@@ -12,19 +12,27 @@
             <p:panel header="Tipo de documento">
                 <h:panelGrid columns="2">
                     <h:outputText value="ID"/>
-                    <p:inputText value="#{administracion$tiposDocumento.idTipoDocumento}" />
+                    <p:inputText id="idTipoDocumento" value="#{administracion$tiposDocumento.idTipoDocumento}" />
                     <h:outputText value="Nombre"/>
-                    <p:inputText value="#{administracion$tiposDocumento.nombreTipoDocumento}"/>
+                    <p:inputText id="nombreTipoDocumento" value="#{administracion$tiposDocumento.nombreTipoDocumento}"/>
                 </h:panelGrid>
                 <f:facet name="footer">
                     <h:panelGroup>
-                        <p:commandButton value="Aceptar" image="guardar" action="#{administracion$tiposDocumento.guardar_action()}" update="statusForm:mensajes"/>
+                        <p:commandButton value="Guardar" image="guardar" action="#{administracion$tiposDocumento.guardar_action()}" 
+                                         update="statusForm:defaultAjaxStatus 
+                                         statusForm:mensajes idTipoDocumento nombreTipoDocumento tipoDocumentoDataTable" />
                         <p:commandButton value="Cancelar" image="cancelar" />
                     </h:panelGroup>
                 </f:facet>
             </p:panel>
             <p:separator/>
-            <p:dataTable value="#{administracion$tiposDocumento.listaTiposDocumento}" var="tipoDocumento">
+            <p:dataTable id="tipoDocumentoDataTable" value="#{administracion$tiposDocumento.listaTiposDocumento}" var="tipoDocumento" 
+                         selectionMode="single" selection="#{administracion$tiposDocumento.tipoDocumentoSeleccionado}">
+                <f:facet name="header">
+                <p:commandButton value="Modificar" image="modificar"/>
+                <p:commandButton value="Eliminar" image="eliminar" action="#{administracion$tiposDocumento.eliminar_action()}" 
+                                 update="statusForm:defaultAjaxStatus statusForm:mensajes tipoDocumentoDataTable"/>
+                </f:facet>
                 <p:column headerText="ID">                    
                     <h:outputText value="#{tipoDocumento.idTipoDocumento}"/>
                 </p:column>
