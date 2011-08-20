@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../plantillas/defaultTemplate.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:h="http://java.sun.com/jsf/html">
+
+    <ui:define name="titulo">
+        titulo
+    </ui:define>
+
+    <ui:define name="top">
+        top
+    </ui:define>
+
+    <ui:define name="left">
+        left
+    </ui:define>
+
+    <ui:define name="content">
+        <p:growl id="mensajes" showDetail="true"/>
+        <h:form id="puestoForm">
+            <p:panel header="Datos del Puesto">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="C&#243;digo"/>
+                    <p:inputText id="Puesto" value="#{administracionPuestoBackingBean.codigoPuesto}" />
+                    <h:outputLabel value="Nombre"/>
+                    <p:inputText id="Nombre" value="#{administracionPuestoBackingBean.nombrePuesto}"  />
+                    <h:outputLabel value="Tipo de puesto"/>
+                    <h:selectOneMenu id="TipoPuesto" value="#{administracionPuestoBackingBean.codigoTipoPuesto}" >
+                        <f:selectItems var="tipoPuesto" value="#{administracionPuestoBackingBean.listaTipoPuesto}" itemValue="#{tipoPuesto.idTipoPuesto}" itemLabel="#{tipoPuesto.nomTipoPuesto}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <p:separator/>
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" image="guardar" action="#{administracionPuestoBackingBean.action_guardar}" update="mensajes tablePuesto Puesto TipoPuesto Nombre"/>
+                    <p:commandButton id="Eliminar" value="Eliminar" action="#{administracionPuestoBackingBean.action_eliminar}" image="eliminar"  update="tablePuesto mensajes Puesto TipoPuesto Nombre"/>
+                    <p:commandButton value="Cancelar" image="cancelar" action="#{administracionPuestoBackingBean.action_cancelar}" update="mensajes tablePuesto Puesto TipoPuesto Nombre"/>
+
+                </f:facet>
+            </p:panel>
+
+            <p:dataTable id="tablePuesto"  
+                         value="#{administracionPuestoBackingBean.listaPuesto}" 
+                         update="tablePuesto Modificar Eliminar Puesto TipoPuesto Nombre" 
+                         selection="#{administracionPuestoBackingBean.puestoSeleccionado}" 
+                         rowSelectListener="#{administracionPuestoBackingBean.onRowSelect}"
+                         paginator="true" 
+                         rows="10" 
+                         selectionMode="single"
+                         var="puesto">
+
+                <f:facet name="header">  
+                    <h:outputLabel value="Puestos Existentes" />
+                </f:facet> 
+                <p:column headerText="C&#243;digo" >
+                    <h:outputLabel value="#{puesto.puestoPK.idPuesto}" />
+                </p:column>
+
+                <p:column headerText="Nombre" >
+                    <h:outputLabel value="#{puesto.nomPuesto}" />
+                </p:column>
+
+                <p:column headerText="Tipo de puesto" >
+                    <h:outputLabel value="#{puesto.tipoPuesto.nomTipoPuesto}" />
+                </p:column>
+                <f:facet name="footer">  
+                    <h:outputLabel value="Total puestos encontrados #{administracionPuestoBackingBean.listaPuesto.size() }" /> 
+                </f:facet> 
+
+            </p:dataTable>
+        </h:form>   
+    </ui:define>
+
+    <ui:define name="bottom">
+        bottom
+    </ui:define>
+
+</ui:composition>
