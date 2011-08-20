@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../plantillas/defaultTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:define name="titulo">
+        Estados civiles
+    </ui:define>
+
+    <ui:define name="top">
+        top
+    </ui:define>
+
+    <ui:define name="left">
+        left
+    </ui:define>
+
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel header="Estado Civil">
+
+                <h:panelGrid columns="2">
+                    <h:outputText value="ID"/>
+                    <p:inputText id="idEstadoCivil" value="#{administracion$estadoCivil.idEstadoCivil}"/>
+                    <h:outputText value="Nombre"/>
+                    <p:inputText id="nombreEstadoCivil" value="#{administracion$estadoCivil.nombreEstadoCivil}"/>
+                </h:panelGrid>
+
+                <f:facet name="footer">
+                    <h:panelGroup>
+                        <p:commandButton value="Guardar" image="guardar"
+                                         action="#{administracion$estadoCivil.guardar_action()}"
+                                         update="statusForm:mensajes idEstadoCivil nombreEstadoCivil estadoCivilDataTable"/>
+                        <p:commandButton value="Cancelar" image="cancelar"/>
+                    </h:panelGroup>
+                </f:facet>
+
+            </p:panel>
+
+            <p:separator/>
+            <p:dataTable id="estadoCivilDataTable" value="#{administracion$estadoCivil.listaEstadoCivil}"
+                         var="estadoCivil" selectionMode="single" selection="#{administracion$estadoCivil.estadoCivilSeleccionado}">
+
+                <f:facet name="header">
+
+                    <p:commandButton value="Modificar" image="modificar"/>
+                    <p:commandButton value="Eliminar" image="eliminar" action="#{administracion$estadoCivil.eliminar_action()}"
+                                     update="statusForm:defaultAjaxStatus statusform:mensajes estadoCivilDataTable"/>                        
+
+                </f:facet>
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{estadoCivil.idEstadoCivil}"/>
+                </p:column>
+
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{estadoCivil.nomEstadoCivil}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+    </ui:define>
+
+    <ui:define name="bottom">
+        bottom
+    </ui:define>
+
+</ui:composition>
