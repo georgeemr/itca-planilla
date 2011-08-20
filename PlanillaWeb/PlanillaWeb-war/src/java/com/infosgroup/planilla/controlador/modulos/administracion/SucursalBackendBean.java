@@ -132,6 +132,13 @@ public class SucursalBackendBean extends JSFUtil implements Serializable {
         setNombre(getSucursalSeleccionada().getNomSucursal());
     }
 
+        public String onRowSelect() {
+
+        setSucursal(getSucursalSeleccionada().getSucursalPK().getIdSucursal());
+        setNombre(getSucursalSeleccionada().getNomSucursal());
+        return null;
+    }
+    
     public String action_editar() {
         setSucursal(getSucursalSeleccionada().getSucursalPK().getIdSucursal());
         setNombre(getSucursalSeleccionada().getNomSucursal());
