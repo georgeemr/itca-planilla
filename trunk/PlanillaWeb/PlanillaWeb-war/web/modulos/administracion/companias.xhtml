@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/plantillas/defaultTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="titulo">Compa&ntilde;ias</ui:define>    
+    <!--ui:define name="top">
+        top
+    </ui:define-->
+
+    <!--ui:define name="left">
+        left
+    </ui:define-->
+
+    <ui:define name="content">
+        <h:form id="companiasForm" prependId="true">
+            <p:panel header="Datos de la compania">
+                <h:panelGrid columns="2">
+                <h:outputText value="ID"/>
+                <p:inputText id="idCompania" value="#{administracion$companias.idCompania}"/>
+                <h:outputText value="Nombre"/>
+                <p:inputText id="nomCompania" value="#{administracion$companias.nomCompania}"/>
+                <h:outputText value="Descripcion"/>
+                <p:inputText id="detCompania" value="#{administracion$companias.detCompania}"/>
+                <h:outputText value="Razon social"/>
+                <p:inputText id="razonSocial" value="#{administracion$companias.razonSocial}"/>
+                </h:panelGrid>
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" image="guardar" action="#{administracion$companias.guardar_action()}" update="statusForm:defaultAjaxStatus idCompania nomCompania detCompania razonSocial companiasDataTable"/>
+                    <p:commandButton value="Cancelar" image="cancelar"/>
+                </f:facet>
+            </p:panel>
+            <p:separator/>
+            <p:dataTable id="companiasDataTable" value="#{administracion$companias.listaCompanias}" var="compania" selectionMode="single" selection="#{administracion$companias.companiaSeleccionada}">
+                <f:facet name="header">
+                    <p:commandButton value="Modificar" image="modificar"/>
+                    <p:commandButton value="Eliminar" image="eliminar" action="#{administracion$companias.eliminar_action()}" update="statusForm:defaultAjaxStatus companiasDataTable"/>
+                </f:facet>
+                <p:column headerText="ID">
+                    <h:outputText value="#{compania.idCompania}"/>
+                </p:column>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{compania.nomCompania}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+    <!--ui:define name="bottom">
+        bottom
+    </ui:define-->
+
+</ui:composition>
