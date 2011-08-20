@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/plantillas/defaultTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="titulo">
+        Tipos de Planilla
+    </ui:define>
+
+    <ui:define name="top">
+        top
+    </ui:define>
+
+    <ui:define name="left">
+        left
+    </ui:define>
+
+    <ui:define name="content">
+        
+        <h:form>
+                <p:panel header="Tipos de Planilla">
+                            <h:panelGrid columns="2">
+                                <h:outputText value="ID Tipo Planilla" />
+                                <p:inputText id="idTipoPlanilla" value="#{administracion$tipoPlanilla.idTipoPlanilla}"/>
+                                <h:outputText value="Nombre Tipo Planilla"/>
+                                <p:inputText id="nombreTipoPlanilla" value="#{administracion$tipoPlanilla.nombreTipoPlanilla}"/>
+                            </h:panelGrid>
+                    
+                            <f:facet name="footer">
+                            <h:panelGroup>
+                            <p:commandButton value="Guardar" image="guardar"
+                                         action="#{administracion$tipoPlanilla.guardar_action()}"
+                                         update="statusForm:mensajes idtipoPlanilla nombreTipoPlanilla tipoPlanillaDataTable"/>
+                            <p:commandButton value="Cancelar" image="cancelar"/>
+                            </h:panelGroup>
+                            </f:facet>
+
+                    
+                </p:panel>
+                  
+        </h:form>
+        
+    </ui:define>
+
+    <ui:define name="bottom">
+        bottom
+    </ui:define>
+
+</ui:composition>
