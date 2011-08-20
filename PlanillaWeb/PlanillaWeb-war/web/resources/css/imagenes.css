@@ -1,0 +1,27 @@
+/*
+    Document   : imagenes.css
+    Created on : 08-10-2011, 11:00:43 PM
+    Author     : Vinicio Enrique Mercado
+    Description: Define las imagenes para los botones Primefaces v2.2.1
+    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+.guardar
+{
+background-image: url('../iconos/document-save.png') !important;
+}
+
+.cancelar
+{
+background-image: url('../iconos/edit-delete.png') !important;
+}
+
+.modificar
+{
+background-image: url('../iconos/document-edit.png') !important;
+}
+
+.eliminar
+{
+background-image: url('../iconos/trash-empty.png') !important;
+}

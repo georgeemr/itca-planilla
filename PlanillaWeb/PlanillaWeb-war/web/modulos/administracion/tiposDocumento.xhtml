@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/plantillas/defaultTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel header="Tipo de documento">
+                <h:panelGrid columns="2">
+                    <h:outputText value="ID"/>
+                    <p:inputText value="#{administracion$tiposDocumento.idTipoDocumento}" />
+                    <h:outputText value="Nombre"/>
+                    <p:inputText value="#{administracion$tiposDocumento.nombreTipoDocumento}"/>
+                </h:panelGrid>
+                <f:facet name="footer">
+                    <h:panelGroup>
+                        <p:commandButton value="Aceptar" image="guardar" action="#{administracion$tiposDocumento.guardar_action()}" update="statusForm:mensajes"/>
+                        <p:commandButton value="Cancelar" image="cancelar" />
+                    </h:panelGroup>
+                </f:facet>
+            </p:panel>
+            <p:separator/>
+            <p:dataTable value="#{administracion$tiposDocumento.listaTiposDocumento}" var="tipoDocumento">
+                <p:column headerText="ID">                    
+                    <h:outputText value="#{tipoDocumento.idTipoDocumento}"/>
+                </p:column>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{tipoDocumento.nomTipoDocumento}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

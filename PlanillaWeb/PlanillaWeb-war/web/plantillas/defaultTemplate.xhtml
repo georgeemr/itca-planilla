@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="#{facesContext.externalContext.requestContextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
+        <link href="#{facesContext.externalContext.requestContextPath}/resources/css/imagenes.css" rel="stylesheet" type="text/css" />
+        <title>Planilla Web - <ui:insert name="titulo">Titulo</ui:insert>
+        </title>
+    </h:head>
+
+    <h:body>
+        <table cellspacing="5" width="100%">
+            <tr>
+                <td id="top" colspan="2">
+                    <ui:insert name="top">                        
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                                <td width="85%">
+                                    <h:outputText styleClass="titulo" value="Planilla Web"/>
+                                </td>
+                                <td width="15%" align="right">
+                                    <h:form id="statusForm" prependId="true">
+                                        <p:growl id="mensajes"/>
+                                    <p:ajaxStatus id="defaultAjaxStatus">
+                                        <f:facet name="start">
+                                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                <tr>
+                                                    <td align="right">
+                                                        <h:graphicImage url="/resources/iconos/system-run.png"/>
+                                                    </td>
+                                                    <td align="left">
+                                                        <h:outputText value="Espere un momento..." style="font-size: 8pt;"/>
+                                                    </td>
+                                                </tr>
+                                                </table>                                            
+                                        </f:facet>
+                                    </p:ajaxStatus>
+                                     </h:form>
+                                </td>
+                            </tr>
+                        </table>
+                    </ui:insert>
+                </td>
+            </tr>
+            <tr>
+                <td id="left">
+                    <ui:insert name="left">Left</ui:insert>
+                </td>
+                <td id="content">
+                    <ui:insert name="content">Content</ui:insert>
+                </td>
+            </tr>
+            <tr>
+                <td id="bottom" colspan="2">
+                    <ui:insert name="bottom">Bottom</ui:insert>
+                </td>
+            </tr>
+        </table>
+    </h:body>
+
+</html>
