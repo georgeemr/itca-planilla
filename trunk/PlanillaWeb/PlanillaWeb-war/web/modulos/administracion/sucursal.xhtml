@@ -31,6 +31,7 @@
                 <p:separator/>
                 <f:facet name="footer">
                     <p:commandButton value="Guardar" image="guardar" action="#{administracion$sucursalBackendBean.action_guardar()}" update="mensajes tableSucursal Sucursal Nombre"/>
+                    <p:commandButton id="Eliminar" value="Eliminar" action="#{administracion$sucursalBackendBean.action_eliminar}" image="eliminar"  update="tableSucursal mensajes Sucursal Nombre"/>
                     <p:commandButton value="Cancelar" image="cancelar" action="#{administracion$sucursalBackendBean.action_cancelar()}" update="mensajes tableSucursal Sucursal Nombre"/>
 
                 </f:facet>
@@ -41,24 +42,41 @@
                          update="tableSucursal Modificar Eliminar Sucursal Nombre" 
                          selection="#{administracion$sucursalBackendBean.sucursalSeleccionada}" 
                          rowSelectListener="#{administracion$sucursalBackendBean.onRowSelect}"
-
-
                          paginator="true" 
                          rows="10" 
                          selectionMode="single" 
                          var="sucursal">
 
                 <f:facet name="header">  
-                    <h:outputLabel value="Sucursales Existentes" /> 
-                    <p:commandButton id="Modificar" value="Modificar" action="#{administracion$sucursalBackendBean.action_editar}" image="modificar"  update="Sucursal Nombre Modificar"/>
-                    <p:commandButton id="Eliminar" value="Eliminar" action="#{administracion$sucursalBackendBean.action_eliminar}" image="eliminar"  update="tableSucursal mensajes Sucursal Nombre"/>
+                    <h:outputLabel value="Sucursales Existentes" />
                 </f:facet> 
                 <p:column headerText="C&#243;digo" >
-                    <h:outputLabel value="#{sucursal.sucursalPK.idSucursal}" />
+                    <p:cellEditor>
+                        <f:facet name="output"> 
+                            <h:outputLabel value="#{sucursal.sucursalPK.idSucursal}" />
+                        </f:facet> 
+                        <f:facet name="input">  
+                            <p:inputText value="#{sucursal.sucursalPK.idSucursal}" style="width:100%"/>  
+                        </f:facet>  
+                    </p:cellEditor>  
                 </p:column>
+
                 <p:column headerText="Sucursal" >
-                    <h:outputLabel value="#{sucursal.nomSucursal}" />
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputLabel value="#{sucursal.nomSucursal}" />
+                        </f:facet>
+                        <f:facet name="input">  
+                            <p:inputText value="#{sucursal.nomSucursal}" style="width:100%"/>  
+                        </f:facet>  
+                    </p:cellEditor>
                 </p:column>
+
+                <p:column headerText="Editar">  
+
+                    <p:rowEditor />  
+
+                </p:column> 
 
                 <f:facet name="footer">  
                     <h:outputLabel value="Total encontradas: #{administracion$sucursalBackendBean.listaSucursales.size() }" /> 
