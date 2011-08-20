@@ -9,7 +9,6 @@ import com.infosgroup.planilla.modelo.facades.TipoDocumentoFacade;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -27,16 +26,6 @@ public class TiposDocumentoBackendBean {
     }
     @EJB
     private TipoDocumentoFacade tipoDocumentoFacade;
-    private List<TipoDocumento> listaTiposDocumento;
-
-    public List<TipoDocumento> getListaTiposDocumento() {
-        listaTiposDocumento = tipoDocumentoFacade.findAll();
-        return listaTiposDocumento;
-    }
-
-    public void setListaTiposDocumento(List<TipoDocumento> listaTiposDocumento) {
-        this.listaTiposDocumento = listaTiposDocumento;
-    }
     private Integer idTipoDocumento;
     private String nombreTipoDocumento;
 
@@ -55,15 +44,50 @@ public class TiposDocumentoBackendBean {
     public void setNombreTipoDocumento(String nombreTipoDocumento) {
         this.nombreTipoDocumento = nombreTipoDocumento;
     }
+    // ===================================================================================================
+    private List<TipoDocumento> listaTiposDocumento;
 
+    public List<TipoDocumento> getListaTiposDocumento() {
+        listaTiposDocumento = tipoDocumentoFacade.findAll();
+        return listaTiposDocumento;
+    }
+
+    public void setListaTiposDocumento(List<TipoDocumento> listaTiposDocumento) {
+        this.listaTiposDocumento = listaTiposDocumento;
+    }
+    // ===================================================================================================
+   
+    private TipoDocumento tipoDocumentoSeleccionado;
+
+    public TipoDocumento getTipoDocumentoSeleccionado() {
+        return tipoDocumentoSeleccionado;
+    }
+
+    public void setTipoDocumentoSeleccionado(TipoDocumento tipoDocumentoSeleccionado) {
+        this.tipoDocumentoSeleccionado = tipoDocumentoSeleccionado;
+    }
+
+// =============================================================================================
     public String guardar_action() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, nombreTipoDocumento, nombreTipoDocumento));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ha guardado el Tipo de Documento", ""));
         TipoDocumento t = new TipoDocumento();
         t.setIdTipoDocumento(idTipoDocumento);
         t.setNomTipoDocumento(nombreTipoDocumento);
         tipoDocumentoFacade.create(t);
         idTipoDocumento = null;
         nombreTipoDocumento = null;
+        t.setIdTipoDocumento(null);
+        t.setNomTipoDocumento(null);
+        return null;
+    }
+
+    public String eliminar_action() {
+        if (tipoDocumentoSeleccionado == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ha eliminado el registro", ""));
+            return null;
+        }
+        TipoDocumento t = tipoDocumentoFacade.find(tipoDocumentoSeleccionado.getIdTipoDocumento());
+        tipoDocumentoFacade.remove(t);
         return null;
     }
 }
