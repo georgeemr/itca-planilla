@@ -44,39 +44,20 @@
                          rowSelectListener="#{administracion$sucursalBackendBean.onRowSelect}"
                          paginator="true" 
                          rows="10" 
-                         selectionMode="single" 
+                         selectionMode="single"
                          var="sucursal">
+
 
                 <f:facet name="header">  
                     <h:outputLabel value="Sucursales Existentes" />
                 </f:facet> 
                 <p:column headerText="C&#243;digo" >
-                    <p:cellEditor>
-                        <f:facet name="output"> 
-                            <h:outputLabel value="#{sucursal.sucursalPK.idSucursal}" />
-                        </f:facet> 
-                        <f:facet name="input">  
-                            <p:inputText value="#{sucursal.sucursalPK.idSucursal}" style="width:100%"/>  
-                        </f:facet>  
-                    </p:cellEditor>  
+                    <h:outputLabel value="#{sucursal.sucursalPK.idSucursal}" />
                 </p:column>
 
                 <p:column headerText="Sucursal" >
-                    <p:cellEditor>
-                        <f:facet name="output">
-                            <h:outputLabel value="#{sucursal.nomSucursal}" />
-                        </f:facet>
-                        <f:facet name="input">  
-                            <p:inputText value="#{sucursal.nomSucursal}" style="width:100%"/>  
-                        </f:facet>  
-                    </p:cellEditor>
+                    <h:outputLabel value="#{sucursal.nomSucursal}" />
                 </p:column>
-
-                <p:column headerText="Editar">  
-
-                    <p:rowEditor />  
-
-                </p:column> 
 
                 <f:facet name="footer">  
                     <h:outputLabel value="Total encontradas: #{administracion$sucursalBackendBean.listaSucursales.size() }" /> 
