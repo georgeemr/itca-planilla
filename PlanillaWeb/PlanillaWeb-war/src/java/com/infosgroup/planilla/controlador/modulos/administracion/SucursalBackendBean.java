@@ -113,6 +113,7 @@ public class SucursalBackendBean extends JSFUtil implements Serializable {
         try {
             sucursalFacade.remove(sucursalSeleccionada);
             addInfoMessage("Crear Sucursal", "Datos Eliminados.");
+            limpiarCampos();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
