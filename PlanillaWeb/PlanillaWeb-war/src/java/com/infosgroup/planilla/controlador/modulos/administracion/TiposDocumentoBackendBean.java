@@ -6,20 +6,22 @@ package com.infosgroup.planilla.controlador.modulos.administracion;
 
 import com.infosgroup.planilla.modelo.entidades.TipoDocumento;
 import com.infosgroup.planilla.modelo.facades.TipoDocumentoFacade;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.util.List;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+    import javax.faces.context.FacesContext;
 
 /**
  *
- * @author root
+ * @author ralarcon
  */
+
 @ManagedBean(name = "administracion$tiposDocumento")
 @ViewScoped
-public class TiposDocumentoBackendBean {
+public class TiposDocumentoBackendBean implements Serializable {
 
     /** Creates a new instance of TiposDocumentoBackendBean */
     public TiposDocumentoBackendBean() {
@@ -88,6 +90,7 @@ public class TiposDocumentoBackendBean {
         }
         TipoDocumento t = tipoDocumentoFacade.find(tipoDocumentoSeleccionado.getIdTipoDocumento());
         tipoDocumentoFacade.remove(t);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ha eliminado el registro", ""));
         return null;
     }
 }

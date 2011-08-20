@@ -5,6 +5,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:f="http://java.sun.com/jsf/core">
+    
+    <ui:define name="titulo">Tipos de Documento</ui:define>    
 
 
     <ui:define name="content">
@@ -33,12 +35,15 @@
                 <p:commandButton value="Eliminar" image="eliminar" action="#{administracion$tiposDocumento.eliminar_action()}" 
                                  update="statusForm:defaultAjaxStatus statusForm:mensajes tipoDocumentoDataTable"/>
                 </f:facet>
+                
                 <p:column headerText="ID">                    
                     <h:outputText value="#{tipoDocumento.idTipoDocumento}"/>
                 </p:column>
+                
                 <p:column headerText="Nombre">
                     <h:outputText value="#{tipoDocumento.nomTipoDocumento}" />
                 </p:column>
+                
             </p:dataTable>
         </h:form>
     </ui:define>
