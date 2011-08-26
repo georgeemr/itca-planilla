@@ -27,20 +27,40 @@
                                 <p:inputText id="idTipoPlanilla" value="#{administracion$tipoPlanilla.idTipoPlanilla}"/>
                                 <h:outputText value="Nombre Tipo Planilla"/>
                                 <p:inputText id="nombreTipoPlanilla" value="#{administracion$tipoPlanilla.nombreTipoPlanilla}"/>
+                                <h:outputText value="Compania"/>
+                                <h:selectOneMenu id="idCompania"   value="#{administracion$tipoPlanilla.compania}">
+                                    <f:selectItems  var="compania" value="#{administracion$tipoPlanilla.listaCompanias}" itemLabel="#{compania.nomCompania}" itemValue="#{compania.idCompania}" />
+                                </h:selectOneMenu>
                             </h:panelGrid>
                     
                             <f:facet name="footer">
                             <h:panelGroup>
-                            <p:commandButton value="Guardar" image="guardar"
-                                         action="#{administracion$tipoPlanilla.guardar_action()}"
+                            <p:commandButton value="Guardar" image="guardar"  action="#{administracion$tipoPlanilla.guardar_action()}"
                                          update="statusForm:mensajes idtipoPlanilla nombreTipoPlanilla tipoPlanillaDataTable"/>
                             <p:commandButton value="Cancelar" image="cancelar"/>
                             </h:panelGroup>
                             </f:facet>
 
-                    
                 </p:panel>
+                  <p:separator/>
                   
+                  <p:dataTable id="tipoPlanillaDataTable" value="#{administracion$tipoPlanilla.listaTiposPlanilla}" var="tipoPlanilla" 
+                               selectionMode="single" selection="#{administracion$tipoPlanilla.tipoPlanillaSeleccionado}">
+                <f:facet name="header">
+                <p:commandButton value="Modificar" image="modificar"/> 
+                <p:commandButton value="Eliminar" image="eliminar" action="#{administracion$tiposDocumento.eliminar_action()}" 
+                                 update="statusForm:defaultAjaxStatus statusForm:mensajes tipoDocumentoDataTable"/>
+                </f:facet>
+                
+                <p:column headerText="ID Tipo Planilla">                    
+                    <h:outputText value="#{tipoPlanilla.tipoPlanillaPK.idTipoPlanilla}"/>
+                </p:column>
+                
+                <p:column headerText="Nombre Tipo Planilla">
+                    <h:outputText value="#{tipoDocumento.nomTipoPlanilla}" />
+                </p:column>
+                
+            </p:dataTable>
         </h:form>
         
     </ui:define>
