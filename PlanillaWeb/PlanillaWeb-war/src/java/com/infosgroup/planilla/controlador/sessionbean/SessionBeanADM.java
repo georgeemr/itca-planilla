@@ -14,16 +14,18 @@ import javax.faces.bean.SessionScoped;
  *
  * @author root
  */
-@ManagedBean(name="SessionBeanADM")
+@ManagedBean(name = "SessionBeanADM")
 @SessionScoped
 public class SessionBeanADM {
+
     @EJB
     private CompaniaFacade companiaFacade;
 
     /** Creates a new instance of SessionBeanADM */
-    public SessionBeanADM() {}
-    
-    public Compania getCompania(){
+    public SessionBeanADM() {
+    }
+
+    public Compania getCompania() {
         return companiaFacade.find(1);
     }
 }
