@@ -8,6 +8,7 @@ import com.infosgroup.planilla.modelo.entidades.NivelAcademico;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -24,6 +25,13 @@ public class NivelAcademicoFacade extends AbstractFacade<NivelAcademico, Integer
 
     public NivelAcademicoFacade() {
         super(NivelAcademico.class);
+    }
+    
+        public Integer max() {
+        Integer max = null;
+        Query q = getEntityManager().createNamedQuery("NivelAcademico.max");
+        max = (Integer) q.getSingleResult();
+        return (max == null) ? 0 : max;
     }
     
 }
