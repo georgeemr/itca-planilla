@@ -5,39 +5,29 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:f="http://java.sun.com/jsf/core">
-
-    <ui:define name="titulo">Compa&ntilde;ias</ui:define>    
-    <!--ui:define name="top">
-        top
-    </ui:define-->
-
-    <!--ui:define name="left">
-        left
-    </ui:define-->
-
+    <ui:define name="titulo">Compa&ntilde;ias</ui:define>
     <ui:define name="content">
-        <h:form id="companiasForm" prependId="true">
-            <p:panel header="Datos de la compania">
+        <h:form id="companiasForm" prependId="false">
+            <p:panel header="Datos de la compañia">
                 <h:panelGrid columns="2">
-                <h:outputText value="ID"/>
-                <p:inputText id="idCompania" value="#{administracion$companias.idCompania}"/>
-                <h:outputText value="Nombre"/>
-                <p:inputText id="nomCompania" value="#{administracion$companias.nomCompania}"/>
-                <h:outputText value="Descripcion"/>
-                <p:inputText id="detCompania" value="#{administracion$companias.detCompania}"/>
-                <h:outputText value="Razon social"/>
-                <p:inputText id="razonSocial" value="#{administracion$companias.razonSocial}"/>
+                    <h:outputText value="Nombre"/>
+                    <p:inputText id="nomCompania" value="#{administracion$companias.nomCompania}"/>
+                    <h:outputText value="Descripcion"/>
+                    <p:inputText id="detCompania" value="#{administracion$companias.detCompania}"/>
+                    <h:outputText value="Razon social"/>
+                    <p:inputText id="razonSocial" value="#{administracion$companias.razonSocial}"/>
                 </h:panelGrid>
                 <f:facet name="footer">
-                    <p:commandButton value="Guardar" image="guardar" action="#{administracion$companias.guardar_action()}" update="statusForm:defaultAjaxStatus idCompania nomCompania detCompania razonSocial companiasDataTable"/>
-                    <p:commandButton value="Cancelar" image="cancelar"/>
+                    <p:commandButton value="Guardar" image="guardar" action="#{administracion$companias.guardar_action()}" update="statusForm:status messageForm:message nomCompania detCompania razonSocial companiasDataTable"/>
+                    <p:commandButton value="Cancelar" image="cancelar" action="#{administracion$companias.cancelar_action()}" update="statusForm:status messageForm:message nomCompania detCompania razonSocial"/>
                 </f:facet>
             </p:panel>
             <p:separator/>
-            <p:dataTable id="companiasDataTable" value="#{administracion$companias.listaCompanias}" var="compania" selectionMode="single" selection="#{administracion$companias.companiaSeleccionada}">
+          
+            <p:dataTable id="companiasDataTable" value="#{administracion$companias.listaCompanias}" var="compania" selection="#{administracion$companias.companiaSeleccionada}" paginator="true" rows="10" selectionMode="single" update="statusForm:status companiasDataTable">
                 <f:facet name="header">
-                    <p:commandButton value="Modificar" image="modificar"/>
-                    <p:commandButton value="Eliminar" image="eliminar" action="#{administracion$companias.eliminar_action()}" update="statusForm:defaultAjaxStatus companiasDataTable"/>
+                    <p:commandButton id="modificarButton" value="Modificar" image="modificar" action="#{administracion$companias.modificar_action()}" disabled="#{administracion$companias.companiaSeleccionada eq null}" update="statusForm:status messageForm:message nomCompania detCompania razonSocial companiasDataTable"/>
+                    <p:commandButton id="eliminarButton" value="Eliminar" image="eliminar" action="#{administracion$companias.eliminar_action()}" disabled="#{administracion$companias.companiaSeleccionada eq null}" update="statusForm:status messageForm:message companiasDataTable"/>
                 </f:facet>
                 <p:column headerText="ID">
                     <h:outputText value="#{compania.idCompania}"/>
@@ -48,9 +38,4 @@
             </p:dataTable>
         </h:form>
     </ui:define>
-
-    <!--ui:define name="bottom">
-        bottom
-    </ui:define-->
-
 </ui:composition>
