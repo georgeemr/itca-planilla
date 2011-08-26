@@ -8,6 +8,7 @@ import com.infosgroup.planilla.modelo.entidades.Pais;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -24,6 +25,13 @@ public class PaisFacade extends AbstractFacade<Pais, Integer> {
 
     public PaisFacade() {
         super(Pais.class);
+    }
+    
+    public Integer max() {
+        Integer max = null;
+        Query q = getEntityManager().createNamedQuery("Pais.max");
+        max = (Integer) q.getSingleResult();
+        return (max == null) ? 0 : max;
     }
     
 }
