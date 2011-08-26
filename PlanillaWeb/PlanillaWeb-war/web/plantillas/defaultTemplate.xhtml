@@ -26,22 +26,24 @@
                                 </td>
                                 <td width="15%" align="right">
                                     <h:form id="statusForm" prependId="true">
-                                        <p:growl id="mensajes"/>
-                                    <p:ajaxStatus id="defaultAjaxStatus">
-                                        <f:facet name="start">
-                                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                                                <tr>
-                                                    <td align="right">
-                                                        <h:graphicImage url="/resources/iconos/system-run.png"/>
-                                                    </td>
-                                                    <td align="left">
-                                                        <h:outputText value="Espere un momento..." style="font-size: 8pt;"/>
-                                                    </td>
-                                                </tr>
+                                        <p:ajaxStatus id="status">
+                                            <f:facet name="start">
+                                                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                    <tr>
+                                                        <td align="right">
+                                                            <h:graphicImage url="/resources/iconos/system-run.png"/>
+                                                        </td>
+                                                        <td align="left">
+                                                            <h:outputText value="Espere un momento..." style="font-size: 8pt;"/>
+                                                        </td>
+                                                    </tr>
                                                 </table>                                            
-                                        </f:facet>
-                                    </p:ajaxStatus>
-                                     </h:form>
+                                            </f:facet>
+                                        </p:ajaxStatus>
+                                    </h:form>
+                                    <h:form id="messageForm" prependId="true">
+                                        <p:growl id="message" showDetail="true" showSummary="true"/>
+                                    </h:form>
                                 </td>
                             </tr>
                         </table>
@@ -50,7 +52,12 @@
             </tr>
             <tr>
                 <td id="left">
-                    <ui:insert name="left">Left</ui:insert>
+                    <!--ui:insert name="left">
+                    </ui:insert-->
+                    <h:form prependId="true">
+                        <p:menu tiered="true">
+                        </p:menu>
+                    </h:form>
                 </td>
                 <td id="content">
                     <ui:insert name="content">Content</ui:insert>
