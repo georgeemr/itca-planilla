@@ -6,13 +6,13 @@ package com.infosgroup.planilla.controlador.modulos.administracion;
 
 import com.infosgroup.planilla.modelo.entidades.Compania;
 import com.infosgroup.planilla.modelo.facades.CompaniaFacade;
+import com.infosgroup.planilla.view.JSFUtil;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 /**
  *
@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean(name = "administracion$companias")
 @ViewScoped
-public class CompaniasBackendBean implements Serializable {
+public class CompaniasBackendBean extends JSFUtil implements Serializable {
 
     /** Creates a new instance of CompaniasBackendBean */
     public CompaniasBackendBean() {
@@ -77,6 +77,96 @@ public class CompaniasBackendBean implements Serializable {
         this.listaCompanias = listaCompanias;
     }
 // =============================================================================================
+    private EstadoAccion estado = EstadoAccion.CREANDO;
+// =============================================================================================
+
+    public String guardar_action() {
+        Boolean hayError = false;
+
+        if ((nomCompania == null) || nomCompania.trim().isEmpty()) {
+            hayError = Boolean.TRUE;
+            mostrarMensaje(FacesMessage.SEVERITY_WARN, "Ingrese el nombre de la compañia");
+        }
+
+        if (hayError) {
+            return null;
+        }
+
+        try {
+            if (estado == EstadoAccion.CREANDO) {
+                Compania c = new Compania();
+               
+                c.setIdCompania(companiaFacade.max() + 1);
+                c.setNomCompania(nomCompania);
+                c.setDetCompania(detCompania);
+                c.setRazonSocial(razonSocial);
+                companiaFacade.create(c);
+                companiaSeleccionada = null;
+                limpiarCampos();
+                mostrarMensaje(FacesMessage.SEVERITY_INFO, "Compañia guardada exitosamente");
+            } else if (estado == EstadoAccion.MODIFICANDO) {
+                if (companiaSeleccionada == null) {
+                    mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se ha seleccionado la compañia");
+                    return null;
+                }
+                Compania c = companiaFacade.find(companiaSeleccionada.getIdCompania());
+                if (c == null) {
+                    mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se encontró la compañia");
+                    return null;
+                }
+               
+                c.setNomCompania(nomCompania);
+                c.setDetCompania(detCompania);
+                c.setRazonSocial(razonSocial);
+                companiaFacade.edit(c);
+                mostrarMensaje(FacesMessage.SEVERITY_INFO, "Datos de la compañia modificados");
+                companiaSeleccionada = null;
+                limpiarCampos();
+            }
+        } catch (Exception excpt) {
+            mostrarMensaje(FacesMessage.SEVERITY_ERROR, excpt.toString());
+        }
+        estado = EstadoAccion.CREANDO;
+        return null;
+    }
+
+    public String cancelar_action() {
+        estado = EstadoAccion.CREANDO;
+        limpiarCampos();
+        return null;
+    }
+
+    public String modificar_action() {
+        if (companiaSeleccionada == null) {
+            mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se ha seleccionado la compañia");
+            return null;
+        }
+        estado = EstadoAccion.MODIFICANDO;
+        idCompania = companiaSeleccionada.getIdCompania();
+        nomCompania = companiaSeleccionada.getNomCompania();
+        detCompania = companiaSeleccionada.getDetCompania();
+        razonSocial = companiaSeleccionada.getRazonSocial();
+        return null;
+    }
+
+// =============================================================================================
+    public String eliminar_action() {
+        if (companiaSeleccionada == null) {
+            mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se ha seleccionado la compañia");
+            return null;
+        }
+        Compania c = companiaFacade.find(companiaSeleccionada.getIdCompania());
+        if (c == null) {
+            mostrarMensaje(FacesMessage.SEVERITY_WARN, "Seleccione la compañia");
+            return null;
+        }
+        companiaFacade.remove(c);
+        companiaSeleccionada = null;
+        estado = EstadoAccion.CREANDO;
+        mostrarMensaje(FacesMessage.SEVERITY_INFO, "Compañia eliminada");
+        return null;
+    }
+// =============================================================================================
     private Compania companiaSeleccionada;
 
     public Compania getCompaniaSeleccionada() {
@@ -86,41 +176,12 @@ public class CompaniasBackendBean implements Serializable {
     public void setCompaniaSeleccionada(Compania companiaSeleccionada) {
         this.companiaSeleccionada = companiaSeleccionada;
     }
-// =============================================================================================
 
-    public String guardar_action() {
-        Compania c = new Compania();
-        c.setIdCompania(idCompania);
-        c.setNomCompania(nomCompania);
-        c.setDetCompania(detCompania);
-        c.setRazonSocial(razonSocial);
-        companiaFacade.create(c);
+    @Override
+    protected void limpiarCampos() {
         idCompania = null;
         nomCompania = null;
         detCompania = null;
         razonSocial = null;
-        return null;
-    }
-
-    public String modificar_action() {
-        if (companiaSeleccionada == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "No he seleccionado ninguna compañia"));
-            return null;
-        }
-        idCompania = companiaSeleccionada.getIdCompania();
-        nomCompania = companiaSeleccionada.getNomCompania();
-        detCompania = companiaSeleccionada.getDetCompania();
-        razonSocial = companiaSeleccionada.getRazonSocial();
-        return null;
-    }
-
-    public String eliminar_action() {
-        if (companiaSeleccionada == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "No he seleccionado ninguna compañia"));
-            return null;
-        }
-        Compania c = companiaFacade.find(companiaSeleccionada.getIdCompania());
-        companiaFacade.remove(c);
-        return null;
     }
 }

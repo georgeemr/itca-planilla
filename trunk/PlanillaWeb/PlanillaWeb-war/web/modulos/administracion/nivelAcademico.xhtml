@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/plantillas/defaultTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="titulo">Nivel academico</ui:define>
+
+
+    <ui:define name="content">
+        <h:form id="nivelAcademicoForm" prependId="false">
+            <p:panel header="Datos del nivel academico">
+                <h:panelGrid columns="2">
+                    <h:outputText value="Nombre"/>
+                    <p:inputText id="nomNivelAcademico" value="#{administracion$nivelAcademico.nomNivelAcademico}" />
+                    <h:outputText value="Descripcion"/>
+                    <p:inputText id="detNivelAcademico" value="#{administracion$nivelAcademico.detNivelAcademico}" />
+                </h:panelGrid>
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" image="guardar" action="#{administracion$nivelAcademico.guardar_action()}" update="statusForm:status messageForm:message nomNivelAcademico detNivelAcademico nivelesAcademicosDataTable"/>
+                    <p:commandButton value="Cancelar" image="cancelar" action="#{administracion$nivelAcademico.cancelar_action()}" update="statusForm:status messageForm:message nomNivelAcademico detNivelAcademico"/>
+                </f:facet>
+            </p:panel>
+            <p:separator/>
+            
+            <p:dataTable id="nivelesAcademicosDataTable" value="#{administracion$nivelAcademico.listaNivelesAcademicos}" var="nivelAcademico" selection="#{administracion$nivelAcademico.nivelAcademicoSeleccionado}" paginator="true" rows="10" selectionMode="single" update="statusForm:status nivelesAcademicosDataTable">
+                <f:facet name="header">
+                    <p:commandButton id="modificarButton" value="Modificar" image="modificar" action="#{administracion$nivelAcademico.modificar_action()}" disabled="#{administracion$nivelAcademico.nivelAcademicoSeleccionado eq null}" update="statusForm:status messageForm:message nomNivelAcademico detNivelAcademico nivelesAcademicosDataTable"/>
+                    <p:commandButton id="eliminarButton" value="Eliminar" image="eliminar" action="#{administracion$nivelAcademico.eliminar_action()}" disabled="#{administracion$nivelAcademico.nivelAcademicoSeleccionado eq null}" update="statusForm:status messageForm:message nivelesAcademicosDataTable"/>
+                </f:facet>
+                <p:column headerText="ID">
+                    <h:outputText value="#{nivelAcademico.idNivelAcademico}"/>
+                </p:column>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{nivelAcademico.nomNivelAcademico}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+
+</ui:composition>

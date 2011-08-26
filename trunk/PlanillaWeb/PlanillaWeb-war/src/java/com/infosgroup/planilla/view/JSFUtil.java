@@ -38,6 +38,14 @@ public abstract class JSFUtil {
         return context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
     }
 
-    public abstract void limpiarCampos();
+    protected abstract void limpiarCampos();
+    
+      protected enum EstadoAccion {
+        CREANDO,
+        MODIFICANDO
+    }
 
+    public static void mostrarMensaje(FacesMessage.Severity severidad, String textoMensaje) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severidad, "Planilla web", textoMensaje));
+    }
 }
