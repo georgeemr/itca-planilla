@@ -6,6 +6,8 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.Menu;
 import com.infosgroup.planilla.modelo.entidades.MenuPK;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,9 +18,11 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class MenuFacade extends AbstractFacade<Menu, MenuPK> {
+
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
@@ -26,5 +30,9 @@ public class MenuFacade extends AbstractFacade<Menu, MenuPK> {
     public MenuFacade() {
         super(Menu.class);
     }
-    
+
+    public List<Menu> getListaMenus() {
+        List<Menu> m = em.createQuery("select m from Menu m where m.menu is null", Menu.class).getResultList();
+        return m != null ? m : new ArrayList<Menu>(0);
+    }
 }
