@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/plantillas/defaultTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="titulo">
+        titulo
+    </ui:define>
+
+    <ui:define name="top">
+        top
+    </ui:define>
+
+    <ui:define name="left">
+        left
+    </ui:define>
+
+    <ui:define name="content">
+
+
+        <h:form>
+
+            <p:panel header="Tipos de Puesto">
+
+                <h:panelGrid columns="2">
+                    <h:outputText value="ID Tipo de Puesto"/>
+                    <p:inputText id="idTipoPuesto" value=""/>
+                    <h:outputText value="Nombre de Tipo de Puesto"/>
+                    <p:inputText id="nombreTipoPuesto" value=""/>
+                </h:panelGrid>
+
+                <f:facet name="footer">
+                    <h:panelGroup>
+                        <p:commandButton value="Guardar" image="guardar"
+                                         action=""
+                                         update="statusForm:mensajes idTipoPuesto nombreTipoPuesto tipoPuestoDataTable"/>
+                        <p:commandButton value="Cancelar" image="cancelar"/>
+                    </h:panelGroup>
+                </f:facet>
+
+            </p:panel>    
+
+            <p:separator/>
+            <p:dataTable id="tipoPuestoDataTable" value="" var ="tipoPuesto"
+                         selectionMode="single" selection="">
+                <f:facet name="header">
+                    <p:commandButton value="Modificar" image="modificar"/>
+                    <p:commandButton value="Eliminar" image="eliminar" action=""
+                                     update="statusForm:defaultAjaxStatus statusForm:mensajes tipoPuestoDataTable"/>
+                </f:facet>
+
+                <p:column headerText="ID">
+                    <h:outputText value=""/>
+                </p:column>
+
+                <p:column headerText="Nombre">
+                    <h:outputText value=""/>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>  
+
+    </ui:define>
+
+    <ui:define name="bottom">
+        bottom
+    </ui:define>
+
+</ui:composition>
