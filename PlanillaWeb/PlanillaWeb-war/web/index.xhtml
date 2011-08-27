@@ -1,54 +1,20 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Sistema de Planillas Web</title>
-    </h:head>
-    <h:body>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./plantillas/defaultTemplate.xhtml">
 
-        <h:form>
-            <p:commandButton value="Menú" onclick="dlg1.show();" type="button" />
-            <p:dialog header="Bienvenido a Planilla Web" widgetVar="dlg1" width="500">
-                Seleccione una opción
-                <ol>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/estadoCivil.xhtml">
-                            estadoCivil</a>
-                    </li>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/tiposDocumento.xhtml">
-                            tiposDocumento</a>
-                    </li>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/companias.xhtml">
-                            companias</a>
-                    </li>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/sucursal.xhtml">
-                            sucursales</a>
-                    </li>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/tipoPlanilla.xhtml">
-                            tipoPlanilla</a>
-                    </li>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/TipoPuesto.xhtml">
-                            tipoPuesto</a>
-                    </li>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/puesto.xhtml">
-                            puesto</a>
-                    </li>
-                </ol>
-            </p:dialog>
-        </h:form>
+    <ui:define name="titulo">
+        titulo
+    </ui:define>
 
+ 
 
+    <ui:define name="content">
+        content
+    </ui:define>
 
+    <ui:define name="bottom">
+        bottom
+    </ui:define>
 
-
-    </h:body>
-</html>
-
+</ui:composition>
