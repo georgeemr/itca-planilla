@@ -48,8 +48,8 @@
                                selectionMode="single" selection="#{administracion$tipoPlanilla.tipoPlanillaSeleccionado}">
                 <f:facet name="header">
                 <p:commandButton value="Modificar" image="modificar"/> 
-                <p:commandButton value="Eliminar" image="eliminar" action="#{administracion$tiposDocumento.eliminar_action()}" 
-                                 update="statusForm:defaultAjaxStatus statusForm:mensajes tipoDocumentoDataTable"/>
+                <p:commandButton value="Eliminar" image="eliminar" action="#{administracion$tipoPlanilla.eliminar_action()}" 
+                                 update="statusForm:defaultAjaxStatus statusForm:mensajes tipoPlanillaDataTable"/>
                 </f:facet>
                 
                 <p:column headerText="ID Tipo Planilla">                    
@@ -57,7 +57,7 @@
                 </p:column>
                 
                 <p:column headerText="Nombre Tipo Planilla">
-                    <h:outputText value="#{tipoDocumento.nomTipoPlanilla}" />
+                    <h:outputText value="#{tipoPlanilla.nomTipoPlanilla}" />
                 </p:column>
                 
             </p:dataTable>

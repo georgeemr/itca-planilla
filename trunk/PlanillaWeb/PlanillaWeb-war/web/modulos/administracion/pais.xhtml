@@ -7,19 +7,7 @@
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="titulo">Pais</ui:define>
     <ui:define name="content">
-        <h:form id="paisesForm" prependId="false">
-            <p:panel header="Datos del pais">
-                <h:panelGrid columns="2">
-                    <h:outputText value="Nombre"/>
-                    <p:inputText id="nomPais" value="#{administracion$pais.nomPais}" />
-                    <h:outputText value="Descripcion"/>
-                    <p:inputText id="detPais" value="#{administracion$pais.detPais}" />
-                </h:panelGrid>
-                <f:facet name="footer">
-                    <p:commandButton value="Guardar" image="guardar" action="#{administracion$pais.guardar_action()}" update="statusForm:status messageForm:message nomPais detPais paisesDataTable"/>
-                    <p:commandButton value="Cancelar" image="cancelar" action="#{administracion$pais.cancelar_action()}" update="statusForm:status messageForm:message nomPais detPais"/>                    
-                </f:facet>
-            </p:panel>
+        <h:form id="paisesForm" prependId="false">  
             <p:separator/>
             <p:dataTable id="paisesDataTable" value="#{administracion$pais.listaPaises}" var="pais" paginator="true" rows="10"  selectionMode="single" selection="#{administracion$pais.paisSeleccionado}" update="statusForm:status paisesDataTable">
                 <f:facet name="header">
