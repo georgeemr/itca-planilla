@@ -111,7 +111,18 @@ public class TipoPlanillaBackendBean implements Serializable{
       
       return null;
       }
-            
+        
+      public String eliminar_action() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ha eliminado el registro", ""));
+        if (tipoPlanillaSeleccionado == null) {
+            return null;
+        }
+        TipoPlanilla e = tipoPlanillaFacade.find(tipoPlanillaSeleccionado.getTipoPlanillaPK());
+
+        tipoPlanillaFacade.remove(e);
+
+        return null;
+    }
       
             
             
