@@ -20,11 +20,9 @@
                 <td id="top" colspan="2">
                     <ui:insert name="top">                        
                         <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <ui:include id="menuID" src="menu.xhtml" />
                             <tr>
-                                <td width="85%">
-                                    <h:outputText styleClass="titulo" value="Planilla Web"/>
-                                </td>
-                                <td width="15%" align="right">
+                                <td width="15%" align="right">                           
                                     <h:form id="statusForm" prependId="true">
                                         <p:ajaxStatus id="status">
                                             <f:facet name="start">
