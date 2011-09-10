@@ -20,7 +20,7 @@
                 <td id="top" colspan="2">
                     <ui:insert name="top">                        
                         <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                            <ui:include id="menuID" src="menu.xhtml" />
+                            
                             <tr>
                                 <td width="15%" align="right">                           
                                     <h:form id="statusForm" prependId="true">
@@ -39,7 +39,7 @@
                                             </f:facet>
                                         </p:ajaxStatus>
                                     </h:form>
-                                    <ui:include src="/menu.xhtml" />
+                                    <!--ui:include src="/menu.xhtml" /-->
                                     <h:form id="messageForm" prependId="true">
                                         <p:growl id="message" showDetail="true" showSummary="true"/>
                                     </h:form>
@@ -53,10 +53,9 @@
                 <td id="left">
                     <!--ui:insert name="left">
                     </ui:insert-->
-                    <h:form prependId="true">
-                        <p:menu tiered="true">
-                        </p:menu>
-                    </h:form>
+                    <!--h:form prependId="true"-->
+                       <ui:include id="menuID" src="menu.xhtml" />
+                    <!--/h:form-->
                 </td>
                 <td id="content">
                     <ui:insert name="content">Content</ui:insert>

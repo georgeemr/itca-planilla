@@ -3,11 +3,9 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" 
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.prime.com.tr/ui">
-
     <ui:insert name="menu">
         <h:form>
-            <p:menubar model="#{menu.menuModel}"/>
+            <p:menu model="#{menu.menuModel}" type="sliding" maxHeight="450" />
         </h:form>
     </ui:insert>
-
 </ui:composition>
