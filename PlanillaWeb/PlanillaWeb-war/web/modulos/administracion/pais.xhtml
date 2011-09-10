@@ -7,8 +7,12 @@
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="titulo">Pais</ui:define>
     <ui:define name="content">
-        <h:form id="paisesForm" prependId="false">  
-            <p:separator/>
+        <h:form id="paisesForm" prependId="false">
+            <h:outputText value="Nombre"/>
+            <p:inputText id="nomPais"/>
+            <h:outputText value="Detalles"/>
+            <p:inputText id="detPais"/>
+            <p:separator/>            
             <p:dataTable id="paisesDataTable" value="#{administracion$pais.listaPaises}" var="pais" paginator="true" rows="10"  selectionMode="single" selection="#{administracion$pais.paisSeleccionado}" update="statusForm:status paisesDataTable">
                 <f:facet name="header">
                     <p:commandButton id="modificarButton" value="Modificar" image="modificar" action="#{administracion$pais.modificar_action()}" disabled="#{administracion$pais.paisSeleccionado eq null}" update="statusForm:status messageForm:message nomPais detPais paisesDataTable"/>
