@@ -7,6 +7,7 @@ package com.infosgroup.planilla.controlador.modulos.administracion;
 import com.infosgroup.planilla.modelo.entidades.Pais;
 import com.infosgroup.planilla.modelo.facades.PaisFacade;
 import com.infosgroup.planilla.view.JSFUtil;
+import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -19,7 +20,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean(name = "administracion$pais")
 @ViewScoped
-public class PaisBackendBean extends JSFUtil {
+public class PaisBackendBean extends JSFUtil implements Serializable {
 
     /** Creates a new instance of PaisBackendBean */
     public PaisBackendBean() {

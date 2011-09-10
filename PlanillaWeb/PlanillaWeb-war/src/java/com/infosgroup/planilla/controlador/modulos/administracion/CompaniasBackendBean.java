@@ -93,7 +93,7 @@ public class CompaniasBackendBean extends JSFUtil implements Serializable {
         }
 
         try {
-            if (estado == EstadoAccion.CREANDO) {
+                if (estado == EstadoAccion.CREANDO) {
                 Compania c = new Compania();
                
                 c.setIdCompania(companiaFacade.max() + 1);
