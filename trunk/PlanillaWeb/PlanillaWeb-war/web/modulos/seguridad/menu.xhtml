@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/plantillas/defaultTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="titulo">Menu</ui:define>
+    <ui:define name="content">
+        <h:form id="menuForm" prependId="true">
+            <p:panel header="Menu">
+                <h:panelGrid>
+                    <h:outputText id="companiaSeleccionada" value="Compañia: #{seguridad$menu.companiaSeleccionada.idCompania} #{seguridad$menu.companiaSeleccionada.nomCompania}"/>
+                    <p:dataList id="listaCompanias" value="#{seguridad$menu.listaCompanias}" var="compania" paginator="true" rows="5" effectSpeed="fast" paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15">
+                        <p:column>
+                            <p:commandLink update="statusForm:status messageForm:message menuForm:companiaSeleccionada menuForm:listaModulos" title="Seleccionar la compañia #{compania.nomCompania}">
+                                <p:graphicImage value="/resources/iconos/edit-find.png"/>
+                                <f:setPropertyActionListener value="#{compania}" target="#{seguridad$menu.companiaSeleccionada}" />  
+                            </p:commandLink>                              
+                            <h:outputText value="#{compania.nomCompania}"/>
+                        </p:column>
+                    </p:dataList>
+                    
+                    <h:outputText id="moduloSeleccionado" value="Módulo: #{seguridad$menu.moduloSeleccionado.moduloPK.idModulo} #{seguridad$menu.moduloSeleccionado.nomModulo}"/>
+                    
+                    <p:dataList id="listaModulos" value="#{seguridad$menu.listaModulos}" var="modulo" paginator="true" rows="5" effectSpeed="fast" paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15">
+                        <p:column>
+                            <p:commandLink update="statusForm:status messageForm:message menuForm:moduloSeleccionado" title="Seleccionar el módulo #{modulo.nomModulo}">
+                                <p:graphicImage value="/resources/iconos/edit-find.png"/>
+                                <f:setPropertyActionListener value="#{modulo}" target="#{seguridad$menu.moduloSeleccionado}" />
+                            </p:commandLink>
+                            <h:outputText value="#{modulo.nomModulo}"/>
+                        </p:column>
+                    </p:dataList>
+                    
+                     <h:outputText value="Titulo"/>
+                     <p:inputText />
+                     
+                  <h:outputText value="Ruta"/>
+                     <p:inputText />
+                     
+                     <h:outputText value="Nivel"/>
+                     <h:selectOneMenu>
+                         <f:selectItem itemValue="1" itemLabel="Nivel 1"/>
+                         <f:selectItem itemValue="2" itemLabel="Nivel 2"/>
+                     </h:selectOneMenu>
+                     
+                      <h:outputText value="Estado"/>
+                      <h:selectOneRadio layout="horizontal">
+                         <f:selectItem itemValue="1" itemLabel="Activo"/>
+                         <f:selectItem itemValue="0" itemLabel="Inactivo"/>
+                     </h:selectOneRadio>
+                     
+                     <h:outputText id="menuPadreSeleccionado" value="Menu padre: #{seguridad$menu.menuPadreSeleccionado.menuPK.idMenu} #{seguridad$menu.menuPadreSeleccionado.titulo}"/>
+                     <p:dataList id="listaMenusPadre" value="#{seguridad$menu.listaMenusPadre}" var="menuPadre" paginator="true" rows="5" effectSpeed="fast" paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15">
+                         <p:column>
+                             <p:commandLink update="statusForm:status messageForm:message menuForm:menuPadreSeleccionado" title="Seleccionar el menú #{menuPadre.titulo}">
+                                <p:graphicImage value="/resources/iconos/edit-find.png"/>
+                                <f:setPropertyActionListener value="#{menuPadre}" target="#{seguridad$menu.menuPadreSeleccionado}" />
+                            </p:commandLink>
+                             <h:outputText value="#{menuPadre.titulo} - Nivel: #{menuPadre.nivel} - Ruta: #{menuPadre.ruta}" />
+                         </p:column>
+                     </p:dataList>
+                    
+                </h:panelGrid>
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" image="ui-icon icon-save" />
+                    <p:spacer width="10"/>
+                    <p:commandButton value="Cancelar" image="ui-icon icon-save" />
+                </f:facet>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
