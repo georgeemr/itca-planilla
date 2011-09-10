@@ -39,13 +39,18 @@ public abstract class JSFUtil {
     }
 
     protected abstract void limpiarCampos();
-    
-      protected enum EstadoAccion {
+
+    protected enum EstadoAccion {
+
         CREANDO,
         MODIFICANDO
     }
 
     public static void mostrarMensaje(FacesMessage.Severity severidad, String textoMensaje) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severidad, "Planilla web", textoMensaje));
+    }
+
+    protected static SessionBeanADM getSessionBeanADM() {
+        return (SessionBeanADM) getBean("SessionBeanADM");
     }
 }
