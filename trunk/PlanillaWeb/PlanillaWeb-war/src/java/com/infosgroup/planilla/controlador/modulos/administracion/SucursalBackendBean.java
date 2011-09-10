@@ -84,12 +84,6 @@ public class SucursalBackendBean extends JSFUtil implements Serializable {
 
         pk.setIdCompania(getSessionBeanADM().getCompania().getIdCompania());
         pk.setIdSucursal(sucursal);
-        /*
-        if (sucursalFacade.find(pk) != null) {
-        addErrorMessage("Crear Sucursal", "El codigo Ingresado ya esta siendo utilizado por otra Sucursal.");
-        return null;
-        }
-         */
         nuevaSucursal.setSucursalPK(pk);
         nuevaSucursal.setNomSucursal(nombre);
 
@@ -121,10 +115,6 @@ public class SucursalBackendBean extends JSFUtil implements Serializable {
         return null;
     }
 
-    private static SessionBeanADM getSessionBeanADM() {
-        return (SessionBeanADM) getBean("SessionBeanADM");
-    }
-
     public void onRowSelect(SelectEvent event) {
         Sucursal s = (Sucursal) event.getObject();
         setSucursalSeleccionada(s);
@@ -132,13 +122,12 @@ public class SucursalBackendBean extends JSFUtil implements Serializable {
         setNombre(getSucursalSeleccionada().getNomSucursal());
     }
 
-        public String onRowSelect() {
-
+    public String onRowSelect() {
         setSucursal(getSucursalSeleccionada().getSucursalPK().getIdSucursal());
         setNombre(getSucursalSeleccionada().getNomSucursal());
         return null;
     }
-    
+
     public String action_editar() {
         setSucursal(getSucursalSeleccionada().getSucursalPK().getIdSucursal());
         setNombre(getSucursalSeleccionada().getNomSucursal());
