@@ -5,14 +5,19 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -44,11 +49,23 @@ public class Plantilla implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "incluye_competencias", length = 2147483647)
     private String incluyeCompetencias;
+    @JoinTable(name = "det_plantilla", joinColumns = {
+        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
+        @JoinColumn(name = "cod_tipo_evaluacion", referencedColumnName = "cod_tipo_evaluacion", nullable = false),
+        @JoinColumn(name = "periodo", referencedColumnName = "periodo", nullable = false),
+        @JoinColumn(name = "cod_plantilla", referencedColumnName = "cod_plantilla", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
+        @JoinColumn(name = "cod_factor", referencedColumnName = "cod_factor", nullable = false),
+        @JoinColumn(name = "cod_pregunta", referencedColumnName = "cod_pregunta", nullable = false)})
+    @ManyToMany
+    private List<Pregunta> preguntaList;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "cod_tipo_evaluacion", referencedColumnName = "cod_tipo_evaluacion", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private TipoEvaluacion tipoEvaluacion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plantilla")
+    private List<Evaluacion> evaluacionList;
 
     public Plantilla() {
     }
@@ -93,12 +110,28 @@ public class Plantilla implements Serializable {
         this.incluyeCompetencias = incluyeCompetencias;
     }
 
+    public List<Pregunta> getPreguntaList() {
+        return preguntaList;
+    }
+
+    public void setPreguntaList(List<Pregunta> preguntaList) {
+        this.preguntaList = preguntaList;
+    }
+
     public TipoEvaluacion getTipoEvaluacion() {
         return tipoEvaluacion;
     }
 
     public void setTipoEvaluacion(TipoEvaluacion tipoEvaluacion) {
         this.tipoEvaluacion = tipoEvaluacion;
+    }
+
+    public List<Evaluacion> getEvaluacionList() {
+        return evaluacionList;
+    }
+
+    public void setEvaluacionList(List<Evaluacion> evaluacionList) {
+        this.evaluacionList = evaluacionList;
     }
 
     @Override

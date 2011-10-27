@@ -55,9 +55,9 @@ public class Compania implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Empleado> empleadoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
-    private List<Factor> factorList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<TipoTransaccion> tipoTransaccionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Factor> factorList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Campania> campaniaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
@@ -65,9 +65,9 @@ public class Compania implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Modulo> moduloList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
-    private List<Rol> rolList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<TipoPlanilla> tipoPlanillaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Rol> rolList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<TipoEvaluacion> tipoEvaluacionList;
 
@@ -142,20 +142,20 @@ public class Compania implements Serializable {
         this.empleadoList = empleadoList;
     }
 
-    public List<Factor> getFactorList() {
-        return factorList;
-    }
-
-    public void setFactorList(List<Factor> factorList) {
-        this.factorList = factorList;
-    }
-
     public List<TipoTransaccion> getTipoTransaccionList() {
         return tipoTransaccionList;
     }
 
     public void setTipoTransaccionList(List<TipoTransaccion> tipoTransaccionList) {
         this.tipoTransaccionList = tipoTransaccionList;
+    }
+
+    public List<Factor> getFactorList() {
+        return factorList;
+    }
+
+    public void setFactorList(List<Factor> factorList) {
+        this.factorList = factorList;
     }
 
     public List<Campania> getCampaniaList() {
@@ -182,20 +182,20 @@ public class Compania implements Serializable {
         this.moduloList = moduloList;
     }
 
-    public List<Rol> getRolList() {
-        return rolList;
-    }
-
-    public void setRolList(List<Rol> rolList) {
-        this.rolList = rolList;
-    }
-
     public List<TipoPlanilla> getTipoPlanillaList() {
         return tipoPlanillaList;
     }
 
     public void setTipoPlanillaList(List<TipoPlanilla> tipoPlanillaList) {
         this.tipoPlanillaList = tipoPlanillaList;
+    }
+
+    public List<Rol> getRolList() {
+        return rolList;
+    }
+
+    public void setRolList(List<Rol> rolList) {
+        this.rolList = rolList;
     }
 
     public List<TipoEvaluacion> getTipoEvaluacionList() {
