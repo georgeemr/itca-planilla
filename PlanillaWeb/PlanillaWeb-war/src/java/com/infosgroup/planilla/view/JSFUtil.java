@@ -5,6 +5,9 @@
 package com.infosgroup.planilla.view;
 
 import com.infosgroup.planilla.controlador.sessionbean.SessionBeanADM;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Properties;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -52,5 +55,16 @@ public abstract class JSFUtil {
 
     protected static SessionBeanADM getSessionBeanADM() {
         return (SessionBeanADM) getBean("SessionBeanADM");
+    }
+    
+    Properties opciones;
+    
+    public void guardarOpciones()
+    {
+        try{
+        opciones.put("opp", 1);
+        opciones.storeToXML(new FileOutputStream(new File("opciones.xml")), "", "");
+        }catch(Exception excpt){
+        }
     }
 }
