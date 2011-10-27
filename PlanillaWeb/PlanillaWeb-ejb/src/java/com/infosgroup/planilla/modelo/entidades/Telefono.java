@@ -7,12 +7,14 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -38,9 +40,9 @@ public class Telefono implements Serializable {
     @Column(name = "num_telefono", length = 20)
     private String numTelefono;
     @ManyToMany(mappedBy = "telefonoList")
-    private List<Empleado> empleadoList;
-    @ManyToMany(mappedBy = "telefonoList")
     private List<Sucursal> sucursalList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "telefono")
+    private List<EmpleadoTelefono> empleadoTelefonoList;
 
     public Telefono() {
     }
@@ -65,20 +67,20 @@ public class Telefono implements Serializable {
         this.numTelefono = numTelefono;
     }
 
-    public List<Empleado> getEmpleadoList() {
-        return empleadoList;
-    }
-
-    public void setEmpleadoList(List<Empleado> empleadoList) {
-        this.empleadoList = empleadoList;
-    }
-
     public List<Sucursal> getSucursalList() {
         return sucursalList;
     }
 
     public void setSucursalList(List<Sucursal> sucursalList) {
         this.sucursalList = sucursalList;
+    }
+
+    public List<EmpleadoTelefono> getEmpleadoTelefonoList() {
+        return empleadoTelefonoList;
+    }
+
+    public void setEmpleadoTelefonoList(List<EmpleadoTelefono> empleadoTelefonoList) {
+        this.empleadoTelefonoList = empleadoTelefonoList;
     }
 
     @Override

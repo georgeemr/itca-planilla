@@ -6,14 +6,15 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -35,8 +36,8 @@ public class TipoPlanilla implements Serializable {
     @Size(max = 100)
     @Column(name = "nom_tipo_planilla", length = 100)
     private String nomTipoPlanilla;
-    @ManyToMany(mappedBy = "tipoPlanillaList")
-    private List<Empleado> empleadoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPlanilla")
+    private List<Planilla> planillaList;
     @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
@@ -68,12 +69,12 @@ public class TipoPlanilla implements Serializable {
         this.nomTipoPlanilla = nomTipoPlanilla;
     }
 
-    public List<Empleado> getEmpleadoList() {
-        return empleadoList;
+    public List<Planilla> getPlanillaList() {
+        return planillaList;
     }
 
-    public void setEmpleadoList(List<Empleado> empleadoList) {
-        this.empleadoList = empleadoList;
+    public void setPlanillaList(List<Planilla> planillaList) {
+        this.planillaList = planillaList;
     }
 
     public Compania getCompania() {
