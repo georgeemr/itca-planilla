@@ -1,62 +1,26 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./plantillas/defaultTemplate.xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
     <h:head>
         <title>Sistema de Planilla Web</title>
     </h:head>
     <h:body>
         <h:form>
-            <p:growl id="mensajes"/>
+            <p:growl id="mensajes" showDetail="true" showSummary="true"/>
             <p:panel header="Inicio de sesión">
                 <h:panelGrid columns="2">
                     <h:outputText value="Nombre de usuario"/>
-                    <p:inputText/>
+                    <p:inputText value="#{index.usuario}"/>
                     <h:outputText value="Contraseña"/>
-                    <p:password minLength="4" feedback="false"/>
+                    <p:password minLength="4" feedback="false" value="#{index.password}"/>
                 </h:panelGrid>
                 <f:facet name="footer">
-                    <p:commandButton value="Iniciar sesión"/>
+                    <p:commandButton value="Iniciar sesión" action="#{index.iniciarSesion$action()}" update="mensajes"/>
                 </f:facet>
             </p:panel>
-
-
-            <!--p:commandButton value="Menú" onclick="dlg1.show();" type="button" />
-            <p:dialog header="Bienvenido a Planilla Web" widgetVar="dlg1" width="500">
-                Seleccione una opción
-                <ol>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/estadoCivil.xhtml">
-                            estadoCivil</a>
-                    </li>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/tiposDocumento.xhtml">
-                            tiposDocumento</a>
-                    </li>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/companias.xhtml">
-                            companias</a>
-                    </li>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/sucursal.xhtml">
-                            sucursales</a>
-                    </li>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/tipoPlanilla.xhtml">
-                            tipoPlanilla</a>
-                    </li>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/TipoPuesto.xhtml">
-                            tipoPuesto</a>
-                    </li>
-                    <li>
-                        <a href="http://localhost:8080/PlanillaWeb-war/faces/modulos/administracion/puesto.xhtml">
-                            puesto</a>
-                    </li>
-                </ol>
-            </p:dialog-->
         </h:form>
     </h:body>
 </html>
