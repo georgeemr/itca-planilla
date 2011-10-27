@@ -13,35 +13,38 @@
         <title>Planilla Web - <ui:insert name="titulo">Titulo</ui:insert>
         </title>
     </h:head>
-
     <h:body>
+        <h:form id="messageForm" prependId="true">
+            <p:growl id="message" showDetail="true" showSummary="true"/>
+        </h:form>
         <table cellspacing="5" width="100%">
             <tr>
                 <td id="top" colspan="2">
                     <ui:insert name="top">                        
                         <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                            
                             <tr>
-                                <td width="15%" align="right">                           
+                                <td>
+                                    <h:graphicImage url="/resources/imagenes/infosgroup.jpg" width="150" height="40"/>
+                                </td>
+                                <td halign="center">
+                                    <h:outputText value="Powered by Glassfish" style="color: black;"/><h:graphicImage url="/resources/imagenes/glassfish.png"/>
+                                </td>
+                                <td width="15%" align="right">
                                     <h:form id="statusForm" prependId="true">
                                         <p:ajaxStatus id="status">
                                             <f:facet name="start">
                                                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                                     <tr>
                                                         <td align="right">
-                                                            <h:graphicImage url="/resources/iconos/system-run.png"/>
+                                                            <h:graphicImage url="/resources/imagenes/ajax.gif" width="24" height="24"/>
                                                         </td>
                                                         <td align="left">
-                                                            <h:outputText value="Espere un momento..." style="font-size: 8pt;"/>
+                                                            <h:outputText value="Espere un momento..." style="font-size: 8pt; color:black;"/>
                                                         </td>
                                                     </tr>
                                                 </table>                                            
                                             </f:facet>
                                         </p:ajaxStatus>
-                                    </h:form>
-                                    <!--ui:include src="/menu.xhtml" /-->
-                                    <h:form id="messageForm" prependId="true">
-                                        <p:growl id="message" showDetail="true" showSummary="true"/>
                                     </h:form>
                                 </td>
                             </tr>
@@ -51,11 +54,7 @@
             </tr>
             <tr>
                 <td id="left">
-                    <!--ui:insert name="left">
-                    </ui:insert-->
-                    <!--h:form prependId="true"-->
                        <ui:include id="menuID" src="menu.xhtml" />
-                    <!--/h:form-->
                 </td>
                 <td id="content">
                     <ui:insert name="content">Content</ui:insert>
@@ -68,5 +67,4 @@
             </tr>
         </table>
     </h:body>
-
 </html>
