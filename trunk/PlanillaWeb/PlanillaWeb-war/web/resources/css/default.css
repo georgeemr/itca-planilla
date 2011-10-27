@@ -1,31 +1,31 @@
 #top {
     /*background-color: #036fab;*/
-    color: white;
+    /*color: white;*/
     padding: 10px;
     margin: 0px 0px 10px 0px;
 }
 
 #bottom {
-    background-color: #c2dfef;
+    /*background-color: #c2dfef;*/
     padding: 10px;
 }
 
 #left {
-    background-color: #ece3a5;
+    /*background-color: #ece3a5;*/
     padding: 10px;
     width: 150px;
     vertical-align: top;
 }
 
 #right {
-    background-color: #ece3a5;
+    /*background-color: #ece3a5;*/
     padding: 10px;
     width: 150px;
     vertical-align: top;
 }
 
 #content {
-    background-color: #dddddd;
+    /*background-color: #dddddd;*/
     padding: 10px;
         vertical-align: top;
 }
@@ -37,7 +37,7 @@
 }
 
 #top a:link:hover, #top a:visited:hover  {
-  color: black;
+  /*color: black;*/
   font-weight : bold;
   text-decoration : underline;
 }
@@ -45,7 +45,7 @@
 /* ===================================================================================================== */
 
 body {
-    background-color: #ffffff;
+    /*background-color: #ffffff;*/
     font-size: 10px;
     font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
     /*color: #000000;*/
@@ -60,17 +60,17 @@ h1 {
     font-weight: bold;
     margin: 0px;
     padding: 0px;
-    color: #D20005;
+    /*color: #D20005;*/
 }
 
 a:link, a:visited {
-  color: #045491;
+  /*color: #045491;*/
   font-weight : bold;
   text-decoration: none;
 }
 
 a:link:hover, a:visited:hover  {
-  color: #045491;
+  /*color: #045491;*/
   font-weight : bold;
   text-decoration : underline;
 }
