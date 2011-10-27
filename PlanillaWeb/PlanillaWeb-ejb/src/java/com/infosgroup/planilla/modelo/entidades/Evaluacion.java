@@ -6,9 +6,7 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -17,7 +15,6 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,12 +25,14 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Entity
-@Table(name = "evaluacion", catalog = "planilla", schema = "public")
+@Table(name = "evaluacion")
 @NamedQueries({
     @NamedQuery(name = "Evaluacion.findAll", query = "SELECT e FROM Evaluacion e"),
     @NamedQuery(name = "Evaluacion.findByCodCia", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.codCia = :codCia"),
     @NamedQuery(name = "Evaluacion.findByCodCampania", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.codCampania = :codCampania"),
-    @NamedQuery(name = "Evaluacion.findByCodEvaluacion", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.codEvaluacion = :codEvaluacion"),
+    @NamedQuery(name = "Evaluacion.findByCodTipoEvaluacion", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.codTipoEvaluacion = :codTipoEvaluacion"),
+    @NamedQuery(name = "Evaluacion.findByPeriodo", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.periodo = :periodo"),
+    @NamedQuery(name = "Evaluacion.findByCodEmp", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.codEmp = :codEmp"),
     @NamedQuery(name = "Evaluacion.findByFecha", query = "SELECT e FROM Evaluacion e WHERE e.fecha = :fecha"),
     @NamedQuery(name = "Evaluacion.findByFinalizada", query = "SELECT e FROM Evaluacion e WHERE e.finalizada = :finalizada")})
 public class Evaluacion implements Serializable {
@@ -49,24 +48,21 @@ public class Evaluacion implements Serializable {
     @NotNull
     @Column(name = "finalizada", nullable = false)
     private int finalizada;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evaluacion")
-    private List<DetEvaluacion> detEvaluacionList;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "cod_tipo_evaluacion", referencedColumnName = "cod_tipo_evaluacion", nullable = false),
-        @JoinColumn(name = "periodo", referencedColumnName = "periodo", nullable = false),
+        @JoinColumn(name = "cod_tipo_evaluacion", referencedColumnName = "cod_tipo_evaluacion", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "cod_plantilla", referencedColumnName = "cod_plantilla", nullable = false)})
     @ManyToOne(optional = false)
     private Plantilla plantilla;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "cod_emp", referencedColumnName = "cod_emp", nullable = false)})
+        @JoinColumn(name = "cod_emp", referencedColumnName = "cod_emp", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Empleado empleado;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "cod_campania", referencedColumnName = "cod_campania", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "periodo", referencedColumnName = "periodo", nullable = false)})
+        @JoinColumn(name = "periodo", referencedColumnName = "periodo", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Campania campania;
 
@@ -83,8 +79,8 @@ public class Evaluacion implements Serializable {
         this.finalizada = finalizada;
     }
 
-    public Evaluacion(int codCia, int codCampania, int codEvaluacion) {
-        this.evaluacionPK = new EvaluacionPK(codCia, codCampania, codEvaluacion);
+    public Evaluacion(int codCia, int codCampania, int codTipoEvaluacion, int periodo, int codEmp) {
+        this.evaluacionPK = new EvaluacionPK(codCia, codCampania, codTipoEvaluacion, periodo, codEmp);
     }
 
     public EvaluacionPK getEvaluacionPK() {
@@ -109,14 +105,6 @@ public class Evaluacion implements Serializable {
 
     public void setFinalizada(int finalizada) {
         this.finalizada = finalizada;
-    }
-
-    public List<DetEvaluacion> getDetEvaluacionList() {
-        return detEvaluacionList;
-    }
-
-    public void setDetEvaluacionList(List<DetEvaluacion> detEvaluacionList) {
-        this.detEvaluacionList = detEvaluacionList;
     }
 
     public Plantilla getPlantilla() {

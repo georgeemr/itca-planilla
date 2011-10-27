@@ -26,20 +26,15 @@ public class PlantillaPK implements Serializable {
     private int codTipoEvaluacion;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "periodo", nullable = false)
-    private int periodo;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "cod_plantilla", nullable = false)
     private int codPlantilla;
 
     public PlantillaPK() {
     }
 
-    public PlantillaPK(int codCia, int codTipoEvaluacion, int periodo, int codPlantilla) {
+    public PlantillaPK(int codCia, int codTipoEvaluacion, int codPlantilla) {
         this.codCia = codCia;
         this.codTipoEvaluacion = codTipoEvaluacion;
-        this.periodo = periodo;
         this.codPlantilla = codPlantilla;
     }
 
@@ -59,14 +54,6 @@ public class PlantillaPK implements Serializable {
         this.codTipoEvaluacion = codTipoEvaluacion;
     }
 
-    public int getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(int periodo) {
-        this.periodo = periodo;
-    }
-
     public int getCodPlantilla() {
         return codPlantilla;
     }
@@ -80,7 +67,6 @@ public class PlantillaPK implements Serializable {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codTipoEvaluacion;
-        hash += (int) periodo;
         hash += (int) codPlantilla;
         return hash;
     }
@@ -98,9 +84,6 @@ public class PlantillaPK implements Serializable {
         if (this.codTipoEvaluacion != other.codTipoEvaluacion) {
             return false;
         }
-        if (this.periodo != other.periodo) {
-            return false;
-        }
         if (this.codPlantilla != other.codPlantilla) {
             return false;
         }
@@ -109,7 +92,7 @@ public class PlantillaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PlantillaPK[ codCia=" + codCia + ", codTipoEvaluacion=" + codTipoEvaluacion + ", periodo=" + periodo + ", codPlantilla=" + codPlantilla + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PlantillaPK[ codCia=" + codCia + ", codTipoEvaluacion=" + codTipoEvaluacion + ", codPlantilla=" + codPlantilla + " ]";
     }
     
 }

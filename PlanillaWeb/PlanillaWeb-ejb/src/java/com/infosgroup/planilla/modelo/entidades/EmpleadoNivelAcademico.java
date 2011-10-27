@@ -18,7 +18,7 @@ import javax.persistence.Table;
  * @author root
  */
 @Entity
-@Table(name = "empleado_nivel_academico", catalog = "planilla", schema = "public")
+@Table(name = "empleado_nivel_academico")
 @NamedQueries({
     @NamedQuery(name = "EmpleadoNivelAcademico.findAll", query = "SELECT e FROM EmpleadoNivelAcademico e"),
     @NamedQuery(name = "EmpleadoNivelAcademico.findByIdCompania", query = "SELECT e FROM EmpleadoNivelAcademico e WHERE e.empleadoNivelAcademicoPK.idCompania = :idCompania"),

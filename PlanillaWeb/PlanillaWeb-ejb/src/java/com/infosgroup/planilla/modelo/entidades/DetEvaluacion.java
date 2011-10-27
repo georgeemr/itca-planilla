@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "det_evaluacion", catalog = "planilla", schema = "public")
+@Table(name = "det_evaluacion")
 @NamedQueries({
     @NamedQuery(name = "DetEvaluacion.findAll", query = "SELECT d FROM DetEvaluacion d"),
     @NamedQuery(name = "DetEvaluacion.findByCodCia", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.codCia = :codCia"),
@@ -52,12 +52,6 @@ public class DetEvaluacion implements Serializable {
         @JoinColumn(name = "cod_pregunta", referencedColumnName = "cod_pregunta", nullable = false)})
     @ManyToOne(optional = false)
     private Pregunta pregunta;
-    @JoinColumns({
-        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "cod_campania", referencedColumnName = "cod_campania", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "cod_evaluacion", referencedColumnName = "cod_evaluacion", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Evaluacion evaluacion;
 
     public DetEvaluacion() {
     }
@@ -105,14 +99,6 @@ public class DetEvaluacion implements Serializable {
 
     public void setPregunta(Pregunta pregunta) {
         this.pregunta = pregunta;
-    }
-
-    public Evaluacion getEvaluacion() {
-        return evaluacion;
-    }
-
-    public void setEvaluacion(Evaluacion evaluacion) {
-        this.evaluacion = evaluacion;
     }
 
     @Override

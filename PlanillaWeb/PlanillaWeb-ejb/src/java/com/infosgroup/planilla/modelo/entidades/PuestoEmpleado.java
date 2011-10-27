@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Entity
-@Table(name = "puesto_empleado", catalog = "planilla", schema = "public")
+@Table(name = "puesto_empleado")
 @NamedQueries({
     @NamedQuery(name = "PuestoEmpleado.findAll", query = "SELECT p FROM PuestoEmpleado p"),
     @NamedQuery(name = "PuestoEmpleado.findByIdCompania", query = "SELECT p FROM PuestoEmpleado p WHERE p.puestoEmpleadoPK.idCompania = :idCompania"),
