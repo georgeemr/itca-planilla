@@ -6,6 +6,8 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -13,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -63,6 +66,8 @@ public class Empleado implements Serializable {
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private List<Evaluacion> evaluacionList;
 
     public Empleado() {
     }
@@ -145,6 +150,14 @@ public class Empleado implements Serializable {
 
     public void setCompania(Compania compania) {
         this.compania = compania;
+    }
+
+    public List<Evaluacion> getEvaluacionList() {
+        return evaluacionList;
+    }
+
+    public void setEvaluacionList(List<Evaluacion> evaluacionList) {
+        this.evaluacionList = evaluacionList;
     }
 
     @Override

@@ -7,6 +7,7 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -50,6 +52,8 @@ public class Respuesta implements Serializable {
     private Integer valor;
     @ManyToMany(mappedBy = "respuestaList")
     private List<Pregunta> preguntaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "respuesta")
+    private List<DetEvaluacion> detEvaluacionList;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "cod_tipo_respuesta", referencedColumnName = "cod_tipo_respuesta", nullable = false, insertable = false, updatable = false)})
@@ -110,6 +114,14 @@ public class Respuesta implements Serializable {
 
     public void setPreguntaList(List<Pregunta> preguntaList) {
         this.preguntaList = preguntaList;
+    }
+
+    public List<DetEvaluacion> getDetEvaluacionList() {
+        return detEvaluacionList;
+    }
+
+    public void setDetEvaluacionList(List<DetEvaluacion> detEvaluacionList) {
+        this.detEvaluacionList = detEvaluacionList;
     }
 
     public TipoRespuesta getTipoRespuesta() {
