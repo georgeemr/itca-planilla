@@ -9,7 +9,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -17,16 +16,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "telefono")
-@XmlRootElement
+@Table(name = "telefono", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Telefono.findAll", query = "SELECT t FROM Telefono t"),
     @NamedQuery(name = "Telefono.findByIdTelefono", query = "SELECT t FROM Telefono t WHERE t.idTelefono = :idTelefono"),
@@ -41,9 +37,9 @@ public class Telefono implements Serializable {
     @Size(max = 20)
     @Column(name = "num_telefono", length = 20)
     private String numTelefono;
-    @ManyToMany(mappedBy = "telefonoList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "telefonoList")
     private List<Empleado> empleadoList;
-    @ManyToMany(mappedBy = "telefonoList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "telefonoList")
     private List<Sucursal> sucursalList;
 
     public Telefono() {
@@ -69,7 +65,6 @@ public class Telefono implements Serializable {
         this.numTelefono = numTelefono;
     }
 
-    @XmlTransient
     public List<Empleado> getEmpleadoList() {
         return empleadoList;
     }
@@ -78,7 +73,6 @@ public class Telefono implements Serializable {
         this.empleadoList = empleadoList;
     }
 
-    @XmlTransient
     public List<Sucursal> getSucursalList() {
         return sucursalList;
     }

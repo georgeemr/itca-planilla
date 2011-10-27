@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -19,16 +18,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "rol")
-@XmlRootElement
+@Table(name = "rol", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Rol.findAll", query = "SELECT r FROM Rol r"),
     @NamedQuery(name = "Rol.findByIdCompania", query = "SELECT r FROM Rol r WHERE r.rolPK.idCompania = :idCompania"),
@@ -41,12 +37,12 @@ public class Rol implements Serializable {
     @Size(max = 100)
     @Column(name = "nom_rol", length = 100)
     private String nomRol;
-    @ManyToMany(mappedBy = "rolList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "rolList")
     private List<Menu> menuList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rol", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rol")
     private List<Usuario> usuarioList;
     @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Compania compania;
 
     public Rol() {
@@ -76,7 +72,6 @@ public class Rol implements Serializable {
         this.nomRol = nomRol;
     }
 
-    @XmlTransient
     public List<Menu> getMenuList() {
         return menuList;
     }
@@ -85,7 +80,6 @@ public class Rol implements Serializable {
         this.menuList = menuList;
     }
 
-    @XmlTransient
     public List<Usuario> getUsuarioList() {
         return usuarioList;
     }

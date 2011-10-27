@@ -9,7 +9,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -17,18 +16,14 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "nivel_academico")
-@XmlRootElement
+@Table(name = "nivel_academico", catalog = "planilla", schema = "public")
 @NamedQueries({
-    @NamedQuery(name = "NivelAcademico.max", query = "SELECT max(n.idNivelAcademico) FROM NivelAcademico n"),
     @NamedQuery(name = "NivelAcademico.findAll", query = "SELECT n FROM NivelAcademico n"),
     @NamedQuery(name = "NivelAcademico.findByIdNivelAcademico", query = "SELECT n FROM NivelAcademico n WHERE n.idNivelAcademico = :idNivelAcademico"),
     @NamedQuery(name = "NivelAcademico.findByNomNivelAcademico", query = "SELECT n FROM NivelAcademico n WHERE n.nomNivelAcademico = :nomNivelAcademico"),
@@ -46,7 +41,7 @@ public class NivelAcademico implements Serializable {
     @Size(max = 200)
     @Column(name = "det_nivel_academico", length = 200)
     private String detNivelAcademico;
-    @ManyToMany(mappedBy = "nivelAcademicoList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "nivelAcademicoList")
     private List<Empleado> empleadoList;
 
     public NivelAcademico() {
@@ -80,7 +75,6 @@ public class NivelAcademico implements Serializable {
         this.detNivelAcademico = detNivelAcademico;
     }
 
-    @XmlTransient
     public List<Empleado> getEmpleadoList() {
         return empleadoList;
     }

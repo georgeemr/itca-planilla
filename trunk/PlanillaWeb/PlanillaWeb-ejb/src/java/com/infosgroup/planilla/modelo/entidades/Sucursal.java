@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -20,16 +19,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "sucursal")
-@XmlRootElement
+@Table(name = "sucursal", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Sucursal.findAll", query = "SELECT s FROM Sucursal s"),
     @NamedQuery(name = "Sucursal.findByIdCompania", query = "SELECT s FROM Sucursal s WHERE s.sucursalPK.idCompania = :idCompania"),
@@ -46,18 +42,18 @@ public class Sucursal implements Serializable {
     @Size(max = 200)
     @Column(name = "det_sucursal", length = 200)
     private String detSucursal;
-    @ManyToMany(mappedBy = "sucursalList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "sucursalList")
     private List<Direccion> direccionList;
     @JoinTable(name = "sucursal_telefono", joinColumns = {
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
         @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "id_telefono", referencedColumnName = "id_telefono", nullable = false)})
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private List<Telefono> telefonoList;
     @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Compania compania;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursal", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursal")
     private List<Empleado> empleadoList;
 
     public Sucursal() {
@@ -95,7 +91,6 @@ public class Sucursal implements Serializable {
         this.detSucursal = detSucursal;
     }
 
-    @XmlTransient
     public List<Direccion> getDireccionList() {
         return direccionList;
     }
@@ -104,7 +99,6 @@ public class Sucursal implements Serializable {
         this.direccionList = direccionList;
     }
 
-    @XmlTransient
     public List<Telefono> getTelefonoList() {
         return telefonoList;
     }
@@ -121,7 +115,6 @@ public class Sucursal implements Serializable {
         this.compania = compania;
     }
 
-    @XmlTransient
     public List<Empleado> getEmpleadoList() {
         return empleadoList;
     }

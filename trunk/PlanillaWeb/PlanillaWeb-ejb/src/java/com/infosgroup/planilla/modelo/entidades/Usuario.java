@@ -10,7 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToMany;
@@ -20,45 +19,39 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "usuario")
-@XmlRootElement
+@Table(name = "usuario", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
     @NamedQuery(name = "Usuario.findByIdCompania", query = "SELECT u FROM Usuario u WHERE u.usuarioPK.idCompania = :idCompania"),
     @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.usuarioPK.idUsuario = :idUsuario"),
-    @NamedQuery(name = "Usuario.findByNomUsuarioPassword", query = "SELECT u FROM Usuario u WHERE u.nomUsuario = :nomUsuario and u.password = :password"),
-    @NamedQuery(name = "Usuario.findByNomUsuario", query = "SELECT u FROM Usuario u WHERE u.nomUsuario = :nomUsuario")})
+    @NamedQuery(name = "Usuario.findByNomUsuario", query = "SELECT u FROM Usuario u WHERE u.nomUsuario = :nomUsuario"),
+    @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")})
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected UsuarioPK usuarioPK;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "nom_usuario", nullable = false, length = 100)
     private String nomUsuario;
-    
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)    
-    @Column(name="password", nullable = false, length = 100)
+    @Size(min = 1, max = 100)
+    @Column(name = "password", nullable = false, length = 100)
     private String password;
-    
-    @ManyToMany(mappedBy = "usuarioList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "usuarioList")
     private List<Modulo> moduloList;
     @JoinColumns({
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_rol", referencedColumnName = "id_rol", nullable = false)})
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Rol rol;
 
     public Usuario() {
@@ -68,9 +61,10 @@ public class Usuario implements Serializable {
         this.usuarioPK = usuarioPK;
     }
 
-    public Usuario(UsuarioPK usuarioPK, String nomUsuario) {
+    public Usuario(UsuarioPK usuarioPK, String nomUsuario, String password) {
         this.usuarioPK = usuarioPK;
         this.nomUsuario = nomUsuario;
+        this.password = password;
     }
 
     public Usuario(int idCompania, int idUsuario) {
@@ -99,9 +93,8 @@ public class Usuario implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }    
+    }
 
-    @XmlTransient
     public List<Modulo> getModuloList() {
         return moduloList;
     }
@@ -117,7 +110,7 @@ public class Usuario implements Serializable {
     public void setRol(Rol rol) {
         this.rol = rol;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;

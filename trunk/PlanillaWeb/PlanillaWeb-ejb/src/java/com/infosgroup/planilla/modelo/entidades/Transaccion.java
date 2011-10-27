@@ -10,7 +10,6 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToMany;
@@ -21,16 +20,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "transaccion")
-@XmlRootElement
+@Table(name = "transaccion", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Transaccion.findAll", query = "SELECT t FROM Transaccion t"),
     @NamedQuery(name = "Transaccion.findByIdCompania", query = "SELECT t FROM Transaccion t WHERE t.transaccionPK.idCompania = :idCompania"),
@@ -51,12 +47,12 @@ public class Transaccion implements Serializable {
     @Column(name = "fechatransaccion")
     @Temporal(TemporalType.DATE)
     private Date fechatransaccion;
-    @ManyToMany(mappedBy = "transaccionList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "transaccionList")
     private List<Cuenta> cuentaList;
     @JoinColumns({
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_tipo_transaccion", referencedColumnName = "id_tipo_transaccion", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private TipoTransaccion tipoTransaccion;
 
     public Transaccion() {
@@ -102,7 +98,6 @@ public class Transaccion implements Serializable {
         this.fechatransaccion = fechatransaccion;
     }
 
-    @XmlTransient
     public List<Cuenta> getCuentaList() {
         return cuentaList;
     }

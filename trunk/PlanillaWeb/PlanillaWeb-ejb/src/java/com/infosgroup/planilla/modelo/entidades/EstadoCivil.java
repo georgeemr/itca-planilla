@@ -10,7 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -18,16 +17,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "estado_civil")
-@XmlRootElement
+@Table(name = "estado_civil", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "EstadoCivil.findAll", query = "SELECT e FROM EstadoCivil e"),
     @NamedQuery(name = "EstadoCivil.findByIdEstadoCivil", query = "SELECT e FROM EstadoCivil e WHERE e.idEstadoCivil = :idEstadoCivil"),
@@ -42,7 +38,7 @@ public class EstadoCivil implements Serializable {
     @Size(max = 100)
     @Column(name = "nom_estado_civil", length = 100)
     private String nomEstadoCivil;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstadoCivil", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstadoCivil")
     private List<Empleado> empleadoList;
 
     public EstadoCivil() {
@@ -68,7 +64,6 @@ public class EstadoCivil implements Serializable {
         this.nomEstadoCivil = nomEstadoCivil;
     }
 
-    @XmlTransient
     public List<Empleado> getEmpleadoList() {
         return empleadoList;
     }

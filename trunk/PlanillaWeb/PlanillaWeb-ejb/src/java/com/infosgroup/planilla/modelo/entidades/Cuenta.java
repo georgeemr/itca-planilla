@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
@@ -21,16 +20,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "cuenta")
-@XmlRootElement
+@Table(name = "cuenta", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Cuenta.findAll", query = "SELECT c FROM Cuenta c"),
     @NamedQuery(name = "Cuenta.findByIdCompania", query = "SELECT c FROM Cuenta c WHERE c.cuentaPK.idCompania = :idCompania"),
@@ -79,14 +75,14 @@ public class Cuenta implements Serializable {
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
         @JoinColumn(name = "id_tipo_transaccion", referencedColumnName = "id_tipo_transaccion", nullable = false),
         @JoinColumn(name = "id_transaccion", referencedColumnName = "id_transaccion", nullable = false)})
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private List<Transaccion> transaccionList;
     @JoinColumns({
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_tipo_cuenta", referencedColumnName = "id_tipo_cuenta", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private TipoCuenta tipoCuenta;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuenta", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuenta")
     private List<DeduccionesPrestaciones> deduccionesPrestacionesList;
 
     public Cuenta() {
@@ -172,7 +168,6 @@ public class Cuenta implements Serializable {
         this.nivel8 = nivel8;
     }
 
-    @XmlTransient
     public List<Transaccion> getTransaccionList() {
         return transaccionList;
     }
@@ -189,7 +184,6 @@ public class Cuenta implements Serializable {
         this.tipoCuenta = tipoCuenta;
     }
 
-    @XmlTransient
     public List<DeduccionesPrestaciones> getDeduccionesPrestacionesList() {
         return deduccionesPrestacionesList;
     }

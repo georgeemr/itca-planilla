@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -19,16 +18,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "barrio")
-@XmlRootElement
+@Table(name = "barrio", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Barrio.findAll", query = "SELECT b FROM Barrio b"),
     @NamedQuery(name = "Barrio.findByIdPais", query = "SELECT b FROM Barrio b WHERE b.barrioPK.idPais = :idPais"),
@@ -47,13 +43,13 @@ public class Barrio implements Serializable {
     @Size(max = 200)
     @Column(name = "det_barrio", length = 200)
     private String detBarrio;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "barrio", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "barrio")
     private List<Direccion> direccionList;
     @JoinColumns({
         @JoinColumn(name = "id_pais", referencedColumnName = "id_pais", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_provincia", referencedColumnName = "id_provincia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_municipio", referencedColumnName = "id_municipio", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Municipio municipio;
 
     public Barrio() {
@@ -91,7 +87,6 @@ public class Barrio implements Serializable {
         this.detBarrio = detBarrio;
     }
 
-    @XmlTransient
     public List<Direccion> getDireccionList() {
         return direccionList;
     }

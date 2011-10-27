@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -19,16 +18,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "municipio")
-@XmlRootElement
+@Table(name = "municipio", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Municipio.findAll", query = "SELECT m FROM Municipio m"),
     @NamedQuery(name = "Municipio.findByIdPais", query = "SELECT m FROM Municipio m WHERE m.municipioPK.idPais = :idPais"),
@@ -49,9 +45,9 @@ public class Municipio implements Serializable {
     @JoinColumns({
         @JoinColumn(name = "id_pais", referencedColumnName = "id_pais", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_provincia", referencedColumnName = "id_provincia", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Provincia provincia;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipio", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipio")
     private List<Barrio> barrioList;
 
     public Municipio() {
@@ -97,7 +93,6 @@ public class Municipio implements Serializable {
         this.provincia = provincia;
     }
 
-    @XmlTransient
     public List<Barrio> getBarrioList() {
         return barrioList;
     }
