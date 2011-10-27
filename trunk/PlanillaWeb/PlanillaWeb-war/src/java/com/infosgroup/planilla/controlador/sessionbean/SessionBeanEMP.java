@@ -15,8 +15,8 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class SessionBeanEMP {
 
-    /** Creates a new instance of SessionBeanEMP */
     public SessionBeanEMP() {
+        
     }
     
 }
