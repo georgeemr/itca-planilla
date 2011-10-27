@@ -73,7 +73,8 @@ public class UsuarioBackendBean extends JSFUtil implements Serializable {
         u.setPassword(password);
         u.setRol(rolFacade.find(new RolPK(getSessionBeanADM().getCompania().getIdCompania(), rolSeleccionado)));
         pk.setIdCompania(getSessionBeanADM().getCompania().getIdCompania());
-        pk.setIdUsuario(usuarioFacade.getMax(getSessionBeanADM().getCompania().getIdCompania()));
+        //pk.setIdUsuario(usuarioFacade.max(getSessionBeanADM().getCompania().getIdCompania()));
+        pk.setIdUsuario(usuarioFacade.count());
         u.setUsuarioPK(pk);
         try {
             usuarioFacade.create(u);
