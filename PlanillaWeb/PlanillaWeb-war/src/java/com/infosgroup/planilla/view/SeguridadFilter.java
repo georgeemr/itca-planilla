@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.ejb.EJB;
 import java.util.List;
-import javax.faces.context.FacesContext;
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -41,7 +40,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 public class SeguridadFilter implements Filter {
 
     private static final boolean debug = false;
-   
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
@@ -172,10 +170,13 @@ public class SeguridadFilter implements Filter {
             List<Menu> listaMenus = rol.getMenuList();
             String url = wrappedRequest.getRequestURI();
             boolean estaConfigurado = false;
-            for(Menu m : listaMenus)            
-                if(url.endsWith(m.getRuta()))
-                    estaConfigurado = true ;            
-            if (!url.endsWith("/index.xhtml") &&  !estaConfigurado) {
+            for (Menu m : listaMenus) {
+                if (url.endsWith(m.getRuta())) {
+                    estaConfigurado = true;
+                    break;
+                }
+            }
+            if (!url.endsWith("/index.xhtml") && !estaConfigurado) {
                 String urlraiz = request.getServletContext().getContextPath();
                 wrappedResponse.sendRedirect(wrappedResponse.encodeRedirectURL(wrappedResponse.encodeURL(urlraiz + "/faces/index.xhtml")));
             } else {
@@ -186,7 +187,7 @@ public class SeguridadFilter implements Filter {
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
-            t.printStackTrace();
+            t.printStackTrace(System.err);
         }
 
         doAfterProcessing(wrappedRequest, wrappedResponse);
