@@ -48,12 +48,6 @@ public class PuestoEmpleado implements Serializable {
         @JoinColumn(name = "id_puesto", referencedColumnName = "id_puesto", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Puesto puesto;
-    @JoinColumns({
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Empleado empleado;
 
     public PuestoEmpleado() {
     }
@@ -93,14 +87,6 @@ public class PuestoEmpleado implements Serializable {
 
     public void setPuesto(Puesto puesto) {
         this.puesto = puesto;
-    }
-
-    public Empleado getEmpleado() {
-        return empleado;
-    }
-
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
     }
 
     @Override

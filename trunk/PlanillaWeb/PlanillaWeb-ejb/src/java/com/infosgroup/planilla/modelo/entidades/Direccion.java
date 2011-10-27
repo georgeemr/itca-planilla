@@ -6,6 +6,7 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -44,17 +46,6 @@ public class Direccion implements Serializable {
     @Size(max = 200)
     @Column(name = "det_direccion", length = 200)
     private String detDireccion;
-    @JoinTable(name = "direccion_empleado", joinColumns = {
-        @JoinColumn(name = "id_pais", referencedColumnName = "id_pais", nullable = false),
-        @JoinColumn(name = "id_provincia", referencedColumnName = "id_provincia", nullable = false),
-        @JoinColumn(name = "id_municipio", referencedColumnName = "id_municipio", nullable = false),
-        @JoinColumn(name = "id_barrio", referencedColumnName = "id_barrio", nullable = false),
-        @JoinColumn(name = "num_casa", referencedColumnName = "num_casa", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
-        @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false),
-        @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado", nullable = false)})
-    @ManyToMany
-    private List<Empleado> empleadoList;
     @JoinTable(name = "direccion_sucursal", joinColumns = {
         @JoinColumn(name = "id_pais", referencedColumnName = "id_pais", nullable = false),
         @JoinColumn(name = "id_provincia", referencedColumnName = "id_provincia", nullable = false),
@@ -72,6 +63,8 @@ public class Direccion implements Serializable {
         @JoinColumn(name = "id_barrio", referencedColumnName = "id_barrio", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Barrio barrio;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccion")
+    private List<DireccionEmpleado> direccionEmpleadoList;
 
     public Direccion() {
     }
@@ -108,14 +101,6 @@ public class Direccion implements Serializable {
         this.detDireccion = detDireccion;
     }
 
-    public List<Empleado> getEmpleadoList() {
-        return empleadoList;
-    }
-
-    public void setEmpleadoList(List<Empleado> empleadoList) {
-        this.empleadoList = empleadoList;
-    }
-
     public List<Sucursal> getSucursalList() {
         return sucursalList;
     }
@@ -130,6 +115,14 @@ public class Direccion implements Serializable {
 
     public void setBarrio(Barrio barrio) {
         this.barrio = barrio;
+    }
+
+    public List<DireccionEmpleado> getDireccionEmpleadoList() {
+        return direccionEmpleadoList;
+    }
+
+    public void setDireccionEmpleadoList(List<DireccionEmpleado> direccionEmpleadoList) {
+        this.direccionEmpleadoList = direccionEmpleadoList;
     }
 
     @Override

@@ -18,56 +18,42 @@ import javax.validation.constraints.NotNull;
 public class EmpleadoPK implements Serializable {
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_compania", nullable = false)
-    private int idCompania;
+    @Column(name = "cod_cia", nullable = false)
+    private int codCia;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_sucursal", nullable = false)
-    private int idSucursal;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_empleado", nullable = false)
-    private int idEmpleado;
+    @Column(name = "cod_emp", nullable = false)
+    private int codEmp;
 
     public EmpleadoPK() {
     }
 
-    public EmpleadoPK(int idCompania, int idSucursal, int idEmpleado) {
-        this.idCompania = idCompania;
-        this.idSucursal = idSucursal;
-        this.idEmpleado = idEmpleado;
+    public EmpleadoPK(int codCia, int codEmp) {
+        this.codCia = codCia;
+        this.codEmp = codEmp;
     }
 
-    public int getIdCompania() {
-        return idCompania;
+    public int getCodCia() {
+        return codCia;
     }
 
-    public void setIdCompania(int idCompania) {
-        this.idCompania = idCompania;
+    public void setCodCia(int codCia) {
+        this.codCia = codCia;
     }
 
-    public int getIdSucursal() {
-        return idSucursal;
+    public int getCodEmp() {
+        return codEmp;
     }
 
-    public void setIdSucursal(int idSucursal) {
-        this.idSucursal = idSucursal;
-    }
-
-    public int getIdEmpleado() {
-        return idEmpleado;
-    }
-
-    public void setIdEmpleado(int idEmpleado) {
-        this.idEmpleado = idEmpleado;
+    public void setCodEmp(int codEmp) {
+        this.codEmp = codEmp;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) idCompania;
-        hash += (int) idSucursal;
-        hash += (int) idEmpleado;
+        hash += (int) codCia;
+        hash += (int) codEmp;
         return hash;
     }
 
@@ -78,13 +64,10 @@ public class EmpleadoPK implements Serializable {
             return false;
         }
         EmpleadoPK other = (EmpleadoPK) object;
-        if (this.idCompania != other.idCompania) {
+        if (this.codCia != other.codCia) {
             return false;
         }
-        if (this.idSucursal != other.idSucursal) {
-            return false;
-        }
-        if (this.idEmpleado != other.idEmpleado) {
+        if (this.codEmp != other.codEmp) {
             return false;
         }
         return true;
@@ -92,7 +75,7 @@ public class EmpleadoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.EmpleadoPK[ idCompania=" + idCompania + ", idSucursal=" + idSucursal + ", idEmpleado=" + idEmpleado + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.EmpleadoPK[ codCia=" + codCia + ", codEmp=" + codEmp + " ]";
     }
     
 }

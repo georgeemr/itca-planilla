@@ -53,9 +53,11 @@ public class Compania implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Departamento> departamentoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
-    private List<TipoTransaccion> tipoTransaccionList;
+    private List<Empleado> empleadoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Factor> factorList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoTransaccion> tipoTransaccionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Campania> campaniaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
@@ -132,12 +134,12 @@ public class Compania implements Serializable {
         this.departamentoList = departamentoList;
     }
 
-    public List<TipoTransaccion> getTipoTransaccionList() {
-        return tipoTransaccionList;
+    public List<Empleado> getEmpleadoList() {
+        return empleadoList;
     }
 
-    public void setTipoTransaccionList(List<TipoTransaccion> tipoTransaccionList) {
-        this.tipoTransaccionList = tipoTransaccionList;
+    public void setEmpleadoList(List<Empleado> empleadoList) {
+        this.empleadoList = empleadoList;
     }
 
     public List<Factor> getFactorList() {
@@ -146,6 +148,14 @@ public class Compania implements Serializable {
 
     public void setFactorList(List<Factor> factorList) {
         this.factorList = factorList;
+    }
+
+    public List<TipoTransaccion> getTipoTransaccionList() {
+        return tipoTransaccionList;
+    }
+
+    public void setTipoTransaccionList(List<TipoTransaccion> tipoTransaccionList) {
+        this.tipoTransaccionList = tipoTransaccionList;
     }
 
     public List<Campania> getCampaniaList() {

@@ -6,19 +6,13 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,73 +26,43 @@ import javax.validation.constraints.Size;
 @Table(name = "empleado", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e"),
-    @NamedQuery(name = "Empleado.findByIdCompania", query = "SELECT e FROM Empleado e WHERE e.empleadoPK.idCompania = :idCompania"),
-    @NamedQuery(name = "Empleado.findByIdSucursal", query = "SELECT e FROM Empleado e WHERE e.empleadoPK.idSucursal = :idSucursal"),
-    @NamedQuery(name = "Empleado.findByIdEmpleado", query = "SELECT e FROM Empleado e WHERE e.empleadoPK.idEmpleado = :idEmpleado"),
-    @NamedQuery(name = "Empleado.findByNomEmpleado", query = "SELECT e FROM Empleado e WHERE e.nomEmpleado = :nomEmpleado"),
-    @NamedQuery(name = "Empleado.findByApeEmpleado", query = "SELECT e FROM Empleado e WHERE e.apeEmpleado = :apeEmpleado"),
-    @NamedQuery(name = "Empleado.findByDetEmpleado", query = "SELECT e FROM Empleado e WHERE e.detEmpleado = :detEmpleado"),
-    @NamedQuery(name = "Empleado.findBySexo", query = "SELECT e FROM Empleado e WHERE e.sexo = :sexo"),
-    @NamedQuery(name = "Empleado.findByFecNacimiento", query = "SELECT e FROM Empleado e WHERE e.fecNacimiento = :fecNacimiento")})
+    @NamedQuery(name = "Empleado.findByCodCia", query = "SELECT e FROM Empleado e WHERE e.empleadoPK.codCia = :codCia"),
+    @NamedQuery(name = "Empleado.findByCodEmp", query = "SELECT e FROM Empleado e WHERE e.empleadoPK.codEmp = :codEmp"),
+    @NamedQuery(name = "Empleado.findByNombres", query = "SELECT e FROM Empleado e WHERE e.nombres = :nombres"),
+    @NamedQuery(name = "Empleado.findByApellidos", query = "SELECT e FROM Empleado e WHERE e.apellidos = :apellidos"),
+    @NamedQuery(name = "Empleado.findByApCasada", query = "SELECT e FROM Empleado e WHERE e.apCasada = :apCasada"),
+    @NamedQuery(name = "Empleado.findByFechaNac", query = "SELECT e FROM Empleado e WHERE e.fechaNac = :fechaNac"),
+    @NamedQuery(name = "Empleado.findByFecIngreso", query = "SELECT e FROM Empleado e WHERE e.fecIngreso = :fecIngreso"),
+    @NamedQuery(name = "Empleado.findByFecSalida", query = "SELECT e FROM Empleado e WHERE e.fecSalida = :fecSalida"),
+    @NamedQuery(name = "Empleado.findByObservacion", query = "SELECT e FROM Empleado e WHERE e.observacion = :observacion")})
 public class Empleado implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected EmpleadoPK empleadoPK;
-    @Size(max = 100)
-    @Column(name = "nom_empleado", length = 100)
-    private String nomEmpleado;
-    @Size(max = 100)
-    @Column(name = "ape_empleado", length = 100)
-    private String apeEmpleado;
-    @Size(max = 100)
-    @Column(name = "det_empleado", length = 100)
-    private String detEmpleado;
-    @Size(max = 1)
-    @Column(name = "sexo", length = 1)
-    private String sexo;
-    @Column(name = "fec_nacimiento")
+    @Size(max = 2147483647)
+    @Column(name = "nombres", length = 2147483647)
+    private String nombres;
+    @Size(max = 2147483647)
+    @Column(name = "apellidos", length = 2147483647)
+    private String apellidos;
+    @Size(max = 2147483647)
+    @Column(name = "ap_casada", length = 2147483647)
+    private String apCasada;
+    @Column(name = "fecha_nac")
     @Temporal(TemporalType.DATE)
-    private Date fecNacimiento;
-    @ManyToMany(mappedBy = "empleadoList")
-    private List<Direccion> direccionList;
-    @JoinTable(name = "empleado_telefono", joinColumns = {
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
-        @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false),
-        @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "id_telefono", referencedColumnName = "id_telefono", nullable = false)})
-    @ManyToMany
-    private List<Telefono> telefonoList;
-    @JoinTable(name = "planilla", joinColumns = {
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
-        @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false),
-        @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
-        @JoinColumn(name = "id_tipo_planilla", referencedColumnName = "id_tipo_planilla", nullable = false)})
-    @ManyToMany
-    private List<TipoPlanilla> tipoPlanillaList;
-    @JoinTable(name = "empleado_nivel_academico", joinColumns = {
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
-        @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false),
-        @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "id_nivel_academico", referencedColumnName = "id_nivel_academico", nullable = false)})
-    @ManyToMany
-    private List<NivelAcademico> nivelAcademicoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private List<SalarioBase> salarioBaseList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private List<DocumentoEmpleado> documentoEmpleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private List<Contrato> contratoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private List<PuestoEmpleado> puestoEmpleadoList;
-    @JoinColumns({
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false, insertable = false, updatable = false)})
+    private Date fechaNac;
+    @Column(name = "fec_ingreso")
+    @Temporal(TemporalType.DATE)
+    private Date fecIngreso;
+    @Column(name = "fec_salida")
+    @Temporal(TemporalType.DATE)
+    private Date fecSalida;
+    @Size(max = 2147483647)
+    @Column(name = "observacion", length = 2147483647)
+    private String observacion;
+    @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Sucursal sucursal;
-    @JoinColumn(name = "id_estado_civil", referencedColumnName = "id_estado_civil", nullable = false)
-    @ManyToOne(optional = false)
-    private EstadoCivil idEstadoCivil;
+    private Compania compania;
 
     public Empleado() {
     }
@@ -107,8 +71,8 @@ public class Empleado implements Serializable {
         this.empleadoPK = empleadoPK;
     }
 
-    public Empleado(int idCompania, int idSucursal, int idEmpleado) {
-        this.empleadoPK = new EmpleadoPK(idCompania, idSucursal, idEmpleado);
+    public Empleado(int codCia, int codEmp) {
+        this.empleadoPK = new EmpleadoPK(codCia, codEmp);
     }
 
     public EmpleadoPK getEmpleadoPK() {
@@ -119,124 +83,68 @@ public class Empleado implements Serializable {
         this.empleadoPK = empleadoPK;
     }
 
-    public String getNomEmpleado() {
-        return nomEmpleado;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setNomEmpleado(String nomEmpleado) {
-        this.nomEmpleado = nomEmpleado;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
-    public String getApeEmpleado() {
-        return apeEmpleado;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setApeEmpleado(String apeEmpleado) {
-        this.apeEmpleado = apeEmpleado;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
-    public String getDetEmpleado() {
-        return detEmpleado;
+    public String getApCasada() {
+        return apCasada;
     }
 
-    public void setDetEmpleado(String detEmpleado) {
-        this.detEmpleado = detEmpleado;
+    public void setApCasada(String apCasada) {
+        this.apCasada = apCasada;
     }
 
-    public String getSexo() {
-        return sexo;
+    public Date getFechaNac() {
+        return fechaNac;
     }
 
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
+    public void setFechaNac(Date fechaNac) {
+        this.fechaNac = fechaNac;
     }
 
-    public Date getFecNacimiento() {
-        return fecNacimiento;
+    public Date getFecIngreso() {
+        return fecIngreso;
     }
 
-    public void setFecNacimiento(Date fecNacimiento) {
-        this.fecNacimiento = fecNacimiento;
+    public void setFecIngreso(Date fecIngreso) {
+        this.fecIngreso = fecIngreso;
     }
 
-    public List<Direccion> getDireccionList() {
-        return direccionList;
+    public Date getFecSalida() {
+        return fecSalida;
     }
 
-    public void setDireccionList(List<Direccion> direccionList) {
-        this.direccionList = direccionList;
+    public void setFecSalida(Date fecSalida) {
+        this.fecSalida = fecSalida;
     }
 
-    public List<Telefono> getTelefonoList() {
-        return telefonoList;
+    public String getObservacion() {
+        return observacion;
     }
 
-    public void setTelefonoList(List<Telefono> telefonoList) {
-        this.telefonoList = telefonoList;
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 
-    public List<TipoPlanilla> getTipoPlanillaList() {
-        return tipoPlanillaList;
+    public Compania getCompania() {
+        return compania;
     }
 
-    public void setTipoPlanillaList(List<TipoPlanilla> tipoPlanillaList) {
-        this.tipoPlanillaList = tipoPlanillaList;
-    }
-
-    public List<NivelAcademico> getNivelAcademicoList() {
-        return nivelAcademicoList;
-    }
-
-    public void setNivelAcademicoList(List<NivelAcademico> nivelAcademicoList) {
-        this.nivelAcademicoList = nivelAcademicoList;
-    }
-
-    public List<SalarioBase> getSalarioBaseList() {
-        return salarioBaseList;
-    }
-
-    public void setSalarioBaseList(List<SalarioBase> salarioBaseList) {
-        this.salarioBaseList = salarioBaseList;
-    }
-
-    public List<DocumentoEmpleado> getDocumentoEmpleadoList() {
-        return documentoEmpleadoList;
-    }
-
-    public void setDocumentoEmpleadoList(List<DocumentoEmpleado> documentoEmpleadoList) {
-        this.documentoEmpleadoList = documentoEmpleadoList;
-    }
-
-    public List<Contrato> getContratoList() {
-        return contratoList;
-    }
-
-    public void setContratoList(List<Contrato> contratoList) {
-        this.contratoList = contratoList;
-    }
-
-    public List<PuestoEmpleado> getPuestoEmpleadoList() {
-        return puestoEmpleadoList;
-    }
-
-    public void setPuestoEmpleadoList(List<PuestoEmpleado> puestoEmpleadoList) {
-        this.puestoEmpleadoList = puestoEmpleadoList;
-    }
-
-    public Sucursal getSucursal() {
-        return sucursal;
-    }
-
-    public void setSucursal(Sucursal sucursal) {
-        this.sucursal = sucursal;
-    }
-
-    public EstadoCivil getIdEstadoCivil() {
-        return idEstadoCivil;
-    }
-
-    public void setIdEstadoCivil(EstadoCivil idEstadoCivil) {
-        this.idEstadoCivil = idEstadoCivil;
+    public void setCompania(Compania compania) {
+        this.compania = compania;
     }
 
     @Override
