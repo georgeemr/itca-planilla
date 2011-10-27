@@ -26,16 +26,26 @@ public class EvaluacionPK implements Serializable {
     private int codCampania;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cod_evaluacion", nullable = false)
-    private int codEvaluacion;
+    @Column(name = "cod_tipo_evaluacion", nullable = false)
+    private int codTipoEvaluacion;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "periodo", nullable = false)
+    private int periodo;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "cod_emp", nullable = false)
+    private int codEmp;
 
     public EvaluacionPK() {
     }
 
-    public EvaluacionPK(int codCia, int codCampania, int codEvaluacion) {
+    public EvaluacionPK(int codCia, int codCampania, int codTipoEvaluacion, int periodo, int codEmp) {
         this.codCia = codCia;
         this.codCampania = codCampania;
-        this.codEvaluacion = codEvaluacion;
+        this.codTipoEvaluacion = codTipoEvaluacion;
+        this.periodo = periodo;
+        this.codEmp = codEmp;
     }
 
     public int getCodCia() {
@@ -54,12 +64,28 @@ public class EvaluacionPK implements Serializable {
         this.codCampania = codCampania;
     }
 
-    public int getCodEvaluacion() {
-        return codEvaluacion;
+    public int getCodTipoEvaluacion() {
+        return codTipoEvaluacion;
     }
 
-    public void setCodEvaluacion(int codEvaluacion) {
-        this.codEvaluacion = codEvaluacion;
+    public void setCodTipoEvaluacion(int codTipoEvaluacion) {
+        this.codTipoEvaluacion = codTipoEvaluacion;
+    }
+
+    public int getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(int periodo) {
+        this.periodo = periodo;
+    }
+
+    public int getCodEmp() {
+        return codEmp;
+    }
+
+    public void setCodEmp(int codEmp) {
+        this.codEmp = codEmp;
     }
 
     @Override
@@ -67,7 +93,9 @@ public class EvaluacionPK implements Serializable {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codCampania;
-        hash += (int) codEvaluacion;
+        hash += (int) codTipoEvaluacion;
+        hash += (int) periodo;
+        hash += (int) codEmp;
         return hash;
     }
 
@@ -84,7 +112,13 @@ public class EvaluacionPK implements Serializable {
         if (this.codCampania != other.codCampania) {
             return false;
         }
-        if (this.codEvaluacion != other.codEvaluacion) {
+        if (this.codTipoEvaluacion != other.codTipoEvaluacion) {
+            return false;
+        }
+        if (this.periodo != other.periodo) {
+            return false;
+        }
+        if (this.codEmp != other.codEmp) {
             return false;
         }
         return true;
@@ -92,7 +126,7 @@ public class EvaluacionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.EvaluacionPK[ codCia=" + codCia + ", codCampania=" + codCampania + ", codEvaluacion=" + codEvaluacion + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.EvaluacionPK[ codCia=" + codCia + ", codCampania=" + codCampania + ", codTipoEvaluacion=" + codTipoEvaluacion + ", periodo=" + periodo + ", codEmp=" + codEmp + " ]";
     }
     
 }

@@ -26,12 +26,11 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "plantilla", catalog = "planilla", schema = "public")
+@Table(name = "plantilla")
 @NamedQueries({
     @NamedQuery(name = "Plantilla.findAll", query = "SELECT p FROM Plantilla p"),
     @NamedQuery(name = "Plantilla.findByCodCia", query = "SELECT p FROM Plantilla p WHERE p.plantillaPK.codCia = :codCia"),
     @NamedQuery(name = "Plantilla.findByCodTipoEvaluacion", query = "SELECT p FROM Plantilla p WHERE p.plantillaPK.codTipoEvaluacion = :codTipoEvaluacion"),
-    @NamedQuery(name = "Plantilla.findByPeriodo", query = "SELECT p FROM Plantilla p WHERE p.plantillaPK.periodo = :periodo"),
     @NamedQuery(name = "Plantilla.findByCodPlantilla", query = "SELECT p FROM Plantilla p WHERE p.plantillaPK.codPlantilla = :codPlantilla"),
     @NamedQuery(name = "Plantilla.findByNomPlantilla", query = "SELECT p FROM Plantilla p WHERE p.nomPlantilla = :nomPlantilla"),
     @NamedQuery(name = "Plantilla.findByIncluyeObjetivos", query = "SELECT p FROM Plantilla p WHERE p.incluyeObjetivos = :incluyeObjetivos"),
@@ -52,7 +51,6 @@ public class Plantilla implements Serializable {
     @JoinTable(name = "det_plantilla", joinColumns = {
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
         @JoinColumn(name = "cod_tipo_evaluacion", referencedColumnName = "cod_tipo_evaluacion", nullable = false),
-        @JoinColumn(name = "periodo", referencedColumnName = "periodo", nullable = false),
         @JoinColumn(name = "cod_plantilla", referencedColumnName = "cod_plantilla", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
         @JoinColumn(name = "cod_factor", referencedColumnName = "cod_factor", nullable = false),
@@ -74,8 +72,8 @@ public class Plantilla implements Serializable {
         this.plantillaPK = plantillaPK;
     }
 
-    public Plantilla(int codCia, int codTipoEvaluacion, int periodo, int codPlantilla) {
-        this.plantillaPK = new PlantillaPK(codCia, codTipoEvaluacion, periodo, codPlantilla);
+    public Plantilla(int codCia, int codTipoEvaluacion, int codPlantilla) {
+        this.plantillaPK = new PlantillaPK(codCia, codTipoEvaluacion, codPlantilla);
     }
 
     public PlantillaPK getPlantillaPK() {
