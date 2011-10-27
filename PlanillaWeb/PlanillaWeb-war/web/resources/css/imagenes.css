@@ -25,3 +25,13 @@ background-image: url('../iconos/document-edit.png') !important;
 {
 background-image: url('../iconos/trash-empty.png') !important;
 }
+
+.mostrarEmpleados
+{
+background-image: url('../iconos/edit-find-user.png') !important;
+}
+
+.evaluar
+{
+background-image: url('../iconos/user-properties.png') !important;
+}
