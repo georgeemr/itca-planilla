@@ -9,6 +9,7 @@ import com.infosgroup.planilla.modelo.entidades.UsuarioPK;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -25,6 +26,14 @@ public class UsuarioFacade extends AbstractFacade<Usuario, UsuarioPK> {
 
     public UsuarioFacade() {
         super(Usuario.class);
+    }
+    
+    public Integer findByUsuarioPassword(String usuario, String password)
+    {
+        Query consulta = em.createNamedQuery("Usuario.findByNomUsuarioPassword");
+        consulta.setParameter("nomUsuario", usuario);
+        consulta.setParameter("password", password);
+        return consulta.getResultList().size();
     }
     
 }
