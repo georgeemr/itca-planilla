@@ -10,7 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -18,16 +17,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "tipo_documento")
-@XmlRootElement
+@Table(name = "tipo_documento", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "TipoDocumento.findAll", query = "SELECT t FROM TipoDocumento t"),
     @NamedQuery(name = "TipoDocumento.findByIdTipoDocumento", query = "SELECT t FROM TipoDocumento t WHERE t.idTipoDocumento = :idTipoDocumento"),
@@ -42,7 +38,7 @@ public class TipoDocumento implements Serializable {
     @Size(max = 100)
     @Column(name = "nom_tipo_documento", length = 100)
     private String nomTipoDocumento;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoDocumento", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoDocumento")
     private List<DocumentoEmpleado> documentoEmpleadoList;
 
     public TipoDocumento() {
@@ -68,7 +64,6 @@ public class TipoDocumento implements Serializable {
         this.nomTipoDocumento = nomTipoDocumento;
     }
 
-    @XmlTransient
     public List<DocumentoEmpleado> getDocumentoEmpleadoList() {
         return documentoEmpleadoList;
     }

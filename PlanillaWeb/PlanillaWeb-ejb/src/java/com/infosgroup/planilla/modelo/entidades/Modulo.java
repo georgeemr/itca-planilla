@@ -11,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -22,16 +21,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "modulo")
-@XmlRootElement
+@Table(name = "modulo", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Modulo.findAll", query = "SELECT m FROM Modulo m"),
     @NamedQuery(name = "Modulo.findByIdCompania", query = "SELECT m FROM Modulo m WHERE m.moduloPK.idCompania = :idCompania"),
@@ -51,12 +47,12 @@ public class Modulo implements Serializable {
         @JoinColumn(name = "id_modulo", referencedColumnName = "id_modulo", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
         @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)})
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private List<Usuario> usuarioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modulo", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modulo")
     private List<Menu> menuList;
     @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Compania compania;
 
     public Modulo() {
@@ -91,7 +87,6 @@ public class Modulo implements Serializable {
         this.nomModulo = nomModulo;
     }
 
-    @XmlTransient
     public List<Usuario> getUsuarioList() {
         return usuarioList;
     }
@@ -100,7 +95,6 @@ public class Modulo implements Serializable {
         this.usuarioList = usuarioList;
     }
 
-    @XmlTransient
     public List<Menu> getMenuList() {
         return menuList;
     }

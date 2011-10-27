@@ -10,7 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -18,16 +17,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "tipo_puesto")
-@XmlRootElement
+@Table(name = "tipo_puesto", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "TipoPuesto.findAll", query = "SELECT t FROM TipoPuesto t"),
     @NamedQuery(name = "TipoPuesto.findByIdTipoPuesto", query = "SELECT t FROM TipoPuesto t WHERE t.idTipoPuesto = :idTipoPuesto"),
@@ -46,7 +42,7 @@ public class TipoPuesto implements Serializable {
     @Size(max = 400)
     @Column(name = "det_tipo_puesto", length = 400)
     private String detTipoPuesto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto")
     private List<Puesto> puestoList;
 
     public TipoPuesto() {
@@ -80,7 +76,6 @@ public class TipoPuesto implements Serializable {
         this.detTipoPuesto = detTipoPuesto;
     }
 
-    @XmlTransient
     public List<Puesto> getPuestoList() {
         return puestoList;
     }

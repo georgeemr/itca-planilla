@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -18,16 +17,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "tipo_cuenta")
-@XmlRootElement
+@Table(name = "tipo_cuenta", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "TipoCuenta.findAll", query = "SELECT t FROM TipoCuenta t"),
     @NamedQuery(name = "TipoCuenta.findByIdCompania", query = "SELECT t FROM TipoCuenta t WHERE t.tipoCuentaPK.idCompania = :idCompania"),
@@ -44,10 +40,10 @@ public class TipoCuenta implements Serializable {
     @Size(max = 200)
     @Column(name = "det_tipo_cuenta", length = 200)
     private String detTipoCuenta;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoCuenta", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoCuenta")
     private List<Cuenta> cuentaList;
     @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Compania compania;
 
     public TipoCuenta() {
@@ -85,7 +81,6 @@ public class TipoCuenta implements Serializable {
         this.detTipoCuenta = detTipoCuenta;
     }
 
-    @XmlTransient
     public List<Cuenta> getCuentaList() {
         return cuentaList;
     }

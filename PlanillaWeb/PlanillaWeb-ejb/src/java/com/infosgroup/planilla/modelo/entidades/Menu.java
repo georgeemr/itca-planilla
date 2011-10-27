@@ -11,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
@@ -23,16 +22,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "menu")
-@XmlRootElement
+@Table(name = "menu", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Menu.findAll", query = "SELECT m FROM Menu m"),
     @NamedQuery(name = "Menu.findByIdCompania", query = "SELECT m FROM Menu m WHERE m.menuPK.idCompania = :idCompania"),
@@ -70,20 +66,20 @@ public class Menu implements Serializable {
         @JoinColumn(name = "id_menu", referencedColumnName = "id_menu", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
         @JoinColumn(name = "id_rol", referencedColumnName = "id_rol", nullable = false)})
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private List<Rol> rolList;
     @JoinColumns({
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_modulo", referencedColumnName = "id_modulo", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Modulo modulo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "menu", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "menu")
     private List<Menu> menuList;
     @JoinColumns({
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_modulo", referencedColumnName = "id_modulo", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_menu_padre", referencedColumnName = "id_menu")})
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Menu menu;
 
     public Menu() {
@@ -145,7 +141,6 @@ public class Menu implements Serializable {
         this.ruta = ruta;
     }
 
-    @XmlTransient
     public List<Rol> getRolList() {
         return rolList;
     }
@@ -162,7 +157,6 @@ public class Menu implements Serializable {
         this.modulo = modulo;
     }
 
-    @XmlTransient
     public List<Menu> getMenuList() {
         return menuList;
     }

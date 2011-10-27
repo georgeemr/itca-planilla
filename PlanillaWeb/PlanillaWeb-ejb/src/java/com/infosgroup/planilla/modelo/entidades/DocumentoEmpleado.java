@@ -7,22 +7,19 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "documento_empleado")
-@XmlRootElement
+@Table(name = "documento_empleado", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "DocumentoEmpleado.findAll", query = "SELECT d FROM DocumentoEmpleado d"),
     @NamedQuery(name = "DocumentoEmpleado.findByIdCompania", query = "SELECT d FROM DocumentoEmpleado d WHERE d.documentoEmpleadoPK.idCompania = :idCompania"),
@@ -35,13 +32,13 @@ public class DocumentoEmpleado implements Serializable {
     @EmbeddedId
     protected DocumentoEmpleadoPK documentoEmpleadoPK;
     @JoinColumn(name = "id_tipo_documento", referencedColumnName = "id_tipo_documento", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private TipoDocumento tipoDocumento;
     @JoinColumns({
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Empleado empleado;
 
     public DocumentoEmpleado() {

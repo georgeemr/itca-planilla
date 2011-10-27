@@ -10,7 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -18,18 +17,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "compania")
-@XmlRootElement
+@Table(name = "compania", catalog = "planilla", schema = "public")
 @NamedQueries({
-    @NamedQuery(name = "Compania.max", query = "SELECT max(c.idCompania) FROM Compania c"),
     @NamedQuery(name = "Compania.findAll", query = "SELECT c FROM Compania c"),
     @NamedQuery(name = "Compania.findByIdCompania", query = "SELECT c FROM Compania c WHERE c.idCompania = :idCompania"),
     @NamedQuery(name = "Compania.findByNomCompania", query = "SELECT c FROM Compania c WHERE c.nomCompania = :nomCompania"),
@@ -51,20 +46,28 @@ public class Compania implements Serializable {
     @Size(max = 200)
     @Column(name = "razon_social", length = 200)
     private String razonSocial;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Sucursal> sucursalList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoRespuesta> tipoRespuestaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Departamento> departamentoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<TipoTransaccion> tipoTransaccionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Factor> factorList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Campania> campaniaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<TipoCuenta> tipoCuentaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Modulo> moduloList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Rol> rolList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<TipoPlanilla> tipoPlanillaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoEvaluacion> tipoEvaluacionList;
 
     public Compania() {
     }
@@ -105,7 +108,6 @@ public class Compania implements Serializable {
         this.razonSocial = razonSocial;
     }
 
-    @XmlTransient
     public List<Sucursal> getSucursalList() {
         return sucursalList;
     }
@@ -114,7 +116,14 @@ public class Compania implements Serializable {
         this.sucursalList = sucursalList;
     }
 
-    @XmlTransient
+    public List<TipoRespuesta> getTipoRespuestaList() {
+        return tipoRespuestaList;
+    }
+
+    public void setTipoRespuestaList(List<TipoRespuesta> tipoRespuestaList) {
+        this.tipoRespuestaList = tipoRespuestaList;
+    }
+
     public List<Departamento> getDepartamentoList() {
         return departamentoList;
     }
@@ -123,7 +132,6 @@ public class Compania implements Serializable {
         this.departamentoList = departamentoList;
     }
 
-    @XmlTransient
     public List<TipoTransaccion> getTipoTransaccionList() {
         return tipoTransaccionList;
     }
@@ -132,7 +140,22 @@ public class Compania implements Serializable {
         this.tipoTransaccionList = tipoTransaccionList;
     }
 
-    @XmlTransient
+    public List<Factor> getFactorList() {
+        return factorList;
+    }
+
+    public void setFactorList(List<Factor> factorList) {
+        this.factorList = factorList;
+    }
+
+    public List<Campania> getCampaniaList() {
+        return campaniaList;
+    }
+
+    public void setCampaniaList(List<Campania> campaniaList) {
+        this.campaniaList = campaniaList;
+    }
+
     public List<TipoCuenta> getTipoCuentaList() {
         return tipoCuentaList;
     }
@@ -141,7 +164,6 @@ public class Compania implements Serializable {
         this.tipoCuentaList = tipoCuentaList;
     }
 
-    @XmlTransient
     public List<Modulo> getModuloList() {
         return moduloList;
     }
@@ -150,7 +172,6 @@ public class Compania implements Serializable {
         this.moduloList = moduloList;
     }
 
-    @XmlTransient
     public List<Rol> getRolList() {
         return rolList;
     }
@@ -159,13 +180,20 @@ public class Compania implements Serializable {
         this.rolList = rolList;
     }
 
-    @XmlTransient
     public List<TipoPlanilla> getTipoPlanillaList() {
         return tipoPlanillaList;
     }
 
     public void setTipoPlanillaList(List<TipoPlanilla> tipoPlanillaList) {
         this.tipoPlanillaList = tipoPlanillaList;
+    }
+
+    public List<TipoEvaluacion> getTipoEvaluacionList() {
+        return tipoEvaluacionList;
+    }
+
+    public void setTipoEvaluacionList(List<TipoEvaluacion> tipoEvaluacionList) {
+        this.tipoEvaluacionList = tipoEvaluacionList;
     }
 
     @Override

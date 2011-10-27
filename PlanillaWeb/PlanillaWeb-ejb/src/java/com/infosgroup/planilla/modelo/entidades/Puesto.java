@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -18,16 +17,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "puesto")
-@XmlRootElement
+@Table(name = "puesto", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Puesto.findAll", query = "SELECT p FROM Puesto p"),
     @NamedQuery(name = "Puesto.findByIdTipoPuesto", query = "SELECT p FROM Puesto p WHERE p.puestoPK.idTipoPuesto = :idTipoPuesto"),
@@ -44,10 +40,10 @@ public class Puesto implements Serializable {
     @Size(max = 400)
     @Column(name = "det_puesto", length = 400)
     private String detPuesto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
     private List<PuestoEmpleado> puestoEmpleadoList;
     @JoinColumn(name = "id_tipo_puesto", referencedColumnName = "id_tipo_puesto", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private TipoPuesto tipoPuesto;
 
     public Puesto() {
@@ -85,7 +81,6 @@ public class Puesto implements Serializable {
         this.detPuesto = detPuesto;
     }
 
-    @XmlTransient
     public List<PuestoEmpleado> getPuestoEmpleadoList() {
         return puestoEmpleadoList;
     }

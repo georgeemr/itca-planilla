@@ -11,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
@@ -24,16 +23,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "empleado")
-@XmlRootElement
+@Table(name = "empleado", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e"),
     @NamedQuery(name = "Empleado.findByIdCompania", query = "SELECT e FROM Empleado e WHERE e.empleadoPK.idCompania = :idCompania"),
@@ -63,14 +59,14 @@ public class Empleado implements Serializable {
     @Column(name = "fec_nacimiento")
     @Temporal(TemporalType.DATE)
     private Date fecNacimiento;
-    @ManyToMany(mappedBy = "empleadoList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "empleadoList")
     private List<Direccion> direccionList;
     @JoinTable(name = "empleado_telefono", joinColumns = {
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
         @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false),
         @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "id_telefono", referencedColumnName = "id_telefono", nullable = false)})
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private List<Telefono> telefonoList;
     @JoinTable(name = "planilla", joinColumns = {
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
@@ -78,30 +74,30 @@ public class Empleado implements Serializable {
         @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
         @JoinColumn(name = "id_tipo_planilla", referencedColumnName = "id_tipo_planilla", nullable = false)})
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private List<TipoPlanilla> tipoPlanillaList;
     @JoinTable(name = "empleado_nivel_academico", joinColumns = {
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
         @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false),
         @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "id_nivel_academico", referencedColumnName = "id_nivel_academico", nullable = false)})
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private List<NivelAcademico> nivelAcademicoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private List<SalarioBase> salarioBaseList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private List<DocumentoEmpleado> documentoEmpleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private List<Contrato> contratoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private List<PuestoEmpleado> puestoEmpleadoList;
     @JoinColumns({
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Sucursal sucursal;
     @JoinColumn(name = "id_estado_civil", referencedColumnName = "id_estado_civil", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private EstadoCivil idEstadoCivil;
 
     public Empleado() {
@@ -163,7 +159,6 @@ public class Empleado implements Serializable {
         this.fecNacimiento = fecNacimiento;
     }
 
-    @XmlTransient
     public List<Direccion> getDireccionList() {
         return direccionList;
     }
@@ -172,7 +167,6 @@ public class Empleado implements Serializable {
         this.direccionList = direccionList;
     }
 
-    @XmlTransient
     public List<Telefono> getTelefonoList() {
         return telefonoList;
     }
@@ -181,7 +175,6 @@ public class Empleado implements Serializable {
         this.telefonoList = telefonoList;
     }
 
-    @XmlTransient
     public List<TipoPlanilla> getTipoPlanillaList() {
         return tipoPlanillaList;
     }
@@ -190,7 +183,6 @@ public class Empleado implements Serializable {
         this.tipoPlanillaList = tipoPlanillaList;
     }
 
-    @XmlTransient
     public List<NivelAcademico> getNivelAcademicoList() {
         return nivelAcademicoList;
     }
@@ -199,7 +191,6 @@ public class Empleado implements Serializable {
         this.nivelAcademicoList = nivelAcademicoList;
     }
 
-    @XmlTransient
     public List<SalarioBase> getSalarioBaseList() {
         return salarioBaseList;
     }
@@ -208,7 +199,6 @@ public class Empleado implements Serializable {
         this.salarioBaseList = salarioBaseList;
     }
 
-    @XmlTransient
     public List<DocumentoEmpleado> getDocumentoEmpleadoList() {
         return documentoEmpleadoList;
     }
@@ -217,7 +207,6 @@ public class Empleado implements Serializable {
         this.documentoEmpleadoList = documentoEmpleadoList;
     }
 
-    @XmlTransient
     public List<Contrato> getContratoList() {
         return contratoList;
     }
@@ -226,7 +215,6 @@ public class Empleado implements Serializable {
         this.contratoList = contratoList;
     }
 
-    @XmlTransient
     public List<PuestoEmpleado> getPuestoEmpleadoList() {
         return puestoEmpleadoList;
     }

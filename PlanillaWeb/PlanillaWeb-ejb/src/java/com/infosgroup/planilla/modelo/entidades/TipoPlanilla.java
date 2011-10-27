@@ -9,7 +9,6 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -17,16 +16,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "tipo_planilla")
-@XmlRootElement
+@Table(name = "tipo_planilla", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "TipoPlanilla.findAll", query = "SELECT t FROM TipoPlanilla t"),
     @NamedQuery(name = "TipoPlanilla.findByIdCompania", query = "SELECT t FROM TipoPlanilla t WHERE t.tipoPlanillaPK.idCompania = :idCompania"),
@@ -39,10 +35,10 @@ public class TipoPlanilla implements Serializable {
     @Size(max = 100)
     @Column(name = "nom_tipo_planilla", length = 100)
     private String nomTipoPlanilla;
-    @ManyToMany(mappedBy = "tipoPlanillaList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "tipoPlanillaList")
     private List<Empleado> empleadoList;
     @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Compania compania;
 
     public TipoPlanilla() {
@@ -72,7 +68,6 @@ public class TipoPlanilla implements Serializable {
         this.nomTipoPlanilla = nomTipoPlanilla;
     }
 
-    @XmlTransient
     public List<Empleado> getEmpleadoList() {
         return empleadoList;
     }

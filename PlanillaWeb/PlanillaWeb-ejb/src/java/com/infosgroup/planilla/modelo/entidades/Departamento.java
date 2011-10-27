@@ -8,22 +8,19 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "departamento")
-@XmlRootElement
+@Table(name = "departamento", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Departamento.findAll", query = "SELECT d FROM Departamento d"),
     @NamedQuery(name = "Departamento.findByIdCompania", query = "SELECT d FROM Departamento d WHERE d.departamentoPK.idCompania = :idCompania"),
@@ -41,7 +38,7 @@ public class Departamento implements Serializable {
     @Column(name = "det_departamento", length = 200)
     private String detDepartamento;
     @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Compania compania;
 
     public Departamento() {

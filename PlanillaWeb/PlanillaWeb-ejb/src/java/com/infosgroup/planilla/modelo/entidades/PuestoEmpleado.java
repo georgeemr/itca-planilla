@@ -10,7 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -20,15 +19,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "puesto_empleado")
-@XmlRootElement
+@Table(name = "puesto_empleado", catalog = "planilla", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "PuestoEmpleado.findAll", query = "SELECT p FROM PuestoEmpleado p"),
     @NamedQuery(name = "PuestoEmpleado.findByIdCompania", query = "SELECT p FROM PuestoEmpleado p WHERE p.puestoEmpleadoPK.idCompania = :idCompania"),
@@ -49,13 +46,13 @@ public class PuestoEmpleado implements Serializable {
     @JoinColumns({
         @JoinColumn(name = "id_tipo_puesto", referencedColumnName = "id_tipo_puesto", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_puesto", referencedColumnName = "id_puesto", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Puesto puesto;
     @JoinColumns({
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Empleado empleado;
 
     public PuestoEmpleado() {
