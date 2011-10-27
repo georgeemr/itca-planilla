@@ -34,16 +34,25 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
     @NamedQuery(name = "Usuario.findByIdCompania", query = "SELECT u FROM Usuario u WHERE u.usuarioPK.idCompania = :idCompania"),
     @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.usuarioPK.idUsuario = :idUsuario"),
+    @NamedQuery(name = "Usuario.findByNomUsuarioPassword", query = "SELECT u FROM Usuario u WHERE u.nomUsuario = :nomUsuario and u.password = :password"),
     @NamedQuery(name = "Usuario.findByNomUsuario", query = "SELECT u FROM Usuario u WHERE u.nomUsuario = :nomUsuario")})
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected UsuarioPK usuarioPK;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "nom_usuario", nullable = false, length = 100)
     private String nomUsuario;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)    
+    @Column(name="password", nullable = false, length = 100)
+    private String password;
+    
     @ManyToMany(mappedBy = "usuarioList", fetch = FetchType.EAGER)
     private List<Modulo> moduloList;
     @JoinColumns({
@@ -84,6 +93,14 @@ public class Usuario implements Serializable {
         this.nomUsuario = nomUsuario;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }    
+
     @XmlTransient
     public List<Modulo> getModuloList() {
         return moduloList;
@@ -100,7 +117,7 @@ public class Usuario implements Serializable {
     public void setRol(Rol rol) {
         this.rol = rol;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
