@@ -9,8 +9,10 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -26,54 +28,54 @@ import javax.validation.constraints.Size;
 @Table(name = "tipo_puesto")
 @NamedQueries({
     @NamedQuery(name = "TipoPuesto.findAll", query = "SELECT t FROM TipoPuesto t"),
-    @NamedQuery(name = "TipoPuesto.findByIdTipoPuesto", query = "SELECT t FROM TipoPuesto t WHERE t.idTipoPuesto = :idTipoPuesto"),
-    @NamedQuery(name = "TipoPuesto.findByNomTipoPuesto", query = "SELECT t FROM TipoPuesto t WHERE t.nomTipoPuesto = :nomTipoPuesto"),
-    @NamedQuery(name = "TipoPuesto.findByDetTipoPuesto", query = "SELECT t FROM TipoPuesto t WHERE t.detTipoPuesto = :detTipoPuesto")})
+    @NamedQuery(name = "TipoPuesto.findByCodCia", query = "SELECT t FROM TipoPuesto t WHERE t.tipoPuestoPK.codCia = :codCia"),
+    @NamedQuery(name = "TipoPuesto.findByCodTipoPuesto", query = "SELECT t FROM TipoPuesto t WHERE t.tipoPuestoPK.codTipoPuesto = :codTipoPuesto"),
+    @NamedQuery(name = "TipoPuesto.findByNombre", query = "SELECT t FROM TipoPuesto t WHERE t.nombre = :nombre")})
 public class TipoPuesto implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
+    @EmbeddedId
+    protected TipoPuestoPK tipoPuestoPK;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_tipo_puesto", nullable = false)
-    private Integer idTipoPuesto;
-    @Size(max = 100)
-    @Column(name = "nom_tipo_puesto", length = 100)
-    private String nomTipoPuesto;
-    @Size(max = 400)
-    @Column(name = "det_tipo_puesto", length = 400)
-    private String detTipoPuesto;
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "nombre", nullable = false, length = 2147483647)
+    private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto")
     private List<Puesto> puestoList;
+    @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Compania compania;
 
     public TipoPuesto() {
     }
 
-    public TipoPuesto(Integer idTipoPuesto) {
-        this.idTipoPuesto = idTipoPuesto;
+    public TipoPuesto(TipoPuestoPK tipoPuestoPK) {
+        this.tipoPuestoPK = tipoPuestoPK;
     }
 
-    public Integer getIdTipoPuesto() {
-        return idTipoPuesto;
+    public TipoPuesto(TipoPuestoPK tipoPuestoPK, String nombre) {
+        this.tipoPuestoPK = tipoPuestoPK;
+        this.nombre = nombre;
     }
 
-    public void setIdTipoPuesto(Integer idTipoPuesto) {
-        this.idTipoPuesto = idTipoPuesto;
+    public TipoPuesto(int codCia, int codTipoPuesto) {
+        this.tipoPuestoPK = new TipoPuestoPK(codCia, codTipoPuesto);
     }
 
-    public String getNomTipoPuesto() {
-        return nomTipoPuesto;
+    public TipoPuestoPK getTipoPuestoPK() {
+        return tipoPuestoPK;
     }
 
-    public void setNomTipoPuesto(String nomTipoPuesto) {
-        this.nomTipoPuesto = nomTipoPuesto;
+    public void setTipoPuestoPK(TipoPuestoPK tipoPuestoPK) {
+        this.tipoPuestoPK = tipoPuestoPK;
     }
 
-    public String getDetTipoPuesto() {
-        return detTipoPuesto;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setDetTipoPuesto(String detTipoPuesto) {
-        this.detTipoPuesto = detTipoPuesto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public List<Puesto> getPuestoList() {
@@ -84,10 +86,18 @@ public class TipoPuesto implements Serializable {
         this.puestoList = puestoList;
     }
 
+    public Compania getCompania() {
+        return compania;
+    }
+
+    public void setCompania(Compania compania) {
+        this.compania = compania;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idTipoPuesto != null ? idTipoPuesto.hashCode() : 0);
+        hash += (tipoPuestoPK != null ? tipoPuestoPK.hashCode() : 0);
         return hash;
     }
 
@@ -98,7 +108,7 @@ public class TipoPuesto implements Serializable {
             return false;
         }
         TipoPuesto other = (TipoPuesto) object;
-        if ((this.idTipoPuesto == null && other.idTipoPuesto != null) || (this.idTipoPuesto != null && !this.idTipoPuesto.equals(other.idTipoPuesto))) {
+        if ((this.tipoPuestoPK == null && other.tipoPuestoPK != null) || (this.tipoPuestoPK != null && !this.tipoPuestoPK.equals(other.tipoPuestoPK))) {
             return false;
         }
         return true;
@@ -106,7 +116,7 @@ public class TipoPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoPuesto[ idTipoPuesto=" + idTipoPuesto + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoPuesto[ tipoPuestoPK=" + tipoPuestoPK + " ]";
     }
     
 }

@@ -15,22 +15,22 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class PuestoPK implements Serializable {
+public class TipoPuestoPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_cia", nullable = false)
     private int codCia;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cod_puesto", nullable = false)
-    private int codPuesto;
+    @Column(name = "cod_tipo_puesto", nullable = false)
+    private int codTipoPuesto;
 
-    public PuestoPK() {
+    public TipoPuestoPK() {
     }
 
-    public PuestoPK(int codCia, int codPuesto) {
+    public TipoPuestoPK(int codCia, int codTipoPuesto) {
         this.codCia = codCia;
-        this.codPuesto = codPuesto;
+        this.codTipoPuesto = codTipoPuesto;
     }
 
     public int getCodCia() {
@@ -41,33 +41,33 @@ public class PuestoPK implements Serializable {
         this.codCia = codCia;
     }
 
-    public int getCodPuesto() {
-        return codPuesto;
+    public int getCodTipoPuesto() {
+        return codTipoPuesto;
     }
 
-    public void setCodPuesto(int codPuesto) {
-        this.codPuesto = codPuesto;
+    public void setCodTipoPuesto(int codTipoPuesto) {
+        this.codTipoPuesto = codTipoPuesto;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) codPuesto;
+        hash += (int) codTipoPuesto;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PuestoPK)) {
+        if (!(object instanceof TipoPuestoPK)) {
             return false;
         }
-        PuestoPK other = (PuestoPK) object;
+        TipoPuestoPK other = (TipoPuestoPK) object;
         if (this.codCia != other.codCia) {
             return false;
         }
-        if (this.codPuesto != other.codPuesto) {
+        if (this.codTipoPuesto != other.codTipoPuesto) {
             return false;
         }
         return true;
@@ -75,7 +75,7 @@ public class PuestoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PuestoPK[ codCia=" + codCia + ", codPuesto=" + codPuesto + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoPuestoPK[ codCia=" + codCia + ", codTipoPuesto=" + codTipoPuesto + " ]";
     }
     
 }

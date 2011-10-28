@@ -33,12 +33,12 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Campania.findAll", query = "SELECT c FROM Campania c"),
     @NamedQuery(name = "Campania.findByCodCia", query = "SELECT c FROM Campania c WHERE c.campaniaPK.codCia = :codCia"),
     @NamedQuery(name = "Campania.findByCodCampania", query = "SELECT c FROM Campania c WHERE c.campaniaPK.codCampania = :codCampania"),
-    @NamedQuery(name = "Campania.findByNomCampania", query = "SELECT c FROM Campania c WHERE c.nomCampania = :nomCampania"),
+    @NamedQuery(name = "Campania.findByNombre", query = "SELECT c FROM Campania c WHERE c.nombre = :nombre"),
     @NamedQuery(name = "Campania.findByFechaInicial", query = "SELECT c FROM Campania c WHERE c.fechaInicial = :fechaInicial"),
     @NamedQuery(name = "Campania.findByFechaFinal", query = "SELECT c FROM Campania c WHERE c.fechaFinal = :fechaFinal"),
     @NamedQuery(name = "Campania.findByEstado", query = "SELECT c FROM Campania c WHERE c.estado = :estado"),
     @NamedQuery(name = "Campania.findByPeriodo", query = "SELECT c FROM Campania c WHERE c.campaniaPK.periodo = :periodo"),
-    @NamedQuery(name = "Campania.findByCodArea", query = "SELECT c FROM Campania c WHERE c.codArea = :codArea"),
+    @NamedQuery(name = "Campania.findByArea", query = "SELECT c FROM Campania c WHERE c.area = :area"),
     @NamedQuery(name = "Campania.findByNota", query = "SELECT c FROM Campania c WHERE c.nota = :nota")})
 public class Campania implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -47,8 +47,8 @@ public class Campania implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "nom_campania", nullable = false, length = 2147483647)
-    private String nomCampania;
+    @Column(name = "nombre", nullable = false, length = 2147483647)
+    private String nombre;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_inicial", nullable = false)
@@ -64,8 +64,8 @@ public class Campania implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "estado", nullable = false, length = 2147483647)
     private String estado;
-    @Column(name = "cod_area")
-    private Integer codArea;
+    @Column(name = "area")
+    private Integer area;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "nota", precision = 17, scale = 17)
     private Double nota;
@@ -82,9 +82,9 @@ public class Campania implements Serializable {
         this.campaniaPK = campaniaPK;
     }
 
-    public Campania(CampaniaPK campaniaPK, String nomCampania, Date fechaInicial, Date fechaFinal, String estado) {
+    public Campania(CampaniaPK campaniaPK, String nombre, Date fechaInicial, Date fechaFinal, String estado) {
         this.campaniaPK = campaniaPK;
-        this.nomCampania = nomCampania;
+        this.nombre = nombre;
         this.fechaInicial = fechaInicial;
         this.fechaFinal = fechaFinal;
         this.estado = estado;
@@ -102,12 +102,12 @@ public class Campania implements Serializable {
         this.campaniaPK = campaniaPK;
     }
 
-    public String getNomCampania() {
-        return nomCampania;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNomCampania(String nomCampania) {
-        this.nomCampania = nomCampania;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Date getFechaInicial() {
@@ -134,12 +134,12 @@ public class Campania implements Serializable {
         this.estado = estado;
     }
 
-    public Integer getCodArea() {
-        return codArea;
+    public Integer getArea() {
+        return area;
     }
 
-    public void setCodArea(Integer codArea) {
-        this.codArea = codArea;
+    public void setArea(Integer area) {
+        this.area = area;
     }
 
     public Double getNota() {

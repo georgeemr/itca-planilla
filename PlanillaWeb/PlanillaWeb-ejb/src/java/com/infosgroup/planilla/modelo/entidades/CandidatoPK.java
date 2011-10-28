@@ -15,22 +15,22 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class PuestoPK implements Serializable {
+public class CandidatoPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_cia", nullable = false)
     private int codCia;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cod_puesto", nullable = false)
-    private int codPuesto;
+    @Column(name = "cod_candidato", nullable = false)
+    private int codCandidato;
 
-    public PuestoPK() {
+    public CandidatoPK() {
     }
 
-    public PuestoPK(int codCia, int codPuesto) {
+    public CandidatoPK(int codCia, int codCandidato) {
         this.codCia = codCia;
-        this.codPuesto = codPuesto;
+        this.codCandidato = codCandidato;
     }
 
     public int getCodCia() {
@@ -41,33 +41,33 @@ public class PuestoPK implements Serializable {
         this.codCia = codCia;
     }
 
-    public int getCodPuesto() {
-        return codPuesto;
+    public int getCodCandidato() {
+        return codCandidato;
     }
 
-    public void setCodPuesto(int codPuesto) {
-        this.codPuesto = codPuesto;
+    public void setCodCandidato(int codCandidato) {
+        this.codCandidato = codCandidato;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) codPuesto;
+        hash += (int) codCandidato;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PuestoPK)) {
+        if (!(object instanceof CandidatoPK)) {
             return false;
         }
-        PuestoPK other = (PuestoPK) object;
+        CandidatoPK other = (CandidatoPK) object;
         if (this.codCia != other.codCia) {
             return false;
         }
-        if (this.codPuesto != other.codPuesto) {
+        if (this.codCandidato != other.codCandidato) {
             return false;
         }
         return true;
@@ -75,7 +75,7 @@ public class PuestoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PuestoPK[ codCia=" + codCia + ", codPuesto=" + codPuesto + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.CandidatoPK[ codCia=" + codCia + ", codCandidato=" + codCandidato + " ]";
     }
     
 }

@@ -9,28 +9,30 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
  * @author root
  */
 @Embeddable
-public class PuestoPK implements Serializable {
+public class ConcursoPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_cia", nullable = false)
     private int codCia;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cod_puesto", nullable = false)
-    private int codPuesto;
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "cod_concurso", nullable = false, length = 2147483647)
+    private String codConcurso;
 
-    public PuestoPK() {
+    public ConcursoPK() {
     }
 
-    public PuestoPK(int codCia, int codPuesto) {
+    public ConcursoPK(int codCia, String codConcurso) {
         this.codCia = codCia;
-        this.codPuesto = codPuesto;
+        this.codConcurso = codConcurso;
     }
 
     public int getCodCia() {
@@ -41,33 +43,33 @@ public class PuestoPK implements Serializable {
         this.codCia = codCia;
     }
 
-    public int getCodPuesto() {
-        return codPuesto;
+    public String getCodConcurso() {
+        return codConcurso;
     }
 
-    public void setCodPuesto(int codPuesto) {
-        this.codPuesto = codPuesto;
+    public void setCodConcurso(String codConcurso) {
+        this.codConcurso = codConcurso;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) codPuesto;
+        hash += (codConcurso != null ? codConcurso.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PuestoPK)) {
+        if (!(object instanceof ConcursoPK)) {
             return false;
         }
-        PuestoPK other = (PuestoPK) object;
+        ConcursoPK other = (ConcursoPK) object;
         if (this.codCia != other.codCia) {
             return false;
         }
-        if (this.codPuesto != other.codPuesto) {
+        if ((this.codConcurso == null && other.codConcurso != null) || (this.codConcurso != null && !this.codConcurso.equals(other.codConcurso))) {
             return false;
         }
         return true;
@@ -75,7 +77,7 @@ public class PuestoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PuestoPK[ codCia=" + codCia + ", codPuesto=" + codPuesto + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ConcursoPK[ codCia=" + codCia + ", codConcurso=" + codConcurso + " ]";
     }
     
 }

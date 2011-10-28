@@ -63,11 +63,11 @@ public class Empleado implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "observacion", length = 2147483647)
     private String observacion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado1")
+    private List<Evaluacion> evaluacionList;
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private List<Evaluacion> evaluacionList;
 
     public Empleado() {
     }
@@ -144,20 +144,20 @@ public class Empleado implements Serializable {
         this.observacion = observacion;
     }
 
-    public Compania getCompania() {
-        return compania;
-    }
-
-    public void setCompania(Compania compania) {
-        this.compania = compania;
-    }
-
     public List<Evaluacion> getEvaluacionList() {
         return evaluacionList;
     }
 
     public void setEvaluacionList(List<Evaluacion> evaluacionList) {
         this.evaluacionList = evaluacionList;
+    }
+
+    public Compania getCompania() {
+        return compania;
+    }
+
+    public void setCompania(Compania compania) {
+        this.compania = compania;
     }
 
     @Override

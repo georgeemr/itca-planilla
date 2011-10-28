@@ -32,7 +32,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Plantilla.findByCodCia", query = "SELECT p FROM Plantilla p WHERE p.plantillaPK.codCia = :codCia"),
     @NamedQuery(name = "Plantilla.findByCodTipoEvaluacion", query = "SELECT p FROM Plantilla p WHERE p.plantillaPK.codTipoEvaluacion = :codTipoEvaluacion"),
     @NamedQuery(name = "Plantilla.findByCodPlantilla", query = "SELECT p FROM Plantilla p WHERE p.plantillaPK.codPlantilla = :codPlantilla"),
-    @NamedQuery(name = "Plantilla.findByNomPlantilla", query = "SELECT p FROM Plantilla p WHERE p.nomPlantilla = :nomPlantilla"),
+    @NamedQuery(name = "Plantilla.findByNombre", query = "SELECT p FROM Plantilla p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "Plantilla.findByIncluyeObjetivos", query = "SELECT p FROM Plantilla p WHERE p.incluyeObjetivos = :incluyeObjetivos"),
     @NamedQuery(name = "Plantilla.findByIncluyeCompetencias", query = "SELECT p FROM Plantilla p WHERE p.incluyeCompetencias = :incluyeCompetencias")})
 public class Plantilla implements Serializable {
@@ -40,8 +40,8 @@ public class Plantilla implements Serializable {
     @EmbeddedId
     protected PlantillaPK plantillaPK;
     @Size(max = 2147483647)
-    @Column(name = "nom_plantilla", length = 2147483647)
-    private String nomPlantilla;
+    @Column(name = "nombre", length = 2147483647)
+    private String nombre;
     @Size(max = 2147483647)
     @Column(name = "incluye_objetivos", length = 2147483647)
     private String incluyeObjetivos;
@@ -53,8 +53,8 @@ public class Plantilla implements Serializable {
         @JoinColumn(name = "cod_tipo_evaluacion", referencedColumnName = "cod_tipo_evaluacion", nullable = false),
         @JoinColumn(name = "cod_plantilla", referencedColumnName = "cod_plantilla", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
-        @JoinColumn(name = "cod_factor", referencedColumnName = "cod_factor", nullable = false),
-        @JoinColumn(name = "cod_pregunta", referencedColumnName = "cod_pregunta", nullable = false)})
+        @JoinColumn(name = "factor", referencedColumnName = "cod_factor", nullable = false),
+        @JoinColumn(name = "pregunta", referencedColumnName = "cod_pregunta", nullable = false)})
     @ManyToMany
     private List<Pregunta> preguntaList;
     @JoinColumns({
@@ -84,12 +84,12 @@ public class Plantilla implements Serializable {
         this.plantillaPK = plantillaPK;
     }
 
-    public String getNomPlantilla() {
-        return nomPlantilla;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNomPlantilla(String nomPlantilla) {
-        this.nomPlantilla = nomPlantilla;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getIncluyeObjetivos() {
