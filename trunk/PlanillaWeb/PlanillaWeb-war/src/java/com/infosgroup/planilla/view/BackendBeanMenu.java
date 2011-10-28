@@ -64,7 +64,8 @@ public class BackendBeanMenu implements Serializable{
                 submenu.setLabel(s.getTitulo());
                 for (Menu o : s.getMenuList()) {
                     MenuItem item = new MenuItem();
-                    item.setValue(o.getTitulo());                
+                    //item.setValue("&diams;&nbsp;" +o.getTitulo());                
+                    item.setValue(o.getTitulo());
                     item.setUrl(o.getRuta());
                     submenu.getChildren().add(item);
                 }     
