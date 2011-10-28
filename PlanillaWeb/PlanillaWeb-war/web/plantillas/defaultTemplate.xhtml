@@ -14,8 +14,8 @@
         </title>
     </h:head>
     <h:body>
-        <h:form id="messageForm" prependId="true">
-            <p:growl id="message" showDetail="true" showSummary="true"/>
+        <h:form prependId="false">
+            <p:growl id="mensajes" showDetail="true" showSummary="true"/>
         </h:form>        
         <table cellspacing="0" cellpadding="0" border="0" width="99%">
             <tr>
@@ -23,63 +23,57 @@
                     <p:panel style="padding: 0px;">
                         <table cellspacing="3" cellpadding="0" border="0" width="100%">
                             <tr>
-                            <td width="200" align="left">
-                                <h:graphicImage url="/resources/imagenes/infosgroup.jpg" width="150" height="40"/>
-                            </td>
-                            <td width="300" align="left">
-                                <h:outputText value="Powered by Glassfish"/><h:graphicImage url="/resources/imagenes/glassfish.png"/>
-                            </td>
-                            <td>
-                                <h:form>
-                                    <p:commandButton value="Opciones" image="opciones" onclick="dialogOpciones.show();" update="statusForm:status"/>
-                                    <p:dialog id="dialogOpciones" widgetVar="dialogOpciones" header="Opciones" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="zoom" showEffect="zoom" modal="true" height="400" width="500">
-                                        <p:themeSwitcher initialText="Cambiar Skin" buttonPreText="Skin: "/>                                            
-                                    </p:dialog>
-                                </h:form>
-                            </td>
-                            <td width="250" align="right">
-                                <h:form id="statusForm" prependId="true">
-                                    <p:ajaxStatus id="status">
-                                        <f:facet name="start">
-                                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                                                <tr>
-                                                    <td align="right">
-                                                        <h:graphicImage url="/resources/imagenes/ajax.gif" width="24" height="24"/>
-                                                    </td>
-                                                    <td align="left">
-                                                        <h:outputText value="Espere un momento..." style="font-size: 8pt; color:black;"/>
-                                                    </td>
-                                                </tr>
-                                            </table>                                            
-                                        </f:facet>
-                                    </p:ajaxStatus>
-                                </h:form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                <h:form>
-                                    <p:menubar model="#{menu.menuModel}"/>
-                                </h:form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                <h:form id="breadCrumForm">
-                                    <p:breadCrumb>
-                                        <p:menuitem value="Categories" url="#" />  
-                                        <p:menuitem value="Sports" url="#" />  
-                                        <p:menuitem value="Football" url="#" />  
-                                        <p:menuitem value="Countries" url="#" />  
-                                        <p:menuitem value="Spain" url="#" />  
-                                        <p:menuitem value="F.C. Barcelona" url="#" />  
-                                        <p:menuitem value="Squad" url="#" />  
-                                        <p:menuitem value="Lionel Messi" url="#" />  
-                                    </p:breadCrumb>
-                                </h:form>
-                            </td>
-                        </tr>
-                    </table>
+                                <td width="200" align="left">
+                                    <h:graphicImage url="/resources/imagenes/infosgroup.jpg" width="150" height="40"/>
+                                </td>
+                                <td width="300" align="left">
+                                    <h:outputText value="Powered by Glassfish"/><h:graphicImage url="/resources/imagenes/glassfish.png"/>
+                                </td>
+                                <td>
+                                    <h:form>
+                                        <p:commandButton value="Opciones" image="opciones" onclick="dialogOpciones.show();"/>
+                                        <p:dialog id="dialogOpciones" widgetVar="dialogOpciones" header="Opciones" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="zoom" showEffect="zoom" modal="true" height="400" width="500">
+                                            <p:themeSwitcher initialText="Cambiar Skin" buttonPreText="Skin: "/>                                            
+                                        </p:dialog>
+                                    </h:form>
+                                </td>
+                                <td width="250" align="right">
+                                    <h:form prependId="false">
+                                        <p:ajaxStatus>
+                                            <f:facet name="start">
+                                                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                    <tr>
+                                                        <td align="right">
+                                                            <h:graphicImage url="/resources/imagenes/ajax.gif" width="24" height="24"/>
+                                                        </td>
+                                                        <td align="left">
+                                                            <h:outputText value="Espere un momento..." style="font-size: 8pt; color:black;"/>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </f:facet>
+                                            <f:facet name="complete">
+                                                <h:outputText/>
+                                            </f:facet>
+                                        </p:ajaxStatus>
+                                    </h:form>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <h:form>
+                                        <p:menubar model="#{menu.menuModel}"/>
+                                    </h:form>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <h:form>
+                                        <p:breadCrumb model=""/>
+                                    </h:form>
+                                </td>
+                            </tr>
+                        </table>
                     </p:panel>
                 </td>
             </tr>
@@ -88,9 +82,13 @@
             <tr>
                 <td id="accionesTD">
                     <p:panel header="Acciones">
-                        <ui:insert name="acciones">
-                            <h:outputText value="Aqui ir&aacute;n las acciones por p&aacute;gina &#9786;"/>
-                        </ui:insert>
+                        <h:form>
+                            <p:accordionPanel>
+                                <ui:insert name="acciones">
+                                    <h:outputText value="Aqui ir&aacute;n las acciones por p&aacute;gina &#9786;"/>
+                                </ui:insert>                                
+                            </p:accordionPanel>
+                        </h:form>
                     </p:panel>
                 </td>
                 <td id="contenidoTD">

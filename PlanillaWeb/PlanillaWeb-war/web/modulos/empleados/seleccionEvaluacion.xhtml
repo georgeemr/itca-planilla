@@ -9,9 +9,35 @@
     <ui:define name="titulo">
         <h:outputText value="Seleccion de evaluacion"/>        
     </ui:define>
+    <ui:define name="acciones">
+        <p:tab title="Empleados">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu">
+                    <p:graphicImage value="/resources/iconos/user-group-new.png"/>
+                    <h:outputText value="Agregar empleados" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu">
+                    <p:graphicImage value="/resources/iconos/user-group-new.png"/>
+                    <h:outputText value="Agregar empleados" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>  
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">  
+                <p:commandLink styleClass="opcionMenu">
+                    <p:graphicImage value="/resources/iconos/user-group-new.png"/>
+                    <h:outputText value="Agregar empleados" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu">
+                    <p:graphicImage value="/resources/iconos/user-group-new.png"/>
+                    <h:outputText value="Agregar empleados" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>  
+        </p:tab>
+    </ui:define>
     <ui:define name="contenido">        
-        <h:form id="seleccionEvaluacionForm" prependId="true">
-            <p:panel header="Evaluaciones">
+        <h:form prependId="false">
+            <p:fieldset legend="Evaluaciones">
                 <h:panelGrid columns="2">
                     <h:outputText value="Campaña"/>
                     <h:selectOneMenu style="width: 350px;">
@@ -26,26 +52,30 @@
                         <f:selectItems value="#{empleados$seleccionEvaluacion.listaPlantillas}" var="plantilla" itemValue="#{plantilla.plantillaPK.codPlantilla}" itemLabel="#{plantilla.nombre}"/>
                     </h:selectOneMenu>
                 </h:panelGrid>
-                <f:facet name="footer">
-                    <p:commandButton value="Mostrar empleados" image="mostrarEmpleados" action="#{empleados$seleccionEvaluacion.mostrarEmpleados()}" update="statusForm:status, seleccionEvaluacionForm:tablaEmpleados"/>
+                <p:separator/>
+                <p:commandButton value="Mostrar empleados" image="mostrarEmpleados" action="#{empleados$seleccionEvaluacion.mostrarEmpleados()}" update="tablaEmpleados"/>
+            </p:fieldset>
+            <p:spacer height="5"/>
+            <p:dataTable id="tablaEmpleados" value="#{empleados$seleccionEvaluacion.listaEmpleados}" var="empleado" rows="5" paginator="true" paginatorAlwaysVisible="true" update="seleccionEvaluacionForm:tablaEmpleados" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">  >
+                <f:facet name="header">
+                    <h:outputText value="Empleados"/>
                 </f:facet>
-            </p:panel>
-            <p:spacer height="10"/>
-            <p:panel header="Empleados">
-                <p:dataTable id="tablaEmpleados" value="#{empleados$seleccionEvaluacion.listaEmpleados}" selectionMode="single" var="empleado" rows="5" paginator="true" paginatorAlwaysVisible="true" update="statusForm:status, seleccionEvaluacionForm:tablaEmpleados">
-                    <p:column headerText="ID" filterBy="#{empleado.empleadoPK.codEmp}">
-                        <h:outputText value="#{empleado.empleadoPK.codEmp}"/>
-                    </p:column>
-                    <p:column headerText="Nombre" filterBy="#{empleado.nombres} #{empleado.apellidos}" filterMatchMode="contains">
-                        <h:outputText value="#{empleado.nombres} #{empleado.apellidos}"/>
-                    </p:column>
-                </p:dataTable>
-                <f:facet name="footer">
-                    <p:commandButton value="Evaluar empleado" image="evaluar" update="statusForm:status"/>
-                    <p:spacer width="10"/>
-                    <p:commandButton value="Cancelar" image="cancelar" update="statusForm:status"/>
-                </f:facet>
-            </p:panel>
+                <p:column selectionMode="single"/>
+                <p:column headerText="ID" filterBy="#{empleado.empleadoPK.codEmp}" sortBy="#{empleado.empleadoPK.codEmp}">
+                    <h:outputText value="#{empleado.empleadoPK.codEmp}"/>
+                </p:column>
+                <p:column headerText="Nombre" filterBy="#{empleado.nombres} #{empleado.apellidos}" sortBy="#{empleado.nombres} #{empleado.apellidos}" filterMatchMode="contains">
+                    <h:outputText value="#{empleado.nombres} #{empleado.apellidos}"/>
+                </p:column>
+            </p:dataTable>
+            <!--f:facet name="footer"-->
+            <p:separator/>
+            <h:panelGrid columns="3">
+                <p:commandButton value="Evaluar empleado" image="evaluar"/>
+                <p:spacer width="10"/>
+                <p:commandButton value="Cancelar" image="cancelar"/>
+            </h:panelGrid>
+            <!--/f:facet-->
         </h:form>
     </ui:define>
 </ui:composition>
