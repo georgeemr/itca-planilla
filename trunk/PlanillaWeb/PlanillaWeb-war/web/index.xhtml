@@ -12,6 +12,9 @@
     <h:body>
         <h:form>
             <p:growl id="mensajes" showDetail="true" showSummary="true"/>
+            <p:dialog id="dialogOpciones" widgetVar="dialogOpciones" header="Opciones" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="zoom" showEffect="zoom" modal="true" height="400" width="500">
+                <p:themeSwitcher initialText="Cambiar Skin" buttonPreText="Skin: "/>                                            
+            </p:dialog>
             <p:panel header="Inicio de sesión">
                 <h:panelGrid columns="2">
                     <h:outputText value="Nombre de usuario"/>
@@ -21,6 +24,7 @@
                 </h:panelGrid>
                 <f:facet name="footer">
                     <p:commandButton value="Iniciar sesión" action="#{index.iniciarSesion$action()}" update="mensajes"/>
+                    <p:commandButton value="Opciones" image="opciones" onclick="dialogOpciones.show();"/>
                 </f:facet>
             </p:panel>
         </h:form>
