@@ -88,9 +88,9 @@ public class PuestoBackingBean extends JSFUtil implements Serializable {
     }
 
     public String onRowSelect() {
-        setCodigoPuesto(getPuestoSeleccionado().getPuestoPK().getIdPuesto());
-        setNombrePuesto(getPuestoSeleccionado().getNomPuesto());
-        setCodigoPuesto(getPuestoSeleccionado().getPuestoPK().getIdTipoPuesto());
+        setCodigoPuesto(getPuestoSeleccionado().getPuestoPK().getCodPuesto());
+        setNombrePuesto(getPuestoSeleccionado().getNombre());
+
         return null;
     }
 
@@ -115,8 +115,8 @@ public class PuestoBackingBean extends JSFUtil implements Serializable {
             return null;
         }
 
-        pk.setIdPuesto(codigoPuesto);
-        pk.setIdTipoPuesto(codigoTipoPuesto);
+        pk.setCodPuesto(codigoPuesto);
+        
         /*
         if (sucursalFacade.find(pk) != null) {
         addErrorMessage("Crear Sucursal", "El codigo Ingresado ya esta siendo utilizado por otra Sucursal.");
@@ -124,7 +124,7 @@ public class PuestoBackingBean extends JSFUtil implements Serializable {
         }
          */
         nuevoPuesto.setPuestoPK(pk);
-        nuevoPuesto.setNomPuesto(nombrePuesto);
+        nuevoPuesto.setNombre(nombrePuesto);
 
         try {
             puestoFacade.edit(nuevoPuesto);
