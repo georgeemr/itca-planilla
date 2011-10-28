@@ -17,27 +17,27 @@
         <h:form id="messageForm" prependId="true">
             <p:growl id="message" showDetail="true" showSummary="true"/>
         </h:form>
-        <table cellspacing="5" width="100%">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%">
             <tr>
                 <td id="top" colspan="2">
                     <ui:insert name="top">                        
                         <table cellpadding="0" cellspacing="0" border="0" width="100%">
                             <tr>
-                                <td>
+                                <td width="200" align="left">
                                     <h:graphicImage url="/resources/imagenes/infosgroup.jpg" width="150" height="40"/>
                                 </td>
-                                <td halign="center">
+                                <td width="300" align="left">
                                     <h:outputText value="Powered by Glassfish"/><h:graphicImage url="/resources/imagenes/glassfish.png"/>
                                 </td>
                                 <td>
                                     <h:form>
-                                        <p:commandButton value="Opciones" onclick="dialogOpciones.show();" update="statusForm:status"/>
-                                        <p:dialog id="dialogOpciones" widgetVar="dialogOpciones" header="Opciones" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="slide" showEffect="slide" modal="true" height="400" width="500">
+                                        <p:commandButton value="Opciones" image="opciones" onclick="dialogOpciones.show();" update="statusForm:status"/>
+                                        <p:dialog id="dialogOpciones" widgetVar="dialogOpciones" header="Opciones" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="zoom" showEffect="zoom" modal="true" height="400" width="500">
                                             <p:themeSwitcher initialText="Cambiar Skin" buttonPreText="Skin: "/>                                            
                                         </p:dialog>
-                                    </h:form>                                    
+                                    </h:form>
                                 </td>
-                                <td width="15%" align="right">
+                                <td width="250" align="right">
                                     <h:form id="statusForm" prependId="true">
                                         <p:ajaxStatus id="status">
                                             <f:facet name="start">
@@ -56,13 +56,43 @@
                                     </h:form>
                                 </td>
                             </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <h:form>
+                                        <p:tabView effect="opacity" effectDuration="normal" style="width: 98%;">
+                                            <p:tab title="Adminsitracion"/>
+                                            <p:tab title="Adminsitracion"/>
+                                            <p:tab title="Adminsitracion"/>
+                                            <p:tab title="Adminsitracion"/>
+                                        </p:tabView>
+                                    </h:form>
+                                </td>
+                            </tr>
+                            <!--tr>
+                                <td colspan="4">
+                                    <h:form id="breadCrumForm">
+                                        <p:breadCrumb preview="true" expandEffectDuration="300" collapseEffectDuration="300" previewWidth="32">
+                                            <p:menuitem value="Categories" url="#" />  
+                                            <p:menuitem value="Sports" url="#" />  
+                                            <p:menuitem value="Football" url="#" />  
+                                            <p:menuitem value="Countries" url="#" />  
+                                            <p:menuitem value="Spain" url="#" />  
+                                            <p:menuitem value="F.C. Barcelona" url="#" />  
+                                            <p:menuitem value="Squad" url="#" />  
+                                            <p:menuitem value="Lionel Messi" url="#" />  
+                                        </p:breadCrumb>
+                                    </h:form>
+                                </td>
+                            </tr-->
                         </table>
                     </ui:insert>
                 </td>
             </tr>
             <tr>
+            </tr>
+            <tr>
                 <td id="left">
-                       <ui:include id="menuID" src="menu.xhtml" />
+                    <ui:include id="menuID" src="menu.xhtml" />
                 </td>
                 <td id="content">
                     <ui:insert name="content">Content</ui:insert>
