@@ -12,15 +12,15 @@
             <p:panel header="Evaluaciones">
                 <h:panelGrid columns="2">
                     <h:outputText value="Campaña"/>
-                    <h:selectOneMenu>
+                    <h:selectOneMenu style="width: 350px;">
                         <f:selectItems value="#{empleados$seleccionEvaluacion.listaCampanias}" var="campania" itemValue="#{campania.campaniaPK.codCampania}" itemLabel="#{campania.nomCampania}" />
                     </h:selectOneMenu>
                     <h:outputText value="Tipo de evaluación"/>
-                    <h:selectOneMenu>
+                    <h:selectOneMenu style="width: 350px;">
                         <f:selectItems value="#{empleados$seleccionEvaluacion.listaTiposEvaluacion}" var="tipoEvaluacion" itemValue="#{tipoEvaluacion.tipoEvaluacionPK.codTipoEvaluacion}" itemLabel="#{tipoEvaluacion.nomTipoEvaluacion}" />
                     </h:selectOneMenu>
                     <h:outputText value="Plantilla"/>
-                    <h:selectOneMenu>
+                    <h:selectOneMenu style="width: 350px;">
                         <f:selectItems value="#{empleados$seleccionEvaluacion.listaPlantillas}" var="plantilla" itemValue="#{plantilla.plantillaPK.codPlantilla}" itemLabel="#{plantilla.nomPlantilla}"/>
                     </h:selectOneMenu>
                 </h:panelGrid>
@@ -30,12 +30,12 @@
             </p:panel>
             <p:spacer height="10"/>
             <p:panel header="Empleados">
-                <p:dataTable id="tablaEmpleados" value="#{empleados$seleccionEvaluacion.listaEmpleados}" var="empleado" selectionMode="single">
-                    <p:column headerText="Código empleado">
-                        <h:outputText value="#{empleado.empleadoPK.idEmpleado}"/>
+                <p:dataTable id="tablaEmpleados" value="#{empleados$seleccionEvaluacion.listaEmpleados}" selectionMode="single" var="empleado" rows="5" paginator="true" paginatorAlwaysVisible="true" update="statusForm:status, seleccionEvaluacionForm:tablaEmpleados">
+                    <p:column headerText="ID" filterBy="#{empleado.empleadoPK.codEmp}">
+                        <h:outputText value="#{empleado.empleadoPK.codEmp}"/>
                     </p:column>
-                    <p:column headerText="Nombre">
-                        <h:outputText value="#{empleado.nomEmpleado}"/>
+                    <p:column headerText="Nombre" filterBy="#{empleado.nombres} #{empleado.apellidos}" filterMatchMode="contains">
+                        <h:outputText value="#{empleado.nombres} #{empleado.apellidos}"/>
                     </p:column>
                 </p:dataTable>
                 <f:facet name="footer">

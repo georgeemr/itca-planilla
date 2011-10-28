@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -40,7 +41,7 @@ public class TipoEvaluacion implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "nom_tipo_evaluacion", nullable = false, length = 2147483647)
     private String nomTipoEvaluacion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion", fetch= FetchType.EAGER)
     private List<Plantilla> plantillaList;
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
