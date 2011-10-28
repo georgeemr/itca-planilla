@@ -39,11 +39,11 @@ public class Rol implements Serializable {
     private String nomRol;
     @ManyToMany(mappedBy = "rolList")
     private List<Menu> menuList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rol")
-    private List<Usuario> usuarioList;
     @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rol")
+    private List<Usuario> usuarioList;
 
     public Rol() {
     }
@@ -80,20 +80,20 @@ public class Rol implements Serializable {
         this.menuList = menuList;
     }
 
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
-    }
-
     public Compania getCompania() {
         return compania;
     }
 
     public void setCompania(Compania compania) {
         this.compania = compania;
+    }
+
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
+    }
+
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
     }
 
     @Override

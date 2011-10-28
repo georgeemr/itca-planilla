@@ -30,7 +30,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Factor.findAll", query = "SELECT f FROM Factor f"),
     @NamedQuery(name = "Factor.findByCodCia", query = "SELECT f FROM Factor f WHERE f.factorPK.codCia = :codCia"),
     @NamedQuery(name = "Factor.findByCodFactor", query = "SELECT f FROM Factor f WHERE f.factorPK.codFactor = :codFactor"),
-    @NamedQuery(name = "Factor.findByNomFactor", query = "SELECT f FROM Factor f WHERE f.nomFactor = :nomFactor"),
+    @NamedQuery(name = "Factor.findByNombre", query = "SELECT f FROM Factor f WHERE f.nombre = :nombre"),
     @NamedQuery(name = "Factor.findByPonderacion", query = "SELECT f FROM Factor f WHERE f.ponderacion = :ponderacion")})
 public class Factor implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -39,15 +39,15 @@ public class Factor implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "nom_factor", nullable = false, length = 2147483647)
-    private String nomFactor;
+    @Column(name = "nombre", nullable = false, length = 2147483647)
+    private String nombre;
     @Column(name = "ponderacion")
     private Integer ponderacion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "factor")
+    private List<Pregunta> preguntaList;
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "factor")
-    private List<Pregunta> preguntaList;
 
     public Factor() {
     }
@@ -56,9 +56,9 @@ public class Factor implements Serializable {
         this.factorPK = factorPK;
     }
 
-    public Factor(FactorPK factorPK, String nomFactor) {
+    public Factor(FactorPK factorPK, String nombre) {
         this.factorPK = factorPK;
-        this.nomFactor = nomFactor;
+        this.nombre = nombre;
     }
 
     public Factor(int codCia, int codFactor) {
@@ -73,12 +73,12 @@ public class Factor implements Serializable {
         this.factorPK = factorPK;
     }
 
-    public String getNomFactor() {
-        return nomFactor;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNomFactor(String nomFactor) {
-        this.nomFactor = nomFactor;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Integer getPonderacion() {
@@ -89,20 +89,20 @@ public class Factor implements Serializable {
         this.ponderacion = ponderacion;
     }
 
-    public Compania getCompania() {
-        return compania;
-    }
-
-    public void setCompania(Compania compania) {
-        this.compania = compania;
-    }
-
     public List<Pregunta> getPreguntaList() {
         return preguntaList;
     }
 
     public void setPreguntaList(List<Pregunta> preguntaList) {
         this.preguntaList = preguntaList;
+    }
+
+    public Compania getCompania() {
+        return compania;
+    }
+
+    public void setCompania(Compania compania) {
+        this.compania = compania;
     }
 
     @Override

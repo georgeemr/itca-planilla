@@ -30,9 +30,9 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Evaluacion.findAll", query = "SELECT e FROM Evaluacion e"),
     @NamedQuery(name = "Evaluacion.findByCodCia", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.codCia = :codCia"),
     @NamedQuery(name = "Evaluacion.findByCodCampania", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.codCampania = :codCampania"),
-    @NamedQuery(name = "Evaluacion.findByCodTipoEvaluacion", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.codTipoEvaluacion = :codTipoEvaluacion"),
+    @NamedQuery(name = "Evaluacion.findByTipoEvaluacion", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.tipoEvaluacion = :tipoEvaluacion"),
     @NamedQuery(name = "Evaluacion.findByPeriodo", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.periodo = :periodo"),
-    @NamedQuery(name = "Evaluacion.findByCodEmp", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.codEmp = :codEmp"),
+    @NamedQuery(name = "Evaluacion.findByEmpleado", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.empleado = :empleado"),
     @NamedQuery(name = "Evaluacion.findByFecha", query = "SELECT e FROM Evaluacion e WHERE e.fecha = :fecha"),
     @NamedQuery(name = "Evaluacion.findByFinalizada", query = "SELECT e FROM Evaluacion e WHERE e.finalizada = :finalizada")})
 public class Evaluacion implements Serializable {
@@ -50,15 +50,15 @@ public class Evaluacion implements Serializable {
     private int finalizada;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "cod_tipo_evaluacion", referencedColumnName = "cod_tipo_evaluacion", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "cod_plantilla", referencedColumnName = "cod_plantilla", nullable = false)})
+        @JoinColumn(name = "tipo_evaluacion", referencedColumnName = "cod_tipo_evaluacion", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "plantilla", referencedColumnName = "cod_plantilla", nullable = false)})
     @ManyToOne(optional = false)
     private Plantilla plantilla;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "cod_emp", referencedColumnName = "cod_emp", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "empleado", referencedColumnName = "cod_emp", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Empleado empleado;
+    private Empleado empleado1;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "cod_campania", referencedColumnName = "cod_campania", nullable = false, insertable = false, updatable = false),
@@ -79,8 +79,8 @@ public class Evaluacion implements Serializable {
         this.finalizada = finalizada;
     }
 
-    public Evaluacion(int codCia, int codCampania, int codTipoEvaluacion, int periodo, int codEmp) {
-        this.evaluacionPK = new EvaluacionPK(codCia, codCampania, codTipoEvaluacion, periodo, codEmp);
+    public Evaluacion(int codCia, int codCampania, int tipoEvaluacion, int periodo, int empleado) {
+        this.evaluacionPK = new EvaluacionPK(codCia, codCampania, tipoEvaluacion, periodo, empleado);
     }
 
     public EvaluacionPK getEvaluacionPK() {
@@ -115,12 +115,12 @@ public class Evaluacion implements Serializable {
         this.plantilla = plantilla;
     }
 
-    public Empleado getEmpleado() {
-        return empleado;
+    public Empleado getEmpleado1() {
+        return empleado1;
     }
 
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
+    public void setEmpleado1(Empleado empleado1) {
+        this.empleado1 = empleado1;
     }
 
     public Campania getCampania() {

@@ -77,13 +77,13 @@ public class Cuenta implements Serializable {
         @JoinColumn(name = "id_transaccion", referencedColumnName = "id_transaccion", nullable = false)})
     @ManyToMany
     private List<Transaccion> transaccionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuenta")
+    private List<DeduccionesPrestaciones> deduccionesPrestacionesList;
     @JoinColumns({
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_tipo_cuenta", referencedColumnName = "id_tipo_cuenta", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private TipoCuenta tipoCuenta;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuenta")
-    private List<DeduccionesPrestaciones> deduccionesPrestacionesList;
 
     public Cuenta() {
     }
@@ -176,20 +176,20 @@ public class Cuenta implements Serializable {
         this.transaccionList = transaccionList;
     }
 
-    public TipoCuenta getTipoCuenta() {
-        return tipoCuenta;
-    }
-
-    public void setTipoCuenta(TipoCuenta tipoCuenta) {
-        this.tipoCuenta = tipoCuenta;
-    }
-
     public List<DeduccionesPrestaciones> getDeduccionesPrestacionesList() {
         return deduccionesPrestacionesList;
     }
 
     public void setDeduccionesPrestacionesList(List<DeduccionesPrestaciones> deduccionesPrestacionesList) {
         this.deduccionesPrestacionesList = deduccionesPrestacionesList;
+    }
+
+    public TipoCuenta getTipoCuenta() {
+        return tipoCuenta;
+    }
+
+    public void setTipoCuenta(TipoCuenta tipoCuenta) {
+        this.tipoCuenta = tipoCuenta;
     }
 
     @Override

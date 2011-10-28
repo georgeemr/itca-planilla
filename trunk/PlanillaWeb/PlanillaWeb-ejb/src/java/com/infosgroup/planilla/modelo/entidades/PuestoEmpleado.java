@@ -10,9 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -43,11 +40,6 @@ public class PuestoEmpleado implements Serializable {
     @Column(name = "fecha_asignacion", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaAsignacion;
-    @JoinColumns({
-        @JoinColumn(name = "id_tipo_puesto", referencedColumnName = "id_tipo_puesto", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_puesto", referencedColumnName = "id_puesto", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Puesto puesto;
 
     public PuestoEmpleado() {
     }
@@ -79,14 +71,6 @@ public class PuestoEmpleado implements Serializable {
 
     public void setFechaAsignacion(Date fechaAsignacion) {
         this.fechaAsignacion = fechaAsignacion;
-    }
-
-    public Puesto getPuesto() {
-        return puesto;
-    }
-
-    public void setPuesto(Puesto puesto) {
-        this.puesto = puesto;
     }
 
     @Override

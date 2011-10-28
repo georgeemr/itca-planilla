@@ -42,13 +42,13 @@ public class Municipio implements Serializable {
     @Size(max = 200)
     @Column(name = "det_municipio", length = 200)
     private String detMunicipio;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipio")
+    private List<Barrio> barrioList;
     @JoinColumns({
         @JoinColumn(name = "id_pais", referencedColumnName = "id_pais", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_provincia", referencedColumnName = "id_provincia", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Provincia provincia;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipio")
-    private List<Barrio> barrioList;
 
     public Municipio() {
     }
@@ -85,20 +85,20 @@ public class Municipio implements Serializable {
         this.detMunicipio = detMunicipio;
     }
 
-    public Provincia getProvincia() {
-        return provincia;
-    }
-
-    public void setProvincia(Provincia provincia) {
-        this.provincia = provincia;
-    }
-
     public List<Barrio> getBarrioList() {
         return barrioList;
     }
 
     public void setBarrioList(List<Barrio> barrioList) {
         this.barrioList = barrioList;
+    }
+
+    public Provincia getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(Provincia provincia) {
+        this.provincia = provincia;
     }
 
     @Override

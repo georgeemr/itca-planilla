@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,25 +27,60 @@ import javax.validation.constraints.Size;
 @Table(name = "puesto")
 @NamedQueries({
     @NamedQuery(name = "Puesto.findAll", query = "SELECT p FROM Puesto p"),
-    @NamedQuery(name = "Puesto.findByIdTipoPuesto", query = "SELECT p FROM Puesto p WHERE p.puestoPK.idTipoPuesto = :idTipoPuesto"),
-    @NamedQuery(name = "Puesto.findByIdPuesto", query = "SELECT p FROM Puesto p WHERE p.puestoPK.idPuesto = :idPuesto"),
-    @NamedQuery(name = "Puesto.findByNomPuesto", query = "SELECT p FROM Puesto p WHERE p.nomPuesto = :nomPuesto"),
-    @NamedQuery(name = "Puesto.findByDetPuesto", query = "SELECT p FROM Puesto p WHERE p.detPuesto = :detPuesto")})
+    @NamedQuery(name = "Puesto.findByCodCia", query = "SELECT p FROM Puesto p WHERE p.puestoPK.codCia = :codCia"),
+    @NamedQuery(name = "Puesto.findByCodPuesto", query = "SELECT p FROM Puesto p WHERE p.puestoPK.codPuesto = :codPuesto"),
+    @NamedQuery(name = "Puesto.findByNombre", query = "SELECT p FROM Puesto p WHERE p.nombre = :nombre"),
+    @NamedQuery(name = "Puesto.findBySalarioMaximo", query = "SELECT p FROM Puesto p WHERE p.salarioMaximo = :salarioMaximo"),
+    @NamedQuery(name = "Puesto.findBySalarioMinimo", query = "SELECT p FROM Puesto p WHERE p.salarioMinimo = :salarioMinimo"),
+    @NamedQuery(name = "Puesto.findByDescripcion", query = "SELECT p FROM Puesto p WHERE p.descripcion = :descripcion"),
+    @NamedQuery(name = "Puesto.findByEstado", query = "SELECT p FROM Puesto p WHERE p.estado = :estado"),
+    @NamedQuery(name = "Puesto.findByGenero", query = "SELECT p FROM Puesto p WHERE p.genero = :genero"),
+    @NamedQuery(name = "Puesto.findByNivelAcademico", query = "SELECT p FROM Puesto p WHERE p.nivelAcademico = :nivelAcademico"),
+    @NamedQuery(name = "Puesto.findByCondicion", query = "SELECT p FROM Puesto p WHERE p.condicion = :condicion"),
+    @NamedQuery(name = "Puesto.findByJefatura", query = "SELECT p FROM Puesto p WHERE p.jefatura = :jefatura")})
 public class Puesto implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PuestoPK puestoPK;
-    @Size(max = 100)
-    @Column(name = "nom_puesto", length = 100)
-    private String nomPuesto;
-    @Size(max = 400)
-    @Column(name = "det_puesto", length = 400)
-    private String detPuesto;
+    @Size(max = 2147483647)
+    @Column(name = "nombre", length = 2147483647)
+    private String nombre;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "salario_maximo", precision = 17, scale = 17)
+    private Double salarioMaximo;
+    @Column(name = "salario_minimo", precision = 17, scale = 17)
+    private Double salarioMinimo;
+    @Size(max = 2147483647)
+    @Column(name = "descripcion", length = 2147483647)
+    private String descripcion;
+    @Size(max = 1)
+    @Column(name = "estado", length = 1)
+    private String estado;
+    @Size(max = 1)
+    @Column(name = "genero", length = 1)
+    private String genero;
+    @Column(name = "nivel_academico")
+    private Integer nivelAcademico;
+    @Column(name = "condicion")
+    private Integer condicion;
+    @Size(max = 2)
+    @Column(name = "jefatura", length = 2)
+    private String jefatura;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
-    private List<PuestoEmpleado> puestoEmpleadoList;
-    @JoinColumn(name = "id_tipo_puesto", referencedColumnName = "id_tipo_puesto", nullable = false, insertable = false, updatable = false)
+    private List<Concurso> concursoList;
+    @JoinColumns({
+        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "tipo", referencedColumnName = "cod_tipo_puesto")})
     @ManyToOne(optional = false)
     private TipoPuesto tipoPuesto;
+    @JoinColumn(name = "rango_edad", referencedColumnName = "cod_rango_edad")
+    @ManyToOne
+    private RangoEdad rangoEdad;
+    @JoinColumn(name = "rango_anios", referencedColumnName = "cod_rango_anios")
+    @ManyToOne
+    private RangoAniosExperiencia rangoAnios;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1")
+    private List<CriteriosXPuesto> criteriosXPuestoList;
 
     public Puesto() {
     }
@@ -53,8 +89,8 @@ public class Puesto implements Serializable {
         this.puestoPK = puestoPK;
     }
 
-    public Puesto(int idTipoPuesto, int idPuesto) {
-        this.puestoPK = new PuestoPK(idTipoPuesto, idPuesto);
+    public Puesto(int codCia, int codPuesto) {
+        this.puestoPK = new PuestoPK(codCia, codPuesto);
     }
 
     public PuestoPK getPuestoPK() {
@@ -65,28 +101,84 @@ public class Puesto implements Serializable {
         this.puestoPK = puestoPK;
     }
 
-    public String getNomPuesto() {
-        return nomPuesto;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNomPuesto(String nomPuesto) {
-        this.nomPuesto = nomPuesto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getDetPuesto() {
-        return detPuesto;
+    public Double getSalarioMaximo() {
+        return salarioMaximo;
     }
 
-    public void setDetPuesto(String detPuesto) {
-        this.detPuesto = detPuesto;
+    public void setSalarioMaximo(Double salarioMaximo) {
+        this.salarioMaximo = salarioMaximo;
     }
 
-    public List<PuestoEmpleado> getPuestoEmpleadoList() {
-        return puestoEmpleadoList;
+    public Double getSalarioMinimo() {
+        return salarioMinimo;
     }
 
-    public void setPuestoEmpleadoList(List<PuestoEmpleado> puestoEmpleadoList) {
-        this.puestoEmpleadoList = puestoEmpleadoList;
+    public void setSalarioMinimo(Double salarioMinimo) {
+        this.salarioMinimo = salarioMinimo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public Integer getNivelAcademico() {
+        return nivelAcademico;
+    }
+
+    public void setNivelAcademico(Integer nivelAcademico) {
+        this.nivelAcademico = nivelAcademico;
+    }
+
+    public Integer getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(Integer condicion) {
+        this.condicion = condicion;
+    }
+
+    public String getJefatura() {
+        return jefatura;
+    }
+
+    public void setJefatura(String jefatura) {
+        this.jefatura = jefatura;
+    }
+
+    public List<Concurso> getConcursoList() {
+        return concursoList;
+    }
+
+    public void setConcursoList(List<Concurso> concursoList) {
+        this.concursoList = concursoList;
     }
 
     public TipoPuesto getTipoPuesto() {
@@ -95,6 +187,30 @@ public class Puesto implements Serializable {
 
     public void setTipoPuesto(TipoPuesto tipoPuesto) {
         this.tipoPuesto = tipoPuesto;
+    }
+
+    public RangoEdad getRangoEdad() {
+        return rangoEdad;
+    }
+
+    public void setRangoEdad(RangoEdad rangoEdad) {
+        this.rangoEdad = rangoEdad;
+    }
+
+    public RangoAniosExperiencia getRangoAnios() {
+        return rangoAnios;
+    }
+
+    public void setRangoAnios(RangoAniosExperiencia rangoAnios) {
+        this.rangoAnios = rangoAnios;
+    }
+
+    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
+        return criteriosXPuestoList;
+    }
+
+    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
+        this.criteriosXPuestoList = criteriosXPuestoList;
     }
 
     @Override

@@ -15,22 +15,22 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class PuestoPK implements Serializable {
+public class CriterioPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_cia", nullable = false)
     private int codCia;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cod_puesto", nullable = false)
-    private int codPuesto;
+    @Column(name = "cod_criterio", nullable = false)
+    private int codCriterio;
 
-    public PuestoPK() {
+    public CriterioPK() {
     }
 
-    public PuestoPK(int codCia, int codPuesto) {
+    public CriterioPK(int codCia, int codCriterio) {
         this.codCia = codCia;
-        this.codPuesto = codPuesto;
+        this.codCriterio = codCriterio;
     }
 
     public int getCodCia() {
@@ -41,33 +41,33 @@ public class PuestoPK implements Serializable {
         this.codCia = codCia;
     }
 
-    public int getCodPuesto() {
-        return codPuesto;
+    public int getCodCriterio() {
+        return codCriterio;
     }
 
-    public void setCodPuesto(int codPuesto) {
-        this.codPuesto = codPuesto;
+    public void setCodCriterio(int codCriterio) {
+        this.codCriterio = codCriterio;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) codPuesto;
+        hash += (int) codCriterio;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PuestoPK)) {
+        if (!(object instanceof CriterioPK)) {
             return false;
         }
-        PuestoPK other = (PuestoPK) object;
+        CriterioPK other = (CriterioPK) object;
         if (this.codCia != other.codCia) {
             return false;
         }
-        if (this.codPuesto != other.codPuesto) {
+        if (this.codCriterio != other.codCriterio) {
             return false;
         }
         return true;
@@ -75,7 +75,7 @@ public class PuestoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PuestoPK[ codCia=" + codCia + ", codPuesto=" + codPuesto + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.CriterioPK[ codCia=" + codCia + ", codCriterio=" + codCriterio + " ]";
     }
     
 }
