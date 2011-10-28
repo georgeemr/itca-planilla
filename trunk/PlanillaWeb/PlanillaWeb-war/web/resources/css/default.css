@@ -19,5 +19,6 @@
 body {
     font-size: 8pt;
     font-family: Arial, "Arial CE", sans-serif, Verdana, "Verdana CE", "Lucida Grande CE", lucida, "Helvetica CE";
-    /*margin: 0px;*/
+    /*margin: 5px 5px 5px 5px;*/
+    padding: 5px 5px 5px 5px;
 }
