@@ -40,3 +40,8 @@ background-image: url('../iconos/user-properties.png') !important;
 {
 background-image: url('../iconos/configure.png') !important;
 }
+
+.buscar
+{
+background-image: url('../iconos/edit-find.png') !important;
+}
