@@ -13,6 +13,8 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -38,8 +40,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Candidato.findByFechaNacimiento", query = "SELECT c FROM Candidato c WHERE c.fechaNacimiento = :fechaNacimiento"),
     @NamedQuery(name = "Candidato.findByApCasada", query = "SELECT c FROM Candidato c WHERE c.apCasada = :apCasada"),
     @NamedQuery(name = "Candidato.findBySexo", query = "SELECT c FROM Candidato c WHERE c.sexo = :sexo"),
-    @NamedQuery(name = "Candidato.findByObservacion", query = "SELECT c FROM Candidato c WHERE c.observacion = :observacion"),
-    @NamedQuery(name = "Candidato.findByStatus", query = "SELECT c FROM Candidato c WHERE c.status = :status")})
+    @NamedQuery(name = "Candidato.findByObservacion", query = "SELECT c FROM Candidato c WHERE c.observacion = :observacion")})
 public class Candidato implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -60,14 +61,20 @@ public class Candidato implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "ap_casada", length = 2147483647)
     private String apCasada;
-    @Column(name = "sexo")
-    private Integer sexo;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "sexo", nullable = false)
+    private int sexo;
     @Size(max = 2147483647)
     @Column(name = "observacion", length = 2147483647)
     private String observacion;
-    @Size(max = 2147483647)
-    @Column(name = "status", length = 2147483647)
-    private String status;
+    @JoinTable(name = "candidato_concurso", joinColumns = {
+        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
+        @JoinColumn(name = "candidato", referencedColumnName = "cod_candidato", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
+        @JoinColumn(name = "concurso", referencedColumnName = "cod_concurso", nullable = false)})
+    @ManyToMany
+    private List<Concurso> concursoList;
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
@@ -81,10 +88,11 @@ public class Candidato implements Serializable {
         this.candidatoPK = candidatoPK;
     }
 
-    public Candidato(CandidatoPK candidatoPK, String nombre, String apellido) {
+    public Candidato(CandidatoPK candidatoPK, String nombre, String apellido, int sexo) {
         this.candidatoPK = candidatoPK;
         this.nombre = nombre;
         this.apellido = apellido;
+        this.sexo = sexo;
     }
 
     public Candidato(int codCia, int codCandidato) {
@@ -131,11 +139,11 @@ public class Candidato implements Serializable {
         this.apCasada = apCasada;
     }
 
-    public Integer getSexo() {
+    public int getSexo() {
         return sexo;
     }
 
-    public void setSexo(Integer sexo) {
+    public void setSexo(int sexo) {
         this.sexo = sexo;
     }
 
@@ -147,12 +155,12 @@ public class Candidato implements Serializable {
         this.observacion = observacion;
     }
 
-    public String getStatus() {
-        return status;
+    public List<Concurso> getConcursoList() {
+        return concursoList;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setConcursoList(List<Concurso> concursoList) {
+        this.concursoList = concursoList;
     }
 
     public Compania getCompania() {
