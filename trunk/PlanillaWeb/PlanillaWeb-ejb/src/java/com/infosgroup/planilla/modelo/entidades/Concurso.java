@@ -13,6 +13,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -36,8 +37,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Concurso.findByFechaInicial", query = "SELECT c FROM Concurso c WHERE c.fechaInicial = :fechaInicial"),
     @NamedQuery(name = "Concurso.findByFechaFinal", query = "SELECT c FROM Concurso c WHERE c.fechaFinal = :fechaFinal"),
     @NamedQuery(name = "Concurso.findByNumeroPlazas", query = "SELECT c FROM Concurso c WHERE c.numeroPlazas = :numeroPlazas"),
-    @NamedQuery(name = "Concurso.findByEstado", query = "SELECT c FROM Concurso c WHERE c.estado = :estado"),
-    @NamedQuery(name = "Concurso.findByFechaInicialFinal", query = "SELECT c FROM Concurso c WHERE c.fechaInicial between :fechaInicial and :fechaFinal")})
+    @NamedQuery(name = "Concurso.findByEstado", query = "SELECT c FROM Concurso c WHERE c.estado = :estado"),@NamedQuery(name = "Concurso.findByFechaInicialFinal", query = "SELECT c FROM Concurso c WHERE c.fechaInicial between :fechaInicial and :fechaFinal and c.estado = 'A'")})
 public class Concurso implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -56,6 +56,8 @@ public class Concurso implements Serializable {
     @Size(max = 1)
     @Column(name = "estado", length = 1)
     private String estado;
+    @ManyToMany(mappedBy = "concursoList")
+    private List<Candidato> candidatoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concurso1")
     private List<ResultadoEvaluacionCandidato> resultadoEvaluacionCandidatoList;
     @JoinColumns({
@@ -121,6 +123,14 @@ public class Concurso implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public List<Candidato> getCandidatoList() {
+        return candidatoList;
+    }
+
+    public void setCandidatoList(List<Candidato> candidatoList) {
+        this.candidatoList = candidatoList;
     }
 
     public List<ResultadoEvaluacionCandidato> getResultadoEvaluacionCandidatoList() {
