@@ -7,38 +7,34 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="titulo">Preseleccion de candidatos</ui:define>
+
     <ui:define name="acciones"/>
+
     <ui:define name="contenido">
         <h:form id="preseleccionAspiranteForm" prependId="true">
             <p:fieldset legend="Concursos" >
                 <p:growl id="mensajes" showDetail="true" />
-                <p:spacer height="20px"/>
 
                 <h:outputText value="Seleccione la fecha inicial y final para iniciar la búsqueda de concursos."/>
 
-                <p:spacer height="10px"/>
-                
-                <h:panelGrid columns="2">
-
+                <h:panelGrid columns="4">
+                    <h:outputLabel value=""/>
                     <h:outputLabel value="Fecha inicial"/>
                     <p:calendar id="calFechaInicial" 
                                 pattern="dd/MM/yyyy" 
                                 value="#{reclutamiento$preseleccionAspirante.fechaInicial}" 
                                 showOn="button"/>
+                    <p:commandButton value="Buscar" 
+                                     image="buscar" 
+                                     update="mensajes calFechaInicial calFechaFinal tablaConcursos" 
+                                     action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"/>
+                    <h:outputLabel value=""/>
                     <h:outputLabel value="Fecha final"/>
                     <p:calendar id="calFechaFinal" 
                                 pattern="dd/MM/yyyy" 
                                 value="#{reclutamiento$preseleccionAspirante.fechaFinal}" 
                                 showOn="button" />
-                    <f:facet name="footer">
-                        <p:commandButton value="Buscar" 
-                                         image="buscar" 
-                                         update="mensajes calFechaInicial calFechaFinal tablaConcursos" 
-                                         action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"/>
-                    </f:facet>
-                    
                 </h:panelGrid>
-
 
                 <p:dataTable id="tablaConcursos"
                              var="concurso" 
@@ -47,10 +43,9 @@
                              paginator="true" 
                              paginatorAlwaysVisible="true" 
                              selection="#{SessionBeanREC.concursoSeleccionado}"
-                             update="tablaConcursos" 
+                             update="tablaConcursos pane1Candidatos" 
+                             selectionMode="single"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
-                    <p:column selectionMode="single" />
-                    
                     <f:facet name="header">
                         <h:outputText value="Concursos"/>
                     </f:facet>
@@ -61,14 +56,14 @@
                         </f:facet>
                         <h:outputLabel value="#{concurso.concursoPK.codConcurso}"/>
                     </p:column>
-                    
+
                     <p:column sortBy="#{concurso.nombre}" >
                         <f:facet name="header">
                             Nombre del concurso
                         </f:facet>
                         <h:outputLabel value="#{concurso.nombre}"/>
                     </p:column> 
-                    
+
                     <p:column sortBy="#{concurso.fechaInicial}">
                         <f:facet name="header">
                             Fecha inicial
@@ -77,7 +72,7 @@
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputLabel>
                     </p:column>    
-                    
+
                     <p:column sortBy="#{concurso.fechaFinal}">
                         <f:facet name="header">
                             Fecha final
@@ -87,9 +82,42 @@
                         </h:outputLabel>
                     </p:column>         
                 </p:dataTable>
-
-
             </p:fieldset>
+            
+            <p:spacer height="20px" />
+            
+            <p:fieldset id="pane1Candidatos" style="border: none;">
+                    <p:dataTable id="tablaCandidatos"
+                                 var="candidato" 
+                                 value="#{reclutamiento$preseleccionAspirante.listaCandidato}"
+                                 rows="5" 
+                                 paginator="true" 
+                                 paginatorAlwaysVisible="true" 
+                                 update="tablaConcursos, tablaCandidatos" 
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" 
+                                 rendered="#{SessionBeanREC.concursoSeleccionado ne null}" >
+
+                        <f:facet name="header">
+                            <h:outputText value="Candidatos"/>
+                        </f:facet>
+
+                        <p:column sortBy="#{candidato.candidatoPK.codCandidato}">
+                            <f:facet name="header">
+                                C&oacute;digo
+                            </f:facet>
+                            <h:outputLabel value="#{candidato.candidatoPK.codCandidato}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{candidato.nombre}" >
+                            <f:facet name="header">
+                                Nombre
+                            </f:facet>
+                            <h:outputLabel value="#{candidato.nombre}"/>
+                        </p:column> 
+                    </p:dataTable>
+                </p:fieldset>
         </h:form>
+
     </ui:define>
+
 </ui:composition>
