@@ -10,6 +10,7 @@ import com.infosgroup.planilla.modelo.entidades.TipoPuesto;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPuestoFacade;
 import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
@@ -101,17 +102,17 @@ public class PuestoBackingBean extends JSFUtil implements Serializable {
         PuestoPK pk = new PuestoPK();
 
         if (codigoPuesto == null) {
-            addErrorMessage("Crear Puesto", "El Código de Puesto es un campo obligatorio.");
+            addMessage("Crear Puesto", "El Código de Puesto es un campo obligatorio.", TipoMensaje.ERROR);
             return null;
         }
 
         if (nombrePuesto == null || nombrePuesto.length() <= 0) {
-            addErrorMessage("Crear Puesto", "El Nombre de Puesto es un campo obligatorio.");
+            addMessage("Crear Puesto", "El Nombre de Puesto es un campo obligatorio.", TipoMensaje.ERROR);
             return null;
         }
 
         if (codigoTipoPuesto == null ) {
-            addErrorMessage("Crear Puesto", "El Codigo de Tipo de Puesto es un campo obligatorio.");
+            addMessage("Crear Puesto", "El Codigo de Tipo de Puesto es un campo obligatorio.", TipoMensaje.ERROR);
             return null;
         }
 
@@ -128,7 +129,7 @@ public class PuestoBackingBean extends JSFUtil implements Serializable {
 
         try {
             puestoFacade.edit(nuevoPuesto);
-            addInfoMessage("Crear Sucursal", "Datos Guardados.");
+            addMessage("Crear Sucursal", "Datos Guardados.", TipoMensaje.ERROR);
             limpiarCampos();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -145,7 +146,7 @@ public class PuestoBackingBean extends JSFUtil implements Serializable {
 
         try {
             puestoFacade.remove(puestoSeleccionado);
-            addInfoMessage("Crear Puesto", "Datos Eliminados.");
+            addMessage("Crear Puesto", "Datos Eliminados.", TipoMensaje.ERROR);
             limpiarCampos();
         } catch (Exception e) {
             System.out.println(e.getMessage());
