@@ -11,6 +11,7 @@ import com.infosgroup.planilla.modelo.entidades.UsuarioPK;
 import com.infosgroup.planilla.modelo.facades.RolFacade;
 import com.infosgroup.planilla.modelo.facades.UsuarioFacade;
 import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
@@ -59,12 +60,12 @@ public class UsuarioBackendBean extends JSFUtil implements Serializable {
     public String guardar_action() {
 
         if (usuario == null) {
-            addErrorMessage("Mantenimiento Usuarios.", "Usuario es un campo obligatorio.");
+            addMessage("Mantenimiento Usuarios.", "Usuario es un campo obligatorio.", TipoMensaje.ERROR);
             return null;
         }
 
         if (password == null) {
-            addErrorMessage("Mantenimiento Usuarios.", "Password es un campo obligatorio.");
+            addMessage("Mantenimiento Usuarios.", "Password es un campo obligatorio.", TipoMensaje.ERROR);
             return null;
         }
         Usuario u = new Usuario();
@@ -78,7 +79,7 @@ public class UsuarioBackendBean extends JSFUtil implements Serializable {
         u.setUsuarioPK(pk);
         try {
             usuarioFacade.create(u);
-            addInfoMessage("Mantenimiento Usuarios.", "Usuario creado éxitosamente.");
+            addMessage("Mantenimiento Usuarios.", "Usuario creado éxitosamente.", TipoMensaje.INFORMACION);
             limpiarCampos();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -91,7 +92,7 @@ public class UsuarioBackendBean extends JSFUtil implements Serializable {
 
         try {
             usuarioFacade.remove(usuarioSeleccionado);
-            addInfoMessage("Mantenimiento Usuarios.", "Usuario eliminado éxitosamente.");
+            addMessage("Mantenimiento Usuarios.", "Usuario eliminado éxitosamente.", TipoMensaje.INFORMACION);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
