@@ -56,7 +56,7 @@
                 <p:commandButton value="Mostrar empleados" image="mostrarEmpleados" action="#{empleados$seleccionEvaluacion.mostrarEmpleados()}" update="tablaEmpleados"/>
             </p:fieldset>
             <p:spacer height="5"/>
-            <p:dataTable id="tablaEmpleados" value="#{empleados$seleccionEvaluacion.listaEmpleados}" var="empleado" rows="5" paginator="true" paginatorAlwaysVisible="true" update="seleccionEvaluacionForm:tablaEmpleados" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">  >
+            <p:dataTable id="tablaEmpleados" value="#{empleados$seleccionEvaluacion.listaEmpleados}" var="empleado" rows="5" paginator="true" paginatorAlwaysVisible="true" update="seleccionEvaluacionForm:tablaEmpleados" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">  
                 <f:facet name="header">
                     <h:outputText value="Empleados"/>
                 </f:facet>
