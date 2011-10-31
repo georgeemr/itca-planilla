@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 
+import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
@@ -27,7 +28,8 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil {
     private Date fechaInicial;
     private Date fechaFinal;
     private List<Concurso> listaConcurso;
-
+    private List<Candidato> listaCandidato;
+    
     public PreseleccionAspiranteBackendBean() {
     }
 
@@ -53,6 +55,14 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil {
 
     public void setListaConcurso(List<Concurso> listaConcurso) {
         this.listaConcurso = listaConcurso;
+    }
+
+    public List<Candidato> getListaCandidato() {
+        return listaCandidato;
+    }
+
+    public void setListaCandidato(List<Candidato> listaCandidato) {
+        this.listaCandidato = listaCandidato;
     }
 
     public String buscarConcurso$action() {
