@@ -4,11 +4,11 @@
  */
 package com.infosgroup.planilla.controlador.modulos.administracion;
 
-import com.infosgroup.planilla.controlador.sessionbean.SessionBeanADM;
 import com.infosgroup.planilla.modelo.entidades.Sucursal;
 import com.infosgroup.planilla.modelo.entidades.SucursalPK;
 import com.infosgroup.planilla.modelo.facades.SucursalFacade;
 import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
@@ -73,12 +73,12 @@ public class SucursalBackendBean extends JSFUtil implements Serializable {
         SucursalPK pk = new SucursalPK();
 
         if (sucursal == null) {
-            addErrorMessage("Crear Sucursal", "El Código de Sucursal es un campo obligatorio.");
+            addMessage("Crear Sucursal", "El Código de Sucursal es un campo obligatorio.", TipoMensaje.ERROR);
             return null;
         }
 
         if (nombre == null || nombre.length() <= 0) {
-            addErrorMessage("Crear Sucursal", "El Nombre de Sucursal es un campo obligatorio.");
+            addMessage("Crear Sucursal", "El Nombre de Sucursal es un campo obligatorio.", TipoMensaje.ERROR);
             return null;
         }
 
@@ -89,7 +89,7 @@ public class SucursalBackendBean extends JSFUtil implements Serializable {
 
         try {
             sucursalFacade.edit(nuevaSucursal);
-            addInfoMessage("Crear Sucursal", "Datos Guardados.");
+            addMessage("Crear Sucursal", "Datos Guardados.", TipoMensaje.ERROR);
             limpiarCampos();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -106,7 +106,7 @@ public class SucursalBackendBean extends JSFUtil implements Serializable {
 
         try {
             sucursalFacade.remove(sucursalSeleccionada);
-            addInfoMessage("Crear Sucursal", "Datos Eliminados.");
+            addMessage("Crear Sucursal", "Datos Eliminados.", TipoMensaje.ERROR);
             limpiarCampos();
         } catch (Exception e) {
             System.out.println(e.getMessage());
