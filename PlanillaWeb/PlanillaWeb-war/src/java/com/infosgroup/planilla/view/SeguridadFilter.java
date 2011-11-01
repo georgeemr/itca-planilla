@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
  *
  * @author root
  */
-@WebFilter(filterName = "SeguridadFilter", urlPatterns = {"*.xhtml"}, dispatcherTypes = {DispatcherType.FORWARD, DispatcherType.REQUEST})
+//@WebFilter(filterName = "SeguridadFilter", urlPatterns = {"*.xhtml"}, dispatcherTypes = {DispatcherType.FORWARD, DispatcherType.REQUEST})
 public class SeguridadFilter implements Filter {
 
     private static final boolean debug = false;
@@ -164,8 +164,14 @@ public class SeguridadFilter implements Filter {
         doBeforeProcessing(wrappedRequest, wrappedResponse);
 
         Throwable problem = null;
+        
+        String urlraiz = request.getServletContext().getContextPath();
 
         try {
+            if (!isConfigurado())
+                 wrappedResponse.sendRedirect(wrappedResponse.encodeRedirectURL(wrappedResponse.encodeURL(urlraiz + "/faces/configuracion.xhtml")));
+            
+            
             Rol rol = rolFacade.find(new RolPK(1, 1));
             List<Menu> listaMenus = rol.getMenuList();
             String url = wrappedRequest.getRequestURI();
@@ -176,12 +182,14 @@ public class SeguridadFilter implements Filter {
                     break;
                 }
             }
-            if (!url.endsWith("/index.xhtml") && !estaConfigurado) {
-                String urlraiz = request.getServletContext().getContextPath();
-                wrappedResponse.sendRedirect(wrappedResponse.encodeRedirectURL(wrappedResponse.encodeURL(urlraiz + "/faces/index.xhtml")));
-            } else {
+            
+            if (url.endsWith("/configuracion.xhtml") || url.endsWith("/index.xhtml") || estaConfigurado)
+                {
                 chain.doFilter(wrappedRequest, wrappedResponse);
             }
+            else{ //if ( /*!estaConfigurado &&*/ (! || !url.endsWith())) {
+                wrappedResponse.sendRedirect(wrappedResponse.encodeRedirectURL(wrappedResponse.encodeURL(urlraiz + "/faces/index.xhtml")));
+            } 
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
@@ -426,5 +434,15 @@ public class SeguridadFilter implements Filter {
         ((HttpServletResponse)getResponse()).addCookie(cookie);
         }
          */
+    }
+    
+    private static boolean configurado;
+
+    public static boolean isConfigurado() {
+        return configurado;
+    }
+
+    public static void setConfigurado(boolean configurado) {
+        SeguridadFilter.configurado = configurado;
     }
 }

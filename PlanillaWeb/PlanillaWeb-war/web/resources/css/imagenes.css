@@ -45,3 +45,8 @@ background-image: url('../iconos/configure.png') !important;
 {
 background-image: url('../iconos/edit-find.png') !important;
 }
+
+.proceso
+{
+background-image: url('../iconos/system-run.png') !important;
+}
