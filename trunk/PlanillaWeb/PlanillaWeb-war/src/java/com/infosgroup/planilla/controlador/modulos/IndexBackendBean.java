@@ -19,7 +19,8 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean(name = "index")
 @ViewScoped
 public class IndexBackendBean extends JSFUtil implements Serializable {
-
+    
+   
     @EJB
     private SeguridadSessionBean seguridadBean;
 

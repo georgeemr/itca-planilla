@@ -8,6 +8,9 @@
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
+        <!--run-as>
+            <role-name>secure</role-name>
+        </run-as-->
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
@@ -17,6 +20,30 @@
         <session-timeout>10</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/index.xhtml</welcome-file>
+        <welcome-file>/faces/modulos/inicio.xhtml</welcome-file>
     </welcome-file-list>
+    <security-constraint>
+        <display-name>Constraint Prueba OpenDS</display-name>
+        <web-resource-collection>
+            <web-resource-name>PruebaOpenDS</web-resource-name>
+            <description>PruebaOpenDS Web Resource</description>
+            <url-pattern>/faces/modulos/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>secure auth constraint</description>
+            <role-name>secure</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>OpenDS</realm-name>
+        <form-login-config>
+            <form-login-page>/login.html</form-login-page>
+            <form-error-page>/error.html</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <description>Rol de Administradores</description>
+        <role-name>secure</role-name>
+    </security-role>
 </web-app>

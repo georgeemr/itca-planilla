@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>Sistema de Planilla Web</title>
+        <link href="#{facesContext.externalContext.requestContextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
+        <link href="#{facesContext.externalContext.requestContextPath}/resources/css/imagenes.css" rel="stylesheet" type="text/css" />
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:growl id="mensajes" showDetail="true" showSummary="true"/>
+            <p:panel header="Configuracion">
+                <p:wizard showNavBar="true" backLabel="Anterior" nextLabel="Siguiente">
+                    <p:tab title="Inicio">
+                        <h:outputText value="Bienvenido"/>
+                        <p:spacer height="20"/>                        
+                        <p:graphicImage url="/resources/imagenes/64/plasmagik.png"/>
+                        <h:outputText value="Este es el asistente de primera configuracion"/>
+                    </p:tab>
+                    <p:tab title="Empresa/Organizaci&oacute;n">
+                        <h:panelGrid columns="2" cellspacing="10" title="Ingrese los datos de la empresa u organizaci&oacute;n">
+                            <h:outputText value="Nombre de la empresa/organizaci&oacute;n"/>
+                            <p:inputText value="#{configuracion.nombreEmpresa}" size="80"/>
+                            <h:outputText value="NIT"/>
+                            <p:inputText value="#{configuracion.NITEmpresa}" size="30"/>
+                            <h:outputText value="Logotipo"/>
+                            <p:fileUpload auto="true" label="Examinar"/>
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab title="Autentificaci&oacute;n">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Direcci&oacute;n del servidor LDAP"/>
+                            <p:inputText value="#{configuracion.urlLDAP}" size="50" alt="URL o Direcci&oacute;n IP del servidor LDAP"/>
+                            <h:outputText value="Puerto"/>
+                            <p:spinner value="#{configuracion.puertoLDAP}" min="1" max="65335"/>
+                            <h:outputText value="Usar LDAP seguro (LDAPS)"/>
+                            <h:selectBooleanCheckbox value="#{configuracion.ldapSeguro}"/>
+                            <h:outputText value="DN Base"/>
+                            <p:inputText value="#{configuracion.dnBaseLDAP}" size="50"/>
+                            <h:outputText value="Contrase&ntilde;a"/>                            
+                            <p:password value="#{configuracion.password}" size="50" feedback="false" minLength="4"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="Probar autentifcaci&oacute;n LDAP" image="proceso" update="mensajes" action="#{configuracion.verificarConfiguracionLDAP()}"/>
+                    </p:tab>
+                    <p:tab title="Apariencia">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Tema"/>
+                            <p:themeSwitcher theme="#{configuracion.tema}"/>
+                            <p:commandLink value="dsd" onclick="dlg1.show();"/>
+                            <p:dialog id="dlg1" widgetVar="dlg1">
+                                <h:outputText value="#{configuracion.tema}"/>
+                            </p:dialog>
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab title="Otras opciones"></p:tab>
+                    <p:tab title="Fin">
+                        <p:graphicImage url="/resources/imagenes/64/applications-education-university.png"/>
+                        <h:outputText value="Felicidades, ha finalizado la configuaci&oacute;n de su aplicaci&oacute;n"/>
+                    </p:tab>
+                </p:wizard>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+
