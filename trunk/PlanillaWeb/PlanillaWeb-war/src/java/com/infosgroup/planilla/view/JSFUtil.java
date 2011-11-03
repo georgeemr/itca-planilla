@@ -40,12 +40,11 @@ public abstract class JSFUtil {
     public static Object getBean(String beanName) {
         FacesContext context = FacesContext.getCurrentInstance();
         return context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
-    }
+    }    
 
     protected abstract void limpiarCampos();
 
     protected enum EstadoAccion {
-
         CREANDO,
         MODIFICANDO
     }

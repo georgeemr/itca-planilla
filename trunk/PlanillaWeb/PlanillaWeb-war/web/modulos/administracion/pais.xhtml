@@ -7,7 +7,6 @@
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="titulo">Pais</ui:define>
     <ui:define name="content">
-        <h:form id="paisesForm" prependId="false">
             <h:outputText value="Nombre"/>
             <p:inputText id="nomPais"/>
             <h:outputText value="Detalles"/>
@@ -28,6 +27,5 @@
                     <h:outputText value="#{pais.detPais}"/>
                 </p:column>                
             </p:dataTable>
-        </h:form>
     </ui:define>
 </ui:composition>

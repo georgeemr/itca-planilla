@@ -117,7 +117,7 @@ public class ConfiguracionBackendBean {
     }
 
     // ======================================================================================
-    public String verificarConfiguracionLDAP() {
+    /*public String verificarConfiguracionLDAP() {
         try {
             Hashtable<String, String> env = new Hashtable<String, String>();
             env.put(Context.INITIAL_CONTEXT_FACTORY, com.sun.jndi.ldap.LdapCtxFactory.class.getCanonicalName());
@@ -134,7 +134,7 @@ public class ConfiguracionBackendBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Configuracion: Autentificacion ", "Error: " +  excpt.toString()));
         }
         return null;
-    }
+    }*/
     
     public String guardarOpciones()
     {

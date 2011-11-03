@@ -13,108 +13,85 @@
         <title>Planilla Web - <ui:insert name="titulo">Titulo</ui:insert></title>
     </h:head>
     <h:body>
-        <h:form prependId="false">
+        <h:form id="principalForm" prependId="true">
             <p:growl id="mensajes" showDetail="true" showSummary="true"/>
-        </h:form>        
-        <table cellspacing="0" cellpadding="0" border="0" width="99%">
-            <tr>
-                <td colspan="2">
-                    <p:panel style="padding: 0px;">
-                        <table cellspacing="3" cellpadding="0" border="0" width="100%">
-                            <tr>
-                                <td width="200" align="left">
-                                    <h:graphicImage url="/resources/imagenes/infosgroup.jpg" width="150" height="40"/>
-                                </td>
-                                <td width="300" align="left">
-                                    <h:outputText value="Powered by Glassfish"/><h:graphicImage url="/resources/imagenes/glassfish.png"/>
-                                </td>
-                                <td>
-                                    <h:form>
-                                        <p:commandButton value="Opciones" image="opciones" onclick="dialogOpciones.show();"/>
-                                        <p:dialog id="dialogOpciones" widgetVar="dialogOpciones" header="Opciones" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="zoom" showEffect="zoom" modal="true" height="400" width="500">
-                                            <h:panelGrid columns="2">
-                                                <h:outputText value="Tema"/>
-                                                <p:themeSwitcher/>
-                                            </h:panelGrid>
-                                        </p:dialog>
-                                    </h:form>
-                                </td>
-                                <td width="250" align="right">
-                                    <h:form prependId="false">
-                                        <p:ajaxStatus>
-                                            <f:facet name="start">
-                                                <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                                                    <tr>
-                                                        <td align="right">
-                                                            <h:graphicImage url="/resources/imagenes/ajax.gif" width="24" height="24"/>
-                                                        </td>
-                                                        <td align="left">
-                                                            <h:outputText value="Espere un momento..." style="font-size: 8pt; color:black;"/>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </f:facet>
-                                            <f:facet name="complete">
-                                                <h:outputText/>
-                                            </f:facet>
-                                        </p:ajaxStatus>
-                                    </h:form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <h:form>
-                                        <p:menubar model="#{menu.menuModel}"/>
-                                    </h:form>
-                                </td>
-                            </tr>
-                            <!--tr>
-                                <td colspan="4">
-                                    <h:form>
-                                        <p:breadCrumb model="#{menu.modeloBreadCrumbs}"/>
-                                    </h:form>
-                                </td>
-                            </tr-->
-                        </table>
-                    </p:panel>
-                </td>
-            </tr>
-            <tr>
-            </tr>
-            <tr>
-                <td id="accionesTD">
-                    <h:form id="accionesForm">
-                        <p:panel id="panelAcciones" header="Acciones">                        
-                            <p:accordionPanel>
-                                <ui:insert name="acciones">
-                                    <h:outputText value="Aqui ir&aacute;n las acciones por p&aacute;gina &#9786;"/>
-                                </ui:insert>                                
-                            </p:accordionPanel>                        
-                        </p:panel>
-                    </h:form>
-                </td>
-                <td id="contenidoTD">
-                    <h:form id="contenidoForm" >
-                        <p:panel id="panelContenido">
-                            <f:facet name="header">
-                                <ui:insert name="titulo">
-                                    <h:outputText value="Aqui ir&aacute; el titulo de la p&aacute;gina &#9786;"/>
+            <p:panel style="padding: 0px;">
+                <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <tr>
+                        <td width="200" align="left">
+                            <h:graphicImage url="/resources/imagenes/infosgroup.jpg" width="150" height="40"/>
+                        </td>
+                        <td width="300" align="left">
+                            <h:outputText value="Powered by Glassfish"/><h:graphicImage url="/resources/imagenes/glassfish.png"/>
+                        </td>
+                        <td>
+                            <p:commandButton value="Opciones" image="opciones" onclick="dialogOpciones.show();"/>
+                            <p:dialog id="dialogOpciones" widgetVar="dialogOpciones" header="Opciones" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="zoom" showEffect="zoom" modal="true" height="400" width="500">
+                                <h:panelGrid columns="2">
+                                    <h:outputText value="Tema"/>
+                                    <p:themeSwitcher/>
+                                </h:panelGrid>
+                            </p:dialog>
+                        </td>
+                        <td width="250" align="right">
+                            <p:ajaxStatus>
+                                <f:facet name="start">
+                                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                        <tr>
+                                            <td align="right">
+                                                <h:graphicImage url="/resources/imagenes/ajax.gif" width="24" height="24"/>
+                                            </td>
+                                            <td align="left">
+                                                <h:outputText value="Espere un momento..." style="font-size: 8pt; color:black;"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </f:facet>
+                                <f:facet name="complete">
+                                    <h:outputText/>
+                                </f:facet>
+                            </p:ajaxStatus>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <p:menubar id="menuBar1" model="#{menu.menuModel}"/>
+                        </td>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:spacer height="5"/>
+            <p:panel style="padding: 0px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td id="accionesTD">
+                            <p:panel id="panelAcciones" header="Acciones" style="text-align: left;">
+                                <p:accordionPanel>
+                                    <ui:insert name="acciones">
+                                        <h:outputText value="Aqui ir&aacute;n las acciones por p&aacute;gina &#9786;"/>
+                                    </ui:insert>                                
+                                </p:accordionPanel>                        
+                            </p:panel>
+                        </td>
+                        <td id="contenidoTD">
+                            <p:panel id="panelContenido">
+                                <f:facet name="header">
+                                    <ui:insert name="titulo">
+                                        <h:outputText value="Aqui ir&aacute; el titulo de la p&aacute;gina &#9786;"/>
+                                    </ui:insert>
+                                </f:facet>
+                                <ui:insert name="contenido">
+                                    <h:outputText value="Aqui ir&aacute; el contenido de la p&aacute;gina &#9786;"/>
                                 </ui:insert>
-                            </f:facet>
-                            <ui:insert name="contenido">
-                                <h:outputText value="Aqui ir&aacute; el contenido de la p&aacute;gina &#9786;"/>
-                            </ui:insert>
-                        </p:panel>
-                    </h:form>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center">
-                    <p:panel>
-                        <h:outputText value="&copy; 2011 Infosgroup - El Salvador"/>
-                    </p:panel>
-                </td>
-            </tr>
-        </table>
+                            </p:panel>
+                        </td>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:spacer height="5"/>
+            <p:panel style="padding: 0px; text-align: center;">
+                <h:outputText value="&copy; 2011 Infosgroup - El Salvador"/>
+            </p:panel>
+        </h:form>
     </h:body>
 </html>
