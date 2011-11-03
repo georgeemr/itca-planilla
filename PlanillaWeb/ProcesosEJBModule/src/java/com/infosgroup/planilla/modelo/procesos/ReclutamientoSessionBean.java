@@ -4,8 +4,11 @@
  */
 package com.infosgroup.planilla.modelo.procesos;
 
+import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
+import com.infosgroup.planilla.modelo.facades.CandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.ConcursoFacade;
+import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -29,5 +32,13 @@ public class ReclutamientoSessionBean {
 
     public List<Concurso> getAllConcursos() {
         return concursoFacade.findAll();
+    }
+
+    public List<Candidato> getCandidatosByConcurso(Concurso c) {
+        if (c != null) {
+            return concursoFacade.find(c.getConcursoPK()).getCandidatoList();
+        } else {
+            return new ArrayList<Candidato>();
+        }
     }
 }
