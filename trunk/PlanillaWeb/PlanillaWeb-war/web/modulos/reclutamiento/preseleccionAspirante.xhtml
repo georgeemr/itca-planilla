@@ -20,7 +20,12 @@
     </ui:define>
 
     <ui:define name="contenido">      
+<<<<<<< .mine
+        <p:fieldset legend="Concursos" >
+
+=======
         <p:fieldset legend="Concursos">
+>>>>>>> .r152
             <h:outputText value="Seleccione la fecha inicial y final para iniciar la búsqueda de concursos."/>
             <h:panelGrid columns="4">
                 <h:outputLabel value=""/>
@@ -116,7 +121,6 @@
 
         <p:spacer height="20" />
 
-        <!--p:fieldset id="pane1Candidatos" style="border: none;"-->
         <p:dataTable id="tablaCandidatos"
                      var="candidato" 
                      value="#{reclutamiento$preseleccionAspirante.listaCandidato}"
