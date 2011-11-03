@@ -34,7 +34,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password"),
     @NamedQuery(name = "Usuario.findByNomUsuarioPassword", query = "SELECT u FROM Usuario u WHERE u.nomUsuario = :nomUsuario and u.password = :password")})
 public class Usuario implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected UsuarioPK usuarioPK;
@@ -137,4 +136,5 @@ public class Usuario implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.Usuario[ usuarioPK=" + usuarioPK + " ]";
     }
+    
 }
