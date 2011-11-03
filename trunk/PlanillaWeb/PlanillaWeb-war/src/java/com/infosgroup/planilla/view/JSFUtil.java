@@ -5,9 +5,6 @@
 package com.infosgroup.planilla.view;
 
 import com.infosgroup.planilla.controlador.sessionbean.SessionBeanADM;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.Date;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -19,7 +16,6 @@ import javax.faces.context.FacesContext;
 public abstract class JSFUtil {
 
     public JSFUtil() {
-     
     }
 
     public void addMessage(String titulo, String mensaje, TipoMensaje tipoMensaje) {
@@ -60,9 +56,8 @@ public abstract class JSFUtil {
     protected static SessionBeanADM getSessionBeanADM() {
         return (SessionBeanADM) getBean("SessionBeanADM");
     }
+
     public boolean validaFechas(Date f1, Date f2) {
-        if ( f1.after(f2) ) return false;
-        return true;
+        return !f1.after(f2);
     }
-    
 }
