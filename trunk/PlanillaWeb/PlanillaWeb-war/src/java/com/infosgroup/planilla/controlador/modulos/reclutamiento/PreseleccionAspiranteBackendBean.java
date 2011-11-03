@@ -9,6 +9,7 @@ import com.infosgroup.planilla.modelo.entidades.Concurso;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
 import com.infosgroup.planilla.view.TipoMensaje;
+import java.io.Serializable;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -22,7 +23,7 @@ import org.primefaces.event.SelectEvent;
  */
 @ManagedBean(name = "reclutamiento$preseleccionAspirante")
 @ViewScoped
-public class PreseleccionAspiranteBackendBean extends JSFUtil {
+public class PreseleccionAspiranteBackendBean extends JSFUtil implements Serializable {
 
     @EJB
     private ReclutamientoSessionBean reclutamientoSessionBean;
@@ -31,6 +32,14 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil {
     private List<Concurso> listaConcurso;
     private List<Candidato> listaCandidato;
     private Candidato[] candidatosSeleccionados;
+
+    public Candidato[] getCandidatosSeleccionados() {
+        return candidatosSeleccionados;
+    }
+
+    public void setCandidatosSeleccionados(Candidato[] candidatosSeleccionados) {
+        this.candidatosSeleccionados = candidatosSeleccionados;
+    }
 
     public PreseleccionAspiranteBackendBean() {
     }
@@ -67,14 +76,6 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil {
         this.listaCandidato = listaCandidato;
     }
 
-    public Candidato[] getCandidatosSeleccionados() {
-        return candidatosSeleccionados;
-    }
-
-    public void setCandidatosSeleccionados(Candidato[] candidatosSeleccionados) {
-        this.candidatosSeleccionados = candidatosSeleccionados;
-    }
-
     public String buscarConcurso$action() {
 
         if (fechaInicial != null && fechaFinal != null) {
@@ -91,25 +92,14 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil {
     }
 
     public String preseleccionarCandidato$action() {
-        if (getCandidatosSeleccionados() == null) {
+        if (candidatosSeleccionados == null) {
             addMessage("Preselección de Candidatos.", "No ha seleccionado ningún candidato.", TipoMensaje.ERROR);
         }
         return null;
     }
 
     public void onRowSelectConcurso(SelectEvent event) {
-        Concurso c = (Concurso) event.getObject();
-        setListaCandidato(reclutamientoSessionBean.getCandidatosByConcurso(c));
-    }
-
-    public void onRowSelectCandidato(SelectEvent event) {
-        Candidato c = (Candidato) event.getObject();
-        if (candidatosSeleccionados.length == 0) {
-            candidatosSeleccionados[0] = c;
-        } else {
-            candidatosSeleccionados[candidatosSeleccionados.length + 1] = c;
-        }
-        addMessage("Agregarndo fulano", c.getNombreCompleto(), TipoMensaje.INFORMACION);
+        setListaCandidato(reclutamientoSessionBean.getCandidatosByConcurso((Concurso) event.getObject()));
     }
 
     @Override
