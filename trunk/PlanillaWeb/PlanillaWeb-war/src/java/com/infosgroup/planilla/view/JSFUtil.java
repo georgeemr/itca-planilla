@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.view;
 
 import com.infosgroup.planilla.controlador.sessionbean.SessionBeanADM;
+import com.infosgroup.planilla.controlador.sessionbean.SessionBeanREC;
 import java.util.Date;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -55,6 +56,10 @@ public abstract class JSFUtil {
 
     protected static SessionBeanADM getSessionBeanADM() {
         return (SessionBeanADM) getBean("SessionBeanADM");
+    }
+
+    protected static SessionBeanREC getSessionBeanREC() {
+        return (SessionBeanREC) getBean("SessionBeanREC");
     }
 
     public boolean validaFechas(Date f1, Date f2) {
