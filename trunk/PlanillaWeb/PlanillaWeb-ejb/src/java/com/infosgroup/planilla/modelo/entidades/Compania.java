@@ -71,6 +71,8 @@ public class Compania implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<TipoPuesto> tipoPuestoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<EstadoConcurso> estadoConcursoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<TipoCuenta> tipoCuentaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Modulo> moduloList;
@@ -210,6 +212,14 @@ public class Compania implements Serializable {
 
     public void setTipoPuestoList(List<TipoPuesto> tipoPuestoList) {
         this.tipoPuestoList = tipoPuestoList;
+    }
+
+    public List<EstadoConcurso> getEstadoConcursoList() {
+        return estadoConcursoList;
+    }
+
+    public void setEstadoConcursoList(List<EstadoConcurso> estadoConcursoList) {
+        this.estadoConcursoList = estadoConcursoList;
     }
 
     public List<TipoCuenta> getTipoCuentaList() {

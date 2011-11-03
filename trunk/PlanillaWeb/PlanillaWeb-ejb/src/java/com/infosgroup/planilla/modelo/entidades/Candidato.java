@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -42,6 +43,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Candidato.findBySexo", query = "SELECT c FROM Candidato c WHERE c.sexo = :sexo"),
     @NamedQuery(name = "Candidato.findByObservacion", query = "SELECT c FROM Candidato c WHERE c.observacion = :observacion")})
 public class Candidato implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CandidatoPK candidatoPK;
@@ -80,6 +82,8 @@ public class Candidato implements Serializable {
     private Compania compania;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
     private List<ResultadoEvaluacionCandidato> resultadoEvaluacionCandidatoList;
+    @Transient
+    private String nombreCompleto;
 
     public Candidato() {
     }
@@ -179,6 +183,17 @@ public class Candidato implements Serializable {
         this.resultadoEvaluacionCandidatoList = resultadoEvaluacionCandidatoList;
     }
 
+    public String getNombreCompleto() {
+        if (apCasada != null) {
+            return nombre + " " + apCasada;
+        }
+        return nombre + " " + apellido;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -203,5 +218,4 @@ public class Candidato implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.Candidato[ candidatoPK=" + candidatoPK + " ]";
     }
-    
 }
