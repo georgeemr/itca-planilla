@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToMany;
@@ -37,7 +38,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Concurso.findByFechaInicial", query = "SELECT c FROM Concurso c WHERE c.fechaInicial = :fechaInicial"),
     @NamedQuery(name = "Concurso.findByFechaFinal", query = "SELECT c FROM Concurso c WHERE c.fechaFinal = :fechaFinal"),
     @NamedQuery(name = "Concurso.findByNumeroPlazas", query = "SELECT c FROM Concurso c WHERE c.numeroPlazas = :numeroPlazas"),
-    @NamedQuery(name = "Concurso.findByEstado", query = "SELECT c FROM Concurso c WHERE c.estado = :estado"),@NamedQuery(name = "Concurso.findByFechaInicialFinal", query = "SELECT c FROM Concurso c WHERE c.fechaInicial between :fechaInicial and :fechaFinal and c.estado = 'A'")})
+    @NamedQuery(name = "Concurso.findByFechaInicialFinal", query = "SELECT c FROM Concurso c WHERE c.fechaInicial between :fechaInicial and :fechaFinal and c.estadoConcurso.nombre = 'A'")})
 public class Concurso implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -53,9 +54,6 @@ public class Concurso implements Serializable {
     private Date fechaFinal;
     @Column(name = "numero_plazas")
     private Integer numeroPlazas;
-    @Size(max = 1)
-    @Column(name = "estado", length = 1)
-    private String estado;
     @ManyToMany(mappedBy = "concursoList")
     private List<Candidato> candidatoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concurso1")
@@ -63,8 +61,13 @@ public class Concurso implements Serializable {
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "puesto", referencedColumnName = "cod_puesto")})
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch= FetchType.EAGER)
     private Puesto puesto;
+    @JoinColumns({
+        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "estado", referencedColumnName = "codigo", nullable = false)})
+    @ManyToOne(optional = false, fetch= FetchType.EAGER)
+    private EstadoConcurso estadoConcurso;
 
     public Concurso() {
     }
@@ -117,14 +120,6 @@ public class Concurso implements Serializable {
         this.numeroPlazas = numeroPlazas;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     public List<Candidato> getCandidatoList() {
         return candidatoList;
     }
@@ -147,6 +142,14 @@ public class Concurso implements Serializable {
 
     public void setPuesto(Puesto puesto) {
         this.puesto = puesto;
+    }
+
+    public EstadoConcurso getEstadoConcurso() {
+        return estadoConcurso;
+    }
+
+    public void setEstadoConcurso(EstadoConcurso estadoConcurso) {
+        this.estadoConcurso = estadoConcurso;
     }
 
     @Override
