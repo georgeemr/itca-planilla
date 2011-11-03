@@ -6,10 +6,12 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.CandidatoPK;
+import com.infosgroup.planilla.modelo.entidades.Concurso;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  *
