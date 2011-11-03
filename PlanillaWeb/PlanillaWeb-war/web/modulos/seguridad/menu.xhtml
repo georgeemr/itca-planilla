@@ -8,7 +8,6 @@
 
     <ui:define name="titulo">Menu</ui:define>
     <ui:define name="content">
-        <h:form id="menuForm" prependId="true">
             <p:panel header="Menu">
                 <h:panelGrid>
                     <h:outputText id="companiaSeleccionada" value="Compañia: #{seguridad$menu.companiaSeleccionada.idCompania} #{seguridad$menu.companiaSeleccionada.nomCompania}"/>
@@ -70,7 +69,6 @@
                     <p:commandButton value="Cancelar" image="ui-icon icon-save" />
                 </f:facet>
             </p:panel>
-        </h:form>
     </ui:define>
 
 </ui:composition>

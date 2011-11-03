@@ -11,10 +11,7 @@
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" 
-                               action="#{reclutamiento$preseleccionAspirante.preseleccionarCandidato$action()}" 
-                               update="displayMulti mensajes"
-                               oncomplete="multiCandidatosSelected.show()">
+                <p:commandLink styleClass="opcionMenu" action="#{reclutamiento$preseleccionAspirante.preseleccionarCandidato$action()}" update="mensajes">
                     <p:graphicImage value="/resources/iconos/dialog-ok-apply.png"/>
                     <h:outputText value="Preseleccionar" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -23,11 +20,8 @@
     </ui:define>
 
     <ui:define name="contenido">      
-        <p:fieldset legend="Concursos" >
-            <p:growl id="mensajes" showDetail="true" />
-
+        <p:fieldset legend="Concursos">
             <h:outputText value="Seleccione la fecha inicial y final para iniciar la búsqueda de concursos."/>
-
             <h:panelGrid columns="4">
                 <h:outputLabel value=""/>
                 <h:outputLabel value="Fecha inicial"/>
@@ -37,7 +31,7 @@
                             showOn="button"/>
                 <p:commandButton value="Buscar" 
                                  image="buscar" 
-                                 update="mensajes calFechaInicial calFechaFinal tablaConcursos" 
+                                 update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos" 
                                  action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"/>
                 <h:outputLabel value=""/>
                 <h:outputLabel value="Fecha final"/>
@@ -55,9 +49,9 @@
                          emptyMessage="No se han encontrado concursos."
                          paginatorAlwaysVisible="true" 
                          selection="#{SessionBeanREC.concursoSeleccionado}"
-                         update="tablaConcursos panelContenido lblPlaza" 
+                         update="panelContenido"
                          selectionMode="single"
-                         onRowSelectUpdate="panelContenido tablaCandidatos lblPlaza"
+                         onRowSelectUpdate="panelContenido"
                          rowSelectListener="#{reclutamiento$preseleccionAspirante.onRowSelectConcurso}"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
                 <f:facet name="header">
@@ -132,13 +126,14 @@
                      emptyMessage="No se han encontrado candidatos."
                      paginatorAlwaysVisible="true"                         
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" 
-                     rendered="#{SessionBeanREC.concursoSeleccionado ne null}" >
+                     rendered="#{SessionBeanREC.concursoSeleccionado ne null}"
+                     selectionMode="multiple">
 
             <f:facet name="header">
                 <h:outputText value="Candidatos"/>
             </f:facet>
 
-            <p:column selectionMode="multiple" />
+            <!--p:column selectionMode="multiple" /-->
 
             <p:column sortBy="#{candidato.candidatoPK.codCandidato}">
                 <f:facet name="header">
@@ -153,15 +148,6 @@
                 <h:outputLabel value="#{candidato.nombreCompleto}"/>
             </p:column> 
         </p:dataTable>
-
-        <p:dialog header="Car Detail" widgetVar="multiCandidatosSelected"  
-                  width="250" height="300" showEffect="explode" hideEffect="explode">  
-
-            <p:dataList id="displayMulti"  
-                        value="#{reclutamiento$preseleccionAspirante.candidatosSeleccionados}" var="candidato">  
-                Model: #{candidato.nombreCompleto}
-            </p:dataList>  
-        </p:dialog>
 
     </ui:define>
 

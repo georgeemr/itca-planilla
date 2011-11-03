@@ -7,7 +7,6 @@
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="titulo">Compa&ntilde;ias</ui:define>
     <ui:define name="content">
-        <h:form id="companiasForm" prependId="false">
             <p:panel header="Datos de la compañia">
                 <h:panelGrid columns="2">
                     <h:outputText value="Nombre"/>
@@ -36,6 +35,5 @@
                     <h:outputText value="#{compania.nomCompania}"/>
                 </p:column>
             </p:dataTable>
-        </h:form>
     </ui:define>
 </ui:composition>
