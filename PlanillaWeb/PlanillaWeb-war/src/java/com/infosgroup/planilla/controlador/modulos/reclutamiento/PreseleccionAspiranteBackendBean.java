@@ -15,6 +15,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.util.List;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.SelectEvent;
 
 /**
