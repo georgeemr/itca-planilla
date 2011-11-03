@@ -14,6 +14,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.util.List;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -29,7 +30,8 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil {
     private Date fechaFinal;
     private List<Concurso> listaConcurso;
     private List<Candidato> listaCandidato;
-    
+    private Candidato[] candidatosSeleccionados;
+
     public PreseleccionAspiranteBackendBean() {
     }
 
@@ -65,8 +67,16 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil {
         this.listaCandidato = listaCandidato;
     }
 
+    public Candidato[] getCandidatosSeleccionados() {
+        return candidatosSeleccionados;
+    }
+
+    public void setCandidatosSeleccionados(Candidato[] candidatosSeleccionados) {
+        this.candidatosSeleccionados = candidatosSeleccionados;
+    }
+
     public String buscarConcurso$action() {
-        
+
         if (fechaInicial != null && fechaFinal != null) {
             if (validaFechas(fechaInicial, fechaFinal) == true) {
                 setListaConcurso(reclutamientoSessionBean.getListaConcursos(fechaInicial, fechaFinal));
@@ -78,6 +88,28 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil {
             addMessage("Buscar concurso", "Mostrando todos los concursos", TipoMensaje.INFORMACION);
         }
         return null;
+    }
+
+    public String preseleccionarCandidato$action() {
+        if (getCandidatosSeleccionados() == null) {
+            addMessage("Preselección de Candidatos.", "No ha seleccionado ningún candidato.", TipoMensaje.ERROR);
+        }
+        return null;
+    }
+
+    public void onRowSelectConcurso(SelectEvent event) {
+        Concurso c = (Concurso) event.getObject();
+        setListaCandidato(reclutamientoSessionBean.getCandidatosByConcurso(c));
+    }
+
+    public void onRowSelectCandidato(SelectEvent event) {
+        Candidato c = (Candidato) event.getObject();
+        if (candidatosSeleccionados.length == 0) {
+            candidatosSeleccionados[0] = c;
+        } else {
+            candidatosSeleccionados[candidatosSeleccionados.length + 1] = c;
+        }
+        addMessage("Agregarndo fulano", c.getNombreCompleto(), TipoMensaje.INFORMACION);
     }
 
     @Override
