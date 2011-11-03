@@ -55,9 +55,9 @@
                              emptyMessage="No se han encontrado concursos."
                              paginatorAlwaysVisible="true" 
                              selection="#{SessionBeanREC.concursoSeleccionado}"
-                             update="tablaConcursos pane1Candidatos lblPlaza" 
+                             update="tablaConcursos panelContenido lblPlaza" 
                              selectionMode="single"
-                             onRowSelectUpdate="pane1Candidatos tablaCandidatos lblPlaza"
+                             onRowSelectUpdate="panelContenido tablaCandidatos lblPlaza"
                              rowSelectListener="#{reclutamiento$preseleccionAspirante.onRowSelectConcurso}"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
                     <f:facet name="header">
@@ -120,9 +120,9 @@
                 </p:dataTable>
             </p:fieldset>
 
-            <p:spacer height="20px" />
+            <p:spacer height="20" />
 
-            <p:fieldset id="pane1Candidatos" style="border: none;">
+            <!--p:fieldset id="pane1Candidatos" style="border: none;"-->
                 <p:dataTable id="tablaCandidatos"
                              var="candidato" 
                              value="#{reclutamiento$preseleccionAspirante.listaCandidato}"
@@ -132,8 +132,8 @@
                              paginator="true" 
                              emptyMessage="No se han encontrado candidatos."
                              paginatorAlwaysVisible="true" 
-                             update="tablaConcursos, tablaCandidatos, pane1Candidatos" 
-                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" 
+                             update="tablaConcursos, tablaCandidatos, panelContenido" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" 
                              rendered="#{SessionBeanREC.concursoSeleccionado ne null}" >
 
                     <f:facet name="header">
@@ -155,7 +155,7 @@
                         <h:outputLabel value="#{candidato.nombreCompleto}"/>
                     </p:column> 
                 </p:dataTable>
-            </p:fieldset>
+            <!--/p:fieldset-->
         </h:form>
 
     </ui:define>
