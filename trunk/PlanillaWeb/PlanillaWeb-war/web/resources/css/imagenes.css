@@ -44,9 +44,17 @@ background-image: url('../iconos/configure.png') !important;
 .buscar
 {
 background-image: url('../iconos/edit-find.png') !important;
+<<<<<<< .mine
+}
+
+.button-ok
+{
+background-image: url('../iconos/dialog-ok-apply.png') !important;
+}=======
 }
 
 .proceso
 {
 background-image: url('../iconos/system-run.png') !important;
 }
+>>>>>>> .r135
