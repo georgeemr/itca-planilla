@@ -35,10 +35,6 @@ public class ReclutamientoSessionBean {
     }
 
     public List<Candidato> getCandidatosByConcurso(Concurso c) {
-        if (c != null) {
-            return concursoFacade.find(c.getConcursoPK()).getCandidatoList();
-        } else {
-            return new ArrayList<Candidato>();
-        }
+        return (c != null) ? concursoFacade.find(c.getConcursoPK()).getCandidatoList() :  new ArrayList<Candidato>();
     }
 }
