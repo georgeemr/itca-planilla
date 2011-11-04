@@ -3,7 +3,8 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 template="./../../plantillas/defaultTemplate.xhtml"
-                xmlns:h="http://java.sun.com/jsf/html">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="titulo">
         Registro de Candidatos
@@ -23,18 +24,30 @@
 
             <h:panelGrid columns="2">
                 <h:outputLabel value="Nombre: "/>
-                <p:inputText value="#{reclutamiento$candidato.nombre}" />
+                <p:inputText id="txNombre" value="#{reclutamiento$candidato.nombre}" />
                 <h:outputLabel value="Apellido: "/>
-                <p:inputText value="#{reclutamiento$candidato.apellido}" />
+                <p:inputText id="txApellido" value="#{reclutamiento$candidato.apellido}" />
                 <h:outputLabel value="Apellido de Casada: "/>
-                <p:inputText value="#{reclutamiento$candidato.apellidoDeCasada}" />
+                <p:inputText id="txApellidoCasada" value="#{reclutamiento$candidato.apellidoDeCasada}" />
                 <h:outputLabel value="Fecha de Nacimiento: "/>
-                <p:calendar id="calFechaFinal" 
+                <p:calendar id="calFechaNacimiento" 
                             pattern="dd/MM/yyyy" 
                             value="#{reclutamiento$candidato.fechaNacimiento}"
                             showOn="button"  />
+                <h:outputLabel value="Sexo: "/>
+                <h:selectOneMenu id="lstSexo" value="#{reclutamiento$candidato.sexo}" >
+                    <f:selectItems var="sexo" value="#{reclutamiento$candidato.selectSexo}" itemValue="#{sexo.value}" itemLabel="#{sexo.label}" />
+                </h:selectOneMenu>
+                <h:outputLabel value="Observaciones:"/>
+                <p:inputTextarea id="txObservaciones" />
             </h:panelGrid>
-
+            
+            <h:outputLabel value="Criterios que cumple" />
+            
+            <p:pickList >
+                
+            </p:pickList>
+            
         </p:fieldset>
 
     </ui:define>
