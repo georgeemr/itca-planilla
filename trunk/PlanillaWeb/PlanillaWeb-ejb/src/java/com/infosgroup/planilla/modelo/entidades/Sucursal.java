@@ -17,6 +17,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -24,6 +26,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "sucursal")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Sucursal.findAll", query = "SELECT s FROM Sucursal s"),
     @NamedQuery(name = "Sucursal.findByIdCompania", query = "SELECT s FROM Sucursal s WHERE s.sucursalPK.idCompania = :idCompania"),
@@ -87,6 +90,7 @@ public class Sucursal implements Serializable {
         this.detSucursal = detSucursal;
     }
 
+    @XmlTransient
     public List<Direccion> getDireccionList() {
         return direccionList;
     }
@@ -95,6 +99,7 @@ public class Sucursal implements Serializable {
         this.direccionList = direccionList;
     }
 
+    @XmlTransient
     public List<Telefono> getTelefonoList() {
         return telefonoList;
     }

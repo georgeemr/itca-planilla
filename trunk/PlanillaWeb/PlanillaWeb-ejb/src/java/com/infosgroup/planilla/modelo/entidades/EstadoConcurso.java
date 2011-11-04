@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,6 +30,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "estado_concurso", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"nombre"})})
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "EstadoConcurso.findAll", query = "SELECT e FROM EstadoConcurso e"),
     @NamedQuery(name = "EstadoConcurso.findByCodCia", query = "SELECT e FROM EstadoConcurso e WHERE e.estadoConcursoPK.codCia = :codCia"),
@@ -80,6 +83,7 @@ public class EstadoConcurso implements Serializable {
         this.nombre = nombre;
     }
 
+    @XmlTransient
     public List<Concurso> getConcursoList() {
         return concursoList;
     }

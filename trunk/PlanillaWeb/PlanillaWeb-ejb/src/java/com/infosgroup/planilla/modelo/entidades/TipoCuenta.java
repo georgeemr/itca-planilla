@@ -17,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -24,6 +26,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "tipo_cuenta")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoCuenta.findAll", query = "SELECT t FROM TipoCuenta t"),
     @NamedQuery(name = "TipoCuenta.findByIdCompania", query = "SELECT t FROM TipoCuenta t WHERE t.tipoCuentaPK.idCompania = :idCompania"),
@@ -81,6 +84,7 @@ public class TipoCuenta implements Serializable {
         this.detTipoCuenta = detTipoCuenta;
     }
 
+    @XmlTransient
     public List<Cuenta> getCuentaList() {
         return cuentaList;
     }

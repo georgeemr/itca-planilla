@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,6 +31,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "criterio", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"nombre"})})
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Criterio.findAll", query = "SELECT c FROM Criterio c"),
     @NamedQuery(name = "Criterio.findByCodCia", query = "SELECT c FROM Criterio c WHERE c.criterioPK.codCia = :codCia"),
@@ -44,13 +47,13 @@ public class Criterio implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
-    private List<CriteriosXPuesto> criteriosXPuestoList;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "tipo", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private TipoCriterio tipoCriterio;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
+    private List<CriteriosXPuesto> criteriosXPuestoList;
 
     public Criterio() {
     }
@@ -84,20 +87,21 @@ public class Criterio implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
-        return criteriosXPuestoList;
-    }
-
-    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
-        this.criteriosXPuestoList = criteriosXPuestoList;
-    }
-
     public TipoCriterio getTipoCriterio() {
         return tipoCriterio;
     }
 
     public void setTipoCriterio(TipoCriterio tipoCriterio) {
         this.tipoCriterio = tipoCriterio;
+    }
+
+    @XmlTransient
+    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
+        return criteriosXPuestoList;
+    }
+
+    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
+        this.criteriosXPuestoList = criteriosXPuestoList;
     }
 
     @Override

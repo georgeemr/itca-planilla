@@ -22,6 +22,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,6 +31,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "campania")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Campania.findAll", query = "SELECT c FROM Campania c"),
     @NamedQuery(name = "Campania.findByCodCia", query = "SELECT c FROM Campania c WHERE c.campaniaPK.codCia = :codCia"),
@@ -158,6 +161,7 @@ public class Campania implements Serializable {
         this.compania = compania;
     }
 
+    @XmlTransient
     public List<Evaluacion> getEvaluacionList() {
         return evaluacionList;
     }

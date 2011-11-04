@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -24,6 +26,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "compania")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Compania.findAll", query = "SELECT c FROM Compania c"),
     @NamedQuery(name = "Compania.findByIdCompania", query = "SELECT c FROM Compania c WHERE c.idCompania = :idCompania"),
@@ -49,7 +52,35 @@ public class Compania implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<TipoRespuesta> tipoRespuestaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Candidato> candidatoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Campania> campaniaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Rol> rolList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoEvaluacion> tipoEvaluacionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Sucursal> sucursalList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Departamento> departamentoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoCriterio> tipoCriterioList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Empleado> empleadoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoTransaccion> tipoTransaccionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Factor> factorList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoPuesto> tipoPuestoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<EstadoConcurso> estadoConcursoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoCuenta> tipoCuentaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Modulo> moduloList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoPlanilla> tipoPlanillaList;
 
     public Compania() {
     }
@@ -90,6 +121,7 @@ public class Compania implements Serializable {
         this.razonSocial = razonSocial;
     }
 
+    @XmlTransient
     public List<TipoRespuesta> getTipoRespuestaList() {
         return tipoRespuestaList;
     }
@@ -98,12 +130,139 @@ public class Compania implements Serializable {
         this.tipoRespuestaList = tipoRespuestaList;
     }
 
+    @XmlTransient
+    public List<Candidato> getCandidatoList() {
+        return candidatoList;
+    }
+
+    public void setCandidatoList(List<Candidato> candidatoList) {
+        this.candidatoList = candidatoList;
+    }
+
+    @XmlTransient
+    public List<Campania> getCampaniaList() {
+        return campaniaList;
+    }
+
+    public void setCampaniaList(List<Campania> campaniaList) {
+        this.campaniaList = campaniaList;
+    }
+
+    @XmlTransient
+    public List<Rol> getRolList() {
+        return rolList;
+    }
+
+    public void setRolList(List<Rol> rolList) {
+        this.rolList = rolList;
+    }
+
+    @XmlTransient
+    public List<TipoEvaluacion> getTipoEvaluacionList() {
+        return tipoEvaluacionList;
+    }
+
+    public void setTipoEvaluacionList(List<TipoEvaluacion> tipoEvaluacionList) {
+        this.tipoEvaluacionList = tipoEvaluacionList;
+    }
+
+    @XmlTransient
+    public List<Sucursal> getSucursalList() {
+        return sucursalList;
+    }
+
+    public void setSucursalList(List<Sucursal> sucursalList) {
+        this.sucursalList = sucursalList;
+    }
+
+    @XmlTransient
+    public List<Departamento> getDepartamentoList() {
+        return departamentoList;
+    }
+
+    public void setDepartamentoList(List<Departamento> departamentoList) {
+        this.departamentoList = departamentoList;
+    }
+
+    @XmlTransient
+    public List<TipoCriterio> getTipoCriterioList() {
+        return tipoCriterioList;
+    }
+
+    public void setTipoCriterioList(List<TipoCriterio> tipoCriterioList) {
+        this.tipoCriterioList = tipoCriterioList;
+    }
+
+    @XmlTransient
+    public List<Empleado> getEmpleadoList() {
+        return empleadoList;
+    }
+
+    public void setEmpleadoList(List<Empleado> empleadoList) {
+        this.empleadoList = empleadoList;
+    }
+
+    @XmlTransient
+    public List<TipoTransaccion> getTipoTransaccionList() {
+        return tipoTransaccionList;
+    }
+
+    public void setTipoTransaccionList(List<TipoTransaccion> tipoTransaccionList) {
+        this.tipoTransaccionList = tipoTransaccionList;
+    }
+
+    @XmlTransient
     public List<Factor> getFactorList() {
         return factorList;
     }
 
     public void setFactorList(List<Factor> factorList) {
         this.factorList = factorList;
+    }
+
+    @XmlTransient
+    public List<TipoPuesto> getTipoPuestoList() {
+        return tipoPuestoList;
+    }
+
+    public void setTipoPuestoList(List<TipoPuesto> tipoPuestoList) {
+        this.tipoPuestoList = tipoPuestoList;
+    }
+
+    @XmlTransient
+    public List<EstadoConcurso> getEstadoConcursoList() {
+        return estadoConcursoList;
+    }
+
+    public void setEstadoConcursoList(List<EstadoConcurso> estadoConcursoList) {
+        this.estadoConcursoList = estadoConcursoList;
+    }
+
+    @XmlTransient
+    public List<TipoCuenta> getTipoCuentaList() {
+        return tipoCuentaList;
+    }
+
+    public void setTipoCuentaList(List<TipoCuenta> tipoCuentaList) {
+        this.tipoCuentaList = tipoCuentaList;
+    }
+
+    @XmlTransient
+    public List<Modulo> getModuloList() {
+        return moduloList;
+    }
+
+    public void setModuloList(List<Modulo> moduloList) {
+        this.moduloList = moduloList;
+    }
+
+    @XmlTransient
+    public List<TipoPlanilla> getTipoPlanillaList() {
+        return tipoPlanillaList;
+    }
+
+    public void setTipoPlanillaList(List<TipoPlanilla> tipoPlanillaList) {
+        this.tipoPlanillaList = tipoPlanillaList;
     }
 
     @Override

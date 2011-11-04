@@ -18,6 +18,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -25,6 +27,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "barrio")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Barrio.findAll", query = "SELECT b FROM Barrio b"),
     @NamedQuery(name = "Barrio.findByIdPais", query = "SELECT b FROM Barrio b WHERE b.barrioPK.idPais = :idPais"),
@@ -87,6 +90,7 @@ public class Barrio implements Serializable {
         this.detBarrio = detBarrio;
     }
 
+    @XmlTransient
     public List<Direccion> getDireccionList() {
         return direccionList;
     }

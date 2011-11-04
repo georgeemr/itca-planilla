@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,6 +28,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "tipo_puesto")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoPuesto.findAll", query = "SELECT t FROM TipoPuesto t"),
     @NamedQuery(name = "TipoPuesto.findByCodCia", query = "SELECT t FROM TipoPuesto t WHERE t.tipoPuestoPK.codCia = :codCia"),
@@ -40,11 +43,11 @@ public class TipoPuesto implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto")
+    private List<Puesto> puestoList;
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto")
-    private List<Puesto> puestoList;
 
     public TipoPuesto() {
     }
@@ -78,20 +81,21 @@ public class TipoPuesto implements Serializable {
         this.nombre = nombre;
     }
 
-    public Compania getCompania() {
-        return compania;
-    }
-
-    public void setCompania(Compania compania) {
-        this.compania = compania;
-    }
-
+    @XmlTransient
     public List<Puesto> getPuestoList() {
         return puestoList;
     }
 
     public void setPuestoList(List<Puesto> puestoList) {
         this.puestoList = puestoList;
+    }
+
+    public Compania getCompania() {
+        return compania;
+    }
+
+    public void setCompania(Compania compania) {
+        this.compania = compania;
     }
 
     @Override

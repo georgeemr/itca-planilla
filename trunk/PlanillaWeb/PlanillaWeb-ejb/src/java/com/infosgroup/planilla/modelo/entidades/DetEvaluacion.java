@@ -17,6 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -24,12 +25,15 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "det_evaluacion")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DetEvaluacion.findAll", query = "SELECT d FROM DetEvaluacion d"),
     @NamedQuery(name = "DetEvaluacion.findByCodCia", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.codCia = :codCia"),
     @NamedQuery(name = "DetEvaluacion.findByCodCampania", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.codCampania = :codCampania"),
     @NamedQuery(name = "DetEvaluacion.findByCodEvaluacion", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.codEvaluacion = :codEvaluacion"),
     @NamedQuery(name = "DetEvaluacion.findByCodDetEvaluacion", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.codDetEvaluacion = :codDetEvaluacion"),
+    @NamedQuery(name = "DetEvaluacion.findByCodRespuesta", query = "SELECT d FROM DetEvaluacion d WHERE d.codRespuesta = :codRespuesta"),
+    @NamedQuery(name = "DetEvaluacion.findByCodTipoRespuesta", query = "SELECT d FROM DetEvaluacion d WHERE d.codTipoRespuesta = :codTipoRespuesta"),
     @NamedQuery(name = "DetEvaluacion.findByTexto", query = "SELECT d FROM DetEvaluacion d WHERE d.texto = :texto")})
 public class DetEvaluacion implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -37,15 +41,17 @@ public class DetEvaluacion implements Serializable {
     protected DetEvaluacionPK detEvaluacionPK;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "cod_respuesta", nullable = false)
+    private int codRespuesta;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "cod_tipo_respuesta", nullable = false)
+    private int codTipoRespuesta;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "texto", nullable = false, length = 2147483647)
     private String texto;
-    @JoinColumns({
-        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "cod_tipo_respuesta", referencedColumnName = "cod_tipo_respuesta", nullable = false),
-        @JoinColumn(name = "cod_respuesta", referencedColumnName = "cod_respuesta", nullable = false)})
-    @ManyToOne(optional = false)
-    private Respuesta respuesta;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "cod_factor", referencedColumnName = "cod_factor", nullable = false),
@@ -60,8 +66,10 @@ public class DetEvaluacion implements Serializable {
         this.detEvaluacionPK = detEvaluacionPK;
     }
 
-    public DetEvaluacion(DetEvaluacionPK detEvaluacionPK, String texto) {
+    public DetEvaluacion(DetEvaluacionPK detEvaluacionPK, int codRespuesta, int codTipoRespuesta, String texto) {
         this.detEvaluacionPK = detEvaluacionPK;
+        this.codRespuesta = codRespuesta;
+        this.codTipoRespuesta = codTipoRespuesta;
         this.texto = texto;
     }
 
@@ -77,20 +85,28 @@ public class DetEvaluacion implements Serializable {
         this.detEvaluacionPK = detEvaluacionPK;
     }
 
+    public int getCodRespuesta() {
+        return codRespuesta;
+    }
+
+    public void setCodRespuesta(int codRespuesta) {
+        this.codRespuesta = codRespuesta;
+    }
+
+    public int getCodTipoRespuesta() {
+        return codTipoRespuesta;
+    }
+
+    public void setCodTipoRespuesta(int codTipoRespuesta) {
+        this.codTipoRespuesta = codTipoRespuesta;
+    }
+
     public String getTexto() {
         return texto;
     }
 
     public void setTexto(String texto) {
         this.texto = texto;
-    }
-
-    public Respuesta getRespuesta() {
-        return respuesta;
-    }
-
-    public void setRespuesta(Respuesta respuesta) {
-        this.respuesta = respuesta;
     }
 
     public Pregunta getPregunta() {

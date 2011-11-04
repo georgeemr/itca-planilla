@@ -22,9 +22,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,6 +33,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "candidato")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Candidato.findAll", query = "SELECT c FROM Candidato c"),
     @NamedQuery(name = "Candidato.findByCodCia", query = "SELECT c FROM Candidato c WHERE c.candidatoPK.codCia = :codCia"),
@@ -43,7 +45,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Candidato.findBySexo", query = "SELECT c FROM Candidato c WHERE c.sexo = :sexo"),
     @NamedQuery(name = "Candidato.findByObservacion", query = "SELECT c FROM Candidato c WHERE c.observacion = :observacion")})
 public class Candidato implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CandidatoPK candidatoPK;
@@ -82,8 +83,6 @@ public class Candidato implements Serializable {
     private Compania compania;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
     private List<ResultadoEvaluacionCandidato> resultadoEvaluacionCandidatoList;
-    @Transient
-    private String nombreCompleto;
 
     public Candidato() {
     }
@@ -159,6 +158,7 @@ public class Candidato implements Serializable {
         this.observacion = observacion;
     }
 
+    @XmlTransient
     public List<Concurso> getConcursoList() {
         return concursoList;
     }
@@ -175,23 +175,13 @@ public class Candidato implements Serializable {
         this.compania = compania;
     }
 
+    @XmlTransient
     public List<ResultadoEvaluacionCandidato> getResultadoEvaluacionCandidatoList() {
         return resultadoEvaluacionCandidatoList;
     }
 
     public void setResultadoEvaluacionCandidatoList(List<ResultadoEvaluacionCandidato> resultadoEvaluacionCandidatoList) {
         this.resultadoEvaluacionCandidatoList = resultadoEvaluacionCandidatoList;
-    }
-
-    public String getNombreCompleto() {
-        if (apCasada != null) {
-            return nombre + " " + apCasada;
-        }
-        return nombre + " " + apellido;
-    }
-
-    public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
     }
 
     @Override
@@ -218,4 +208,5 @@ public class Candidato implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.Candidato[ candidatoPK=" + candidatoPK + " ]";
     }
+    
 }
