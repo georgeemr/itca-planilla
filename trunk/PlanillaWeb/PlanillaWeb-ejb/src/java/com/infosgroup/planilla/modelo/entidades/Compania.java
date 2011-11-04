@@ -47,9 +47,9 @@ public class Compania implements Serializable {
     @Column(name = "razon_social", length = 200)
     private String razonSocial;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
-    private List<TipoPuesto> tipoPuestoList;
+    private List<TipoRespuesta> tipoRespuestaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
-    private List<TipoCriterio> tipoCriterioList;
+    private List<Factor> factorList;
 
     public Compania() {
     }
@@ -90,20 +90,20 @@ public class Compania implements Serializable {
         this.razonSocial = razonSocial;
     }
 
-    public List<TipoPuesto> getTipoPuestoList() {
-        return tipoPuestoList;
+    public List<TipoRespuesta> getTipoRespuestaList() {
+        return tipoRespuestaList;
     }
 
-    public void setTipoPuestoList(List<TipoPuesto> tipoPuestoList) {
-        this.tipoPuestoList = tipoPuestoList;
+    public void setTipoRespuestaList(List<TipoRespuesta> tipoRespuestaList) {
+        this.tipoRespuestaList = tipoRespuestaList;
     }
 
-    public List<TipoCriterio> getTipoCriterioList() {
-        return tipoCriterioList;
+    public List<Factor> getFactorList() {
+        return factorList;
     }
 
-    public void setTipoCriterioList(List<TipoCriterio> tipoCriterioList) {
-        this.tipoCriterioList = tipoCriterioList;
+    public void setFactorList(List<Factor> factorList) {
+        this.factorList = factorList;
     }
 
     @Override

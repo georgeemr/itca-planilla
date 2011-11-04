@@ -26,15 +26,20 @@ public class RespuestaPK implements Serializable {
     private int codTipoRespuesta;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "grupo_respuesta", nullable = false)
+    private int grupoRespuesta;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "cod_respuesta", nullable = false)
     private int codRespuesta;
 
     public RespuestaPK() {
     }
 
-    public RespuestaPK(int codCia, int codTipoRespuesta, int codRespuesta) {
+    public RespuestaPK(int codCia, int codTipoRespuesta, int grupoRespuesta, int codRespuesta) {
         this.codCia = codCia;
         this.codTipoRespuesta = codTipoRespuesta;
+        this.grupoRespuesta = grupoRespuesta;
         this.codRespuesta = codRespuesta;
     }
 
@@ -54,6 +59,14 @@ public class RespuestaPK implements Serializable {
         this.codTipoRespuesta = codTipoRespuesta;
     }
 
+    public int getGrupoRespuesta() {
+        return grupoRespuesta;
+    }
+
+    public void setGrupoRespuesta(int grupoRespuesta) {
+        this.grupoRespuesta = grupoRespuesta;
+    }
+
     public int getCodRespuesta() {
         return codRespuesta;
     }
@@ -67,6 +80,7 @@ public class RespuestaPK implements Serializable {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codTipoRespuesta;
+        hash += (int) grupoRespuesta;
         hash += (int) codRespuesta;
         return hash;
     }
@@ -84,6 +98,9 @@ public class RespuestaPK implements Serializable {
         if (this.codTipoRespuesta != other.codTipoRespuesta) {
             return false;
         }
+        if (this.grupoRespuesta != other.grupoRespuesta) {
+            return false;
+        }
         if (this.codRespuesta != other.codRespuesta) {
             return false;
         }
@@ -92,7 +109,7 @@ public class RespuestaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.RespuestaPK[ codCia=" + codCia + ", codTipoRespuesta=" + codTipoRespuesta + ", codRespuesta=" + codRespuesta + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.RespuestaPK[ codCia=" + codCia + ", codTipoRespuesta=" + codTipoRespuesta + ", grupoRespuesta=" + grupoRespuesta + ", codRespuesta=" + codRespuesta + " ]";
     }
     
 }
