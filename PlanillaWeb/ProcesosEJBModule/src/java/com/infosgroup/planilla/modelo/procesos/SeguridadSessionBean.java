@@ -8,11 +8,16 @@ import com.infosgroup.planilla.modelo.facades.UsuarioFacade;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
 
 /**
  *
  * @author root
  */
+
+@WebService
 @Stateless(name="SeguridadSessionBean")
 @LocalBean
 public class SeguridadSessionBean {
@@ -20,7 +25,8 @@ public class SeguridadSessionBean {
     @EJB
     private UsuarioFacade usuariosFacade;
 
-    public Boolean validarUsuario(String usuario, String password) {
+    @WebMethod
+    public Boolean validarUsuario(@WebParam String usuario, @WebParam String password) {
         return (usuariosFacade.findByUsuarioPassword(usuario, password) > 0);
     }
     // Add business logic below. (Right-click in editor and choose
