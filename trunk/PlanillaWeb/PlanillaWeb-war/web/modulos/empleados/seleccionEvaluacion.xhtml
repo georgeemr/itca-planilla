@@ -6,36 +6,28 @@
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="titulo">
-        <h:outputText value="Seleccion de evaluacion"/>        
+        <h:outputText value="Seleccion de evaluaci&oacute;n"/>        
     </ui:define>
     <ui:define name="acciones">
-        <p:tab title="Empleados">
+        <p:tab title="Evaluaci&oacute;n">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu">
+                <p:commandLink styleClass="opcionMenu" action="#{empleados$seleccionEvaluacion.evaluarEmpleado$action}">
                     <p:graphicImage value="/resources/iconos/user-group-new.png"/>
-                    <h:outputText value="Agregar empleados" styleClass="espacioTexto"/>
-                </p:commandLink>
-                <p:commandLink styleClass="opcionMenu">
-                    <p:graphicImage value="/resources/iconos/user-group-new.png"/>
-                    <h:outputText value="Agregar empleados" styleClass="espacioTexto"/>
+                    <h:outputText value="Evaluar empleado" styleClass="espacioTexto"/>
                 </p:commandLink>
             </h:panelGrid>
         </p:tab>  
         <p:tab title="Otras acciones">
-            <h:panelGrid columns="1">  
-                <p:commandLink styleClass="opcionMenu">
-                    <p:graphicImage value="/resources/iconos/user-group-new.png"/>
-                    <h:outputText value="Agregar empleados" styleClass="espacioTexto"/>
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu" ajax="true" action="#{empleados$seleccionEvaluacion.inicio$action}">
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu">
-                    <p:graphicImage value="/resources/iconos/user-group-new.png"/>
-                    <h:outputText value="Agregar empleados" styleClass="espacioTexto"/>
-                </p:commandLink>
-            </h:panelGrid>  
+            </h:panelGrid>
         </p:tab>
     </ui:define>
     <ui:define name="contenido">        
-            <p:fieldset legend="Evaluaciones">
+        <p:fieldset legend="Evaluaci&oacute;n">
                 <h:panelGrid columns="2">
                     <h:outputText value="Campaña"/>
                     <h:selectOneMenu style="width: 350px;">
@@ -58,7 +50,6 @@
                 <f:facet name="header">
                     <h:outputText value="Empleados"/>
                 </f:facet>
-                <!--p:column selectionMode="single"/-->
                 <p:column headerText="ID" filterBy="#{empleado.empleadoPK.codEmp}" sortBy="#{empleado.empleadoPK.codEmp}">
                     <h:outputText value="#{empleado.empleadoPK.codEmp}"/>
                 </p:column>
@@ -66,11 +57,5 @@
                     <h:outputText value="#{empleado.nombres} #{empleado.apellidos}"/>
                 </p:column>
             </p:dataTable>
-            <p:separator/>
-            <h:panelGrid columns="3">
-                <p:commandButton value="Evaluar empleado" image="evaluar"/>
-                <p:spacer width="10"/>
-                <p:commandButton value="Cancelar" image="cancelar"/>
-            </h:panelGrid>
     </ui:define>
 </ui:composition>

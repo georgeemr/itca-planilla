@@ -79,4 +79,9 @@ public class SeleccionEvaluacionBackendBean extends JSFUtil implements Serializa
     protected void limpiarCampos() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    public String evaluarEmpleado$action()
+    {
+        return "evaluacionEmpleado?faces-redirect=true";
+    }
 }
