@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -83,7 +84,8 @@ public class Candidato implements Serializable {
     private Compania compania;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
     private List<ResultadoEvaluacionCandidato> resultadoEvaluacionCandidatoList;
-
+    @Transient
+    private String nombreCompleto;
     public Candidato() {
     }
 
@@ -190,7 +192,16 @@ public class Candidato implements Serializable {
         hash += (candidatoPK != null ? candidatoPK.hashCode() : 0);
         return hash;
     }
+    public String getNombreCompleto() {
+        if (apCasada != null) {
+            return nombre + " " + apCasada;
+        }
+        return nombre + " " + apellido;
+    }
 
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
