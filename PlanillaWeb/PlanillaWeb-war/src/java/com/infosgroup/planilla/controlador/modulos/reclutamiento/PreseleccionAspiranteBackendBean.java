@@ -10,6 +10,7 @@ import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -33,6 +34,24 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     private List<Concurso> listaConcurso;
     private List<Candidato> listaCandidato;
     private Candidato[] candidatosSeleccionados;
+    private DataTable tableCandidatos;
+    private DataTable tableConcursos;
+
+    public DataTable getTableConcursos() {
+        return tableConcursos;
+    }
+
+    public void setTableConcursos(DataTable tableConcursos) {
+        this.tableConcursos = tableConcursos;
+    }
+
+    public DataTable getTableCandidatos() {
+        return tableCandidatos;
+    }
+
+    public void setTableCandidatos(DataTable tableCandidatos) {
+        this.tableCandidatos = tableCandidatos;
+    }
 
     public Candidato[] getCandidatosSeleccionados() {
         return candidatosSeleccionados;
@@ -85,17 +104,20 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
             } else {
                 addMessage("Buscar concurso", "Los rangos de fecha Ingresados no son consistentes.", TipoMensaje.ERROR);
             }
+            return null;
         } else {
             setListaConcurso(reclutamientoSessionBean.getAllConcursos());
             addMessage("Buscar concurso", "Mostrando todos los concursos", TipoMensaje.INFORMACION);
         }
+        limpiarCampos();
         return null;
     }
 
     public String preseleccionarCandidato$action() {
-        if (candidatosSeleccionados == null) {
+        if (candidatosSeleccionados == null || candidatosSeleccionados.length <= 0) {
             addMessage("Preselección de Candidatos.", "No ha seleccionado ningún candidato.", TipoMensaje.ERROR);
         }
+        addMessage("Prueba", "Total de elementos agregados: " + candidatosSeleccionados.length, TipoMensaje.INFORMACION);
         return null;
     }
 
@@ -107,5 +129,10 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     protected void limpiarCampos() {
         setFechaInicial(null);
         setFechaFinal(null);
+        tableConcursos.setSelection(null);
+        candidatosSeleccionados = null;
+        tableConcursos.setSelection(null);
+        listaCandidato= new ArrayList<Candidato>();
+        getSessionBeanREC().setConcursoSeleccionado(null);
     }
 }
