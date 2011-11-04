@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Concurso.findByNombre", query = "SELECT c FROM Concurso c WHERE c.nombre = :nombre"),
     @NamedQuery(name = "Concurso.findByFechaInicial", query = "SELECT c FROM Concurso c WHERE c.fechaInicial = :fechaInicial"),
     @NamedQuery(name = "Concurso.findByFechaFinal", query = "SELECT c FROM Concurso c WHERE c.fechaFinal = :fechaFinal"),
+    @NamedQuery(name = "Concurso.findByFechaInicialFinal", query = "SELECT c FROM Concurso c WHERE c.fechaInicial between :fechaInicial and :fechaFinal and c.estadoConcurso.estadoConcursoPK.codigo = 'A'"),
     @NamedQuery(name = "Concurso.findByNumeroPlazas", query = "SELECT c FROM Concurso c WHERE c.numeroPlazas = :numeroPlazas")})
 public class Concurso implements Serializable {
     private static final long serialVersionUID = 1L;
