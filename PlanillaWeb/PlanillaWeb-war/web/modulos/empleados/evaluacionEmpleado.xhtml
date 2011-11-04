@@ -1,17 +1,52 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="/plantillas/defaultTemplate.xhtml">
+<ui:composition template="/plantillas/defaultTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="titulo">
-        titulo
+        <h:outputText value="Evaluaci&oacute;n de empleado"/>        
     </ui:define>
-    <ui:define name="top">
-        top
+    <ui:define name="acciones">
+        <p:tab title="Evaluaci&oacute;n">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu">
+                    <p:graphicImage value="/resources/iconos/user-group-new.png"/>
+                    <h:outputText value="Evaluar empleado" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>  
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu" ajax="true" action="#{empleados$seleccionEvaluacion.inicio$action}">
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
     </ui:define>
-    <ui:define name="content">
-        content
-    </ui:define>
-    <ui:define name="bottom">
-        bottom
+    <ui:define name="contenido">        
+        <p:fieldset legend="Evaluaci&oacute;n del empleado: #num_empleado#">
+            <h:panelGrid columns="2">
+                <h:outputText/>
+                <h:outputText/>
+                <h:outputText/>
+                <h:outputText/>
+                <h:outputText/>
+                <h:outputText/>
+            </h:panelGrid>
+            <p:dataTable>
+                <p:column headerText="ID">
+                    <h:outputText />
+                </p:column>
+                <p:column headerText="Pregunta">
+                    <h:outputText />
+                </p:column>
+                <p:column headerText="Respuesta">
+                    <h:outputText />
+                </p:column>
+            </p:dataTable>
+        </p:fieldset>
     </ui:define>
 </ui:composition>

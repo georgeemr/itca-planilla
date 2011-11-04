@@ -40,11 +40,12 @@ public abstract class JSFUtil {
     public static Object getBean(String beanName) {
         FacesContext context = FacesContext.getCurrentInstance();
         return context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
-    }    
+    }
 
     protected abstract void limpiarCampos();
 
     protected enum EstadoAccion {
+
         CREANDO,
         MODIFICANDO
     }
@@ -63,5 +64,9 @@ public abstract class JSFUtil {
 
     public boolean validaFechas(Date f1, Date f2) {
         return !f1.after(f2);
+    }
+
+    public String inicio$action() {
+        return "/modulos/inicio.xhtml?faces-redirect=true";
     }
 }
