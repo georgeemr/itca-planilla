@@ -6,7 +6,6 @@ package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
-import com.infosgroup.planilla.modelo.facades.CandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.ConcursoFacade;
 import java.util.ArrayList;
 import javax.ejb.EJB;
