@@ -32,15 +32,20 @@ public class CriteriosXPuestoPK implements Serializable {
     @NotNull
     @Column(name = "correlativo", nullable = false)
     private int correlativo;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "tipo_criterio", nullable = false)
+    private int tipoCriterio;
 
     public CriteriosXPuestoPK() {
     }
 
-    public CriteriosXPuestoPK(int codCia, int puesto, int criterio, int correlativo) {
+    public CriteriosXPuestoPK(int codCia, int puesto, int criterio, int correlativo, int tipoCriterio) {
         this.codCia = codCia;
         this.puesto = puesto;
         this.criterio = criterio;
         this.correlativo = correlativo;
+        this.tipoCriterio = tipoCriterio;
     }
 
     public int getCodCia() {
@@ -75,6 +80,14 @@ public class CriteriosXPuestoPK implements Serializable {
         this.correlativo = correlativo;
     }
 
+    public int getTipoCriterio() {
+        return tipoCriterio;
+    }
+
+    public void setTipoCriterio(int tipoCriterio) {
+        this.tipoCriterio = tipoCriterio;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -82,6 +95,7 @@ public class CriteriosXPuestoPK implements Serializable {
         hash += (int) puesto;
         hash += (int) criterio;
         hash += (int) correlativo;
+        hash += (int) tipoCriterio;
         return hash;
     }
 
@@ -104,12 +118,15 @@ public class CriteriosXPuestoPK implements Serializable {
         if (this.correlativo != other.correlativo) {
             return false;
         }
+        if (this.tipoCriterio != other.tipoCriterio) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK[ codCia=" + codCia + ", puesto=" + puesto + ", criterio=" + criterio + ", correlativo=" + correlativo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK[ codCia=" + codCia + ", puesto=" + puesto + ", criterio=" + criterio + ", correlativo=" + correlativo + ", tipoCriterio=" + tipoCriterio + " ]";
     }
     
 }

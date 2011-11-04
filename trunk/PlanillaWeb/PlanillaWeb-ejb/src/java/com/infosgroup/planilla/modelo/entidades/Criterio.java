@@ -6,16 +6,20 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -23,30 +27,30 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "criterio")
+@Table(name = "criterio", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"nombre"})})
 @NamedQueries({
     @NamedQuery(name = "Criterio.findAll", query = "SELECT c FROM Criterio c"),
     @NamedQuery(name = "Criterio.findByCodCia", query = "SELECT c FROM Criterio c WHERE c.criterioPK.codCia = :codCia"),
-    @NamedQuery(name = "Criterio.findByCodCriterio", query = "SELECT c FROM Criterio c WHERE c.criterioPK.codCriterio = :codCriterio"),
-    @NamedQuery(name = "Criterio.findByNombre", query = "SELECT c FROM Criterio c WHERE c.nombre = :nombre"),
-    @NamedQuery(name = "Criterio.findByRango", query = "SELECT c FROM Criterio c WHERE c.rango = :rango"),
-    @NamedQuery(name = "Criterio.findByTipo", query = "SELECT c FROM Criterio c WHERE c.tipo = :tipo")})
+    @NamedQuery(name = "Criterio.findByCodigo", query = "SELECT c FROM Criterio c WHERE c.criterioPK.codigo = :codigo"),
+    @NamedQuery(name = "Criterio.findByTipo", query = "SELECT c FROM Criterio c WHERE c.criterioPK.tipo = :tipo"),
+    @NamedQuery(name = "Criterio.findByNombre", query = "SELECT c FROM Criterio c WHERE c.nombre = :nombre")})
 public class Criterio implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CriterioPK criterioPK;
-    @Size(max = 2147483647)
-    @Column(name = "nombre", length = 2147483647)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
-    @Column(name = "rango")
-    private Integer rango;
-    @Column(name = "tipo")
-    private Integer tipo;
-    @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Compania compania;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
     private List<CriteriosXPuesto> criteriosXPuestoList;
+    @JoinColumns({
+        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "tipo", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private TipoCriterio tipoCriterio;
 
     public Criterio() {
     }
@@ -55,8 +59,13 @@ public class Criterio implements Serializable {
         this.criterioPK = criterioPK;
     }
 
-    public Criterio(int codCia, int codCriterio) {
-        this.criterioPK = new CriterioPK(codCia, codCriterio);
+    public Criterio(CriterioPK criterioPK, String nombre) {
+        this.criterioPK = criterioPK;
+        this.nombre = nombre;
+    }
+
+    public Criterio(int codCia, int codigo, int tipo) {
+        this.criterioPK = new CriterioPK(codCia, codigo, tipo);
     }
 
     public CriterioPK getCriterioPK() {
@@ -75,36 +84,20 @@ public class Criterio implements Serializable {
         this.nombre = nombre;
     }
 
-    public Integer getRango() {
-        return rango;
-    }
-
-    public void setRango(Integer rango) {
-        this.rango = rango;
-    }
-
-    public Integer getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
-    }
-
-    public Compania getCompania() {
-        return compania;
-    }
-
-    public void setCompania(Compania compania) {
-        this.compania = compania;
-    }
-
     public List<CriteriosXPuesto> getCriteriosXPuestoList() {
         return criteriosXPuestoList;
     }
 
     public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
         this.criteriosXPuestoList = criteriosXPuestoList;
+    }
+
+    public TipoCriterio getTipoCriterio() {
+        return tipoCriterio;
+    }
+
+    public void setTipoCriterio(TipoCriterio tipoCriterio) {
+        this.tipoCriterio = tipoCriterio;
     }
 
     @Override
