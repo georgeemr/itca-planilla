@@ -27,19 +27,20 @@ import javax.persistence.Table;
     @NamedQuery(name = "CriteriosXPuesto.findByPuesto", query = "SELECT c FROM CriteriosXPuesto c WHERE c.criteriosXPuestoPK.puesto = :puesto"),
     @NamedQuery(name = "CriteriosXPuesto.findByCriterio", query = "SELECT c FROM CriteriosXPuesto c WHERE c.criteriosXPuestoPK.criterio = :criterio"),
     @NamedQuery(name = "CriteriosXPuesto.findByCorrelativo", query = "SELECT c FROM CriteriosXPuesto c WHERE c.criteriosXPuestoPK.correlativo = :correlativo"),
-    @NamedQuery(name = "CriteriosXPuesto.findByNivel", query = "SELECT c FROM CriteriosXPuesto c WHERE c.nivel = :nivel"),
-    @NamedQuery(name = "CriteriosXPuesto.findByValor1", query = "SELECT c FROM CriteriosXPuesto c WHERE c.valor1 = :valor1"),
-    @NamedQuery(name = "CriteriosXPuesto.findByValor2", query = "SELECT c FROM CriteriosXPuesto c WHERE c.valor2 = :valor2")})
+    @NamedQuery(name = "CriteriosXPuesto.findByValor", query = "SELECT c FROM CriteriosXPuesto c WHERE c.valor = :valor"),
+    @NamedQuery(name = "CriteriosXPuesto.findByValorInicialRango", query = "SELECT c FROM CriteriosXPuesto c WHERE c.valorInicialRango = :valorInicialRango"),
+    @NamedQuery(name = "CriteriosXPuesto.findByValorFinalRango", query = "SELECT c FROM CriteriosXPuesto c WHERE c.valorFinalRango = :valorFinalRango"),
+    @NamedQuery(name = "CriteriosXPuesto.findByTipoCriterio", query = "SELECT c FROM CriteriosXPuesto c WHERE c.criteriosXPuestoPK.tipoCriterio = :tipoCriterio")})
 public class CriteriosXPuesto implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CriteriosXPuestoPK criteriosXPuestoPK;
-    @Column(name = "nivel")
-    private Integer nivel;
-    @Column(name = "valor1")
-    private Integer valor1;
-    @Column(name = "valor2")
-    private Integer valor2;
+    @Column(name = "valor")
+    private Integer valor;
+    @Column(name = "valor_inicial_rango")
+    private Integer valorInicialRango;
+    @Column(name = "valor_final_rango")
+    private Integer valorFinalRango;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "puesto", referencedColumnName = "cod_puesto", nullable = false, insertable = false, updatable = false)})
@@ -47,7 +48,8 @@ public class CriteriosXPuesto implements Serializable {
     private Puesto puesto1;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "criterio", referencedColumnName = "cod_criterio", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "criterio", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "tipo_criterio", referencedColumnName = "tipo", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Criterio criterio1;
 
@@ -58,8 +60,8 @@ public class CriteriosXPuesto implements Serializable {
         this.criteriosXPuestoPK = criteriosXPuestoPK;
     }
 
-    public CriteriosXPuesto(int codCia, int puesto, int criterio, int correlativo) {
-        this.criteriosXPuestoPK = new CriteriosXPuestoPK(codCia, puesto, criterio, correlativo);
+    public CriteriosXPuesto(int codCia, int puesto, int criterio, int correlativo, int tipoCriterio) {
+        this.criteriosXPuestoPK = new CriteriosXPuestoPK(codCia, puesto, criterio, correlativo, tipoCriterio);
     }
 
     public CriteriosXPuestoPK getCriteriosXPuestoPK() {
@@ -70,28 +72,28 @@ public class CriteriosXPuesto implements Serializable {
         this.criteriosXPuestoPK = criteriosXPuestoPK;
     }
 
-    public Integer getNivel() {
-        return nivel;
+    public Integer getValor() {
+        return valor;
     }
 
-    public void setNivel(Integer nivel) {
-        this.nivel = nivel;
+    public void setValor(Integer valor) {
+        this.valor = valor;
     }
 
-    public Integer getValor1() {
-        return valor1;
+    public Integer getValorInicialRango() {
+        return valorInicialRango;
     }
 
-    public void setValor1(Integer valor1) {
-        this.valor1 = valor1;
+    public void setValorInicialRango(Integer valorInicialRango) {
+        this.valorInicialRango = valorInicialRango;
     }
 
-    public Integer getValor2() {
-        return valor2;
+    public Integer getValorFinalRango() {
+        return valorFinalRango;
     }
 
-    public void setValor2(Integer valor2) {
-        this.valor2 = valor2;
+    public void setValorFinalRango(Integer valorFinalRango) {
+        this.valorFinalRango = valorFinalRango;
     }
 
     public Puesto getPuesto1() {

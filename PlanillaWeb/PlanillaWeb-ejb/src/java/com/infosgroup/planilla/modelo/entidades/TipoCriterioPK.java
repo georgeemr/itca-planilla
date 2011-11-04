@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class CriterioPK implements Serializable {
+public class TipoCriterioPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_cia", nullable = false)
@@ -24,18 +24,13 @@ public class CriterioPK implements Serializable {
     @NotNull
     @Column(name = "codigo", nullable = false)
     private int codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "tipo", nullable = false)
-    private int tipo;
 
-    public CriterioPK() {
+    public TipoCriterioPK() {
     }
 
-    public CriterioPK(int codCia, int codigo, int tipo) {
+    public TipoCriterioPK(int codCia, int codigo) {
         this.codCia = codCia;
         this.codigo = codigo;
-        this.tipo = tipo;
     }
 
     public int getCodCia() {
@@ -54,37 +49,25 @@ public class CriterioPK implements Serializable {
         this.codigo = codigo;
     }
 
-    public int getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codigo;
-        hash += (int) tipo;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CriterioPK)) {
+        if (!(object instanceof TipoCriterioPK)) {
             return false;
         }
-        CriterioPK other = (CriterioPK) object;
+        TipoCriterioPK other = (TipoCriterioPK) object;
         if (this.codCia != other.codCia) {
             return false;
         }
         if (this.codigo != other.codigo) {
-            return false;
-        }
-        if (this.tipo != other.tipo) {
             return false;
         }
         return true;
@@ -92,7 +75,7 @@ public class CriterioPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CriterioPK[ codCia=" + codCia + ", codigo=" + codigo + ", tipo=" + tipo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoCriterioPK[ codCia=" + codCia + ", codigo=" + codigo + " ]";
     }
     
 }

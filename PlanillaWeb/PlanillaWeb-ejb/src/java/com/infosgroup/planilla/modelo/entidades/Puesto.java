@@ -66,8 +66,8 @@ public class Puesto implements Serializable {
     @Size(max = 2)
     @Column(name = "jefatura", length = 2)
     private String jefatura;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
-    private List<Concurso> concursoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1")
+    private List<CriteriosXPuesto> criteriosXPuestoList;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "tipo", referencedColumnName = "cod_tipo_puesto")})
@@ -79,8 +79,6 @@ public class Puesto implements Serializable {
     @JoinColumn(name = "rango_anios", referencedColumnName = "cod_rango_anios")
     @ManyToOne
     private RangoAniosExperiencia rangoAnios;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1")
-    private List<CriteriosXPuesto> criteriosXPuestoList;
 
     public Puesto() {
     }
@@ -173,12 +171,12 @@ public class Puesto implements Serializable {
         this.jefatura = jefatura;
     }
 
-    public List<Concurso> getConcursoList() {
-        return concursoList;
+    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
+        return criteriosXPuestoList;
     }
 
-    public void setConcursoList(List<Concurso> concursoList) {
-        this.concursoList = concursoList;
+    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
+        this.criteriosXPuestoList = criteriosXPuestoList;
     }
 
     public TipoPuesto getTipoPuesto() {
@@ -203,14 +201,6 @@ public class Puesto implements Serializable {
 
     public void setRangoAnios(RangoAniosExperiencia rangoAnios) {
         this.rangoAnios = rangoAnios;
-    }
-
-    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
-        return criteriosXPuestoList;
-    }
-
-    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
-        this.criteriosXPuestoList = criteriosXPuestoList;
     }
 
     @Override

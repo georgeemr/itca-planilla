@@ -40,11 +40,11 @@ public class TipoPuesto implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto")
-    private List<Puesto> puestoList;
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto")
+    private List<Puesto> puestoList;
 
     public TipoPuesto() {
     }
@@ -78,20 +78,20 @@ public class TipoPuesto implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<Puesto> getPuestoList() {
-        return puestoList;
-    }
-
-    public void setPuestoList(List<Puesto> puestoList) {
-        this.puestoList = puestoList;
-    }
-
     public Compania getCompania() {
         return compania;
     }
 
     public void setCompania(Compania compania) {
         this.compania = compania;
+    }
+
+    public List<Puesto> getPuestoList() {
+        return puestoList;
+    }
+
+    public void setPuestoList(List<Puesto> puestoList) {
+        this.puestoList = puestoList;
     }
 
     @Override
