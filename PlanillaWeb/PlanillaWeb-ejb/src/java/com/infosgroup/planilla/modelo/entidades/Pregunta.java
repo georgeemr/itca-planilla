@@ -7,7 +7,6 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -18,7 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -44,19 +42,16 @@ public class Pregunta implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "descripcion", nullable = false, length = 2147483647)
     private String descripcion;
-    @ManyToMany(mappedBy = "preguntaList")
-    private List<Plantilla> plantillaList;
     @JoinTable(name = "pregunta_respuesta", joinColumns = {
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
         @JoinColumn(name = "cod_factor", referencedColumnName = "cod_factor", nullable = false),
         @JoinColumn(name = "cod_pregunta", referencedColumnName = "cod_pregunta", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
-        @JoinColumn(name = "cod_respuesta", referencedColumnName = "cod_respuesta", nullable = false),
-        @JoinColumn(name = "cod_tipo_respuesta", referencedColumnName = "cod_tipo_respuesta", nullable = false)})
+        @JoinColumn(name = "cod_tipo_respuesta", referencedColumnName = "cod_tipo_respuesta", nullable = false),
+        @JoinColumn(name = "grupo_respuesta", referencedColumnName = "grupo_respuesta", nullable = false),
+        @JoinColumn(name = "cod_respuesta", referencedColumnName = "cod_respuesta", nullable = false)})
     @ManyToMany
     private List<Respuesta> respuestaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pregunta")
-    private List<DetEvaluacion> detEvaluacionList;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "cod_factor", referencedColumnName = "cod_factor", nullable = false, insertable = false, updatable = false)})
@@ -95,28 +90,12 @@ public class Pregunta implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public List<Plantilla> getPlantillaList() {
-        return plantillaList;
-    }
-
-    public void setPlantillaList(List<Plantilla> plantillaList) {
-        this.plantillaList = plantillaList;
-    }
-
     public List<Respuesta> getRespuestaList() {
         return respuestaList;
     }
 
     public void setRespuestaList(List<Respuesta> respuestaList) {
         this.respuestaList = respuestaList;
-    }
-
-    public List<DetEvaluacion> getDetEvaluacionList() {
-        return detEvaluacionList;
-    }
-
-    public void setDetEvaluacionList(List<DetEvaluacion> detEvaluacionList) {
-        this.detEvaluacionList = detEvaluacionList;
     }
 
     public Factor getFactor() {
