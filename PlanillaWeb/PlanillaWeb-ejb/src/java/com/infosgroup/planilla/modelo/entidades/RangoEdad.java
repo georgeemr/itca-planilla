@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -23,6 +25,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "rango_edad")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RangoEdad.findAll", query = "SELECT r FROM RangoEdad r"),
     @NamedQuery(name = "RangoEdad.findByCodRangoEdad", query = "SELECT r FROM RangoEdad r WHERE r.codRangoEdad = :codRangoEdad"),
@@ -63,6 +66,7 @@ public class RangoEdad implements Serializable {
         this.descripcion = descripcion;
     }
 
+    @XmlTransient
     public List<Puesto> getPuestoList() {
         return puestoList;
     }

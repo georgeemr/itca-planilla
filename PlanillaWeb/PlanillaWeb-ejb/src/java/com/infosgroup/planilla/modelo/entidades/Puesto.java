@@ -18,6 +18,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -25,6 +27,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "puesto")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Puesto.findAll", query = "SELECT p FROM Puesto p"),
     @NamedQuery(name = "Puesto.findByCodCia", query = "SELECT p FROM Puesto p WHERE p.puestoPK.codCia = :codCia"),
@@ -66,8 +69,8 @@ public class Puesto implements Serializable {
     @Size(max = 2)
     @Column(name = "jefatura", length = 2)
     private String jefatura;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1")
-    private List<CriteriosXPuesto> criteriosXPuestoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
+    private List<Concurso> concursoList;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "tipo", referencedColumnName = "cod_tipo_puesto")})
@@ -79,6 +82,8 @@ public class Puesto implements Serializable {
     @JoinColumn(name = "rango_anios", referencedColumnName = "cod_rango_anios")
     @ManyToOne
     private RangoAniosExperiencia rangoAnios;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1")
+    private List<CriteriosXPuesto> criteriosXPuestoList;
 
     public Puesto() {
     }
@@ -171,12 +176,13 @@ public class Puesto implements Serializable {
         this.jefatura = jefatura;
     }
 
-    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
-        return criteriosXPuestoList;
+    @XmlTransient
+    public List<Concurso> getConcursoList() {
+        return concursoList;
     }
 
-    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
-        this.criteriosXPuestoList = criteriosXPuestoList;
+    public void setConcursoList(List<Concurso> concursoList) {
+        this.concursoList = concursoList;
     }
 
     public TipoPuesto getTipoPuesto() {
@@ -201,6 +207,15 @@ public class Puesto implements Serializable {
 
     public void setRangoAnios(RangoAniosExperiencia rangoAnios) {
         this.rangoAnios = rangoAnios;
+    }
+
+    @XmlTransient
+    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
+        return criteriosXPuestoList;
+    }
+
+    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
+        this.criteriosXPuestoList = criteriosXPuestoList;
     }
 
     @Override

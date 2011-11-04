@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,6 +28,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "factor")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Factor.findAll", query = "SELECT f FROM Factor f"),
     @NamedQuery(name = "Factor.findByCodCia", query = "SELECT f FROM Factor f WHERE f.factorPK.codCia = :codCia"),
@@ -89,6 +92,7 @@ public class Factor implements Serializable {
         this.ponderacion = ponderacion;
     }
 
+    @XmlTransient
     public List<Pregunta> getPreguntaList() {
         return preguntaList;
     }
