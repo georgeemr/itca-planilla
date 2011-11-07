@@ -9,14 +9,6 @@
         <h:outputText value="Evaluaci&oacute;n de empleado"/>        
     </ui:define>
     <ui:define name="acciones">
-        <p:tab title="Evaluaci&oacute;n">
-            <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu">
-                    <p:graphicImage value="/resources/iconos/user-group-new.png"/>
-                    <h:outputText value="Evaluar empleado" styleClass="espacioTexto"/>
-                </p:commandLink>
-            </h:panelGrid>
-        </p:tab>  
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu" ajax="true" action="#{empleados$seleccionEvaluacion.inicio$action}">
@@ -27,16 +19,30 @@
         </p:tab>
     </ui:define>
     <ui:define name="contenido">        
-        <p:fieldset legend="Evaluaci&oacute;n del empleado: #num_empleado#">
-            <h:panelGrid columns="2">
-                <h:outputText/>
-                <h:outputText/>
-                <h:outputText/>
-                <h:outputText/>
-                <h:outputText/>
-                <h:outputText/>
+        <p:fieldset legend="Evaluaci&oacute;n del empleado">
+            <h:panelGrid columns="4" width="100%">
+                <h:outputText value="Campaña" styleClass="negrita"/>
+                <h:outputText value="#{SessionBeanEMP.campania.nombre}"/>
+
+                <h:outputText value="Tipo de evaluacion" styleClass="negrita"/>
+                <h:outputText value="#{SessionBeanEMP.tipoEvaluacion.nomTipoEvaluacion}"/>
+
+                <h:outputText value="Plantilla" styleClass="negrita"/>
+                <h:outputText value="#{SessionBeanEMP.plantilla.nombre}"/>
+
+                <h:outputText value="Empleado:" styleClass="negrita"/>
+                <h:panelGrid columns="3" cellspacing="0" cellpadding="0">
+                    <h:outputText value="#{SessionBeanEMP.empleado.nombres}"/>
+                    <p:spacer width="4"/>
+                    <h:outputText value="#{SessionBeanEMP.empleado.apellidos}" rendered="#{SessionBeanEMP.empleado.apCasada eq null}"/>
+                    <h:outputText value="#{SessionBeanEMP.empleado.apCasada}" rendered="#{SessionBeanEMP.empleado.apCasada ne null}"/>
+                </h:panelGrid>
             </h:panelGrid>
             <p:dataTable>
+                <f:facet name="header">
+                    <h:outputText value="Factor"/>
+                    <h:outputText value="Factor"/>
+                </f:facet>
                 <p:column headerText="ID">
                     <h:outputText />
                 </p:column>

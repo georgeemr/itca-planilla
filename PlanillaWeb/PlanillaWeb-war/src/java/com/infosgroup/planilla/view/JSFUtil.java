@@ -5,9 +5,11 @@
 package com.infosgroup.planilla.view;
 
 import com.infosgroup.planilla.controlador.sessionbean.SessionBeanADM;
+import com.infosgroup.planilla.controlador.sessionbean.SessionBeanEMP;
 import com.infosgroup.planilla.controlador.sessionbean.SessionBeanREC;
 import java.util.Date;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 
 /**
@@ -20,26 +22,26 @@ public abstract class JSFUtil {
     }
 
     public void addMessage(String titulo, String mensaje, TipoMensaje tipoMensaje) {
-
+        FacesMessage.Severity severidad = null;
         switch (tipoMensaje) {
             case INFORMACION:
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, titulo, mensaje));
+                severidad = FacesMessage.SEVERITY_INFO;
                 break;
             case ADVERTENCIA:
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, titulo, mensaje));
+                severidad = FacesMessage.SEVERITY_WARN;
                 break;
             case ERROR:
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, titulo, mensaje));
+                severidad = FacesMessage.SEVERITY_ERROR;
                 break;
             case ERROR_FATAL:
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, titulo, mensaje));
+                severidad = FacesMessage.SEVERITY_FATAL;
                 break;
         }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severidad, titulo, mensaje));
     }
 
-    public static Object getBean(String beanName) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        return context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
+    protected boolean validaFechas(Date f1, Date f2) {
+        return !f1.after(f2);
     }
 
     protected abstract void limpiarCampos();
@@ -53,19 +55,38 @@ public abstract class JSFUtil {
     public static void mostrarMensaje(FacesMessage.Severity severidad, String textoMensaje) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severidad, "Planilla web", textoMensaje));
     }
+    @ManagedProperty(value = "#{SessionBeanADM}")
+    protected SessionBeanADM sessionBeanADM;
+    @ManagedProperty(value = "#{SessionBeanREC}")
+    protected SessionBeanREC sessionBeanREC;
+    @ManagedProperty(value = "#{SessionBeanEMP}")
+    protected SessionBeanEMP sessionBeanEMP;
 
-    protected static SessionBeanADM getSessionBeanADM() {
-        return (SessionBeanADM) getBean("SessionBeanADM");
+    public SessionBeanADM getSessionBeanADM() {
+        return sessionBeanADM;
     }
 
-    protected static SessionBeanREC getSessionBeanREC() {
-        return (SessionBeanREC) getBean("SessionBeanREC");
+    public void setSessionBeanADM(SessionBeanADM sessionBeanADM) {
+        this.sessionBeanADM = sessionBeanADM;
     }
 
-    public boolean validaFechas(Date f1, Date f2) {
-        return !f1.after(f2);
+    public SessionBeanREC getSessionBeanREC() {
+        return sessionBeanREC;
     }
 
+    public void setSessionBeanREC(SessionBeanREC sessionBeanREC) {
+        this.sessionBeanREC = sessionBeanREC;
+    }
+
+    public SessionBeanEMP getSessionBeanEMP() {
+        return sessionBeanEMP;
+    }
+
+    public void setSessionBeanEMP(SessionBeanEMP sessionBeanEMP) {
+        this.sessionBeanEMP = sessionBeanEMP;
+    }
+
+    // =================================================================================================
     public String inicio$action() {
         return "/modulos/inicio.xhtml?faces-redirect=true";
     }

@@ -31,3 +31,11 @@ body {
 .espacioTexto {
     padding-left: 5px;
 }
+
+.textonegrita{
+    font-weight: bolder;
+}
+
+.textonormal{
+    font-weight: normal;
+}
