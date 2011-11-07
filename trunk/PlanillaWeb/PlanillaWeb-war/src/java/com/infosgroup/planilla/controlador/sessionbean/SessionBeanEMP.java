@@ -4,6 +4,10 @@
  */
 package com.infosgroup.planilla.controlador.sessionbean;
 
+import com.infosgroup.planilla.modelo.entidades.Campania;
+import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Plantilla;
+import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -16,7 +20,43 @@ import javax.faces.bean.SessionScoped;
 public class SessionBeanEMP {
 
     public SessionBeanEMP() {
-        
     }
     
+    private Campania campania;
+    private Plantilla plantilla;
+    private TipoEvaluacion tipoEvaluacion;
+    private Empleado empleado;
+
+    public Campania getCampania() {
+        return campania;
+    }
+
+    public void setCampania(Campania campania) {
+        this.campania = campania;
+    }
+
+    public Empleado getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
+
+    public Plantilla getPlantilla() {
+        return plantilla;
+    }
+
+    public void setPlantilla(Plantilla plantilla) {
+        this.plantilla = plantilla;
+    }
+
+    public TipoEvaluacion getTipoEvaluacion() {
+        return tipoEvaluacion;
+    }
+
+    public void setTipoEvaluacion(TipoEvaluacion tipoEvaluacion) {
+        this.tipoEvaluacion = tipoEvaluacion;
+    }
+
 }

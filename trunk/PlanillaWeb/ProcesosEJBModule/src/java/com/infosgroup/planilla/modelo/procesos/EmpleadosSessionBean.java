@@ -25,36 +25,27 @@ import javax.ejb.EJB;
 @Stateless
 @LocalBean
 public class EmpleadosSessionBean {
-    
+
     @EJB
     private CampaniaFacade campaniasFacade;
-    
     @EJB
     private TipoEvaluacionFacade tipoEvaluacionFacade;
-    
     @EJB
-    private PlantillaFacade plantillasFacade ;
-    
-    @EJB
-    private EmpleadoFacade empleadosFacade ;
+    private EmpleadoFacade empleadosFacade;
 
-    public List<Campania> listarCampanias() {        
+    public List<Campania> listarCampanias() {
         return campaniasFacade.findAll();
     }
-    
-    public List<TipoEvaluacion> listarTiposEvaluacion()
-    {
+
+    public List<TipoEvaluacion> listarTiposEvaluacion() {
         return tipoEvaluacionFacade.findAll();
     }
-    
-    public List<Plantilla> listarPlantillas()
-    {
-        return plantillasFacade.findAll();
+
+    public List<Plantilla> listarPlantillasPorTipoEvaluacion(TipoEvaluacion tipoEvaluacion) {
+        return (tipoEvaluacion != null) ? tipoEvaluacion.getPlantillaList() : null;
     }
 
-    public List<Empleado> listarEmpleados()
-    {
+    public List<Empleado> listarEmpleados() {
         return empleadosFacade.findAll();
     }
-
 }

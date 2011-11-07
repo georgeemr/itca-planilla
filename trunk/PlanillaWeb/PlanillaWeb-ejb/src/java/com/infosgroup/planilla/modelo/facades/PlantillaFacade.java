@@ -6,9 +6,12 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.Plantilla;
 import com.infosgroup.planilla.modelo.entidades.PlantillaPK;
+import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
 
 /**
  *

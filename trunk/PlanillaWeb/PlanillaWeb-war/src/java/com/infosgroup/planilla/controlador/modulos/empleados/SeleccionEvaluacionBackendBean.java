@@ -10,6 +10,7 @@ import com.infosgroup.planilla.modelo.entidades.Plantilla;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
@@ -53,7 +54,7 @@ public class SeleccionEvaluacionBackendBean extends JSFUtil implements Serializa
     private List<Plantilla> listaPlantillas;
 
     public List<Plantilla> getListaPlantillas() {
-        listaPlantillas = empleadosBean.listarPlantillas();
+        listaPlantillas = empleadosBean.listarPlantillasPorTipoEvaluacion(sessionBeanEMP.getTipoEvaluacion()); //(getSessionBeanEMP().getTipoEvaluacion() != null) ? getSessionBeanEMP().getTipoEvaluacion().getPlantillaList() : null; //empleadosBean.listarPlantillasPorTipoEvaluacion(sessionBeanEMP.getTipoEvaluacion());
         return listaPlantillas;
     }
 
@@ -70,18 +71,72 @@ public class SeleccionEvaluacionBackendBean extends JSFUtil implements Serializa
         this.listaEmpleados = listaEmpleados;
     }
 
-    public String mostrarEmpleados() {
-        listaEmpleados = empleadosBean.listarEmpleados();
+    public String mostrarEmpleados$action() {
+        boolean hayError = false;
+        if (getSessionBeanEMP().getCampania() == null) {
+            addMessage("Seleccion de evaluacion", "Seleccione una campa&ntilde;a", TipoMensaje.ADVERTENCIA);
+            hayError = true;
+        }
+        if (!hayError) {
+            addMessage("Seleccion de evaluacion", "Mostrando los empleados no evaluados para la campa&ntilde;a seleccionada", TipoMensaje.INFORMACION);
+            listaEmpleados = empleadosBean.listarEmpleados();
+        }
         return null;
+    }
+    private Empleado empleadoSeleccionado;
+
+    public Empleado getEmpleadoSeleccionado() {
+        return empleadoSeleccionado;
+    }
+
+    public void setEmpleadoSeleccionado(Empleado empleadoSeleccionado) {
+        this.empleadoSeleccionado = empleadoSeleccionado;
     }
 
     @Override
     protected void limpiarCampos() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
-    public String evaluarEmpleado$action()
-    {
-        return "evaluacionEmpleado?faces-redirect=true";
+
+    public String evaluarEmpleado$action() {
+        boolean hayError = false;
+        String outcome = null;
+
+        if (getSessionBeanEMP().getTipoEvaluacion() == null) {
+            addMessage("Seleccion de evaluacion", "Seleccione un tipo de evaluaci&oacute;n", TipoMensaje.ADVERTENCIA);
+            hayError = true;
+        }
+
+        if (getSessionBeanEMP().getPlantilla() == null) {
+            addMessage("Seleccion de evaluacion", "Seleccione una plantilla", TipoMensaje.ADVERTENCIA);
+            hayError = true;
+        }
+
+        if (empleadoSeleccionado == null) {
+            addMessage("Evaluacion de empleados", "Seleccione un empleado para evaluarlo", TipoMensaje.ADVERTENCIA);
+            hayError = true;
+        }
+
+        if (!hayError) {
+            sessionBeanEMP.setEmpleado(empleadoSeleccionado);
+            outcome = "evaluacionEmpleado?faces-redirect=true";
+        }
+        return outcome;
+    }
+
+    public String seleccionCampania$action() {
+        addMessage("", "Seleccionada campa&ntilde;a: " + getSessionBeanEMP().getCampania().getNombre(), TipoMensaje.INFORMACION);
+        return null;
+    }
+
+    public String seleccionTipoEvaluacion$action() {
+        getSessionBeanEMP().setPlantilla(null);
+        addMessage("", "Seleccionado Tipo de evaluaci&oacute;n: " + getSessionBeanEMP().getTipoEvaluacion().getNomTipoEvaluacion(), TipoMensaje.INFORMACION);
+        return null;
+    }
+
+    public String seleccionPlantilla$action() {
+        addMessage("", "Seleccionada plantilla: " + getSessionBeanEMP().getPlantilla().getNombre(), TipoMensaje.INFORMACION);
+        return null;
     }
 }
