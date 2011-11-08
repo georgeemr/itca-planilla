@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 
 import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -90,7 +91,18 @@ public class CandidatoBackendBean extends JSFUtil implements Serializable {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
-    
+
+    public String guardarDatos$action() {
+        try {
+            addMessage("Registro de Candidatos", "Datos guardados satisfactoriamente.", TipoMensaje.INFORMACION);
+        } catch (Exception e) {
+            addMessage("Registro de Candidatos", "Ocurrio un error al intentar almacenar la información.", TipoMensaje.ERROR_FATAL);
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+
     @Override
     protected void limpiarCampos() {
         throw new UnsupportedOperationException("Not supported yet.");
