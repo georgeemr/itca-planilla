@@ -11,7 +11,18 @@
     </ui:define>
 
     <ui:define name="acciones">
-        Acciones
+        <p:tab title="Acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu" action="#{reclutamiento$candidato.guardarDatos$action()}" update="mensajes">
+                    <p:graphicImage value="/resources/iconos/document-save.png"/>
+                    <h:outputText value="Guardar" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu" action="#{reclutamiento$candidato.guardarDatos$action()}" update="mensajes">
+                    <p:graphicImage value="/resources/iconos/document-save.png"/>
+                    <h:outputText value="Guardar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>  
     </ui:define>
 
     <ui:define name="titulo">
@@ -22,7 +33,7 @@
 
         <p:fieldset legend="Datos personales">
 
-            <h:panelGrid columns="2">
+            <h:panelGrid columns="6">
                 <h:outputLabel value="Nombre: "/>
                 <p:inputText id="txNombre" value="#{reclutamiento$candidato.nombre}" />
                 <h:outputLabel value="Apellido: "/>
@@ -30,8 +41,7 @@
                 <h:outputLabel value="Apellido de Casada: "/>
                 <p:inputText id="txApellidoCasada" value="#{reclutamiento$candidato.apellidoDeCasada}" />
                 <h:outputLabel value="Fecha de Nacimiento: "/>
-                <p:calendar id="calFechaNacimiento" 
-                            pattern="dd/MM/yyyy" 
+                <p:calendar id="calFechaNacimiento" pattern="dd/MM/yyyy" 
                             value="#{reclutamiento$candidato.fechaNacimiento}"
                             showOn="button"  />
                 <h:outputLabel value="Sexo: "/>
@@ -41,8 +51,12 @@
                 <h:outputLabel value="Observaciones:"/>
                 <p:inputTextarea id="txObservaciones" />
             </h:panelGrid>
-            
-            <h:outputLabel value="Criterios que cumple" />
+
+        </p:fieldset>
+
+        <p:spacer height="20px" />
+
+        <p:fieldset legend="Documentos de Identidad" >
 
         </p:fieldset>
 
