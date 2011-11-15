@@ -6,6 +6,7 @@ package com.infosgroup.planilla.controlador.modulos.empleados;
 
 import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Factor;
 import com.infosgroup.planilla.modelo.entidades.Plantilla;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
@@ -118,7 +119,12 @@ public class SeleccionEvaluacionBackendBean extends JSFUtil implements Serializa
         }
 
         if (!hayError) {
+            List<Factor> listaFactores = empleadosBean.listarFactoresPorPlantilla(null);
+            Factor primerFactor = ((listaFactores != null) &&  !listaFactores.isEmpty()) ? listaFactores.get(0) : null;
             sessionBeanEMP.setEmpleado(empleadoSeleccionado);
+            sessionBeanEMP.setListaFactores(listaFactores);
+            sessionBeanEMP.setFactor(primerFactor);
+            //outcome = "evaluacionEmpleado?faces-redirect=true&includeViewParams=true";
             outcome = "evaluacionEmpleado?faces-redirect=true";
         }
         return outcome;
