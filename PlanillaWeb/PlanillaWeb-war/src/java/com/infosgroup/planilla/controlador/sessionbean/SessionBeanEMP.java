@@ -6,10 +6,13 @@ package com.infosgroup.planilla.controlador.sessionbean;
 
 import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Factor;
 import com.infosgroup.planilla.modelo.entidades.Plantilla;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+
+import java.util.List;
 
 /**
  *
@@ -58,5 +61,25 @@ public class SessionBeanEMP {
     public void setTipoEvaluacion(TipoEvaluacion tipoEvaluacion) {
         this.tipoEvaluacion = tipoEvaluacion;
     }
+    
+    private Factor factor;
 
+    public Factor getFactor() {
+        return factor;
+    }
+
+    public void setFactor(Factor factor) {
+        this.factor = factor;
+    }
+    
+    private List<Factor> listaFactores ;
+
+    public List<Factor> getListaFactores() {
+        return listaFactores;
+    }
+
+    public void setListaFactores(List<Factor> listaFactores) {
+        this.listaFactores = listaFactores;
+    }
+    
 }

@@ -6,10 +6,13 @@ package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Factor;
 import com.infosgroup.planilla.modelo.entidades.Plantilla;
+import com.infosgroup.planilla.modelo.entidades.Pregunta;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
 import com.infosgroup.planilla.modelo.facades.CampaniaFacade;
 import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
+import com.infosgroup.planilla.modelo.facades.FactorFacade;
 import com.infosgroup.planilla.modelo.facades.PlantillaFacade;
 import com.infosgroup.planilla.modelo.facades.TipoEvaluacionFacade;
 import javax.ejb.Stateless;
@@ -32,6 +35,8 @@ public class EmpleadosSessionBean {
     private TipoEvaluacionFacade tipoEvaluacionFacade;
     @EJB
     private EmpleadoFacade empleadosFacade;
+    @EJB
+    private FactorFacade factorFacade;
 
     public List<Campania> listarCampanias() {
         return campaniasFacade.findAll();
@@ -48,4 +53,15 @@ public class EmpleadosSessionBean {
     public List<Empleado> listarEmpleados() {
         return empleadosFacade.findAll();
     }
+    
+    public List<Factor> listarFactoresPorPlantilla(Plantilla plantilla)
+    {
+        return factorFacade.findAll();
+    }
+    
+    public List<Pregunta> listarPreguntasPorFactor(Factor factor)
+    {
+        return (factor != null) ? factor.getPreguntaList() : null;
+    }
+    
 }

@@ -47,7 +47,6 @@ public abstract class JSFUtil {
     protected abstract void limpiarCampos();
 
     protected enum EstadoAccion {
-
         CREANDO,
         MODIFICANDO
     }
