@@ -46,6 +46,17 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Empleado implements Serializable
 {
 
+    @Column(name = "fecha_nac")
+    @Temporal(TemporalType.DATE)
+    private Date fechaNac;
+    @Column(name = "fec_ingreso")
+    @Temporal(TemporalType.DATE)
+    private Date fecIngreso;
+    @Column(name = "fec_salida")
+    @Temporal(TemporalType.DATE)
+    private Date fecSalida;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private List<DetPlanilla> detPlanillaList;
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
@@ -62,18 +73,6 @@ public class Empleado implements Serializable
     @Size(max = 2147483647)
     @Column(name = "ap_casada", length = 2147483647)
     private String apCasada;
-
-    @Column(name = "fecha_nac")
-    @Temporal(TemporalType.DATE)
-    private Date fechaNac;
-
-    @Column(name = "fec_ingreso")
-    @Temporal(TemporalType.DATE)
-    private Date fecIngreso;
-
-    @Column(name = "fec_salida")
-    @Temporal(TemporalType.DATE)
-    private Date fecSalida;
 
     @Size(max = 2147483647)
     @Column(name = "observacion", length = 2147483647)
@@ -229,6 +228,14 @@ public class Empleado implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Empleado[ empleadoPK=" + empleadoPK + " ]";
+    }
+
+    public List<DetPlanilla> getDetPlanillaList() {
+        return detPlanillaList;
+    }
+
+    public void setDetPlanillaList(List<DetPlanilla> detPlanillaList) {
+        this.detPlanillaList = detPlanillaList;
     }
     
 }
