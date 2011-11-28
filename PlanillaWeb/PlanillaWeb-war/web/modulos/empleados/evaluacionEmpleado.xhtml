@@ -6,9 +6,6 @@
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
-    <!--f:metadata>
-        <f:viewParam name="plantilla" value="#{SessionBeanEMP.plantilla.plantillaPK.codPlantilla}"/>
-    </f:metadata-->
     <ui:define name="titulo">
         <h:outputText value="Evaluaci&oacute;n de empleado"/>        
     </ui:define>
@@ -27,14 +24,11 @@
             <h:panelGrid columns="4" width="100%">
                 <h:outputText value="Campaña" styleClass="negrita"/>
                 <h:outputText value="#{SessionBeanEMP.campania.nombre}"/>
-
                 <h:outputText value="Tipo de evaluacion" styleClass="negrita"/>
                 <h:outputText value="#{SessionBeanEMP.tipoEvaluacion.nomTipoEvaluacion}"/>
-
                 <h:outputText value="Plantilla" styleClass="negrita"/>
                 <h:outputText value="#{SessionBeanEMP.plantilla.nombre}"/>
-
-                <h:outputText value="Empleado:" styleClass="negrita"/>
+                <h:outputText value="Empleado" styleClass="negrita"/>
                 <h:panelGrid columns="3" cellspacing="0" cellpadding="0">
                     <h:outputText value="#{SessionBeanEMP.empleado.nombres}"/>
                     <p:spacer width="4"/>
@@ -42,15 +36,13 @@
                     <h:outputText value="#{SessionBeanEMP.empleado.apCasada}" rendered="#{SessionBeanEMP.empleado.apCasada ne null}"/>
                 </h:panelGrid>
             </h:panelGrid>
-
             <p:separator/>
-
-            <p:wizard id="wizard1" backLabel="Anterior" flowListener="#{empleados$evaluacionEmpleado.defaultFlowListener}" nextLabel="Siguiente" showStepStatus="true" showNavBar="true" onback="" >
+            <p:wizard id="wizard1" backLabel="Anterior" flowListener="#{empleados$evaluacionEmpleado.defaultFlowListener}" nextLabel="Siguiente" showStepStatus="true" showNavBar="true">
                 <c:forEach items="#{SessionBeanEMP.listaFactores}" var="factor" varStatus="status">
                     <p:tab title="#{factor.nombre}" id="tab#{status.count}">
-                        <p:dataTable id="wizardTable" dynamic="true" value="#{empleados$evaluacionEmpleado.listaPreguntas}" var="pregunta">
+                        <p:dataTable binding="#{empleados$evaluacionEmpleado.wizardTable[status.count-1]}" value="#{empleados$evaluacionEmpleado.listaPreguntas}" var="pregunta">
                             <f:facet name="header">
-                                <h:outputText value="Factor: #{factor.nombre} - Ponderaci&oacute;n: #{factor.ponderacion}%"/>
+                                <h:outputText value="Ponderaci&oacute;n: #{factor.ponderacion}%"/>
                             </f:facet>
                             <p:column headerText="ID">
                                 <h:outputText value="#{pregunta.preguntaPK.codPregunta}"/>
@@ -59,14 +51,14 @@
                                 <h:outputText value="#{pregunta.descripcion}"/>
                             </p:column>
                             <p:column headerText="Respuesta">
-                                <h:selectOneMenu required="false">
-                                    <f:selectItems value="#{pregunta.respuestaList}" var="respuesta" itemValue="#{respuesta.texto}" itemLabel="#{respuesta.nivel}"/>
+                                <h:selectOneMenu value="#{pregunta.respuestaSeleccionada}">
+                                    <f:selectItems value="#{pregunta.respuestaList}" var="respuesta" itemValue="#{respuesta.respuestaPK.codCia}:#{respuesta.respuestaPK.codTipoRespuesta}:#{respuesta.respuestaPK.grupoRespuesta}:#{respuesta.respuestaPK.codRespuesta}" itemLabel="#{respuesta.nivel}" itemDescription="#{respuesta.texto}"/>                                    
                                 </h:selectOneMenu>
                             </p:column>
                         </p:dataTable>
                     </p:tab>
                 </c:forEach>
-                <p:tab title="Fin" id="tab0">
+                <p:tab title="Fin" id="tab1000">
                     <p:panel header="Fin de evaluaci&oacute;n" style="text-align: center;">
                         <h:panelGrid columns="2" style="text-align: center;">
                             <p:graphicImage width="64" height="64" url="/resources/imagenes/64/applications-education-university.png"/>
@@ -86,10 +78,9 @@
             </h:panelGrid>
             <p:separator/>
             <h:panelGrid columns="2">
-                <p:commandButton value="Si" image="ui-icon ui-icon-circle-check" action="#{empleados$evaluacionEmpleado.inicio$action}"/>
+                <p:commandButton value="Si" image="ui-icon ui-icon-circle-check" action="#{empleados$evaluacionEmpleado.cerrarEvaluacion$action}"/>
                 <p:commandButton value="No" image="ui-icon ui-icon-circle-close" onclick="cnf1.hide();"/>
             </h:panelGrid>
-
         </p:dialog>
     </ui:define>
 </ui:composition>
