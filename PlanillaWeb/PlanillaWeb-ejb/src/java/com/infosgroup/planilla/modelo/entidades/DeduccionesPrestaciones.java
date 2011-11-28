@@ -5,6 +5,8 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -13,6 +15,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,6 +35,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "DeduccionesPrestaciones.findByIdPrestacion", query = "SELECT d FROM DeduccionesPrestaciones d WHERE d.deduccionesPrestacionesPK.idPrestacion = :idPrestacion"),
     @NamedQuery(name = "DeduccionesPrestaciones.findByNomPrestacion", query = "SELECT d FROM DeduccionesPrestaciones d WHERE d.nomPrestacion = :nomPrestacion")})
 public class DeduccionesPrestaciones implements Serializable {
+    @Size(max = 2147483647)
+    @Column(name = "tipo", length = 2147483647)
+    private String tipo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deduccionesPrestaciones")
+    private List<DetPlanilla> detPlanillaList;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected DeduccionesPrestacionesPK deduccionesPrestacionesPK;
@@ -103,6 +111,22 @@ public class DeduccionesPrestaciones implements Serializable {
     @Override
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.DeduccionesPrestaciones[ deduccionesPrestacionesPK=" + deduccionesPrestacionesPK + " ]";
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public List<DetPlanilla> getDetPlanillaList() {
+        return detPlanillaList;
+    }
+
+    public void setDetPlanillaList(List<DetPlanilla> detPlanillaList) {
+        this.detPlanillaList = detPlanillaList;
     }
     
 }

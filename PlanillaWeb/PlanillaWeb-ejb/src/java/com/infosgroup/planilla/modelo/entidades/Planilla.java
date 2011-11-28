@@ -6,6 +6,8 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -14,6 +16,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,6 +37,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Planilla.findByIdEmpleado", query = "SELECT p FROM Planilla p WHERE p.planillaPK.idEmpleado = :idEmpleado"),
     @NamedQuery(name = "Planilla.findByFecha", query = "SELECT p FROM Planilla p WHERE p.fecha = :fecha")})
 public class Planilla implements Serializable {
+    @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Compania compania;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla")
+    private List<DetPlanilla> detPlanillaList;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PlanillaPK planillaPK;
@@ -104,6 +112,22 @@ public class Planilla implements Serializable {
     @Override
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.Planilla[ planillaPK=" + planillaPK + " ]";
+    }
+
+    public Compania getCompania() {
+        return compania;
+    }
+
+    public void setCompania(Compania compania) {
+        this.compania = compania;
+    }
+
+    public List<DetPlanilla> getDetPlanillaList() {
+        return detPlanillaList;
+    }
+
+    public void setDetPlanillaList(List<DetPlanilla> detPlanillaList) {
+        this.detPlanillaList = detPlanillaList;
     }
     
 }

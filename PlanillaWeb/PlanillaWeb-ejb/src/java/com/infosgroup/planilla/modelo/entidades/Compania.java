@@ -47,6 +47,9 @@ public class Compania implements Serializable {
     @Column(name = "razon_social", length = 200)
     private String razonSocial;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Planilla> planillaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Empleado> empleadoList;
     private List<Indicador> indicadorList;
 
     public Compania() {
@@ -86,6 +89,22 @@ public class Compania implements Serializable {
 
     public void setRazonSocial(String razonSocial) {
         this.razonSocial = razonSocial;
+    }
+
+    public List<Planilla> getPlanillaList() {
+        return planillaList;
+    }
+
+    public void setPlanillaList(List<Planilla> planillaList) {
+        this.planillaList = planillaList;
+    }
+
+    public List<Empleado> getEmpleadoList() {
+        return empleadoList;
+    }
+
+    public void setEmpleadoList(List<Empleado> empleadoList) {
+        this.empleadoList = empleadoList;
     }
 
     public List<Indicador> getIndicadorList() {
