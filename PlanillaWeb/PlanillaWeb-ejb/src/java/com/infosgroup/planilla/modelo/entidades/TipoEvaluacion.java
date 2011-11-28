@@ -11,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -30,108 +29,122 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "tipo_evaluacion")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+    {
     @NamedQuery(name = "TipoEvaluacion.findAll", query = "SELECT t FROM TipoEvaluacion t"),
     @NamedQuery(name = "TipoEvaluacion.findByCodCia", query = "SELECT t FROM TipoEvaluacion t WHERE t.tipoEvaluacionPK.codCia = :codCia"),
     @NamedQuery(name = "TipoEvaluacion.findByCodTipoEvaluacion", query = "SELECT t FROM TipoEvaluacion t WHERE t.tipoEvaluacionPK.codTipoEvaluacion = :codTipoEvaluacion"),
-    @NamedQuery(name = "TipoEvaluacion.findByNomTipoEvaluacion", query = "SELECT t FROM TipoEvaluacion t WHERE t.nomTipoEvaluacion = :nomTipoEvaluacion")})
-public class TipoEvaluacion implements Serializable {
+    @NamedQuery(name = "TipoEvaluacion.findByNomTipoEvaluacion", query = "SELECT t FROM TipoEvaluacion t WHERE t.nomTipoEvaluacion = :nomTipoEvaluacion")
+    })
+public class TipoEvaluacion implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected TipoEvaluacionPK tipoEvaluacionPK;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "nom_tipo_evaluacion", nullable = false, length = 2147483647)
     private String nomTipoEvaluacion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion", fetch = FetchType.EAGER)
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion")
     private List<Plantilla> plantillaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion1")
-    private List<ResultadoEvaluacionCandidato> resultadoEvaluacionCandidatoList;
+
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
 
-    public TipoEvaluacion() {
+    public TipoEvaluacion()
+    {
     }
 
-    public TipoEvaluacion(TipoEvaluacionPK tipoEvaluacionPK) {
+    public TipoEvaluacion(TipoEvaluacionPK tipoEvaluacionPK)
+    {
         this.tipoEvaluacionPK = tipoEvaluacionPK;
     }
 
-    public TipoEvaluacion(TipoEvaluacionPK tipoEvaluacionPK, String nomTipoEvaluacion) {
+    public TipoEvaluacion(TipoEvaluacionPK tipoEvaluacionPK, String nomTipoEvaluacion)
+    {
         this.tipoEvaluacionPK = tipoEvaluacionPK;
         this.nomTipoEvaluacion = nomTipoEvaluacion;
     }
 
-    public TipoEvaluacion(int codCia, int codTipoEvaluacion) {
+    public TipoEvaluacion(int codCia, int codTipoEvaluacion)
+    {
         this.tipoEvaluacionPK = new TipoEvaluacionPK(codCia, codTipoEvaluacion);
     }
 
-    public TipoEvaluacionPK getTipoEvaluacionPK() {
+    public TipoEvaluacionPK getTipoEvaluacionPK()
+    {
         return tipoEvaluacionPK;
     }
 
-    public void setTipoEvaluacionPK(TipoEvaluacionPK tipoEvaluacionPK) {
+    public void setTipoEvaluacionPK(TipoEvaluacionPK tipoEvaluacionPK)
+    {
         this.tipoEvaluacionPK = tipoEvaluacionPK;
     }
 
-    public String getNomTipoEvaluacion() {
+    public String getNomTipoEvaluacion()
+    {
         return nomTipoEvaluacion;
     }
 
-    public void setNomTipoEvaluacion(String nomTipoEvaluacion) {
+    public void setNomTipoEvaluacion(String nomTipoEvaluacion)
+    {
         this.nomTipoEvaluacion = nomTipoEvaluacion;
     }
 
     @XmlTransient
-    public List<Plantilla> getPlantillaList() {
+    public List<Plantilla> getPlantillaList()
+    {
         return plantillaList;
     }
 
-    public void setPlantillaList(List<Plantilla> plantillaList) {
+    public void setPlantillaList(List<Plantilla> plantillaList)
+    {
         this.plantillaList = plantillaList;
     }
 
-    @XmlTransient
-    public List<ResultadoEvaluacionCandidato> getResultadoEvaluacionCandidatoList() {
-        return resultadoEvaluacionCandidatoList;
-    }
-
-    public void setResultadoEvaluacionCandidatoList(List<ResultadoEvaluacionCandidato> resultadoEvaluacionCandidatoList) {
-        this.resultadoEvaluacionCandidatoList = resultadoEvaluacionCandidatoList;
-    }
-
-    public Compania getCompania() {
+    public Compania getCompania()
+    {
         return compania;
     }
 
-    public void setCompania(Compania compania) {
+    public void setCompania(Compania compania)
+    {
         this.compania = compania;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (tipoEvaluacionPK != null ? tipoEvaluacionPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoEvaluacion)) {
+        if (!(object instanceof TipoEvaluacion))
+            {
             return false;
-        }
+            }
         TipoEvaluacion other = (TipoEvaluacion) object;
-        if ((this.tipoEvaluacionPK == null && other.tipoEvaluacionPK != null) || (this.tipoEvaluacionPK != null && !this.tipoEvaluacionPK.equals(other.tipoEvaluacionPK))) {
+        if ((this.tipoEvaluacionPK == null && other.tipoEvaluacionPK != null) || (this.tipoEvaluacionPK != null && !this.tipoEvaluacionPK.equals(other.tipoEvaluacionPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.TipoEvaluacion[ tipoEvaluacionPK=" + tipoEvaluacionPK + " ]";
     }
     
