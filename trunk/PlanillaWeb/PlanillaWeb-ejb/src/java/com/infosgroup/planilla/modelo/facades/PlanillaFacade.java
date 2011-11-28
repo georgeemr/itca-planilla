@@ -4,8 +4,8 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
-import com.infosgroup.planilla.modelo.entidades.DeduccionesPrestaciones;
-import com.infosgroup.planilla.modelo.entidades.DeduccionesPrestacionesPK;
+import com.infosgroup.planilla.modelo.entidades.Planilla;
+import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,8 @@ import javax.persistence.PersistenceContext;
  * @author root
  */
 @Stateless
-public class DeduccionesPrestacionesFacade extends AbstractFacade<DeduccionesPrestaciones, DeduccionesPrestacionesPK> {
+public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
+
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
@@ -24,8 +25,8 @@ public class DeduccionesPrestacionesFacade extends AbstractFacade<DeduccionesPre
         return em;
     }
 
-    public DeduccionesPrestacionesFacade() {
-        super(DeduccionesPrestaciones.class);
+    public PlanillaFacade() {
+        super(Planilla.class);
     }
     
 }
