@@ -29,108 +29,136 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "factor")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+    {
     @NamedQuery(name = "Factor.findAll", query = "SELECT f FROM Factor f"),
     @NamedQuery(name = "Factor.findByCodCia", query = "SELECT f FROM Factor f WHERE f.factorPK.codCia = :codCia"),
     @NamedQuery(name = "Factor.findByCodFactor", query = "SELECT f FROM Factor f WHERE f.factorPK.codFactor = :codFactor"),
     @NamedQuery(name = "Factor.findByNombre", query = "SELECT f FROM Factor f WHERE f.nombre = :nombre"),
-    @NamedQuery(name = "Factor.findByPonderacion", query = "SELECT f FROM Factor f WHERE f.ponderacion = :ponderacion")})
-public class Factor implements Serializable {
+    @NamedQuery(name = "Factor.findByPonderacion", query = "SELECT f FROM Factor f WHERE f.ponderacion = :ponderacion")
+    })
+public class Factor implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected FactorPK factorPK;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
+
     @Column(name = "ponderacion")
     private Integer ponderacion;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "factor")
     private List<Pregunta> preguntaList;
+
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
 
-    public Factor() {
+    public Factor()
+    {
     }
 
-    public Factor(FactorPK factorPK) {
+    public Factor(FactorPK factorPK)
+    {
         this.factorPK = factorPK;
     }
 
-    public Factor(FactorPK factorPK, String nombre) {
+    public Factor(FactorPK factorPK, String nombre)
+    {
         this.factorPK = factorPK;
         this.nombre = nombre;
     }
 
-    public Factor(int codCia, int codFactor) {
+    public Factor(int codCia, int codFactor)
+    {
         this.factorPK = new FactorPK(codCia, codFactor);
     }
 
-    public FactorPK getFactorPK() {
+    public FactorPK getFactorPK()
+    {
         return factorPK;
     }
 
-    public void setFactorPK(FactorPK factorPK) {
+    public void setFactorPK(FactorPK factorPK)
+    {
         this.factorPK = factorPK;
     }
 
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre)
+    {
         this.nombre = nombre;
     }
 
-    public Integer getPonderacion() {
+    public Integer getPonderacion()
+    {
         return ponderacion;
     }
 
-    public void setPonderacion(Integer ponderacion) {
+    public void setPonderacion(Integer ponderacion)
+    {
         this.ponderacion = ponderacion;
     }
 
     @XmlTransient
-    public List<Pregunta> getPreguntaList() {
+    public List<Pregunta> getPreguntaList()
+    {
         return preguntaList;
     }
 
-    public void setPreguntaList(List<Pregunta> preguntaList) {
+    public void setPreguntaList(List<Pregunta> preguntaList)
+    {
         this.preguntaList = preguntaList;
     }
 
-    public Compania getCompania() {
+    public Compania getCompania()
+    {
         return compania;
     }
 
-    public void setCompania(Compania compania) {
+    public void setCompania(Compania compania)
+    {
         this.compania = compania;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (factorPK != null ? factorPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Factor)) {
+        if (!(object instanceof Factor))
+            {
             return false;
-        }
+            }
         Factor other = (Factor) object;
-        if ((this.factorPK == null && other.factorPK != null) || (this.factorPK != null && !this.factorPK.equals(other.factorPK))) {
+        if ((this.factorPK == null && other.factorPK != null) || (this.factorPK != null && !this.factorPK.equals(other.factorPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Factor[ factorPK=" + factorPK + " ]";
     }
     

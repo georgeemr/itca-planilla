@@ -15,42 +15,52 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class FactorPK implements Serializable {
+public class FactorPK implements Serializable
+{
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_cia", nullable = false)
     private int codCia;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_factor", nullable = false)
     private int codFactor;
 
-    public FactorPK() {
+    public FactorPK()
+    {
     }
 
-    public FactorPK(int codCia, int codFactor) {
+    public FactorPK(int codCia, int codFactor)
+    {
         this.codCia = codCia;
         this.codFactor = codFactor;
     }
 
-    public int getCodCia() {
+    public int getCodCia()
+    {
         return codCia;
     }
 
-    public void setCodCia(int codCia) {
+    public void setCodCia(int codCia)
+    {
         this.codCia = codCia;
     }
 
-    public int getCodFactor() {
+    public int getCodFactor()
+    {
         return codFactor;
     }
 
-    public void setCodFactor(int codFactor) {
+    public void setCodFactor(int codFactor)
+    {
         this.codFactor = codFactor;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codFactor;
@@ -58,23 +68,28 @@ public class FactorPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof FactorPK)) {
+        if (!(object instanceof FactorPK))
+            {
             return false;
-        }
+            }
         FactorPK other = (FactorPK) object;
-        if (this.codCia != other.codCia) {
+        if (this.codCia != other.codCia)
+            {
             return false;
-        }
-        if (this.codFactor != other.codFactor) {
+            }
+        if (this.codFactor != other.codFactor)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.FactorPK[ codCia=" + codCia + ", codFactor=" + codFactor + " ]";
     }
     

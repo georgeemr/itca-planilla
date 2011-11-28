@@ -15,42 +15,52 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class TipoEvaluacionPK implements Serializable {
+public class TipoEvaluacionPK implements Serializable
+{
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_cia", nullable = false)
     private int codCia;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_tipo_evaluacion", nullable = false)
     private int codTipoEvaluacion;
 
-    public TipoEvaluacionPK() {
+    public TipoEvaluacionPK()
+    {
     }
 
-    public TipoEvaluacionPK(int codCia, int codTipoEvaluacion) {
+    public TipoEvaluacionPK(int codCia, int codTipoEvaluacion)
+    {
         this.codCia = codCia;
         this.codTipoEvaluacion = codTipoEvaluacion;
     }
 
-    public int getCodCia() {
+    public int getCodCia()
+    {
         return codCia;
     }
 
-    public void setCodCia(int codCia) {
+    public void setCodCia(int codCia)
+    {
         this.codCia = codCia;
     }
 
-    public int getCodTipoEvaluacion() {
+    public int getCodTipoEvaluacion()
+    {
         return codTipoEvaluacion;
     }
 
-    public void setCodTipoEvaluacion(int codTipoEvaluacion) {
+    public void setCodTipoEvaluacion(int codTipoEvaluacion)
+    {
         this.codTipoEvaluacion = codTipoEvaluacion;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codTipoEvaluacion;
@@ -58,23 +68,28 @@ public class TipoEvaluacionPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoEvaluacionPK)) {
+        if (!(object instanceof TipoEvaluacionPK))
+            {
             return false;
-        }
+            }
         TipoEvaluacionPK other = (TipoEvaluacionPK) object;
-        if (this.codCia != other.codCia) {
+        if (this.codCia != other.codCia)
+            {
             return false;
-        }
-        if (this.codTipoEvaluacion != other.codTipoEvaluacion) {
+            }
+        if (this.codTipoEvaluacion != other.codTipoEvaluacion)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.TipoEvaluacionPK[ codCia=" + codCia + ", codTipoEvaluacion=" + codTipoEvaluacion + " ]";
     }
     
