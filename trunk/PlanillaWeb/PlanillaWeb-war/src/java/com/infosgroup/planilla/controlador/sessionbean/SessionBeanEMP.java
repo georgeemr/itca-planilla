@@ -9,6 +9,7 @@ import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.entidades.Factor;
 import com.infosgroup.planilla.modelo.entidades.Plantilla;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
+import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -20,66 +21,93 @@ import java.util.List;
  */
 @ManagedBean(name = "SessionBeanEMP")
 @SessionScoped
-public class SessionBeanEMP {
+public class SessionBeanEMP
+{
+public SessionBeanEMP()
+{
+}
 
-    public SessionBeanEMP() {
-    }
-    
-    private Campania campania;
-    private Plantilla plantilla;
-    private TipoEvaluacion tipoEvaluacion;
-    private Empleado empleado;
+private Campania campania;
 
-    public Campania getCampania() {
-        return campania;
-    }
+private Plantilla plantilla;
 
-    public void setCampania(Campania campania) {
-        this.campania = campania;
-    }
+private TipoEvaluacion tipoEvaluacion;
 
-    public Empleado getEmpleado() {
-        return empleado;
-    }
+private Empleado empleado;
 
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
-    }
+public Campania getCampania()
+{
+    return campania;
+}
 
-    public Plantilla getPlantilla() {
-        return plantilla;
-    }
+public void setCampania(Campania campania)
+{
+    this.campania = campania;
+}
 
-    public void setPlantilla(Plantilla plantilla) {
-        this.plantilla = plantilla;
-    }
+public Empleado getEmpleado()
+{
+    return empleado;
+}
 
-    public TipoEvaluacion getTipoEvaluacion() {
-        return tipoEvaluacion;
-    }
+public void setEmpleado(Empleado empleado)
+{
+    this.empleado = empleado;
+}
 
-    public void setTipoEvaluacion(TipoEvaluacion tipoEvaluacion) {
-        this.tipoEvaluacion = tipoEvaluacion;
-    }
-    
-    private Factor factor;
+public Plantilla getPlantilla()
+{
+    return plantilla;
+}
 
-    public Factor getFactor() {
-        return factor;
-    }
+public void setPlantilla(Plantilla plantilla)
+{
+    this.plantilla = plantilla;
+}
 
-    public void setFactor(Factor factor) {
-        this.factor = factor;
-    }
-    
-    private List<Factor> listaFactores ;
+public TipoEvaluacion getTipoEvaluacion()
+{
+    return tipoEvaluacion;
+}
 
-    public List<Factor> getListaFactores() {
-        return listaFactores;
-    }
+public void setTipoEvaluacion(TipoEvaluacion tipoEvaluacion)
+{
+    this.tipoEvaluacion = tipoEvaluacion;
+}
 
-    public void setListaFactores(List<Factor> listaFactores) {
-        this.listaFactores = listaFactores;
-    }
-    
+private Factor factor;
+
+public Factor getFactor()
+{
+    return factor;
+}
+
+public void setFactor(Factor factor)
+{
+    this.factor = factor;
+}
+
+private List<Factor> listaFactores;
+
+public List<Factor> getListaFactores()
+{
+    return listaFactores;
+}
+
+public void setListaFactores(List<Factor> listaFactores)
+{
+    this.listaFactores = listaFactores;
+}
+
+private List<DetalleEvaluacion> detalleEvaluacionTemporal;
+
+public List<DetalleEvaluacion> getDetalleEvaluacionTemporal()
+{
+    return detalleEvaluacionTemporal;
+}
+
+public void setDetalleEvaluacionTemporal(List<DetalleEvaluacion> detalleEvaluacionTemporal)
+{
+    this.detalleEvaluacionTemporal = detalleEvaluacionTemporal;
+}
 }
