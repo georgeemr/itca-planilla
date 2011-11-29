@@ -7,125 +7,183 @@
                 template="/plantillas/defaultTemplate.xhtml">
 
     <ui:define name="titulo">
-        titulo
+        Indicadores de RRHH
     </ui:define>
 
     <ui:define name="acciones">
-        acciones
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu" ajax="true" action="#{reportes$indicador.inicio$action}">
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
     </ui:define>
 
     <ui:define name="contenido">
-        <p:fieldset legend="1">
-            <table width="100%" cellpadding="0" cellspacing="0" border="1">
+        <p:fieldset legend="Reclutamiento y Selecci&oacute;n" style="width: 75%;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td>
-                        <h:outputText value="#{reportes$indicador.indicadores.get(0)}"/>
+                    <td width="60%">
+                        <h:outputText value="#{(reportes$indicador.indicadores.get(0)).nombreIndicador}"/>
                     </td>
-                    <td></td>
+                    <td width="40%">
+                        <h:outputText value="#{(reportes$indicador.indicadores.get(0)).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(1).nombreIndicador}"/>
+                    </td>
+                    <td>
+                         <h:outputText value="#{reportes$indicador.indicadores.get(1).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(2).nombreIndicador}"/>
+                    </td>
+                    <td>
+                          <h:outputText value="#{reportes$indicador.indicadores.get(2).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(3).nombreIndicador}"/>
+                    </td>
+                    <td>
+                         <h:outputText value="#{reportes$indicador.indicadores.get(3).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(4).nombreIndicador}"/>
+                    </td>
+                    <td>
+                         <h:outputText value="#{reportes$indicador.indicadores.get(4).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(5).nombreIndicador}"/>
+                    </td>
+                    <td>
+                         <h:outputText value="#{reportes$indicador.indicadores.get(5).valorIndicador}%"/>
+                    </td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
+               
             </table>
         </p:fieldset>
         
-           <p:fieldset legend="2">
-            <table width="100%" cellpadding="0" cellspacing="0" border="1">
+        <p:spacer height="20"/>
+        
+        <p:fieldset legend="Evaluaci&oacute;n del Desempe&ntilde;o" style="width: 75%;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(6).nombreIndicador}"/>
+                    </td>
+                    <td>
+                         <h:outputText value="#{reportes$indicador.indicadores.get(6).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(7).nombreIndicador}"/>
+                    </td>
+                    <td>
+                        <h:outputText value="#{reportes$indicador.indicadores.get(7).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(8).nombreIndicador}"/>
+                    </td>
+                    <td>
+                        <h:outputText value="#{reportes$indicador.indicadores.get(8).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(9).nombreIndicador}"/>
+                    </td>
+                    <td>
+                        <h:outputText value="#{reportes$indicador.indicadores.get(9).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(10).nombreIndicador}"/>
+                    </td>
+                    <td>
+                        <h:outputText value="#{reportes$indicador.indicadores.get(10).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(11).nombreIndicador}"/>
+                    </td>
+                    <td>
+                        <h:outputText value="#{reportes$indicador.indicadores.get(11).valorIndicador}%"/>
+                    </td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
+                 </table>
         </p:fieldset>
         
-           <p:fieldset legend="3">
-            <table width="100%" cellpadding="0" cellspacing="0" border="1">
+        <p:spacer height="20"/>
+        
+        <p:fieldset legend="RRHH" style="width: 75%;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(12).nombreIndicador}"/>
+                    </td>
+                    <td>
+                         <h:outputText value="#{reportes$indicador.indicadores.get(12).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(13).nombreIndicador}"/>
+                    </td>
+                    <td>
+                        <h:outputText value="#{reportes$indicador.indicadores.get(13).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(14).nombreIndicador}"/>
+                    </td>
+                    <td>
+                        <h:outputText value="#{reportes$indicador.indicadores.get(14).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(15).nombreIndicador}"/>
+                    </td>
+                    <td>
+                        <h:outputText value="#{reportes$indicador.indicadores.get(15).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(16).nombreIndicador}"/>
+                    </td>
+                    <td>
+                        <h:outputText value="#{reportes$indicador.indicadores.get(16).valorIndicador}%"/>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="60%">
+                        <h:outputText value="#{reportes$indicador.indicadores.get(17).nombreIndicador}"/>
+                    </td>
+                    <td>
+                         <h:outputText value="#{reportes$indicador.indicadores.get(17).valorIndicador}%"/>
+                    </td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
+                </table>
         </p:fieldset>
     </ui:define>
 
