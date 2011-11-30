@@ -50,6 +50,7 @@ public class Compania implements Serializable {
     private List<Planilla> planillaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Empleado> empleadoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Indicador> indicadorList;
 
     public Compania() {
