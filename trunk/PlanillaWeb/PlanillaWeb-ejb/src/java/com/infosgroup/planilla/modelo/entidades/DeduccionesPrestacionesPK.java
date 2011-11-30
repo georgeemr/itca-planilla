@@ -20,14 +20,14 @@ public class DeduccionesPrestacionesPK implements Serializable {
     @NotNull
     @Column(name = "id_compania", nullable = false)
     private int idCompania;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_tipo_cuenta", nullable = false)
-    private int idTipoCuenta;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_cuenta", nullable = false)
-    private int idCuenta;
+//    @Basic(optional = false)
+//    @NotNull
+//    @Column(name = "id_tipo_cuenta", nullable = false)
+//    private int idTipoCuenta;
+//    @Basic(optional = false)
+//    @NotNull
+//    @Column(name = "id_cuenta", nullable = false)
+//    private int idCuenta;
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_prestacion", nullable = false)
@@ -36,10 +36,8 @@ public class DeduccionesPrestacionesPK implements Serializable {
     public DeduccionesPrestacionesPK() {
     }
 
-    public DeduccionesPrestacionesPK(int idCompania, int idTipoCuenta, int idCuenta, int idPrestacion) {
+    public DeduccionesPrestacionesPK(int idCompania, int idPrestacion) {
         this.idCompania = idCompania;
-        this.idTipoCuenta = idTipoCuenta;
-        this.idCuenta = idCuenta;
         this.idPrestacion = idPrestacion;
     }
 
@@ -51,21 +49,21 @@ public class DeduccionesPrestacionesPK implements Serializable {
         this.idCompania = idCompania;
     }
 
-    public int getIdTipoCuenta() {
-        return idTipoCuenta;
-    }
-
-    public void setIdTipoCuenta(int idTipoCuenta) {
-        this.idTipoCuenta = idTipoCuenta;
-    }
-
-    public int getIdCuenta() {
-        return idCuenta;
-    }
-
-    public void setIdCuenta(int idCuenta) {
-        this.idCuenta = idCuenta;
-    }
+//    public int getIdTipoCuenta() {
+//        return idTipoCuenta;
+//    }
+//
+//    public void setIdTipoCuenta(int idTipoCuenta) {
+//        this.idTipoCuenta = idTipoCuenta;
+//    }
+//
+//    public int getIdCuenta() {
+//        return idCuenta;
+//    }
+//
+//    public void setIdCuenta(int idCuenta) {
+//        this.idCuenta = idCuenta;
+//    }
 
     public int getIdPrestacion() {
         return idPrestacion;
@@ -79,8 +77,8 @@ public class DeduccionesPrestacionesPK implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (int) idCompania;
-        hash += (int) idTipoCuenta;
-        hash += (int) idCuenta;
+//        hash += (int) idTipoCuenta;
+//        hash += (int) idCuenta;
         hash += (int) idPrestacion;
         return hash;
     }
@@ -95,12 +93,12 @@ public class DeduccionesPrestacionesPK implements Serializable {
         if (this.idCompania != other.idCompania) {
             return false;
         }
-        if (this.idTipoCuenta != other.idTipoCuenta) {
-            return false;
-        }
-        if (this.idCuenta != other.idCuenta) {
-            return false;
-        }
+//        if (this.idTipoCuenta != other.idTipoCuenta) {
+//            return false;
+//        }
+//        if (this.idCuenta != other.idCuenta) {
+//            return false;
+//        }
         if (this.idPrestacion != other.idPrestacion) {
             return false;
         }
@@ -109,7 +107,7 @@ public class DeduccionesPrestacionesPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.DeduccionesPrestacionesPK[ idCompania=" + idCompania + ", idTipoCuenta=" + idTipoCuenta + ", idCuenta=" + idCuenta + ", idPrestacion=" + idPrestacion + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DeduccionesPrestacionesPK[ idCompania=" + idCompania + ", idPrestacion=" + idPrestacion + " ]";
     }
     
 }

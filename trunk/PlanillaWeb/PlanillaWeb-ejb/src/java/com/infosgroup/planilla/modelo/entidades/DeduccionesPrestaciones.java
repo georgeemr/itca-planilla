@@ -30,8 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "DeduccionesPrestaciones.findAll", query = "SELECT d FROM DeduccionesPrestaciones d"),
     @NamedQuery(name = "DeduccionesPrestaciones.findByIdCompania", query = "SELECT d FROM DeduccionesPrestaciones d WHERE d.deduccionesPrestacionesPK.idCompania = :idCompania"),
-    @NamedQuery(name = "DeduccionesPrestaciones.findByIdTipoCuenta", query = "SELECT d FROM DeduccionesPrestaciones d WHERE d.deduccionesPrestacionesPK.idTipoCuenta = :idTipoCuenta"),
-    @NamedQuery(name = "DeduccionesPrestaciones.findByIdCuenta", query = "SELECT d FROM DeduccionesPrestaciones d WHERE d.deduccionesPrestacionesPK.idCuenta = :idCuenta"),
+    //@NamedQuery(name = "DeduccionesPrestaciones.findByIdTipoCuenta", query = "SELECT d FROM DeduccionesPrestaciones d WHERE d.deduccionesPrestacionesPK.idTipoCuenta = :idTipoCuenta"),
+    //@NamedQuery(name = "DeduccionesPrestaciones.findByIdCuenta", query = "SELECT d FROM DeduccionesPrestaciones d WHERE d.deduccionesPrestacionesPK.idCuenta = :idCuenta"),
     @NamedQuery(name = "DeduccionesPrestaciones.findByIdPrestacion", query = "SELECT d FROM DeduccionesPrestaciones d WHERE d.deduccionesPrestacionesPK.idPrestacion = :idPrestacion"),
     @NamedQuery(name = "DeduccionesPrestaciones.findByNomPrestacion", query = "SELECT d FROM DeduccionesPrestaciones d WHERE d.nomPrestacion = :nomPrestacion")})
 public class DeduccionesPrestaciones implements Serializable {
@@ -46,12 +46,13 @@ public class DeduccionesPrestaciones implements Serializable {
     @Size(max = 100)
     @Column(name = "nom_prestacion", length = 100)
     private String nomPrestacion;
-    @JoinColumns({
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
+    
+    /*@JoinColumns({
+        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false) ,
         @JoinColumn(name = "id_tipo_cuenta", referencedColumnName = "id_tipo_cuenta", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Cuenta cuenta;
+    private Cuenta cuenta;*/
 
     public DeduccionesPrestaciones() {
     }
@@ -60,8 +61,8 @@ public class DeduccionesPrestaciones implements Serializable {
         this.deduccionesPrestacionesPK = deduccionesPrestacionesPK;
     }
 
-    public DeduccionesPrestaciones(int idCompania, int idTipoCuenta, int idCuenta, int idPrestacion) {
-        this.deduccionesPrestacionesPK = new DeduccionesPrestacionesPK(idCompania, idTipoCuenta, idCuenta, idPrestacion);
+    public DeduccionesPrestaciones(int idCompania, int idPrestacion) {
+        this.deduccionesPrestacionesPK = new DeduccionesPrestacionesPK(idCompania, idPrestacion);
     }
 
     public DeduccionesPrestacionesPK getDeduccionesPrestacionesPK() {
@@ -80,13 +81,13 @@ public class DeduccionesPrestaciones implements Serializable {
         this.nomPrestacion = nomPrestacion;
     }
 
-    public Cuenta getCuenta() {
-        return cuenta;
-    }
-
-    public void setCuenta(Cuenta cuenta) {
-        this.cuenta = cuenta;
-    }
+//    public Cuenta getCuenta() {
+//        return cuenta;
+//    }
+//
+//    public void setCuenta(Cuenta cuenta) {
+//        this.cuenta = cuenta;
+//    }
 
     @Override
     public int hashCode() {

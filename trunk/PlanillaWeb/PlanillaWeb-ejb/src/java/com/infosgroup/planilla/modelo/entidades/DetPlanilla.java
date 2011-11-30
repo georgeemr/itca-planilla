@@ -5,11 +5,13 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -51,9 +53,23 @@ public class DetPlanilla implements Serializable {
     private Empleado empleado;
     @JoinColumns({
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_prestacion", referencedColumnName = "id_prestacion", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "id_prestacion", referencedColumnName = "id_prestacion", nullable = false, insertable = false, updatable = false) /*,
+        @JoinColumn(name = "id_tipo_cuenta", referencedColumnName = "id_tipo_cuenta", nullable = false, insertable = false, updatable = false).
+        @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta", nullable = false, insertable = false, updatable = false)*/
+        })
     @ManyToOne(optional = false)
     private DeduccionesPrestaciones deduccionesPrestaciones;
+    
+    @ManyToMany
+    private List<DetPlanilla> detalleList;
+
+    public List<DetPlanilla> getDetalleList() {
+        return detalleList;
+    }
+
+    public void setDetalleList(List<DetPlanilla> detalleList) {
+        this.detalleList = detalleList;
+    }
 
     public DetPlanilla() {
     }
