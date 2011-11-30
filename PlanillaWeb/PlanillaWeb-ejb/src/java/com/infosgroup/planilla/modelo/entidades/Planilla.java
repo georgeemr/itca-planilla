@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -53,6 +54,36 @@ public class Planilla implements Serializable {
         @JoinColumn(name = "id_tipo_planilla", referencedColumnName = "id_tipo_planilla", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private TipoPlanilla tipoPlanilla;
+    @Column(name = "anio")
+    private Integer anio;
+    @Column(name = "mes")
+    private Integer mes;
+    @Column(name = "num_planilla")
+    private BigDecimal numeroPlanilla;
+
+    public BigDecimal getNumeroPlanilla() {
+        return numeroPlanilla;
+    }
+
+    public void setNumeroPlanilla(BigDecimal numeroPlanilla) {
+        this.numeroPlanilla = numeroPlanilla;
+    }
+    
+    public Integer getMes() {
+        return mes;
+    }
+
+    public void setMes(Integer mes) {
+        this.mes = mes;
+    }
+    
+    public Integer getAnio() {
+        return anio;
+    }
+
+    public void setAnio(Integer anio) {
+        this.anio = anio;
+    }
 
     public Planilla() {
     }
