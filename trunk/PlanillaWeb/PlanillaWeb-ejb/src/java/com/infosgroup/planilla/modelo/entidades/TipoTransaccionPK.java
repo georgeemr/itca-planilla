@@ -15,42 +15,52 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class TipoTransaccionPK implements Serializable {
+public class TipoTransaccionPK implements Serializable
+{
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_compania", nullable = false)
     private int idCompania;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_tipo_transaccion", nullable = false)
     private int idTipoTransaccion;
 
-    public TipoTransaccionPK() {
+    public TipoTransaccionPK()
+    {
     }
 
-    public TipoTransaccionPK(int idCompania, int idTipoTransaccion) {
+    public TipoTransaccionPK(int idCompania, int idTipoTransaccion)
+    {
         this.idCompania = idCompania;
         this.idTipoTransaccion = idTipoTransaccion;
     }
 
-    public int getIdCompania() {
+    public int getIdCompania()
+    {
         return idCompania;
     }
 
-    public void setIdCompania(int idCompania) {
+    public void setIdCompania(int idCompania)
+    {
         this.idCompania = idCompania;
     }
 
-    public int getIdTipoTransaccion() {
+    public int getIdTipoTransaccion()
+    {
         return idTipoTransaccion;
     }
 
-    public void setIdTipoTransaccion(int idTipoTransaccion) {
+    public void setIdTipoTransaccion(int idTipoTransaccion)
+    {
         this.idTipoTransaccion = idTipoTransaccion;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idCompania;
         hash += (int) idTipoTransaccion;
@@ -58,23 +68,28 @@ public class TipoTransaccionPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoTransaccionPK)) {
+        if (!(object instanceof TipoTransaccionPK))
+            {
             return false;
-        }
+            }
         TipoTransaccionPK other = (TipoTransaccionPK) object;
-        if (this.idCompania != other.idCompania) {
+        if (this.idCompania != other.idCompania)
+            {
             return false;
-        }
-        if (this.idTipoTransaccion != other.idTipoTransaccion) {
+            }
+        if (this.idTipoTransaccion != other.idTipoTransaccion)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.TipoTransaccionPK[ idCompania=" + idCompania + ", idTipoTransaccion=" + idTipoTransaccion + " ]";
     }
     

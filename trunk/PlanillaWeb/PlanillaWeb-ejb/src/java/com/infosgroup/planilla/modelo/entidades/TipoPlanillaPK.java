@@ -15,42 +15,52 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class TipoPlanillaPK implements Serializable {
+public class TipoPlanillaPK implements Serializable
+{
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_compania", nullable = false)
     private int idCompania;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_tipo_planilla", nullable = false)
     private int idTipoPlanilla;
 
-    public TipoPlanillaPK() {
+    public TipoPlanillaPK()
+    {
     }
 
-    public TipoPlanillaPK(int idCompania, int idTipoPlanilla) {
+    public TipoPlanillaPK(int idCompania, int idTipoPlanilla)
+    {
         this.idCompania = idCompania;
         this.idTipoPlanilla = idTipoPlanilla;
     }
 
-    public int getIdCompania() {
+    public int getIdCompania()
+    {
         return idCompania;
     }
 
-    public void setIdCompania(int idCompania) {
+    public void setIdCompania(int idCompania)
+    {
         this.idCompania = idCompania;
     }
 
-    public int getIdTipoPlanilla() {
+    public int getIdTipoPlanilla()
+    {
         return idTipoPlanilla;
     }
 
-    public void setIdTipoPlanilla(int idTipoPlanilla) {
+    public void setIdTipoPlanilla(int idTipoPlanilla)
+    {
         this.idTipoPlanilla = idTipoPlanilla;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idCompania;
         hash += (int) idTipoPlanilla;
@@ -58,23 +68,28 @@ public class TipoPlanillaPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoPlanillaPK)) {
+        if (!(object instanceof TipoPlanillaPK))
+            {
             return false;
-        }
+            }
         TipoPlanillaPK other = (TipoPlanillaPK) object;
-        if (this.idCompania != other.idCompania) {
+        if (this.idCompania != other.idCompania)
+            {
             return false;
-        }
-        if (this.idTipoPlanilla != other.idTipoPlanilla) {
+            }
+        if (this.idTipoPlanilla != other.idTipoPlanilla)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.TipoPlanillaPK[ idCompania=" + idCompania + ", idTipoPlanilla=" + idTipoPlanilla + " ]";
     }
     

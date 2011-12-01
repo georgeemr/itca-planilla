@@ -17,127 +17,375 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Soporte
+ * @author root
  */
 @Entity
 @Table(name = "compania")
-@NamedQueries({
+@XmlRootElement
+@NamedQueries(
+    {
     @NamedQuery(name = "Compania.findAll", query = "SELECT c FROM Compania c"),
     @NamedQuery(name = "Compania.findByIdCompania", query = "SELECT c FROM Compania c WHERE c.idCompania = :idCompania"),
     @NamedQuery(name = "Compania.findByNomCompania", query = "SELECT c FROM Compania c WHERE c.nomCompania = :nomCompania"),
     @NamedQuery(name = "Compania.findByDetCompania", query = "SELECT c FROM Compania c WHERE c.detCompania = :detCompania"),
-    @NamedQuery(name = "Compania.findByRazonSocial", query = "SELECT c FROM Compania c WHERE c.razonSocial = :razonSocial")})
-public class Compania implements Serializable {
+    @NamedQuery(name = "Compania.findByRazonSocial", query = "SELECT c FROM Compania c WHERE c.razonSocial = :razonSocial")
+    })
+public class Compania implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_compania", nullable = false)
     private Integer idCompania;
+
     @Size(max = 100)
     @Column(name = "nom_compania", length = 100)
     private String nomCompania;
+
     @Size(max = 200)
     @Column(name = "det_compania", length = 200)
     private String detCompania;
+
     @Size(max = 200)
     @Column(name = "razon_social", length = 200)
     private String razonSocial;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoRespuesta> tipoRespuestaList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Candidato> candidatoList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Planilla> planillaList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
-    private List<Empleado> empleadoList;
+    private List<Campania> campaniaList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Indicador> indicadorList;
 
-    public Compania() {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Rol> rolList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoEvaluacion> tipoEvaluacionList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Sucursal> sucursalList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Departamento> departamentoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoCriterio> tipoCriterioList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Empleado> empleadoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoTransaccion> tipoTransaccionList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Factor> factorList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoPuesto> tipoPuestoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<EstadoConcurso> estadoConcursoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoCuenta> tipoCuentaList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Modulo> moduloList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<TipoPlanilla> tipoPlanillaList;
+
+    public Compania()
+    {
     }
 
-    public Compania(Integer idCompania) {
+    public Compania(Integer idCompania)
+    {
         this.idCompania = idCompania;
     }
 
-    public Integer getIdCompania() {
+    public Integer getIdCompania()
+    {
         return idCompania;
     }
 
-    public void setIdCompania(Integer idCompania) {
+    public void setIdCompania(Integer idCompania)
+    {
         this.idCompania = idCompania;
     }
 
-    public String getNomCompania() {
+    public String getNomCompania()
+    {
         return nomCompania;
     }
 
-    public void setNomCompania(String nomCompania) {
+    public void setNomCompania(String nomCompania)
+    {
         this.nomCompania = nomCompania;
     }
 
-    public String getDetCompania() {
+    public String getDetCompania()
+    {
         return detCompania;
     }
 
-    public void setDetCompania(String detCompania) {
+    public void setDetCompania(String detCompania)
+    {
         this.detCompania = detCompania;
     }
 
-    public String getRazonSocial() {
+    public String getRazonSocial()
+    {
         return razonSocial;
     }
 
-    public void setRazonSocial(String razonSocial) {
+    public void setRazonSocial(String razonSocial)
+    {
         this.razonSocial = razonSocial;
     }
 
-    public List<Planilla> getPlanillaList() {
+    @XmlTransient
+    public List<TipoRespuesta> getTipoRespuestaList()
+    {
+        return tipoRespuestaList;
+    }
+
+    public void setTipoRespuestaList(List<TipoRespuesta> tipoRespuestaList)
+    {
+        this.tipoRespuestaList = tipoRespuestaList;
+    }
+
+    @XmlTransient
+    public List<Candidato> getCandidatoList()
+    {
+        return candidatoList;
+    }
+
+    public void setCandidatoList(List<Candidato> candidatoList)
+    {
+        this.candidatoList = candidatoList;
+    }
+
+    @XmlTransient
+    public List<Planilla> getPlanillaList()
+    {
         return planillaList;
     }
 
-    public void setPlanillaList(List<Planilla> planillaList) {
+    public void setPlanillaList(List<Planilla> planillaList)
+    {
         this.planillaList = planillaList;
     }
 
-    public List<Empleado> getEmpleadoList() {
-        return empleadoList;
+    @XmlTransient
+    public List<Campania> getCampaniaList()
+    {
+        return campaniaList;
     }
 
-    public void setEmpleadoList(List<Empleado> empleadoList) {
-        this.empleadoList = empleadoList;
+    public void setCampaniaList(List<Campania> campaniaList)
+    {
+        this.campaniaList = campaniaList;
     }
 
-    public List<Indicador> getIndicadorList() {
+    @XmlTransient
+    public List<Indicador> getIndicadorList()
+    {
         return indicadorList;
     }
 
-    public void setIndicadorList(List<Indicador> indicadorList) {
+    public void setIndicadorList(List<Indicador> indicadorList)
+    {
         this.indicadorList = indicadorList;
     }
 
+    @XmlTransient
+    public List<Rol> getRolList()
+    {
+        return rolList;
+    }
+
+    public void setRolList(List<Rol> rolList)
+    {
+        this.rolList = rolList;
+    }
+
+    @XmlTransient
+    public List<TipoEvaluacion> getTipoEvaluacionList()
+    {
+        return tipoEvaluacionList;
+    }
+
+    public void setTipoEvaluacionList(List<TipoEvaluacion> tipoEvaluacionList)
+    {
+        this.tipoEvaluacionList = tipoEvaluacionList;
+    }
+
+    @XmlTransient
+    public List<Sucursal> getSucursalList()
+    {
+        return sucursalList;
+    }
+
+    public void setSucursalList(List<Sucursal> sucursalList)
+    {
+        this.sucursalList = sucursalList;
+    }
+
+    @XmlTransient
+    public List<Departamento> getDepartamentoList()
+    {
+        return departamentoList;
+    }
+
+    public void setDepartamentoList(List<Departamento> departamentoList)
+    {
+        this.departamentoList = departamentoList;
+    }
+
+    @XmlTransient
+    public List<TipoCriterio> getTipoCriterioList()
+    {
+        return tipoCriterioList;
+    }
+
+    public void setTipoCriterioList(List<TipoCriterio> tipoCriterioList)
+    {
+        this.tipoCriterioList = tipoCriterioList;
+    }
+
+    @XmlTransient
+    public List<Empleado> getEmpleadoList()
+    {
+        return empleadoList;
+    }
+
+    public void setEmpleadoList(List<Empleado> empleadoList)
+    {
+        this.empleadoList = empleadoList;
+    }
+
+    @XmlTransient
+    public List<TipoTransaccion> getTipoTransaccionList()
+    {
+        return tipoTransaccionList;
+    }
+
+    public void setTipoTransaccionList(List<TipoTransaccion> tipoTransaccionList)
+    {
+        this.tipoTransaccionList = tipoTransaccionList;
+    }
+
+    @XmlTransient
+    public List<Factor> getFactorList()
+    {
+        return factorList;
+    }
+
+    public void setFactorList(List<Factor> factorList)
+    {
+        this.factorList = factorList;
+    }
+
+    @XmlTransient
+    public List<TipoPuesto> getTipoPuestoList()
+    {
+        return tipoPuestoList;
+    }
+
+    public void setTipoPuestoList(List<TipoPuesto> tipoPuestoList)
+    {
+        this.tipoPuestoList = tipoPuestoList;
+    }
+
+    @XmlTransient
+    public List<EstadoConcurso> getEstadoConcursoList()
+    {
+        return estadoConcursoList;
+    }
+
+    public void setEstadoConcursoList(List<EstadoConcurso> estadoConcursoList)
+    {
+        this.estadoConcursoList = estadoConcursoList;
+    }
+
+    @XmlTransient
+    public List<TipoCuenta> getTipoCuentaList()
+    {
+        return tipoCuentaList;
+    }
+
+    public void setTipoCuentaList(List<TipoCuenta> tipoCuentaList)
+    {
+        this.tipoCuentaList = tipoCuentaList;
+    }
+
+    @XmlTransient
+    public List<Modulo> getModuloList()
+    {
+        return moduloList;
+    }
+
+    public void setModuloList(List<Modulo> moduloList)
+    {
+        this.moduloList = moduloList;
+    }
+
+    @XmlTransient
+    public List<TipoPlanilla> getTipoPlanillaList()
+    {
+        return tipoPlanillaList;
+    }
+
+    public void setTipoPlanillaList(List<TipoPlanilla> tipoPlanillaList)
+    {
+        this.tipoPlanillaList = tipoPlanillaList;
+    }
+
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (idCompania != null ? idCompania.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Compania)) {
+        if (!(object instanceof Compania))
+            {
             return false;
-        }
+            }
         Compania other = (Compania) object;
-        if ((this.idCompania == null && other.idCompania != null) || (this.idCompania != null && !this.idCompania.equals(other.idCompania))) {
+        if ((this.idCompania == null && other.idCompania != null) || (this.idCompania != null && !this.idCompania.equals(other.idCompania)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Compania[ idCompania=" + idCompania + " ]";
     }
     

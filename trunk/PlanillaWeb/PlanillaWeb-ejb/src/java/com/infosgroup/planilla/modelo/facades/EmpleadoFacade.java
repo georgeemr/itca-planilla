@@ -7,15 +7,11 @@ package com.infosgroup.planilla.modelo.facades;
 import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.entidades.EmpleadoPK;
-import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.Query;
 
 /**
 *
@@ -40,10 +36,11 @@ super(Empleado.class);
 public List<Empleado> findEmpleadosNoEvaluados(Campania c)
 {
 List<Empleado> le = null ;
-//TypedQuery<Empleado> tq = em.createQuery("SELECT em FROM Empleado em, Evaluacion ev, Campania c WHERE ev NOT MEMBER OF c.evaluacionList AND ev.campania = :campania", Empleado.class);
-TypedQuery<Empleado> tq = em.createQuery("SELECT em FROM Empleado em WHERE NOT EXISTS(SELECT ev.empleado1 FROM Evaluacion ev WHERE ev.campania = :campania)", Empleado.class);
-tq.setParameter("campania", c);
-le = tq.getResultList();
+Query q = em.createNativeQuery("select em.* from empleado em where (cod_cia, em.cod_emp) not in (select ev.cod_cia, ev.empleado from evaluacion ev where (ev.cod_cia, ev.periodo, ev.cod_campania) in (select c.cod_cia, c.periodo, c.cod_campania from campania c where cod_cia = ? and periodo = ? and cod_campania = ?)) order by em.cod_cia, em.cod_emp", Empleado.class);
+q.setParameter(1, c.getCampaniaPK().getCodCia());
+q.setParameter(2, c.getCampaniaPK().getPeriodo());
+q.setParameter(3, c.getCampaniaPK().getCodCampania());
+le = (List<Empleado>) q.getResultList();
 return le;
 }
 }

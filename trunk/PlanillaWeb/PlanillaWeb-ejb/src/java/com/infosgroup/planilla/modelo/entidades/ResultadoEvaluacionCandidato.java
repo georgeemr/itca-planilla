@@ -27,7 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "resultado_evaluacion_candidato")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+    {
     @NamedQuery(name = "ResultadoEvaluacionCandidato.findAll", query = "SELECT r FROM ResultadoEvaluacionCandidato r"),
     @NamedQuery(name = "ResultadoEvaluacionCandidato.findByCodCia", query = "SELECT r FROM ResultadoEvaluacionCandidato r WHERE r.resultadoEvaluacionCandidatoPK.codCia = :codCia"),
     @NamedQuery(name = "ResultadoEvaluacionCandidato.findByConcurso", query = "SELECT r FROM ResultadoEvaluacionCandidato r WHERE r.resultadoEvaluacionCandidatoPK.concurso = :concurso"),
@@ -35,125 +36,163 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ResultadoEvaluacionCandidato.findByFechaEvaluacion", query = "SELECT r FROM ResultadoEvaluacionCandidato r WHERE r.fechaEvaluacion = :fechaEvaluacion"),
     @NamedQuery(name = "ResultadoEvaluacionCandidato.findByTipoEvaluacion", query = "SELECT r FROM ResultadoEvaluacionCandidato r WHERE r.resultadoEvaluacionCandidatoPK.tipoEvaluacion = :tipoEvaluacion"),
     @NamedQuery(name = "ResultadoEvaluacionCandidato.findByNota", query = "SELECT r FROM ResultadoEvaluacionCandidato r WHERE r.nota = :nota"),
-    @NamedQuery(name = "ResultadoEvaluacionCandidato.findByObservacion", query = "SELECT r FROM ResultadoEvaluacionCandidato r WHERE r.observacion = :observacion")})
-public class ResultadoEvaluacionCandidato implements Serializable {
+    @NamedQuery(name = "ResultadoEvaluacionCandidato.findByObservacion", query = "SELECT r FROM ResultadoEvaluacionCandidato r WHERE r.observacion = :observacion")
+    })
+public class ResultadoEvaluacionCandidato implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected ResultadoEvaluacionCandidatoPK resultadoEvaluacionCandidatoPK;
+
     @Column(name = "fecha_evaluacion")
     @Temporal(TemporalType.DATE)
     private Date fechaEvaluacion;
+
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "nota", precision = 17, scale = 17)
     private Double nota;
+
     @Size(max = 2147483647)
     @Column(name = "observacion", length = 2147483647)
     private String observacion;
-    @JoinColumns({
+
+    @JoinColumns(
+        {
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "tipo_evaluacion", referencedColumnName = "cod_tipo_evaluacion", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "tipo_evaluacion", referencedColumnName = "cod_tipo_evaluacion", nullable = false, insertable = false, updatable = false)
+        })
     @ManyToOne(optional = false)
     private TipoEvaluacion tipoEvaluacion1;
-    @JoinColumns({
+
+    @JoinColumns(
+        {
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "concurso", referencedColumnName = "cod_concurso", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "concurso", referencedColumnName = "cod_concurso", nullable = false, insertable = false, updatable = false)
+        })
     @ManyToOne(optional = false)
     private Concurso concurso1;
-    @JoinColumns({
+
+    @JoinColumns(
+        {
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "candidato", referencedColumnName = "cod_candidato", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "candidato", referencedColumnName = "cod_candidato", nullable = false, insertable = false, updatable = false)
+        })
     @ManyToOne(optional = false)
     private Candidato candidato1;
 
-    public ResultadoEvaluacionCandidato() {
+    public ResultadoEvaluacionCandidato()
+    {
     }
 
-    public ResultadoEvaluacionCandidato(ResultadoEvaluacionCandidatoPK resultadoEvaluacionCandidatoPK) {
+    public ResultadoEvaluacionCandidato(ResultadoEvaluacionCandidatoPK resultadoEvaluacionCandidatoPK)
+    {
         this.resultadoEvaluacionCandidatoPK = resultadoEvaluacionCandidatoPK;
     }
 
-    public ResultadoEvaluacionCandidato(int codCia, String concurso, int candidato, int tipoEvaluacion) {
+    public ResultadoEvaluacionCandidato(int codCia, String concurso, int candidato, int tipoEvaluacion)
+    {
         this.resultadoEvaluacionCandidatoPK = new ResultadoEvaluacionCandidatoPK(codCia, concurso, candidato, tipoEvaluacion);
     }
 
-    public ResultadoEvaluacionCandidatoPK getResultadoEvaluacionCandidatoPK() {
+    public ResultadoEvaluacionCandidatoPK getResultadoEvaluacionCandidatoPK()
+    {
         return resultadoEvaluacionCandidatoPK;
     }
 
-    public void setResultadoEvaluacionCandidatoPK(ResultadoEvaluacionCandidatoPK resultadoEvaluacionCandidatoPK) {
+    public void setResultadoEvaluacionCandidatoPK(ResultadoEvaluacionCandidatoPK resultadoEvaluacionCandidatoPK)
+    {
         this.resultadoEvaluacionCandidatoPK = resultadoEvaluacionCandidatoPK;
     }
 
-    public Date getFechaEvaluacion() {
+    public Date getFechaEvaluacion()
+    {
         return fechaEvaluacion;
     }
 
-    public void setFechaEvaluacion(Date fechaEvaluacion) {
+    public void setFechaEvaluacion(Date fechaEvaluacion)
+    {
         this.fechaEvaluacion = fechaEvaluacion;
     }
 
-    public Double getNota() {
+    public Double getNota()
+    {
         return nota;
     }
 
-    public void setNota(Double nota) {
+    public void setNota(Double nota)
+    {
         this.nota = nota;
     }
 
-    public String getObservacion() {
+    public String getObservacion()
+    {
         return observacion;
     }
 
-    public void setObservacion(String observacion) {
+    public void setObservacion(String observacion)
+    {
         this.observacion = observacion;
     }
 
-    public TipoEvaluacion getTipoEvaluacion1() {
+    public TipoEvaluacion getTipoEvaluacion1()
+    {
         return tipoEvaluacion1;
     }
 
-    public void setTipoEvaluacion1(TipoEvaluacion tipoEvaluacion1) {
+    public void setTipoEvaluacion1(TipoEvaluacion tipoEvaluacion1)
+    {
         this.tipoEvaluacion1 = tipoEvaluacion1;
     }
 
-    public Concurso getConcurso1() {
+    public Concurso getConcurso1()
+    {
         return concurso1;
     }
 
-    public void setConcurso1(Concurso concurso1) {
+    public void setConcurso1(Concurso concurso1)
+    {
         this.concurso1 = concurso1;
     }
 
-    public Candidato getCandidato1() {
+    public Candidato getCandidato1()
+    {
         return candidato1;
     }
 
-    public void setCandidato1(Candidato candidato1) {
+    public void setCandidato1(Candidato candidato1)
+    {
         this.candidato1 = candidato1;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (resultadoEvaluacionCandidatoPK != null ? resultadoEvaluacionCandidatoPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ResultadoEvaluacionCandidato)) {
+        if (!(object instanceof ResultadoEvaluacionCandidato))
+            {
             return false;
-        }
+            }
         ResultadoEvaluacionCandidato other = (ResultadoEvaluacionCandidato) object;
-        if ((this.resultadoEvaluacionCandidatoPK == null && other.resultadoEvaluacionCandidatoPK != null) || (this.resultadoEvaluacionCandidatoPK != null && !this.resultadoEvaluacionCandidatoPK.equals(other.resultadoEvaluacionCandidatoPK))) {
+        if ((this.resultadoEvaluacionCandidatoPK == null && other.resultadoEvaluacionCandidatoPK != null) || (this.resultadoEvaluacionCandidatoPK != null && !this.resultadoEvaluacionCandidatoPK.equals(other.resultadoEvaluacionCandidatoPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.ResultadoEvaluacionCandidato[ resultadoEvaluacionCandidatoPK=" + resultadoEvaluacionCandidatoPK + " ]";
     }
     

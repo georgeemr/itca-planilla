@@ -15,42 +15,52 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class ModuloPK implements Serializable {
+public class ModuloPK implements Serializable
+{
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_compania", nullable = false)
     private int idCompania;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_modulo", nullable = false)
     private int idModulo;
 
-    public ModuloPK() {
+    public ModuloPK()
+    {
     }
 
-    public ModuloPK(int idCompania, int idModulo) {
+    public ModuloPK(int idCompania, int idModulo)
+    {
         this.idCompania = idCompania;
         this.idModulo = idModulo;
     }
 
-    public int getIdCompania() {
+    public int getIdCompania()
+    {
         return idCompania;
     }
 
-    public void setIdCompania(int idCompania) {
+    public void setIdCompania(int idCompania)
+    {
         this.idCompania = idCompania;
     }
 
-    public int getIdModulo() {
+    public int getIdModulo()
+    {
         return idModulo;
     }
 
-    public void setIdModulo(int idModulo) {
+    public void setIdModulo(int idModulo)
+    {
         this.idModulo = idModulo;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idCompania;
         hash += (int) idModulo;
@@ -58,23 +68,28 @@ public class ModuloPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ModuloPK)) {
+        if (!(object instanceof ModuloPK))
+            {
             return false;
-        }
+            }
         ModuloPK other = (ModuloPK) object;
-        if (this.idCompania != other.idCompania) {
+        if (this.idCompania != other.idCompania)
+            {
             return false;
-        }
-        if (this.idModulo != other.idModulo) {
+            }
+        if (this.idModulo != other.idModulo)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.ModuloPK[ idCompania=" + idCompania + ", idModulo=" + idModulo + " ]";
     }
     

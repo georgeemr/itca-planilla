@@ -51,8 +51,10 @@ public class Factor implements Serializable
     @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
 
-    @Column(name = "ponderacion")
-    private Integer ponderacion;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ponderacion", nullable = false)
+    private int ponderacion;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "factor")
     private List<Pregunta> preguntaList;
@@ -70,10 +72,11 @@ public class Factor implements Serializable
         this.factorPK = factorPK;
     }
 
-    public Factor(FactorPK factorPK, String nombre)
+    public Factor(FactorPK factorPK, String nombre, int ponderacion)
     {
         this.factorPK = factorPK;
         this.nombre = nombre;
+        this.ponderacion = ponderacion;
     }
 
     public Factor(int codCia, int codFactor)
@@ -101,12 +104,12 @@ public class Factor implements Serializable
         this.nombre = nombre;
     }
 
-    public Integer getPonderacion()
+    public int getPonderacion()
     {
         return ponderacion;
     }
 
-    public void setPonderacion(Integer ponderacion)
+    public void setPonderacion(int ponderacion)
     {
         this.ponderacion = ponderacion;
     }

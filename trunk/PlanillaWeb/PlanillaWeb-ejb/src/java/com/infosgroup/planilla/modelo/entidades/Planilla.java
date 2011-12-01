@@ -5,23 +5,18 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,135 +25,102 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "planilla")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+    {
     @NamedQuery(name = "Planilla.findAll", query = "SELECT p FROM Planilla p"),
     @NamedQuery(name = "Planilla.findByIdCompania", query = "SELECT p FROM Planilla p WHERE p.planillaPK.idCompania = :idCompania"),
-    @NamedQuery(name = "Planilla.findByIdTipoPlanilla", query = "SELECT p FROM Planilla p WHERE p.planillaPK.idTipoPlanilla = :idTipoPlanilla"),
-    @NamedQuery(name = "Planilla.findByIdSucursal", query = "SELECT p FROM Planilla p WHERE p.planillaPK.idSucursal = :idSucursal"),
-    @NamedQuery(name = "Planilla.findByIdEmpleado", query = "SELECT p FROM Planilla p WHERE p.planillaPK.idEmpleado = :idEmpleado"),
-    @NamedQuery(name = "Planilla.findByFecha", query = "SELECT p FROM Planilla p WHERE p.fecha = :fecha")})
-public class Planilla implements Serializable {
+    @NamedQuery(name = "Planilla.findByAnio", query = "SELECT p FROM Planilla p WHERE p.planillaPK.anio = :anio"),
+    @NamedQuery(name = "Planilla.findByMes", query = "SELECT p FROM Planilla p WHERE p.planillaPK.mes = :mes"),
+    @NamedQuery(name = "Planilla.findByNumPlanilla", query = "SELECT p FROM Planilla p WHERE p.planillaPK.numPlanilla = :numPlanilla")
+    })
+public class Planilla implements Serializable
+{
+
+    private static final long serialVersionUID = 1L;
+
+    @EmbeddedId
+    protected PlanillaPK planillaPK;
+
     @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla")
     private List<DetPlanilla> detPlanillaList;
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected PlanillaPK planillaPK;
-    @Column(name = "fecha")
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
-    @JoinColumns({
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_tipo_planilla", referencedColumnName = "id_tipo_planilla", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private TipoPlanilla tipoPlanilla;
-    @Column(name = "anio")
-    private Integer anio;
-    @Column(name = "mes")
-    private Integer mes;
-    @Column(name = "num_planilla")
-    private BigDecimal numeroPlanilla;
 
-    public BigDecimal getNumeroPlanilla() {
-        return numeroPlanilla;
+    public Planilla()
+    {
     }
 
-    public void setNumeroPlanilla(BigDecimal numeroPlanilla) {
-        this.numeroPlanilla = numeroPlanilla;
-    }
-    
-    public Integer getMes() {
-        return mes;
-    }
-
-    public void setMes(Integer mes) {
-        this.mes = mes;
-    }
-    
-    public Integer getAnio() {
-        return anio;
-    }
-
-    public void setAnio(Integer anio) {
-        this.anio = anio;
-    }
-
-    public Planilla() {
-    }
-
-    public Planilla(PlanillaPK planillaPK) {
+    public Planilla(PlanillaPK planillaPK)
+    {
         this.planillaPK = planillaPK;
     }
 
-    public Planilla(int idCompania, int idTipoPlanilla, int idSucursal, int idEmpleado) {
-        this.planillaPK = new PlanillaPK(idCompania, idTipoPlanilla, idSucursal, idEmpleado);
+    public Planilla(int idCompania, int anio, int mes, int numPlanilla)
+    {
+        this.planillaPK = new PlanillaPK(idCompania, anio, mes, numPlanilla);
     }
 
-    public PlanillaPK getPlanillaPK() {
+    public PlanillaPK getPlanillaPK()
+    {
         return planillaPK;
     }
 
-    public void setPlanillaPK(PlanillaPK planillaPK) {
+    public void setPlanillaPK(PlanillaPK planillaPK)
+    {
         this.planillaPK = planillaPK;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public Compania getCompania()
+    {
+        return compania;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setCompania(Compania compania)
+    {
+        this.compania = compania;
     }
 
-    public TipoPlanilla getTipoPlanilla() {
-        return tipoPlanilla;
+    @XmlTransient
+    public List<DetPlanilla> getDetPlanillaList()
+    {
+        return detPlanillaList;
     }
 
-    public void setTipoPlanilla(TipoPlanilla tipoPlanilla) {
-        this.tipoPlanilla = tipoPlanilla;
+    public void setDetPlanillaList(List<DetPlanilla> detPlanillaList)
+    {
+        this.detPlanillaList = detPlanillaList;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (planillaPK != null ? planillaPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Planilla)) {
+        if (!(object instanceof Planilla))
+            {
             return false;
-        }
+            }
         Planilla other = (Planilla) object;
-        if ((this.planillaPK == null && other.planillaPK != null) || (this.planillaPK != null && !this.planillaPK.equals(other.planillaPK))) {
+        if ((this.planillaPK == null && other.planillaPK != null) || (this.planillaPK != null && !this.planillaPK.equals(other.planillaPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Planilla[ planillaPK=" + planillaPK + " ]";
-    }
-
-    public Compania getCompania() {
-        return compania;
-    }
-
-    public void setCompania(Compania compania) {
-        this.compania = compania;
-    }
-
-    public List<DetPlanilla> getDetPlanillaList() {
-        return detPlanillaList;
-    }
-
-    public void setDetPlanillaList(List<DetPlanilla> detPlanillaList) {
-        this.detPlanillaList = detPlanillaList;
     }
     
 }

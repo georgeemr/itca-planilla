@@ -83,7 +83,7 @@ return empleadosFacade.findAll();
 
 public List<Factor> listarFactoresPorPlantilla(Plantilla plantilla)
 {
-return factorFacade.findAll();
+return factorFacade.findByPlantilla(plantilla);
 }
 
 public List<Pregunta> listarPreguntasPorFactor(Factor factor)

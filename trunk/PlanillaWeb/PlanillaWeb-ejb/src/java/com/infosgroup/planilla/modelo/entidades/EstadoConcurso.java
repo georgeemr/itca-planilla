@@ -28,100 +28,130 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "estado_concurso", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"nombre"})})
+@Table(name = "estado_concurso", uniqueConstraints =
+    {
+    @UniqueConstraint(columnNames =
+        {
+        "nombre"
+        })
+    })
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+    {
     @NamedQuery(name = "EstadoConcurso.findAll", query = "SELECT e FROM EstadoConcurso e"),
     @NamedQuery(name = "EstadoConcurso.findByCodCia", query = "SELECT e FROM EstadoConcurso e WHERE e.estadoConcursoPK.codCia = :codCia"),
     @NamedQuery(name = "EstadoConcurso.findByCodigo", query = "SELECT e FROM EstadoConcurso e WHERE e.estadoConcursoPK.codigo = :codigo"),
-    @NamedQuery(name = "EstadoConcurso.findByNombre", query = "SELECT e FROM EstadoConcurso e WHERE e.nombre = :nombre")})
-public class EstadoConcurso implements Serializable {
+    @NamedQuery(name = "EstadoConcurso.findByNombre", query = "SELECT e FROM EstadoConcurso e WHERE e.nombre = :nombre")
+    })
+public class EstadoConcurso implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected EstadoConcursoPK estadoConcursoPK;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadoConcurso")
     private List<Concurso> concursoList;
+
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
 
-    public EstadoConcurso() {
+    public EstadoConcurso()
+    {
     }
 
-    public EstadoConcurso(EstadoConcursoPK estadoConcursoPK) {
+    public EstadoConcurso(EstadoConcursoPK estadoConcursoPK)
+    {
         this.estadoConcursoPK = estadoConcursoPK;
     }
 
-    public EstadoConcurso(EstadoConcursoPK estadoConcursoPK, String nombre) {
+    public EstadoConcurso(EstadoConcursoPK estadoConcursoPK, String nombre)
+    {
         this.estadoConcursoPK = estadoConcursoPK;
         this.nombre = nombre;
     }
 
-    public EstadoConcurso(int codCia, String codigo) {
+    public EstadoConcurso(int codCia, String codigo)
+    {
         this.estadoConcursoPK = new EstadoConcursoPK(codCia, codigo);
     }
 
-    public EstadoConcursoPK getEstadoConcursoPK() {
+    public EstadoConcursoPK getEstadoConcursoPK()
+    {
         return estadoConcursoPK;
     }
 
-    public void setEstadoConcursoPK(EstadoConcursoPK estadoConcursoPK) {
+    public void setEstadoConcursoPK(EstadoConcursoPK estadoConcursoPK)
+    {
         this.estadoConcursoPK = estadoConcursoPK;
     }
 
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre)
+    {
         this.nombre = nombre;
     }
 
     @XmlTransient
-    public List<Concurso> getConcursoList() {
+    public List<Concurso> getConcursoList()
+    {
         return concursoList;
     }
 
-    public void setConcursoList(List<Concurso> concursoList) {
+    public void setConcursoList(List<Concurso> concursoList)
+    {
         this.concursoList = concursoList;
     }
 
-    public Compania getCompania() {
+    public Compania getCompania()
+    {
         return compania;
     }
 
-    public void setCompania(Compania compania) {
+    public void setCompania(Compania compania)
+    {
         this.compania = compania;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (estadoConcursoPK != null ? estadoConcursoPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EstadoConcurso)) {
+        if (!(object instanceof EstadoConcurso))
+            {
             return false;
-        }
+            }
         EstadoConcurso other = (EstadoConcurso) object;
-        if ((this.estadoConcursoPK == null && other.estadoConcursoPK != null) || (this.estadoConcursoPK != null && !this.estadoConcursoPK.equals(other.estadoConcursoPK))) {
+        if ((this.estadoConcursoPK == null && other.estadoConcursoPK != null) || (this.estadoConcursoPK != null && !this.estadoConcursoPK.equals(other.estadoConcursoPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.EstadoConcurso[ estadoConcursoPK=" + estadoConcursoPK + " ]";
     }
     
