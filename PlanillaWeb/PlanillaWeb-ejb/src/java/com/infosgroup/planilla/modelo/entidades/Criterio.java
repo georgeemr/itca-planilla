@@ -29,103 +29,135 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "criterio", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"nombre"})})
+@Table(name = "criterio", uniqueConstraints =
+    {
+    @UniqueConstraint(columnNames =
+        {
+        "nombre"
+        })
+    })
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+    {
     @NamedQuery(name = "Criterio.findAll", query = "SELECT c FROM Criterio c"),
     @NamedQuery(name = "Criterio.findByCodCia", query = "SELECT c FROM Criterio c WHERE c.criterioPK.codCia = :codCia"),
     @NamedQuery(name = "Criterio.findByCodigo", query = "SELECT c FROM Criterio c WHERE c.criterioPK.codigo = :codigo"),
     @NamedQuery(name = "Criterio.findByTipo", query = "SELECT c FROM Criterio c WHERE c.criterioPK.tipo = :tipo"),
-    @NamedQuery(name = "Criterio.findByNombre", query = "SELECT c FROM Criterio c WHERE c.nombre = :nombre")})
-public class Criterio implements Serializable {
+    @NamedQuery(name = "Criterio.findByNombre", query = "SELECT c FROM Criterio c WHERE c.nombre = :nombre")
+    })
+public class Criterio implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected CriterioPK criterioPK;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
-    @JoinColumns({
+
+    @JoinColumns(
+        {
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "tipo", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "tipo", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
+        })
     @ManyToOne(optional = false)
     private TipoCriterio tipoCriterio;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
     private List<CriteriosXPuesto> criteriosXPuestoList;
 
-    public Criterio() {
+    public Criterio()
+    {
     }
 
-    public Criterio(CriterioPK criterioPK) {
+    public Criterio(CriterioPK criterioPK)
+    {
         this.criterioPK = criterioPK;
     }
 
-    public Criterio(CriterioPK criterioPK, String nombre) {
+    public Criterio(CriterioPK criterioPK, String nombre)
+    {
         this.criterioPK = criterioPK;
         this.nombre = nombre;
     }
 
-    public Criterio(int codCia, int codigo, int tipo) {
+    public Criterio(int codCia, int codigo, int tipo)
+    {
         this.criterioPK = new CriterioPK(codCia, codigo, tipo);
     }
 
-    public CriterioPK getCriterioPK() {
+    public CriterioPK getCriterioPK()
+    {
         return criterioPK;
     }
 
-    public void setCriterioPK(CriterioPK criterioPK) {
+    public void setCriterioPK(CriterioPK criterioPK)
+    {
         this.criterioPK = criterioPK;
     }
 
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre)
+    {
         this.nombre = nombre;
     }
 
-    public TipoCriterio getTipoCriterio() {
+    public TipoCriterio getTipoCriterio()
+    {
         return tipoCriterio;
     }
 
-    public void setTipoCriterio(TipoCriterio tipoCriterio) {
+    public void setTipoCriterio(TipoCriterio tipoCriterio)
+    {
         this.tipoCriterio = tipoCriterio;
     }
 
     @XmlTransient
-    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
+    public List<CriteriosXPuesto> getCriteriosXPuestoList()
+    {
         return criteriosXPuestoList;
     }
 
-    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
+    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList)
+    {
         this.criteriosXPuestoList = criteriosXPuestoList;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (criterioPK != null ? criterioPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Criterio)) {
+        if (!(object instanceof Criterio))
+            {
             return false;
-        }
+            }
         Criterio other = (Criterio) object;
-        if ((this.criterioPK == null && other.criterioPK != null) || (this.criterioPK != null && !this.criterioPK.equals(other.criterioPK))) {
+        if ((this.criterioPK == null && other.criterioPK != null) || (this.criterioPK != null && !this.criterioPK.equals(other.criterioPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Criterio[ criterioPK=" + criterioPK + " ]";
     }
     

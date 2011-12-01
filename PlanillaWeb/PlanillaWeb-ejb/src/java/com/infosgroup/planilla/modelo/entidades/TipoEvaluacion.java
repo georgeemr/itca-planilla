@@ -53,6 +53,9 @@ public class TipoEvaluacion implements Serializable
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion")
     private List<Plantilla> plantillaList;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion1")
+    private List<ResultadoEvaluacionCandidato> resultadoEvaluacionCandidatoList;
+
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
@@ -106,6 +109,17 @@ public class TipoEvaluacion implements Serializable
     public void setPlantillaList(List<Plantilla> plantillaList)
     {
         this.plantillaList = plantillaList;
+    }
+
+    @XmlTransient
+    public List<ResultadoEvaluacionCandidato> getResultadoEvaluacionCandidatoList()
+    {
+        return resultadoEvaluacionCandidatoList;
+    }
+
+    public void setResultadoEvaluacionCandidatoList(List<ResultadoEvaluacionCandidato> resultadoEvaluacionCandidatoList)
+    {
+        this.resultadoEvaluacionCandidatoList = resultadoEvaluacionCandidatoList;
     }
 
     public Compania getCompania()

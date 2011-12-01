@@ -1,7 +1,7 @@
 /*
-* To change this template, choose Tools | Templates
-* and open the template in the editor.
-*/
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
@@ -27,175 +27,176 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
-*
-* @author root
-*/
+ *
+ * @author root
+ */
 @Entity
 @Table(name = "pregunta")
 @XmlRootElement
 @NamedQueries(
-{
-@NamedQuery(name = "Pregunta.findAll", query = "SELECT p FROM Pregunta p"),
-@NamedQuery(name = "Pregunta.findByCodCia", query = "SELECT p FROM Pregunta p WHERE p.preguntaPK.codCia = :codCia"),
-@NamedQuery(name = "Pregunta.findByCodFactor", query = "SELECT p FROM Pregunta p WHERE p.preguntaPK.codFactor = :codFactor"),
-@NamedQuery(name = "Pregunta.findByCodPregunta", query = "SELECT p FROM Pregunta p WHERE p.preguntaPK.codPregunta = :codPregunta"),
-@NamedQuery(name = "Pregunta.findByDescripcion", query = "SELECT p FROM Pregunta p WHERE p.descripcion = :descripcion")
-})
+    {
+    @NamedQuery(name = "Pregunta.findAll", query = "SELECT p FROM Pregunta p"),
+    @NamedQuery(name = "Pregunta.findByCodCia", query = "SELECT p FROM Pregunta p WHERE p.preguntaPK.codCia = :codCia"),
+    @NamedQuery(name = "Pregunta.findByCodFactor", query = "SELECT p FROM Pregunta p WHERE p.preguntaPK.codFactor = :codFactor"),
+    @NamedQuery(name = "Pregunta.findByCodPregunta", query = "SELECT p FROM Pregunta p WHERE p.preguntaPK.codPregunta = :codPregunta"),
+    @NamedQuery(name = "Pregunta.findByDescripcion", query = "SELECT p FROM Pregunta p WHERE p.descripcion = :descripcion")
+    })
 public class Pregunta implements Serializable
 {
-private static final long serialVersionUID = 1L;
 
-@EmbeddedId
-protected PreguntaPK preguntaPK;
+    private static final long serialVersionUID = 1L;
 
-@Basic(optional = false)
-@NotNull
-@Size(min = 1, max = 2147483647)
-@Column(name = "descripcion", nullable = false, length = 2147483647)
-private String descripcion;
+    @EmbeddedId
+    protected PreguntaPK preguntaPK;
 
-@ManyToMany(mappedBy = "preguntaList")
-private List<Plantilla> plantillaList;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "descripcion", nullable = false, length = 2147483647)
+    private String descripcion;
 
-@JoinTable(name = "pregunta_respuesta", joinColumns =
-{
-@JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
-@JoinColumn(name = "cod_factor", referencedColumnName = "cod_factor", nullable = false),
-@JoinColumn(name = "cod_pregunta", referencedColumnName = "cod_pregunta", nullable = false)
-}, inverseJoinColumns =
-{
-@JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
-@JoinColumn(name = "cod_tipo_respuesta", referencedColumnName = "cod_tipo_respuesta", nullable = false),
-@JoinColumn(name = "grupo_respuesta", referencedColumnName = "grupo_respuesta", nullable = false),
-@JoinColumn(name = "cod_respuesta", referencedColumnName = "cod_respuesta", nullable = false)
-})
-@ManyToMany
-private List<Respuesta> respuestaList;
+    @ManyToMany(mappedBy = "preguntaList")
+    private List<Plantilla> plantillaList;
 
-@JoinColumns(
-{
-@JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-@JoinColumn(name = "cod_factor", referencedColumnName = "cod_factor", nullable = false, insertable = false, updatable = false)
-})
-@ManyToOne(optional = false)
-private Factor factor;
+    @JoinTable(name = "pregunta_respuesta", joinColumns =
+        {
+        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
+        @JoinColumn(name = "cod_factor", referencedColumnName = "cod_factor", nullable = false),
+        @JoinColumn(name = "cod_pregunta", referencedColumnName = "cod_pregunta", nullable = false)
+        }, inverseJoinColumns =
+        {
+        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
+        @JoinColumn(name = "cod_tipo_respuesta", referencedColumnName = "cod_tipo_respuesta", nullable = false),
+        @JoinColumn(name = "grupo_respuesta", referencedColumnName = "grupo_respuesta", nullable = false),
+        @JoinColumn(name = "cod_respuesta", referencedColumnName = "cod_respuesta", nullable = false)
+        })
+    @ManyToMany
+    private List<Respuesta> respuestaList;
 
-@OneToMany(cascade = CascadeType.ALL, mappedBy = "pregunta")
-private List<DetEvaluacion> detEvaluacionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pregunta")
+    private List<DetEvaluacion> detEvaluacionList;
 
-public Pregunta()
-{
-}
+    @JoinColumns(
+        {
+        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "cod_factor", referencedColumnName = "cod_factor", nullable = false, insertable = false, updatable = false)
+        })
+    @ManyToOne(optional = false)
+    private Factor factor;
 
-public Pregunta(PreguntaPK preguntaPK)
-{
-this.preguntaPK = preguntaPK;
-}
-
-public Pregunta(PreguntaPK preguntaPK, String descripcion)
-{
-this.preguntaPK = preguntaPK;
-this.descripcion = descripcion;
-}
-
-public Pregunta(int codCia, int codFactor, String codPregunta)
-{
-this.preguntaPK = new PreguntaPK(codCia, codFactor, codPregunta);
-}
-
-public PreguntaPK getPreguntaPK()
-{
-return preguntaPK;
-}
-
-public void setPreguntaPK(PreguntaPK preguntaPK)
-{
-this.preguntaPK = preguntaPK;
-}
-
-public String getDescripcion()
-{
-return descripcion;
-}
-
-public void setDescripcion(String descripcion)
-{
-this.descripcion = descripcion;
-}
-
-@XmlTransient
-public List<Plantilla> getPlantillaList()
-{
-return plantillaList;
-}
-
-public void setPlantillaList(List<Plantilla> plantillaList)
-{
-this.plantillaList = plantillaList;
-}
-
-@XmlTransient
-public List<Respuesta> getRespuestaList()
-{
-return respuestaList;
-}
-
-public void setRespuestaList(List<Respuesta> respuestaList)
-{
-this.respuestaList = respuestaList;
-}
-
-public Factor getFactor()
-{
-return factor;
-}
-
-public void setFactor(Factor factor)
-{
-this.factor = factor;
-}
-
-@XmlTransient
-public List<DetEvaluacion> getDetEvaluacionList()
-{
-return detEvaluacionList;
-}
-
-public void setDetEvaluacionList(List<DetEvaluacion> detEvaluacionList)
-{
-this.detEvaluacionList = detEvaluacionList;
-}
-
-@Override
-public int hashCode()
-{
-int hash = 0;
-hash += (preguntaPK != null ? preguntaPK.hashCode() : 0);
-return hash;
-}
-
-@Override
-public boolean equals(Object object)
-{
-// TODO: Warning - this method won't work in the case the id fields are not set
-if (!(object instanceof Pregunta))
+    public Pregunta()
     {
-    return false;
     }
-Pregunta other = (Pregunta) object;
-if ((this.preguntaPK == null && other.preguntaPK != null) || (this.preguntaPK != null && !this.preguntaPK.equals(other.preguntaPK)))
+
+    public Pregunta(PreguntaPK preguntaPK)
     {
-    return false;
+        this.preguntaPK = preguntaPK;
     }
-return true;
-}
 
-@Override
-public String toString()
-{
-return "com.infosgroup.planilla.modelo.entidades.Pregunta[ preguntaPK=" + preguntaPK + " ]";
-}
+    public Pregunta(PreguntaPK preguntaPK, String descripcion)
+    {
+        this.preguntaPK = preguntaPK;
+        this.descripcion = descripcion;
+    }
 
+    public Pregunta(int codCia, int codFactor, String codPregunta)
+    {
+        this.preguntaPK = new PreguntaPK(codCia, codFactor, codPregunta);
+    }
+
+    public PreguntaPK getPreguntaPK()
+    {
+        return preguntaPK;
+    }
+
+    public void setPreguntaPK(PreguntaPK preguntaPK)
+    {
+        this.preguntaPK = preguntaPK;
+    }
+
+    public String getDescripcion()
+    {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion)
+    {
+        this.descripcion = descripcion;
+    }
+
+    @XmlTransient
+    public List<Plantilla> getPlantillaList()
+    {
+        return plantillaList;
+    }
+
+    public void setPlantillaList(List<Plantilla> plantillaList)
+    {
+        this.plantillaList = plantillaList;
+    }
+
+    @XmlTransient
+    public List<Respuesta> getRespuestaList()
+    {
+        return respuestaList;
+    }
+
+    public void setRespuestaList(List<Respuesta> respuestaList)
+    {
+        this.respuestaList = respuestaList;
+    }
+
+    @XmlTransient
+    public List<DetEvaluacion> getDetEvaluacionList()
+    {
+        return detEvaluacionList;
+    }
+
+    public void setDetEvaluacionList(List<DetEvaluacion> detEvaluacionList)
+    {
+        this.detEvaluacionList = detEvaluacionList;
+    }
+
+    public Factor getFactor()
+    {
+        return factor;
+    }
+
+    public void setFactor(Factor factor)
+    {
+        this.factor = factor;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 0;
+        hash += (preguntaPK != null ? preguntaPK.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Pregunta))
+            {
+            return false;
+            }
+        Pregunta other = (Pregunta) object;
+        if ((this.preguntaPK == null && other.preguntaPK != null) || (this.preguntaPK != null && !this.preguntaPK.equals(other.preguntaPK)))
+            {
+            return false;
+            }
+        return true;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "com.infosgroup.planilla.modelo.entidades.Pregunta[ preguntaPK=" + preguntaPK + " ]";
+    }
+    
 // ==========================================================================================
 @Transient
 private String respuestaSeleccionada;

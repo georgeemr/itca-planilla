@@ -62,6 +62,9 @@ public class Evaluacion implements Serializable
     @Column(name = "finalizada", nullable = false)
     private int finalizada;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evaluacion")
+    private List<DetEvaluacion> detEvaluacionList;
+
     @JoinColumns(
         {
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
@@ -87,9 +90,6 @@ public class Evaluacion implements Serializable
         })
     @ManyToOne(optional = false)
     private Campania campania;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evaluacion")
-    private List<DetEvaluacion> detEvaluacionList;
 
     public Evaluacion()
     {
@@ -142,6 +142,17 @@ public class Evaluacion implements Serializable
         this.finalizada = finalizada;
     }
 
+    @XmlTransient
+    public List<DetEvaluacion> getDetEvaluacionList()
+    {
+        return detEvaluacionList;
+    }
+
+    public void setDetEvaluacionList(List<DetEvaluacion> detEvaluacionList)
+    {
+        this.detEvaluacionList = detEvaluacionList;
+    }
+
     public Plantilla getPlantilla()
     {
         return plantilla;
@@ -170,17 +181,6 @@ public class Evaluacion implements Serializable
     public void setCampania(Campania campania)
     {
         this.campania = campania;
-    }
-
-    @XmlTransient
-    public List<DetEvaluacion> getDetEvaluacionList()
-    {
-        return detEvaluacionList;
-    }
-
-    public void setDetEvaluacionList(List<DetEvaluacion> detEvaluacionList)
-    {
-        this.detEvaluacionList = detEvaluacionList;
     }
 
     @Override

@@ -27,117 +27,151 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "sucursal")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+    {
     @NamedQuery(name = "Sucursal.findAll", query = "SELECT s FROM Sucursal s"),
     @NamedQuery(name = "Sucursal.findByIdCompania", query = "SELECT s FROM Sucursal s WHERE s.sucursalPK.idCompania = :idCompania"),
     @NamedQuery(name = "Sucursal.findByIdSucursal", query = "SELECT s FROM Sucursal s WHERE s.sucursalPK.idSucursal = :idSucursal"),
     @NamedQuery(name = "Sucursal.findByNomSucursal", query = "SELECT s FROM Sucursal s WHERE s.nomSucursal = :nomSucursal"),
-    @NamedQuery(name = "Sucursal.findByDetSucursal", query = "SELECT s FROM Sucursal s WHERE s.detSucursal = :detSucursal")})
-public class Sucursal implements Serializable {
+    @NamedQuery(name = "Sucursal.findByDetSucursal", query = "SELECT s FROM Sucursal s WHERE s.detSucursal = :detSucursal")
+    })
+public class Sucursal implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected SucursalPK sucursalPK;
+
     @Size(max = 100)
     @Column(name = "nom_sucursal", length = 100)
     private String nomSucursal;
+
     @Size(max = 200)
     @Column(name = "det_sucursal", length = 200)
     private String detSucursal;
+
     @ManyToMany(mappedBy = "sucursalList")
     private List<Direccion> direccionList;
-    @JoinTable(name = "sucursal_telefono", joinColumns = {
+
+    @JoinTable(name = "sucursal_telefono", joinColumns =
+        {
         @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
-        @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "id_telefono", referencedColumnName = "id_telefono", nullable = false)})
+        @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false)
+        }, inverseJoinColumns =
+        {
+        @JoinColumn(name = "id_telefono", referencedColumnName = "id_telefono", nullable = false)
+        })
     @ManyToMany
     private List<Telefono> telefonoList;
+
     @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
 
-    public Sucursal() {
+    public Sucursal()
+    {
     }
 
-    public Sucursal(SucursalPK sucursalPK) {
+    public Sucursal(SucursalPK sucursalPK)
+    {
         this.sucursalPK = sucursalPK;
     }
 
-    public Sucursal(int idCompania, int idSucursal) {
+    public Sucursal(int idCompania, int idSucursal)
+    {
         this.sucursalPK = new SucursalPK(idCompania, idSucursal);
     }
 
-    public SucursalPK getSucursalPK() {
+    public SucursalPK getSucursalPK()
+    {
         return sucursalPK;
     }
 
-    public void setSucursalPK(SucursalPK sucursalPK) {
+    public void setSucursalPK(SucursalPK sucursalPK)
+    {
         this.sucursalPK = sucursalPK;
     }
 
-    public String getNomSucursal() {
+    public String getNomSucursal()
+    {
         return nomSucursal;
     }
 
-    public void setNomSucursal(String nomSucursal) {
+    public void setNomSucursal(String nomSucursal)
+    {
         this.nomSucursal = nomSucursal;
     }
 
-    public String getDetSucursal() {
+    public String getDetSucursal()
+    {
         return detSucursal;
     }
 
-    public void setDetSucursal(String detSucursal) {
+    public void setDetSucursal(String detSucursal)
+    {
         this.detSucursal = detSucursal;
     }
 
     @XmlTransient
-    public List<Direccion> getDireccionList() {
+    public List<Direccion> getDireccionList()
+    {
         return direccionList;
     }
 
-    public void setDireccionList(List<Direccion> direccionList) {
+    public void setDireccionList(List<Direccion> direccionList)
+    {
         this.direccionList = direccionList;
     }
 
     @XmlTransient
-    public List<Telefono> getTelefonoList() {
+    public List<Telefono> getTelefonoList()
+    {
         return telefonoList;
     }
 
-    public void setTelefonoList(List<Telefono> telefonoList) {
+    public void setTelefonoList(List<Telefono> telefonoList)
+    {
         this.telefonoList = telefonoList;
     }
 
-    public Compania getCompania() {
+    public Compania getCompania()
+    {
         return compania;
     }
 
-    public void setCompania(Compania compania) {
+    public void setCompania(Compania compania)
+    {
         this.compania = compania;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (sucursalPK != null ? sucursalPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Sucursal)) {
+        if (!(object instanceof Sucursal))
+            {
             return false;
-        }
+            }
         Sucursal other = (Sucursal) object;
-        if ((this.sucursalPK == null && other.sucursalPK != null) || (this.sucursalPK != null && !this.sucursalPK.equals(other.sucursalPK))) {
+        if ((this.sucursalPK == null && other.sucursalPK != null) || (this.sucursalPK != null && !this.sucursalPK.equals(other.sucursalPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Sucursal[ sucursalPK=" + sucursalPK + " ]";
     }
     

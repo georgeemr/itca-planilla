@@ -15,68 +15,84 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class EmpleadoTelefonoPK implements Serializable {
+public class EmpleadoTelefonoPK implements Serializable
+{
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_compania", nullable = false)
     private int idCompania;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_sucursal", nullable = false)
     private int idSucursal;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_empleado", nullable = false)
     private int idEmpleado;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_telefono", nullable = false)
     private int idTelefono;
 
-    public EmpleadoTelefonoPK() {
+    public EmpleadoTelefonoPK()
+    {
     }
 
-    public EmpleadoTelefonoPK(int idCompania, int idSucursal, int idEmpleado, int idTelefono) {
+    public EmpleadoTelefonoPK(int idCompania, int idSucursal, int idEmpleado, int idTelefono)
+    {
         this.idCompania = idCompania;
         this.idSucursal = idSucursal;
         this.idEmpleado = idEmpleado;
         this.idTelefono = idTelefono;
     }
 
-    public int getIdCompania() {
+    public int getIdCompania()
+    {
         return idCompania;
     }
 
-    public void setIdCompania(int idCompania) {
+    public void setIdCompania(int idCompania)
+    {
         this.idCompania = idCompania;
     }
 
-    public int getIdSucursal() {
+    public int getIdSucursal()
+    {
         return idSucursal;
     }
 
-    public void setIdSucursal(int idSucursal) {
+    public void setIdSucursal(int idSucursal)
+    {
         this.idSucursal = idSucursal;
     }
 
-    public int getIdEmpleado() {
+    public int getIdEmpleado()
+    {
         return idEmpleado;
     }
 
-    public void setIdEmpleado(int idEmpleado) {
+    public void setIdEmpleado(int idEmpleado)
+    {
         this.idEmpleado = idEmpleado;
     }
 
-    public int getIdTelefono() {
+    public int getIdTelefono()
+    {
         return idTelefono;
     }
 
-    public void setIdTelefono(int idTelefono) {
+    public void setIdTelefono(int idTelefono)
+    {
         this.idTelefono = idTelefono;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idCompania;
         hash += (int) idSucursal;
@@ -86,29 +102,36 @@ public class EmpleadoTelefonoPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EmpleadoTelefonoPK)) {
+        if (!(object instanceof EmpleadoTelefonoPK))
+            {
             return false;
-        }
+            }
         EmpleadoTelefonoPK other = (EmpleadoTelefonoPK) object;
-        if (this.idCompania != other.idCompania) {
+        if (this.idCompania != other.idCompania)
+            {
             return false;
-        }
-        if (this.idSucursal != other.idSucursal) {
+            }
+        if (this.idSucursal != other.idSucursal)
+            {
             return false;
-        }
-        if (this.idEmpleado != other.idEmpleado) {
+            }
+        if (this.idEmpleado != other.idEmpleado)
+            {
             return false;
-        }
-        if (this.idTelefono != other.idTelefono) {
+            }
+        if (this.idTelefono != other.idTelefono)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.EmpleadoTelefonoPK[ idCompania=" + idCompania + ", idSucursal=" + idSucursal + ", idEmpleado=" + idEmpleado + ", idTelefono=" + idTelefono + " ]";
     }
     

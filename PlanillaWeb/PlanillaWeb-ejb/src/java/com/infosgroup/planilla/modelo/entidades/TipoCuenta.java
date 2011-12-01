@@ -27,102 +27,129 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "tipo_cuenta")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+    {
     @NamedQuery(name = "TipoCuenta.findAll", query = "SELECT t FROM TipoCuenta t"),
     @NamedQuery(name = "TipoCuenta.findByIdCompania", query = "SELECT t FROM TipoCuenta t WHERE t.tipoCuentaPK.idCompania = :idCompania"),
     @NamedQuery(name = "TipoCuenta.findByIdTipoCuenta", query = "SELECT t FROM TipoCuenta t WHERE t.tipoCuentaPK.idTipoCuenta = :idTipoCuenta"),
     @NamedQuery(name = "TipoCuenta.findByNomTipoCuenta", query = "SELECT t FROM TipoCuenta t WHERE t.nomTipoCuenta = :nomTipoCuenta"),
-    @NamedQuery(name = "TipoCuenta.findByDetTipoCuenta", query = "SELECT t FROM TipoCuenta t WHERE t.detTipoCuenta = :detTipoCuenta")})
-public class TipoCuenta implements Serializable {
+    @NamedQuery(name = "TipoCuenta.findByDetTipoCuenta", query = "SELECT t FROM TipoCuenta t WHERE t.detTipoCuenta = :detTipoCuenta")
+    })
+public class TipoCuenta implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected TipoCuentaPK tipoCuentaPK;
+
     @Size(max = 100)
     @Column(name = "nom_tipo_cuenta", length = 100)
     private String nomTipoCuenta;
+
     @Size(max = 200)
     @Column(name = "det_tipo_cuenta", length = 200)
     private String detTipoCuenta;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoCuenta")
     private List<Cuenta> cuentaList;
+
     @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
 
-    public TipoCuenta() {
+    public TipoCuenta()
+    {
     }
 
-    public TipoCuenta(TipoCuentaPK tipoCuentaPK) {
+    public TipoCuenta(TipoCuentaPK tipoCuentaPK)
+    {
         this.tipoCuentaPK = tipoCuentaPK;
     }
 
-    public TipoCuenta(int idCompania, int idTipoCuenta) {
+    public TipoCuenta(int idCompania, int idTipoCuenta)
+    {
         this.tipoCuentaPK = new TipoCuentaPK(idCompania, idTipoCuenta);
     }
 
-    public TipoCuentaPK getTipoCuentaPK() {
+    public TipoCuentaPK getTipoCuentaPK()
+    {
         return tipoCuentaPK;
     }
 
-    public void setTipoCuentaPK(TipoCuentaPK tipoCuentaPK) {
+    public void setTipoCuentaPK(TipoCuentaPK tipoCuentaPK)
+    {
         this.tipoCuentaPK = tipoCuentaPK;
     }
 
-    public String getNomTipoCuenta() {
+    public String getNomTipoCuenta()
+    {
         return nomTipoCuenta;
     }
 
-    public void setNomTipoCuenta(String nomTipoCuenta) {
+    public void setNomTipoCuenta(String nomTipoCuenta)
+    {
         this.nomTipoCuenta = nomTipoCuenta;
     }
 
-    public String getDetTipoCuenta() {
+    public String getDetTipoCuenta()
+    {
         return detTipoCuenta;
     }
 
-    public void setDetTipoCuenta(String detTipoCuenta) {
+    public void setDetTipoCuenta(String detTipoCuenta)
+    {
         this.detTipoCuenta = detTipoCuenta;
     }
 
     @XmlTransient
-    public List<Cuenta> getCuentaList() {
+    public List<Cuenta> getCuentaList()
+    {
         return cuentaList;
     }
 
-    public void setCuentaList(List<Cuenta> cuentaList) {
+    public void setCuentaList(List<Cuenta> cuentaList)
+    {
         this.cuentaList = cuentaList;
     }
 
-    public Compania getCompania() {
+    public Compania getCompania()
+    {
         return compania;
     }
 
-    public void setCompania(Compania compania) {
+    public void setCompania(Compania compania)
+    {
         this.compania = compania;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (tipoCuentaPK != null ? tipoCuentaPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoCuenta)) {
+        if (!(object instanceof TipoCuenta))
+            {
             return false;
-        }
+            }
         TipoCuenta other = (TipoCuenta) object;
-        if ((this.tipoCuentaPK == null && other.tipoCuentaPK != null) || (this.tipoCuentaPK != null && !this.tipoCuentaPK.equals(other.tipoCuentaPK))) {
+        if ((this.tipoCuentaPK == null && other.tipoCuentaPK != null) || (this.tipoCuentaPK != null && !this.tipoCuentaPK.equals(other.tipoCuentaPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.TipoCuenta[ tipoCuentaPK=" + tipoCuentaPK + " ]";
     }
     
