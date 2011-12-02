@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/plantillas/defaultTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="titulo">
+        <h:outputText value="Reporte de evaluaci&oacute;n"/>
+    </ui:define>
+    <ui:define name="acciones">
+        <p:tab title="Evaluaci&oacute;n">
+            <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <p:commandLink styleClass="opcionMenu textoNormal" action="#{empleados$reporteEvaluacion.mostrarEmpleadosEvaluados$action}" update="principalForm:mensajes, principalForm:tablaEmpleados" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/edit-find-user.png"/>
+                    <h:outputText value="Mostrar empleados" title="Muestra los empleados evaluados en la campa&ntilde;a seleccionada" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu" action="#{empleados$reporteEvaluacion.mostrarReporteEvaluacion$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/view-pim-journal.png"/>
+                    <h:outputText value="Mostrar reporte" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>  
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{empleados$reporteEvaluacion.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+    <ui:define name="contenido">        
+        <p:fieldset id="fieldset1" legend="Reporte de evaluaci&oacute;n">
+            <table width="100%">
+                <tr valign="top">
+                    <td colspan="2">
+                        <p:dataList id="campaniasDataList" value="#{empleados$reporteEvaluacion.listaCampanias}" var="campania" paginator="true" rows="3" effectSpeed="fast" paginatorAlwaysVisible="true" paginatorPosition="top" paginatorTemplate="Campa&ntilde;a {PreviousPageLink} {CurrentPageReport} {NextPageLink}" itemType="none">
+                            <p:column>  
+                                <p:commandLink title="Seleccionar campa&ntilde;a: #{campania.nombre}" style="text-decoration: none;" action="#{empleados$reporteEvaluacion.seleccionCampania$action}" update="principalForm:mensajes" onmouseover="this.className='textonegrita';" onmouseout="this.className='textonormal';">
+                                    <p:graphicImage value="/resources/iconos/task-delegate.png"/>
+                                    <h:outputText value="#{campania.nombre} (del " style="margin-left: 10px;"/>
+                                    <h:outputText value="#{campania.fechaInicial}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                    <h:outputText value="al "/>
+                                    <h:outputText value="#{campania.fechaFinal}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>                                
+                                    <h:outputText value=")"/>
+                                    <f:setPropertyActionListener value="#{campania}" target="#{SessionBeanEMP.campania}"/>
+                                </p:commandLink>                        
+                            </p:column>
+                        </p:dataList>
+                    </td>
+                </tr>
+            </table>
+        </p:fieldset>
+        <p:spacer height="5"/>
+        <p:dataTable id="tablaEmpleados" value="#{empleados$reporteEvaluacion.listaEmpleados}" var="empleado" selectionMode="single" rows="5" paginator="true" paginatorAlwaysVisible="true" update="seleccionEvaluacionForm:tablaEmpleados" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" selection="#{empleados$reporteEvaluacion.empleadoSeleccionado}">
+            <f:facet name="header">
+                <h:outputText value="Empleados"/>
+            </f:facet>
+            <p:column headerText="ID" filterBy="#{empleado.empleadoPK.codEmp}" sortBy="#{empleado.empleadoPK.codEmp}">
+                <h:outputText value="#{empleado.empleadoPK.codEmp}"/>
+            </p:column>
+            <p:column headerText="Nombre" filterBy="#{empleado.nombres} #{empleado.apellidos}" sortBy="#{empleado.nombres} #{empleado.apellidos}" filterMatchMode="contains">
+                <h:outputText value="#{empleado.nombres} #{empleado.apellidos}"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>
