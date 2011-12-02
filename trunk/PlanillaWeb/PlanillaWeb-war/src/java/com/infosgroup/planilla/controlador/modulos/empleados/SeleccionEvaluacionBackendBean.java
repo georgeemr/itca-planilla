@@ -87,7 +87,7 @@ public void setListaEmpleados(List<Empleado> listaEmpleados)
 this.listaEmpleados = listaEmpleados;
 }
 
-public String mostrarEmpleados$action()
+public String mostrarEmpleadosNoEvaluados$action()
 {
 boolean hayError = false;
 if (sessionBeanEMP.getCampania() == null)
@@ -97,7 +97,7 @@ if (sessionBeanEMP.getCampania() == null)
     }
 if (!hayError)
     {
-    addMessage("Seleccion de evaluacion", "Mostrando los empleados no evaluados para la campa&ntilde;a seleccionada", TipoMensaje.INFORMACION);
+    addMessage("Seleccion de evaluacion", "Mostrando los empleados no evaluados para la campa&ntilde;a " + sessionBeanEMP.getCampania().getNombre(), TipoMensaje.INFORMACION);
     //listaEmpleados = empleadosBean.listarEmpleados();
     listaEmpleados = empleadosBean.listarEmpleadosNoEvaluados(sessionBeanEMP.getCampania());
     }

@@ -151,6 +151,11 @@ catch (Exception excpt)
 return result;
 }
 
+public List<Empleado> listarEmpleadosEvaluados(Campania c)
+{
+return empleadosFacade.findEmpleadosEvaluados(c);
+}
+
 public List<Empleado> listarEmpleadosNoEvaluados(Campania c)
 {
 return empleadosFacade.findEmpleadosNoEvaluados(c);
