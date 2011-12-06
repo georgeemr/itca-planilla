@@ -5,6 +5,26 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 template="./../../plantillas/defaultTemplate.xhtml"
                 xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="dialogos">
+        <!--p:dialog showEffect="bounce" hideEffect="explode" header="Eliminar Concurso" widgetVar="confirmation" id="confirmation" modal="true">
+            <h:outputText value="&#191; Esta seguro que desea eliminar el Concurso seleccionado?"  />
+            <p:spacer height="5"/>
+            <p:separator/>
+            <p:commandButton value="Si, estoy seguro" oncomplete="confirmation.hide()" actionListener="# {reclutamiento$concursos.eliminar$crud$action}" update="mensajes, tablaConcursos"/>
+            <p:commandButton value="No" onclick="confirmation.hide()"/>
+        </p:dialog --> 
+        <p:confirmDialog message="&#191; Esta seguro que desea eliminar el Concurso seleccionado ?"  
+                         showEffect="bounce" hideEffect="explode"  modal="true"
+                         header="Eliminar Concurso" severity="alert" widgetVar="confirmation">  
+
+            <p:commandButton value="Si, estoy seguro" update="mensajes, tablaConcursos" oncomplete="confirmation.hide()"  
+                             actionListener="#{reclutamiento$concursos.eliminar$crud$action}" />  
+            <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+
+        </p:confirmDialog>        
+    </ui:define>
+
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
@@ -15,12 +35,12 @@
                 </p:commandLink>
 
                 <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true"
-                               action="#{reclutamiento$concursos.consultar$vh$action()}" update="tablaConcursos panelContenido">
+                               action="#{reclutamiento$concursos.consultar$vh$action()}" update="tablaConcursos, panelContenido">
                     <p:graphicImage value="/resources/iconos/dialog-ok-apply.png"/>
                     <h:outputText value="Consultar" styleClass="espacioTexto"/>
                 </p:commandLink>
                 <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true"
-                               action="#{reclutamiento$concursos.editar$crud$action()}" update="mensajes panelContenido">
+                               action="#{reclutamiento$concursos.editar$crud$action()}" update="mensajes, panelContenido">
                     <p:graphicImage value="/resources/iconos/dialog-ok-apply.png"/>
                     <h:outputText value="Editar" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -42,7 +62,8 @@
         Concursos
     </ui:define>
 
-    <ui:define name="contenido">
+    <ui:define name="contenido">       
+
 
         <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }"  >
             <p:toolbarGroup align="right" >
@@ -92,8 +113,7 @@
 
         <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 2)}"  >
             <p:toolbarGroup align="right" >
-                <p:commandButton type="button" value="Eliminar" image="ui-icon ui-icon-circle-minus" onclick="confirmation.show()" 
-                                 update="mensajes tablaConcursos" />  
+                <p:commandButton value="Eliminar" image="ui-icon ui-icon-circle-minus" ajax="true" onclick="confirmation.show()"/>
             </p:toolbarGroup>
         </p:toolbar>
 
@@ -175,20 +195,11 @@
                 </p:column> 
 
             </p:dataTable>
-            <p:spacer height="20" />
-
-            <p:confirmDialog message="&#191; Esta seguro que desea eliminar el Concurso seleccionado ?"  
-                             showEffect="bounce" hideEffect="explode"
-                             header="Eliminar Concurso" severity="alert" widgetVar="confirmation" >  
-                <p:commandButton value="Si, estoy seguro" oncomplete="confirmation.hide()"  
-                                 actionListener="#{reclutamiento$concursos.eliminar$crud$action}" update="mensajes tablaConcursos" />  
-                <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
-
-            </p:confirmDialog>  
+            <p:spacer height="20" />    
 
         </p:fieldset>
 
-        
+
         <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 1)}"  >
             <p:toolbarGroup align="right" >
                 <p:commandButton id="cmdModificar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{reclutamiento$concursos.guardar$crud$action()}"
@@ -233,7 +244,5 @@
             </h:panelGrid>
             <p:spacer height="20" />
         </p:fieldset>
-
     </ui:define>
-
 </ui:composition>
