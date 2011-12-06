@@ -22,18 +22,18 @@
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true"
                                action="#{reclutamiento$concursos.nuevo$vh$action()}" update="panelContenido">
-                    <p:graphicImage value="/resources/iconos/dialog-ok-apply.png"/>
+                    <p:graphicImage value="/resources/iconos/new.png"/>
                     <h:outputText value="Nuevo" styleClass="espacioTexto"/>
                 </p:commandLink>
 
                 <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true"
                                action="#{reclutamiento$concursos.consultar$vh$action()}" update="tablaConcursos, panelContenido">
-                    <p:graphicImage value="/resources/iconos/dialog-ok-apply.png"/>
+                    <p:graphicImage value="/resources/iconos/search.png"/>
                     <h:outputText value="Consultar" styleClass="espacioTexto"/>
                 </p:commandLink>
                 <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true"
                                action="#{reclutamiento$concursos.editar$crud$action()}" update="mensajes, panelContenido">
-                    <p:graphicImage value="/resources/iconos/dialog-ok-apply.png"/>
+                    <p:graphicImage value="/resources/iconos/edit.png"/>
                     <h:outputText value="Editar" styleClass="espacioTexto"/>
                 </p:commandLink>
 
