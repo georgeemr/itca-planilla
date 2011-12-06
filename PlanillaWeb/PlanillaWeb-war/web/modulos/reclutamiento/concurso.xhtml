@@ -7,17 +7,9 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="dialogos">
-        <!--p:dialog showEffect="bounce" hideEffect="explode" header="Eliminar Concurso" widgetVar="confirmation" id="confirmation" modal="true">
-            <h:outputText value="&#191; Esta seguro que desea eliminar el Concurso seleccionado?"  />
-            <p:spacer height="5"/>
-            <p:separator/>
-            <p:commandButton value="Si, estoy seguro" oncomplete="confirmation.hide()" actionListener="# {reclutamiento$concursos.eliminar$crud$action}" update="mensajes, tablaConcursos"/>
-            <p:commandButton value="No" onclick="confirmation.hide()"/>
-        </p:dialog --> 
         <p:confirmDialog message="&#191; Esta seguro que desea eliminar el Concurso seleccionado ?"  
                          showEffect="bounce" hideEffect="explode"  modal="true"
                          header="Eliminar Concurso" severity="alert" widgetVar="confirmation">  
-
             <p:commandButton value="Si, estoy seguro" update="mensajes, tablaConcursos" oncomplete="confirmation.hide()"  
                              actionListener="#{reclutamiento$concursos.eliminar$crud$action}" />  
             <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
@@ -122,7 +114,6 @@
         <p:fieldset legend="Consulta de Concursos" rendered="#{(SessionBeanADM.estadoAccion eq 2)}" >
 
             <p:spacer height="20" />
-            <!-- onRowSelectUpdate="panelContenido" update="panelContenido" -->
             <p:dataTable id="tablaConcursos"
                          var="concurso" rows="5"  paginator="true" 
                          value="#{reclutamiento$concursos.listaConcursos}"
