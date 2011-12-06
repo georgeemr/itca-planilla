@@ -8,14 +8,14 @@
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link href="#{facesContext.externalContext.requestContextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
+        <link href="#{facesContext.externalContext.requestContextPath}/resources/css/default.css"  rel="stylesheet" type="text/css" />
         <link href="#{facesContext.externalContext.requestContextPath}/resources/css/imagenes.css" rel="stylesheet" type="text/css" />
         <title>Planilla Web - <ui:insert name="titulo">Titulo</ui:insert></title>
     </h:head>
     <h:body>
         <h:form id="principalForm" prependId="true">
             <p:growl id="mensajes" showDetail="true" showSummary="true"/>
-            <p:panel style="padding: 0px;">
+            <p:panel style="padding: 0px; border: none;">
                 <table width="100%" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <td width="200" align="left">
@@ -33,6 +33,7 @@
                                     <p:themeSwitcher width="400"/>
                                 </h:panelGrid>
                             </p:dialog>
+                            <ui:insert name="dialogos"/>
                         </td>
                         <td width="250" align="right">
                             <p:ajaxStatus>
@@ -62,12 +63,12 @@
                 </table>
             </p:panel>
             <p:spacer height="5"/>
-            <p:panel style="padding: 0px;">
+            <p:panel style="padding: 0px;border: none;">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                         <td id="accionesTD">
                             <p:panel id="panelAcciones" header="Acciones" style="text-align: left;">
-                                <p:accordionPanel>
+                                <p:accordionPanel  >
                                     <ui:insert name="acciones">
                                         <h:outputText value="Aqui ir&aacute;n las acciones por p&aacute;gina &#9786;"/>
                                     </ui:insert>                                
@@ -75,7 +76,7 @@
                             </p:panel>
                         </td>
                         <td id="contenidoTD">
-                            <p:panel id="panelContenido">
+                            <p:panel id="panelContenido" >
                                 <f:facet name="header">
                                     <ui:insert name="titulo">
                                         <h:outputText value="Aqui ir&aacute; el titulo de la p&aacute;gina &#9786;"/>
@@ -90,7 +91,7 @@
                 </table>
             </p:panel>
             <p:spacer height="5"/>
-            <p:panel style="padding: 0px; text-align: center;">
+            <p:panel style="padding: 0px; text-align: center;border: none;">
                 <h:outputText value="&copy; 2011 Infosgroup - El Salvador"/>
             </p:panel>
         </h:form>
