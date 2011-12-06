@@ -1,0 +1,261 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./../../plantillas/defaultTemplate.xhtml">
+
+    <ui:define name="titulo">Contrataciones</ui:define>
+
+    <ui:define name="acciones">
+        <p:tab title="Acciones">
+            <h:panelGrid columns="1">
+                <!-- action="#-{reclutamiento$preseleccionAspirante.preseleccionarCandidato$action()}" -->
+                <p:commandLink styleClass="opcionMenu"  update="mensajes" ajax="true">
+                    <p:graphicImage value="/resources/iconos/personal.png"/>
+                    <h:outputText value="Contratar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>  
+    </ui:define>
+
+    <ui:define name="contenido">
+        <p:spacer height="20" />
+        <p:wizard  flowListener="#{reclutamiento$contratacion.onFlowListener}">
+            <p:tab id="concursoEvaluado" title="Concursos"  >
+                <!-- h:outputLabel value="Seleccione un curso para ver los participantes preseleccionados." >
+                    <p:graphicImage value="/resources/imagenes/64/dialog-information.png" style="left: auto" />
+                </h:outputLabel-->
+                <p:spacer height="20" />
+                <p:dataTable id="tablaConcursos"
+                             var="concurso" 
+                             value="#{reclutamiento$contratacion.listaConcurso}"
+                             rows="5" 
+                             paginator="true" 
+                             emptyMessage="No se han encontrado concursos."
+                             binding="#{reclutamiento$contratacion.tableConcursos}"
+                             paginatorAlwaysVisible="true" 
+                             selection="#{SessionBeanREC.concursoSeleccionado}"
+                             update="panelContenido"
+                             selectionMode="single"
+                             onRowSelectUpdate="panelContenido"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
+                    <f:facet name="header">
+                        <h:outputText value="Concursos Evaluados"/>
+                    </f:facet>
+
+                    <p:column sortBy="#{concurso.concursoPK.codConcurso}">
+                        <f:facet name="header">
+                            Concurso
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.concursoPK.codConcurso}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{concurso.nombre}" 
+                              filterMatchMode="contains"
+                              headerText="Descripci&#243;n">
+                        <h:outputLabel value="#{concurso.nombre}"/>
+                    </p:column> 
+
+                    <p:column sortBy="#{concurso.fechaInicial}">
+                        <f:facet name="header">
+                            Fecha Inicio
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.fechaInicial}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputLabel>
+                    </p:column>    
+
+                    <p:column sortBy="#{concurso.fechaFinal}">
+                        <f:facet name="header">
+                            Fecha Cierre
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.fechaFinal}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputLabel>
+                    </p:column>         
+
+                    <p:column sortBy="#{concurso.numeroPlazas}">
+                        <f:facet name="header">
+                            Puesto
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.puesto.nombre}" />
+
+                    </p:column> 
+
+                    <p:column sortBy="#{concurso.puesto.nombre}">
+                        <f:facet name="header">
+                            N&uacute;mero de plazas
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.numeroPlazas}" />
+                    </p:column> 
+
+                    <p:column sortBy="#{concurso.estadoConcurso.nombre}">
+                        <f:facet name="header">
+                            Estado
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.estadoConcurso.nombre}" />
+                    </p:column> 
+
+                </p:dataTable>
+            </p:tab>
+            
+            <!--  -->
+            
+            <p:tab id="candidatosPreseleccionados" title="Candidatos" >
+                <p:spacer height="20" />
+                
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Concurso seleccionado: " style="font-weight: bold;" />
+                    <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.nombre}"/>
+                </h:panelGrid>
+
+                <p:spacer height="20" />
+                <p:dataTable id="tablaEvaluados"
+                             var="candidato" 
+                             value="#{reclutamiento$contratacion.listaConcurso}"
+                             rows="5" 
+                             paginator="true" 
+                             emptyMessage="No se han encontrado Candidatos."
+                             binding="#{reclutamiento$contratacion.tableEvaluados}"
+                             paginatorAlwaysVisible="true" 
+                             selection="#{reclutamiento$contratacion.candidatosSeleccionados}"
+                             update="panelContenido"
+                             selectionMode="multiple"
+                             onRowSelectUpdate="panelContenido"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
+                    <f:facet name="header">
+                        <h:outputText value="Resultados de las Evaluaciones"/>
+                    </f:facet>
+
+                    <p:column sortBy="#{concurso.concursoPK.codConcurso}">
+                        <f:facet name="header">
+                            Concurso
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.concursoPK.codConcurso}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{concurso.nombre}" 
+                              filterMatchMode="contains"
+                              headerText="Candidato">
+                        <h:outputLabel value="#{concurso.nombre}"/>
+                    </p:column> 
+
+                    <p:column sortBy="#{concurso.fechaInicial}">
+                        <f:facet name="header">
+                            Nombre
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.fechaInicial}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputLabel>
+                    </p:column>    
+
+                    <p:column sortBy="#{concurso.fechaFinal}">
+                        <f:facet name="header">
+                            Fecha
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.fechaFinal}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputLabel>
+                    </p:column>         
+
+                    <p:column sortBy="#{concurso.numeroPlazas}">
+                        <f:facet name="header">
+                            Nota
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.numeroPlazas}" />
+                    </p:column> 
+
+                    <p:column sortBy="#{concurso.puesto.nombre}">
+                        <f:facet name="header">
+                            Aprobar
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.puesto.nombre}" />
+                    </p:column> 
+
+                    <p:column sortBy="#{concurso.estadoConcurso.nombre}">
+                        <f:facet name="header">
+                            Emitir contrato
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.estadoConcurso.nombre}" />
+                    </p:column> 
+
+                </p:dataTable>
+            </p:tab>
+
+            <p:tab id="contratacionesEmpleado" title="Contratar" >
+
+                <p:spacer height="20" />
+                <p:fieldset legend="Contrato de Empleado" >
+
+                    <h:panelGrid columns="5" >
+                        <h:outputLabel value="Empresa" />
+                        <p:inputText value="Empresa" />
+                        <h:outputLabel value="" />
+                        <h:outputLabel value="" />
+                        <h:outputLabel value="" />
+
+                        <h:outputLabel value="Candidato" />
+                        <p:inputText value="Fulanito de tal" />
+                        <h:outputLabel value="" />
+                        <h:outputLabel value="" />
+                        <h:outputLabel value="" />
+
+                        <h:outputLabel value="Acta y Acuerdo" />
+                        <p:inputText value="Empresa" />
+                        <h:outputLabel value="" />
+                        <h:outputLabel value="Fecha de Acuerdo" />
+                        <p:calendar />
+
+                        <h:outputLabel value="Fecha Inicio" />
+                        <p:inputText value="Empresa" />
+                        <h:outputLabel value="" />
+                        <h:outputLabel value="Fecha Fin" />
+                        <p:calendar />
+                    </h:panelGrid>
+                    <p:spacer height="15" />
+
+                    <h:panelGrid columns="5">
+                        <h:outputLabel value="Puesto" />
+                        <p:inputText value="Desarrollador Analista Senior II" />    
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value=""/>
+
+                        <h:outputLabel value="Representante Patronal" />
+                        <p:inputText value="Desarrollador Analista Senior II" />    
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value=""/>
+
+                        <h:outputLabel value="Tipo de Contrato" />
+                        <p:inputText value="Permanente" />    
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value="Estado del Contrato" />
+                        <p:inputText value="Aprobado" /> 
+
+                        <f:facet name="footer" >
+
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Contratar" />
+                            </h:panelGrid>
+
+                        </f:facet>
+
+                    </h:panelGrid>
+
+                </p:fieldset>
+            </p:tab>
+
+
+            <p:tab id="imprimirContratacion" title="Imprimir" >
+                <p:panel header="Imprimir Contrato" >
+
+                </p:panel>
+            </p:tab>
+
+        </p:wizard>
+    </ui:define>
+
+</ui:composition>

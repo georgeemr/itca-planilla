@@ -11,7 +11,7 @@
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" action="#{reclutamiento$preseleccionAspirante.preseleccionarCandidato$action()}" update="mensajes">
+                <p:commandLink styleClass="opcionMenu" action="#{reclutamiento$preseleccionAspirante.preseleccionarCandidato$action()}" update="mensajes" ajax="true">
                     <p:graphicImage value="/resources/iconos/dialog-ok-apply.png"/>
                     <h:outputText value="Preseleccionar" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -115,12 +115,22 @@
                 </p:column> 
 
             </p:dataTable>
-            
+
             <p:spacer height="20" />
-            
-            <h:panelGrid columns="2">
+
+            <h:panelGrid columns="1">
+
                 <h:outputLabel value="Criterios por puesto:" />
+                <p:pickList id="picktCriterios" value="#{reclutamiento$preseleccionAspirante.listModelCriterios}" 
+                            var="c" iconOnly="true" effect="bounce"
+                            itemLabel="#{c.criterio1.nombre}"
+                            itemValue="#{c.criterio1.criterioPK.pkAsString}"
+                            >
+                    <f:facet name="sourceCaption">Disponible</f:facet>  
+                    <f:facet name="targetCaption">Seleccionado</f:facet>  
+                </p:pickList>
                 <p:commandButton value="Aplicar Criterios" />
+
             </h:panelGrid>
 
             <p:dataTable id="tablaCandidatos"
