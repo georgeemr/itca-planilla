@@ -11,6 +11,8 @@ import javax.faces.bean.SessionScoped;
 /**
  *
  * @author root
+ * <pre>Bean de Session utilizado para almacenar los datos 
+ * de Reclutamiento y preseleccion de candidatos.</pre>
  */
 @ManagedBean(name="SessionBeanREC")
 @SessionScoped
