@@ -14,6 +14,11 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -25,15 +30,18 @@ public class ConcursoBackendBean extends JSFUtil implements Serializable {
 
     @EJB
     private ReclutamientoSessionBean reclutamientoFacade;
-    private String nombreConcurso;
+    private Boolean isError;
     private Date fechaInicial;
+    private String nombreConcurso;
     private Date fechaFinal;
     private Integer numeroPlazas;
     private Integer puesto;
     private String estadoConcurso;
     private List<Puesto> listaPuestos;
     private List<EstadoConcurso> listaEstadoConcurso;
-    private Boolean isError;
+    private List<Concurso> listaConcursos;
+    private DataTable tableConcursos;
+    private SelectItem[] itemEstado;
 
     public ConcursoBackendBean() {
     }
@@ -105,32 +113,135 @@ public class ConcursoBackendBean extends JSFUtil implements Serializable {
         this.listaEstadoConcurso = listaEstadoConcurso;
     }
 
-    public String guardar$action() {
+    public List<Concurso> getListaConcursos() {
+        listaConcursos = reclutamientoFacade.getConcursoByEmpresa(getSessionBeanADM().getCompania().getIdCompania());
+        return listaConcursos;
+    }
+
+    public void setListaConcursos(List<Concurso> listaConcursos) {
+        this.listaConcursos = listaConcursos;
+    }
+
+    public DataTable getTableConcursos() {
+        return tableConcursos;
+    }
+
+    public void setTableConcursos(DataTable tableConcursos) {
+        this.tableConcursos = tableConcursos;
+    }
+
+    public SelectItem[] getItemEstado() {
+        List<EstadoConcurso> k = reclutamientoFacade.getEstadoConcursosByEmpresa(getSessionBeanADM().getCompania().getIdCompania());
+        itemEstado = new SelectItem[k.size()];
+        for (int f = 0; f < k.size(); f++) {
+            SelectItem s = new SelectItem(k.get(f).getNombre(), k.get(f).getNombre());
+            itemEstado[f] = s;
+        }
+        return itemEstado;
+    }
+
+    public void setItemEstado(SelectItem[] itemEstado) {
+        this.itemEstado = itemEstado;
+    }
+
+    public String guardar$crud$action() {
         isError = Boolean.FALSE;
         validaCampos$action();
+        Integer c = getSessionBeanADM().getCompania().getIdCompania();
         if (isError) {
             return null;
         }
 
-        Concurso nuevoConcurso = new Concurso();
-        ConcursoPK pk = new ConcursoPK();
-        pk.setCodCia(1);
-        pk.setCodConcurso(reclutamientoFacade.getMaxConcurso(1));
-        nuevoConcurso.setConcursoPK(pk);
-        nuevoConcurso.setNombre(nombreConcurso);
-        nuevoConcurso.setFechaInicial(fechaInicial);
-        nuevoConcurso.setFechaFinal(fechaFinal);
-        nuevoConcurso.setNumeroPlazas(numeroPlazas);
-        nuevoConcurso.setPuesto(reclutamientoFacade.findPuestoById(new PuestoPK(1, puesto)));
-        nuevoConcurso.setEstadoConcurso(reclutamientoFacade.findEstadoConcursoById(new EstadoConcursoPK(1, estadoConcurso)));
-
-        try {
-            reclutamientoFacade.guardarConcurso(nuevoConcurso);
-            limpiarCampos();
-        } catch (Exception e) {
+        Concurso concurso = new Concurso();
+        /* Crear Concurso */
+        if (getSessionBeanADM().getEstadoAccion() == null || getSessionBeanADM().getEstadoAccion().equals(0)) {
+            ConcursoPK pk = new ConcursoPK();
+            pk.setCodCia(c);
+            pk.setCodConcurso(reclutamientoFacade.getMaxConcurso(1));
+            concurso.setConcursoPK(pk);
+            concurso.setNombre(nombreConcurso);
+            concurso.setFechaInicial(fechaInicial);
+            concurso.setFechaFinal(fechaFinal);
+            concurso.setNumeroPlazas(numeroPlazas);
+            concurso.setPuesto(reclutamientoFacade.findPuestoById(new PuestoPK(c, puesto)));
+            concurso.setEstadoConcurso(reclutamientoFacade.findEstadoConcursoById(new EstadoConcursoPK(c, estadoConcurso)));
+            try {
+                reclutamientoFacade.guardarConcurso(concurso);
+                addMessage("Mantenimiento de Concursos.", "Datos guardados con éxito", TipoMensaje.INFORMACION);
+                limpiarCampos();
+            } catch (Exception e) {
+                addMessage("Mantenimiento de Concursos.", "Ha ocurrido un error al intentar guardar el Concurso.", TipoMensaje.ERROR);
+                System.out.println(e.getMessage());
+            }
+        } else if (getSessionBeanADM().getEstadoAccion().equals(1)) {
+            /* Modificar Concurso */
+            concurso = getSessionBeanREC().getConcursoSeleccionado();
+            if (concurso == null) {
+                addMessage("Mantenimiento de Concursos.", "No ha seleccionado ningún concurso para editar.", TipoMensaje.ERROR);
+                return null;
+            }
+            concurso.setNombre(nombreConcurso);
+            concurso.setFechaInicial(fechaInicial);
+            concurso.setFechaFinal(fechaFinal);
+            concurso.setNumeroPlazas(numeroPlazas);
+            concurso.setPuesto(reclutamientoFacade.findPuestoById(new PuestoPK(c, puesto)));
+            concurso.setEstadoConcurso(reclutamientoFacade.findEstadoConcursoById(new EstadoConcursoPK(c, estadoConcurso)));
+            try {
+                reclutamientoFacade.editarConcurso(concurso);
+                addMessage("Mantenimiento de Concursos.", "Datos actualizados con éxito", TipoMensaje.INFORMACION);
+                limpiarCampos();
+            } catch (Exception e) {
+                addMessage("Mantenimiento de Concursos.", "Ha ocurrido un error al intentar actualizar el Concurso.", TipoMensaje.ERROR);
+                System.out.println(e.getMessage());
+            }
         }
 
         return null;
+    }
+
+    public void eliminar$crud$action(ActionEvent actionEvent) {
+        if (getSessionBeanREC().getConcursoSeleccionado() == null) {
+            addMessage("Mantenimiento de Concursos", "Primero seleccione un concurso", TipoMensaje.ERROR);
+            return;
+        }
+        try {
+            reclutamientoFacade.eliminarConcurso(getSessionBeanREC().getConcursoSeleccionado());
+            addMessage("Mantenimiento de Concursos.", "Datos eliminados con éxito", TipoMensaje.INFORMACION);
+            limpiarCampos();
+        } catch (Exception e) {
+            addMessage("Mantenimiento de Concursos.", "Ha ocurrido un error al intentar remover el Concurso.", TipoMensaje.ERROR);
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public String editar$crud$action() {
+        if (getSessionBeanREC().getConcursoSeleccionado() == null) {
+        addMessage("Mantenimiento de Concursos.", "No ha seleccionado ningún concurso para editar.", TipoMensaje.ERROR);
+        return null;
+        }
+        Concurso c = getSessionBeanREC().getConcursoSeleccionado();
+        setNombreConcurso(c.getNombre());
+        setFechaInicial(c.getFechaInicial());
+        setFechaFinal(c.getFechaFinal());
+        setNumeroPlazas(c.getNumeroPlazas());
+        setPuesto(c.getPuesto().getPuestoPK().getCodPuesto());
+        setEstadoConcurso(c.getEstadoConcurso().getEstadoConcursoPK().getCodigo());
+        getSessionBeanADM().setEstadoAccion( 1 );
+        return null;
+    }
+
+    public void nuevo$vh$action() {
+        setEstadoAccion(0);
+    }
+
+    public void consultar$vh$action() {
+        setEstadoAccion(2);
+    }
+
+    public void setEstadoAccion(Integer estadoAccion) {
+        getSessionBeanADM().setEstadoAccion(estadoAccion);
+        limpiarCampos();
     }
 
     public void validaCampos$action() {
@@ -140,17 +251,17 @@ public class ConcursoBackendBean extends JSFUtil implements Serializable {
         }
     }
 
-    private void editar$action() {
+    public void onRowSelectConcurso(SelectEvent event) {
+        getSessionBeanREC().setConcursoSeleccionado((Concurso) event.getObject());
     }
 
-    private void eliminar$action() {
-    }
-
-    private void consultar$action() {
+    public void onRowUnSelectConcurso(UnselectEvent event) {
+        getSessionBeanREC().setConcursoSeleccionado(null);
     }
 
     @Override
     protected void limpiarCampos() {
+        tableConcursos.setSelection(null);
         setNombreConcurso(null);
         setFechaInicial(null);
         setFechaFinal(null);
