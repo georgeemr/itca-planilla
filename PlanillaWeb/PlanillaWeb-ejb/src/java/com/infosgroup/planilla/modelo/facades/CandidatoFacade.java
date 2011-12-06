@@ -6,7 +6,8 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.CandidatoPK;
-import com.infosgroup.planilla.modelo.entidades.Concurso;
+import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
+import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -31,5 +32,19 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
 
     public CandidatoFacade() {
         super(Candidato.class);
+    }
+
+  
+    public List<Candidato> findByCriterios(List<CriteriosXPuesto> criterios) {
+        List<Candidato> listaCandidatos = new ArrayList<Candidato>();
+        String q = "select * from candidato ";
+        
+        for (CriteriosXPuesto cx : criterios) {
+            if ( cx.getCriterio1().getClase() != null && cx.getCriterio1().getCampo() != null ) {
+                
+            }
+        }
+
+        return listaCandidatos;
     }
 }
