@@ -29,6 +29,5 @@ public class SeguridadSessionBean {
     public Boolean validarUsuario(@WebParam String usuario, @WebParam String password) {
         return (usuariosFacade.findByUsuarioPassword(usuario, password) > 0);
     }
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+
 }
