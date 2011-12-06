@@ -58,8 +58,8 @@ public class ConcursoFacade extends AbstractFacade<Concurso, ConcursoPK> {
         return lstConcurso;
     }
 
-    public Long getMax(Integer empresa) {
-        Long max = (Long) em.createNamedQuery("Concurso.max").setParameter("codCia", empresa).getSingleResult();
+    public Integer getMax(Integer empresa) {
+        Integer max = (Integer) em.createQuery("SELECT max(c.concursoPK.codConcurso) FROM Concurso c WHERE c.concursoPK.codCia = :codCia").setParameter("codCia", empresa).getSingleResult();
         return max != null ? ( ++max ): 1;
     }
 }
