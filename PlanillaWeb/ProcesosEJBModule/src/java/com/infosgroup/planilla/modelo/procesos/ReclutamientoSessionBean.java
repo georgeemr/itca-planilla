@@ -31,7 +31,7 @@ import java.util.List;
 @Stateless
 @LocalBean
 public class ReclutamientoSessionBean {
-    
+
     @EJB
     private EstadoConcursoFacade estadoConcursoFacade;
     @EJB
@@ -42,51 +42,63 @@ public class ReclutamientoSessionBean {
     private CandidatoFacade candidatoFacade;
     @EJB
     private ConcursoFacade concursoFacade;
-    
+
     public List<Concurso> getListaConcursos(Date fechaInicial, Date fechaFinal) {
         return concursoFacade.getConcursosByDate(fechaInicial, fechaFinal);
     }
-    
+
     public List<Concurso> getConcursosEvaluados(Integer empresa) {
         return concursoFacade.getConcursosActivos(empresa);
     }
-    
+
+    public List<Concurso> getConcursoByEmpresa(Integer empresa) {
+        return concursoFacade.findConcursoByEmpresa(empresa);
+    }
+
     public List<EstadoConcurso> getEstadoConcursosByEmpresa(Integer empresa) {
         return estadoConcursoFacade.findEstadoConcursoByEmpresa(empresa);
     }
-    
+
     public List<Puesto> getPuestosByEmpresa(Integer empresa) {
         return puestoFacade.findPuestoByEmpresa(empresa);
     }
-    
+
     public List<TipoPuesto> getTipoPuestosByEmpresa(Integer empresa) {
         return tipoPuestoFacade.findTipoPuestoByEmpresa(empresa);
     }
-    
+
     public Integer getMaxConcurso(Integer empresa) {
         return concursoFacade.getMax(empresa).intValue();
     }
-    
+
     public Puesto findPuestoById(PuestoPK pkPuesto) {
         return puestoFacade.find(pkPuesto);
     }
-    
+
     public EstadoConcurso findEstadoConcursoById(EstadoConcursoPK estadoConcursoPK) {
         return estadoConcursoFacade.find(estadoConcursoPK);
     }
-    
+
     public TipoPuesto findTipoPuestoById(TipoPuestoPK tipoPuestoPK) {
         return tipoPuestoFacade.find(tipoPuestoPK);
     }
-    
+
     public void guardarConcurso(Concurso c) {
         concursoFacade.create(c);
     }
-    
+
+    public void eliminarConcurso(Concurso c) {
+        concursoFacade.remove(c);
+    }
+
+    public void editarConcurso(Concurso c) {
+        concursoFacade.edit(c);
+    }
+
     public List<Candidato> getCandidatosByConcurso(Concurso c) {
         return (c != null) ? concursoFacade.find(c.getConcursoPK()).getCandidatoList() : new ArrayList<Candidato>();
     }
-    
+
     public void CambioEstadoCandidato(Concurso concurso, List<Candidato> listaCandidatos, String estado) {
         for (Candidato c : concurso.getCandidatoList()) {
             c.setEstado("A");
