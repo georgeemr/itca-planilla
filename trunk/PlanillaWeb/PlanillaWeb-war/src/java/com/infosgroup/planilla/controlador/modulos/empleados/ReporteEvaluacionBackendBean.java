@@ -5,16 +5,26 @@
 package com.infosgroup.planilla.controlador.modulos.empleados;
 
 import com.infosgroup.planilla.modelo.entidades.Campania;
-import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
+import com.infosgroup.planilla.modelo.estructuras.DetalleAdjuntoCorreo;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
+import com.infosgroup.planilla.modelo.procesos.MailStatelessBean;
+import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
+import com.infosgroup.planilla.modelo.reportes.ReporteEvaluacion;
 import com.infosgroup.planilla.view.JSFUtil;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+;
 
 /**
 *
@@ -26,6 +36,12 @@ public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializabl
 {
 @EJB
 private EmpleadosSessionBean empleadosBean;
+
+@EJB
+private ReportesStatelessBean reportesBean;
+
+@EJB
+private MailStatelessBean mailBean;
 
 /** Creates a new instance of SeleccionEvaluacionBackendBean */
 public ReporteEvaluacionBackendBean()
@@ -58,19 +74,19 @@ public void setListaTiposEvaluacion(List<TipoEvaluacion> listaTiposEvaluacion)
 this.listaTiposEvaluacion = listaTiposEvaluacion;
 }
 
-private List<Empleado> listaEmpleados;
+private List<Evaluacion> listaEvaluaciones;
 
-public List<Empleado> getListaEmpleados()
+public List<Evaluacion> getListaEvaluaciones()
 {
-return listaEmpleados;
+return listaEvaluaciones;
 }
 
-public void setListaEmpleados(List<Empleado> listaEmpleados)
+public void setListaEvaluaciones(List<Evaluacion> listaEvaluaciones)
 {
-this.listaEmpleados = listaEmpleados;
+this.listaEvaluaciones = listaEvaluaciones;
 }
 
-public String mostrarEmpleadosEvaluados$action()
+public String mostrarEvaluaciones$action()
 {
 boolean hayError = false;
 if (sessionBeanEMP.getCampania() == null)
@@ -81,21 +97,21 @@ if (sessionBeanEMP.getCampania() == null)
 if (!hayError)
     {
     addMessage("Seleccion de evaluacion", "Mostrando los empleados evaluados en la campa&ntilde;a " + sessionBeanEMP.getCampania().getNombre(), TipoMensaje.INFORMACION);
-    listaEmpleados = empleadosBean.listarEmpleadosEvaluados(sessionBeanEMP.getCampania());
+    listaEvaluaciones = sessionBeanEMP.getCampania().getEvaluacionList(); //empleadosBean.listarEmpleadosEvaluados(sessionBeanEMP.getCampania());
     }
 return null;
 }
 
-private Empleado empleadoSeleccionado;
+private Evaluacion evaluacionSeleccionada;
 
-public Empleado getEmpleadoSeleccionado()
+public Evaluacion getEvaluacionSeleccionada()
 {
-return empleadoSeleccionado;
+return evaluacionSeleccionada;
 }
 
-public void setEmpleadoSeleccionado(Empleado empleadoSeleccionado)
+public void setEvaluacionSeleccionada(Evaluacion evaluacionSeleccionada)
 {
-this.empleadoSeleccionado = empleadoSeleccionado;
+this.evaluacionSeleccionada = evaluacionSeleccionada;
 }
 
 @Override
@@ -116,8 +132,18 @@ addMessage("", "Seleccionado Tipo de evaluaci&oacute;n: " + getSessionBeanEMP().
 return null;
 }
 
+@PermitAll
 public String mostrarReporteEvaluacion$action()
 {
+List<ReporteEvaluacion> lr = reportesBean.listarReporteEvaluacion(evaluacionSeleccionada);
+//mailBean.enviarCorreoElectronico("Correo de prueba", "Esta es una prueba de envio de correo electronico via GMail XD", "echopin@infosgroup.com");
+List<DetalleAdjuntoCorreo> listaAdjuntos = new ArrayList<DetalleAdjuntoCorreo>(0);
+listaAdjuntos.add(new DetalleAdjuntoCorreo("reporteprueba1.pdf", "application/pdf", reportesBean.generarDatosReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr)));
+listaAdjuntos.add(new DetalleAdjuntoCorreo("reporteprueba2.pdf", "application/pdf", reportesBean.generarDatosReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr)));
+
+String destinatarios = "gbran@infosgroup.com:echopin@infosgroup.com:vmercado@infosgroup.com:gsalazar@infosgroup.com";
+mailBean.enviarCorreoElectronicoAdjuntos("Correo de prueba", "Prueba de correo con adjuntos", destinatarios, listaAdjuntos);
+//reportesBean.generarReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr);
 return null;
 }
 }
