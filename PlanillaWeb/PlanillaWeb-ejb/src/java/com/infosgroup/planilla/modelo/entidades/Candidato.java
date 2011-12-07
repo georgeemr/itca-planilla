@@ -20,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -42,6 +43,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Candidato.findByEstado", query = "SELECT c FROM Candidato c WHERE c.estado = :estado"),
     @NamedQuery(name = "Candidato.findByEdad", query = "SELECT c FROM Candidato c WHERE c.edad = :edad")})
 public class Candidato implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CandidatoPK candidatoPK;
@@ -87,6 +89,8 @@ public class Candidato implements Serializable {
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
+    @Transient
+    private String nombreCompleto;
 
     public Candidato() {
     }
@@ -220,5 +224,13 @@ public class Candidato implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.Candidato[ candidatoPK=" + candidatoPK + " ]";
     }
-    
+
+    public String getNombreCompleto() {
+        nombreCompleto = nombre + " " + apellido + " " + ( apCasada != null ? apCasada : "" );
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
 }
