@@ -19,152 +19,166 @@
         </p:tab>  
     </ui:define>
 
-    <ui:define name="contenido">      
+    <ui:define name="contenido">    
+        <p:spacer height="20" />
 
-        <p:fieldset legend="Concursos" >
+        <p:wizard  flowListener="#{reclutamiento$preseleccionAspirante.onFlowListener}">
 
-            <h:outputText value="Seleccione la fecha inicial y final para iniciar la búsqueda de concursos."/>
-            <h:panelGrid columns="4">
-                <h:outputLabel value=""/>
-                <h:outputLabel value="Fecha inicial"/>
-                <p:calendar id="calFechaInicial" 
-                            pattern="dd/MM/yyyy" 
-                            value="#{reclutamiento$preseleccionAspirante.fechaInicial}" 
-                            showOn="button"/>
-                <p:commandButton value="Buscar" 
-                                 image="buscar" 
-                                 update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos, tablaCandidatos" 
-                                 action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"/>
-                <h:outputLabel value=""/>
-                <h:outputLabel value="Fecha final"/>
-                <p:calendar id="calFechaFinal" 
-                            pattern="dd/MM/yyyy" 
-                            value="#{reclutamiento$preseleccionAspirante.fechaFinal}" 
-                            showOn="button" />
-            </h:panelGrid>
+            <p:tab id="concursoSeleccionado" title="Concursos"  >
+                <p:spacer height="20" />
+                <h:panelGrid columns="4">
+                    <h:outputLabel value=""/>
+                    <h:outputLabel value="Fecha inicial"/>
+                    <p:calendar id="calFechaInicial"  pattern="dd/MM/yyyy" showOn="button"
+                                value="#{reclutamiento$preseleccionAspirante.fechaInicial}" />
+                    <p:commandButton value="Buscar" image="buscar" 
+                                     update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos, tablaCandidatos" 
+                                     action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"/>
+                    <h:outputLabel value=""/>
+                    <h:outputLabel value="Fecha final"/>
+                    <p:calendar id="calFechaFinal" 
+                                pattern="dd/MM/yyyy" 
+                                value="#{reclutamiento$preseleccionAspirante.fechaFinal}" 
+                                showOn="button" />
+                </h:panelGrid>
+                <p:spacer width="20" />
 
-            <p:dataTable id="tablaConcursos"
-                         var="concurso" 
-                         value="#{reclutamiento$preseleccionAspirante.listaConcurso}"
-                         rows="5" 
-                         paginator="true" 
-                         emptyMessage="No se han encontrado concursos."
-                         binding="#{reclutamiento$preseleccionAspirante.tableConcursos}"
-                         paginatorAlwaysVisible="true" 
-                         selection="#{SessionBeanREC.concursoSeleccionado}"
-                         update="panelContenido"
-                         selectionMode="single"
-                         onRowSelectUpdate="panelContenido"
-                         rowSelectListener="#{reclutamiento$preseleccionAspirante.onRowSelectConcurso}"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
-                <f:facet name="header">
-                    <h:outputText value="Concursos"/>
-                </f:facet>
-
-                <p:column sortBy="#{concurso.concursoPK.codConcurso}">
+                <p:dataTable id="tablaConcursos"
+                             var="concurso" 
+                             value="#{reclutamiento$preseleccionAspirante.listaConcurso}"
+                             rows="5" 
+                             paginator="true" 
+                             emptyMessage="No se han encontrado concursos."
+                             binding="#{reclutamiento$preseleccionAspirante.tableConcursos}"
+                             paginatorAlwaysVisible="true" 
+                             selection="#{SessionBeanREC.concursoSeleccionado}"
+                             update="panelContenido"
+                             selectionMode="single"
+                             onRowSelectUpdate="panelContenido"
+                             rowSelectListener="#{reclutamiento$preseleccionAspirante.onRowSelectConcurso}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
                     <f:facet name="header">
-                        C&oacute;digo
+                        <h:outputText value="Concursos"/>
                     </f:facet>
-                    <h:outputLabel value="#{concurso.concursoPK.codConcurso}"/>
-                </p:column>
 
-                <p:column filterBy="#{concurso.nombre}" 
-                          filterMatchMode="contains"
-                          headerText="Nombre del concurso">
-                    <h:outputLabel value="#{concurso.nombre}"/>
-                </p:column> 
+                    <p:column sortBy="#{concurso.concursoPK.codConcurso}">
+                        <f:facet name="header">
+                            C&oacute;digo
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.concursoPK.codConcurso}"/>
+                    </p:column>
 
-                <p:column sortBy="#{concurso.fechaInicial}">
-                    <f:facet name="header">
-                        Fecha inicial
-                    </f:facet>
-                    <h:outputLabel value="#{concurso.fechaInicial}" >
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                    </h:outputLabel>
-                </p:column>    
+                    <p:column filterBy="#{concurso.nombre}" 
+                              filterMatchMode="contains"
+                              headerText="Nombre del concurso">
+                        <h:outputLabel value="#{concurso.nombre}"/>
+                    </p:column> 
 
-                <p:column sortBy="#{concurso.fechaFinal}">
-                    <f:facet name="header">
-                        Fecha final
-                    </f:facet>
-                    <h:outputLabel value="#{concurso.fechaFinal}" >
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                    </h:outputLabel>
-                </p:column>         
+                    <p:column sortBy="#{concurso.fechaInicial}">
+                        <f:facet name="header">
+                            Fecha inicial
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.fechaInicial}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputLabel>
+                    </p:column>    
+
+                    <p:column sortBy="#{concurso.fechaFinal}">
+                        <f:facet name="header">
+                            Fecha final
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.fechaFinal}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputLabel>
+                    </p:column>         
 
 
-                <p:column sortBy="#{concurso.numeroPlazas}">
-                    <f:facet name="header">
-                        N&uacute;mero de plazas
-                    </f:facet>
-                    <h:outputLabel value="#{concurso.numeroPlazas}" />
-                </p:column> 
+                    <p:column sortBy="#{concurso.numeroPlazas}">
+                        <f:facet name="header">
+                            N&uacute;mero de plazas
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.numeroPlazas}" />
+                    </p:column> 
 
-                <p:column sortBy="#{concurso.puesto.nombre}">
-                    <f:facet name="header">
-                        Puesto
-                    </f:facet>
-                    <h:outputLabel value="#{concurso.puesto.nombre}" />
-                </p:column> 
+                    <p:column sortBy="#{concurso.puesto.nombre}"
+                              filterBy="#{concurso.puesto.nombre}"
+                              filterMatchMode="contains">
+                        <f:facet name="header">
+                            Puesto
+                        </f:facet>
+                        <h:outputLabel value="#{concurso.puesto.nombre}" />
+                    </p:column> 
+                </p:dataTable>
+                <p:spacer height="20" />
+            </p:tab>
 
-                <p:column sortBy="#{concurso.estadoConcurso.nombre}">
-                    <f:facet name="header">
-                        Estado
-                    </f:facet>
-                    <h:outputLabel value="#{concurso.estadoConcurso.nombre}" />
-                </p:column> 
+            <p:tab id="candidatosSeleccionados" title="Candidatos"  >
 
-            </p:dataTable>
+                <p:spacer height="20" />
+                <p:panel >
+                    <h:panelGrid columns="5" >
+                        <h:outputLabel value="Concurso Seleccionado: " style="font-weight: bold;" />
+                        <h:outputLabel value="#{SessionBeanREC.concursoSeleccionado.nombre}" />
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value="Plazas necesarias: " style="font-weight: bold;" />
+                        <h:outputLabel value="#{SessionBeanREC.concursoSeleccionado.numeroPlazas}" />
 
-            <p:spacer height="20" />
+                        <h:outputLabel value="Puesto al que aplica: " style="font-weight: bold;" />
+                        <h:outputLabel value="#{SessionBeanREC.concursoSeleccionado.puesto.nombre}" />
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value="" />
+                        <h:outputLabel value="" />
 
-            <h:panelGrid columns="1">
+                        <h:outputLabel value="Fecha Inicial: " style="font-weight: bold;" />
+                        <h:outputLabel value="#{SessionBeanREC.concursoSeleccionado.fechaInicial}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputLabel>
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value="Fecha Final: " style="font-weight: bold;" />
+                        <h:outputLabel value="#{SessionBeanREC.concursoSeleccionado.fechaFinal}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputLabel>
+                    </h:panelGrid>
+                </p:panel>
+                <p:spacer height="20" />
 
-                <h:outputLabel value="Criterios por puesto:" />
-                <p:pickList id="picktCriterios" value="#{reclutamiento$preseleccionAspirante.listModelCriterios}" 
-                            var="c" iconOnly="true" effect="bounce"
-                            itemLabel="#{c.criterio1.nombre}"
-                            itemValue="#{c.criterio1.criterioPK.pkAsString}"
-                            >
-                    <f:facet name="sourceCaption">Disponible</f:facet>  
-                    <f:facet name="targetCaption">Seleccionado</f:facet>  
-                </p:pickList>
-                <p:commandButton value="Aplicar Criterios" />
+                <div >
+                    <div style="display: inline-block">
+                        <p:fieldset legend="Criterios por Perfil" >
+                            <p:pickList id="picktCriterios" value="#{reclutamiento$preseleccionAspirante.listModelCriterios}" 
+                                        var="c" iconOnly="true" effect="bounce"
+                                        itemLabel="#{c.criterio1.nombre}"
+                                        itemValue="#{c.criterio1.criterioPK.pkAsString}"
+                                        >
+                                <f:facet name="sourceCaption">Disponible</f:facet>  
+                                <f:facet name="targetCaption">Seleccionado</f:facet>  
+                            </p:pickList>
+                            <p:commandButton value="Aplicar Criterios" />
+                        </p:fieldset>
+                    </div>
+                    <div style="display: inline-block">
+                        <p:fieldset legend="Candidatos" >
+                            <p:pickList id="picktCandidatos" value="#{reclutamiento$preseleccionAspirante.listModelCriterios}" 
+                                        var="c" iconOnly="true" effect="bounce"
+                                        itemLabel="#{c.criterio1.nombre}"
+                                        itemValue="#{c.criterio1.criterioPK.pkAsString}">
+                                <f:facet name="sourceCaption">Disponible</f:facet>  
+                                <f:facet name="targetCaption">Preseleccionado</f:facet>  
+                            </p:pickList>
+                            <p:commandButton value="Aplicar Criterios" />
+                        </p:fieldset>
+                    </div>
+                </div>
 
-            </h:panelGrid>
+                <p:spacer height="20" />
+            </p:tab>
 
-            <p:dataTable id="tablaCandidatos"
-                         var="candidato" 
-                         value="#{reclutamiento$preseleccionAspirante.listaCandidato}"
-                         selection="#{reclutamiento$preseleccionAspirante.candidatosSeleccionados}"
-                         rows="5"                          
-                         paginator="true" 
-                         binding="#{reclutamiento$preseleccionAspirante.tableCandidatos}"
-                         emptyMessage="No se han encontrado candidatos."
-                         paginatorAlwaysVisible="true"                         
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" 
-                         selectionMode="multiple">
+            <p:tab id="preseleccionar" title="Preseleccionar"  >
+            </p:tab>
 
-                <f:facet name="header">
-                    <h:outputText value="Candidatos"/>
-                </f:facet>
+        </p:wizard>
 
-                <p:column sortBy="#{candidato.candidatoPK.codCandidato}">
-                    <f:facet name="header">
-                        C&oacute;digo
-                    </f:facet>
-                    <h:outputLabel value="#{candidato.candidatoPK.codCandidato}"/>
-                </p:column>
-
-                <p:column filterBy="#{candidato.nombreCompleto}"
-                          filterMatchMode="contains"
-                          headerText="Nombre">
-                    <h:outputLabel value="#{candidato.nombreCompleto}"/>
-                </p:column> 
-            </p:dataTable>
-
-        </p:fieldset>
-
+        <p:spacer height="20" />
     </ui:define>
 
 </ui:composition>
