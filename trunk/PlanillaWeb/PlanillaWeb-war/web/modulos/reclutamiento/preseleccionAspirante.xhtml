@@ -158,10 +158,10 @@
                     </div>
                     <div style="display: inline-block">
                         <p:fieldset legend="Candidatos" >
-                            <p:pickList id="picktCandidatos" value="#{reclutamiento$preseleccionAspirante.listModelCriterios}" 
-                                        var="c" iconOnly="true" effect="bounce"
-                                        itemLabel="#{c.criterio1.nombre}"
-                                        itemValue="#{c.criterio1.criterioPK.pkAsString}">
+                            <p:pickList id="picktCandidatos" value="#{reclutamiento$preseleccionAspirante.listModelCandidatos}"
+                                        var="candidato" iconOnly="true" effect="bounce"
+                                        itemLabel="#{candidato.nombreCompleto}"
+                                        itemValue="#{candidato.candidatoPK.pkAsString}">
                                 <f:facet name="sourceCaption">Disponible</f:facet>  
                                 <f:facet name="targetCaption">Preseleccionado</f:facet>  
                             </p:pickList>
@@ -174,6 +174,12 @@
             </p:tab>
 
             <p:tab id="preseleccionar" title="Preseleccionar"  >
+                
+                <p:dataList >
+                    
+                    
+                </p:dataList>
+                
             </p:tab>
 
         </p:wizard>
