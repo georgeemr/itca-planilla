@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -81,7 +82,7 @@ public class Puesto implements Serializable {
     @JoinColumn(name = "rango_anios", referencedColumnName = "cod_rango_anios")
     @ManyToOne
     private RangoAniosExperiencia rangoAnios;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1", fetch=FetchType.EAGER)
     private List<CriteriosXPuesto> criteriosXPuestoList;
 
     public Puesto() {
