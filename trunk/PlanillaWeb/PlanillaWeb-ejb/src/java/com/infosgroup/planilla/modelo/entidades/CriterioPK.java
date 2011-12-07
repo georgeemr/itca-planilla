@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
  */
 @Embeddable
 public class CriterioPK implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_cia", nullable = false)
@@ -28,6 +30,8 @@ public class CriterioPK implements Serializable {
     @NotNull
     @Column(name = "tipo", nullable = false)
     private int tipo;
+    @Transient
+    private String pkAsString;
 
     public CriterioPK() {
     }
@@ -93,6 +97,14 @@ public class CriterioPK implements Serializable {
     @Override
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.CriterioPK[ codCia=" + codCia + ", codigo=" + codigo + ", tipo=" + tipo + " ]";
+    }
+
+    public String getPkAsString() {
+        return ""+codCia + ":" + codigo +":" + tipo;
+    }
+    
+    public void setPkAsString(String pkAsString) {
+        this.pkAsString = pkAsString;
     }
     
 }
