@@ -11,11 +11,11 @@
     <ui:define name="acciones">
         <p:tab title="Evaluaci&oacute;n">
             <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
-                <p:commandLink styleClass="opcionMenu textoNormal" action="#{empleados$reporteEvaluacion.mostrarEmpleadosEvaluados$action}" update="principalForm:mensajes, principalForm:tablaEmpleados" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                <p:commandLink styleClass="opcionMenu textoNormal" action="#{empleados$reporteEvaluacion.mostrarEvaluaciones$action}" update="principalForm:mensajes, principalForm:tablaEmpleados" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/edit-find-user.png"/>
                     <h:outputText value="Mostrar empleados" title="Muestra los empleados evaluados en la campa&ntilde;a seleccionada" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu" action="#{empleados$reporteEvaluacion.mostrarReporteEvaluacion$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                <p:commandLink styleClass="opcionMenu" action="#{empleados$reporteEvaluacion.mostrarReporteEvaluacion$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" ajax="false">
                     <p:graphicImage value="/resources/iconos/view-pim-journal.png"/>
                     <h:outputText value="Mostrar reporte" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -57,16 +57,24 @@
             </table>
         </p:fieldset>
         <p:spacer height="5"/>
-        <p:dataTable id="tablaEmpleados" value="#{empleados$reporteEvaluacion.listaEmpleados}" var="empleado" selectionMode="single" rows="5" paginator="true" paginatorAlwaysVisible="true" update="seleccionEvaluacionForm:tablaEmpleados" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" selection="#{empleados$reporteEvaluacion.empleadoSeleccionado}">
+        <p:dataTable id="tablaEmpleados" value="#{empleados$reporteEvaluacion.listaEvaluaciones}" var="evaluacion" selectionMode="single" rows="5" paginator="true" paginatorAlwaysVisible="true" update="seleccionEvaluacionForm:tablaEmpleados" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" selection="#{empleados$reporteEvaluacion.evaluacionSeleccionada}">
             <f:facet name="header">
-                <h:outputText value="Empleados"/>
+                <h:outputText value="Evaluaciones"/>
             </f:facet>
-            <p:column headerText="ID" filterBy="#{empleado.empleadoPK.codEmp}" sortBy="#{empleado.empleadoPK.codEmp}">
-                <h:outputText value="#{empleado.empleadoPK.codEmp}"/>
+            <p:column headerText="Tipo evaluacion">
+                <h:outputText value="#{evaluacion.plantilla.tipoEvaluacion.nomTipoEvaluacion}"/>
+            </p:column>     
+            <p:column headerText="Fecha">
+                <h:outputText value="#{evaluacion.fecha}">
+                    <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                </h:outputText>
             </p:column>
-            <p:column headerText="Nombre" filterBy="#{empleado.nombres} #{empleado.apellidos}" sortBy="#{empleado.nombres} #{empleado.apellidos}" filterMatchMode="contains">
-                <h:outputText value="#{empleado.nombres} #{empleado.apellidos}"/>
-            </p:column>
+            <p:column headerText="Empleado" filterBy="#{evaluacion.empleado1.nombres} #{evaluacion.empleado1.apellidos}" filterMatchMode="contains">
+                <h:outputText value="#{evaluacion.empleado1.nombres} #{evaluacion.empleado1.apellidos}"/>
+            </p:column>       
         </p:dataTable>
     </ui:define>
+    <p:dialog>
+        <ui:include src=""/>
+    </p:dialog>
 </ui:composition>
