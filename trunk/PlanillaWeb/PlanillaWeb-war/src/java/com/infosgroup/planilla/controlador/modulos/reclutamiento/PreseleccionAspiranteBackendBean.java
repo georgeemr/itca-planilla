@@ -19,6 +19,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.util.List;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.FlowEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DualListModel;
 
@@ -132,8 +133,8 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
                 setListaConcurso(reclutamientoSessionBean.getListaConcursos(fechaInicial, fechaFinal));
             } else {
                 addMessage("Buscar concurso", "Los rangos de fecha Ingresados no son consistentes.", TipoMensaje.ERROR);
-            }    
-        } 
+            }
+        }
         setListaConcurso(reclutamientoSessionBean.getListaConcursos(fechaInicial, fechaFinal));
         limpiarCampos();
         return null;
@@ -144,11 +145,11 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
             addMessage("Preselección de Candidatos.", "No ha seleccionado ningún Candidato.", TipoMensaje.ERROR);
             return null;
         }
-        if ( getSessionBeanREC().getConcursoSeleccionado() == null ) {
+        if (getSessionBeanREC().getConcursoSeleccionado() == null) {
             addMessage("Preselección de Candidatos.", "No ha seleccionado ningún Concurso.", TipoMensaje.ERROR);
             return null;
         }
-        
+
         reclutamientoSessionBean.CambioEstadoCandidato(getSessionBeanREC().getConcursoSeleccionado(), Arrays.asList(candidatosSeleccionados), "P");
         addMessage("Preselección de Candidatos.", "Datos Guardados. Total de elementos agregados: " + candidatosSeleccionados.length, TipoMensaje.INFORMACION);
         return null;
@@ -162,7 +163,19 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
         c.setTarget(new ArrayList<CriteriosXPuesto>());
         setListModelCriterios(c);
     }
-    
+
+    public String onFlowListener(FlowEvent event) {
+
+        if (event.getOldStep().equals("concursoSeleccionado")) {
+            if (getSessionBeanREC().getConcursoSeleccionado() == null) {
+                addMessage("Contrataciones", "Seleccione un curso", TipoMensaje.ERROR);
+                return event.getOldStep();
+            }
+        }
+
+        return event.getNewStep();
+    }
+
     @Override
     protected void limpiarCampos() {
         setFechaInicial(null);
