@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../plantillas/defaultTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="titulo">
+        <h:outputText value="Resumen de Asistencia"/>   
+    </ui:define>
+
+    <ui:define name="acciones">
+        <p:tab title="Acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" action="#{planilla$horasExtras.mostrar$action}">
+                    <p:graphicImage value="/resources/iconos/edit-find-user.png"/>
+                    <h:outputText value="Mostrar" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" >
+                    <h:outputText value="Guardar cambios" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+
+    <ui:define name="contenido">
+        <h:panelGrid columns="2">
+            <h:outputLabel value="Compa&ntilde;ia"/>
+            <h:selectOneMenu id="lstCia" label="Compa&ntilde;ia" >
+
+            </h:selectOneMenu>
+            <h:outputLabel value="Tipo Planilla"/>
+            <h:selectOneMenu id="lstTipo_plan" label="Tipo Planilla" >
+
+            </h:selectOneMenu>
+            <h:outputLabel value="Planilla"/>
+            <h:selectOneMenu id="lstPlan" label="Planilla" >
+
+            </h:selectOneMenu>
+            <h:outputLabel value="Sucursal"/>
+            <h:selectOneMenu id="lstSuc" label="Sucursal" >
+
+            </h:selectOneMenu>
+        </h:panelGrid>
+        <p:dataTable id="tablaResumen" 
+                     emptyMessage="No se han encontrado asistencias" 
+                     var="h_xtras" rows="5" paginator="true" 
+                     rowEditListener="#{planilla$horasExtras.rowEditListener}"
+                     value="#{planilla$horasExtras.horasExtras}"                      
+                     paginatorAlwaysVisible="true"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
+            <f:facet name="header">
+                Resumen de asistencia
+            </f:facet>
+            <p:column headerText="Cod">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{h_xtras.puestoEmpleado.empleado.empleadoPK.codEmp}" />
+                    </f:facet>
+                    <f:facet name="input">
+                        <h:outputText value="#{h_xtras.puestoEmpleado.empleado.empleadoPK.codEmp}"/>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Nombre">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{h_xtras.puestoEmpleado.empleado.nombres}" />
+                    </f:facet>
+                    <f:facet name="input">
+                        <h:outputText value="#{h_xtras.puestoEmpleado.empleado.nombres}"/>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Lab.">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputLabel value="#{h_xtras.DLaborados}" />
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{h_xtras.DLaborados}" style="width:100%" maxlength="10" />
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="No Lab.">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputLabel value="#{h_xtras.dnLaborados}" />
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{h_xtras.dnLaborados}" style="width:100%" maxlength="10" />
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Noct">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputLabel value="#{h_xtras.DNocturnidad}" />
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{h_xtras.DNocturnidad}" style="width:100%" maxlength="10" />
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Had">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputLabel value="#{h_xtras.viaticos}" />
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{h_xtras.viaticos}" style="width:100%" maxlength="10" />
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Diur">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputLabel value="#{h_xtras.HXsencillas}" />
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{h_xtras.HXsencillas}" style="width:100%" maxlength="10" />
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Noct">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputLabel value="#{h_xtras.HXdobles}" />
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{h_xtras.HXdobles}" style="width:100%" maxlength="10" />
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="D. Fest">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputLabel/>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText style="width:100%" maxlength="10" />
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="No Fest">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputLabel/>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText style="width:100%" maxlength="10" />
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Dias Vac">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputLabel value="#{h_xtras.vacaciones}" />
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{h_xtras.vacaciones}" style="width:100%" maxlength="10" />
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Opciones" styleClass="ui-editable-column-options" >
+                <p:rowEditor/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+
+</ui:composition>
