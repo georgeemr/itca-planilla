@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.controlador.sessionbean;
 
 import com.infosgroup.planilla.modelo.entidades.DetPlanilla;
+import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -20,9 +21,8 @@ public class SessionBeanPLA {
     }
     
     private DetPlanilla detalleSeleccionado;
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-
+    private ResumenAsistencia resumenSeleccionado;
+    
     public DetPlanilla getDetalleSeleccionado() {
         return detalleSeleccionado;
     }
@@ -30,4 +30,13 @@ public class SessionBeanPLA {
     public void setDetalleSeleccionado(DetPlanilla detalleSeleccionado) {
         this.detalleSeleccionado = detalleSeleccionado;
     }
+
+    public ResumenAsistencia getResumenSeleccionado() {
+        return resumenSeleccionado;
+    }
+
+    public void setResumenSeleccionado(ResumenAsistencia resumenSeleccionado) {
+        this.resumenSeleccionado = resumenSeleccionado;
+    }
+    
 }
