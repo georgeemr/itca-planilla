@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../plantillas/defaultTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+>
+
+    <ui:define name="titulo">
+        <h:outputText value="Informaci&oacute;n de Pagos"/>   
+    </ui:define>
+
+    <ui:define name="acciones">
+        acciones
+    </ui:define>
+
+    <ui:define name="contenido">
+        <p:fieldset id="fieldset2" legend="Elegir Planilla">
+            <h:outputLabel value="Anio"/>
+            <p:inputText id="txtAnio" value="#{planilla$informacionPagos.anio}"/>
+            <h:outputLabel value="Mes"/>
+            <p:inputText id="txtMes" value="#{planilla$informacionPagos.mes}"/>
+            <h:outputLabel value="Planilla"/>
+            <p:inputText id="txtPlan" value="#{planilla$informacionPagos.pla}"/>
+            <p:spacer width="10px" />
+            <p:commandButton value="Buscar" 
+                             image="buscar" 
+                             update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos, tablaCandidatos" 
+                             action="#{planilla$informacionPagos.buscarPlanilla$action()}"/>
+            
+        </p:fieldset>
+        <p:spacer height="10px" />
+        <p:fieldset id ="fieldset1" legend ="Planilla">
+            <p:dataTable id="tablaDetalle"
+                         var="detalle"
+                         value="#{planilla$informacionPagos.listaDetalles}"
+                         rows="5"
+                         paginator="true"
+                         binding="#{planilla$informacionPagos.tablaDetalles}" 
+                         emptyMessage="No se han encontrado datos."
+                         paginatorAlwaysVisible="true" 
+                         selection="#{SessionBeanPLA.detalleSeleccionado}"
+                         update="panelContenido"
+                         onRowSelectUpdate="panelContenido"
+                         rowSelectListener="#{planilla$informacionPagos.onRowSelectDetalle}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
+                <f:facet name="header">
+                    <h:outputText value="Planilla"/>
+                </f:facet>
+                <p:column>
+                    <p:rowToggler/>
+                </p:column>
+                <p:column sortBy="#{detalle.cod_cia}">
+                    <f:facet name="header">
+                        Cod Empleado
+                    </f:facet>
+                    <h:outputLabel value="#{detalle.cod_emp}"/>
+                </p:column>
+                <p:column sortBy="#{detalle.apellido}">
+                    <f:facet name="header">
+                        Apellidos
+                    </f:facet>
+                    <h:outputLabel value="#{detalle.apellido}"/>
+                </p:column>
+                <p:column sortBy="#{detalle.nombre}" headerText="Nombres">
+                    <h:outputLabel value="#{detalle.nombre}"/>
+                </p:column>
+                <p:column sortBy="#{detalle.base}" headerText="Sueldo base">
+                    <h:outputLabel value="#{detalle.base}"/>
+                </p:column>
+                <p:column sortBy="#{detalle.prestaciones}" headerText="Prestaciones">
+                    <h:outputLabel value="#{detalle.prestaciones}" />
+                </p:column>
+                <p:column sortBy="#{detalle.deducciones}" headerText="Deducciones">
+                    <h:outputLabel value="#{detalle.deducciones}"/>
+                </p:column>
+                <p:column sortBy="#{detalle.total}" headerText="Liq. Recibir">
+                    <h:outputLabel value="#{detalle.total}"/>
+                </p:column>
+                <p:rowExpansion>
+            <h:panelGrid columns="2">
+                <p:dataTable emptyMessage="No se han encontrado ingresos.">
+                    <f:facet name="header">
+                        <h:outputText value="Ingresos"/>
+                    </f:facet>
+                    <p:column headerText="Descripcion"></p:column>
+                    <p:column headerText="Cantidad"></p:column>
+                </p:dataTable>
+                        
+                <p:dataTable emptyMessage="No se han encontrado egresos.">
+                    <f:facet name="header">
+                        <h:outputText value="Egresos"/>
+                    </f:facet>
+                    <p:column headerText="Descripcion"></p:column>
+                    <p:column headerText="Cantidad"></p:column>
+                </p:dataTable>
+            </h:panelGrid>              
+          
+                </p:rowExpansion>
+            </p:dataTable>
+        </p:fieldset>
+    </ui:define>
+
+</ui:composition>
