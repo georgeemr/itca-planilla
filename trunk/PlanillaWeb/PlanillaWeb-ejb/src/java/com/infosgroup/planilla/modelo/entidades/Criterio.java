@@ -52,6 +52,8 @@ public class Criterio implements Serializable {
     private List<CriteriosXPuesto> criteriosXPuestoList;
     @Column(name = "operador", length = 2147483647)
     private String operador;
+    @Column(name = "clase", length = 2147483647)
+    private String clase;
     
     public Criterio() {
     }
@@ -140,6 +142,14 @@ public class Criterio implements Serializable {
 
     public void setCriteriosXCandidatoList(List<CriteriosXCandidato> criteriosXCandidatoList) {
         this.criteriosXCandidatoList = criteriosXCandidatoList;
+    }
+
+    public String getClase() {
+        return clase;
+    }
+
+    public void setClase(String clase) {
+        this.clase = clase;
     }
     
 }
