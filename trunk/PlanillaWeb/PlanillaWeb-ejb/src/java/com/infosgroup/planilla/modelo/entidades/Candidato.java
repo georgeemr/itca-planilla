@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -17,17 +18,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-/**
- *
- * @author root
- */
+
 @Entity
 @Table(name = "candidato")
 @NamedQueries({
@@ -48,35 +44,22 @@ public class Candidato implements Serializable {
     @EmbeddedId
     protected CandidatoPK candidatoPK;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "apellido", nullable = false, length = 2147483647)
     private String apellido;
-    @Column(name = "fecha_nacimiento")
-    @Temporal(TemporalType.DATE)
-    private Date fechaNacimiento;
-    @Size(max = 2147483647)
     @Column(name = "ap_casada", length = 2147483647)
     private String apCasada;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "sexo", nullable = false)
-    private int sexo;
-    @Size(max = 2147483647)
+    private String sexo;
     @Column(name = "observacion", length = 2147483647)
     private String observacion;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 1)
     @Column(name = "estado", nullable = false, length = 1)
     private String estado;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "edad", nullable = false)
     private int edad;
     @JoinTable(name = "candidato_concurso", joinColumns = {
@@ -89,8 +72,11 @@ public class Candidato implements Serializable {
     @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
-    @Transient
-    private String nombreCompleto;
+    @Column(name = "fecha_nacimiento")
+    @Temporal(TemporalType.DATE)
+    private Date fechaNacimiento;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
+    private List<CriteriosXCandidato> criteriosXCandidatoList;
 
     public Candidato() {
     }
@@ -99,7 +85,7 @@ public class Candidato implements Serializable {
         this.candidatoPK = candidatoPK;
     }
 
-    public Candidato(CandidatoPK candidatoPK, String nombre, String apellido, int sexo, String estado, int edad) {
+    public Candidato(CandidatoPK candidatoPK, String nombre, String apellido, String sexo, String estado, int edad) {
         this.candidatoPK = candidatoPK;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -152,11 +138,11 @@ public class Candidato implements Serializable {
         this.apCasada = apCasada;
     }
 
-    public int getSexo() {
+    public String getSexo() {
         return sexo;
     }
 
-    public void setSexo(int sexo) {
+    public void setSexo(String sexo) {
         this.sexo = sexo;
     }
 
@@ -200,6 +186,14 @@ public class Candidato implements Serializable {
         this.compania = compania;
     }
 
+    public List<CriteriosXCandidato> getCriteriosXCandidatoList() {
+        return criteriosXCandidatoList;
+    }
+
+    public void setCriteriosXCandidatoList(List<CriteriosXCandidato> criteriosXCandidatoList) {
+        this.criteriosXCandidatoList = criteriosXCandidatoList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -222,15 +216,6 @@ public class Candidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Candidato[ candidatoPK=" + candidatoPK + " ]";
-    }
-
-    public String getNombreCompleto() {
-        nombreCompleto = nombre + " " + apellido + " " + ( apCasada != null ? apCasada : "" );
-        return nombreCompleto;
-    }
-
-    public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
+        return "testjqpl.modelo.entidades.Candidato[ candidatoPK=" + candidatoPK + " ]";
     }
 }
