@@ -38,13 +38,9 @@ public class CriteriosXPuesto implements Serializable {
     @Column(name = "valor", length = 2147483647)
     private String valor;
     @Column(name = "valor_inicial_rango")
-    private Integer valorInicialRango;
+    private String valorInicialRango;
     @Column(name = "valor_final_rango")
-    private Integer valorFinalRango;
-    @Column(name = "clase", length = 2147483647)
-    private String clase;
-    @Column(name = "campo", length = 2147483647)
-    private String campo;
+    private String valorFinalRango;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "puesto", referencedColumnName = "cod_puesto", nullable = false, insertable = false, updatable = false)})
@@ -84,36 +80,20 @@ public class CriteriosXPuesto implements Serializable {
         this.valor = valor;
     }
 
-    public Integer getValorInicialRango() {
+    public String getValorInicialRango() {
         return valorInicialRango;
     }
 
-    public void setValorInicialRango(Integer valorInicialRango) {
+    public void setValorInicialRango(String valorInicialRango) {
         this.valorInicialRango = valorInicialRango;
     }
 
-    public Integer getValorFinalRango() {
+    public String getValorFinalRango() {
         return valorFinalRango;
     }
 
-    public void setValorFinalRango(Integer valorFinalRango) {
+    public void setValorFinalRango(String valorFinalRango) {
         this.valorFinalRango = valorFinalRango;
-    }
-
-    public String getCampo() {
-        return campo;
-    }
-
-    public void setCampo(String campo) {
-        this.campo = campo;
-    }
-
-    public String getClase() {
-        return clase;
-    }
-
-    public void setClase(String clase) {
-        this.clase = clase;
     }
 
     public Puesto getPuesto1() {
