@@ -92,7 +92,6 @@
                         </h:outputLabel>
                     </p:column>         
 
-
                     <p:column sortBy="#{concurso.numeroPlazas}">
                         <f:facet name="header">
                             N&uacute;mero de plazas
@@ -118,49 +117,48 @@
                 <p:panel >
                     <h:panelGrid columns="5" >
                         <h:outputLabel value="Concurso Seleccionado: " style="font-weight: bold;" />
-                        <h:outputLabel value="#{SessionBeanREC.concursoSeleccionado.nombre}" />
+                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.nombre}" />
                         <h:outputLabel value=""/>
                         <h:outputLabel value="Plazas necesarias: " style="font-weight: bold;" />
-                        <h:outputLabel value="#{SessionBeanREC.concursoSeleccionado.numeroPlazas}" />
+                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.numeroPlazas}" />
 
                         <h:outputLabel value="Puesto al que aplica: " style="font-weight: bold;" />
-                        <h:outputLabel value="#{SessionBeanREC.concursoSeleccionado.puesto.nombre}" />
+                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.puesto.nombre}" />
                         <h:outputLabel value=""/>
                         <h:outputLabel value="" />
                         <h:outputLabel value="" />
 
                         <h:outputLabel value="Fecha Inicial: " style="font-weight: bold;" />
-                        <h:outputLabel value="#{SessionBeanREC.concursoSeleccionado.fechaInicial}" >
+                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.fechaInicial}" >
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputLabel>
                         <h:outputLabel value=""/>
                         <h:outputLabel value="Fecha Final: " style="font-weight: bold;" />
-                        <h:outputLabel value="#{SessionBeanREC.concursoSeleccionado.fechaFinal}" >
+                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.fechaFinal}" >
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputLabel>
                     </h:panelGrid>
                 </p:panel>
                 <p:spacer height="20" />
 
-                <div >
-                    <div style="display: inline-block">
+                <div>
+                    <div style="display: inline-block;">
                         <p:fieldset legend="Criterios por Perfil" >
                             <p:pickList id="picktCriterios" value="#{reclutamiento$preseleccionAspirante.listModelCriterios}" 
                                         var="c" iconOnly="true" effect="bounce"
-                                        itemLabel="#{c.criterio1.nombre}"
-                                        itemValue="#{c.criterio1.criterioPK.pkAsString}"
-                                        >
+                                        itemLabel="#{c.criterio1.nombre}" 
+                                        itemValue="#{c.criterio1.criterioPK.pkAsString}">
                                 <f:facet name="sourceCaption">Disponible</f:facet>  
                                 <f:facet name="targetCaption">Seleccionado</f:facet>  
                             </p:pickList>
                             <p:commandButton value="Aplicar Criterios" />
                         </p:fieldset>
                     </div>
-                    <div style="display: inline-block">
+                    <div style="display: inline-block;" >
                         <p:fieldset legend="Candidatos" >
                             <p:pickList id="picktCandidatos" value="#{reclutamiento$preseleccionAspirante.listModelCandidatos}"
                                         var="candidato" iconOnly="true" effect="bounce"
-                                        itemLabel="#{candidato.nombreCompleto}"
+                                        itemLabel="#{candidato.nombreCompleto}" 
                                         itemValue="#{candidato.candidatoPK.pkAsString}">
                                 <f:facet name="sourceCaption">Disponible</f:facet>  
                                 <f:facet name="targetCaption">Preseleccionado</f:facet>  
@@ -173,18 +171,27 @@
                 <p:spacer height="20" />
             </p:tab>
 
-            <p:tab id="preseleccionar" title="Preseleccionar"  >
-                
-                <p:dataList >
-                    
-                    
+            <!-- p:tab id="preseleccionar" title="Preseleccionar"  -->
+                <!--
+                <p:spacer height="20" /-->
+                <!-- "# {reclutamiento$preseleccionAspirante.listModelCandidatos.target}" -->
+                <!--p:dataList value="# {reclutamiento$preseleccionAspirante.listaCandidato}" var="candidato" paginator="true" 
+                             type="ordered" 
+                            paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"  
+                            rowsPerPageTemplate="5,10,15">
+
+                    <p:column   >
+                        <p:graphicImage value="/resources/iconos/personal.png"/>   
+                        <h:outputText value="# {candidato.nombreCompleto}" style="margin-left:10px" />  
+                    </p:column>
                 </p:dataList>
-                
-            </p:tab>
+                <p:spacer height="10" / -->
+            <!-- /p:tab -->
 
         </p:wizard>
 
         <p:spacer height="20" />
+        
     </ui:define>
 
 </ui:composition>
