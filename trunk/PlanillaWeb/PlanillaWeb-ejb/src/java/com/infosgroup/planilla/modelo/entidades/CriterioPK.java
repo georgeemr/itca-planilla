@@ -100,7 +100,8 @@ public class CriterioPK implements Serializable {
     }
 
     public String getPkAsString() {
-        return ""+codCia + ":" + codigo +":" + tipo;
+        pkAsString =""+codCia + ":" + codigo +":" + tipo;
+        return pkAsString;
     }
     
     public void setPkAsString(String pkAsString) {
