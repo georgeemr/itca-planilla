@@ -6,6 +6,7 @@ package com.infosgroup.planilla.view;
 
 import com.infosgroup.planilla.controlador.sessionbean.SessionBeanADM;
 import com.infosgroup.planilla.controlador.sessionbean.SessionBeanEMP;
+import com.infosgroup.planilla.controlador.sessionbean.SessionBeanPLA;
 import com.infosgroup.planilla.controlador.sessionbean.SessionBeanREC;
 import java.util.Date;
 import javax.faces.application.FacesMessage;
@@ -70,6 +71,9 @@ protected SessionBeanREC sessionBeanREC;
 @ManagedProperty(value = "#{SessionBeanEMP}")
 protected SessionBeanEMP sessionBeanEMP;
 
+@ManagedProperty(value = "#{SessionBeanPLA}")
+protected SessionBeanPLA sessionBeanPLA;
+
 public SessionBeanADM getSessionBeanADM()
 {
 return sessionBeanADM;
@@ -99,6 +103,14 @@ public void setSessionBeanEMP(SessionBeanEMP sessionBeanEMP)
 {
 this.sessionBeanEMP = sessionBeanEMP;
 }
+
+    public SessionBeanPLA getSessionBeanPLA() {
+        return sessionBeanPLA;
+    }
+
+    public void setSessionBeanPLA(SessionBeanPLA sessionBeanPLA) {
+        this.sessionBeanPLA = sessionBeanPLA;
+    }
 
 // =================================================================================================
 public String inicio$action()
