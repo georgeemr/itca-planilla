@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -31,26 +30,21 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "CriteriosXPuesto.findByValor", query = "SELECT c FROM CriteriosXPuesto c WHERE c.valor = :valor"),
     @NamedQuery(name = "CriteriosXPuesto.findByValorInicialRango", query = "SELECT c FROM CriteriosXPuesto c WHERE c.valorInicialRango = :valorInicialRango"),
     @NamedQuery(name = "CriteriosXPuesto.findByValorFinalRango", query = "SELECT c FROM CriteriosXPuesto c WHERE c.valorFinalRango = :valorFinalRango"),
-    @NamedQuery(name = "CriteriosXPuesto.findByTipoCriterio", query = "SELECT c FROM CriteriosXPuesto c WHERE c.criteriosXPuestoPK.tipoCriterio = :tipoCriterio"),
-    @NamedQuery(name = "CriteriosXPuesto.findByOperador", query = "SELECT c FROM CriteriosXPuesto c WHERE c.operador = :operador"),
-    @NamedQuery(name = "CriteriosXPuesto.findByTipo", query = "SELECT c FROM CriteriosXPuesto c WHERE c.tipo = :tipo")})
+    @NamedQuery(name = "CriteriosXPuesto.findByTipoCriterio", query = "SELECT c FROM CriteriosXPuesto c WHERE c.criteriosXPuestoPK.tipoCriterio = :tipoCriterio")})
 public class CriteriosXPuesto implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CriteriosXPuestoPK criteriosXPuestoPK;
-    @Size(max = 2147483647)
     @Column(name = "valor", length = 2147483647)
     private String valor;
     @Column(name = "valor_inicial_rango")
     private Integer valorInicialRango;
     @Column(name = "valor_final_rango")
     private Integer valorFinalRango;
-    @Size(max = 2147483647)
-    @Column(name = "operador", length = 2147483647)
-    private String operador;
-    @Size(max = 2147483647)
-    @Column(name = "tipo", length = 2147483647)
-    private String tipo;
+    @Column(name = "clase", length = 2147483647)
+    private String clase;
+    @Column(name = "campo", length = 2147483647)
+    private String campo;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "puesto", referencedColumnName = "cod_puesto", nullable = false, insertable = false, updatable = false)})
@@ -106,20 +100,20 @@ public class CriteriosXPuesto implements Serializable {
         this.valorFinalRango = valorFinalRango;
     }
 
-    public String getOperador() {
-        return operador;
+    public String getCampo() {
+        return campo;
     }
 
-    public void setOperador(String operador) {
-        this.operador = operador;
+    public void setCampo(String campo) {
+        this.campo = campo;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getClase() {
+        return clase;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setClase(String clase) {
+        this.clase = clase;
     }
 
     public Puesto getPuesto1() {
@@ -160,7 +154,7 @@ public class CriteriosXPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto[ criteriosXPuestoPK=" + criteriosXPuestoPK + " ]";
+        return "testjqpl.modelo.entidades.CriteriosXPuesto[ criteriosXPuestoPK=" + criteriosXPuestoPK + " ]";
     }
     
 }
