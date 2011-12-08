@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -19,8 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -34,32 +33,26 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Criterio.findByCodCia", query = "SELECT c FROM Criterio c WHERE c.criterioPK.codCia = :codCia"),
     @NamedQuery(name = "Criterio.findByCodigo", query = "SELECT c FROM Criterio c WHERE c.criterioPK.codigo = :codigo"),
     @NamedQuery(name = "Criterio.findByTipo", query = "SELECT c FROM Criterio c WHERE c.criterioPK.tipo = :tipo"),
-    @NamedQuery(name = "Criterio.findByNombre", query = "SELECT c FROM Criterio c WHERE c.nombre = :nombre"),
-    @NamedQuery(name = "Criterio.findByClase", query = "SELECT c FROM Criterio c WHERE c.clase = :clase"),
-    @NamedQuery(name = "Criterio.findByCampo", query = "SELECT c FROM Criterio c WHERE c.campo = :campo")})
+    @NamedQuery(name = "Criterio.findByNombre", query = "SELECT c FROM Criterio c WHERE c.nombre = :nombre")})
 public class Criterio implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
+    private List<CriteriosXCandidato> criteriosXCandidatoList;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CriterioPK criterioPK;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", nullable = false, length = 2147483647)
     private String nombre;
-    @Size(max = 2147483647)
-    @Column(name = "clase", length = 2147483647)
-    private String clase;
-    @Size(max = 2147483647)
-    @Column(name = "campo", length = 2147483647)
-    private String campo;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "tipo", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private TipoCriterio tipoCriterio;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1", fetch= FetchType.EAGER)
     private List<CriteriosXPuesto> criteriosXPuestoList;
-
+    @Column(name = "operador", length = 2147483647)
+    private String operador;
+    
     public Criterio() {
     }
 
@@ -92,28 +85,20 @@ public class Criterio implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getClase() {
-        return clase;
-    }
-
-    public void setClase(String clase) {
-        this.clase = clase;
-    }
-
-    public String getCampo() {
-        return campo;
-    }
-
-    public void setCampo(String campo) {
-        this.campo = campo;
-    }
-
     public TipoCriterio getTipoCriterio() {
         return tipoCriterio;
     }
 
     public void setTipoCriterio(TipoCriterio tipoCriterio) {
         this.tipoCriterio = tipoCriterio;
+    }
+
+    public String getOperador() {
+        return operador;
+    }
+
+    public void setOperador(String operador) {
+        this.operador = operador;
     }
 
     public List<CriteriosXPuesto> getCriteriosXPuestoList() {
@@ -146,7 +131,15 @@ public class Criterio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Criterio[ criterioPK=" + criterioPK + " ]";
+        return "testjqpl.modelo.entidades.Criterio[ criterioPK=" + criterioPK + " ]";
+    }
+
+    public List<CriteriosXCandidato> getCriteriosXCandidatoList() {
+        return criteriosXCandidatoList;
+    }
+
+    public void setCriteriosXCandidatoList(List<CriteriosXCandidato> criteriosXCandidatoList) {
+        this.criteriosXCandidatoList = criteriosXCandidatoList;
     }
     
 }
