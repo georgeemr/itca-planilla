@@ -22,7 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "candidato")
@@ -77,6 +77,8 @@ public class Candidato implements Serializable {
     private Date fechaNacimiento;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
     private List<CriteriosXCandidato> criteriosXCandidatoList;
+    @Transient
+    private String nombreCompleto;
 
     public Candidato() {
     }
@@ -217,5 +219,14 @@ public class Candidato implements Serializable {
     @Override
     public String toString() {
         return "testjqpl.modelo.entidades.Candidato[ candidatoPK=" + candidatoPK + " ]";
+    }
+
+    public String getNombreCompleto() {
+        nombreCompleto = nombre + " " + apellido;
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
     }
 }
