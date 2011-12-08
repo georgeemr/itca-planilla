@@ -28,23 +28,20 @@ import javax.persistence.Table;
     @NamedQuery(name = "CriteriosXCandidato.findByCriterio", query = "SELECT c FROM CriteriosXCandidato c WHERE c.criteriosXCandidatoPK.criterio = :criterio"),
     @NamedQuery(name = "CriteriosXCandidato.findByCorrelativo", query = "SELECT c FROM CriteriosXCandidato c WHERE c.criteriosXCandidatoPK.correlativo = :correlativo"),
     @NamedQuery(name = "CriteriosXCandidato.findByValor", query = "SELECT c FROM CriteriosXCandidato c WHERE c.valor = :valor"),
-    @NamedQuery(name = "CriteriosXCandidato.findByValorInicialRango", query = "SELECT c FROM CriteriosXCandidato c WHERE c.valorInicialRango = :valorInicialRango"),
-    @NamedQuery(name = "CriteriosXCandidato.findByValorFinalRango", query = "SELECT c FROM CriteriosXCandidato c WHERE c.valorFinalRango = :valorFinalRango"),
     @NamedQuery(name = "CriteriosXCandidato.findByTipoCriterio", query = "SELECT c FROM CriteriosXCandidato c WHERE c.criteriosXCandidatoPK.tipoCriterio = :tipoCriterio")})
 public class CriteriosXCandidato implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CriteriosXCandidatoPK criteriosXCandidatoPK;
     @Column(name = "valor", length = 2147483647)
     private String valor;
-    @Column(name = "valor_inicial_rango")
-    private Integer valorInicialRango;
-    @Column(name = "valor_final_rango")
-    private Integer valorFinalRango;
-    @Column(name = "clase", length = 2147483647)
-    private String clase;
+    @Column(name = "entidad", length = 2147483647)
+    private String entidad;
     @Column(name = "campo", length = 2147483647)
     private String campo;
+    @Column(name = "entidadPK", length = 2147483647)
+    private String entidadPK;
     @JoinColumns({
         @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "criterio", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false),
@@ -84,22 +81,6 @@ public class CriteriosXCandidato implements Serializable {
         this.valor = valor;
     }
 
-    public Integer getValorInicialRango() {
-        return valorInicialRango;
-    }
-
-    public void setValorInicialRango(Integer valorInicialRango) {
-        this.valorInicialRango = valorInicialRango;
-    }
-
-    public Integer getValorFinalRango() {
-        return valorFinalRango;
-    }
-
-    public void setValorFinalRango(Integer valorFinalRango) {
-        this.valorFinalRango = valorFinalRango;
-    }
-
     public String getCampo() {
         return campo;
     }
@@ -108,12 +89,12 @@ public class CriteriosXCandidato implements Serializable {
         this.campo = campo;
     }
 
-    public String getClase() {
-        return clase;
+    public String getEntidad() {
+        return entidad;
     }
 
-    public void setClase(String clase) {
-        this.clase = clase;
+    public void setEntidad(String entidad) {
+        this.entidad = entidad;
     }
 
     public Criterio getCriterio1() {
@@ -155,6 +136,14 @@ public class CriteriosXCandidato implements Serializable {
     @Override
     public String toString() {
         return "testjqpl.modelo.entidades.CriteriosXCandidato[ criteriosXCandidatoPK=" + criteriosXCandidatoPK + " ]";
+    }
+
+    public String getEntidadPK() {
+        return entidadPK;
+    }
+
+    public void setEntidadPK(String entidadPK) {
+        this.entidadPK = entidadPK;
     }
     
 }
