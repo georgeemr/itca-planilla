@@ -36,8 +36,8 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
     public List<Planilla> findByTipoPLanilla(TipoPlanilla tipo){
         List<Planilla> listPla = new ArrayList<Planilla>(0);
         
-        Query q = em.createQuery("select * from planilla" 
-        +"where tipoPlanilla = :tipoPla", Planilla.class);
+        Query q = em.createQuery("select p from planilla p" 
+        +"where p.tipoPlanilla = :tipoPla", Planilla.class);
         q.setParameter("tipoPla", tipo);
         listPla = q.getResultList();
         
