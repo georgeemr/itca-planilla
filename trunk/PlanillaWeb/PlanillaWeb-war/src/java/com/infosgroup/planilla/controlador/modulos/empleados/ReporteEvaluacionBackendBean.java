@@ -88,17 +88,17 @@ this.listaEvaluaciones = listaEvaluaciones;
 
 public String mostrarEvaluaciones$action()
 {
-boolean hayError = false;
-if (sessionBeanEMP.getCampania() == null)
-    {
-    addMessage("Seleccion de evaluacion", "Seleccione una campa&ntilde;a", TipoMensaje.ADVERTENCIA);
-    hayError = true;
-    }
-if (!hayError)
-    {
-    addMessage("Seleccion de evaluacion", "Mostrando los empleados evaluados en la campa&ntilde;a " + sessionBeanEMP.getCampania().getNombre(), TipoMensaje.INFORMACION);
-    listaEvaluaciones = sessionBeanEMP.getCampania().getEvaluacionList(); //empleadosBean.listarEmpleadosEvaluados(sessionBeanEMP.getCampania());
-    }
+//boolean hayError = false;
+//if (sessionBeanEMP.getCampania() == null)
+//    {
+//    addMessage("Seleccion de evaluacion", "Seleccione una campa&ntilde;a", TipoMensaje.ADVERTENCIA);
+//    hayError = true;
+//    }
+//if (!hayError)
+//    {
+//    addMessage("Seleccion de evaluacion", "Mostrando los empleados evaluados en la campa&ntilde;a " + sessionBeanEMP.getCampania().getNombre(), TipoMensaje.INFORMACION);
+//    listaEvaluaciones = sessionBeanEMP.getCampania().getEvaluacionList(); //empleadosBean.listarEmpleadosEvaluados(sessionBeanEMP.getCampania());
+//    }
 return null;
 }
 
@@ -122,13 +122,13 @@ throw new UnsupportedOperationException("Not supported yet.");
 
 public String seleccionCampania$action()
 {
-addMessage("", "Seleccionada campa&ntilde;a: " + getSessionBeanEMP().getCampania().getNombre(), TipoMensaje.INFORMACION);
+//addMessage("", "Seleccionada campa&ntilde;a: " + getSessionBeanEMP().getCampania().getNombre(), TipoMensaje.INFORMACION);
 return null;
 }
 
 public String seleccionTipoEvaluacion$action()
 {
-addMessage("", "Seleccionado Tipo de evaluaci&oacute;n: " + getSessionBeanEMP().getTipoEvaluacion().getNomTipoEvaluacion(), TipoMensaje.INFORMACION);
+//addMessage("", "Seleccionado Tipo de evaluaci&oacute;n: " + getSessionBeanEMP().getTipoEvaluacion().getNomTipoEvaluacion(), TipoMensaje.INFORMACION);
 return null;
 }
 
