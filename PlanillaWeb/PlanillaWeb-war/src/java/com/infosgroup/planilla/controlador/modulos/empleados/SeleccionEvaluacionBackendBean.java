@@ -5,20 +5,25 @@
 package com.infosgroup.planilla.controlador.modulos.empleados;
 
 import com.infosgroup.planilla.modelo.entidades.Campania;
-import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.Factor;
-import com.infosgroup.planilla.modelo.entidades.Plantilla;
-import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
+import com.infosgroup.planilla.modelo.entidades.Pregunta;
+import com.infosgroup.planilla.modelo.entidades.Respuesta;
+import com.infosgroup.planilla.modelo.entidades.RespuestaPK;
 import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
+import com.infosgroup.planilla.modelo.estructuras.PreguntaRespuesta;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.FlowEvent;
 
 /**
 *
@@ -36,6 +41,11 @@ public SeleccionEvaluacionBackendBean()
 {
 }
 
+@PostConstruct
+public void init()
+{
+}
+
 private List<Campania> listaCampanias;
 
 public List<Campania> getListaCampanias()
@@ -49,71 +59,17 @@ public void setListaCampanias(List<Campania> listaCampanias)
 this.listaCampanias = listaCampanias;
 }
 
-private List<TipoEvaluacion> listaTiposEvaluacion;
+private List<Evaluacion> listaEvaluaciones;
 
-public List<TipoEvaluacion> getListaTiposEvaluacion()
+public List<Evaluacion> getListaEvaluaciones()
 {
-listaTiposEvaluacion = empleadosBean.listarTiposEvaluacion();
-return listaTiposEvaluacion;
+listaEvaluaciones = (campaniaSeleccionada != null) ? campaniaSeleccionada.getEvaluacionList() : null;
+return listaEvaluaciones;
 }
 
-public void setListaTiposEvaluacion(List<TipoEvaluacion> listaTiposEvaluacion)
+public void setListaEvaluaciones(List<Evaluacion> listaEvaluaciones)
 {
-this.listaTiposEvaluacion = listaTiposEvaluacion;
-}
-
-private List<Plantilla> listaPlantillas;
-
-public List<Plantilla> getListaPlantillas()
-{
-listaPlantillas = empleadosBean.listarPlantillasPorTipoEvaluacion(sessionBeanEMP.getTipoEvaluacion()); //(getSessionBeanEMP().getTipoEvaluacion() != null) ? getSessionBeanEMP().getTipoEvaluacion().getPlantillaList() : null; //empleadosBean.listarPlantillasPorTipoEvaluacion(sessionBeanEMP.getTipoEvaluacion());
-return listaPlantillas;
-}
-
-public void setListaPlantillas(List<Plantilla> listaPlantillas)
-{
-this.listaPlantillas = listaPlantillas;
-}
-
-private List<Empleado> listaEmpleados;
-
-public List<Empleado> getListaEmpleados()
-{
-return listaEmpleados;
-}
-
-public void setListaEmpleados(List<Empleado> listaEmpleados)
-{
-this.listaEmpleados = listaEmpleados;
-}
-
-public String mostrarEmpleadosNoEvaluados$action()
-{
-boolean hayError = false;
-if (sessionBeanEMP.getCampania() == null)
-    {
-    addMessage("Seleccion de evaluacion", "Seleccione una campa&ntilde;a", TipoMensaje.ADVERTENCIA);
-    hayError = true;
-    }
-if (!hayError)
-    {
-    addMessage("Seleccion de evaluacion", "Mostrando los empleados no evaluados para la campa&ntilde;a " + sessionBeanEMP.getCampania().getNombre(), TipoMensaje.INFORMACION);
-    //listaEmpleados = empleadosBean.listarEmpleados();
-    listaEmpleados = empleadosBean.listarEmpleadosNoEvaluados(sessionBeanEMP.getCampania());
-    }
-return null;
-}
-
-private Empleado empleadoSeleccionado;
-
-public Empleado getEmpleadoSeleccionado()
-{
-return empleadoSeleccionado;
-}
-
-public void setEmpleadoSeleccionado(Empleado empleadoSeleccionado)
-{
-this.empleadoSeleccionado = empleadoSeleccionado;
+this.listaEvaluaciones = listaEvaluaciones;
 }
 
 @Override
@@ -125,21 +81,7 @@ throw new UnsupportedOperationException("Not supported yet.");
 public String evaluarEmpleado$action()
 {
 boolean hayError = false;
-String outcome = null;
-
-if (getSessionBeanEMP().getTipoEvaluacion() == null)
-    {
-    addMessage("Seleccion de evaluacion", "Seleccione un tipo de evaluaci&oacute;n", TipoMensaje.ADVERTENCIA);
-    hayError = true;
-    }
-
-if (getSessionBeanEMP().getPlantilla() == null)
-    {
-    addMessage("Seleccion de evaluacion", "Seleccione una plantilla", TipoMensaje.ADVERTENCIA);
-    hayError = true;
-    }
-
-if (empleadoSeleccionado == null)
+if (evaluacionSeleccionada == null)
     {
     addMessage("Evaluacion de empleados", "Seleccione un empleado para evaluarlo", TipoMensaje.ADVERTENCIA);
     hayError = true;
@@ -147,45 +89,154 @@ if (empleadoSeleccionado == null)
 
 if (!hayError)
     {
-    // TODO: Listar los factores por la plantilla que el usuario ha seleccionado ;)
-    List<Factor> listaFactores = empleadosBean.listarFactoresPorPlantilla(getSessionBeanEMP().getPlantilla());
-    Factor primerFactor = ((listaFactores != null) && !listaFactores.isEmpty()) ? listaFactores.get(0) : null;
-
-    List<DetalleEvaluacion> listaDetalleTemporal = new ArrayList<DetalleEvaluacion>(0);
+    listaFactores = empleadosBean.listarFactoresPorPlantilla(evaluacionSeleccionada.getPlantilla1());
+    factorActual = ((listaFactores != null) && !listaFactores.isEmpty()) ? listaFactores.get(0) : null;
+    detalleEvaluacionTemporal = new ArrayList<DetalleEvaluacion>(0);
     for (Factor f : listaFactores)
         {
         DetalleEvaluacion d = new DetalleEvaluacion();
         d.setFactor(f);
         d.setRespuestas(null);
-        listaDetalleTemporal.add(d);
+        detalleEvaluacionTemporal.add(d);
         }
-    sessionBeanEMP.setDetalleEvaluacionTemporal(listaDetalleTemporal);
-
-    sessionBeanEMP.setEmpleado(empleadoSeleccionado);
-    sessionBeanEMP.setListaFactores(listaFactores);
-    sessionBeanEMP.setFactor(primerFactor);
-    //outcome = "evaluacionEmpleado?faces-redirect=true&includeViewParams=true";
-    outcome = "evaluacionEmpleado?faces-redirect=true";
     }
-return outcome;
-}
-
-public String seleccionCampania$action()
-{
-addMessage("", "Seleccionada campa&ntilde;a: " + getSessionBeanEMP().getCampania().getNombre(), TipoMensaje.INFORMACION);
 return null;
 }
 
-public String seleccionTipoEvaluacion$action()
+private Campania campaniaSeleccionada;
+
+public Campania getCampaniaSeleccionada()
 {
-getSessionBeanEMP().setPlantilla(null);
-addMessage("", "Seleccionado Tipo de evaluaci&oacute;n: " + getSessionBeanEMP().getTipoEvaluacion().getNomTipoEvaluacion(), TipoMensaje.INFORMACION);
-return null;
+return campaniaSeleccionada;
 }
 
-public String seleccionPlantilla$action()
+public void setCampaniaSeleccionada(Campania campaniaSeleccionada)
 {
-addMessage("", "Seleccionada plantilla: " + getSessionBeanEMP().getPlantilla().getNombre(), TipoMensaje.INFORMACION);
-return null;
+this.campaniaSeleccionada = campaniaSeleccionada;
+}
+
+private Evaluacion evaluacionSeleccionada;
+
+public Evaluacion getEvaluacionSeleccionada()
+{
+return evaluacionSeleccionada;
+}
+
+public void setEvaluacionSeleccionada(Evaluacion evaluacionSeleccionada)
+{
+this.evaluacionSeleccionada = evaluacionSeleccionada;
+}
+
+private Factor factorActual;
+
+public Factor getFactorActual()
+{
+return factorActual;
+}
+
+public void setFactorActual(Factor factorActual)
+{
+this.factorActual = factorActual;
+}
+
+private List<Factor> listaFactores;
+
+public List<Factor> getListaFactores()
+{
+if (evaluacionSeleccionada != null)
+    {
+    listaFactores = empleadosBean.listarFactoresPorPlantilla(evaluacionSeleccionada.getPlantilla1());
+    }
+return listaFactores;
+}
+
+public void setListaFactores(List<Factor> listaFactores)
+{
+this.listaFactores = listaFactores;
+}
+
+private List<DetalleEvaluacion> detalleEvaluacionTemporal;
+
+public List<DetalleEvaluacion> getDetalleEvaluacionTemporal()
+{
+return detalleEvaluacionTemporal;
+}
+
+public void setDetalleEvaluacionTemporal(List<DetalleEvaluacion> detalleEvaluacionTemporal)
+{
+this.detalleEvaluacionTemporal = detalleEvaluacionTemporal;
+}
+
+// ==============================================================================================================
+private List<Pregunta> listaPreguntas;
+
+public List<Pregunta> getListaPreguntas()
+{
+listaPreguntas = empleadosBean.listarPreguntasPorFactor(factorActual);
+return listaPreguntas;
+}
+
+public void setListaPreguntas(List<Pregunta> listaPreguntas)
+{
+this.listaPreguntas = listaPreguntas;
+}
+
+private DataTable[] wizardTable = new DataTable[15];
+
+public DataTable[] getWizardTable()
+{
+return wizardTable;
+}
+
+public void setWizardTable(DataTable[] wizardTable)
+{
+this.wizardTable = wizardTable;
+}
+
+public String defaultFlowListener(FlowEvent event)
+{
+Integer actual = Integer.parseInt(event.getOldStep().replaceAll("tab", "")) - 1;
+Integer nuevo = Integer.parseInt(event.getNewStep().replaceAll("tab", "")) - 1;
+List<PreguntaRespuesta> preguntas_respuestas = new ArrayList<PreguntaRespuesta>(0);
+
+if (actual < nuevo)
+    {
+    DataTable tabla = wizardTable[actual];
+    Integer filas = tabla.getRowCount();
+    for (int fila = 0; fila < filas; fila++)
+        {
+        tabla.setRowIndex(fila);
+        Pregunta p = (Pregunta) tabla.getRowData();
+        String respuesta = p.getRespuestaSeleccionada();
+        if (respuesta != null)
+            {
+            String[] desco = respuesta.split(":");
+            RespuestaPK respuestaPK = new RespuestaPK();
+            respuestaPK.setCodCia(Integer.parseInt(desco[0]));
+            respuestaPK.setCodTipoRespuesta(Integer.parseInt(desco[1]));
+            respuestaPK.setGrupoRespuesta(Integer.parseInt(desco[2]));
+            respuestaPK.setCodRespuesta(Integer.parseInt(desco[3]));
+
+            PreguntaRespuesta pr = new PreguntaRespuesta();
+            pr.setPregunta(p);
+            Respuesta r = empleadosBean.findRespuestaById(respuestaPK);
+            pr.setRespuesta(r);
+
+            preguntas_respuestas.add(pr);
+            }
+        }
+    detalleEvaluacionTemporal.get(actual).setRespuestas(preguntas_respuestas);
+    if (nuevo < 999)
+        {
+        DetalleEvaluacion detalle = detalleEvaluacionTemporal.get(nuevo);
+        factorActual = detalle.getFactor();
+        }
+    }
+return event.getNewStep();
+}
+
+public String cerrarEvaluacion$action()
+{
+return empleadosBean.cerrarEvaluacion(campaniaSeleccionada, null, null, null, detalleEvaluacionTemporal) ? inicio$action() : null;
 }
 }
