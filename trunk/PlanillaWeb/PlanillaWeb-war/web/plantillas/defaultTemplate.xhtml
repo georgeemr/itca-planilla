@@ -25,6 +25,13 @@
                             <h:outputText value="Powered by Glassfish"/><h:graphicImage url="/resources/imagenes/glassfish.png"/>
                         </td>
                         <td>
+                            <h:outputText value="Bienvenido"/>
+                            <p:spacer width="5"/>
+                            <h:outputText value="#{SessionBeanEMP.empleadoSesion.nombres} #{SessionBeanEMP.empleadoSesion.apellidos}" style="font-weight: bold;"/>
+                            <p:spacer width="20"/>
+                            <p:commandLink value="Cerrar sesi&oacute;n" action="#{index.cerrarSesion$action}"/>
+                        </td>
+                        <td>
                             <!--p:commandButton value="Opciones" image="opciones" onclick="dialogOpciones.show();"/-->
                             <p:commandButton value="Opciones" image="ui-icon ui-icon-wrench" onclick="dialogOpciones.show();"/>
                             <p:dialog id="dialogOpciones" widgetVar="dialogOpciones" header="Opciones" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="zoom" showEffect="zoom" modal="true" height="400" width="500">
@@ -56,7 +63,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4">
+                        <td colspan="5">
                             <p:menubar id="menuBar1" model="#{menu.menuModel}"/>
                         </td>
                     </tr>
