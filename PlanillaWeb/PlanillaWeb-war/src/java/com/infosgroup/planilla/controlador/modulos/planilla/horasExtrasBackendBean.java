@@ -4,9 +4,14 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
+import com.infosgroup.planilla.modelo.entidades.Compania;
+import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
+import com.infosgroup.planilla.modelo.entidades.Sucursal;
+import com.infosgroup.planilla.modelo.entidades.TipoPlanilla;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
@@ -26,18 +31,58 @@ public class horasExtrasBackendBean extends JSFUtil implements Serializable {
 
     @EJB
     private PlanillaSessionBean planillaSessionBean;
-    private int cia;
+    private Integer cia = 1;
     private int tipo;
     private int planilla;
     private int sucursal;
     private List<ResumenAsistencia> horasExtras;
     private DataTable tablaHorasExtras;
+    private List<Compania> listaCias;
+    private List<TipoPlanilla> listaTipos;
+    private List<Planilla> listaPlanillas;
+    private List<Sucursal> listaSucursales;
 
-    public int getCia() {
+    public List<Sucursal> getListaSucursales() {
+        listaSucursales = planillaSessionBean.listarSucursal();
+        return listaSucursales;
+    }
+
+    public void setListaSucursales(List<Sucursal> listaSucursales) {
+        this.listaSucursales = listaSucursales;
+    }
+
+    public List<Planilla> getListaPlanillas() {
+        listaPlanillas = planillaSessionBean.listarPlanilla();
+        return listaPlanillas;
+    }
+
+    public void setListaPlanillas(List<Planilla> listaPlanillas) {
+        this.listaPlanillas = listaPlanillas;
+    }
+
+    public List<TipoPlanilla> getListaTipos() {
+        listaTipos = planillaSessionBean.listarTipos();
+        return listaTipos;
+    }
+
+    public void setListaTipos(List<TipoPlanilla> listaTipos) {
+        this.listaTipos = listaTipos;
+    }
+
+    public List<Compania> getListaCias() {
+        listaCias = planillaSessionBean.listarCias();
+        return listaCias;
+    }
+
+    public void setListaCias(List<Compania> listaCias) {
+        this.listaCias = listaCias;
+    }
+
+    public Integer getCia() {
         return cia;
     }
 
-    public void setCia(int cia) {
+    public void setCia(Integer cia) {
         this.cia = cia;
     }
 
@@ -87,9 +132,22 @@ public class horasExtrasBackendBean extends JSFUtil implements Serializable {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+//    public void onRowSelectDetalle(SelectEvent event){
+//        setHorasExtras(planillaSessionBean.getResumen((ResumenAsistencia)event.getObject()));
+//    }
     public void rowEditListener(RowEditEvent event) {
+        boolean hayError = false;
         ResumenAsistencia resumen = (ResumenAsistencia) event.getObject();
-        planillaSessionBean.editar$action(resumen);
+        //setHorasExtras(planillaSessionBean.getResumen(resumen));
+        if(resumen.getEstadoPla().equals('G')){
+            hayError = true;
+        }
+        if (hayError) {
+            planillaSessionBean.editar$action(resumen);
+        } else {
+            addMessage("Registro de Resumen de Asistencias", "La planilla no está en estado gravado", TipoMensaje.INFORMACION);
+        }
+        mostrar$action();
     }
 
     public String mostrar$action() {
