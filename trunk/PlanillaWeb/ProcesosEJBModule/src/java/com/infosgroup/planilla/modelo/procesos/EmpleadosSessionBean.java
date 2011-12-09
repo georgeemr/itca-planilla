@@ -112,7 +112,7 @@ try
     Evaluacion ev = new Evaluacion();
     ev.setEvaluacionPK(evaluacionPK);
     ev.setCampania(c);
-    ev.setPlantilla(p);
+    ev.setPlantilla1(p);
     ev.setEmpleado1(e);
     ev.setFecha(Calendar.getInstance().getTime());
     ev.setFinalizada(1);
@@ -159,5 +159,10 @@ return empleadosFacade.findEmpleadosEvaluados(c);
 public List<Empleado> listarEmpleadosNoEvaluados(Campania c)
 {
 return empleadosFacade.findEmpleadosNoEvaluados(c);
+}
+
+public Empleado buscarEmpleadoPorUsuario(String usuario)
+{
+return empleadosFacade.findByUsuario(usuario);
 }
 }
