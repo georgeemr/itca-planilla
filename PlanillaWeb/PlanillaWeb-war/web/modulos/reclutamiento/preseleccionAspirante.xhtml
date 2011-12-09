@@ -22,7 +22,7 @@
     <ui:define name="contenido">    
         <p:spacer height="20" />
 
-        <p:wizard  flowListener="#{reclutamiento$preseleccionAspirante.onFlowListener}">
+        <p:wizard id="wizarPreseleccion" flowListener="#{reclutamiento$preseleccionAspirante.onFlowListener}">
 
             <p:tab id="concursoSeleccionado" title="Concursos"  >
                 <p:spacer height="20" />
@@ -32,7 +32,7 @@
                     <p:calendar id="calFechaInicial"  pattern="dd/MM/yyyy" showOn="button"
                                 value="#{reclutamiento$preseleccionAspirante.fechaInicial}" />
                     <p:commandButton value="Buscar" image="buscar" 
-                                     update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos, tablaCandidatos" 
+                                     update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos" 
                                      action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"/>
                     <h:outputLabel value=""/>
                     <h:outputLabel value="Fecha final"/>
@@ -42,7 +42,6 @@
                                 showOn="button" />
                 </h:panelGrid>
                 <p:spacer width="20" />
-
                 <p:dataTable id="tablaConcursos"
                              var="concurso" 
                              value="#{reclutamiento$preseleccionAspirante.listaConcurso}"
@@ -51,10 +50,7 @@
                              emptyMessage="No se han encontrado concursos."
                              binding="#{reclutamiento$preseleccionAspirante.tableConcursos}"
                              paginatorAlwaysVisible="true" 
-                             selection="#{SessionBeanREC.concursoSeleccionado}"
-                             update="panelContenido"
                              selectionMode="single"
-                             onRowSelectUpdate="panelContenido"
                              rowSelectListener="#{reclutamiento$preseleccionAspirante.onRowSelectConcurso}"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
                     <f:facet name="header">
@@ -145,13 +141,12 @@
                     <div style="display: inline-block;">
                         <p:fieldset legend="Criterios por Perfil" >
                             <p:pickList id="picktCriterios" value="#{reclutamiento$preseleccionAspirante.listModelCriterios}" 
-                                        var="c" iconOnly="true" effect="bounce"
-                                        itemLabel="#{c.criterio1.nombre}" 
-                                        itemValue="#{c.criterio1.criterioPK.pkAsString}">
+                                        var="criterio" iconOnly="true" effect="bounce"
+                                        itemLabel="#{criterio.criterio1.nombre}" 
+                                        itemValue="#{criterio.criterio1.criterioPK.pkAsString}">
                                 <f:facet name="sourceCaption">Disponible</f:facet>  
                                 <f:facet name="targetCaption">Seleccionado</f:facet>  
                             </p:pickList>
-                            <p:commandButton value="Aplicar Criterios" />
                         </p:fieldset>
                     </div>
                     <div style="display: inline-block;" >
@@ -163,19 +158,23 @@
                                 <f:facet name="sourceCaption">Disponible</f:facet>  
                                 <f:facet name="targetCaption">Preseleccionado</f:facet>  
                             </p:pickList>
-                            <p:commandButton value="Aplicar Criterios" />
                         </p:fieldset>
                     </div>
                 </div>
-
+                <p:spacer height="10" />
+                
+                <p:panel>
+                    <p:commandButton value="Aplicar Criterios" ajax="true" action="#{reclutamiento$preseleccionAspirante.aplicarCriterios}" update="picktCandidatos" />
+                </p:panel>
+                
                 <p:spacer height="20" />
             </p:tab>
 
-            <!-- p:tab id="preseleccionar" title="Preseleccionar"  -->
-                <!--
-                <p:spacer height="20" /-->
-                <!-- "# {reclutamiento$preseleccionAspirante.listModelCandidatos.target}" -->
-                <!--p:dataList value="# {reclutamiento$preseleccionAspirante.listaCandidato}" var="candidato" paginator="true" 
+            <!--p:tab id="preseleccionar" title="Preseleccionar">
+             
+                <p:spacer height="20" />
+                
+                <p:dataList value="# {reclutamiento$preseleccionAspirante.listaCandidato}" var="candidato" paginator="true" 
                              type="ordered" 
                             paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"  
                             rowsPerPageTemplate="5,10,15">
@@ -185,8 +184,8 @@
                         <h:outputText value="# {candidato.nombreCompleto}" style="margin-left:10px" />  
                     </p:column>
                 </p:dataList>
-                <p:spacer height="10" / -->
-            <!-- /p:tab -->
+                <p:spacer height="10" />
+            </p:tab -->
 
         </p:wizard>
 
