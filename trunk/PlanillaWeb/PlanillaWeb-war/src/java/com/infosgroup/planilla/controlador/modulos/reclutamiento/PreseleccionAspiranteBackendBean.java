@@ -35,19 +35,17 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     private Date fechaInicial;
     private Date fechaFinal;
     private List<Concurso> listaConcurso;
-    private List<Candidato> listaCandidato; //@borrar luego
     private DataTable tableConcursos;
     private DualListModel<CriteriosXPuesto> listModelCriterios = new DualListModel<CriteriosXPuesto>();
     private DualListModel<Candidato> listModelCandidatos = new DualListModel<Candidato>();
 
     public DualListModel<CriteriosXPuesto> getListModelCriterios() {
-    return listModelCriterios;
+        return listModelCriterios;
     }
-    
+
     public void setListModelCriterios(DualListModel<CriteriosXPuesto> listModelCriterios) {
-    this.listModelCriterios = listModelCriterios;
+        this.listModelCriterios = listModelCriterios;
     }
-     
 
     public DataTable getTableConcursos() {
         return tableConcursos;
@@ -88,19 +86,13 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
         return reclutamientoSessionBean.getCandidatosByEmpresa(1);
     }
 
-    public void setListaCandidato(List<Candidato> listaCandidato) {
-        this.listaCandidato = listaCandidato;
-    }
-    
     public DualListModel<Candidato> getListModelCandidatos() {
-    return listModelCandidatos;
+        return listModelCandidatos;
     }
-    
+
     public void setListModelCandidatos(DualListModel<Candidato> listModelCandidatos) {
-    this.listModelCandidatos = listModelCandidatos;
+        this.listModelCandidatos = listModelCandidatos;
     }
-     
-    // @metodos
 
     public String buscarConcurso$action() {
         if (fechaInicial != null && fechaFinal != null) {
@@ -116,39 +108,25 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     }
 
     public String preseleccionarCandidato$action() {
-
-        /*if (candidatosSeleccionados == null || candidatosSeleccionados.length <= 0) {
-        addMessage("Preselección de Candidatos.", "No ha seleccionado ningún Candidato.", TipoMensaje.ERROR);
-        return null;
-        }
-        if (getSessionBeanREC().getConcursoSeleccionado() == null) {
-        addMessage("Preselección de Candidatos.", "No ha seleccionado ningún Concurso.", TipoMensaje.ERROR);
-        return null;
-        }
-        reclutamientoSessionBean.CambioEstadoCandidato(getSessionBeanREC().getConcursoSeleccionado(), Arrays.asList(candidatosSeleccionados), "P");
-        addMessage("Preselección de Candidatos.", "Datos Guardados. Total de elementos agregados: " + candidatosSeleccionados.length, TipoMensaje.INFORMACION);*/
         return null;
     }
 
     public void onRowSelectConcurso(SelectEvent event) {
         getSessionBeanREC().setConcursoSeleccionado((Concurso) event.getObject());
-        /*getSessionBeanREC().*/setListModelCandidatos(new DualListModel<Candidato>(new ArrayList<Candidato>(), reclutamientoSessionBean.getCandidatosByConcurso(getSessionBeanREC().getConcursoSeleccionado()) /*new ArrayList<Candidato>()*/));
-        /*getSessionBeanREC().*/setListModelCriterios(new DualListModel<CriteriosXPuesto>(getSessionBeanREC().getConcursoSeleccionado().getPuesto().getCriteriosXPuestoList(), new ArrayList<CriteriosXPuesto>()));
+        setListModelCandidatos(new DualListModel<Candidato>(reclutamientoSessionBean.getCandidatosByEmpresa(getSessionBeanADM().getCompania().getIdCompania()), new ArrayList<Candidato>()));
+        setListModelCriterios(new DualListModel<CriteriosXPuesto>(getSessionBeanREC().getConcursoSeleccionado().getPuesto().getCriteriosXPuestoList(), new ArrayList<CriteriosXPuesto>()));
     }
 
     public String onFlowListener(FlowEvent event) {
         if (getSessionBeanREC().getConcursoSeleccionado() == null) {
             return "concursoSeleccionado";
         }
-
-        /*if (event.getOldStep().equals("concursoSeleccionado")) {
-        if (getSessionBeanREC().getConcursoSeleccionado() == null) {
-        //addMessage("Contrataciones", "Seleccione un curso", TipoMensaje.ERROR);
-        return event.getOldStep();
-        }
-        }*/
-
         return event.getNewStep();
+    }
+
+    public String aplicarCriterios() {
+        setListModelCandidatos(new DualListModel<Candidato>(reclutamientoSessionBean.getCandidatoConCriteriosPuesto(sessionBeanREC.getConcursoSeleccionado(), listModelCriterios.getTarget()), new ArrayList<Candidato>()));
+        return null;
     }
 
     @Override
@@ -157,7 +135,7 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
         setFechaFinal(null);
         tableConcursos.setSelection(null);
         getSessionBeanREC().setConcursoSeleccionado(null);
-        /*getSessionBeanREC().*/setListModelCandidatos(new DualListModel<Candidato>(new ArrayList<Candidato>(), new ArrayList<Candidato>()));
-        /*getSessionBeanREC().*/setListModelCriterios(new DualListModel<CriteriosXPuesto>(new ArrayList<CriteriosXPuesto>(), new ArrayList<CriteriosXPuesto>()));
+        setListModelCandidatos(new DualListModel<Candidato>(new ArrayList<Candidato>(), new ArrayList<Candidato>()));
+        setListModelCriterios(new DualListModel<CriteriosXPuesto>(new ArrayList<CriteriosXPuesto>(), new ArrayList<CriteriosXPuesto>()));
     }
 }
