@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
 *
@@ -53,5 +54,14 @@ q.setParameter(2, c.getCampaniaPK().getPeriodo());
 q.setParameter(3, c.getCampaniaPK().getCodCampania());
 le = (List<Empleado>) q.getResultList();
 return le;
+}
+
+public Empleado findByUsuario(String usuario)
+{
+Empleado e = null ;
+TypedQuery tq = em.createNamedQuery("Empleado.findByUsuario", Empleado.class);
+tq.setParameter("usuario", usuario);
+e = (Empleado) tq.getSingleResult();
+return e;
 }
 }
