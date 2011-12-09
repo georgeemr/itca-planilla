@@ -27,26 +27,28 @@
     <ui:define name="contenido">
         <h:panelGrid columns="2">
             <h:outputLabel value="Compa&ntilde;ia"/>
-            <h:selectOneMenu id="lstCia" label="Compa&ntilde;ia" >
-
+            <h:selectOneMenu id="lstCia" value="#{planilla$horasExtras.cia}" style="width:150px" disabled="true" >
+                <f:selectItems value="#{planilla$horasExtras.listaCias}" var="empresa" itemValue="#{empresa.idCompania}" itemLabel="#{empresa.nomCompania}" />
             </h:selectOneMenu>
             <h:outputLabel value="Tipo Planilla"/>
-            <h:selectOneMenu id="lstTipo_plan" label="Tipo Planilla" >
-
+            <h:selectOneMenu id="lstTipo_plan" label="Tipo Planilla" style="width:150px" >
+                <f:selectItems value="#{planilla$horasExtras.listaTipos}" var="tipo" itemValue="#{tipo.tipoPlanillaPK.idTipoPlanilla}" itemLabel="#{tipo.nomTipoPlanilla}"/>
             </h:selectOneMenu>
             <h:outputLabel value="Planilla"/>
-            <h:selectOneMenu id="lstPlan" label="Planilla" >
-
+            <h:selectOneMenu id="lstPlan" label="Planilla" style="width:150px">
+                <f:selectItems value="#{planilla$horasExtras.listaPlanillas}" var="pla" itemValue="#{pla.planillaPK.numPlanilla}" itemLabel="#{pla.planillaPK.anio}" />
             </h:selectOneMenu>
             <h:outputLabel value="Sucursal"/>
-            <h:selectOneMenu id="lstSuc" label="Sucursal" >
-
+            <h:selectOneMenu id="lstSuc" label="Sucursal" style="width:150px">
+                <f:selectItems value="#{planilla$horasExtras.listaSucursales}" var="sucursal" itemValue="#{sucursal.sucursalPK.idSucursal}" itemLabel="#{sucursal.nomSucursal}"/>
             </h:selectOneMenu>
         </h:panelGrid>
+        <p:spacer height="10px"/>
         <p:dataTable id="tablaResumen" 
                      emptyMessage="No se han encontrado asistencias" 
                      var="h_xtras" rows="5" paginator="true" 
                      rowEditListener="#{planilla$horasExtras.rowEditListener}"
+                     selection="#{SessionBeanPLA.resumenSeleccionado}"
                      value="#{planilla$horasExtras.horasExtras}"                      
                      paginatorAlwaysVisible="true"
                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
