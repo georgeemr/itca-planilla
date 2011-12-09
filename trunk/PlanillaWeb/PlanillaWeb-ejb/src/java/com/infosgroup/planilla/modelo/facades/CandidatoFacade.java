@@ -7,11 +7,14 @@ package com.infosgroup.planilla.modelo.facades;
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.CandidatoPK;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
+import com.infosgroup.planilla.modelo.entidades.ConcursoPK;
+import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.estructuras.ModelConsultaCriterio;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -27,8 +30,11 @@ import java.util.logging.Logger;
 @Stateless
 @LocalBean
 public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
+    @EJB
+    private ConcursoFacade concursoFacade;
 
     private enum operacion { equal, between };
+    
     
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
@@ -48,18 +54,25 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         return listaCandidatos;
     }
 
-    public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c) {
+    public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, List<String> criterios) {
         List<Candidato> listaCandidatos = new ArrayList<Candidato>();
-        for ( Candidato candidato: c.getCandidatoList() ){
-            if ( validaCriterios( c.getConcursoPK().getCodCia(), c.getPuesto().getPuestoPK().getCodPuesto(), candidato.getCandidatoPK().getCodCandidato()) == 1 ){
+        for ( Candidato candidato:  findByCanditadoByEmpresa( c.getConcursoPK().getCodCia() )  ){
+            if ( validaCriterios( c.getConcursoPK().getCodCia(), c.getPuesto().getPuestoPK().getCodPuesto(), candidato.getCandidatoPK().getCodCandidato(), criterios) == 1 ){
                 listaCandidatos.add( candidato );
             }
         }
         return listaCandidatos;
     }
 
-    public Integer validaCriterios(Integer empresa, Integer puesto, Integer candidato) {
-        String q = "SELECT t.criteriosXPuestoPK.codCia, t.criteriosXPuestoPK.puesto, "
+    public Integer validaCriterios(Integer empresa, Integer puesto, Integer candidato, List<String> criterios) {
+        
+        String cq = "";
+        
+        for (String qk: criterios ){
+            cq = qk.split(":")[0];
+        }
+        
+        String q ="SELECT t.criteriosXPuestoPK.codCia, t.criteriosXPuestoPK.puesto, "
                 + " t.criteriosXPuestoPK.tipoCriterio, t.criteriosXPuestoPK.correlativo, "
                 + " t.valor, t.valorInicialRango, t.valorFinalRango,  "
                 + " u.operador, u.clase, v.campo, v.entidad, v.entidadPK "
