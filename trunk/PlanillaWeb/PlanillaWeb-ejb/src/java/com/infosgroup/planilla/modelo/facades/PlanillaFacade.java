@@ -6,9 +6,13 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
+import com.infosgroup.planilla.modelo.entidades.TipoPlanilla;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +31,17 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
 
     public PlanillaFacade() {
         super(Planilla.class);
+    }
+    
+    public List<Planilla> findByTipoPLanilla(TipoPlanilla tipo){
+        List<Planilla> listPla = new ArrayList<Planilla>(0);
+        
+        Query q = em.createQuery("select * from planilla" 
+        +"where tipoPlanilla = :tipoPla", Planilla.class);
+        q.setParameter("tipoPla", tipo);
+        listPla = q.getResultList();
+        
+        return listPla;
     }
     
 }
