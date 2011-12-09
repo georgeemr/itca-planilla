@@ -28,7 +28,7 @@ public class SessionBeanADM implements Serializable {
     }
 
     public Compania getCompania() {
-        return companiaFacade.find(1);
+        return companiaFacade.find(1L);
     }
 
     public Integer getEstadoAccion() {
