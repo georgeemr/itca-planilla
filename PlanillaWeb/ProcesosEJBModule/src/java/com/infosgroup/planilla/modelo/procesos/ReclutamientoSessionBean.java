@@ -72,7 +72,7 @@ public class ReclutamientoSessionBean {
         return concursoFacade.getMax(empresa).intValue();
     }
 
-    public List<Candidato> getCandidatosByEmpresa(Integer empresa) {
+    public List<Candidato> getCandidatosByEmpresa(Long empresa) {
         return candidatoFacade.findByCanditadoByEmpresa(empresa);
     }
 

@@ -83,7 +83,7 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     }
 
     public List<Candidato> getListaCandidato() {
-        return reclutamientoSessionBean.getCandidatosByEmpresa(1);
+        return reclutamientoSessionBean.getCandidatosByEmpresa(1L);
     }
 
     public DualListModel<Candidato> getListModelCandidatos() {
