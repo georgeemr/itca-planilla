@@ -16,33 +16,41 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Embeddable
-public class DireccionPK implements Serializable {
+public class DireccionPK implements Serializable
+{
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_pais", nullable = false)
-    private int idPais;
+    @Column(name = "ID_PAIS", nullable = false)
+    private long idPais;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_provincia", nullable = false)
-    private int idProvincia;
+    @Column(name = "ID_PROVINCIA", nullable = false)
+    private long idProvincia;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_municipio", nullable = false)
-    private int idMunicipio;
+    @Column(name = "ID_MUNICIPIO", nullable = false)
+    private long idMunicipio;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_barrio", nullable = false)
-    private int idBarrio;
+    @Column(name = "ID_BARRIO", nullable = false)
+    private long idBarrio;
+
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "num_casa", nullable = false, length = 100)
+    @Size(min = 1, max = 200)
+    @Column(name = "NUM_CASA", nullable = false, length = 200)
     private String numCasa;
 
-    public DireccionPK() {
+    public DireccionPK()
+    {
     }
 
-    public DireccionPK(int idPais, int idProvincia, int idMunicipio, int idBarrio, String numCasa) {
+    public DireccionPK(long idPais, long idProvincia, long idMunicipio, long idBarrio, String numCasa)
+    {
         this.idPais = idPais;
         this.idProvincia = idProvincia;
         this.idMunicipio = idMunicipio;
@@ -50,48 +58,59 @@ public class DireccionPK implements Serializable {
         this.numCasa = numCasa;
     }
 
-    public int getIdPais() {
+    public long getIdPais()
+    {
         return idPais;
     }
 
-    public void setIdPais(int idPais) {
+    public void setIdPais(long idPais)
+    {
         this.idPais = idPais;
     }
 
-    public int getIdProvincia() {
+    public long getIdProvincia()
+    {
         return idProvincia;
     }
 
-    public void setIdProvincia(int idProvincia) {
+    public void setIdProvincia(long idProvincia)
+    {
         this.idProvincia = idProvincia;
     }
 
-    public int getIdMunicipio() {
+    public long getIdMunicipio()
+    {
         return idMunicipio;
     }
 
-    public void setIdMunicipio(int idMunicipio) {
+    public void setIdMunicipio(long idMunicipio)
+    {
         this.idMunicipio = idMunicipio;
     }
 
-    public int getIdBarrio() {
+    public long getIdBarrio()
+    {
         return idBarrio;
     }
 
-    public void setIdBarrio(int idBarrio) {
+    public void setIdBarrio(long idBarrio)
+    {
         this.idBarrio = idBarrio;
     }
 
-    public String getNumCasa() {
+    public String getNumCasa()
+    {
         return numCasa;
     }
 
-    public void setNumCasa(String numCasa) {
+    public void setNumCasa(String numCasa)
+    {
         this.numCasa = numCasa;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idPais;
         hash += (int) idProvincia;
@@ -102,32 +121,40 @@ public class DireccionPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DireccionPK)) {
+        if (!(object instanceof DireccionPK))
+            {
             return false;
-        }
+            }
         DireccionPK other = (DireccionPK) object;
-        if (this.idPais != other.idPais) {
+        if (this.idPais != other.idPais)
+            {
             return false;
-        }
-        if (this.idProvincia != other.idProvincia) {
+            }
+        if (this.idProvincia != other.idProvincia)
+            {
             return false;
-        }
-        if (this.idMunicipio != other.idMunicipio) {
+            }
+        if (this.idMunicipio != other.idMunicipio)
+            {
             return false;
-        }
-        if (this.idBarrio != other.idBarrio) {
+            }
+        if (this.idBarrio != other.idBarrio)
+            {
             return false;
-        }
-        if ((this.numCasa == null && other.numCasa != null) || (this.numCasa != null && !this.numCasa.equals(other.numCasa))) {
+            }
+        if ((this.numCasa == null && other.numCasa != null) || (this.numCasa != null && !this.numCasa.equals(other.numCasa)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.DireccionPK[ idPais=" + idPais + ", idProvincia=" + idProvincia + ", idMunicipio=" + idMunicipio + ", idBarrio=" + idBarrio + ", numCasa=" + numCasa + " ]";
     }
     

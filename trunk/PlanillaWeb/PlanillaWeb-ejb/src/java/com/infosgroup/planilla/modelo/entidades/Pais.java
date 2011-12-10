@@ -23,89 +23,112 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "pais")
-@NamedQueries({
+@Table(name = "PAIS")
+@NamedQueries(
+    {
     @NamedQuery(name = "Pais.findAll", query = "SELECT p FROM Pais p"),
     @NamedQuery(name = "Pais.findByIdPais", query = "SELECT p FROM Pais p WHERE p.idPais = :idPais"),
     @NamedQuery(name = "Pais.findByNomPais", query = "SELECT p FROM Pais p WHERE p.nomPais = :nomPais"),
-    @NamedQuery(name = "Pais.findByDetPais", query = "SELECT p FROM Pais p WHERE p.detPais = :detPais")})
-public class Pais implements Serializable {
+    @NamedQuery(name = "Pais.findByDetPais", query = "SELECT p FROM Pais p WHERE p.detPais = :detPais")
+    })
+public class Pais implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_pais", nullable = false)
-    private Integer idPais;
-    @Size(max = 100)
-    @Column(name = "nom_pais", length = 100)
-    private String nomPais;
+    @Column(name = "ID_PAIS", nullable = false)
+    private Long idPais;
+
     @Size(max = 200)
-    @Column(name = "det_pais", length = 200)
+    @Column(name = "NOM_PAIS", length = 200)
+    private String nomPais;
+
+    @Size(max = 200)
+    @Column(name = "DET_PAIS", length = 200)
     private String detPais;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pais")
     private List<Provincia> provinciaList;
 
-    public Pais() {
+    public Pais()
+    {
     }
 
-    public Pais(Integer idPais) {
+    public Pais(Long idPais)
+    {
         this.idPais = idPais;
     }
 
-    public Integer getIdPais() {
+    public Long getIdPais()
+    {
         return idPais;
     }
 
-    public void setIdPais(Integer idPais) {
+    public void setIdPais(Long idPais)
+    {
         this.idPais = idPais;
     }
 
-    public String getNomPais() {
+    public String getNomPais()
+    {
         return nomPais;
     }
 
-    public void setNomPais(String nomPais) {
+    public void setNomPais(String nomPais)
+    {
         this.nomPais = nomPais;
     }
 
-    public String getDetPais() {
+    public String getDetPais()
+    {
         return detPais;
     }
 
-    public void setDetPais(String detPais) {
+    public void setDetPais(String detPais)
+    {
         this.detPais = detPais;
     }
 
-    public List<Provincia> getProvinciaList() {
+    public List<Provincia> getProvinciaList()
+    {
         return provinciaList;
     }
 
-    public void setProvinciaList(List<Provincia> provinciaList) {
+    public void setProvinciaList(List<Provincia> provinciaList)
+    {
         this.provinciaList = provinciaList;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (idPais != null ? idPais.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Pais)) {
+        if (!(object instanceof Pais))
+            {
             return false;
-        }
+            }
         Pais other = (Pais) object;
-        if ((this.idPais == null && other.idPais != null) || (this.idPais != null && !this.idPais.equals(other.idPais))) {
+        if ((this.idPais == null && other.idPais != null) || (this.idPais != null && !this.idPais.equals(other.idPais)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Pais[ idPais=" + idPais + " ]";
     }
     

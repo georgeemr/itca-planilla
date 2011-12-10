@@ -24,8 +24,9 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "cuenta")
-@NamedQueries({
+@Table(name = "CUENTA")
+@NamedQueries(
+    {
     @NamedQuery(name = "Cuenta.findAll", query = "SELECT c FROM Cuenta c"),
     @NamedQuery(name = "Cuenta.findByIdCompania", query = "SELECT c FROM Cuenta c WHERE c.cuentaPK.idCompania = :idCompania"),
     @NamedQuery(name = "Cuenta.findByIdTipoCuenta", query = "SELECT c FROM Cuenta c WHERE c.cuentaPK.idTipoCuenta = :idTipoCuenta"),
@@ -37,171 +38,221 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Cuenta.findByNivel5", query = "SELECT c FROM Cuenta c WHERE c.nivel5 = :nivel5"),
     @NamedQuery(name = "Cuenta.findByNivel6", query = "SELECT c FROM Cuenta c WHERE c.nivel6 = :nivel6"),
     @NamedQuery(name = "Cuenta.findByNivel7", query = "SELECT c FROM Cuenta c WHERE c.nivel7 = :nivel7"),
-    @NamedQuery(name = "Cuenta.findByNivel8", query = "SELECT c FROM Cuenta c WHERE c.nivel8 = :nivel8")})
-public class Cuenta implements Serializable {
+    @NamedQuery(name = "Cuenta.findByNivel8", query = "SELECT c FROM Cuenta c WHERE c.nivel8 = :nivel8")
+    })
+public class Cuenta implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected CuentaPK cuentaPK;
+
     @Size(max = 20)
-    @Column(name = "nivel1", length = 20)
+    @Column(name = "NIVEL1", length = 20)
     private String nivel1;
+
     @Size(max = 20)
-    @Column(name = "nivel2", length = 20)
+    @Column(name = "NIVEL2", length = 20)
     private String nivel2;
+
     @Size(max = 20)
-    @Column(name = "nivel3", length = 20)
+    @Column(name = "NIVEL3", length = 20)
     private String nivel3;
+
     @Size(max = 20)
-    @Column(name = "nivel4", length = 20)
+    @Column(name = "NIVEL4", length = 20)
     private String nivel4;
+
     @Size(max = 20)
-    @Column(name = "nivel5", length = 20)
+    @Column(name = "NIVEL5", length = 20)
     private String nivel5;
+
     @Size(max = 20)
-    @Column(name = "nivel6", length = 20)
+    @Column(name = "NIVEL6", length = 20)
     private String nivel6;
+
     @Size(max = 20)
-    @Column(name = "nivel7", length = 20)
+    @Column(name = "NIVEL7", length = 20)
     private String nivel7;
+
     @Size(max = 20)
-    @Column(name = "nivel8", length = 20)
+    @Column(name = "NIVEL8", length = 20)
     private String nivel8;
-    @JoinTable(name = "transaccion_cuenta", joinColumns = {
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
-        @JoinColumn(name = "id_tipo_cuenta", referencedColumnName = "id_tipo_cuenta", nullable = false),
-        @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
-        @JoinColumn(name = "id_tipo_transaccion", referencedColumnName = "id_tipo_transaccion", nullable = false),
-        @JoinColumn(name = "id_transaccion", referencedColumnName = "id_transaccion", nullable = false)})
+
+    @JoinTable(name = "TRANSACCION_CUENTA", joinColumns =
+        {
+        @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false),
+        @JoinColumn(name = "ID_TIPO_CUENTA", referencedColumnName = "ID_TIPO_CUENTA", nullable = false),
+        @JoinColumn(name = "ID_CUENTA", referencedColumnName = "ID_CUENTA", nullable = false)
+        }, inverseJoinColumns =
+        {
+        @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false),
+        @JoinColumn(name = "ID_TIPO_TRANSACCION", referencedColumnName = "ID_TIPO_TRANSACCION", nullable = false),
+        @JoinColumn(name = "ID_TRANSACCION", referencedColumnName = "ID_TRANSACCION", nullable = false)
+        })
     @ManyToMany
     private List<Transaccion> transaccionList;
-    @JoinColumns({
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_tipo_cuenta", referencedColumnName = "id_tipo_cuenta", nullable = false, insertable = false, updatable = false)})
+
+    @JoinColumns(
+        {
+        @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ID_TIPO_CUENTA", referencedColumnName = "ID_TIPO_CUENTA", nullable = false, insertable = false, updatable = false)
+        })
     @ManyToOne(optional = false)
     private TipoCuenta tipoCuenta;
 
-    public Cuenta() {
+    public Cuenta()
+    {
     }
 
-    public Cuenta(CuentaPK cuentaPK) {
+    public Cuenta(CuentaPK cuentaPK)
+    {
         this.cuentaPK = cuentaPK;
     }
 
-    public Cuenta(int idCompania, int idTipoCuenta, int idCuenta) {
+    public Cuenta(long idCompania, long idTipoCuenta, long idCuenta)
+    {
         this.cuentaPK = new CuentaPK(idCompania, idTipoCuenta, idCuenta);
     }
 
-    public CuentaPK getCuentaPK() {
+    public CuentaPK getCuentaPK()
+    {
         return cuentaPK;
     }
 
-    public void setCuentaPK(CuentaPK cuentaPK) {
+    public void setCuentaPK(CuentaPK cuentaPK)
+    {
         this.cuentaPK = cuentaPK;
     }
 
-    public String getNivel1() {
+    public String getNivel1()
+    {
         return nivel1;
     }
 
-    public void setNivel1(String nivel1) {
+    public void setNivel1(String nivel1)
+    {
         this.nivel1 = nivel1;
     }
 
-    public String getNivel2() {
+    public String getNivel2()
+    {
         return nivel2;
     }
 
-    public void setNivel2(String nivel2) {
+    public void setNivel2(String nivel2)
+    {
         this.nivel2 = nivel2;
     }
 
-    public String getNivel3() {
+    public String getNivel3()
+    {
         return nivel3;
     }
 
-    public void setNivel3(String nivel3) {
+    public void setNivel3(String nivel3)
+    {
         this.nivel3 = nivel3;
     }
 
-    public String getNivel4() {
+    public String getNivel4()
+    {
         return nivel4;
     }
 
-    public void setNivel4(String nivel4) {
+    public void setNivel4(String nivel4)
+    {
         this.nivel4 = nivel4;
     }
 
-    public String getNivel5() {
+    public String getNivel5()
+    {
         return nivel5;
     }
 
-    public void setNivel5(String nivel5) {
+    public void setNivel5(String nivel5)
+    {
         this.nivel5 = nivel5;
     }
 
-    public String getNivel6() {
+    public String getNivel6()
+    {
         return nivel6;
     }
 
-    public void setNivel6(String nivel6) {
+    public void setNivel6(String nivel6)
+    {
         this.nivel6 = nivel6;
     }
 
-    public String getNivel7() {
+    public String getNivel7()
+    {
         return nivel7;
     }
 
-    public void setNivel7(String nivel7) {
+    public void setNivel7(String nivel7)
+    {
         this.nivel7 = nivel7;
     }
 
-    public String getNivel8() {
+    public String getNivel8()
+    {
         return nivel8;
     }
 
-    public void setNivel8(String nivel8) {
+    public void setNivel8(String nivel8)
+    {
         this.nivel8 = nivel8;
     }
 
-    public List<Transaccion> getTransaccionList() {
+    public List<Transaccion> getTransaccionList()
+    {
         return transaccionList;
     }
 
-    public void setTransaccionList(List<Transaccion> transaccionList) {
+    public void setTransaccionList(List<Transaccion> transaccionList)
+    {
         this.transaccionList = transaccionList;
     }
 
-    public TipoCuenta getTipoCuenta() {
+    public TipoCuenta getTipoCuenta()
+    {
         return tipoCuenta;
     }
 
-    public void setTipoCuenta(TipoCuenta tipoCuenta) {
+    public void setTipoCuenta(TipoCuenta tipoCuenta)
+    {
         this.tipoCuenta = tipoCuenta;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (cuentaPK != null ? cuentaPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cuenta)) {
+        if (!(object instanceof Cuenta))
+            {
             return false;
-        }
+            }
         Cuenta other = (Cuenta) object;
-        if ((this.cuentaPK == null && other.cuentaPK != null) || (this.cuentaPK != null && !this.cuentaPK.equals(other.cuentaPK))) {
+        if ((this.cuentaPK == null && other.cuentaPK != null) || (this.cuentaPK != null && !this.cuentaPK.equals(other.cuentaPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Cuenta[ cuentaPK=" + cuentaPK + " ]";
     }
     

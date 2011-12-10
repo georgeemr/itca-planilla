@@ -15,42 +15,52 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class EmpleadoPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cod_cia", nullable = false)
-    private int codCia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cod_emp", nullable = false)
-    private int codEmp;
+public class EmpleadoPK implements Serializable
+{
 
-    public EmpleadoPK() {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "COD_CIA", nullable = false)
+    private long codCia;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "COD_EMP", nullable = false)
+    private long codEmp;
+
+    public EmpleadoPK()
+    {
     }
 
-    public EmpleadoPK(int codCia, int codEmp) {
+    public EmpleadoPK(long codCia, long codEmp)
+    {
         this.codCia = codCia;
         this.codEmp = codEmp;
     }
 
-    public int getCodCia() {
+    public long getCodCia()
+    {
         return codCia;
     }
 
-    public void setCodCia(int codCia) {
+    public void setCodCia(long codCia)
+    {
         this.codCia = codCia;
     }
 
-    public int getCodEmp() {
+    public long getCodEmp()
+    {
         return codEmp;
     }
 
-    public void setCodEmp(int codEmp) {
+    public void setCodEmp(long codEmp)
+    {
         this.codEmp = codEmp;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codEmp;
@@ -58,23 +68,28 @@ public class EmpleadoPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EmpleadoPK)) {
+        if (!(object instanceof EmpleadoPK))
+            {
             return false;
-        }
+            }
         EmpleadoPK other = (EmpleadoPK) object;
-        if (this.codCia != other.codCia) {
+        if (this.codCia != other.codCia)
+            {
             return false;
-        }
-        if (this.codEmp != other.codEmp) {
+            }
+        if (this.codEmp != other.codEmp)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.EmpleadoPK[ codCia=" + codCia + ", codEmp=" + codEmp + " ]";
     }
     

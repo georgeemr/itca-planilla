@@ -19,8 +19,9 @@ import javax.persistence.Table;
  * @author root
  */
 @Entity
-@Table(name = "direccion_empleado")
-@NamedQueries({
+@Table(name = "DIRECCION_EMPLEADO")
+@NamedQueries(
+    {
     @NamedQuery(name = "DireccionEmpleado.findAll", query = "SELECT d FROM DireccionEmpleado d"),
     @NamedQuery(name = "DireccionEmpleado.findByIdCompania", query = "SELECT d FROM DireccionEmpleado d WHERE d.direccionEmpleadoPK.idCompania = :idCompania"),
     @NamedQuery(name = "DireccionEmpleado.findByIdSucursal", query = "SELECT d FROM DireccionEmpleado d WHERE d.direccionEmpleadoPK.idSucursal = :idSucursal"),
@@ -29,69 +30,88 @@ import javax.persistence.Table;
     @NamedQuery(name = "DireccionEmpleado.findByIdProvincia", query = "SELECT d FROM DireccionEmpleado d WHERE d.direccionEmpleadoPK.idProvincia = :idProvincia"),
     @NamedQuery(name = "DireccionEmpleado.findByIdMunicipio", query = "SELECT d FROM DireccionEmpleado d WHERE d.direccionEmpleadoPK.idMunicipio = :idMunicipio"),
     @NamedQuery(name = "DireccionEmpleado.findByIdBarrio", query = "SELECT d FROM DireccionEmpleado d WHERE d.direccionEmpleadoPK.idBarrio = :idBarrio"),
-    @NamedQuery(name = "DireccionEmpleado.findByNumCasa", query = "SELECT d FROM DireccionEmpleado d WHERE d.direccionEmpleadoPK.numCasa = :numCasa")})
-public class DireccionEmpleado implements Serializable {
+    @NamedQuery(name = "DireccionEmpleado.findByNumCasa", query = "SELECT d FROM DireccionEmpleado d WHERE d.direccionEmpleadoPK.numCasa = :numCasa")
+    })
+public class DireccionEmpleado implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected DireccionEmpleadoPK direccionEmpleadoPK;
-    @JoinColumns({
-        @JoinColumn(name = "id_pais", referencedColumnName = "id_pais", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_provincia", referencedColumnName = "id_provincia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_municipio", referencedColumnName = "id_municipio", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_barrio", referencedColumnName = "id_barrio", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "num_casa", referencedColumnName = "num_casa", nullable = false, insertable = false, updatable = false)})
+
+    @JoinColumns(
+        {
+        @JoinColumn(name = "ID_PAIS", referencedColumnName = "ID_PAIS", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ID_PROVINCIA", referencedColumnName = "ID_PROVINCIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ID_MUNICIPIO", referencedColumnName = "ID_MUNICIPIO", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ID_BARRIO", referencedColumnName = "ID_BARRIO", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "NUM_CASA", referencedColumnName = "NUM_CASA", nullable = false, insertable = false, updatable = false)
+        })
     @ManyToOne(optional = false)
     private Direccion direccion;
 
-    public DireccionEmpleado() {
+    public DireccionEmpleado()
+    {
     }
 
-    public DireccionEmpleado(DireccionEmpleadoPK direccionEmpleadoPK) {
+    public DireccionEmpleado(DireccionEmpleadoPK direccionEmpleadoPK)
+    {
         this.direccionEmpleadoPK = direccionEmpleadoPK;
     }
 
-    public DireccionEmpleado(int idCompania, int idSucursal, int idEmpleado, int idPais, int idProvincia, int idMunicipio, int idBarrio, String numCasa) {
+    public DireccionEmpleado(long idCompania, long idSucursal, long idEmpleado, long idPais, long idProvincia, long idMunicipio, long idBarrio, String numCasa)
+    {
         this.direccionEmpleadoPK = new DireccionEmpleadoPK(idCompania, idSucursal, idEmpleado, idPais, idProvincia, idMunicipio, idBarrio, numCasa);
     }
 
-    public DireccionEmpleadoPK getDireccionEmpleadoPK() {
+    public DireccionEmpleadoPK getDireccionEmpleadoPK()
+    {
         return direccionEmpleadoPK;
     }
 
-    public void setDireccionEmpleadoPK(DireccionEmpleadoPK direccionEmpleadoPK) {
+    public void setDireccionEmpleadoPK(DireccionEmpleadoPK direccionEmpleadoPK)
+    {
         this.direccionEmpleadoPK = direccionEmpleadoPK;
     }
 
-    public Direccion getDireccion() {
+    public Direccion getDireccion()
+    {
         return direccion;
     }
 
-    public void setDireccion(Direccion direccion) {
+    public void setDireccion(Direccion direccion)
+    {
         this.direccion = direccion;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (direccionEmpleadoPK != null ? direccionEmpleadoPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DireccionEmpleado)) {
+        if (!(object instanceof DireccionEmpleado))
+            {
             return false;
-        }
+            }
         DireccionEmpleado other = (DireccionEmpleado) object;
-        if ((this.direccionEmpleadoPK == null && other.direccionEmpleadoPK != null) || (this.direccionEmpleadoPK != null && !this.direccionEmpleadoPK.equals(other.direccionEmpleadoPK))) {
+        if ((this.direccionEmpleadoPK == null && other.direccionEmpleadoPK != null) || (this.direccionEmpleadoPK != null && !this.direccionEmpleadoPK.equals(other.direccionEmpleadoPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.DireccionEmpleado[ direccionEmpleadoPK=" + direccionEmpleadoPK + " ]";
     }
     

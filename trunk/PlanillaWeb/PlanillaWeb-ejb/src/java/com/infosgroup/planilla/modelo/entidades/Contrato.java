@@ -21,8 +21,9 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "contrato")
-@NamedQueries({
+@Table(name = "CONTRATO")
+@NamedQueries(
+    {
     @NamedQuery(name = "Contrato.findAll", query = "SELECT c FROM Contrato c"),
     @NamedQuery(name = "Contrato.findByIdCompania", query = "SELECT c FROM Contrato c WHERE c.contratoPK.idCompania = :idCompania"),
     @NamedQuery(name = "Contrato.findByIdSucursal", query = "SELECT c FROM Contrato c WHERE c.contratoPK.idSucursal = :idSucursal"),
@@ -30,86 +31,109 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Contrato.findByIdContrato", query = "SELECT c FROM Contrato c WHERE c.contratoPK.idContrato = :idContrato"),
     @NamedQuery(name = "Contrato.findByFechaInicio", query = "SELECT c FROM Contrato c WHERE c.fechaInicio = :fechaInicio"),
     @NamedQuery(name = "Contrato.findByFechaFin", query = "SELECT c FROM Contrato c WHERE c.fechaFin = :fechaFin"),
-    @NamedQuery(name = "Contrato.findByTetContrato", query = "SELECT c FROM Contrato c WHERE c.tetContrato = :tetContrato")})
-public class Contrato implements Serializable {
+    @NamedQuery(name = "Contrato.findByTetContrato", query = "SELECT c FROM Contrato c WHERE c.tetContrato = :tetContrato")
+    })
+public class Contrato implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected ContratoPK contratoPK;
-    @Column(name = "fecha_inicio")
-    @Temporal(TemporalType.DATE)
+
+    @Column(name = "FECHA_INICIO")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
-    @Column(name = "fecha_fin")
-    @Temporal(TemporalType.DATE)
+
+    @Column(name = "FECHA_FIN")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFin;
+
     @Size(max = 200)
-    @Column(name = "tet_contrato", length = 200)
+    @Column(name = "TET_CONTRATO", length = 200)
     private String tetContrato;
 
-    public Contrato() {
+    public Contrato()
+    {
     }
 
-    public Contrato(ContratoPK contratoPK) {
+    public Contrato(ContratoPK contratoPK)
+    {
         this.contratoPK = contratoPK;
     }
 
-    public Contrato(int idCompania, int idSucursal, int idEmpleado, int idContrato) {
+    public Contrato(long idCompania, long idSucursal, long idEmpleado, long idContrato)
+    {
         this.contratoPK = new ContratoPK(idCompania, idSucursal, idEmpleado, idContrato);
     }
 
-    public ContratoPK getContratoPK() {
+    public ContratoPK getContratoPK()
+    {
         return contratoPK;
     }
 
-    public void setContratoPK(ContratoPK contratoPK) {
+    public void setContratoPK(ContratoPK contratoPK)
+    {
         this.contratoPK = contratoPK;
     }
 
-    public Date getFechaInicio() {
+    public Date getFechaInicio()
+    {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(Date fechaInicio)
+    {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public Date getFechaFin()
+    {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(Date fechaFin)
+    {
         this.fechaFin = fechaFin;
     }
 
-    public String getTetContrato() {
+    public String getTetContrato()
+    {
         return tetContrato;
     }
 
-    public void setTetContrato(String tetContrato) {
+    public void setTetContrato(String tetContrato)
+    {
         this.tetContrato = tetContrato;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (contratoPK != null ? contratoPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Contrato)) {
+        if (!(object instanceof Contrato))
+            {
             return false;
-        }
+            }
         Contrato other = (Contrato) object;
-        if ((this.contratoPK == null && other.contratoPK != null) || (this.contratoPK != null && !this.contratoPK.equals(other.contratoPK))) {
+        if ((this.contratoPK == null && other.contratoPK != null) || (this.contratoPK != null && !this.contratoPK.equals(other.contratoPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Contrato[ contratoPK=" + contratoPK + " ]";
     }
     

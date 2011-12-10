@@ -20,67 +20,84 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "estado_civil")
-@NamedQueries({
+@Table(name = "ESTADO_CIVIL")
+@NamedQueries(
+    {
     @NamedQuery(name = "EstadoCivil.findAll", query = "SELECT e FROM EstadoCivil e"),
     @NamedQuery(name = "EstadoCivil.findByIdEstadoCivil", query = "SELECT e FROM EstadoCivil e WHERE e.idEstadoCivil = :idEstadoCivil"),
-    @NamedQuery(name = "EstadoCivil.findByNomEstadoCivil", query = "SELECT e FROM EstadoCivil e WHERE e.nomEstadoCivil = :nomEstadoCivil")})
-public class EstadoCivil implements Serializable {
+    @NamedQuery(name = "EstadoCivil.findByNomEstadoCivil", query = "SELECT e FROM EstadoCivil e WHERE e.nomEstadoCivil = :nomEstadoCivil")
+    })
+public class EstadoCivil implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_estado_civil", nullable = false)
-    private Integer idEstadoCivil;
-    @Size(max = 100)
-    @Column(name = "nom_estado_civil", length = 100)
+    @Column(name = "ID_ESTADO_CIVIL", nullable = false)
+    private Long idEstadoCivil;
+
+    @Size(max = 200)
+    @Column(name = "NOM_ESTADO_CIVIL", length = 200)
     private String nomEstadoCivil;
 
-    public EstadoCivil() {
+    public EstadoCivil()
+    {
     }
 
-    public EstadoCivil(Integer idEstadoCivil) {
+    public EstadoCivil(Long idEstadoCivil)
+    {
         this.idEstadoCivil = idEstadoCivil;
     }
 
-    public Integer getIdEstadoCivil() {
+    public Long getIdEstadoCivil()
+    {
         return idEstadoCivil;
     }
 
-    public void setIdEstadoCivil(Integer idEstadoCivil) {
+    public void setIdEstadoCivil(Long idEstadoCivil)
+    {
         this.idEstadoCivil = idEstadoCivil;
     }
 
-    public String getNomEstadoCivil() {
+    public String getNomEstadoCivil()
+    {
         return nomEstadoCivil;
     }
 
-    public void setNomEstadoCivil(String nomEstadoCivil) {
+    public void setNomEstadoCivil(String nomEstadoCivil)
+    {
         this.nomEstadoCivil = nomEstadoCivil;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (idEstadoCivil != null ? idEstadoCivil.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EstadoCivil)) {
+        if (!(object instanceof EstadoCivil))
+            {
             return false;
-        }
+            }
         EstadoCivil other = (EstadoCivil) object;
-        if ((this.idEstadoCivil == null && other.idEstadoCivil != null) || (this.idEstadoCivil != null && !this.idEstadoCivil.equals(other.idEstadoCivil))) {
+        if ((this.idEstadoCivil == null && other.idEstadoCivil != null) || (this.idEstadoCivil != null && !this.idEstadoCivil.equals(other.idEstadoCivil)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.EstadoCivil[ idEstadoCivil=" + idEstadoCivil + " ]";
     }
     

@@ -15,36 +15,45 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class DetPlanillaPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_compania", nullable = false)
-    private int idCompania;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "anio", nullable = false)
-    private int anio;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "mes", nullable = false)
-    private int mes;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "num_planilla", nullable = false)
-    private int numPlanilla;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_empleado", nullable = false)
-    private int idEmpleado;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_prestacion", nullable = false)
-    private int idPrestacion;
+public class DetPlanillaPK implements Serializable
+{
 
-    public DetPlanillaPK() {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_COMPANIA", nullable = false)
+    private long idCompania;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ANIO", nullable = false)
+    private long anio;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "MES", nullable = false)
+    private long mes;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "NUM_PLANILLA", nullable = false)
+    private long numPlanilla;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_EMPLEADO", nullable = false)
+    private long idEmpleado;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_PRESTACION", nullable = false)
+    private long idPrestacion;
+
+    public DetPlanillaPK()
+    {
     }
 
-    public DetPlanillaPK(int idCompania, int anio, int mes, int numPlanilla, int idEmpleado, int idPrestacion) {
+    public DetPlanillaPK(long idCompania, long anio, long mes, long numPlanilla, long idEmpleado, long idPrestacion)
+    {
         this.idCompania = idCompania;
         this.anio = anio;
         this.mes = mes;
@@ -53,56 +62,69 @@ public class DetPlanillaPK implements Serializable {
         this.idPrestacion = idPrestacion;
     }
 
-    public int getIdCompania() {
+    public long getIdCompania()
+    {
         return idCompania;
     }
 
-    public void setIdCompania(int idCompania) {
+    public void setIdCompania(long idCompania)
+    {
         this.idCompania = idCompania;
     }
 
-    public int getAnio() {
+    public long getAnio()
+    {
         return anio;
     }
 
-    public void setAnio(int anio) {
+    public void setAnio(long anio)
+    {
         this.anio = anio;
     }
 
-    public int getMes() {
+    public long getMes()
+    {
         return mes;
     }
 
-    public void setMes(int mes) {
+    public void setMes(long mes)
+    {
         this.mes = mes;
     }
 
-    public int getNumPlanilla() {
+    public long getNumPlanilla()
+    {
         return numPlanilla;
     }
 
-    public void setNumPlanilla(int numPlanilla) {
+    public void setNumPlanilla(long numPlanilla)
+    {
         this.numPlanilla = numPlanilla;
     }
 
-    public int getIdEmpleado() {
+    public long getIdEmpleado()
+    {
         return idEmpleado;
     }
 
-    public void setIdEmpleado(int idEmpleado) {
+    public void setIdEmpleado(long idEmpleado)
+    {
         this.idEmpleado = idEmpleado;
     }
 
-    public int getIdPrestacion() {
+    public long getIdPrestacion()
+    {
         return idPrestacion;
     }
 
-    public void setIdPrestacion(int idPrestacion) {
+    public void setIdPrestacion(long idPrestacion)
+    {
         this.idPrestacion = idPrestacion;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idCompania;
         hash += (int) anio;
@@ -114,35 +136,44 @@ public class DetPlanillaPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DetPlanillaPK)) {
+        if (!(object instanceof DetPlanillaPK))
+            {
             return false;
-        }
+            }
         DetPlanillaPK other = (DetPlanillaPK) object;
-        if (this.idCompania != other.idCompania) {
+        if (this.idCompania != other.idCompania)
+            {
             return false;
-        }
-        if (this.anio != other.anio) {
+            }
+        if (this.anio != other.anio)
+            {
             return false;
-        }
-        if (this.mes != other.mes) {
+            }
+        if (this.mes != other.mes)
+            {
             return false;
-        }
-        if (this.numPlanilla != other.numPlanilla) {
+            }
+        if (this.numPlanilla != other.numPlanilla)
+            {
             return false;
-        }
-        if (this.idEmpleado != other.idEmpleado) {
+            }
+        if (this.idEmpleado != other.idEmpleado)
+            {
             return false;
-        }
-        if (this.idPrestacion != other.idPrestacion) {
+            }
+        if (this.idPrestacion != other.idPrestacion)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.DetPlanillaPK[ idCompania=" + idCompania + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", idEmpleado=" + idEmpleado + ", idPrestacion=" + idPrestacion + " ]";
     }
     

@@ -23,90 +23,114 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "tipo_planilla")
-@NamedQueries({
+@Table(name = "TIPO_PLANILLA")
+@NamedQueries(
+    {
     @NamedQuery(name = "TipoPlanilla.findAll", query = "SELECT t FROM TipoPlanilla t"),
     @NamedQuery(name = "TipoPlanilla.findByIdCompania", query = "SELECT t FROM TipoPlanilla t WHERE t.tipoPlanillaPK.idCompania = :idCompania"),
     @NamedQuery(name = "TipoPlanilla.findByIdTipoPlanilla", query = "SELECT t FROM TipoPlanilla t WHERE t.tipoPlanillaPK.idTipoPlanilla = :idTipoPlanilla"),
-    @NamedQuery(name = "TipoPlanilla.findByNomTipoPlanilla", query = "SELECT t FROM TipoPlanilla t WHERE t.nomTipoPlanilla = :nomTipoPlanilla")})
-public class TipoPlanilla implements Serializable {
+    @NamedQuery(name = "TipoPlanilla.findByNomTipoPlanilla", query = "SELECT t FROM TipoPlanilla t WHERE t.nomTipoPlanilla = :nomTipoPlanilla")
+    })
+public class TipoPlanilla implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected TipoPlanillaPK tipoPlanillaPK;
+
     @Size(max = 100)
-    @Column(name = "nom_tipo_planilla", length = 100)
+    @Column(name = "NOM_TIPO_PLANILLA", length = 100)
     private String nomTipoPlanilla;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPlanilla")
-    private List<Planilla> planillaList;
-    @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
+
+    @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
 
-    public TipoPlanilla() {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPlanilla")
+    private List<Planilla> planillaList;
+
+    public TipoPlanilla()
+    {
     }
 
-    public TipoPlanilla(TipoPlanillaPK tipoPlanillaPK) {
+    public TipoPlanilla(TipoPlanillaPK tipoPlanillaPK)
+    {
         this.tipoPlanillaPK = tipoPlanillaPK;
     }
 
-    public TipoPlanilla(int idCompania, int idTipoPlanilla) {
+    public TipoPlanilla(long idCompania, long idTipoPlanilla)
+    {
         this.tipoPlanillaPK = new TipoPlanillaPK(idCompania, idTipoPlanilla);
     }
 
-    public TipoPlanillaPK getTipoPlanillaPK() {
+    public TipoPlanillaPK getTipoPlanillaPK()
+    {
         return tipoPlanillaPK;
     }
 
-    public void setTipoPlanillaPK(TipoPlanillaPK tipoPlanillaPK) {
+    public void setTipoPlanillaPK(TipoPlanillaPK tipoPlanillaPK)
+    {
         this.tipoPlanillaPK = tipoPlanillaPK;
     }
 
-    public String getNomTipoPlanilla() {
+    public String getNomTipoPlanilla()
+    {
         return nomTipoPlanilla;
     }
 
-    public void setNomTipoPlanilla(String nomTipoPlanilla) {
+    public void setNomTipoPlanilla(String nomTipoPlanilla)
+    {
         this.nomTipoPlanilla = nomTipoPlanilla;
     }
 
-    public List<Planilla> getPlanillaList() {
-        return planillaList;
-    }
-
-    public void setPlanillaList(List<Planilla> planillaList) {
-        this.planillaList = planillaList;
-    }
-
-    public Compania getCompania() {
+    public Compania getCompania()
+    {
         return compania;
     }
 
-    public void setCompania(Compania compania) {
+    public void setCompania(Compania compania)
+    {
         this.compania = compania;
     }
 
+    public List<Planilla> getPlanillaList()
+    {
+        return planillaList;
+    }
+
+    public void setPlanillaList(List<Planilla> planillaList)
+    {
+        this.planillaList = planillaList;
+    }
+
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (tipoPlanillaPK != null ? tipoPlanillaPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoPlanilla)) {
+        if (!(object instanceof TipoPlanilla))
+            {
             return false;
-        }
+            }
         TipoPlanilla other = (TipoPlanilla) object;
-        if ((this.tipoPlanillaPK == null && other.tipoPlanillaPK != null) || (this.tipoPlanillaPK != null && !this.tipoPlanillaPK.equals(other.tipoPlanillaPK))) {
+        if ((this.tipoPlanillaPK == null && other.tipoPlanillaPK != null) || (this.tipoPlanillaPK != null && !this.tipoPlanillaPK.equals(other.tipoPlanillaPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.TipoPlanilla[ tipoPlanillaPK=" + tipoPlanillaPK + " ]";
     }
     

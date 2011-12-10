@@ -25,97 +25,122 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "tipo_respuesta")
-@NamedQueries({
+@Table(name = "TIPO_RESPUESTA")
+@NamedQueries(
+    {
     @NamedQuery(name = "TipoRespuesta.findAll", query = "SELECT t FROM TipoRespuesta t"),
     @NamedQuery(name = "TipoRespuesta.findByCodCia", query = "SELECT t FROM TipoRespuesta t WHERE t.tipoRespuestaPK.codCia = :codCia"),
     @NamedQuery(name = "TipoRespuesta.findByCodTipoRespuesta", query = "SELECT t FROM TipoRespuesta t WHERE t.tipoRespuestaPK.codTipoRespuesta = :codTipoRespuesta"),
-    @NamedQuery(name = "TipoRespuesta.findByNomTipoRespuesta", query = "SELECT t FROM TipoRespuesta t WHERE t.nomTipoRespuesta = :nomTipoRespuesta")})
-public class TipoRespuesta implements Serializable {
+    @NamedQuery(name = "TipoRespuesta.findByNomTipoRespuesta", query = "SELECT t FROM TipoRespuesta t WHERE t.nomTipoRespuesta = :nomTipoRespuesta")
+    })
+public class TipoRespuesta implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected TipoRespuestaPK tipoRespuestaPK;
+
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "nom_tipo_respuesta", nullable = false, length = 2147483647)
+    @Size(min = 1, max = 200)
+    @Column(name = "NOM_TIPO_RESPUESTA", nullable = false, length = 200)
     private String nomTipoRespuesta;
-    @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
+
+    @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoRespuesta")
     private List<Respuesta> respuestaList;
 
-    public TipoRespuesta() {
+    public TipoRespuesta()
+    {
     }
 
-    public TipoRespuesta(TipoRespuestaPK tipoRespuestaPK) {
+    public TipoRespuesta(TipoRespuestaPK tipoRespuestaPK)
+    {
         this.tipoRespuestaPK = tipoRespuestaPK;
     }
 
-    public TipoRespuesta(TipoRespuestaPK tipoRespuestaPK, String nomTipoRespuesta) {
+    public TipoRespuesta(TipoRespuestaPK tipoRespuestaPK, String nomTipoRespuesta)
+    {
         this.tipoRespuestaPK = tipoRespuestaPK;
         this.nomTipoRespuesta = nomTipoRespuesta;
     }
 
-    public TipoRespuesta(int codCia, int codTipoRespuesta) {
+    public TipoRespuesta(long codCia, long codTipoRespuesta)
+    {
         this.tipoRespuestaPK = new TipoRespuestaPK(codCia, codTipoRespuesta);
     }
 
-    public TipoRespuestaPK getTipoRespuestaPK() {
+    public TipoRespuestaPK getTipoRespuestaPK()
+    {
         return tipoRespuestaPK;
     }
 
-    public void setTipoRespuestaPK(TipoRespuestaPK tipoRespuestaPK) {
+    public void setTipoRespuestaPK(TipoRespuestaPK tipoRespuestaPK)
+    {
         this.tipoRespuestaPK = tipoRespuestaPK;
     }
 
-    public String getNomTipoRespuesta() {
+    public String getNomTipoRespuesta()
+    {
         return nomTipoRespuesta;
     }
 
-    public void setNomTipoRespuesta(String nomTipoRespuesta) {
+    public void setNomTipoRespuesta(String nomTipoRespuesta)
+    {
         this.nomTipoRespuesta = nomTipoRespuesta;
     }
 
-    public Compania getCompania() {
+    public Compania getCompania()
+    {
         return compania;
     }
 
-    public void setCompania(Compania compania) {
+    public void setCompania(Compania compania)
+    {
         this.compania = compania;
     }
 
-    public List<Respuesta> getRespuestaList() {
+    public List<Respuesta> getRespuestaList()
+    {
         return respuestaList;
     }
 
-    public void setRespuestaList(List<Respuesta> respuestaList) {
+    public void setRespuestaList(List<Respuesta> respuestaList)
+    {
         this.respuestaList = respuestaList;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (tipoRespuestaPK != null ? tipoRespuestaPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoRespuesta)) {
+        if (!(object instanceof TipoRespuesta))
+            {
             return false;
-        }
+            }
         TipoRespuesta other = (TipoRespuesta) object;
-        if ((this.tipoRespuestaPK == null && other.tipoRespuestaPK != null) || (this.tipoRespuestaPK != null && !this.tipoRespuestaPK.equals(other.tipoRespuestaPK))) {
+        if ((this.tipoRespuestaPK == null && other.tipoRespuestaPK != null) || (this.tipoRespuestaPK != null && !this.tipoRespuestaPK.equals(other.tipoRespuestaPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.TipoRespuesta[ tipoRespuestaPK=" + tipoRespuestaPK + " ]";
     }
     

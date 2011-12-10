@@ -24,87 +24,110 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "telefono")
-@NamedQueries({
+@Table(name = "TELEFONO")
+@NamedQueries(
+    {
     @NamedQuery(name = "Telefono.findAll", query = "SELECT t FROM Telefono t"),
     @NamedQuery(name = "Telefono.findByIdTelefono", query = "SELECT t FROM Telefono t WHERE t.idTelefono = :idTelefono"),
-    @NamedQuery(name = "Telefono.findByNumTelefono", query = "SELECT t FROM Telefono t WHERE t.numTelefono = :numTelefono")})
-public class Telefono implements Serializable {
+    @NamedQuery(name = "Telefono.findByNumTelefono", query = "SELECT t FROM Telefono t WHERE t.numTelefono = :numTelefono")
+    })
+public class Telefono implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_telefono", nullable = false)
-    private Integer idTelefono;
+    @Column(name = "ID_TELEFONO", nullable = false)
+    private Long idTelefono;
+
     @Size(max = 20)
-    @Column(name = "num_telefono", length = 20)
+    @Column(name = "NUM_TELEFONO", length = 20)
     private String numTelefono;
+
     @ManyToMany(mappedBy = "telefonoList")
     private List<Sucursal> sucursalList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "telefono")
     private List<EmpleadoTelefono> empleadoTelefonoList;
 
-    public Telefono() {
+    public Telefono()
+    {
     }
 
-    public Telefono(Integer idTelefono) {
+    public Telefono(Long idTelefono)
+    {
         this.idTelefono = idTelefono;
     }
 
-    public Integer getIdTelefono() {
+    public Long getIdTelefono()
+    {
         return idTelefono;
     }
 
-    public void setIdTelefono(Integer idTelefono) {
+    public void setIdTelefono(Long idTelefono)
+    {
         this.idTelefono = idTelefono;
     }
 
-    public String getNumTelefono() {
+    public String getNumTelefono()
+    {
         return numTelefono;
     }
 
-    public void setNumTelefono(String numTelefono) {
+    public void setNumTelefono(String numTelefono)
+    {
         this.numTelefono = numTelefono;
     }
 
-    public List<Sucursal> getSucursalList() {
+    public List<Sucursal> getSucursalList()
+    {
         return sucursalList;
     }
 
-    public void setSucursalList(List<Sucursal> sucursalList) {
+    public void setSucursalList(List<Sucursal> sucursalList)
+    {
         this.sucursalList = sucursalList;
     }
 
-    public List<EmpleadoTelefono> getEmpleadoTelefonoList() {
+    public List<EmpleadoTelefono> getEmpleadoTelefonoList()
+    {
         return empleadoTelefonoList;
     }
 
-    public void setEmpleadoTelefonoList(List<EmpleadoTelefono> empleadoTelefonoList) {
+    public void setEmpleadoTelefonoList(List<EmpleadoTelefono> empleadoTelefonoList)
+    {
         this.empleadoTelefonoList = empleadoTelefonoList;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (idTelefono != null ? idTelefono.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Telefono)) {
+        if (!(object instanceof Telefono))
+            {
             return false;
-        }
+            }
         Telefono other = (Telefono) object;
-        if ((this.idTelefono == null && other.idTelefono != null) || (this.idTelefono != null && !this.idTelefono.equals(other.idTelefono))) {
+        if ((this.idTelefono == null && other.idTelefono != null) || (this.idTelefono != null && !this.idTelefono.equals(other.idTelefono)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Telefono[ idTelefono=" + idTelefono + " ]";
     }
     

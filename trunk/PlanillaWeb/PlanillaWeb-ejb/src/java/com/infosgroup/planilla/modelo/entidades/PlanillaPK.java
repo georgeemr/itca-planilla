@@ -15,68 +15,84 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class PlanillaPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_compania", nullable = false)
-    private int idCompania;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "anio", nullable = false)
-    private int anio;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "mes", nullable = false)
-    private int mes;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "num_planilla", nullable = false)
-    private int numPlanilla;
+public class PlanillaPK implements Serializable
+{
 
-    public PlanillaPK() {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_COMPANIA", nullable = false)
+    private long idCompania;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ANIO", nullable = false)
+    private long anio;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "MES", nullable = false)
+    private long mes;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "NUM_PLANILLA", nullable = false)
+    private long numPlanilla;
+
+    public PlanillaPK()
+    {
     }
 
-    public PlanillaPK(int idCompania, int anio, int mes, int numPlanilla) {
+    public PlanillaPK(long idCompania, long anio, long mes, long numPlanilla)
+    {
         this.idCompania = idCompania;
         this.anio = anio;
         this.mes = mes;
         this.numPlanilla = numPlanilla;
     }
 
-    public int getIdCompania() {
+    public long getIdCompania()
+    {
         return idCompania;
     }
 
-    public void setIdCompania(int idCompania) {
+    public void setIdCompania(long idCompania)
+    {
         this.idCompania = idCompania;
     }
 
-    public int getAnio() {
+    public long getAnio()
+    {
         return anio;
     }
 
-    public void setAnio(int anio) {
+    public void setAnio(long anio)
+    {
         this.anio = anio;
     }
 
-    public int getMes() {
+    public long getMes()
+    {
         return mes;
     }
 
-    public void setMes(int mes) {
+    public void setMes(long mes)
+    {
         this.mes = mes;
     }
 
-    public int getNumPlanilla() {
+    public long getNumPlanilla()
+    {
         return numPlanilla;
     }
 
-    public void setNumPlanilla(int numPlanilla) {
+    public void setNumPlanilla(long numPlanilla)
+    {
         this.numPlanilla = numPlanilla;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idCompania;
         hash += (int) anio;
@@ -86,29 +102,36 @@ public class PlanillaPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PlanillaPK)) {
+        if (!(object instanceof PlanillaPK))
+            {
             return false;
-        }
+            }
         PlanillaPK other = (PlanillaPK) object;
-        if (this.idCompania != other.idCompania) {
+        if (this.idCompania != other.idCompania)
+            {
             return false;
-        }
-        if (this.anio != other.anio) {
+            }
+        if (this.anio != other.anio)
+            {
             return false;
-        }
-        if (this.mes != other.mes) {
+            }
+        if (this.mes != other.mes)
+            {
             return false;
-        }
-        if (this.numPlanilla != other.numPlanilla) {
+            }
+        if (this.numPlanilla != other.numPlanilla)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.PlanillaPK[ idCompania=" + idCompania + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + " ]";
     }
     

@@ -5,12 +5,12 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -25,8 +25,9 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "puesto")
-@NamedQueries({
+@Table(name = "PUESTO")
+@NamedQueries(
+    {
     @NamedQuery(name = "Puesto.findAll", query = "SELECT p FROM Puesto p"),
     @NamedQuery(name = "Puesto.findByCodCia", query = "SELECT p FROM Puesto p WHERE p.puestoPK.codCia = :codCia"),
     @NamedQuery(name = "Puesto.findByCodPuesto", query = "SELECT p FROM Puesto p WHERE p.puestoPK.codPuesto = :codPuesto"),
@@ -38,214 +39,274 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Puesto.findByGenero", query = "SELECT p FROM Puesto p WHERE p.genero = :genero"),
     @NamedQuery(name = "Puesto.findByNivelAcademico", query = "SELECT p FROM Puesto p WHERE p.nivelAcademico = :nivelAcademico"),
     @NamedQuery(name = "Puesto.findByCondicion", query = "SELECT p FROM Puesto p WHERE p.condicion = :condicion"),
-    @NamedQuery(name = "Puesto.findByJefatura", query = "SELECT p FROM Puesto p WHERE p.jefatura = :jefatura")})
-public class Puesto implements Serializable {
+    @NamedQuery(name = "Puesto.findByJefatura", query = "SELECT p FROM Puesto p WHERE p.jefatura = :jefatura")
+    })
+public class Puesto implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected PuestoPK puestoPK;
-    @Size(max = 2147483647)
-    @Column(name = "nombre", length = 2147483647)
+
+    @Size(max = 200)
+    @Column(name = "NOMBRE", length = 200)
     private String nombre;
+
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "salario_maximo", precision = 17, scale = 17)
-    private Double salarioMaximo;
-    @Column(name = "salario_minimo", precision = 17, scale = 17)
-    private Double salarioMinimo;
-    @Size(max = 2147483647)
-    @Column(name = "descripcion", length = 2147483647)
+    @Column(name = "SALARIO_MAXIMO", precision = 11, scale = 3)
+    private BigDecimal salarioMaximo;
+
+    @Column(name = "SALARIO_MINIMO", precision = 11, scale = 3)
+    private BigDecimal salarioMinimo;
+
+    @Size(max = 200)
+    @Column(name = "DESCRIPCION", length = 200)
     private String descripcion;
-    @Size(max = 1)
-    @Column(name = "estado", length = 1)
+
+    @Size(max = 200)
+    @Column(name = "ESTADO", length = 200)
     private String estado;
-    @Size(max = 1)
-    @Column(name = "genero", length = 1)
+
+    @Size(max = 200)
+    @Column(name = "GENERO", length = 200)
     private String genero;
-    @Column(name = "nivel_academico")
-    private Integer nivelAcademico;
-    @Column(name = "condicion")
-    private Integer condicion;
-    @Size(max = 2)
-    @Column(name = "jefatura", length = 2)
-    private String jefatura;
+
+    @Column(name = "NIVEL_ACADEMICO")
+    private Long nivelAcademico;
+
+    @Column(name = "CONDICION")
+    private Long condicion;
+
+    @Column(name = "JEFATURA")
+    private Long jefatura;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
     private List<Concurso> concursoList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
     private List<PuestoEmpleado> puestoEmpleadoList;
-    @JoinColumns({
-        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "tipo", referencedColumnName = "cod_tipo_puesto")})
+
+    @JoinColumns(
+        {
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "TIPO", referencedColumnName = "COD_TIPO_PUESTO")
+        })
     @ManyToOne(optional = false)
     private TipoPuesto tipoPuesto;
-    @JoinColumn(name = "rango_edad", referencedColumnName = "cod_rango_edad")
+
+    @JoinColumn(name = "RANGO_EDAD", referencedColumnName = "COD_RANGO_EDAD")
     @ManyToOne
     private RangoEdad rangoEdad;
-    @JoinColumn(name = "rango_anios", referencedColumnName = "cod_rango_anios")
+
+    @JoinColumn(name = "RANGO_ANIOS", referencedColumnName = "COD_RANGO_ANIOS")
     @ManyToOne
     private RangoAniosExperiencia rangoAnios;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1", fetch=FetchType.EAGER)
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1")
     private List<CriteriosXPuesto> criteriosXPuestoList;
 
-    public Puesto() {
+    public Puesto()
+    {
     }
 
-    public Puesto(PuestoPK puestoPK) {
+    public Puesto(PuestoPK puestoPK)
+    {
         this.puestoPK = puestoPK;
     }
 
-    public Puesto(int codCia, int codPuesto) {
+    public Puesto(long codCia, long codPuesto)
+    {
         this.puestoPK = new PuestoPK(codCia, codPuesto);
     }
 
-    public PuestoPK getPuestoPK() {
+    public PuestoPK getPuestoPK()
+    {
         return puestoPK;
     }
 
-    public void setPuestoPK(PuestoPK puestoPK) {
+    public void setPuestoPK(PuestoPK puestoPK)
+    {
         this.puestoPK = puestoPK;
     }
 
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre)
+    {
         this.nombre = nombre;
     }
 
-    public Double getSalarioMaximo() {
+    public BigDecimal getSalarioMaximo()
+    {
         return salarioMaximo;
     }
 
-    public void setSalarioMaximo(Double salarioMaximo) {
+    public void setSalarioMaximo(BigDecimal salarioMaximo)
+    {
         this.salarioMaximo = salarioMaximo;
     }
 
-    public Double getSalarioMinimo() {
+    public BigDecimal getSalarioMinimo()
+    {
         return salarioMinimo;
     }
 
-    public void setSalarioMinimo(Double salarioMinimo) {
+    public void setSalarioMinimo(BigDecimal salarioMinimo)
+    {
         this.salarioMinimo = salarioMinimo;
     }
 
-    public String getDescripcion() {
+    public String getDescripcion()
+    {
         return descripcion;
     }
 
-    public void setDescripcion(String descripcion) {
+    public void setDescripcion(String descripcion)
+    {
         this.descripcion = descripcion;
     }
 
-    public String getEstado() {
+    public String getEstado()
+    {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(String estado)
+    {
         this.estado = estado;
     }
 
-    public String getGenero() {
+    public String getGenero()
+    {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(String genero)
+    {
         this.genero = genero;
     }
 
-    public Integer getNivelAcademico() {
+    public Long getNivelAcademico()
+    {
         return nivelAcademico;
     }
 
-    public void setNivelAcademico(Integer nivelAcademico) {
+    public void setNivelAcademico(Long nivelAcademico)
+    {
         this.nivelAcademico = nivelAcademico;
     }
 
-    public Integer getCondicion() {
+    public Long getCondicion()
+    {
         return condicion;
     }
 
-    public void setCondicion(Integer condicion) {
+    public void setCondicion(Long condicion)
+    {
         this.condicion = condicion;
     }
 
-    public String getJefatura() {
+    public Long getJefatura()
+    {
         return jefatura;
     }
 
-    public void setJefatura(String jefatura) {
+    public void setJefatura(Long jefatura)
+    {
         this.jefatura = jefatura;
     }
 
-    public List<Concurso> getConcursoList() {
+    public List<Concurso> getConcursoList()
+    {
         return concursoList;
     }
 
-    public void setConcursoList(List<Concurso> concursoList) {
+    public void setConcursoList(List<Concurso> concursoList)
+    {
         this.concursoList = concursoList;
     }
 
-    public List<PuestoEmpleado> getPuestoEmpleadoList() {
+    public List<PuestoEmpleado> getPuestoEmpleadoList()
+    {
         return puestoEmpleadoList;
     }
 
-    public void setPuestoEmpleadoList(List<PuestoEmpleado> puestoEmpleadoList) {
+    public void setPuestoEmpleadoList(List<PuestoEmpleado> puestoEmpleadoList)
+    {
         this.puestoEmpleadoList = puestoEmpleadoList;
     }
 
-    public TipoPuesto getTipoPuesto() {
+    public TipoPuesto getTipoPuesto()
+    {
         return tipoPuesto;
     }
 
-    public void setTipoPuesto(TipoPuesto tipoPuesto) {
+    public void setTipoPuesto(TipoPuesto tipoPuesto)
+    {
         this.tipoPuesto = tipoPuesto;
     }
 
-    public RangoEdad getRangoEdad() {
+    public RangoEdad getRangoEdad()
+    {
         return rangoEdad;
     }
 
-    public void setRangoEdad(RangoEdad rangoEdad) {
+    public void setRangoEdad(RangoEdad rangoEdad)
+    {
         this.rangoEdad = rangoEdad;
     }
 
-    public RangoAniosExperiencia getRangoAnios() {
+    public RangoAniosExperiencia getRangoAnios()
+    {
         return rangoAnios;
     }
 
-    public void setRangoAnios(RangoAniosExperiencia rangoAnios) {
+    public void setRangoAnios(RangoAniosExperiencia rangoAnios)
+    {
         this.rangoAnios = rangoAnios;
     }
 
-    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
+    public List<CriteriosXPuesto> getCriteriosXPuestoList()
+    {
         return criteriosXPuestoList;
     }
 
-    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
+    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList)
+    {
         this.criteriosXPuestoList = criteriosXPuestoList;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (puestoPK != null ? puestoPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Puesto)) {
+        if (!(object instanceof Puesto))
+            {
             return false;
-        }
+            }
         Puesto other = (Puesto) object;
-        if ((this.puestoPK == null && other.puestoPK != null) || (this.puestoPK != null && !this.puestoPK.equals(other.puestoPK))) {
+        if ((this.puestoPK == null && other.puestoPK != null) || (this.puestoPK != null && !this.puestoPK.equals(other.puestoPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Puesto[ puestoPK=" + puestoPK + " ]";
     }
     

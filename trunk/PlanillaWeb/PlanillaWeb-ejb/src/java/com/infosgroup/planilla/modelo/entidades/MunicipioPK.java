@@ -15,55 +15,68 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class MunicipioPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_pais", nullable = false)
-    private int idPais;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_provincia", nullable = false)
-    private int idProvincia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_municipio", nullable = false)
-    private int idMunicipio;
+public class MunicipioPK implements Serializable
+{
 
-    public MunicipioPK() {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_PAIS", nullable = false)
+    private long idPais;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_PROVINCIA", nullable = false)
+    private long idProvincia;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_MUNICIPIO", nullable = false)
+    private long idMunicipio;
+
+    public MunicipioPK()
+    {
     }
 
-    public MunicipioPK(int idPais, int idProvincia, int idMunicipio) {
+    public MunicipioPK(long idPais, long idProvincia, long idMunicipio)
+    {
         this.idPais = idPais;
         this.idProvincia = idProvincia;
         this.idMunicipio = idMunicipio;
     }
 
-    public int getIdPais() {
+    public long getIdPais()
+    {
         return idPais;
     }
 
-    public void setIdPais(int idPais) {
+    public void setIdPais(long idPais)
+    {
         this.idPais = idPais;
     }
 
-    public int getIdProvincia() {
+    public long getIdProvincia()
+    {
         return idProvincia;
     }
 
-    public void setIdProvincia(int idProvincia) {
+    public void setIdProvincia(long idProvincia)
+    {
         this.idProvincia = idProvincia;
     }
 
-    public int getIdMunicipio() {
+    public long getIdMunicipio()
+    {
         return idMunicipio;
     }
 
-    public void setIdMunicipio(int idMunicipio) {
+    public void setIdMunicipio(long idMunicipio)
+    {
         this.idMunicipio = idMunicipio;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idPais;
         hash += (int) idProvincia;
@@ -72,26 +85,32 @@ public class MunicipioPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MunicipioPK)) {
+        if (!(object instanceof MunicipioPK))
+            {
             return false;
-        }
+            }
         MunicipioPK other = (MunicipioPK) object;
-        if (this.idPais != other.idPais) {
+        if (this.idPais != other.idPais)
+            {
             return false;
-        }
-        if (this.idProvincia != other.idProvincia) {
+            }
+        if (this.idProvincia != other.idProvincia)
+            {
             return false;
-        }
-        if (this.idMunicipio != other.idMunicipio) {
+            }
+        if (this.idMunicipio != other.idMunicipio)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.MunicipioPK[ idPais=" + idPais + ", idProvincia=" + idProvincia + ", idMunicipio=" + idMunicipio + " ]";
     }
     

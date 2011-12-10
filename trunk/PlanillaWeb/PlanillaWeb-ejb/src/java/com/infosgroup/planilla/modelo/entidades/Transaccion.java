@@ -26,116 +26,148 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "transaccion")
-@NamedQueries({
+@Table(name = "TRANSACCION")
+@NamedQueries(
+    {
     @NamedQuery(name = "Transaccion.findAll", query = "SELECT t FROM Transaccion t"),
     @NamedQuery(name = "Transaccion.findByIdCompania", query = "SELECT t FROM Transaccion t WHERE t.transaccionPK.idCompania = :idCompania"),
     @NamedQuery(name = "Transaccion.findByIdTipoTransaccion", query = "SELECT t FROM Transaccion t WHERE t.transaccionPK.idTipoTransaccion = :idTipoTransaccion"),
     @NamedQuery(name = "Transaccion.findByIdTransaccion", query = "SELECT t FROM Transaccion t WHERE t.transaccionPK.idTransaccion = :idTransaccion"),
     @NamedQuery(name = "Transaccion.findByDetalle", query = "SELECT t FROM Transaccion t WHERE t.detalle = :detalle"),
     @NamedQuery(name = "Transaccion.findByValor", query = "SELECT t FROM Transaccion t WHERE t.valor = :valor"),
-    @NamedQuery(name = "Transaccion.findByFechatransaccion", query = "SELECT t FROM Transaccion t WHERE t.fechatransaccion = :fechatransaccion")})
-public class Transaccion implements Serializable {
+    @NamedQuery(name = "Transaccion.findByFechatransaccion", query = "SELECT t FROM Transaccion t WHERE t.fechatransaccion = :fechatransaccion")
+    })
+public class Transaccion implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected TransaccionPK transaccionPK;
+
     @Size(max = 500)
-    @Column(name = "detalle", length = 500)
+    @Column(name = "DETALLE", length = 500)
     private String detalle;
-    @Column(name = "valor")
-    private Integer valor;
-    @Column(name = "fechatransaccion")
-    @Temporal(TemporalType.DATE)
+
+    @Column(name = "VALOR")
+    private Long valor;
+
+    @Column(name = "FECHATRANSACCION")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechatransaccion;
+
     @ManyToMany(mappedBy = "transaccionList")
     private List<Cuenta> cuentaList;
-    @JoinColumns({
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_tipo_transaccion", referencedColumnName = "id_tipo_transaccion", nullable = false, insertable = false, updatable = false)})
+
+    @JoinColumns(
+        {
+        @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ID_TIPO_TRANSACCION", referencedColumnName = "ID_TIPO_TRANSACCION", nullable = false, insertable = false, updatable = false)
+        })
     @ManyToOne(optional = false)
     private TipoTransaccion tipoTransaccion;
 
-    public Transaccion() {
+    public Transaccion()
+    {
     }
 
-    public Transaccion(TransaccionPK transaccionPK) {
+    public Transaccion(TransaccionPK transaccionPK)
+    {
         this.transaccionPK = transaccionPK;
     }
 
-    public Transaccion(int idCompania, int idTipoTransaccion, int idTransaccion) {
+    public Transaccion(long idCompania, long idTipoTransaccion, long idTransaccion)
+    {
         this.transaccionPK = new TransaccionPK(idCompania, idTipoTransaccion, idTransaccion);
     }
 
-    public TransaccionPK getTransaccionPK() {
+    public TransaccionPK getTransaccionPK()
+    {
         return transaccionPK;
     }
 
-    public void setTransaccionPK(TransaccionPK transaccionPK) {
+    public void setTransaccionPK(TransaccionPK transaccionPK)
+    {
         this.transaccionPK = transaccionPK;
     }
 
-    public String getDetalle() {
+    public String getDetalle()
+    {
         return detalle;
     }
 
-    public void setDetalle(String detalle) {
+    public void setDetalle(String detalle)
+    {
         this.detalle = detalle;
     }
 
-    public Integer getValor() {
+    public Long getValor()
+    {
         return valor;
     }
 
-    public void setValor(Integer valor) {
+    public void setValor(Long valor)
+    {
         this.valor = valor;
     }
 
-    public Date getFechatransaccion() {
+    public Date getFechatransaccion()
+    {
         return fechatransaccion;
     }
 
-    public void setFechatransaccion(Date fechatransaccion) {
+    public void setFechatransaccion(Date fechatransaccion)
+    {
         this.fechatransaccion = fechatransaccion;
     }
 
-    public List<Cuenta> getCuentaList() {
+    public List<Cuenta> getCuentaList()
+    {
         return cuentaList;
     }
 
-    public void setCuentaList(List<Cuenta> cuentaList) {
+    public void setCuentaList(List<Cuenta> cuentaList)
+    {
         this.cuentaList = cuentaList;
     }
 
-    public TipoTransaccion getTipoTransaccion() {
+    public TipoTransaccion getTipoTransaccion()
+    {
         return tipoTransaccion;
     }
 
-    public void setTipoTransaccion(TipoTransaccion tipoTransaccion) {
+    public void setTipoTransaccion(TipoTransaccion tipoTransaccion)
+    {
         this.tipoTransaccion = tipoTransaccion;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (transaccionPK != null ? transaccionPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Transaccion)) {
+        if (!(object instanceof Transaccion))
+            {
             return false;
-        }
+            }
         Transaccion other = (Transaccion) object;
-        if ((this.transaccionPK == null && other.transaccionPK != null) || (this.transaccionPK != null && !this.transaccionPK.equals(other.transaccionPK))) {
+        if ((this.transaccionPK == null && other.transaccionPK != null) || (this.transaccionPK != null && !this.transaccionPK.equals(other.transaccionPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Transaccion[ transaccionPK=" + transaccionPK + " ]";
     }
     
