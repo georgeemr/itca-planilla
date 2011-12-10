@@ -29,13 +29,13 @@ public class CompaniasBackendBean extends JSFUtil implements Serializable {
     @EJB
     private CompaniaFacade companiaFacade;
 // ===================================================================================================
-    private Integer idCompania;
+    private Long idCompania;
 
-    public Integer getIdCompania() {
+    public Long getIdCompania() {
         return idCompania;
     }
 
-    public void setIdCompania(Integer idCompania) {
+    public void setIdCompania(Long idCompania) {
         this.idCompania = idCompania;
     }
     private String nomCompania;
@@ -96,7 +96,7 @@ public class CompaniasBackendBean extends JSFUtil implements Serializable {
                 if (estado == EstadoAccion.CREANDO) {
                 Compania c = new Compania();
                
-                c.setIdCompania(companiaFacade.max() + 1);
+                c.setIdCompania(companiaFacade.max() + 1L);
                 c.setNomCompania(nomCompania);
                 c.setDetCompania(detCompania);
                 c.setRazonSocial(razonSocial);

@@ -32,7 +32,7 @@ public class PuestoBackingBean extends JSFUtil implements Serializable {
     private List<TipoPuesto> listaTipoPuesto;
     private List<Puesto> listaPuesto;
     private Puesto puestoSeleccionado;
-    private Integer codigoPuesto;
+    private Long codigoPuesto;
     private Integer codigoTipoPuesto;
     private String nombrePuesto;
 
@@ -40,11 +40,11 @@ public class PuestoBackingBean extends JSFUtil implements Serializable {
     public PuestoBackingBean() {
     }
 
-    public Integer getCodigoPuesto() {
+    public Long getCodigoPuesto() {
         return codigoPuesto;
     }
 
-    public void setCodigoPuesto(Integer codigoPuesto) {
+    public void setCodigoPuesto(Long codigoPuesto) {
         this.codigoPuesto = codigoPuesto;
     }
 
