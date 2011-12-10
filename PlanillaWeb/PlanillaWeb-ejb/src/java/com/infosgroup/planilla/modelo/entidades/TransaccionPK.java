@@ -15,55 +15,68 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class TransaccionPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_compania", nullable = false)
-    private int idCompania;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_tipo_transaccion", nullable = false)
-    private int idTipoTransaccion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_transaccion", nullable = false)
-    private int idTransaccion;
+public class TransaccionPK implements Serializable
+{
 
-    public TransaccionPK() {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_COMPANIA", nullable = false)
+    private long idCompania;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_TIPO_TRANSACCION", nullable = false)
+    private long idTipoTransaccion;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_TRANSACCION", nullable = false)
+    private long idTransaccion;
+
+    public TransaccionPK()
+    {
     }
 
-    public TransaccionPK(int idCompania, int idTipoTransaccion, int idTransaccion) {
+    public TransaccionPK(long idCompania, long idTipoTransaccion, long idTransaccion)
+    {
         this.idCompania = idCompania;
         this.idTipoTransaccion = idTipoTransaccion;
         this.idTransaccion = idTransaccion;
     }
 
-    public int getIdCompania() {
+    public long getIdCompania()
+    {
         return idCompania;
     }
 
-    public void setIdCompania(int idCompania) {
+    public void setIdCompania(long idCompania)
+    {
         this.idCompania = idCompania;
     }
 
-    public int getIdTipoTransaccion() {
+    public long getIdTipoTransaccion()
+    {
         return idTipoTransaccion;
     }
 
-    public void setIdTipoTransaccion(int idTipoTransaccion) {
+    public void setIdTipoTransaccion(long idTipoTransaccion)
+    {
         this.idTipoTransaccion = idTipoTransaccion;
     }
 
-    public int getIdTransaccion() {
+    public long getIdTransaccion()
+    {
         return idTransaccion;
     }
 
-    public void setIdTransaccion(int idTransaccion) {
+    public void setIdTransaccion(long idTransaccion)
+    {
         this.idTransaccion = idTransaccion;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idCompania;
         hash += (int) idTipoTransaccion;
@@ -72,26 +85,32 @@ public class TransaccionPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TransaccionPK)) {
+        if (!(object instanceof TransaccionPK))
+            {
             return false;
-        }
+            }
         TransaccionPK other = (TransaccionPK) object;
-        if (this.idCompania != other.idCompania) {
+        if (this.idCompania != other.idCompania)
+            {
             return false;
-        }
-        if (this.idTipoTransaccion != other.idTipoTransaccion) {
+            }
+        if (this.idTipoTransaccion != other.idTipoTransaccion)
+            {
             return false;
-        }
-        if (this.idTransaccion != other.idTransaccion) {
+            }
+        if (this.idTransaccion != other.idTransaccion)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.TransaccionPK[ idCompania=" + idCompania + ", idTipoTransaccion=" + idTipoTransaccion + ", idTransaccion=" + idTransaccion + " ]";
     }
     

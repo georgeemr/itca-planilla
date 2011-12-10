@@ -24,107 +24,136 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "barrio")
-@NamedQueries({
+@Table(name = "BARRIO")
+@NamedQueries(
+    {
     @NamedQuery(name = "Barrio.findAll", query = "SELECT b FROM Barrio b"),
     @NamedQuery(name = "Barrio.findByIdPais", query = "SELECT b FROM Barrio b WHERE b.barrioPK.idPais = :idPais"),
     @NamedQuery(name = "Barrio.findByIdProvincia", query = "SELECT b FROM Barrio b WHERE b.barrioPK.idProvincia = :idProvincia"),
     @NamedQuery(name = "Barrio.findByIdMunicipio", query = "SELECT b FROM Barrio b WHERE b.barrioPK.idMunicipio = :idMunicipio"),
     @NamedQuery(name = "Barrio.findByIdBarrio", query = "SELECT b FROM Barrio b WHERE b.barrioPK.idBarrio = :idBarrio"),
     @NamedQuery(name = "Barrio.findByNomBarrio", query = "SELECT b FROM Barrio b WHERE b.nomBarrio = :nomBarrio"),
-    @NamedQuery(name = "Barrio.findByDetBarrio", query = "SELECT b FROM Barrio b WHERE b.detBarrio = :detBarrio")})
-public class Barrio implements Serializable {
+    @NamedQuery(name = "Barrio.findByDetBarrio", query = "SELECT b FROM Barrio b WHERE b.detBarrio = :detBarrio")
+    })
+public class Barrio implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected BarrioPK barrioPK;
+
     @Size(max = 200)
-    @Column(name = "nom_barrio", length = 200)
+    @Column(name = "NOM_BARRIO", length = 200)
     private String nomBarrio;
+
     @Size(max = 200)
-    @Column(name = "det_barrio", length = 200)
+    @Column(name = "DET_BARRIO", length = 200)
     private String detBarrio;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "barrio")
-    private List<Direccion> direccionList;
-    @JoinColumns({
-        @JoinColumn(name = "id_pais", referencedColumnName = "id_pais", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_provincia", referencedColumnName = "id_provincia", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_municipio", referencedColumnName = "id_municipio", nullable = false, insertable = false, updatable = false)})
+
+    @JoinColumns(
+        {
+        @JoinColumn(name = "ID_PAIS", referencedColumnName = "ID_PAIS", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ID_PROVINCIA", referencedColumnName = "ID_PROVINCIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ID_MUNICIPIO", referencedColumnName = "ID_MUNICIPIO", nullable = false, insertable = false, updatable = false)
+        })
     @ManyToOne(optional = false)
     private Municipio municipio;
 
-    public Barrio() {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "barrio")
+    private List<Direccion> direccionList;
+
+    public Barrio()
+    {
     }
 
-    public Barrio(BarrioPK barrioPK) {
+    public Barrio(BarrioPK barrioPK)
+    {
         this.barrioPK = barrioPK;
     }
 
-    public Barrio(int idPais, int idProvincia, int idMunicipio, int idBarrio) {
+    public Barrio(long idPais, long idProvincia, long idMunicipio, long idBarrio)
+    {
         this.barrioPK = new BarrioPK(idPais, idProvincia, idMunicipio, idBarrio);
     }
 
-    public BarrioPK getBarrioPK() {
+    public BarrioPK getBarrioPK()
+    {
         return barrioPK;
     }
 
-    public void setBarrioPK(BarrioPK barrioPK) {
+    public void setBarrioPK(BarrioPK barrioPK)
+    {
         this.barrioPK = barrioPK;
     }
 
-    public String getNomBarrio() {
+    public String getNomBarrio()
+    {
         return nomBarrio;
     }
 
-    public void setNomBarrio(String nomBarrio) {
+    public void setNomBarrio(String nomBarrio)
+    {
         this.nomBarrio = nomBarrio;
     }
 
-    public String getDetBarrio() {
+    public String getDetBarrio()
+    {
         return detBarrio;
     }
 
-    public void setDetBarrio(String detBarrio) {
+    public void setDetBarrio(String detBarrio)
+    {
         this.detBarrio = detBarrio;
     }
 
-    public List<Direccion> getDireccionList() {
-        return direccionList;
-    }
-
-    public void setDireccionList(List<Direccion> direccionList) {
-        this.direccionList = direccionList;
-    }
-
-    public Municipio getMunicipio() {
+    public Municipio getMunicipio()
+    {
         return municipio;
     }
 
-    public void setMunicipio(Municipio municipio) {
+    public void setMunicipio(Municipio municipio)
+    {
         this.municipio = municipio;
     }
 
+    public List<Direccion> getDireccionList()
+    {
+        return direccionList;
+    }
+
+    public void setDireccionList(List<Direccion> direccionList)
+    {
+        this.direccionList = direccionList;
+    }
+
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (barrioPK != null ? barrioPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Barrio)) {
+        if (!(object instanceof Barrio))
+            {
             return false;
-        }
+            }
         Barrio other = (Barrio) object;
-        if ((this.barrioPK == null && other.barrioPK != null) || (this.barrioPK != null && !this.barrioPK.equals(other.barrioPK))) {
+        if ((this.barrioPK == null && other.barrioPK != null) || (this.barrioPK != null && !this.barrioPK.equals(other.barrioPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Barrio[ barrioPK=" + barrioPK + " ]";
     }
     

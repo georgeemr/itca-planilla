@@ -15,44 +15,55 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class ResumenAsistenciaPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_compania", nullable = false)
-    private int idCompania;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "anio", nullable = false)
-    private int anio;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "mes", nullable = false)
-    private int mes;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "num_planilla", nullable = false)
-    private int numPlanilla;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cod_emp", nullable = false)
-    private int codEmp;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_sucursal", nullable = false)
-    private int idSucursal;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_tipo_puesto", nullable = false)
-    private int idTipoPuesto;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_puesto", nullable = false)
-    private int idPuesto;
+public class ResumenAsistenciaPK implements Serializable
+{
 
-    public ResumenAsistenciaPK() {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_COMPANIA", nullable = false)
+    private long idCompania;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ANIO", nullable = false)
+    private long anio;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "MES", nullable = false)
+    private long mes;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "NUM_PLANILLA", nullable = false)
+    private long numPlanilla;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "COD_EMP", nullable = false)
+    private long codEmp;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_SUCURSAL", nullable = false)
+    private long idSucursal;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_TIPO_PUESTO", nullable = false)
+    private long idTipoPuesto;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_PUESTO", nullable = false)
+    private long idPuesto;
+
+    public ResumenAsistenciaPK()
+    {
     }
 
-    public ResumenAsistenciaPK(int idCompania, int anio, int mes, int numPlanilla, int codEmp, int idSucursal, int idTipoPuesto, int idPuesto) {
+    public ResumenAsistenciaPK(long idCompania, long anio, long mes, long numPlanilla, long codEmp, long idSucursal, long idTipoPuesto, long idPuesto)
+    {
         this.idCompania = idCompania;
         this.anio = anio;
         this.mes = mes;
@@ -63,72 +74,89 @@ public class ResumenAsistenciaPK implements Serializable {
         this.idPuesto = idPuesto;
     }
 
-    public int getIdCompania() {
+    public long getIdCompania()
+    {
         return idCompania;
     }
 
-    public void setIdCompania(int idCompania) {
+    public void setIdCompania(long idCompania)
+    {
         this.idCompania = idCompania;
     }
 
-    public int getAnio() {
+    public long getAnio()
+    {
         return anio;
     }
 
-    public void setAnio(int anio) {
+    public void setAnio(long anio)
+    {
         this.anio = anio;
     }
 
-    public int getMes() {
+    public long getMes()
+    {
         return mes;
     }
 
-    public void setMes(int mes) {
+    public void setMes(long mes)
+    {
         this.mes = mes;
     }
 
-    public int getNumPlanilla() {
+    public long getNumPlanilla()
+    {
         return numPlanilla;
     }
 
-    public void setNumPlanilla(int numPlanilla) {
+    public void setNumPlanilla(long numPlanilla)
+    {
         this.numPlanilla = numPlanilla;
     }
 
-    public int getCodEmp() {
+    public long getCodEmp()
+    {
         return codEmp;
     }
 
-    public void setCodEmp(int codEmp) {
+    public void setCodEmp(long codEmp)
+    {
         this.codEmp = codEmp;
     }
 
-    public int getIdSucursal() {
+    public long getIdSucursal()
+    {
         return idSucursal;
     }
 
-    public void setIdSucursal(int idSucursal) {
+    public void setIdSucursal(long idSucursal)
+    {
         this.idSucursal = idSucursal;
     }
 
-    public int getIdTipoPuesto() {
+    public long getIdTipoPuesto()
+    {
         return idTipoPuesto;
     }
 
-    public void setIdTipoPuesto(int idTipoPuesto) {
+    public void setIdTipoPuesto(long idTipoPuesto)
+    {
         this.idTipoPuesto = idTipoPuesto;
     }
 
-    public int getIdPuesto() {
+    public long getIdPuesto()
+    {
         return idPuesto;
     }
 
-    public void setIdPuesto(int idPuesto) {
+    public void setIdPuesto(long idPuesto)
+    {
         this.idPuesto = idPuesto;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idCompania;
         hash += (int) anio;
@@ -142,41 +170,52 @@ public class ResumenAsistenciaPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ResumenAsistenciaPK)) {
+        if (!(object instanceof ResumenAsistenciaPK))
+            {
             return false;
-        }
+            }
         ResumenAsistenciaPK other = (ResumenAsistenciaPK) object;
-        if (this.idCompania != other.idCompania) {
+        if (this.idCompania != other.idCompania)
+            {
             return false;
-        }
-        if (this.anio != other.anio) {
+            }
+        if (this.anio != other.anio)
+            {
             return false;
-        }
-        if (this.mes != other.mes) {
+            }
+        if (this.mes != other.mes)
+            {
             return false;
-        }
-        if (this.numPlanilla != other.numPlanilla) {
+            }
+        if (this.numPlanilla != other.numPlanilla)
+            {
             return false;
-        }
-        if (this.codEmp != other.codEmp) {
+            }
+        if (this.codEmp != other.codEmp)
+            {
             return false;
-        }
-        if (this.idSucursal != other.idSucursal) {
+            }
+        if (this.idSucursal != other.idSucursal)
+            {
             return false;
-        }
-        if (this.idTipoPuesto != other.idTipoPuesto) {
+            }
+        if (this.idTipoPuesto != other.idTipoPuesto)
+            {
             return false;
-        }
-        if (this.idPuesto != other.idPuesto) {
+            }
+        if (this.idPuesto != other.idPuesto)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.ResumenAsistenciaPK[ idCompania=" + idCompania + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", codEmp=" + codEmp + ", idSucursal=" + idSucursal + ", idTipoPuesto=" + idTipoPuesto + ", idPuesto=" + idPuesto + " ]";
     }
     

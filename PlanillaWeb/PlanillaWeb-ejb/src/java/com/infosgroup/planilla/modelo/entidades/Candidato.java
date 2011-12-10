@@ -22,11 +22,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 @Entity
-@Table(name = "candidato")
-@NamedQueries({
+@Table(name = "CANDIDATO")
+@NamedQueries(
+    {
     @NamedQuery(name = "Candidato.findAll", query = "SELECT c FROM Candidato c"),
     @NamedQuery(name = "Candidato.findByCodCia", query = "SELECT c FROM Candidato c WHERE c.candidatoPK.codCia = :codCia"),
     @NamedQuery(name = "Candidato.findByCodCandidato", query = "SELECT c FROM Candidato c WHERE c.candidatoPK.codCandidato = :codCandidato"),
@@ -37,39 +37,62 @@ import javax.persistence.Transient;
     @NamedQuery(name = "Candidato.findBySexo", query = "SELECT c FROM Candidato c WHERE c.sexo = :sexo"),
     @NamedQuery(name = "Candidato.findByObservacion", query = "SELECT c FROM Candidato c WHERE c.observacion = :observacion"),
     @NamedQuery(name = "Candidato.findByEstado", query = "SELECT c FROM Candidato c WHERE c.estado = :estado"),
-    @NamedQuery(name = "Candidato.findByEdad", query = "SELECT c FROM Candidato c WHERE c.edad = :edad")})
-public class Candidato implements Serializable {
+    @NamedQuery(name = "Candidato.findByEdad", query = "SELECT c FROM Candidato c WHERE c.edad = :edad")
+    })
+public class Candidato implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected CandidatoPK candidatoPK;
+
     @Basic(optional = false)
-    @Column(name = "nombre", nullable = false, length = 2147483647)
+    @Size(min = 1, max = 200)
+    @Column(name = "NOMBRE", nullable = false, length = 200)
     private String nombre;
+
     @Basic(optional = false)
-    @Column(name = "apellido", nullable = false, length = 2147483647)
+    @Size(min = 1, max = 200)
+    @Column(name = "APELLIDO", nullable = false, length = 200)
     private String apellido;
-    @Column(name = "ap_casada", length = 2147483647)
+
+    @Column(name = "FECHA_NACIMIENTO")
+    @Temporal(TemporalType.TIMESTAMP)
+
+    @Size(max = 299)
+    @Column(name = "AP_CASADA", length = 299)
     private String apCasada;
+
     @Basic(optional = false)
-    @Column(name = "sexo", nullable = false)
+    @Column(name = "SEXO", nullable = false)
     private String sexo;
-    @Column(name = "observacion", length = 2147483647)
+    @Size(max = 200)
+    @Column(name = "OBSERVACION", length = 200)
     private String observacion;
+
     @Basic(optional = false)
-    @Column(name = "estado", nullable = false, length = 1)
+    @Size(min = 1, max = 100)
+    @Column(name = "ESTADO", nullable = false, length = 100)
     private String estado;
+
     @Basic(optional = false)
-    @Column(name = "edad", nullable = false)
-    private int edad;
-    @JoinTable(name = "candidato_concurso", joinColumns = {
-        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
-        @JoinColumn(name = "candidato", referencedColumnName = "cod_candidato", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "cod_cia", referencedColumnName = "cod_cia", nullable = false),
-        @JoinColumn(name = "concurso", referencedColumnName = "cod_concurso", nullable = false)})
+    @Column(name = "EDAD", nullable = false)
+    private long edad;
+
+    @JoinTable(name = "CANDIDATO_CONCURSO", joinColumns =
+        {
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
+        @JoinColumn(name = "CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false)
+        }, inverseJoinColumns =
+        {
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
+        @JoinColumn(name = "CONCURSO", referencedColumnName = "COD_CONCURSO", nullable = false)
+        })
     @ManyToMany
     private List<Concurso> concursoList;
-    @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
+
+    @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
     @Column(name = "fecha_nacimiento")
@@ -77,17 +100,21 @@ public class Candidato implements Serializable {
     private Date fechaNacimiento;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
     private List<CriteriosXCandidato> criteriosXCandidatoList;
-    @Transient
-    private String nombreCompleto;
 
-    public Candidato() {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
+    private List<CriteriosXCandidato> criteriosXCandidatoList;
+
+    public Candidato()
+    {
     }
 
-    public Candidato(CandidatoPK candidatoPK) {
+    public Candidato(CandidatoPK candidatoPK)
+    {
         this.candidatoPK = candidatoPK;
     }
 
     public Candidato(CandidatoPK candidatoPK, String nombre, String apellido, String sexo, String estado, int edad) {
+    {
         this.candidatoPK = candidatoPK;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -96,129 +123,159 @@ public class Candidato implements Serializable {
         this.edad = edad;
     }
 
-    public Candidato(int codCia, int codCandidato) {
+    public Candidato(long codCia, long codCandidato)
+    {
         this.candidatoPK = new CandidatoPK(codCia, codCandidato);
     }
 
-    public CandidatoPK getCandidatoPK() {
+    public CandidatoPK getCandidatoPK()
+    {
         return candidatoPK;
     }
 
-    public void setCandidatoPK(CandidatoPK candidatoPK) {
+    public void setCandidatoPK(CandidatoPK candidatoPK)
+    {
         this.candidatoPK = candidatoPK;
     }
 
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre)
+    {
         this.nombre = nombre;
     }
 
-    public String getApellido() {
+    public String getApellido()
+    {
         return apellido;
     }
 
-    public void setApellido(String apellido) {
+    public void setApellido(String apellido)
+    {
         this.apellido = apellido;
     }
 
-    public Date getFechaNacimiento() {
+    public Date getFechaNacimiento()
+    {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento)
+    {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getApCasada() {
+    public String getApCasada()
+    {
         return apCasada;
     }
 
-    public void setApCasada(String apCasada) {
+    public void setApCasada(String apCasada)
+    {
         this.apCasada = apCasada;
     }
 
     public String getSexo() {
+    {
         return sexo;
     }
 
     public void setSexo(String sexo) {
+    {
         this.sexo = sexo;
     }
 
-    public String getObservacion() {
+    public String getObservacion()
+    {
         return observacion;
     }
 
-    public void setObservacion(String observacion) {
+    public void setObservacion(String observacion)
+    {
         this.observacion = observacion;
     }
 
-    public String getEstado() {
+    public String getEstado()
+    {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(String estado)
+    {
         this.estado = estado;
     }
 
-    public int getEdad() {
+    public long getEdad()
+    {
         return edad;
     }
 
-    public void setEdad(int edad) {
+    public void setEdad(long edad)
+    {
         this.edad = edad;
     }
 
-    public List<Concurso> getConcursoList() {
+    public List<Concurso> getConcursoList()
+    {
         return concursoList;
     }
 
-    public void setConcursoList(List<Concurso> concursoList) {
+    public void setConcursoList(List<Concurso> concursoList)
+    {
         this.concursoList = concursoList;
     }
 
-    public Compania getCompania() {
+    public Compania getCompania()
+    {
         return compania;
     }
 
-    public void setCompania(Compania compania) {
+    public void setCompania(Compania compania)
+    {
         this.compania = compania;
     }
 
-    public List<CriteriosXCandidato> getCriteriosXCandidatoList() {
+    public List<CriteriosXCandidato> getCriteriosXCandidatoList()
+    {
         return criteriosXCandidatoList;
     }
 
-    public void setCriteriosXCandidatoList(List<CriteriosXCandidato> criteriosXCandidatoList) {
+    public void setCriteriosXCandidatoList(List<CriteriosXCandidato> criteriosXCandidatoList)
+    {
         this.criteriosXCandidatoList = criteriosXCandidatoList;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (candidatoPK != null ? candidatoPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Candidato)) {
+        if (!(object instanceof Candidato))
+            {
             return false;
-        }
+            }
         Candidato other = (Candidato) object;
-        if ((this.candidatoPK == null && other.candidatoPK != null) || (this.candidatoPK != null && !this.candidatoPK.equals(other.candidatoPK))) {
+        if ((this.candidatoPK == null && other.candidatoPK != null) || (this.candidatoPK != null && !this.candidatoPK.equals(other.candidatoPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
-        return "testjqpl.modelo.entidades.Candidato[ candidatoPK=" + candidatoPK + " ]";
+    public String toString()
+    {
+        return "com.infosgroup.planilla.modelo.entidades.Candidato[ candidatoPK=" + candidatoPK + " ]";
     }
 
     public String getNombreCompleto() {

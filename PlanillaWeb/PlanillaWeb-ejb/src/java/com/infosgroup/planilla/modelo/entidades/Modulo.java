@@ -12,8 +12,6 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -27,112 +25,122 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "modulo")
-@NamedQueries({
+@Table(name = "MODULO")
+@NamedQueries(
+    {
     @NamedQuery(name = "Modulo.findAll", query = "SELECT m FROM Modulo m"),
     @NamedQuery(name = "Modulo.findByIdCompania", query = "SELECT m FROM Modulo m WHERE m.moduloPK.idCompania = :idCompania"),
     @NamedQuery(name = "Modulo.findByIdModulo", query = "SELECT m FROM Modulo m WHERE m.moduloPK.idModulo = :idModulo"),
-    @NamedQuery(name = "Modulo.findByNomModulo", query = "SELECT m FROM Modulo m WHERE m.nomModulo = :nomModulo")})
-public class Modulo implements Serializable {
+    @NamedQuery(name = "Modulo.findByNomModulo", query = "SELECT m FROM Modulo m WHERE m.nomModulo = :nomModulo")
+    })
+public class Modulo implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected ModuloPK moduloPK;
+
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "nom_modulo", nullable = false, length = 100)
+    @Size(min = 1, max = 200)
+    @Column(name = "NOM_MODULO", nullable = false, length = 200)
     private String nomModulo;
-    @JoinTable(name = "usuario_modulo", joinColumns = {
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
-        @JoinColumn(name = "id_modulo", referencedColumnName = "id_modulo", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false),
-        @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)})
-    @ManyToMany
-    private List<Usuario> usuarioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modulo")
-    private List<Menu> menuList;
-    @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
+
+    @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
 
-    public Modulo() {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modulo")
+    private List<Menu> menuList;
+
+    public Modulo()
+    {
     }
 
-    public Modulo(ModuloPK moduloPK) {
+    public Modulo(ModuloPK moduloPK)
+    {
         this.moduloPK = moduloPK;
     }
 
-    public Modulo(ModuloPK moduloPK, String nomModulo) {
+    public Modulo(ModuloPK moduloPK, String nomModulo)
+    {
         this.moduloPK = moduloPK;
         this.nomModulo = nomModulo;
     }
 
-    public Modulo(int idCompania, int idModulo) {
+    public Modulo(long idCompania, long idModulo)
+    {
         this.moduloPK = new ModuloPK(idCompania, idModulo);
     }
 
-    public ModuloPK getModuloPK() {
+    public ModuloPK getModuloPK()
+    {
         return moduloPK;
     }
 
-    public void setModuloPK(ModuloPK moduloPK) {
+    public void setModuloPK(ModuloPK moduloPK)
+    {
         this.moduloPK = moduloPK;
     }
 
-    public String getNomModulo() {
+    public String getNomModulo()
+    {
         return nomModulo;
     }
 
-    public void setNomModulo(String nomModulo) {
+    public void setNomModulo(String nomModulo)
+    {
         this.nomModulo = nomModulo;
     }
 
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
-    }
-
-    public List<Menu> getMenuList() {
-        return menuList;
-    }
-
-    public void setMenuList(List<Menu> menuList) {
-        this.menuList = menuList;
-    }
-
-    public Compania getCompania() {
+    public Compania getCompania()
+    {
         return compania;
     }
 
-    public void setCompania(Compania compania) {
+    public void setCompania(Compania compania)
+    {
         this.compania = compania;
     }
 
+    public List<Menu> getMenuList()
+    {
+        return menuList;
+    }
+
+    public void setMenuList(List<Menu> menuList)
+    {
+        this.menuList = menuList;
+    }
+
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (moduloPK != null ? moduloPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Modulo)) {
+        if (!(object instanceof Modulo))
+            {
             return false;
-        }
+            }
         Modulo other = (Modulo) object;
-        if ((this.moduloPK == null && other.moduloPK != null) || (this.moduloPK != null && !this.moduloPK.equals(other.moduloPK))) {
+        if ((this.moduloPK == null && other.moduloPK != null) || (this.moduloPK != null && !this.moduloPK.equals(other.moduloPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Modulo[ moduloPK=" + moduloPK + " ]";
     }
     

@@ -15,68 +15,84 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class RespuestaPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cod_cia", nullable = false)
-    private int codCia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cod_tipo_respuesta", nullable = false)
-    private int codTipoRespuesta;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "grupo_respuesta", nullable = false)
-    private int grupoRespuesta;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cod_respuesta", nullable = false)
-    private int codRespuesta;
+public class RespuestaPK implements Serializable
+{
 
-    public RespuestaPK() {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "COD_CIA", nullable = false)
+    private long codCia;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "COD_TIPO_RESPUESTA", nullable = false)
+    private long codTipoRespuesta;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "GRUPO_RESPUESTA", nullable = false)
+    private long grupoRespuesta;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "COD_RESPUESTA", nullable = false)
+    private long codRespuesta;
+
+    public RespuestaPK()
+    {
     }
 
-    public RespuestaPK(int codCia, int codTipoRespuesta, int grupoRespuesta, int codRespuesta) {
+    public RespuestaPK(long codCia, long codTipoRespuesta, long grupoRespuesta, long codRespuesta)
+    {
         this.codCia = codCia;
         this.codTipoRespuesta = codTipoRespuesta;
         this.grupoRespuesta = grupoRespuesta;
         this.codRespuesta = codRespuesta;
     }
 
-    public int getCodCia() {
+    public long getCodCia()
+    {
         return codCia;
     }
 
-    public void setCodCia(int codCia) {
+    public void setCodCia(long codCia)
+    {
         this.codCia = codCia;
     }
 
-    public int getCodTipoRespuesta() {
+    public long getCodTipoRespuesta()
+    {
         return codTipoRespuesta;
     }
 
-    public void setCodTipoRespuesta(int codTipoRespuesta) {
+    public void setCodTipoRespuesta(long codTipoRespuesta)
+    {
         this.codTipoRespuesta = codTipoRespuesta;
     }
 
-    public int getGrupoRespuesta() {
+    public long getGrupoRespuesta()
+    {
         return grupoRespuesta;
     }
 
-    public void setGrupoRespuesta(int grupoRespuesta) {
+    public void setGrupoRespuesta(long grupoRespuesta)
+    {
         this.grupoRespuesta = grupoRespuesta;
     }
 
-    public int getCodRespuesta() {
+    public long getCodRespuesta()
+    {
         return codRespuesta;
     }
 
-    public void setCodRespuesta(int codRespuesta) {
+    public void setCodRespuesta(long codRespuesta)
+    {
         this.codRespuesta = codRespuesta;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codTipoRespuesta;
@@ -86,29 +102,36 @@ public class RespuestaPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof RespuestaPK)) {
+        if (!(object instanceof RespuestaPK))
+            {
             return false;
-        }
+            }
         RespuestaPK other = (RespuestaPK) object;
-        if (this.codCia != other.codCia) {
+        if (this.codCia != other.codCia)
+            {
             return false;
-        }
-        if (this.codTipoRespuesta != other.codTipoRespuesta) {
+            }
+        if (this.codTipoRespuesta != other.codTipoRespuesta)
+            {
             return false;
-        }
-        if (this.grupoRespuesta != other.grupoRespuesta) {
+            }
+        if (this.grupoRespuesta != other.grupoRespuesta)
+            {
             return false;
-        }
-        if (this.codRespuesta != other.codRespuesta) {
+            }
+        if (this.codRespuesta != other.codRespuesta)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.RespuestaPK[ codCia=" + codCia + ", codTipoRespuesta=" + codTipoRespuesta + ", grupoRespuesta=" + grupoRespuesta + ", codRespuesta=" + codRespuesta + " ]";
     }
     

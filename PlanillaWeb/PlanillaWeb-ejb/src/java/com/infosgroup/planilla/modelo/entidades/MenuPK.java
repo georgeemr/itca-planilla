@@ -15,55 +15,68 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class MenuPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_compania", nullable = false)
-    private int idCompania;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_modulo", nullable = false)
-    private int idModulo;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_menu", nullable = false)
-    private int idMenu;
+public class MenuPK implements Serializable
+{
 
-    public MenuPK() {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_COMPANIA", nullable = false)
+    private long idCompania;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_MODULO", nullable = false)
+    private long idModulo;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_MENU", nullable = false)
+    private long idMenu;
+
+    public MenuPK()
+    {
     }
 
-    public MenuPK(int idCompania, int idModulo, int idMenu) {
+    public MenuPK(long idCompania, long idModulo, long idMenu)
+    {
         this.idCompania = idCompania;
         this.idModulo = idModulo;
         this.idMenu = idMenu;
     }
 
-    public int getIdCompania() {
+    public long getIdCompania()
+    {
         return idCompania;
     }
 
-    public void setIdCompania(int idCompania) {
+    public void setIdCompania(long idCompania)
+    {
         this.idCompania = idCompania;
     }
 
-    public int getIdModulo() {
+    public long getIdModulo()
+    {
         return idModulo;
     }
 
-    public void setIdModulo(int idModulo) {
+    public void setIdModulo(long idModulo)
+    {
         this.idModulo = idModulo;
     }
 
-    public int getIdMenu() {
+    public long getIdMenu()
+    {
         return idMenu;
     }
 
-    public void setIdMenu(int idMenu) {
+    public void setIdMenu(long idMenu)
+    {
         this.idMenu = idMenu;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idCompania;
         hash += (int) idModulo;
@@ -72,26 +85,32 @@ public class MenuPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MenuPK)) {
+        if (!(object instanceof MenuPK))
+            {
             return false;
-        }
+            }
         MenuPK other = (MenuPK) object;
-        if (this.idCompania != other.idCompania) {
+        if (this.idCompania != other.idCompania)
+            {
             return false;
-        }
-        if (this.idModulo != other.idModulo) {
+            }
+        if (this.idModulo != other.idModulo)
+            {
             return false;
-        }
-        if (this.idMenu != other.idMenu) {
+            }
+        if (this.idMenu != other.idMenu)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.MenuPK[ idCompania=" + idCompania + ", idModulo=" + idModulo + ", idMenu=" + idMenu + " ]";
     }
     

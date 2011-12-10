@@ -23,8 +23,9 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author root
  */
 @Entity
-@Table(name = "resumen_asistencia")
-@NamedQueries({
+@Table(name = "RESUMEN_ASISTENCIA")
+@NamedQueries(
+    {
     @NamedQuery(name = "ResumenAsistencia.findAll", query = "SELECT r FROM ResumenAsistencia r"),
     @NamedQuery(name = "ResumenAsistencia.findByIdCompania", query = "SELECT r FROM ResumenAsistencia r WHERE r.resumenAsistenciaPK.idCompania = :idCompania"),
     @NamedQuery(name = "ResumenAsistencia.findByAnio", query = "SELECT r FROM ResumenAsistencia r WHERE r.resumenAsistenciaPK.anio = :anio"),
@@ -47,52 +48,79 @@ import org.hibernate.validator.constraints.NotEmpty;
     @NamedQuery(name = "ResumenAsistencia.findByHAusencia", query = "SELECT r FROM ResumenAsistencia r WHERE r.hAusencia = :hAusencia"),
     @NamedQuery(name = "ResumenAsistencia.findByDNocturnidad", query = "SELECT r FROM ResumenAsistencia r WHERE r.dNocturnidad = :dNocturnidad"),
     @NamedQuery(name = "ResumenAsistencia.findByVacaciones", query = "SELECT r FROM ResumenAsistencia r WHERE r.vacaciones = :vacaciones"),
-    @NamedQuery(name = "ResumenAsistencia.findByAguinaldo", query = "SELECT r FROM ResumenAsistencia r WHERE r.aguinaldo = :aguinaldo")})
-public class ResumenAsistencia implements Serializable {
+    @NamedQuery(name = "ResumenAsistencia.findByAguinaldo", query = "SELECT r FROM ResumenAsistencia r WHERE r.aguinaldo = :aguinaldo")
+    })
+public class ResumenAsistencia implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected ResumenAsistenciaPK resumenAsistenciaPK;
-    @Column(name = "d_laborados")
-    private Integer dLaborados;
-    @Column(name = "dn_laborados")
-    private Integer dnLaborados;
-    @Column(name = "h_xsencillas")
-    private Integer hXsencillas;
-    @Column(name = "h_xdobles")
-    private Integer hXdobles;
-    @Column(name = "viaticos")
-    private Integer viaticos;
-    @Column(name = "estado_pla")
-    private Character estadoPla;
-    @Column(name = "estado_emp")
-    private Character estadoEmp;
-    @Column(name = "h_xf150")
-    private Integer hXf150;
-    @Column(name = "h_xf250")
-    private Integer hXf250;
-    @Column(name = "d_aguinaldo")
-    private Integer dAguinaldo;
-    @Column(name = "h_ausencia")
-    private Integer hAusencia;
-    @Column(name = "d_nocturnidad")
-    private Integer dNocturnidad;
-    @Column(name = "vacaciones")
-    private Integer vacaciones;
-    @Column(name = "aguinaldo")
-    private Character aguinaldo;
-    @JoinColumns({
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "cod_emp", referencedColumnName = "id_empleado", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_sucursal", referencedColumnName = "id_sucursal", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_tipo_puesto", referencedColumnName = "id_tipo_puesto", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "id_puesto", referencedColumnName = "id_puesto", nullable = false, insertable = false, updatable = false)})
+
+    @Column(name = "D_LABORADOS")
+    private Long dLaborados;
+
+    @Column(name = "DN_LABORADOS")
+    private Long dnLaborados;
+
+    @Column(name = "H_XSENCILLAS")
+    private Long hXsencillas;
+
+    @Column(name = "H_XDOBLES")
+    private Long hXdobles;
+
+    @Column(name = "VIATICOS")
+    private Long viaticos;
+
+    @Size(max = 100)
+    @Column(name = "ESTADO_PLA", length = 100)
+    private String estadoPla;
+
+    @Size(max = 100)
+    @Column(name = "ESTADO_EMP", length = 100)
+    private String estadoEmp;
+
+    @Column(name = "H_XF150")
+    private Long hXf150;
+
+    @Column(name = "H_XF250")
+    private Long hXf250;
+
+    @Column(name = "D_AGUINALDO")
+    private Long dAguinaldo;
+
+    @Column(name = "H_AUSENCIA")
+    private Long hAusencia;
+
+    @Column(name = "D_NOCTURNIDAD")
+    private Long dNocturnidad;
+
+    @Column(name = "VACACIONES")
+    private Long vacaciones;
+
+    @Size(max = 100)
+    @Column(name = "AGUINALDO", length = 100)
+    private String aguinaldo;
+
+    @JoinColumns(
+        {
+        @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ID_SUCURSAL", referencedColumnName = "ID_SUCURSAL", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_EMP", referencedColumnName = "ID_EMPLEADO", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ID_TIPO_PUESTO", referencedColumnName = "ID_TIPO_PUESTO", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ID_PUESTO", referencedColumnName = "ID_PUESTO", nullable = false, insertable = false, updatable = false)
+        })
     @ManyToOne(optional = false)
     private PuestoEmpleado puestoEmpleado;
-    @JoinColumns({
-        @JoinColumn(name = "id_compania", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "anio", referencedColumnName = "anio", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "mes", referencedColumnName = "mes", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "num_planilla", referencedColumnName = "num_planilla", nullable = false, insertable = false, updatable = false)})
+
+    @JoinColumns(
+        {
+        @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ANIO", referencedColumnName = "ANIO", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "MES", referencedColumnName = "MES", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "NUM_PLANILLA", referencedColumnName = "NUM_PLANILLA", nullable = false, insertable = false, updatable = false)
+        })
     @ManyToOne(optional = false)
     private Planilla planilla;
 //    private List<ResumenAsistencia> resumenList;
@@ -105,175 +133,217 @@ public class ResumenAsistencia implements Serializable {
 //        this.resumenList = resumenList;
 //    }
 
-    public ResumenAsistencia() {
+    public ResumenAsistencia()
+    {
     }
 
-    public ResumenAsistencia(ResumenAsistenciaPK resumenAsistenciaPK) {
+    public ResumenAsistencia(ResumenAsistenciaPK resumenAsistenciaPK)
+    {
         this.resumenAsistenciaPK = resumenAsistenciaPK;
     }
 
-    public ResumenAsistencia(int idCompania, int anio, int mes, int numPlanilla, int codEmp, int idSucursal, int idTipoPuesto, int idPuesto) {
+    public ResumenAsistencia(long idCompania, long anio, long mes, long numPlanilla, long codEmp, long idSucursal, long idTipoPuesto, long idPuesto)
+    {
         this.resumenAsistenciaPK = new ResumenAsistenciaPK(idCompania, anio, mes, numPlanilla, codEmp, idSucursal, idTipoPuesto, idPuesto);
     }
 
-    public ResumenAsistenciaPK getResumenAsistenciaPK() {
+    public ResumenAsistenciaPK getResumenAsistenciaPK()
+    {
         return resumenAsistenciaPK;
     }
 
-    public void setResumenAsistenciaPK(ResumenAsistenciaPK resumenAsistenciaPK) {
+    public void setResumenAsistenciaPK(ResumenAsistenciaPK resumenAsistenciaPK)
+    {
         this.resumenAsistenciaPK = resumenAsistenciaPK;
     }
 
-    public Integer getDLaborados() {
+    public Long getDLaborados()
+    {
         return dLaborados;
     }
 
-    public void setDLaborados(Integer dLaborados) {
+    public void setDLaborados(Long dLaborados)
+    {
         this.dLaborados = dLaborados;
     }
 
-    public Integer getDnLaborados() {
+    public Long getDnLaborados()
+    {
         return dnLaborados;
     }
 
-    public void setDnLaborados(Integer dnLaborados) {
+    public void setDnLaborados(Long dnLaborados)
+    {
         this.dnLaborados = dnLaborados;
     }
 
-    public Integer getHXsencillas() {
+    public Long getHXsencillas()
+    {
         return hXsencillas;
     }
 
-    public void setHXsencillas(Integer hXsencillas) {
+    public void setHXsencillas(Long hXsencillas)
+    {
         this.hXsencillas = hXsencillas;
     }
 
-    public Integer getHXdobles() {
+    public Long getHXdobles()
+    {
         return hXdobles;
     }
 
-    public void setHXdobles(Integer hXdobles) {
+    public void setHXdobles(Long hXdobles)
+    {
         this.hXdobles = hXdobles;
     }
 
-    public Integer getViaticos() {
+    public Long getViaticos()
+    {
         return viaticos;
     }
 
-    public void setViaticos(Integer viaticos) {
+    public void setViaticos(Long viaticos)
+    {
         this.viaticos = viaticos;
     }
 
-    public Character getEstadoPla() {
+    public String getEstadoPla()
+    {
         return estadoPla;
     }
 
-    public void setEstadoPla(Character estadoPla) {
+    public void setEstadoPla(String estadoPla)
+    {
         this.estadoPla = estadoPla;
     }
 
-    public Character getEstadoEmp() {
+    public String getEstadoEmp()
+    {
         return estadoEmp;
     }
 
-    public void setEstadoEmp(Character estadoEmp) {
+    public void setEstadoEmp(String estadoEmp)
+    {
         this.estadoEmp = estadoEmp;
     }
 
-    public Integer getHXf150() {
+    public Long getHXf150()
+    {
         return hXf150;
     }
 
-    public void setHXf150(Integer hXf150) {
+    public void setHXf150(Long hXf150)
+    {
         this.hXf150 = hXf150;
     }
 
-    public Integer getHXf250() {
+    public Long getHXf250()
+    {
         return hXf250;
     }
 
-    public void setHXf250(Integer hXf250) {
+    public void setHXf250(Long hXf250)
+    {
         this.hXf250 = hXf250;
     }
 
-    public Integer getDAguinaldo() {
+    public Long getDAguinaldo()
+    {
         return dAguinaldo;
     }
 
-    public void setDAguinaldo(Integer dAguinaldo) {
+    public void setDAguinaldo(Long dAguinaldo)
+    {
         this.dAguinaldo = dAguinaldo;
     }
 
-    public Integer getHAusencia() {
+    public Long getHAusencia()
+    {
         return hAusencia;
     }
 
-    public void setHAusencia(Integer hAusencia) {
+    public void setHAusencia(Long hAusencia)
+    {
         this.hAusencia = hAusencia;
     }
 
-    public Integer getDNocturnidad() {
+    public Long getDNocturnidad()
+    {
         return dNocturnidad;
     }
 
-    public void setDNocturnidad(Integer dNocturnidad) {
+    public void setDNocturnidad(Long dNocturnidad)
+    {
         this.dNocturnidad = dNocturnidad;
     }
 
-    public Integer getVacaciones() {
+    public Long getVacaciones()
+    {
         return vacaciones;
     }
 
-    public void setVacaciones(Integer vacaciones) {
+    public void setVacaciones(Long vacaciones)
+    {
         this.vacaciones = vacaciones;
     }
 
-    public Character getAguinaldo() {
+    public String getAguinaldo()
+    {
         return aguinaldo;
     }
 
-    public void setAguinaldo(Character aguinaldo) {
+    public void setAguinaldo(String aguinaldo)
+    {
         this.aguinaldo = aguinaldo;
     }
 
-    public PuestoEmpleado getPuestoEmpleado() {
+    public PuestoEmpleado getPuestoEmpleado()
+    {
         return puestoEmpleado;
     }
 
-    public void setPuestoEmpleado(PuestoEmpleado puestoEmpleado) {
+    public void setPuestoEmpleado(PuestoEmpleado puestoEmpleado)
+    {
         this.puestoEmpleado = puestoEmpleado;
     }
 
-    public Planilla getPlanilla() {
+    public Planilla getPlanilla()
+    {
         return planilla;
     }
 
-    public void setPlanilla(Planilla planilla) {
+    public void setPlanilla(Planilla planilla)
+    {
         this.planilla = planilla;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (resumenAsistenciaPK != null ? resumenAsistenciaPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ResumenAsistencia)) {
+        if (!(object instanceof ResumenAsistencia))
+            {
             return false;
-        }
+            }
         ResumenAsistencia other = (ResumenAsistencia) object;
-        if ((this.resumenAsistenciaPK == null && other.resumenAsistenciaPK != null) || (this.resumenAsistenciaPK != null && !this.resumenAsistenciaPK.equals(other.resumenAsistenciaPK))) {
+        if ((this.resumenAsistenciaPK == null && other.resumenAsistenciaPK != null) || (this.resumenAsistenciaPK != null && !this.resumenAsistenciaPK.equals(other.resumenAsistenciaPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.ResumenAsistencia[ resumenAsistenciaPK=" + resumenAsistenciaPK + " ]";
     }
     

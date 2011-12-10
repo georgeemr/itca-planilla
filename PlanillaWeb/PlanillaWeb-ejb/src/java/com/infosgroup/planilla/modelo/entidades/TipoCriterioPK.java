@@ -15,42 +15,52 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class TipoCriterioPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cod_cia", nullable = false)
-    private int codCia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "codigo", nullable = false)
-    private int codigo;
+public class TipoCriterioPK implements Serializable
+{
 
-    public TipoCriterioPK() {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "COD_CIA", nullable = false)
+    private long codCia;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO", nullable = false)
+    private long codigo;
+
+    public TipoCriterioPK()
+    {
     }
 
-    public TipoCriterioPK(int codCia, int codigo) {
+    public TipoCriterioPK(long codCia, long codigo)
+    {
         this.codCia = codCia;
         this.codigo = codigo;
     }
 
-    public int getCodCia() {
+    public long getCodCia()
+    {
         return codCia;
     }
 
-    public void setCodCia(int codCia) {
+    public void setCodCia(long codCia)
+    {
         this.codCia = codCia;
     }
 
-    public int getCodigo() {
+    public long getCodigo()
+    {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(long codigo)
+    {
         this.codigo = codigo;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codigo;
@@ -58,23 +68,28 @@ public class TipoCriterioPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoCriterioPK)) {
+        if (!(object instanceof TipoCriterioPK))
+            {
             return false;
-        }
+            }
         TipoCriterioPK other = (TipoCriterioPK) object;
-        if (this.codCia != other.codCia) {
+        if (this.codCia != other.codCia)
+            {
             return false;
-        }
-        if (this.codigo != other.codigo) {
+            }
+        if (this.codigo != other.codigo)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.TipoCriterioPK[ codCia=" + codCia + ", codigo=" + codigo + " ]";
     }
     

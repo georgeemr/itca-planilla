@@ -23,102 +23,129 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "provincia")
-@NamedQueries({
+@Table(name = "PROVINCIA")
+@NamedQueries(
+    {
     @NamedQuery(name = "Provincia.findAll", query = "SELECT p FROM Provincia p"),
     @NamedQuery(name = "Provincia.findByIdPais", query = "SELECT p FROM Provincia p WHERE p.provinciaPK.idPais = :idPais"),
     @NamedQuery(name = "Provincia.findByIdProvincia", query = "SELECT p FROM Provincia p WHERE p.provinciaPK.idProvincia = :idProvincia"),
     @NamedQuery(name = "Provincia.findByNomProvincia", query = "SELECT p FROM Provincia p WHERE p.nomProvincia = :nomProvincia"),
-    @NamedQuery(name = "Provincia.findByDetProvincia", query = "SELECT p FROM Provincia p WHERE p.detProvincia = :detProvincia")})
-public class Provincia implements Serializable {
+    @NamedQuery(name = "Provincia.findByDetProvincia", query = "SELECT p FROM Provincia p WHERE p.detProvincia = :detProvincia")
+    })
+public class Provincia implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected ProvinciaPK provinciaPK;
-    @Size(max = 100)
-    @Column(name = "nom_provincia", length = 100)
-    private String nomProvincia;
+
     @Size(max = 200)
-    @Column(name = "det_provincia", length = 200)
+    @Column(name = "NOM_PROVINCIA", length = 200)
+    private String nomProvincia;
+
+    @Size(max = 200)
+    @Column(name = "DET_PROVINCIA", length = 200)
     private String detProvincia;
-    @JoinColumn(name = "id_pais", referencedColumnName = "id_pais", nullable = false, insertable = false, updatable = false)
+
+    @JoinColumn(name = "ID_PAIS", referencedColumnName = "ID_PAIS", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Pais pais;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "provincia")
     private List<Municipio> municipioList;
 
-    public Provincia() {
+    public Provincia()
+    {
     }
 
-    public Provincia(ProvinciaPK provinciaPK) {
+    public Provincia(ProvinciaPK provinciaPK)
+    {
         this.provinciaPK = provinciaPK;
     }
 
-    public Provincia(int idPais, int idProvincia) {
+    public Provincia(long idPais, long idProvincia)
+    {
         this.provinciaPK = new ProvinciaPK(idPais, idProvincia);
     }
 
-    public ProvinciaPK getProvinciaPK() {
+    public ProvinciaPK getProvinciaPK()
+    {
         return provinciaPK;
     }
 
-    public void setProvinciaPK(ProvinciaPK provinciaPK) {
+    public void setProvinciaPK(ProvinciaPK provinciaPK)
+    {
         this.provinciaPK = provinciaPK;
     }
 
-    public String getNomProvincia() {
+    public String getNomProvincia()
+    {
         return nomProvincia;
     }
 
-    public void setNomProvincia(String nomProvincia) {
+    public void setNomProvincia(String nomProvincia)
+    {
         this.nomProvincia = nomProvincia;
     }
 
-    public String getDetProvincia() {
+    public String getDetProvincia()
+    {
         return detProvincia;
     }
 
-    public void setDetProvincia(String detProvincia) {
+    public void setDetProvincia(String detProvincia)
+    {
         this.detProvincia = detProvincia;
     }
 
-    public Pais getPais() {
+    public Pais getPais()
+    {
         return pais;
     }
 
-    public void setPais(Pais pais) {
+    public void setPais(Pais pais)
+    {
         this.pais = pais;
     }
 
-    public List<Municipio> getMunicipioList() {
+    public List<Municipio> getMunicipioList()
+    {
         return municipioList;
     }
 
-    public void setMunicipioList(List<Municipio> municipioList) {
+    public void setMunicipioList(List<Municipio> municipioList)
+    {
         this.municipioList = municipioList;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (provinciaPK != null ? provinciaPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Provincia)) {
+        if (!(object instanceof Provincia))
+            {
             return false;
-        }
+            }
         Provincia other = (Provincia) object;
-        if ((this.provinciaPK == null && other.provinciaPK != null) || (this.provinciaPK != null && !this.provinciaPK.equals(other.provinciaPK))) {
+        if ((this.provinciaPK == null && other.provinciaPK != null) || (this.provinciaPK != null && !this.provinciaPK.equals(other.provinciaPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Provincia[ provinciaPK=" + provinciaPK + " ]";
     }
     

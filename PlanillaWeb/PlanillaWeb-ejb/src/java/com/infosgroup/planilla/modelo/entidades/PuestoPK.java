@@ -15,42 +15,52 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class PuestoPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cod_cia", nullable = false)
-    private int codCia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cod_puesto", nullable = false)
-    private int codPuesto;
+public class PuestoPK implements Serializable
+{
 
-    public PuestoPK() {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "COD_CIA", nullable = false)
+    private long codCia;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "COD_PUESTO", nullable = false)
+    private long codPuesto;
+
+    public PuestoPK()
+    {
     }
 
-    public PuestoPK(int codCia, int codPuesto) {
+    public PuestoPK(long codCia, long codPuesto)
+    {
         this.codCia = codCia;
         this.codPuesto = codPuesto;
     }
 
-    public int getCodCia() {
+    public long getCodCia()
+    {
         return codCia;
     }
 
-    public void setCodCia(int codCia) {
+    public void setCodCia(long codCia)
+    {
         this.codCia = codCia;
     }
 
-    public int getCodPuesto() {
+    public long getCodPuesto()
+    {
         return codPuesto;
     }
 
-    public void setCodPuesto(int codPuesto) {
+    public void setCodPuesto(long codPuesto)
+    {
         this.codPuesto = codPuesto;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codPuesto;
@@ -58,23 +68,28 @@ public class PuestoPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PuestoPK)) {
+        if (!(object instanceof PuestoPK))
+            {
             return false;
-        }
+            }
         PuestoPK other = (PuestoPK) object;
-        if (this.codCia != other.codCia) {
+        if (this.codCia != other.codCia)
+            {
             return false;
-        }
-        if (this.codPuesto != other.codPuesto) {
+            }
+        if (this.codPuesto != other.codPuesto)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.PuestoPK[ codCia=" + codCia + ", codPuesto=" + codPuesto + " ]";
     }
     

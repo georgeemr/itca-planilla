@@ -8,7 +8,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -16,45 +15,52 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class CandidatoPK implements Serializable {
+public class CandidatoPK implements Serializable
+{
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cod_cia", nullable = false)
-    private int codCia;
+    @Column(name = "COD_CIA", nullable = false)
+    private long codCia;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cod_candidato", nullable = false)
-    private int codCandidato;
-    @Transient
-    private String pkAsString;
+    @Column(name = "COD_CANDIDATO", nullable = false)
+    private long codCandidato;
 
-    public CandidatoPK() {
+    public CandidatoPK()
+    {
     }
 
-    public CandidatoPK(int codCia, int codCandidato) {
+    public CandidatoPK(long codCia, long codCandidato)
+    {
         this.codCia = codCia;
         this.codCandidato = codCandidato;
     }
 
-    public int getCodCia() {
+    public long getCodCia()
+    {
         return codCia;
     }
 
-    public void setCodCia(int codCia) {
+    public void setCodCia(long codCia)
+    {
         this.codCia = codCia;
     }
 
-    public int getCodCandidato() {
+    public long getCodCandidato()
+    {
         return codCandidato;
     }
 
-    public void setCodCandidato(int codCandidato) {
+    public void setCodCandidato(long codCandidato)
+    {
         this.codCandidato = codCandidato;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codCandidato;
@@ -62,32 +68,29 @@ public class CandidatoPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CandidatoPK)) {
+        if (!(object instanceof CandidatoPK))
+            {
             return false;
-        }
+            }
         CandidatoPK other = (CandidatoPK) object;
-        if (this.codCia != other.codCia) {
+        if (this.codCia != other.codCia)
+            {
             return false;
-        }
-        if (this.codCandidato != other.codCandidato) {
+            }
+        if (this.codCandidato != other.codCandidato)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.CandidatoPK[ codCia=" + codCia + ", codCandidato=" + codCandidato + " ]";
     }
-
-    public String getPkAsString() {
-        pkAsString = "" + codCia + ":" + codCandidato;
-        return pkAsString;
-    }
-
-    public void setPkAsString(String pkAsString) {
-        this.pkAsString = pkAsString;
-    }
+    
 }

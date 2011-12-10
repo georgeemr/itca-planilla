@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -28,8 +29,9 @@ import javax.validation.constraints.Size;
  * @author root
  */
 @Entity
-@Table(name = "campania")
-@NamedQueries({
+@Table(name = "CAMPANIA")
+@NamedQueries(
+    {
     @NamedQuery(name = "Campania.findAll", query = "SELECT c FROM Campania c"),
     @NamedQuery(name = "Campania.findByCodCia", query = "SELECT c FROM Campania c WHERE c.campaniaPK.codCia = :codCia"),
     @NamedQuery(name = "Campania.findByCodCampania", query = "SELECT c FROM Campania c WHERE c.campaniaPK.codCampania = :codCampania"),
@@ -39,50 +41,65 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Campania.findByEstado", query = "SELECT c FROM Campania c WHERE c.estado = :estado"),
     @NamedQuery(name = "Campania.findByPeriodo", query = "SELECT c FROM Campania c WHERE c.campaniaPK.periodo = :periodo"),
     @NamedQuery(name = "Campania.findByArea", query = "SELECT c FROM Campania c WHERE c.area = :area"),
-    @NamedQuery(name = "Campania.findByNota", query = "SELECT c FROM Campania c WHERE c.nota = :nota")})
-public class Campania implements Serializable {
+    @NamedQuery(name = "Campania.findByNota", query = "SELECT c FROM Campania c WHERE c.nota = :nota")
+    })
+public class Campania implements Serializable
+{
+
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
     protected CampaniaPK campaniaPK;
+
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre", nullable = false, length = 2147483647)
+    @Size(min = 1, max = 200)
+    @Column(name = "NOMBRE", nullable = false, length = 200)
     private String nombre;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "fecha_inicial", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Column(name = "FECHA_INICIAL", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicial;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "fecha_final", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Column(name = "FECHA_FINAL", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFinal;
+
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "estado", nullable = false, length = 2147483647)
+    @Size(min = 1, max = 100)
+    @Column(name = "ESTADO", nullable = false, length = 100)
     private String estado;
-    @Column(name = "area")
-    private Integer area;
+
+    @Column(name = "AREA")
+    private Long area;
+
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "nota", precision = 17, scale = 17)
-    private Double nota;
-    @JoinColumn(name = "cod_cia", referencedColumnName = "id_compania", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Compania compania;
+    @Column(name = "NOTA", precision = 11, scale = 3)
+    private BigDecimal nota;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "campania")
     private List<Evaluacion> evaluacionList;
 
-    public Campania() {
+    @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Compania compania;
+
+    public Campania()
+    {
     }
 
-    public Campania(CampaniaPK campaniaPK) {
+    public Campania(CampaniaPK campaniaPK)
+    {
         this.campaniaPK = campaniaPK;
     }
 
-    public Campania(CampaniaPK campaniaPK, String nombre, Date fechaInicial, Date fechaFinal, String estado) {
+    public Campania(CampaniaPK campaniaPK, String nombre, Date fechaInicial, Date fechaFinal, String estado)
+    {
         this.campaniaPK = campaniaPK;
         this.nombre = nombre;
         this.fechaInicial = fechaInicial;
@@ -90,104 +107,128 @@ public class Campania implements Serializable {
         this.estado = estado;
     }
 
-    public Campania(int codCia, int codCampania, int periodo) {
+    public Campania(long codCia, long codCampania, long periodo)
+    {
         this.campaniaPK = new CampaniaPK(codCia, codCampania, periodo);
     }
 
-    public CampaniaPK getCampaniaPK() {
+    public CampaniaPK getCampaniaPK()
+    {
         return campaniaPK;
     }
 
-    public void setCampaniaPK(CampaniaPK campaniaPK) {
+    public void setCampaniaPK(CampaniaPK campaniaPK)
+    {
         this.campaniaPK = campaniaPK;
     }
 
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre)
+    {
         this.nombre = nombre;
     }
 
-    public Date getFechaInicial() {
+    public Date getFechaInicial()
+    {
         return fechaInicial;
     }
 
-    public void setFechaInicial(Date fechaInicial) {
+    public void setFechaInicial(Date fechaInicial)
+    {
         this.fechaInicial = fechaInicial;
     }
 
-    public Date getFechaFinal() {
+    public Date getFechaFinal()
+    {
         return fechaFinal;
     }
 
-    public void setFechaFinal(Date fechaFinal) {
+    public void setFechaFinal(Date fechaFinal)
+    {
         this.fechaFinal = fechaFinal;
     }
 
-    public String getEstado() {
+    public String getEstado()
+    {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(String estado)
+    {
         this.estado = estado;
     }
 
-    public Integer getArea() {
+    public Long getArea()
+    {
         return area;
     }
 
-    public void setArea(Integer area) {
+    public void setArea(Long area)
+    {
         this.area = area;
     }
 
-    public Double getNota() {
+    public BigDecimal getNota()
+    {
         return nota;
     }
 
-    public void setNota(Double nota) {
+    public void setNota(BigDecimal nota)
+    {
         this.nota = nota;
     }
 
-    public Compania getCompania() {
-        return compania;
-    }
-
-    public void setCompania(Compania compania) {
-        this.compania = compania;
-    }
-
-    public List<Evaluacion> getEvaluacionList() {
+    public List<Evaluacion> getEvaluacionList()
+    {
         return evaluacionList;
     }
 
-    public void setEvaluacionList(List<Evaluacion> evaluacionList) {
+    public void setEvaluacionList(List<Evaluacion> evaluacionList)
+    {
         this.evaluacionList = evaluacionList;
     }
 
+    public Compania getCompania()
+    {
+        return compania;
+    }
+
+    public void setCompania(Compania compania)
+    {
+        this.compania = compania;
+    }
+
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (campaniaPK != null ? campaniaPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Campania)) {
+        if (!(object instanceof Campania))
+            {
             return false;
-        }
+            }
         Campania other = (Campania) object;
-        if ((this.campaniaPK == null && other.campaniaPK != null) || (this.campaniaPK != null && !this.campaniaPK.equals(other.campaniaPK))) {
+        if ((this.campaniaPK == null && other.campaniaPK != null) || (this.campaniaPK != null && !this.campaniaPK.equals(other.campaniaPK)))
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.Campania[ campaniaPK=" + campaniaPK + " ]";
     }
     

@@ -15,42 +15,52 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class DeduccionesPrestacionesPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_compania", nullable = false)
-    private int idCompania;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_prestacion", nullable = false)
-    private int idPrestacion;
+public class DeduccionesPrestacionesPK implements Serializable
+{
 
-    public DeduccionesPrestacionesPK() {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_COMPANIA", nullable = false)
+    private long idCompania;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_PRESTACION", nullable = false)
+    private long idPrestacion;
+
+    public DeduccionesPrestacionesPK()
+    {
     }
 
-    public DeduccionesPrestacionesPK(int idCompania, int idPrestacion) {
+    public DeduccionesPrestacionesPK(long idCompania, long idPrestacion)
+    {
         this.idCompania = idCompania;
         this.idPrestacion = idPrestacion;
     }
 
-    public int getIdCompania() {
+    public long getIdCompania()
+    {
         return idCompania;
     }
 
-    public void setIdCompania(int idCompania) {
+    public void setIdCompania(long idCompania)
+    {
         this.idCompania = idCompania;
     }
 
-    public int getIdPrestacion() {
+    public long getIdPrestacion()
+    {
         return idPrestacion;
     }
 
-    public void setIdPrestacion(int idPrestacion) {
+    public void setIdPrestacion(long idPrestacion)
+    {
         this.idPrestacion = idPrestacion;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idCompania;
         hash += (int) idPrestacion;
@@ -58,23 +68,28 @@ public class DeduccionesPrestacionesPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DeduccionesPrestacionesPK)) {
+        if (!(object instanceof DeduccionesPrestacionesPK))
+            {
             return false;
-        }
+            }
         DeduccionesPrestacionesPK other = (DeduccionesPrestacionesPK) object;
-        if (this.idCompania != other.idCompania) {
+        if (this.idCompania != other.idCompania)
+            {
             return false;
-        }
-        if (this.idPrestacion != other.idPrestacion) {
+            }
+        if (this.idPrestacion != other.idPrestacion)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.DeduccionesPrestacionesPK[ idCompania=" + idCompania + ", idPrestacion=" + idPrestacion + " ]";
     }
     

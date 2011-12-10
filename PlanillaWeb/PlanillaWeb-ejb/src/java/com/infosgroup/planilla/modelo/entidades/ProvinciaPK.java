@@ -15,42 +15,52 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class ProvinciaPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_pais", nullable = false)
-    private int idPais;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id_provincia", nullable = false)
-    private int idProvincia;
+public class ProvinciaPK implements Serializable
+{
 
-    public ProvinciaPK() {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_PAIS", nullable = false)
+    private long idPais;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_PROVINCIA", nullable = false)
+    private long idProvincia;
+
+    public ProvinciaPK()
+    {
     }
 
-    public ProvinciaPK(int idPais, int idProvincia) {
+    public ProvinciaPK(long idPais, long idProvincia)
+    {
         this.idPais = idPais;
         this.idProvincia = idProvincia;
     }
 
-    public int getIdPais() {
+    public long getIdPais()
+    {
         return idPais;
     }
 
-    public void setIdPais(int idPais) {
+    public void setIdPais(long idPais)
+    {
         this.idPais = idPais;
     }
 
-    public int getIdProvincia() {
+    public long getIdProvincia()
+    {
         return idProvincia;
     }
 
-    public void setIdProvincia(int idProvincia) {
+    public void setIdProvincia(long idProvincia)
+    {
         this.idProvincia = idProvincia;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) idPais;
         hash += (int) idProvincia;
@@ -58,23 +68,28 @@ public class ProvinciaPK implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProvinciaPK)) {
+        if (!(object instanceof ProvinciaPK))
+            {
             return false;
-        }
+            }
         ProvinciaPK other = (ProvinciaPK) object;
-        if (this.idPais != other.idPais) {
+        if (this.idPais != other.idPais)
+            {
             return false;
-        }
-        if (this.idProvincia != other.idProvincia) {
+            }
+        if (this.idProvincia != other.idProvincia)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "com.infosgroup.planilla.modelo.entidades.ProvinciaPK[ idPais=" + idPais + ", idProvincia=" + idProvincia + " ]";
     }
     
