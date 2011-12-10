@@ -48,7 +48,7 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         super(Candidato.class);
     }
 
-    public List<Candidato> findByCanditadoByEmpresa(Integer empresa) {
+    public List<Candidato> findByCanditadoByEmpresa(Long empresa) {
         List<Candidato> listaCandidatos = new ArrayList<Candidato>();
         listaCandidatos.addAll(getEntityManager().createQuery("SELECT c FROM Candidato c WHERE c.candidatoPK.codCia = :codCia", Candidato.class).setParameter("codCia", empresa).getResultList());
         return listaCandidatos;
@@ -64,7 +64,7 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         return listaCandidatos;
     }
 
-    public Integer validaCriterios(Integer empresa, Integer puesto, Integer candidato, List<String> criterios) {
+    public Integer validaCriterios(Long empresa, Long puesto, Long candidato, List<String> criterios) {
         //codCia + ":" + puesto + ":" + criterio + ":" + correlativo + ":" + tipoCriterio;
         /*String cq = "";
         
