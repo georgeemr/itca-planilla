@@ -5,7 +5,11 @@
 package com.infosgroup.planilla.controlador.sessionbean;
 
 import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Evaluacion;
+import com.infosgroup.planilla.modelo.entidades.Factor;
+import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -41,4 +45,58 @@ public void postConstruct()
 {
 empleadoSesion = (FacesContext.getCurrentInstance().getExternalContext().getRemoteUser() != null) ? empleadosBean.buscarEmpleadoPorUsuario(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser()) : null;
 }
+
+private Evaluacion evaluacionSeleccionada;
+
+public Evaluacion getEvaluacionSeleccionada()
+{
+return evaluacionSeleccionada;
+}
+
+public void setEvaluacionSeleccionada(Evaluacion evaluacionSeleccionada)
+{
+this.evaluacionSeleccionada = evaluacionSeleccionada;
+}
+
+private List<Factor> listaFactores;
+
+public List<Factor> getListaFactores()
+{
+if (evaluacionSeleccionada != null)
+    {
+    listaFactores = empleadosBean.listarFactoresPorPlantilla(evaluacionSeleccionada.getPlantilla1());
+    }
+return listaFactores;
+}
+
+public void setListaFactores(List<Factor> listaFactores)
+{
+this.listaFactores = listaFactores;
+}
+
+private Factor factorActual;
+
+public Factor getFactorActual()
+{
+return factorActual;
+}
+
+public void setFactorActual(Factor factorActual)
+{
+this.factorActual = factorActual;
+}
+
+private List<DetalleEvaluacion> detalleEvaluacionTemporal;
+
+public List<DetalleEvaluacion> getDetalleEvaluacionTemporal()
+{
+return detalleEvaluacionTemporal;
+}
+
+public void setDetalleEvaluacionTemporal(List<DetalleEvaluacion> detalleEvaluacionTemporal)
+{
+this.detalleEvaluacionTemporal = detalleEvaluacionTemporal;
+}
+
+
 }
