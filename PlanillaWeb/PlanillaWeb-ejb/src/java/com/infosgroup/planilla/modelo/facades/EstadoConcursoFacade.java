@@ -31,7 +31,7 @@ public class EstadoConcursoFacade extends AbstractFacade<EstadoConcurso, EstadoC
         return em;
     }
 
-    public List<EstadoConcurso> findEstadoConcursoByEmpresa(Integer empresa) {
+    public List<EstadoConcurso> findEstadoConcursoByEmpresa(Long empresa) {
         List<EstadoConcurso> puestos = new ArrayList<EstadoConcurso>();
         puestos.addAll(getEntityManager().createNamedQuery("EstadoConcurso.findByCodCia", EstadoConcurso.class).setParameter("codCia", empresa).getResultList());
         return puestos;
