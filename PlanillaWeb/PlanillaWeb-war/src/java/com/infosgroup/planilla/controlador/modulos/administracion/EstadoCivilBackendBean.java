@@ -27,14 +27,14 @@ public class EstadoCivilBackendBean implements Serializable {
     }
     @EJB
     private EstadoCivilFacade estadoCivilFacade;
-    private Integer idEstadoCivil;
+    private Long idEstadoCivil;
     private String nombreEstadoCivil;
 
-    public Integer getIdEstadoCivil() {
+    public Long getIdEstadoCivil() {
         return idEstadoCivil;
     }
 
-    public void setIdEstadoCivil(Integer idEstadoCivil) {
+    public void setIdEstadoCivil(Long idEstadoCivil) {
         this.idEstadoCivil = idEstadoCivil;
     }
 

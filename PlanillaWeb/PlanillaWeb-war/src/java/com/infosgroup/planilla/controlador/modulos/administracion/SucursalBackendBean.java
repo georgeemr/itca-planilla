@@ -27,7 +27,7 @@ public class SucursalBackendBean extends JSFUtil implements Serializable {
     @EJB
     private SucursalFacade sucursalFacade;
     private List<Sucursal> listaSucursales;
-    private Integer sucursal;
+    private Long sucursal;
     private String nombre;
     private Sucursal sucursalSeleccionada;
 
@@ -42,11 +42,11 @@ public class SucursalBackendBean extends JSFUtil implements Serializable {
         this.nombre = nombre;
     }
 
-    public Integer getSucursal() {
+    public Long getSucursal() {
         return sucursal;
     }
 
-    public void setSucursal(Integer sucursal) {
+    public void setSucursal(Long sucursal) {
         this.sucursal = sucursal;
     }
 

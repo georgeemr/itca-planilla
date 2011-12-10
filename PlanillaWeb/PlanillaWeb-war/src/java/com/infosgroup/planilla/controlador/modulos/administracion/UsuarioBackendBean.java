@@ -6,10 +6,7 @@ package com.infosgroup.planilla.controlador.modulos.administracion;
 
 import com.infosgroup.planilla.modelo.entidades.Rol;
 import com.infosgroup.planilla.modelo.entidades.RolPK;
-import com.infosgroup.planilla.modelo.entidades.Usuario;
-import com.infosgroup.planilla.modelo.entidades.UsuarioPK;
 import com.infosgroup.planilla.modelo.facades.RolFacade;
-import com.infosgroup.planilla.modelo.facades.UsuarioFacade;
 import com.infosgroup.planilla.view.JSFUtil;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
@@ -29,14 +26,11 @@ public class UsuarioBackendBean extends JSFUtil implements Serializable {
 
     @EJB
     private RolFacade rolFacade;
-    @EJB
-    private UsuarioFacade usuarioFacade;
+
     private List<Rol> listaRoles;
     private String usuario;
     private String password;
-    private Usuario usuarioSeleccionado;
-    private List<Usuario> listaUsuarios;
-    private Integer rolSeleccionado;
+    private Long rolSeleccionado;
 
     public UsuarioBackendBean() {
     }
@@ -68,7 +62,7 @@ public class UsuarioBackendBean extends JSFUtil implements Serializable {
             addMessage("Mantenimiento Usuarios.", "Password es un campo obligatorio.", TipoMensaje.ERROR);
             return null;
         }
-        Usuario u = new Usuario();
+/*        Usuario u = new Usuario();
         UsuarioPK pk = new UsuarioPK();
         u.setNomUsuario(usuario);
         u.setPassword(password);
@@ -83,7 +77,7 @@ public class UsuarioBackendBean extends JSFUtil implements Serializable {
             limpiarCampos();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
+        }*/
 
         return null;
     }
@@ -91,7 +85,7 @@ public class UsuarioBackendBean extends JSFUtil implements Serializable {
     public String eliminar_action() {
 
         try {
-            usuarioFacade.remove(usuarioSeleccionado);
+            //usuarioFacade.remove(usuarioSeleccionado);
             addMessage("Mantenimiento Usuarios.", "Usuario eliminado éxitosamente.", TipoMensaje.INFORMACION);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -101,7 +95,7 @@ public class UsuarioBackendBean extends JSFUtil implements Serializable {
 
     public String actualizar_action() {
         try {
-            usuarioFacade.edit(null);
+            //usuarioFacade.edit(null);
             limpiarCampos();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -110,33 +104,33 @@ public class UsuarioBackendBean extends JSFUtil implements Serializable {
     }
 
     public String cancelar_action() {
-        setUsuarioSeleccionado(null);
+//        setUsuarioSeleccionado(null);
         limpiarCampos();
         return null;
     }
 
-    public List<Usuario> getListaUsuarios() {
-        return usuarioFacade.findAll();
-    }
+//    public List<Usuario> getListaUsuarios() {
+//        return usuarioFacade.findAll();
+//    }
+//
+//    public void setListaUsuarios(List<Usuario> listaUsuarios) {
+//        this.listaUsuarios = listaUsuarios;
+//    }
+//
+//    public Usuario getUsuarioSeleccionado() {
+//        return usuarioSeleccionado;
+//    }
 
-    public void setListaUsuarios(List<Usuario> listaUsuarios) {
-        this.listaUsuarios = listaUsuarios;
-    }
+//    public void setUsuarioSeleccionado(Usuario usuarioSeleccionado) {
+//        this.usuarioSeleccionado = usuarioSeleccionado;
+//    }
 
-    public Usuario getUsuarioSeleccionado() {
-        return usuarioSeleccionado;
-    }
-
-    public void setUsuarioSeleccionado(Usuario usuarioSeleccionado) {
-        this.usuarioSeleccionado = usuarioSeleccionado;
-    }
-
-    public void onRowSelect(SelectEvent event) {
-        Usuario u = (Usuario) event.getObject();
-        setUsuario(u.getNomUsuario());
-        setPassword(u.getPassword());
-        setRolSeleccionado(u.getRol().getRolPK().getIdRol());
-    }
+//    public void onRowSelect(SelectEvent event) {
+//        Usuario u = (Usuario) event.getObject();
+//        setUsuario(u.getNomUsuario());
+//        setPassword(u.getPassword());
+//        setRolSeleccionado(u.getRol().getRolPK().getIdRol());
+//    }
 
     public List<Rol> getListaRoles() {
         return rolFacade.findAll();
@@ -146,11 +140,11 @@ public class UsuarioBackendBean extends JSFUtil implements Serializable {
         this.listaRoles = listaRoles;
     }
 
-    public Integer getRolSeleccionado() {
+    public Long getRolSeleccionado() {
         return rolSeleccionado;
     }
 
-    public void setRolSeleccionado(Integer rolSeleccionado) {
+    public void setRolSeleccionado(Long rolSeleccionado) {
         this.rolSeleccionado = rolSeleccionado;
     }
 

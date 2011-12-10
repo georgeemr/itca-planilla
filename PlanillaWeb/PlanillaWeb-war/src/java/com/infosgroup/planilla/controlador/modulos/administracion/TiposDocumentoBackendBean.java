@@ -28,14 +28,14 @@ public class TiposDocumentoBackendBean implements Serializable {
     }
     @EJB
     private TipoDocumentoFacade tipoDocumentoFacade;
-    private Integer idTipoDocumento;
+    private Long idTipoDocumento;
     private String nombreTipoDocumento;
 
-    public Integer getIdTipoDocumento() {
+    public Long getIdTipoDocumento() {
         return idTipoDocumento;
     }
 
-    public void setIdTipoDocumento(Integer idTipoDocumento) {
+    public void setIdTipoDocumento(Long idTipoDocumento) {
         this.idTipoDocumento = idTipoDocumento;
     }
 

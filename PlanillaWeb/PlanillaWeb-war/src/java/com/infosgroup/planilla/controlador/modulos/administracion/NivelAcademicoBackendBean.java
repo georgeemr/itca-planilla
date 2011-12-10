@@ -88,7 +88,7 @@ public class NivelAcademicoBackendBean extends JSFUtil implements Serializable {
         try {
             if (estado == EstadoAccion.CREANDO) {
                 NivelAcademico n = new NivelAcademico();
-                n.setIdNivelAcademico(nivelAcademicoFacade.max() + 1);
+                n.setIdNivelAcademico(nivelAcademicoFacade.max() + 1L);
                 n.setNomNivelAcademico(nomNivelAcademico);
                 n.setDetNivelAcademico(detNivelAcademico);
                 nivelAcademicoFacade.create(n);
