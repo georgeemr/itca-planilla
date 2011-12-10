@@ -11,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -20,6 +19,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,16 +36,19 @@ import javax.persistence.UniqueConstraint;
         "NOMBRE"
         })
     })
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Criterio.findAll", query = "SELECT c FROM Criterio c"),
     @NamedQuery(name = "Criterio.findByCodCia", query = "SELECT c FROM Criterio c WHERE c.criterioPK.codCia = :codCia"),
     @NamedQuery(name = "Criterio.findByCodigo", query = "SELECT c FROM Criterio c WHERE c.criterioPK.codigo = :codigo"),
     @NamedQuery(name = "Criterio.findByTipo", query = "SELECT c FROM Criterio c WHERE c.criterioPK.tipo = :tipo"),
-    @NamedQuery(name = "Criterio.findByNombre", query = "SELECT c FROM Criterio c WHERE c.nombre = :nombre")})
+    @NamedQuery(name = "Criterio.findByNombre", query = "SELECT c FROM Criterio c WHERE c.nombre = :nombre"),
+    @NamedQuery(name = "Criterio.findByOperador", query = "SELECT c FROM Criterio c WHERE c.operador = :operador"),
+    @NamedQuery(name = "Criterio.findByClase", query = "SELECT c FROM Criterio c WHERE c.clase = :clase")
     })
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
-    private List<CriteriosXCandidato> criteriosXCandidatoList;
+public class Criterio implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
 
@@ -50,27 +56,37 @@ import javax.persistence.UniqueConstraint;
     protected CriterioPK criterioPK;
 
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOMBRE", nullable = false, length = 200)
     private String nombre;
+
+    @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
     @Column(name = "OPERADOR", nullable = false, length = 200)
     private String operador;
 
-    @Size(max = 200)
-    @Column(name = "CLASE", length = 200)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
+    @Column(name = "CLASE", nullable = false, length = 200)
+    private String clase;
+
+    @JoinColumns(
+        {
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "TIPO", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)
         })
     @ManyToOne(optional = false)
     private TipoCriterio tipoCriterio;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1", fetch= FetchType.EAGER)
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
+    private List<CriteriosXCandidato> criteriosXCandidatoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
     private List<CriteriosXPuesto> criteriosXPuestoList;
-    @Column(name = "operador", length = 2147483647)
-    private String operador;
-    @Column(name = "clase", length = 2147483647)
-    private String clase;
-    
+
     public Criterio()
     {
     }
@@ -80,11 +96,12 @@ import javax.persistence.UniqueConstraint;
         this.criterioPK = criterioPK;
     }
 
-    public Criterio(CriterioPK criterioPK, String nombre, String operador)
+    public Criterio(CriterioPK criterioPK, String nombre, String operador, String clase)
     {
         this.criterioPK = criterioPK;
         this.nombre = nombre;
         this.operador = operador;
+        this.clase = clase;
     }
 
     public Criterio(long codCia, long codigo, long tipo)
@@ -112,10 +129,26 @@ import javax.persistence.UniqueConstraint;
         this.nombre = nombre;
     }
 
+    public String getOperador()
+    {
         return operador;
+    }
+
+    public void setOperador(String operador)
+    {
         this.operador = operador;
+    }
+
+    public String getClase()
+    {
         return clase;
+    }
+
+    public void setClase(String clase)
+    {
         this.clase = clase;
+    }
+
     public TipoCriterio getTipoCriterio()
     {
         return tipoCriterio;
@@ -126,16 +159,18 @@ import javax.persistence.UniqueConstraint;
         this.tipoCriterio = tipoCriterio;
     }
 
-    public String getOperador() {
-        return operador;
+    @XmlTransient
+    public List<CriteriosXCandidato> getCriteriosXCandidatoList()
+    {
+        return criteriosXCandidatoList;
     }
 
-    public void setOperador(String operador) {
-        this.operador = operador;
+    public void setCriteriosXCandidatoList(List<CriteriosXCandidato> criteriosXCandidatoList)
+    {
+        this.criteriosXCandidatoList = criteriosXCandidatoList;
     }
 
-    }
-
+    @XmlTransient
     public List<CriteriosXPuesto> getCriteriosXPuestoList()
     {
         return criteriosXPuestoList;
@@ -173,23 +208,7 @@ import javax.persistence.UniqueConstraint;
     @Override
     public String toString()
     {
-        return "testjqpl.modelo.entidades.Criterio[ criterioPK=" + criterioPK + " ]";
-    }
-
-    public List<CriteriosXCandidato> getCriteriosXCandidatoList() {
-        return criteriosXCandidatoList;
-    }
-
-    public void setCriteriosXCandidatoList(List<CriteriosXCandidato> criteriosXCandidatoList) {
-        this.criteriosXCandidatoList = criteriosXCandidatoList;
-    }
-
-    public String getClase() {
-        return clase;
-    }
-
-    public void setClase(String clase) {
-        this.clase = clase;
+        return "com.infosgroup.planilla.modelo.entidades.Criterio[ criterioPK=" + criterioPK + " ]";
     }
     
 }

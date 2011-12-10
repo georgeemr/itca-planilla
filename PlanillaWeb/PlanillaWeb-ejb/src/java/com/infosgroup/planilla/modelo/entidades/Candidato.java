@@ -22,9 +22,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ *
+ * @author root
+ */
 @Entity
 @Table(name = "CANDIDATO")
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Candidato.findAll", query = "SELECT c FROM Candidato c"),
@@ -48,35 +57,42 @@ public class Candidato implements Serializable
     protected CandidatoPK candidatoPK;
 
     @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 200)
     @Column(name = "NOMBRE", nullable = false, length = 200)
     private String nombre;
 
     @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 200)
     @Column(name = "APELLIDO", nullable = false, length = 200)
     private String apellido;
 
     @Column(name = "FECHA_NACIMIENTO")
     @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNacimiento;
 
     @Size(max = 299)
     @Column(name = "AP_CASADA", length = 299)
     private String apCasada;
 
     @Basic(optional = false)
+    @NotNull
     @Column(name = "SEXO", nullable = false)
-    private String sexo;
+    private long sexo;
+
     @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
     private String observacion;
 
     @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "ESTADO", nullable = false, length = 100)
     private String estado;
 
     @Basic(optional = false)
+    @NotNull
     @Column(name = "EDAD", nullable = false)
     private long edad;
 
@@ -95,11 +111,6 @@ public class Candidato implements Serializable
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Compania compania;
-    @Column(name = "fecha_nacimiento")
-    @Temporal(TemporalType.DATE)
-    private Date fechaNacimiento;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
-    private List<CriteriosXCandidato> criteriosXCandidatoList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
     private List<CriteriosXCandidato> criteriosXCandidatoList;
@@ -113,7 +124,7 @@ public class Candidato implements Serializable
         this.candidatoPK = candidatoPK;
     }
 
-    public Candidato(CandidatoPK candidatoPK, String nombre, String apellido, String sexo, String estado, int edad) {
+    public Candidato(CandidatoPK candidatoPK, String nombre, String apellido, long sexo, String estado, long edad)
     {
         this.candidatoPK = candidatoPK;
         this.nombre = nombre;
@@ -178,12 +189,12 @@ public class Candidato implements Serializable
         this.apCasada = apCasada;
     }
 
-    public String getSexo() {
+    public long getSexo()
     {
         return sexo;
     }
 
-    public void setSexo(String sexo) {
+    public void setSexo(long sexo)
     {
         this.sexo = sexo;
     }
@@ -218,6 +229,7 @@ public class Candidato implements Serializable
         this.edad = edad;
     }
 
+    @XmlTransient
     public List<Concurso> getConcursoList()
     {
         return concursoList;
@@ -238,6 +250,7 @@ public class Candidato implements Serializable
         this.compania = compania;
     }
 
+    @XmlTransient
     public List<CriteriosXCandidato> getCriteriosXCandidatoList()
     {
         return criteriosXCandidatoList;
@@ -277,13 +290,5 @@ public class Candidato implements Serializable
     {
         return "com.infosgroup.planilla.modelo.entidades.Candidato[ candidatoPK=" + candidatoPK + " ]";
     }
-
-    public String getNombreCompleto() {
-        nombreCompleto = nombre + " " + apellido;
-        return nombreCompleto;
-    }
-
-    public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
-    }
+    
 }

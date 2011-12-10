@@ -16,6 +16,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -23,6 +25,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "ROL")
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Rol.findAll", query = "SELECT r FROM Rol r"),
@@ -83,6 +86,7 @@ public class Rol implements Serializable
         this.nomRol = nomRol;
     }
 
+    @XmlTransient
     public List<Menu> getMenuList()
     {
         return menuList;

@@ -11,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
@@ -24,6 +23,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,6 +32,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "PREGUNTA")
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Pregunta.findAll", query = "SELECT p FROM Pregunta p"),
@@ -68,7 +70,7 @@ public class Pregunta implements Serializable
         @JoinColumn(name = "GRUPO_RESPUESTA", referencedColumnName = "GRUPO_RESPUESTA", nullable = false),
         @JoinColumn(name = "COD_RESPUESTA", referencedColumnName = "COD_RESPUESTA", nullable = false)
         })
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private List<Respuesta> respuestaList;
 
     @JoinColumns(
@@ -122,6 +124,7 @@ public class Pregunta implements Serializable
         this.descripcion = descripcion;
     }
 
+    @XmlTransient
     public List<Plantilla> getPlantillaList()
     {
         return plantillaList;
@@ -132,6 +135,7 @@ public class Pregunta implements Serializable
         this.plantillaList = plantillaList;
     }
 
+    @XmlTransient
     public List<Respuesta> getRespuestaList()
     {
         return respuestaList;
@@ -152,6 +156,7 @@ public class Pregunta implements Serializable
         this.factor = factor;
     }
 
+    @XmlTransient
     public List<DetEvaluacion> getDetEvaluacionList()
     {
         return detEvaluacionList;

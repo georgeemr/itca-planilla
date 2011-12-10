@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,6 +29,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "CONCURSO")
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Concurso.findAll", query = "SELECT c FROM Concurso c"),
@@ -143,6 +146,7 @@ public class Concurso implements Serializable
         this.numeroPlazas = numeroPlazas;
     }
 
+    @XmlTransient
     public List<Candidato> getCandidatoList()
     {
         return candidatoList;

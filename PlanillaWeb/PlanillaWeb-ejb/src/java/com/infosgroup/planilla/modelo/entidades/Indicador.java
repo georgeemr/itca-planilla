@@ -14,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -21,6 +22,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "INDICADOR")
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Indicador.findAll", query = "SELECT i FROM Indicador i"),

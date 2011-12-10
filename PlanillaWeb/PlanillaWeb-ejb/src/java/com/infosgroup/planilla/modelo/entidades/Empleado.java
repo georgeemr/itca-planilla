@@ -25,6 +25,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -38,6 +40,7 @@ import javax.validation.constraints.Size;
         "USUARIO"
         })
     })
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e"),
@@ -233,6 +236,7 @@ public class Empleado implements Serializable
         this.observacion = observacion;
     }
 
+    @XmlTransient
     public List<Evaluacion> getEvaluacionList()
     {
         return evaluacionList;
@@ -243,6 +247,7 @@ public class Empleado implements Serializable
         this.evaluacionList = evaluacionList;
     }
 
+    @XmlTransient
     public List<DetPlanilla> getDetPlanillaList()
     {
         return detPlanillaList;
@@ -253,6 +258,7 @@ public class Empleado implements Serializable
         this.detPlanillaList = detPlanillaList;
     }
 
+    @XmlTransient
     public List<Evaluacion> getEvaluacionList1()
     {
         return evaluacionList1;
@@ -263,6 +269,7 @@ public class Empleado implements Serializable
         this.evaluacionList1 = evaluacionList1;
     }
 
+    @XmlTransient
     public List<PuestoEmpleado> getPuestoEmpleadoList()
     {
         return puestoEmpleadoList;

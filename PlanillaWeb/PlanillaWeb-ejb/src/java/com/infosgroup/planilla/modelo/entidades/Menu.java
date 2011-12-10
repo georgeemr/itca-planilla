@@ -22,6 +22,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,6 +31,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "MENU")
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Menu.findAll", query = "SELECT m FROM Menu m"),
@@ -176,6 +179,7 @@ public class Menu implements Serializable
         this.ruta = ruta;
     }
 
+    @XmlTransient
     public List<Rol> getRolList()
     {
         return rolList;
@@ -196,6 +200,7 @@ public class Menu implements Serializable
         this.modulo = modulo;
     }
 
+    @XmlTransient
     public List<Menu> getMenuList()
     {
         return menuList;
