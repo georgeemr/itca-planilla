@@ -117,4 +117,10 @@ public String inicio$action()
 {
 return "/modulos/inicio.xhtml?faces-redirect=true";
 }
+
+public String cerrarSesion$action()
+{
+FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+return "/modulos/inicio.xhtml?faces-redirect=true";
+}
 }
