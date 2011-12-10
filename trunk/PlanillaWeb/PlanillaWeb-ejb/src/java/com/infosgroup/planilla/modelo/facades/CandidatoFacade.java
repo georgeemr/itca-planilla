@@ -30,8 +30,8 @@ import java.util.logging.Logger;
 @Stateless
 @LocalBean
 public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
-    @EJB
-    private ConcursoFacade concursoFacade;
+
+    
 
     private enum operacion { equal, between };
     
@@ -65,17 +65,17 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
     }
 
     public Integer validaCriterios(Integer empresa, Integer puesto, Integer candidato, List<String> criterios) {
+        //codCia + ":" + puesto + ":" + criterio + ":" + correlativo + ":" + tipoCriterio;
+        /*String cq = "";
         
-        String cq = "";
-        
-        for (String qk: criterios ){
-            cq = qk.split(":")[0];
-        }
+        for (String qt: criterios ){
+            cq = qt.split(":")[0] + qt.split(":")[2] + qt.split(":")[4];
+        }*/
         
         String q ="SELECT t.criteriosXPuestoPK.codCia, t.criteriosXPuestoPK.puesto, "
                 + " t.criteriosXPuestoPK.tipoCriterio, t.criteriosXPuestoPK.correlativo, "
                 + " t.valor, t.valorInicialRango, t.valorFinalRango,  "
-                + " u.operador, u.clase, v.campo, v.entidad, v.entidadPK "
+                + " u.operador, u.clase, v.campo, v.entidad, v.entidadPK, u "
                 + "FROM CriteriosXPuesto t JOIN t.criterio1 u JOIN u.criteriosXCandidatoList v "
                 + "WHERE t.criteriosXPuestoPK.codCia = :codCia AND t.criteriosXPuestoPK.puesto = :puesto";
         for (Object o : getEntityManager().createQuery(q).setParameter("codCia", empresa).setParameter("puesto", puesto).getResultList()) {
