@@ -43,25 +43,24 @@
                 </tr>
                 <tr align="center" valign="top">
                     <td width="50%">
-                        <p:pickList value="#{empleados$definirEvaluaciones.modeloEmpleadosEvaluadores}" var="empleado" itemValue="#{empleado.empleadoPK.codCia}:#{empleado.empleadoPK.codEmp}" itemLabel="#{empleado.nombres} #{empleado.apellidos}" iconOnly="true" effect="fade" showSourceControls="false" showTargetControls="false">
-                            <f:facet name="sourceCaption">
-                                <h:outputText value="Disponibles"/>
-                            </f:facet>
-                            <f:facet name="targetCaption">
-                                <h:outputText value="Seleccionados"/>
-                            </f:facet>
-                        </p:pickList>
+                        <p:dataTable value="#{empleados$definirEvaluaciones.listaEmpleadosEvaluadores}" var="evaluador" selectionMode="multiple">
+                            <p:column headerText="Empleado" filterBy="#{evaluador.nombres} #{evaluador.apellidos}" filterMatchMode="contains" sortBy="#{evaluador.nombres} #{evaluador.apellidos}">
+                                <h:outputText value="#{evaluador.nombres} #{evaluador.apellidos}"/>
+                            </p:column>
+                            <p:column headerText="Puesto">
+                                <h:outputText value="#{evaluador.puestoEmpleadoList}"/>
+                            </p:column>
+                        </p:dataTable>                    
                     </td>
                     <td width="50%">
-                        <p:pickList value="#{empleados$definirEvaluaciones.modeloEmpleadosEvaluadores}" var="empleado" itemValue="#{empleado.empleadoPK.codCia}:#{empleado.empleadoPK.codEmp}" itemLabel="#{empleado.nombres} #{empleado.apellidos}" iconOnly="true" effect="fade" showSourceControls="false" showTargetControls="false">
-                            <f:facet name="sourceCaption">
-                                <h:outputText value="Disponibles"/>
-                            </f:facet>
-                            <f:facet name="targetCaption">
-                                <h:outputText value="Seleccionados"/>
-                            </f:facet>
-                        </p:pickList>
-
+                        <p:dataTable value="#{empleados$definirEvaluaciones.listaEmpleadosEvaluados}" var="evaluado" selectionMode="multiple">
+                            <p:column headerText="Empleado">
+                                <h:outputText value="#{evaluado.nombres} #{evaluado.apellidos}"/>
+                            </p:column>
+                            <p:column headerText="Puesto">
+                                <h:outputText value="#{evaluado.puestoEmpleadoList}"/>
+                            </p:column>
+                        </p:dataTable>
                     </td>
                 </tr>
             </table>
