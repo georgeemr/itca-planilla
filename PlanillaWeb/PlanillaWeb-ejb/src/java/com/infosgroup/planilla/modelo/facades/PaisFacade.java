@@ -15,7 +15,7 @@ import javax.persistence.Query;
  * @author root
  */
 @Stateless
-public class PaisFacade extends AbstractFacade<Pais, Integer> {
+public class PaisFacade extends AbstractFacade<Pais, Long> {
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
@@ -27,11 +27,11 @@ public class PaisFacade extends AbstractFacade<Pais, Integer> {
         super(Pais.class);
     }
     
-    public Integer max() {
-        Integer max = null;
+    public Long max() {
+        Long max = null;
         Query q = getEntityManager().createNamedQuery("Pais.max");
-        max = (Integer) q.getSingleResult();
-        return (max == null) ? 0 : max;
+        max = (Long) q.getSingleResult();
+        return (max == null) ? 0L : max;
     }
     
 }

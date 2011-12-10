@@ -49,7 +49,7 @@ public class ConcursoFacade extends AbstractFacade<Concurso, ConcursoPK> {
         return lstConcurso;
     }
 
-    public List<Concurso> getConcursosActivos(Integer empresa) {
+    public List<Concurso> getConcursosActivos(Long empresa) {
         List<Concurso> lstConcurso = new ArrayList<Concurso>();
         CriteriaQuery<Concurso> cq = em.getCriteriaBuilder().createQuery(Concurso.class);
         Root<Concurso> rootConcurso = cq.from(Concurso.class);
@@ -58,12 +58,12 @@ public class ConcursoFacade extends AbstractFacade<Concurso, ConcursoPK> {
         return lstConcurso;
     }
 
-    public Integer getMax(Integer empresa) {
-        Integer max = (Integer) em.createQuery("SELECT max(c.concursoPK.codConcurso) FROM Concurso c WHERE c.concursoPK.codCia = :codCia").setParameter("codCia", empresa).getSingleResult();
-        return max != null ? ( ++max ): 1;
+    public Long getMax(Long empresa) {
+        Long max = (Long) em.createQuery("SELECT max(c.concursoPK.codConcurso) FROM Concurso c WHERE c.concursoPK.codCia = :codCia").setParameter("codCia", empresa).getSingleResult();
+        return max != null ? ( ++max ): 1L;
     }
     
-    public List<Concurso> findConcursoByEmpresa(Integer empresa){
+    public List<Concurso> findConcursoByEmpresa(Long empresa){
         List<Concurso> l = new ArrayList<Concurso>();
         l.addAll( em.createQuery("SELECT c FROM Concurso c WHERE c.concursoPK.codCia = :codCia", Concurso.class).setParameter("codCia", empresa).getResultList() );
         return l;

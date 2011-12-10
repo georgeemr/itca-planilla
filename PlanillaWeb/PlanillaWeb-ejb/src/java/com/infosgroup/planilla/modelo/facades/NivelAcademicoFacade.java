@@ -15,7 +15,7 @@ import javax.persistence.Query;
  * @author root
  */
 @Stateless
-public class NivelAcademicoFacade extends AbstractFacade<NivelAcademico, Integer> {
+public class NivelAcademicoFacade extends AbstractFacade<NivelAcademico, Long> {
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
@@ -27,11 +27,11 @@ public class NivelAcademicoFacade extends AbstractFacade<NivelAcademico, Integer
         super(NivelAcademico.class);
     }
     
-        public Integer max() {
-        Integer max = null;
+        public Long max() {
+        Long max = null;
         Query q = getEntityManager().createNamedQuery("NivelAcademico.max");
-        max = (Integer) q.getSingleResult();
-        return (max == null) ? 0 : max;
+        max = (Long) q.getSingleResult();
+        return (max == null) ? 0L : max;
     }
     
 }
