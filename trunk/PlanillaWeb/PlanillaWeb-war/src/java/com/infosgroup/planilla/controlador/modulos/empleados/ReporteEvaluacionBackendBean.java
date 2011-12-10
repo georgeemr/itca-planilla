@@ -52,7 +52,7 @@ private List<Campania> listaCampanias;
 
 public List<Campania> getListaCampanias()
 {
-listaCampanias = empleadosBean.listarCampanias();
+//listaCampanias = empleadosBean.listarCampanias();
 return listaCampanias;
 }
 
@@ -65,7 +65,7 @@ private List<TipoEvaluacion> listaTiposEvaluacion;
 
 public List<TipoEvaluacion> getListaTiposEvaluacion()
 {
-listaTiposEvaluacion = empleadosBean.listarTiposEvaluacion();
+//listaTiposEvaluacion = empleadosBean.listarTiposEvaluacion();
 return listaTiposEvaluacion;
 }
 
