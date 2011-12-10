@@ -34,8 +34,8 @@ public class ConcursoBackendBean extends JSFUtil implements Serializable {
     private Date fechaInicial;
     private String nombreConcurso;
     private Date fechaFinal;
-    private Integer numeroPlazas;
-    private Integer puesto;
+    private Long numeroPlazas;
+    private Long puesto;
     private String estadoConcurso;
     private List<Puesto> listaPuestos;
     private List<EstadoConcurso> listaEstadoConcurso;
@@ -71,24 +71,24 @@ public class ConcursoBackendBean extends JSFUtil implements Serializable {
         this.nombreConcurso = nombreConcurso;
     }
 
-    public Integer getNumeroPlazas() {
+    public Long getNumeroPlazas() {
         return numeroPlazas;
     }
 
-    public void setNumeroPlazas(Integer numeroPlazas) {
+    public void setNumeroPlazas(Long numeroPlazas) {
         this.numeroPlazas = numeroPlazas;
     }
 
-    public Integer getPuesto() {
+    public Long getPuesto() {
         return puesto;
     }
 
-    public void setPuesto(Integer puesto) {
+    public void setPuesto(Long puesto) {
         this.puesto = puesto;
     }
 
     public List<Puesto> getListaPuestos() {
-        listaPuestos = reclutamientoFacade.getPuestosByEmpresa(1);
+        listaPuestos = reclutamientoFacade.getPuestosByEmpresa(1L);
         return listaPuestos;
     }
 
@@ -105,7 +105,7 @@ public class ConcursoBackendBean extends JSFUtil implements Serializable {
     }
 
     public List<EstadoConcurso> getListaEstadoConcurso() {
-        listaEstadoConcurso = reclutamientoFacade.getEstadoConcursosByEmpresa(1);
+        listaEstadoConcurso = reclutamientoFacade.getEstadoConcursosByEmpresa(1L);
         return listaEstadoConcurso;
     }
 
@@ -147,7 +147,7 @@ public class ConcursoBackendBean extends JSFUtil implements Serializable {
     public String guardar$crud$action() {
         isError = Boolean.FALSE;
         validaCampos$action();
-        Integer c = getSessionBeanADM().getCompania().getIdCompania();
+        Long c = getSessionBeanADM().getCompania().getIdCompania();
         if (isError) {
             return null;
         }
@@ -157,7 +157,7 @@ public class ConcursoBackendBean extends JSFUtil implements Serializable {
         if (getSessionBeanADM().getEstadoAccion() == null || getSessionBeanADM().getEstadoAccion().equals(0)) {
             ConcursoPK pk = new ConcursoPK();
             pk.setCodCia(c);
-            pk.setCodConcurso(reclutamientoFacade.getMaxConcurso(1));
+            pk.setCodConcurso(reclutamientoFacade.getMaxConcurso(1L));
             concurso.setConcursoPK(pk);
             concurso.setNombre(nombreConcurso);
             concurso.setFechaInicial(fechaInicial);
