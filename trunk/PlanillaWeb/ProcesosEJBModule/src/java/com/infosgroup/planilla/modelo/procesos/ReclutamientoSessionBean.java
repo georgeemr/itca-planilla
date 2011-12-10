@@ -6,6 +6,7 @@ package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
+import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcurso;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcursoPK;
 import com.infosgroup.planilla.modelo.entidades.Puesto;
@@ -71,6 +72,10 @@ public class ReclutamientoSessionBean {
         return concursoFacade.getMax(empresa).intValue();
     }
 
+    public List<Candidato> getCandidatosByEmpresa(Integer empresa) {
+        return candidatoFacade.findByCanditadoByEmpresa(empresa);
+    }
+
     public Puesto findPuestoById(PuestoPK pkPuesto) {
         return puestoFacade.find(pkPuesto);
     }
@@ -108,5 +113,19 @@ public class ReclutamientoSessionBean {
             c.setEstado(estado);
             candidatoFacade.edit(c);
         }
+    }
+
+    /**
+     * Este método devuelve una lista de Candidatos que cumplen con 
+     * los criterios del pruesto establecido en el concurso seleccionado.
+     * @param  Concurso
+     * @return Candidatos que cumplen con los criterios del puesto.
+     */
+    public List<Candidato> getCandidatoConCriteriosPuesto( Concurso c, List<CriteriosXPuesto> criterios) {
+        List<String> z = new ArrayList<String>();
+        for ( Object o: criterios ){
+            z.add(o.toString());
+        }
+        return candidatoFacade.getCandidatoConCriteriosPuesto( c, z);
     }
 }
