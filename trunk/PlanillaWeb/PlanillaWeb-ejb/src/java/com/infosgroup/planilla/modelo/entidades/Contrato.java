@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -22,6 +23,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "CONTRATO")
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Contrato.findAll", query = "SELECT c FROM Contrato c"),

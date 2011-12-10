@@ -17,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -24,6 +26,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "PROVINCIA")
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Provincia.findAll", query = "SELECT p FROM Provincia p"),
@@ -109,6 +112,7 @@ public class Provincia implements Serializable
         this.pais = pais;
     }
 
+    @XmlTransient
     public List<Municipio> getMunicipioList()
     {
         return municipioList;

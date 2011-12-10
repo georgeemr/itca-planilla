@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +35,7 @@ import javax.validation.constraints.Size;
         "NOMBRE"
         })
     })
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "TipoCriterio.findAll", query = "SELECT t FROM TipoCriterio t"),
@@ -116,6 +119,7 @@ public class TipoCriterio implements Serializable
         this.descripcion = descripcion;
     }
 
+    @XmlTransient
     public List<Criterio> getCriterioList()
     {
         return criterioList;

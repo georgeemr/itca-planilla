@@ -113,13 +113,5 @@ public class CriterioPK implements Serializable
     {
         return "com.infosgroup.planilla.modelo.entidades.CriterioPK[ codCia=" + codCia + ", codigo=" + codigo + ", tipo=" + tipo + " ]";
     }
-<<<<<<< .mine
-=======
-
-    public String getPkAsString() {
-        pkAsString =""+codCia + ":" + codigo +":" + tipo;
-        return pkAsString;
-    }
->>>>>>> .r287
     
 }

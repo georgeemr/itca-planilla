@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -24,6 +26,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "COMPANIA")
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Compania.findAll", query = "SELECT c FROM Compania c"),
@@ -158,6 +161,7 @@ public class Compania implements Serializable
         this.razonSocial = razonSocial;
     }
 
+    @XmlTransient
     public List<Sucursal> getSucursalList()
     {
         return sucursalList;
@@ -168,6 +172,7 @@ public class Compania implements Serializable
         this.sucursalList = sucursalList;
     }
 
+    @XmlTransient
     public List<Indicador> getIndicadorList()
     {
         return indicadorList;
@@ -178,6 +183,7 @@ public class Compania implements Serializable
         this.indicadorList = indicadorList;
     }
 
+    @XmlTransient
     public List<TipoPuesto> getTipoPuestoList()
     {
         return tipoPuestoList;
@@ -188,6 +194,7 @@ public class Compania implements Serializable
         this.tipoPuestoList = tipoPuestoList;
     }
 
+    @XmlTransient
     public List<TipoEvaluacion> getTipoEvaluacionList()
     {
         return tipoEvaluacionList;
@@ -198,6 +205,7 @@ public class Compania implements Serializable
         this.tipoEvaluacionList = tipoEvaluacionList;
     }
 
+    @XmlTransient
     public List<Candidato> getCandidatoList()
     {
         return candidatoList;
@@ -208,6 +216,7 @@ public class Compania implements Serializable
         this.candidatoList = candidatoList;
     }
 
+    @XmlTransient
     public List<TipoTransaccion> getTipoTransaccionList()
     {
         return tipoTransaccionList;
@@ -218,6 +227,7 @@ public class Compania implements Serializable
         this.tipoTransaccionList = tipoTransaccionList;
     }
 
+    @XmlTransient
     public List<TipoRespuesta> getTipoRespuestaList()
     {
         return tipoRespuestaList;
@@ -228,6 +238,7 @@ public class Compania implements Serializable
         this.tipoRespuestaList = tipoRespuestaList;
     }
 
+    @XmlTransient
     public List<Rol> getRolList()
     {
         return rolList;
@@ -238,6 +249,7 @@ public class Compania implements Serializable
         this.rolList = rolList;
     }
 
+    @XmlTransient
     public List<Departamento> getDepartamentoList()
     {
         return departamentoList;
@@ -248,6 +260,7 @@ public class Compania implements Serializable
         this.departamentoList = departamentoList;
     }
 
+    @XmlTransient
     public List<Factor> getFactorList()
     {
         return factorList;
@@ -258,6 +271,7 @@ public class Compania implements Serializable
         this.factorList = factorList;
     }
 
+    @XmlTransient
     public List<Modulo> getModuloList()
     {
         return moduloList;
@@ -268,6 +282,7 @@ public class Compania implements Serializable
         this.moduloList = moduloList;
     }
 
+    @XmlTransient
     public List<Empleado> getEmpleadoList()
     {
         return empleadoList;
@@ -278,6 +293,7 @@ public class Compania implements Serializable
         this.empleadoList = empleadoList;
     }
 
+    @XmlTransient
     public List<TipoPlanilla> getTipoPlanillaList()
     {
         return tipoPlanillaList;
@@ -288,6 +304,7 @@ public class Compania implements Serializable
         this.tipoPlanillaList = tipoPlanillaList;
     }
 
+    @XmlTransient
     public List<EstadoConcurso> getEstadoConcursoList()
     {
         return estadoConcursoList;
@@ -298,6 +315,7 @@ public class Compania implements Serializable
         this.estadoConcursoList = estadoConcursoList;
     }
 
+    @XmlTransient
     public List<Planilla> getPlanillaList()
     {
         return planillaList;
@@ -308,6 +326,7 @@ public class Compania implements Serializable
         this.planillaList = planillaList;
     }
 
+    @XmlTransient
     public List<TipoCriterio> getTipoCriterioList()
     {
         return tipoCriterioList;
@@ -318,6 +337,7 @@ public class Compania implements Serializable
         this.tipoCriterioList = tipoCriterioList;
     }
 
+    @XmlTransient
     public List<TipoCuenta> getTipoCuentaList()
     {
         return tipoCuentaList;
@@ -328,6 +348,7 @@ public class Compania implements Serializable
         this.tipoCuentaList = tipoCuentaList;
     }
 
+    @XmlTransient
     public List<Campania> getCampaniaList()
     {
         return campaniaList;

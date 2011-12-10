@@ -5,7 +5,6 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -16,7 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -24,6 +23,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @Entity
 @Table(name = "RESUMEN_ASISTENCIA")
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "ResumenAsistencia.findAll", query = "SELECT r FROM ResumenAsistencia r"),
@@ -123,15 +123,6 @@ public class ResumenAsistencia implements Serializable
         })
     @ManyToOne(optional = false)
     private Planilla planilla;
-//    private List<ResumenAsistencia> resumenList;
-//
-//    public List<ResumenAsistencia> getResumenList() {
-//        return resumenList;
-//    }
-//
-//    public void setResumenList(List<ResumenAsistencia> resumenList) {
-//        this.resumenList = resumenList;
-//    }
 
     public ResumenAsistencia()
     {

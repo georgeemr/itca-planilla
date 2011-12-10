@@ -18,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -25,6 +27,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "CUENTA")
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Cuenta.findAll", query = "SELECT c FROM Cuenta c"),
@@ -206,6 +209,7 @@ public class Cuenta implements Serializable
         this.nivel8 = nivel8;
     }
 
+    @XmlTransient
     public List<Transaccion> getTransaccionList()
     {
         return transaccionList;

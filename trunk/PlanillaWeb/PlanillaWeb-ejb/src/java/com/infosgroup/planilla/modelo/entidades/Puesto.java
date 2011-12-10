@@ -19,6 +19,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,6 +28,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "PUESTO")
+@XmlRootElement
 @NamedQueries(
     {
     @NamedQuery(name = "Puesto.findAll", query = "SELECT p FROM Puesto p"),
@@ -220,6 +223,7 @@ public class Puesto implements Serializable
         this.jefatura = jefatura;
     }
 
+    @XmlTransient
     public List<Concurso> getConcursoList()
     {
         return concursoList;
@@ -230,6 +234,7 @@ public class Puesto implements Serializable
         this.concursoList = concursoList;
     }
 
+    @XmlTransient
     public List<PuestoEmpleado> getPuestoEmpleadoList()
     {
         return puestoEmpleadoList;
@@ -270,6 +275,7 @@ public class Puesto implements Serializable
         this.rangoAnios = rangoAnios;
     }
 
+    @XmlTransient
     public List<CriteriosXPuesto> getCriteriosXPuestoList()
     {
         return criteriosXPuestoList;

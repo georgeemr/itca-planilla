@@ -8,7 +8,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -18,7 +17,6 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class CriteriosXPuestoPK implements Serializable
 {
-
 
     @Basic(optional = false)
     @NotNull
@@ -44,8 +42,6 @@ public class CriteriosXPuestoPK implements Serializable
     @NotNull
     @Column(name = "CORRELATIVO", nullable = false)
     private long correlativo;
-    @Transient
-    private String pkAsString;
 
     public CriteriosXPuestoPK()
     {
@@ -159,13 +155,5 @@ public class CriteriosXPuestoPK implements Serializable
     {
         return "com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK[ codCia=" + codCia + ", puesto=" + puesto + ", tipoCriterio=" + tipoCriterio + ", criterio=" + criterio + ", correlativo=" + correlativo + " ]";
     }
-
-    public String getPkAsString() {
-        pkAsString = "" + codCia + ":" + puesto + ":" + criterio + ":" + correlativo + ":" + tipoCriterio;
-        return pkAsString;
-    }
-
-    public void setPkAsString(String pkAsString) {
-        this.pkAsString = pkAsString;
-    }
+    
 }
