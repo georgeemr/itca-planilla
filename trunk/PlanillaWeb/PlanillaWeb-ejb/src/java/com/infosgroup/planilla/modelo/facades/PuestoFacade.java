@@ -27,7 +27,7 @@ public class PuestoFacade extends AbstractFacade<Puesto, PuestoPK> {
         return em;
     }
 
-    public List<Puesto> findPuestoByEmpresa(Integer empresa) {
+    public List<Puesto> findPuestoByEmpresa(Long empresa) {
         List<Puesto> puestos = new ArrayList<Puesto>();
         puestos.addAll(getEntityManager().createNamedQuery("Puesto.findByCodCia", Puesto.class).setParameter("codCia", empresa).getResultList());
         return puestos;

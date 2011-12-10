@@ -27,7 +27,7 @@ public class TipoPuestoFacade extends AbstractFacade<TipoPuesto, TipoPuestoPK> {
         return em;
     }
 
-    public List<TipoPuesto> findTipoPuestoByEmpresa(Integer empresa) {
+    public List<TipoPuesto> findTipoPuestoByEmpresa(Long empresa) {
         List<TipoPuesto> lstConcurso = new ArrayList<TipoPuesto>();
         lstConcurso.addAll(getEntityManager().createNamedQuery("TipoPuesto.findByCodCia", TipoPuesto.class).setParameter("codCia", empresa).getResultList());
         return lstConcurso;

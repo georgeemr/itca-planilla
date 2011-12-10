@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
  * @author root
  */
 @Stateless
-public class TipoDocumentoFacade extends AbstractFacade<TipoDocumento, Integer> {
+public class TipoDocumentoFacade extends AbstractFacade<TipoDocumento, Long> {
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 

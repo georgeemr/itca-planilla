@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
  * @author root
  */
 @Stateless
-public class EstadoCivilFacade extends AbstractFacade<EstadoCivil, Integer> {
+public class EstadoCivilFacade extends AbstractFacade<EstadoCivil, Long> {
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
