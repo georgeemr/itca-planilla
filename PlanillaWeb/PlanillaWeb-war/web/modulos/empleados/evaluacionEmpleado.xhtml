@@ -6,9 +6,11 @@
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <!-- ===================================================================================================== -->
     <ui:define name="titulo">
         <h:outputText value="Evaluaci&oacute;n de empleado"/>        
     </ui:define>
+    <!-- ===================================================================================================== -->
     <ui:define name="acciones">
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
@@ -19,6 +21,7 @@
             </h:panelGrid>
         </p:tab>
     </ui:define>
+    <!-- ===================================================================================================== -->
     <ui:define name="contenido">        
         <p:fieldset legend="Evaluaci&oacute;n del empleado">
             <h:panelGrid columns="4" width="100%">
@@ -73,6 +76,7 @@
             </p:wizard>
         </p:fieldset>
     </ui:define>
+    <!-- ===================================================================================================== -->
     <ui:define name="dialogos">
         <p:dialog id="cnf1" widgetVar="cnf1" modal="true" closeOnEscape="true" closable="true" draggable="true" showEffect="zoom" hideEffect="zoom" header="PlanillaWeb" resizable="false" width="400">
             <h:panelGrid columns="2" width="100%">
