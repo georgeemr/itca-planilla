@@ -128,7 +128,7 @@ public List<ReporteEvaluacion> listarReporteEvaluacion(Evaluacion evaluacion)
 {
 List<ReporteEvaluacion> l = new ArrayList<ReporteEvaluacion>(0);
 ReporteEvaluacion reporte = new ReporteEvaluacion();
-reporte.setCompania(evaluacion.getPlantilla().getTipoEvaluacion().getCompania().getNomCompania());
+reporte.setCompania(evaluacion.getPlantilla1().getTipoEvaluacion().getCompania().getNomCompania());
 reporte.setEmpleado(evaluacion.getEmpleado1().getNombres());
 l.add(reporte);
 return l;
