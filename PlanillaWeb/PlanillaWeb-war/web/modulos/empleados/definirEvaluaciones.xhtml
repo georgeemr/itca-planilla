@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/plantillas/defaultTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <!-- ======================================================================================================= -->
+    <ui:define name="titulo">
+        <h:outputText value="Definir evaluaciones"/>        
+    </ui:define>
+    <!-- ======================================================================================================= -->
+    <ui:define name="acciones">
+        <p:tab title="Evaluaci&oacute;n">
+            <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <p:commandLink styleClass="opcionMenu" action="#{empleados$seleccionEvaluacion.evaluarEmpleado$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/meeting-participant-request-response.png"/>
+                    <h:outputText value="Evaluar empleado" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{empleados$definirEvaluaciones.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+    <!-- ======================================================================================================= -->
+    <ui:define name="contenido">        
+        <p:fieldset id="fieldset1" legend="Selecci&oacute;n de empleados a evaluar">
+            <table width="100%" cellspacing="5" cellpadding="0" border="0">
+                <tr align="center" valign="top">
+                    <td>
+                        <h:outputText value="Evaluadores" style="font-weight: bold;"/>
+                    </td>
+                    <td>
+                        <h:outputText value="Empleados evaluados" style="font-weight: bold;"/>
+                    </td>
+                </tr>
+                <tr align="center" valign="top">
+                    <td width="50%">
+                        <p:pickList value="#{empleados$definirEvaluaciones.modeloEmpleadosEvaluadores}" var="empleado" itemValue="#{empleado.empleadoPK.codCia}:#{empleado.empleadoPK.codEmp}" itemLabel="#{empleado.nombres}" iconOnly="true" effect="fade" showSourceControls="false" showTargetControls="false">
+                            <f:facet name="sourceCaption">
+                                <h:outputText value="Disponibles"/>
+                            </f:facet>
+                            <f:facet name="targetCaption">
+                                <h:outputText value="Seleccionados"/>
+                            </f:facet>
+                        </p:pickList>
+                    </td>
+                    <td width="50%">
+                        <p:pickList value="#{empleados$definirEvaluaciones.modeloEmpleadosEvaluadores}" var="empleado" itemValue="#{empleado.empleadoPK.codCia}:#{empleado.empleadoPK.codEmp}" itemLabel="#{empleado.nombres}" iconOnly="true" effect="fade" showSourceControls="false" showTargetControls="false">
+                            <f:facet name="sourceCaption">
+                                <h:outputText value="Disponibles"/>
+                            </f:facet>
+                            <f:facet name="targetCaption">
+                                <h:outputText value="Seleccionados"/>
+                            </f:facet>
+                        </p:pickList>
+
+                    </td>
+                </tr>
+            </table>
+        </p:fieldset>
+    </ui:define>
+    <!-- ======================================================================================================= -->
+    <ui:define name="dialogos"/>
+    <!-- ======================================================================================================= -->
+</ui:composition>

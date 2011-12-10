@@ -7,8 +7,8 @@
     </context-param>
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>aristo</param-value>        
-    </context-param>    
+        <param-value>aristo</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -35,8 +35,8 @@
             <url-pattern>/faces/modulos/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <description>secure auth constraint</description>
-            <role-name>secure</role-name>
+            <description>Administradores authorization constraint</description>
+            <role-name>administradores</role-name>
         </auth-constraint>
     </security-constraint>
     <login-config>
@@ -49,6 +49,6 @@
     </login-config>
     <security-role>
         <description>Rol de Administradores</description>
-        <role-name>secure</role-name>
+        <role-name>administradores</role-name>
     </security-role>
 </web-app>

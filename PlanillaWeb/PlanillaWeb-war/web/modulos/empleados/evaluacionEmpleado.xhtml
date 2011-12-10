@@ -23,17 +23,18 @@
         <p:fieldset legend="Evaluaci&oacute;n del empleado">
             <h:panelGrid columns="4" width="100%">
                 <h:outputText value="Campaña" styleClass="negrita"/>
-                <h:outputText value="#{SessionBeanEMP.campania.nombre}"/>
+                <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.campania.nombre}"/>
                 <h:outputText value="Tipo de evaluacion" styleClass="negrita"/>
-                <h:outputText value="#{SessionBeanEMP.tipoEvaluacion.nomTipoEvaluacion}"/>
+                <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.plantilla1.tipoEvaluacion.nomTipoEvaluacion}"/>
                 <h:outputText value="Plantilla" styleClass="negrita"/>
-                <h:outputText value="#{SessionBeanEMP.plantilla.nombre}"/>
+                <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.plantilla1.nombre}"/>
                 <h:outputText value="Empleado" styleClass="negrita"/>
                 <h:panelGrid columns="3" cellspacing="0" cellpadding="0">
-                    <h:outputText value="#{SessionBeanEMP.empleado.nombres}"/>
+                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleado1.nombres}"/>
                     <p:spacer width="4"/>
-                    <h:outputText value="#{SessionBeanEMP.empleado.apellidos}" rendered="#{SessionBeanEMP.empleado.apCasada eq null}"/>
-                    <h:outputText value="#{SessionBeanEMP.empleado.apCasada}" rendered="#{SessionBeanEMP.empleado.apCasada ne null}"/>
+                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleado1.apellidos}"/>
+                    <p:spacer width="4"/>
+                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleado1.apCasada}" rendered="#{SessionBeanEMP.evaluacionSeleccionada.empleado1.apCasada ne null}"/>
                 </h:panelGrid>
             </h:panelGrid>
             <p:separator/>
