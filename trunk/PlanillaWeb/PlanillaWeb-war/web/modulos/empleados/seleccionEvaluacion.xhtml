@@ -4,23 +4,22 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <!-- ======================================================================================================= -->
     <ui:define name="titulo">
         <h:outputText value="Seleccion de evaluaci&oacute;n"/>        
     </ui:define>
+    <!-- ======================================================================================================= -->
     <ui:define name="acciones">
         <p:tab title="Evaluaci&oacute;n">
             <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
-                <p:commandLink styleClass="opcionMenu textoNormal" action="#{empleados$seleccionEvaluacion.mostrarEmpleadosNoEvaluados$action}" update="principalForm:mensajes, principalForm:tablaEmpleados" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
-                    <p:graphicImage value="/resources/iconos/edit-find-user.png"/>
-                    <h:outputText value="Mostrar empleados" styleClass="espacioTexto"/>
-                </p:commandLink>
                 <p:commandLink styleClass="opcionMenu" action="#{empleados$seleccionEvaluacion.evaluarEmpleado$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/meeting-participant-request-response.png"/>
                     <h:outputText value="Evaluar empleado" styleClass="espacioTexto"/>
                 </p:commandLink>
             </h:panelGrid>
-        </p:tab>  
+        </p:tab>
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{empleados$seleccionEvaluacion.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
@@ -30,67 +29,51 @@
             </h:panelGrid>
         </p:tab>
     </ui:define>
+    <!-- ======================================================================================================= -->
     <ui:define name="contenido">        
-        <p:fieldset id="fieldset1" legend="Evaluaci&oacute;n">
-            <table width="100%">
+        <p:fieldset id="fieldset1" legend="Selecci&oacute;n de empleados">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr valign="top">
-                    <td colspan="2">
-                        <p:dataList id="campaniasDataList" value="#{empleados$seleccionEvaluacion.listaCampanias}" var="campania" paginator="true" rows="3" effectSpeed="fast" paginatorAlwaysVisible="true" paginatorPosition="top" paginatorTemplate="Campa&ntilde;a {PreviousPageLink} {CurrentPageReport} {NextPageLink}" itemType="none">
-                            <p:column>  
-                                <p:commandLink title="Seleccionar campa&ntilde;a: #{campania.nombre}" style="text-decoration: none;" action="#{empleados$seleccionEvaluacion.seleccionCampania$action}" update="principalForm:mensajes" onmouseover="this.className='textonegrita';" onmouseout="this.className='textonormal';">
-                                    <p:graphicImage value="/resources/iconos/task-delegate.png"/>
-                                    <h:outputText value="#{campania.nombre} (del " style="margin-left: 10px;"/>
-                                    <h:outputText value="#{campania.fechaInicial}">
-                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                    </h:outputText>
-                                    <h:outputText value="al "/>
-                                    <h:outputText value="#{campania.fechaFinal}">
-                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                    </h:outputText>                                
-                                    <h:outputText value=")"/>
-                                    <f:setPropertyActionListener value="#{campania}" target="#{SessionBeanEMP.campania}"/>
-                                </p:commandLink>                        
-                            </p:column>  
-                        </p:dataList>
+                    <td width="30%">
+                        <p:dataTable id="campaniasTable" value="#{empleados$seleccionEvaluacion.listaCampanias}" var="campania" selection="#{empleados$seleccionEvaluacion.campaniaSeleccionada}" selectionMode="single" emptyMessage="[No hay campa&ntilde;as abiertas]" paginatorAlwaysVisible="true" paginator="true" update="evaluacionesTable">
+                            <f:facet name="header">
+                                <h:outputText value="Campa&ntilde;as"/>
+                            </f:facet>
+                            <p:column headerText="Campa&ntilde;a">
+                                <h:outputText value="#{campania.nombre}"/>
+                            </p:column>
+                        </p:dataTable>
+
                     </td>
-                </tr>
-                <tr valign="top">
-                    <td width="50%">
-                        <p:dataList id="tipoEvaluacionDataList" value="#{empleados$seleccionEvaluacion.listaTiposEvaluacion}" var="tipoEvaluacion" paginator="true" rows="3" effectSpeed="fast" paginatorAlwaysVisible="true" paginatorPosition="top" paginatorTemplate="Tipo de evaluaci&oacute;n {PreviousPageLink} {CurrentPageReport} {NextPageLink}" itemType="none">
-                            <p:column>  
-                                <p:commandLink title="Seleccionar tipo de evaluaci&oacute;n: #{tipoEvaluacion.nomTipoEvaluacion}" style="text-decoration: none;" action="#{empleados$seleccionEvaluacion.seleccionTipoEvaluacion$action}" update="principalForm:mensajes, principalForm:plantillasDataList" onmouseover="this.className='textonegrita';" onmouseout="this.className='textonormal';">
-                                    <p:graphicImage value="/resources/iconos/task-delegate.png"/>
-                                    <h:outputText value="#{tipoEvaluacion.nomTipoEvaluacion}" style="margin-left: 10px;"/>
-                                    <f:setPropertyActionListener value="#{tipoEvaluacion}" target="#{SessionBeanEMP.tipoEvaluacion}"/>
-                                </p:commandLink>                        
-                            </p:column>  
-                        </p:dataList>
-                    </td>
-                    <td width="50%">
-                        <p:dataList id="plantillasDataList" value="#{empleados$seleccionEvaluacion.listaPlantillas}" var="plantilla" paginator="true" rows="3" effectSpeed="fast" paginatorAlwaysVisible="true" paginatorPosition="top" paginatorTemplate="Plantilla {PreviousPageLink} {CurrentPageReport} {NextPageLink}" itemType="none">
-                            <p:column>  
-                                <p:commandLink title="Seleccionar plantilla: #{plantilla.nombre}" style="text-decoration: none;" action="#{empleados$seleccionEvaluacion.seleccionPlantilla$action}" update="principalForm:mensajes" onmouseover="this.className='textonegrita';" onmouseout="this.className='textonormal';">
-                                    <p:graphicImage value="/resources/iconos/task-delegate.png"/>
-                                    <h:outputText value="#{plantilla.nombre}" style="margin-left: 10px;"/>
-                                    <f:setPropertyActionListener value="#{plantilla}" target="#{SessionBeanEMP.plantilla}"/>
-                                </p:commandLink>                        
-                            </p:column>  
-                        </p:dataList>
+                    <td width="70%">
+                        <p:dataTable id="evaluacionesTable" value="#{empleados$seleccionEvaluacion.listaEvaluaciones}" var="evaluacion" emptyMessage="[No hay evaluaciones pendientes]" paginatorAlwaysVisible="true" paginator="true" selectionMode="single" selection="#{SessionBeanEMP.evaluacionSeleccionada}">
+                            <f:facet name="header">
+                                <h:outputText value="Evaluaciones"/>
+                            </f:facet>
+                            <p:column headerText="Empleado">
+                                <h:outputText value="#{evaluacion.empleado1.nombres} #{evaluacion.empleado1.apellidos}"/>
+                            </p:column>
+                            <p:column headerText="Tipo de evaluaci&oacute;n">
+                                <h:outputText value="#{evaluacion.plantilla1.tipoEvaluacion.nomTipoEvaluacion}"/>
+                            </p:column>
+                        </p:dataTable>
                     </td>
                 </tr>
             </table>
         </p:fieldset>
-        <p:spacer height="5"/>
-        <p:dataTable id="tablaEmpleados" value="#{empleados$seleccionEvaluacion.listaEmpleados}" var="empleado" selectionMode="single" rows="5" paginator="true" paginatorAlwaysVisible="true" update="seleccionEvaluacionForm:tablaEmpleados" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" selection="#{empleados$seleccionEvaluacion.empleadoSeleccionado}">
-            <f:facet name="header">
-                <h:outputText value="Empleados"/>
-            </f:facet>
-            <p:column headerText="ID" filterBy="#{empleado.empleadoPK.codEmp}" sortBy="#{empleado.empleadoPK.codEmp}">
-                <h:outputText value="#{empleado.empleadoPK.codEmp}"/>
-            </p:column>
-            <p:column headerText="Nombre" filterBy="#{empleado.nombres} #{empleado.apellidos}" sortBy="#{empleado.nombres} #{empleado.apellidos}" filterMatchMode="contains">
-                <h:outputText value="#{empleado.nombres} #{empleado.apellidos}"/>
-            </p:column>
-        </p:dataTable>
+    </ui:define>
+    <!-- ======================================================================================================= -->
+    <ui:define name="dialogos">
+        <p:dialog id="cnf1" widgetVar="cnf1" modal="true" closeOnEscape="true" closable="true" draggable="true" showEffect="zoom" hideEffect="zoom" header="PlanillaWeb" resizable="false" width="400">
+            <h:panelGrid columns="2" width="100%">
+                <p:graphicImage width="64" height="64" url="/resources/imagenes/64/dialog-question.png"/>
+                <h:outputText value="¿Confirma que desea cerrar la evaluaci&oacute;n?"/>                
+            </h:panelGrid>
+            <p:separator/>
+            <h:panelGrid columns="2">
+                <p:commandButton value="Si" image="ui-icon ui-icon-circle-check" action="#{empleados$seleccionEvaluacion.cerrarEvaluacion$action}"/>
+                <p:commandButton value="No" image="ui-icon ui-icon-circle-close" onclick="cnf1.hide();"/>
+            </h:panelGrid>
+        </p:dialog>
     </ui:define>
 </ui:composition>
