@@ -47,27 +47,27 @@ public class ReclutamientoSessionBean {
         return concursoFacade.getConcursosByDate(fechaInicial, fechaFinal);
     }
 
-    public List<Concurso> getConcursosEvaluados(Integer empresa) {
+    public List<Concurso> getConcursosEvaluados(Long empresa) {
         return concursoFacade.getConcursosActivos(empresa);
     }
 
-    public List<Concurso> getConcursoByEmpresa(Integer empresa) {
+    public List<Concurso> getConcursoByEmpresa(Long empresa) {
         return concursoFacade.findConcursoByEmpresa(empresa);
     }
 
-    public List<EstadoConcurso> getEstadoConcursosByEmpresa(Integer empresa) {
+    public List<EstadoConcurso> getEstadoConcursosByEmpresa(Long empresa) {
         return estadoConcursoFacade.findEstadoConcursoByEmpresa(empresa);
     }
 
-    public List<Puesto> getPuestosByEmpresa(Integer empresa) {
+    public List<Puesto> getPuestosByEmpresa(Long empresa) {
         return puestoFacade.findPuestoByEmpresa(empresa);
     }
 
-    public List<TipoPuesto> getTipoPuestosByEmpresa(Integer empresa) {
+    public List<TipoPuesto> getTipoPuestosByEmpresa(Long empresa) {
         return tipoPuestoFacade.findTipoPuestoByEmpresa(empresa);
     }
 
-    public Integer getMaxConcurso(Integer empresa) {
+    public Integer getMaxConcurso(Long empresa) {
         return concursoFacade.getMax(empresa).intValue();
     }
 
