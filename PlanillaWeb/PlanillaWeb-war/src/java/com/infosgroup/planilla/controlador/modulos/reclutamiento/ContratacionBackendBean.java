@@ -70,7 +70,7 @@ public class ContratacionBackendBean extends JSFUtil implements Serializable {
     }
 
     public List<Concurso> getListaConcurso() {
-        return reclutamientoSessionBean.getConcursosEvaluados(1);
+        return reclutamientoSessionBean.getConcursosEvaluados(1L);
     }
 
     public void setListaConcurso(List<Concurso> listaConcursos) {
