@@ -58,4 +58,9 @@ List<Empleado> listaEvaluadoresSource = empleadosBean.listarEmpleados();
 List<Empleado> listaEvaluadoresTarget = new ArrayList<Empleado>(0);
 modeloEmpleadosEvaluadores = new DualListModel<Empleado>(listaEvaluadoresSource, listaEvaluadoresTarget);
 }
+
+public String definirEvaluaciones$action()
+{
+return null;
+}
 }
