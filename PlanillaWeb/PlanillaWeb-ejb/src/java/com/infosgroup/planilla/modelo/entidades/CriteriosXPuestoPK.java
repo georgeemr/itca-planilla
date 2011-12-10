@@ -16,121 +16,148 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class CriteriosXPuestoPK implements Serializable {
+public class CriteriosXPuestoPK implements Serializable
+{
+
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cod_cia", nullable = false)
-    private int codCia;
+    @Column(name = "COD_CIA", nullable = false)
+    private long codCia;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "puesto", nullable = false)
-    private int puesto;
+    @Column(name = "PUESTO", nullable = false)
+    private long puesto;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "criterio", nullable = false)
-    private int criterio;
+    @Column(name = "TIPO_CRITERIO", nullable = false)
+    private long tipoCriterio;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "correlativo", nullable = false)
-    private int correlativo;
+    @Column(name = "CRITERIO", nullable = false)
+    private long criterio;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "tipo_criterio", nullable = false)
-    private int tipoCriterio;
+    @Column(name = "CORRELATIVO", nullable = false)
+    private long correlativo;
     @Transient
     private String pkAsString;
 
-    public CriteriosXPuestoPK() {
+    public CriteriosXPuestoPK()
+    {
     }
 
-    public CriteriosXPuestoPK(int codCia, int puesto, int criterio, int correlativo, int tipoCriterio) {
+    public CriteriosXPuestoPK(long codCia, long puesto, long tipoCriterio, long criterio, long correlativo)
+    {
         this.codCia = codCia;
         this.puesto = puesto;
+        this.tipoCriterio = tipoCriterio;
         this.criterio = criterio;
         this.correlativo = correlativo;
-        this.tipoCriterio = tipoCriterio;
     }
 
-    public int getCodCia() {
+    public long getCodCia()
+    {
         return codCia;
     }
 
-    public void setCodCia(int codCia) {
+    public void setCodCia(long codCia)
+    {
         this.codCia = codCia;
     }
 
-    public int getPuesto() {
+    public long getPuesto()
+    {
         return puesto;
     }
 
-    public void setPuesto(int puesto) {
+    public void setPuesto(long puesto)
+    {
         this.puesto = puesto;
     }
 
-    public int getCriterio() {
-        return criterio;
-    }
-
-    public void setCriterio(int criterio) {
-        this.criterio = criterio;
-    }
-
-    public int getCorrelativo() {
-        return correlativo;
-    }
-
-    public void setCorrelativo(int correlativo) {
-        this.correlativo = correlativo;
-    }
-
-    public int getTipoCriterio() {
+    public long getTipoCriterio()
+    {
         return tipoCriterio;
     }
 
-    public void setTipoCriterio(int tipoCriterio) {
+    public void setTipoCriterio(long tipoCriterio)
+    {
         this.tipoCriterio = tipoCriterio;
     }
 
+    public long getCriterio()
+    {
+        return criterio;
+    }
+
+    public void setCriterio(long criterio)
+    {
+        this.criterio = criterio;
+    }
+
+    public long getCorrelativo()
+    {
+        return correlativo;
+    }
+
+    public void setCorrelativo(long correlativo)
+    {
+        this.correlativo = correlativo;
+    }
+
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) puesto;
+        hash += (int) tipoCriterio;
         hash += (int) criterio;
         hash += (int) correlativo;
-        hash += (int) tipoCriterio;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CriteriosXPuestoPK)) {
+        if (!(object instanceof CriteriosXPuestoPK))
+            {
             return false;
-        }
+            }
         CriteriosXPuestoPK other = (CriteriosXPuestoPK) object;
-        if (this.codCia != other.codCia) {
+        if (this.codCia != other.codCia)
+            {
             return false;
-        }
-        if (this.puesto != other.puesto) {
+            }
+        if (this.puesto != other.puesto)
+            {
             return false;
-        }
-        if (this.criterio != other.criterio) {
+            }
+        if (this.tipoCriterio != other.tipoCriterio)
+            {
             return false;
-        }
-        if (this.correlativo != other.correlativo) {
+            }
+        if (this.criterio != other.criterio)
+            {
             return false;
-        }
-        if (this.tipoCriterio != other.tipoCriterio) {
+            }
+        if (this.correlativo != other.correlativo)
+            {
             return false;
-        }
+            }
         return true;
     }
 
     @Override
-    public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK[ codCia=" + codCia + ", puesto=" + puesto + ", criterio=" + criterio + ", correlativo=" + correlativo + ", tipoCriterio=" + tipoCriterio + " ]";
+    public String toString()
+    {
+        return "com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK[ codCia=" + codCia + ", puesto=" + puesto + ", tipoCriterio=" + tipoCriterio + ", criterio=" + criterio + ", correlativo=" + correlativo + " ]";
     }
 
     public String getPkAsString() {
