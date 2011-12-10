@@ -29,7 +29,7 @@
                             <p:spacer width="5"/>
                             <h:outputText value="#{SessionBeanEMP.empleadoSesion.nombres} #{SessionBeanEMP.empleadoSesion.apellidos}" style="font-weight: bold;"/>
                             <p:spacer width="20"/>
-                            <p:commandLink value="Cerrar sesi&oacute;n" action="#{index.cerrarSesion$action}"/>
+                            <p:commandLink value="Cerrar sesi&oacute;n" onclick="cerrarSessionDialog.show();"/>
                         </td>
                         <td>
                             <!--p:commandButton value="Opciones" image="opciones" onclick="dialogOpciones.show();"/-->
@@ -40,6 +40,17 @@
                                     <p:themeSwitcher width="400"/>
                                 </h:panelGrid>
                             </p:dialog>
+                            <p:dialog id="cerrarSessionDialog" widgetVar="cerrarSessionDialog" header="Planilla Web" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="zoom" showEffect="zoom" modal="true" width="400">
+                                <h:panelGrid columns="2" width="100%">
+                                    <p:graphicImage width="64" height="64" url="/resources/imagenes/64/dialog-question.png"/>
+                                    <h:outputText value="¿Confirma que desea cerrar sesi&oacute;n?"/>
+                                </h:panelGrid>
+                                <p:separator/>
+                                <h:panelGrid columns="2">
+                                    <p:commandButton value="Aceptar"  image="ui-icon ui-icon-circle-check" action="#{index.cerrarSesion$action}"/>
+                                    <p:commandButton value="Cancelar" image="ui-icon ui-icon-circle-close" onclick="cerrarSessionDialog.hide();"/>
+                                </h:panelGrid>
+                            </p:dialog>
                             <ui:insert name="dialogos"/>
                         </td>
                         <td width="250" align="right">
@@ -48,8 +59,9 @@
                                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                         <tr>
                                             <td align="right">
-                                                <h:graphicImage url="/resources/imagenes/ajax-loader-otro.gif" width="24" height="24"/>
+                                                <h:graphicImage url="/resources/imagenes/ajax_loader_large.gif" width="24" height="24"/>
                                             </td>
+                                            <td><p:spacer width="5"/></td>
                                             <td align="left">
                                                 <h:outputText value="Espere un momento..." style="font-size: 8pt; color:black;"/>
                                             </td>
