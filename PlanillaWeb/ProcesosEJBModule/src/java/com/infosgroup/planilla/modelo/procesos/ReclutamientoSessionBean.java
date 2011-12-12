@@ -15,6 +15,7 @@ import com.infosgroup.planilla.modelo.entidades.TipoPuesto;
 import com.infosgroup.planilla.modelo.entidades.TipoPuestoPK;
 import com.infosgroup.planilla.modelo.facades.CandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.ConcursoFacade;
+import com.infosgroup.planilla.modelo.facades.CriterioSeleccionadoFacade;
 import com.infosgroup.planilla.modelo.facades.EstadoConcursoFacade;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPuestoFacade;
@@ -33,6 +34,8 @@ import java.util.List;
 @LocalBean
 public class ReclutamientoSessionBean {
 
+    @EJB
+    private CriterioSeleccionadoFacade criterioSeleccionadoFacade;
     @EJB
     private EstadoConcursoFacade estadoConcursoFacade;
     @EJB
@@ -121,11 +124,21 @@ public class ReclutamientoSessionBean {
      * @param  Concurso
      * @return Candidatos que cumplen con los criterios del puesto.
      */
-    public List<Candidato> getCandidatoConCriteriosPuesto( Concurso c, List<CriteriosXPuesto> criterios) {
-        List<String> z = new ArrayList<String>();
-        for ( Object o: criterios ){
-            z.add(o.toString());
+    public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String empleado) {
+        return candidatoFacade.getCandidatoConCriteriosPuesto(c, empleado );
+    }
+
+    public Integer eliminarCriteriosSeleccionados(String usuario) {
+        return criterioSeleccionadoFacade.eliminarCriterioSeleccionado(usuario);
+    }
+
+    public void seleccionarCriterio(String usuario, List<CriteriosXPuesto> listaCriterios) {
+        List<String> a = new ArrayList<String>();
+        
+        for( CriteriosXPuesto z: listaCriterios ){
+            a.add(z.toString());
         }
-        return candidatoFacade.getCandidatoConCriteriosPuesto( c, z);
+        
+        criterioSeleccionadoFacade.seleccionarCriterio(usuario, a);
     }
 }
