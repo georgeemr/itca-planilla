@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -54,7 +55,7 @@ public class TipoEvaluacion implements Serializable
     @ManyToOne(optional = false)
     private Compania compania;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion", fetch = FetchType.EAGER)
     private List<Plantilla> plantillaList;
 
     public TipoEvaluacion()

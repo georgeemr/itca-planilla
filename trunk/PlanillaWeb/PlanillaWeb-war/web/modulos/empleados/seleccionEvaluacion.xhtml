@@ -43,7 +43,6 @@
                                 <h:outputText value="#{campania.nombre}"/>
                             </p:column>
                         </p:dataTable>
-
                     </td>
                     <td width="70%">
                         <p:dataTable id="evaluacionesTable" value="#{empleados$seleccionEvaluacion.listaEvaluaciones}" var="evaluacion" emptyMessage="[No hay evaluaciones pendientes]" paginatorAlwaysVisible="true" paginator="true" selectionMode="single" selection="#{SessionBeanEMP.evaluacionSeleccionada}">
@@ -55,6 +54,9 @@
                             </p:column>
                             <p:column headerText="Tipo de evaluaci&oacute;n">
                                 <h:outputText value="#{evaluacion.plantilla1.tipoEvaluacion.nomTipoEvaluacion}"/>
+                            </p:column>
+                            <p:column headerText="Plantilla">
+                                <h:outputText value="#{evaluacion.plantilla1.nombre}"/>
                             </p:column>
                         </p:dataTable>
                     </td>
@@ -71,7 +73,7 @@
             </h:panelGrid>
             <p:separator/>
             <h:panelGrid columns="2">
-                <p:commandButton value="Si" image="ui-icon ui-icon-circle-check" action="#{empleados$seleccionEvaluacion.cerrarEvaluacion$action}"/>
+                <p:commandButton value="Si" image="ui-icon ui-icon-circle-check" action="#{empleados$evaluacionEmpleado.cerrarEvaluacion$action}"/>
                 <p:commandButton value="No" image="ui-icon ui-icon-circle-close" onclick="cnf1.hide();"/>
             </h:panelGrid>
         </p:dialog>
