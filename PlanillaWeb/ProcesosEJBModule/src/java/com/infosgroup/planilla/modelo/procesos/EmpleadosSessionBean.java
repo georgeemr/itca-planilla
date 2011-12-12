@@ -12,6 +12,8 @@ import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.Factor;
 import com.infosgroup.planilla.modelo.entidades.Plantilla;
 import com.infosgroup.planilla.modelo.entidades.Pregunta;
+import com.infosgroup.planilla.modelo.entidades.Puesto;
+import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import com.infosgroup.planilla.modelo.entidades.Respuesta;
 import com.infosgroup.planilla.modelo.entidades.RespuestaPK;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
@@ -22,7 +24,10 @@ import com.infosgroup.planilla.modelo.facades.DetEvaluacionFacade;
 import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
 import com.infosgroup.planilla.modelo.facades.EvaluacionFacade;
 import com.infosgroup.planilla.modelo.facades.FactorFacade;
+import com.infosgroup.planilla.modelo.facades.PuestoEmpleadoFacade;
+import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.RespuestaFacade;
+import com.infosgroup.planilla.modelo.facades.TipoEvaluacionFacade;
 
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -39,11 +44,14 @@ import javax.ejb.EJB;
 @LocalBean
 public class EmpleadosSessionBean
 {
-@EJB 
+@EJB
 private CampaniaFacade campaniasFacade;
 
 @EJB
 private EmpleadoFacade empleadosFacade;
+
+@EJB
+private PuestoEmpleadoFacade puestoEmpleadoFacade;
 
 @EJB
 private FactorFacade factorFacade;
@@ -57,33 +65,34 @@ private DetEvaluacionFacade detalleEvaluacionFacade;
 @EJB
 private EvaluacionFacade evaluacionFacade;
 
+@EJB
+private PuestoFacade puestoFacade;
+
+@EJB
+private TipoEvaluacionFacade tipoEvaluacionFacade;
+
+public List<Campania> listarCampanias()
+{
+return campaniasFacade.findAll();
+}
+
 @PermitAll
 public List<Campania> listarCampaniasPorEmpleado(Empleado empleado)
 {
-//return campaniasFacade.findAll();
 return campaniasFacade.findByEmpleadoEvaluador(empleado);
 }
-//
-//public List<TipoEvaluacion> listarTiposEvaluacion()
-//{
-//return tipoEvaluacionFacade.findAll();
-//}
 
 public List<Plantilla> listarPlantillasPorTipoEvaluacion(TipoEvaluacion tipoEvaluacion)
 {
 return (tipoEvaluacion != null) ? tipoEvaluacion.getPlantillaList() : null;
 }
 
-//public List<Empleado> listarEmpleados()
-//{
-//return empleadosFacade.findAll();
-//}
-
 public List<Factor> listarFactoresPorPlantilla(Plantilla plantilla)
 {
 return factorFacade.findByPlantilla(plantilla);
 }
 
+@PermitAll
 public List<Pregunta> listarPreguntasPorFactor(Factor factor)
 {
 return (factor != null) ? factor.getPreguntaList() : null;
@@ -105,24 +114,6 @@ boolean result = true;
 Integer i = 1;
 try
     {
-//    EvaluacionPK evaluacionPK = new EvaluacionPK();
-//    evaluacionPK.setCodCia(c.getCampaniaPK().getCodCia());
-//    evaluacionPK.setCodCampania(c.getCampaniaPK().getCodCampania());
-//    evaluacionPK.setPeriodo(c.getCampaniaPK().getPeriodo());
-//    evaluacionPK.setTipoEvaluacion(t.getTipoEvaluacionPK().getCodTipoEvaluacion());
-//    evaluacionPK.setEmpleado(e.getEmpleadoPK().getCodEmp());
-//
-//    Evaluacion ev = new Evaluacion();
-//    ev.setEvaluacionPK(evaluacionPK);
-//    ev.setCampania(c);
-//    ev.setPlantilla1(p);
-//    ev.setEmpleado1(e);
-//    ev.setFecha(Calendar.getInstance().getTime());
-//    ev.setFinalizada(1);
-//    evaluacionFacade.create(ev);
-
-//    ev = evaluacionFacade.find(evaluacionPK);
-
     for (DetalleEvaluacion d : det)
         {
         List<PreguntaRespuesta> preguntasRespuestasList = d.getRespuestas();
@@ -135,7 +126,6 @@ try
             detEvaluacionPK.setEmpleado(ev.getEvaluacionPK().getEmpleado());
             detEvaluacionPK.setTipoEvaluacion(ev.getEvaluacionPK().getTipoEvaluacion());
             detEvaluacionPK.setCodDetEvaluacion(i++);
-            //detEvaluacionPK.setCodDetEvaluacion(detalleEvaluacionFacade.max(ev.getEvaluacionPK())+1);                
 
             DetEvaluacion detEvaluacion = new DetEvaluacion();
             detEvaluacion.setEvaluacion(ev);
@@ -156,9 +146,9 @@ catch (Exception excpt)
 return result;
 }
 
-public List<Empleado> listarEmpleados()
+public List<PuestoEmpleado> listarPuestosEmpleados()
 {
-return empleadosFacade.findAll();
+return puestoEmpleadoFacade.findAll();
 }
 
 public List<Empleado> listarEmpleadosEvaluados(Campania c)
@@ -174,5 +164,58 @@ return empleadosFacade.findEmpleadosNoEvaluados(c);
 public Empleado buscarEmpleadoPorUsuario(String usuario)
 {
 return empleadosFacade.findByUsuario(usuario);
+}
+
+public List<Puesto> listarPuestos()
+{
+return puestoFacade.findAll();
+}
+
+public List<TipoEvaluacion> listarTiposEvaluacion()
+{
+return tipoEvaluacionFacade.findAll();
+}
+
+@PermitAll
+public Integer crearEvaluaciones(List<Evaluacion> listaEvaluaciones)
+{
+Integer excepciones = 0;
+for (Evaluacion evaluacion : listaEvaluaciones)
+    {
+    try
+        {
+        evaluacionFacade.create(evaluacion);
+        }
+    catch (Exception excpt)
+        {
+        excepciones++;
+        }
+    }
+return excepciones;
+}
+
+@PermitAll
+public Integer asignarEvaluaciones(List<Evaluacion> listaEvaluaciones, Empleado evaluador)
+{
+Integer excepciones = 0;
+List<Evaluacion> evaluacionesActuales = evaluador.getEvaluacionList();
+for (Evaluacion evaluacion : listaEvaluaciones)
+    {
+    if (!evaluacionesActuales.contains(evaluacion))
+        {
+        evaluacionesActuales.add(evaluacion);
+        }
+    }
+try
+    {
+    evaluador.setEvaluacionList(evaluacionesActuales);
+    empleadosFacade.edit(evaluador);
+    }
+catch (Exception excpt)
+    {
+    excepciones += listaEvaluaciones.size();
+    excpt.printStackTrace(System.err);
+    }
+return excepciones;
 }
 }
