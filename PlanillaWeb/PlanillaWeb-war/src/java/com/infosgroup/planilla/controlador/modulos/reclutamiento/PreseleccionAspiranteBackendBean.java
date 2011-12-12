@@ -20,7 +20,6 @@ import java.util.List;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -36,17 +35,9 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     private Date fechaFinal;
     private List<Concurso> listaConcurso;
     private DataTable tableConcursos;
-    private DualListModel<CriteriosXPuesto> listModelCriterios = new DualListModel<CriteriosXPuesto>();
-    private DualListModel<Candidato> listModelCandidatos = new DualListModel<Candidato>();
-
-    public DualListModel<CriteriosXPuesto> getListModelCriterios() {
-        return listModelCriterios;
-    }
-
-    public void setListModelCriterios(DualListModel<CriteriosXPuesto> listModelCriterios) {
-        this.listModelCriterios = listModelCriterios;
-    }
-
+    private DataTable tableCriterios;
+    private DataTable tableCandidatos;
+    
     public DataTable getTableConcursos() {
         return tableConcursos;
     }
@@ -86,14 +77,22 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
         return reclutamientoSessionBean.getCandidatosByEmpresa(1L);
     }
 
-    public DualListModel<Candidato> getListModelCandidatos() {
-        return listModelCandidatos;
+    public DataTable getTableCandidatos() {
+        return tableCandidatos;
     }
 
-    public void setListModelCandidatos(DualListModel<Candidato> listModelCandidatos) {
-        this.listModelCandidatos = listModelCandidatos;
+    public void setTableCandidatos(DataTable tableCandidatos) {
+        this.tableCandidatos = tableCandidatos;
     }
 
+    public DataTable getTableCriterios() {
+        return tableCriterios;
+    }
+
+    public void setTableCriterios(DataTable tableCriterios) {
+        this.tableCriterios = tableCriterios;
+    }
+    
     public String buscarConcurso$action() {
         if (fechaInicial != null && fechaFinal != null) {
             if (validaFechas(fechaInicial, fechaFinal) == true) {
@@ -113,9 +112,13 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
 
     public void onRowSelectConcurso(SelectEvent event) {
         getSessionBeanREC().setConcursoSeleccionado((Concurso) event.getObject());
-        setListModelCandidatos(new DualListModel<Candidato>(reclutamientoSessionBean.getCandidatosByEmpresa(getSessionBeanADM().getCompania().getIdCompania()), new ArrayList<Candidato>()));
-        setListModelCriterios(new DualListModel<CriteriosXPuesto>(getSessionBeanREC().getConcursoSeleccionado().getPuesto().getCriteriosXPuestoList(), new ArrayList<CriteriosXPuesto>()));
+
     }
+    
+    public void onRowSelectCriterio(SelectEvent event) {
+        getSessionBeanREC().setConcursoSeleccionado((Concurso) event.getObject());
+    }
+    
 
     public String onFlowListener(FlowEvent event) {
         if (getSessionBeanREC().getConcursoSeleccionado() == null) {
@@ -125,7 +128,7 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     }
 
     public String aplicarCriterios() {
-        setListModelCandidatos(new DualListModel<Candidato>(reclutamientoSessionBean.getCandidatoConCriteriosPuesto(sessionBeanREC.getConcursoSeleccionado(), listModelCriterios.getTarget()), new ArrayList<Candidato>()));
+
         return null;
     }
 
@@ -134,8 +137,7 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
         setFechaInicial(null);
         setFechaFinal(null);
         tableConcursos.setSelection(null);
+//        Integer s = reclutamientoSessionBean.eliminarCriteriosSeleccionados(getSessionBeanEMP().getEmpleadoSesion().getUsuario());
         getSessionBeanREC().setConcursoSeleccionado(null);
-        setListModelCandidatos(new DualListModel<Candidato>(new ArrayList<Candidato>(), new ArrayList<Candidato>()));
-        setListModelCriterios(new DualListModel<CriteriosXPuesto>(new ArrayList<CriteriosXPuesto>(), new ArrayList<CriteriosXPuesto>()));
     }
 }
