@@ -221,7 +221,7 @@ public class Candidato implements Serializable {
     }
 
     public String getNombreCompleto() {
-        nombreCompleto = nombre + " " + apellido + " " + apCasada;
+        nombreCompleto = nombre + " " + apellido + " " + (apCasada != null ? apCasada :"");
         return nombreCompleto;
     }
 
