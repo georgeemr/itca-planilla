@@ -214,7 +214,6 @@ try
 catch (Exception excpt)
     {
     excepciones += listaEvaluaciones.size();
-    excpt.printStackTrace(System.err);
     }
 return excepciones;
 }
