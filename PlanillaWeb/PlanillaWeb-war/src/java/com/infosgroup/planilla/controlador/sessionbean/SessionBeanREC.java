@@ -10,7 +10,7 @@ import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import org.primefaces.model.DualListModel;
+import java.util.List;
 
 /**
  *
@@ -38,4 +38,23 @@ public class SessionBeanREC implements Serializable {
         this.concursoSeleccionado = concursoSeleccionado;
     }
 
+    public List<CriteriosXPuesto> criteriosSeleccionados;
+    public List<Candidato> candidatosSeleccionados;
+
+    public List<Candidato> getCandidatosSeleccionados() {
+        return candidatosSeleccionados;
+    }
+
+    public void setCandidatosSeleccionados(List<Candidato> candidatosSeleccionados) {
+        this.candidatosSeleccionados = candidatosSeleccionados;
+    }
+
+    public List<CriteriosXPuesto> getCriteriosSeleccionados() {
+        return criteriosSeleccionados;
+    }
+
+    public void setCriteriosSeleccionados(List<CriteriosXPuesto> criteriosSeleccionados) {
+        this.criteriosSeleccionados = criteriosSeleccionados;
+    }
+   
 }
