@@ -143,6 +143,6 @@ public class CriteriosXPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto[ criteriosXPuestoPK=" + criteriosXPuestoPK + " ]";
+        return "" + criteriosXPuestoPK.getCodCia() + ":" + criteriosXPuestoPK.getCriterio() + ":" + criteriosXPuestoPK.getTipoCriterio();
     }
 }
