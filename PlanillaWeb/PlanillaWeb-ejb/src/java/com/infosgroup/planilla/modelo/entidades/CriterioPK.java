@@ -32,7 +32,7 @@ public class CriterioPK implements Serializable {
     private long tipo;
     @Transient
     private String pkAsString;
-    
+
     public CriterioPK() {
     }
 
@@ -67,13 +67,14 @@ public class CriterioPK implements Serializable {
     }
 
     public String getPkAsString() {
+        pkAsString = "" + codCia + ":" + codigo + ":" + tipo;
         return pkAsString;
     }
 
     public void setPkAsString(String pkAsString) {
         this.pkAsString = pkAsString;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
