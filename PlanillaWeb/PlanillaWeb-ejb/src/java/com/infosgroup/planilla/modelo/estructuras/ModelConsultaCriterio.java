@@ -5,6 +5,8 @@
 package com.infosgroup.planilla.modelo.estructuras;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 
 /**
  *
@@ -12,10 +14,10 @@ import java.io.Serializable;
  */
 public class ModelConsultaCriterio implements Serializable {
 
-    private Integer empresa;
-    private Integer puesto;
-    private Integer tipoCriterio;
-    private Integer correlativo;
+    private BigDecimal empresa;
+    private BigDecimal puesto;
+    private BigDecimal tipoCriterio;
+    private BigDecimal correlativo;
     private String valor;
     private String valorInicialRango;
     private String valorFinalRango;
@@ -28,7 +30,7 @@ public class ModelConsultaCriterio implements Serializable {
     public ModelConsultaCriterio() {
     }
 
-    public ModelConsultaCriterio(Integer empresa, Integer puesto, Integer tipoCriterio, Integer correlativo, String valor, String valorInicialRango, String valorFinalRango, String operacion, String clase, String campo, String entidad, String entidadPK) {
+    public ModelConsultaCriterio(BigDecimal empresa, BigDecimal puesto, BigDecimal tipoCriterio, BigDecimal correlativo, String valor, String valorInicialRango, String valorFinalRango, String operacion, String clase, String campo, String entidad, String entidadPK) {
         this.empresa = empresa;
         this.puesto = puesto;
         this.tipoCriterio = tipoCriterio;
@@ -44,10 +46,10 @@ public class ModelConsultaCriterio implements Serializable {
     }
 
     public ModelConsultaCriterio(Object[] o) {
-        this.empresa = (Integer) o[0];
-        this.puesto = (Integer) o[1];
-        this.tipoCriterio = (Integer) o[2];
-        this.correlativo = (Integer) o[3];
+        this.empresa = (BigDecimal) o[0];
+        this.puesto = (BigDecimal) o[1];
+        this.tipoCriterio = (BigDecimal) o[2];
+        this.correlativo = (BigDecimal) o[3];
         this.valor = (String) o[4];
         this.valorInicialRango = (String) o[5];
         this.valorFinalRango = (String) o[6];
@@ -66,19 +68,19 @@ public class ModelConsultaCriterio implements Serializable {
         this.campo = campo;
     }
 
-    public Integer getCorrelativo() {
+    public BigDecimal getCorrelativo() {
         return correlativo;
     }
 
-    public void setCorrelativo(Integer correlativo) {
+    public void setCorrelativo(BigDecimal correlativo) {
         this.correlativo = correlativo;
     }
 
-    public Integer getEmpresa() {
+    public BigDecimal getEmpresa() {
         return empresa;
     }
 
-    public void setEmpresa(Integer empresa) {
+    public void setEmpresa(BigDecimal empresa) {
         this.empresa = empresa;
     }
 
@@ -98,19 +100,19 @@ public class ModelConsultaCriterio implements Serializable {
         this.operacion = operacion;
     }
 
-    public Integer getPuesto() {
+    public BigDecimal getPuesto() {
         return puesto;
     }
 
-    public void setPuesto(Integer puesto) {
+    public void setPuesto(BigDecimal puesto) {
         this.puesto = puesto;
     }
 
-    public Integer getTipoCriterio() {
+    public BigDecimal getTipoCriterio() {
         return tipoCriterio;
     }
 
-    public void setTipoCriterio(Integer tipoCriterio) {
+    public void setTipoCriterio(BigDecimal tipoCriterio) {
         this.tipoCriterio = tipoCriterio;
     }
 
