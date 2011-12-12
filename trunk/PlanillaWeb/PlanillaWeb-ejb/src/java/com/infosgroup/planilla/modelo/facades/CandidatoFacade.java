@@ -7,14 +7,11 @@ package com.infosgroup.planilla.modelo.facades;
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.CandidatoPK;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
-import com.infosgroup.planilla.modelo.entidades.ConcursoPK;
-import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.estructuras.ModelConsultaCriterio;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -31,8 +28,10 @@ import java.util.logging.Logger;
 @LocalBean
 public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
 
-    private enum operacion { equal, between };
-    
+    private enum operacion {
+
+        equal, between
+    };
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
@@ -54,17 +53,84 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
     /**
      * Devuelve una lista de candidatos, con todos los criterios del puesto del concurso seleccionado.
      */
-    public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, List<String> criterios) {
+    public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String usuario) {
         List<Candidato> listaCandidatos = new ArrayList<Candidato>();
         for (Candidato candidato : findByCanditadoByEmpresa(c.getConcursoPK().getCodCia())) {
-            if (validaCriterios(c.getConcursoPK().getCodCia(), c.getPuesto().getPuestoPK().getCodPuesto(), candidato.getCandidatoPK().getCodCandidato()/*, criterios*/) == 1) {
+            if (getCandidatosByCriterios(c.getConcursoPK().getCodCia(), c.getPuesto().getPuestoPK().getCodPuesto(), candidato.getCandidatoPK().getCodCandidato(), usuario) == 1) {
                 listaCandidatos.add(candidato);
             }
         }
         return listaCandidatos;
     }
 
-    public Integer validaCriterios(Long empresa, Long puesto, Long candidato /*, List<String> criterios */) {
+    private Integer getCandidatosByCriterios(Long empresa, Long puesto, Long candidato, String usuario) {
+        String nativeQuery = "select  t.cod_cia, t.puesto, t.tipo_criterio, t.correlativo, t.valor, t.valor_inicial_rango, t.valor_final_rango, "
+                + "u.operador,u.clase, "
+                + "v.campo, v.entidad, v.entidadpk "
+                + "from planilla.criterios_x_puesto t, planilla.criterio u, planilla.criterios_x_candidato v, planilla.criterio_seleccionado w "
+                + "where t.cod_cia = " + empresa + " and t.puesto = " + puesto
+                + "and u.cod_cia = t.cod_cia "
+                + "and u.tipo = t.tipo_criterio "
+                + "and u.codigo = t.criterio "
+                + "and v.cod_cia = u.cod_cia "
+                + "and v.tipo_criterio = u.tipo "
+                + "and v.criterio = u.codigo "
+                + "and w.cod_cia = v.cod_cia "
+                + "and w.codigo = v.criterio "
+                + "and w.tipo = v.tipo_criterio "
+                + "and w.usuario = '" + usuario + "'";
+        for (Object o : getEntityManager().createNativeQuery(nativeQuery)/*.setParameter("codCia", empresa).setParameter("puesto", puesto)*/.getResultList()) {
+            ModelConsultaCriterio model = new ModelConsultaCriterio((Object[]) o);
+            Object t = getEntityManager().createQuery("SELECT v." + model.getCampo() + " FROM " + model.getEntidad() + " v WHERE v." + model.getEntidadPK().split(":")[0] + " = " + empresa + " AND v." + model.getEntidadPK().split(":")[1] + " =  " + candidato).setMaxResults(1).getSingleResult();
+            if (model.getOperacion().equals(operacion.equal.toString())) {
+                if (model.getValor() == null) {
+                    return 0;
+                }
+                if (model.getClase().equals("java.lang.String")) {
+                    if (!t.toString().equals(model.getValor().toString())) {
+                        return 0;
+                    }
+                } else if (model.getClase().equals("java.lang.Integer")) {
+                    if (!t.toString().equals(model.getValor().toString())) {
+                        return 0;
+                    }
+                } else if (model.getClase().equals("java.util.Date")) {
+                    if (!new SimpleDateFormat("dd/MM/yyyy").format((Date) t).equals(new SimpleDateFormat("dd/MM/yyyy").format(model.getValor().toString()))) {
+                        return 0;
+                    }
+                }
+            } else if (model.getOperacion().equals(operacion.between.toString())) {
+                if (model.getValorInicialRango() == null || model.getValorInicialRango() == null) {
+                    return 0;
+                }
+
+                if (model.getClase().equals("java.lang.Integer")) {
+                    if (!(new Integer(t.toString()) >= new Integer(model.getValorInicialRango().toString()) && new Integer(t.toString()) <= new Integer(model.getValorInicialRango().toString()))) {
+                        return 0;
+                    }
+                } else if (model.getClase().equals("java.util.Date")) {
+                    SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+                    java.util.Date a = null, b = null, c = null;
+                    try {
+                        a = (Date) t;
+                        b = f.parse(model.getValorInicialRango());
+                        c = f.parse(model.getValorFinalRango());
+                    } catch (ParseException ex) {
+                        Logger.getLogger(CandidatoFacade.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if (!(a.compareTo(b) >= 0 && a.compareTo(c) <= 0)) {
+                        return 0;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+}
+
+/*
+     public Integer validaCriterios(Long empresa, Long puesto, Long candidato) {
         String q = "SELECT t.criteriosXPuestoPK.codCia, t.criteriosXPuestoPK.puesto, "
                 + " t.criteriosXPuestoPK.tipoCriterio, t.criteriosXPuestoPK.correlativo, "
                 + " t.valor, t.valorInicialRango, t.valorFinalRango,  "
@@ -118,12 +184,4 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         }
         return 1;
     }
-    
-    private List<Candidato> getCandidatosByCriterios(){
-        
-        
-        
-        return null;
-    }
-    
-}
+ */
