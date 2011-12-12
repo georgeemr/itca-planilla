@@ -47,6 +47,9 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Puesto implements Serializable
 {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
+    private List<AccionPersonal> accionPersonalList;
+
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
@@ -314,6 +317,17 @@ public class Puesto implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Puesto[ puestoPK=" + puestoPK + " ]";
+    }
+
+    @XmlTransient
+    public List<AccionPersonal> getAccionPersonalList()
+    {
+        return accionPersonalList;
+    }
+
+    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
+    {
+        this.accionPersonalList = accionPersonalList;
     }
     
 }
