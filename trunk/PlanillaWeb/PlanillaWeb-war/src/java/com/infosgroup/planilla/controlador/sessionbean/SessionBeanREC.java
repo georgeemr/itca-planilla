@@ -14,6 +14,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.util.List;
+import javax.faces.bean.ManagedProperty;
 
 /**
  *
@@ -31,6 +32,8 @@ public class SessionBeanREC implements Serializable {
     private CriteriosXPuesto[] criteriosSeleccionados;
     private Candidato[] candidatosSeleccionados;
     private List<Candidato> listaCandidatos;
+    @ManagedProperty(value="#{SessionBeanEMP}")
+    private SessionBeanEMP sessionBeanEMP;
 
     public SessionBeanREC() {
     }
@@ -61,9 +64,9 @@ public class SessionBeanREC implements Serializable {
 
     public List<Candidato> getListaCandidatos() {
         if (criteriosSeleccionados == null || criteriosSeleccionados.length <= 0) {
-            listaCandidatos = reclutamientoSessionBean.getCandidatosByEmpresa(1L);
+            listaCandidatos = reclutamientoSessionBean.findCandidatosAPreseleccionar(concursoSeleccionado);
         } else {
-            listaCandidatos = new ArrayList<Candidato>();
+            listaCandidatos = reclutamientoSessionBean.getCandidatoConCriteriosPuesto(concursoSeleccionado, getSessionBeanEMP().getEmpleadoSesion().getUsuario());
         }
         return listaCandidatos;
     }
@@ -71,4 +74,13 @@ public class SessionBeanREC implements Serializable {
     public void setListaCandidatos(List<Candidato> listaCandidatos) {
         this.listaCandidatos = listaCandidatos;
     }
+
+    public SessionBeanEMP getSessionBeanEMP() {
+        return sessionBeanEMP;
+    }
+
+    public void setSessionBeanEMP(SessionBeanEMP sessionBeanEMP) {
+        this.sessionBeanEMP = sessionBeanEMP;
+    }
+    
 }
