@@ -9,6 +9,7 @@ import com.infosgroup.planilla.modelo.estructuras.DetallePlanilla;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -26,33 +27,34 @@ public class InformacionPagosBackendBean extends JSFUtil implements Serializable
 
     @EJB
     private PlanillaSessionBean planillaSessionBean;
-    private List<DetallePlanilla> listaDetalles;
+    private List<DetallePlanilla> listaPlaDetalles;
     private DataTable tablaDetalles;
-    private int pla;
-    private int anio;
-    private int mes;
+    private DataTable tablaPrueba;
+    private Long pla;
+    private Long anio;
+    private Long mes;
 
-    public int getAnio() {
+    public Long getAnio() {
         return anio;
     }
 
-    public void setAnio(int anio) {
+    public void setAnio(Long anio) {
         this.anio = anio;
     }
 
-    public int getMes() {
+    public Long getMes() {
         return mes;
     }
 
-    public void setMes(int mes) {
+    public void setMes(Long mes) {
         this.mes = mes;
     }
 
-    public int getPla() {
+    public Long getPla() {
         return pla;
     }
 
-    public void setPla(int pla) {
+    public void setPla(Long pla) {
         this.pla = pla;
     }
 
@@ -63,28 +65,34 @@ public class InformacionPagosBackendBean extends JSFUtil implements Serializable
     public void setTablaDetalles(DataTable tablaDetalles) {
         this.tablaDetalles = tablaDetalles;
     }
- 
-    public List<DetallePlanilla> getListaDetalles() {
-        //listaDetalles = planillaSessionBean.lisDetalle();
-        listaDetalles = planillaSessionBean.listarDetalle(/*pla, anio, mes*/);
-        return listaDetalles;
+
+    public DataTable getTablaPrueba() {
+        return tablaPrueba;
     }
 
-    public void setListaDetalles(List<DetallePlanilla> listaDetalles) {
-        this.listaDetalles = listaDetalles;
+    public void setTablaPrueba(DataTable tablaPrueba) {
+        this.tablaPrueba = tablaPrueba;
     }
-    
-    public void onRowSelectDetalle(SelectEvent event){
-        setListaDetalles(planillaSessionBean.getDetalle((DetallePlanilla) event.getObject()));
+
+    public List<DetallePlanilla> getListaPlaDetalles() {
+        return listaPlaDetalles;
     }
-    
+
+    public void setListaPlaDetalles(List<DetallePlanilla> listaPlaDetalles) {
+        this.listaPlaDetalles = listaPlaDetalles;
+    }
+
+//    public void onRowSelectDetalle(SelectEvent event){
+//        setListaDetalles(planillaSessionBean.getDetalle((DetallePlanilla) event.getObject()));
+//    }
     @Override
     protected void limpiarCampos() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
-    public String buscarPlanilla$action(){
-        getListaDetalles();
+
+    public String buscarPlanilla$action() {
+        listaPlaDetalles = planillaSessionBean.getDetallesPla(pla, anio, mes);
+//        getListaPlaDetalles();
         return null;
     }
 }

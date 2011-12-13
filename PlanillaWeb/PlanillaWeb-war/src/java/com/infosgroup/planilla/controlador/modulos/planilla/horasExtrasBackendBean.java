@@ -17,6 +17,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ValueChangeEvent;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
@@ -33,8 +34,8 @@ public class horasExtrasBackendBean extends JSFUtil implements Serializable {
     private PlanillaSessionBean planillaSessionBean;
     private Integer cia = 1;
     private int tipo;
-    private int planilla;
-    private int sucursal;
+    private int planilla = 0;
+    private int sucursal = 0;
     private List<ResumenAsistencia> horasExtras;
     private DataTable tablaHorasExtras;
     private List<Compania> listaCias;
@@ -132,14 +133,19 @@ public class horasExtrasBackendBean extends JSFUtil implements Serializable {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-//    public void onRowSelectDetalle(SelectEvent event){
-//        setHorasExtras(planillaSessionBean.getResumen((ResumenAsistencia)event.getObject()));
-//    }
+    public void lstPla_valueChangeListener(ValueChangeEvent event) {
+        planilla = (Integer) event.getNewValue();
+    }
+
+    public void lstSuc_valueChangeListener(ValueChangeEvent event) {
+        sucursal = (Integer) event.getNewValue();
+    }
+
     public void rowEditListener(RowEditEvent event) {
         boolean hayError = false;
         ResumenAsistencia resumen = (ResumenAsistencia) event.getObject();
         //setHorasExtras(planillaSessionBean.getResumen(resumen));
-        if(resumen.getEstadoPla().equals('G')){
+        if (resumen.getEstadoPla().matches("G")) {
             hayError = true;
         }
         if (hayError) {
@@ -148,11 +154,15 @@ public class horasExtrasBackendBean extends JSFUtil implements Serializable {
             addMessage("Registro de Resumen de Asistencias", "La planilla no está en estado gravado", TipoMensaje.INFORMACION);
         }
         mostrar$action();
+        hayError = false;
     }
 
     public String mostrar$action() {
-        horasExtras = planillaSessionBean.getAsistencia();
+        if ((planilla != 0) && (sucursal != 0)) {
+            horasExtras = planillaSessionBean.listarResumenByParam(cia, sucursal, planilla);
+        } else {
+            horasExtras = planillaSessionBean.getAsistencia();
+        }
         return null;
     }
-
 }
