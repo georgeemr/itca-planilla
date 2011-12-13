@@ -6,6 +6,7 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.CriterioSeleccionado;
 import com.infosgroup.planilla.modelo.entidades.CriterioSeleccionadoPK;
+import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.ejb.LocalBean;
@@ -25,6 +26,7 @@ public class CriterioSeleccionadoFacade extends AbstractFacade<CriterioSeleccion
 
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
+    private static String DELETE_NATIVE_QUERY = "delete from criterio_seleccionado where cod_cia = ? and usuario = ? ";
 
     public CriterioSeleccionadoFacade() {
         super(CriterioSeleccionado.class);
@@ -36,21 +38,23 @@ public class CriterioSeleccionadoFacade extends AbstractFacade<CriterioSeleccion
     }
 
     @PermitAll
-    public Integer eliminarCriterioSeleccionado(String usuario) {
-        return getEntityManager().createNativeQuery("delete from criterio_seleccionado where usuario = '" + usuario +"'").executeUpdate();
+    public void eliminarCriteriosSeleccionados(Long empresa, String usuario) {
+        getEntityManager().createNativeQuery(DELETE_NATIVE_QUERY).setParameter(1, empresa).setParameter(2, usuario).executeUpdate();
     }
 
-    public void seleccionarCriterio(String usuario, List<String> listaCriterios) {
-        for (String l : listaCriterios) {
-            CriterioSeleccionado x = new CriterioSeleccionado(new Long(l.split(":")[0]), correlativo(usuario).longValue(), usuario);
-            x.setCodigo(new Long(l.split(":")[1]));
-            x.setTipo(new Long(l.split(":")[2]));
-            create(x);
-        }
+    private Long correlativo(String usuario) {
+        Long n = (Long) getEntityManager().createQuery("SELECT MAX(c.criterioSeleccionadoPK.correlativo) FROM CriterioSeleccionado c WHERE c.criterioSeleccionadoPK.usuario = :usuario ").setParameter("usuario", usuario).getSingleResult();
+        return n != null ? ++n : new Long("1");
     }
 
-    private BigDecimal correlativo(String usuario) {
-        BigDecimal n = (BigDecimal) getEntityManager().createQuery("SELECT MAX(c.correlativo) FROM CriterioSeleccionado c WHERE c.usuario = '" +usuario +"'").getSingleResult();
-        return n != null ? n : new BigDecimal(BigInteger.ONE);
+    public void guardarCriterio(CriteriosXPuesto cxp, String usuario) {
+        CriterioSeleccionado cs = new CriterioSeleccionado(cxp.getCriteriosXPuestoPK().getCodCia(), correlativo(usuario).longValue(), usuario);
+        cs.setCodigo(cxp.getCriterio1().getCriterioPK().getCodigo());
+        cs.setTipo(cxp.getCriterio1().getCriterioPK().getTipo());
+        create(cs);
+    }
+
+    public void eliminarCriterio(CriteriosXPuesto cxp, String usuario) {
+        int i = getEntityManager().createNativeQuery(DELETE_NATIVE_QUERY + " and codigo = ? and tipo = ? ").setParameter(1, cxp.getCriterio1().getCriterioPK().getCodCia()).setParameter(2, usuario).setParameter(3, cxp.getCriterio1().getCriterioPK().getCodigo()).setParameter(4, cxp.getCriterio1().getCriterioPK().getTipo()).executeUpdate();
     }
 }
