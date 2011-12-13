@@ -16,90 +16,81 @@
     </ui:define>
 
     <ui:define name="contenido">
-        <p:fieldset id="fieldset2" legend="Elegir Planilla">
+                <p:fieldset id="fieldset2" legend="Elegir Planilla">
             <h:outputLabel value="Anio"/>
-            <p:inputText id="txtAnio" value="#{planilla$informacionPagos.anio}"/>
+            <p:spinner id="txtAnio" value="#{planilla$informacionPagos.anio}" min="1" max="3000" stepFactor="1"/>
             <h:outputLabel value="Mes"/>
-            <p:inputText id="txtMes" value="#{planilla$informacionPagos.mes}"/>
+            <p:spinner id="txtMes" value="#{planilla$informacionPagos.mes}" min="1" max="12" stepFactor="1"/>
             <h:outputLabel value="Planilla"/>
-            <p:inputText id="txtPlan" value="#{planilla$informacionPagos.pla}"/>
+            <p:spinner id="txtPlan" value="#{planilla$informacionPagos.pla}" min="1" max="4" stepFactor="1"/>
             <p:spacer width="10px" />
             <p:commandButton value="Buscar" 
                              image="buscar" 
-                             update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos, tablaCandidatos" 
+                             update="principalForm:mensajes, principalForm:tablaDetalle" 
                              action="#{planilla$informacionPagos.buscarPlanilla$action()}"/>
             
         </p:fieldset>
         <p:spacer height="10px" />
-        <p:fieldset id ="fieldset1" legend ="Planilla">
+        <p:fieldset id="fieldset3" legend="Planilla">
             <p:dataTable id="tablaDetalle"
-                         var="detalle"
-                         value="#{planilla$informacionPagos.listaDetalles}"
+                         var="total"
+                         value="#{planilla$informacionPagos.listaPlaDetalles}"
                          rows="5"
                          paginator="true"
-                         binding="#{planilla$informacionPagos.tablaDetalles}" 
+                         binding="#{planilla$informacionPagos.tablaPrueba}" 
                          emptyMessage="No se han encontrado datos."
                          paginatorAlwaysVisible="true" 
-                         selection="#{SessionBeanPLA.detalleSeleccionado}"
                          update="panelContenido"
                          onRowSelectUpdate="panelContenido"
-                         rowSelectListener="#{planilla$informacionPagos.onRowSelectDetalle}"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
-                <f:facet name="header">
-                    <h:outputText value="Planilla"/>
-                </f:facet>
                 <p:column>
                     <p:rowToggler/>
                 </p:column>
-                <p:column sortBy="#{detalle.cod_cia}">
-                    <f:facet name="header">
-                        Cod Empleado
-                    </f:facet>
-                    <h:outputLabel value="#{detalle.cod_emp}"/>
+                <p:column headerText="Cod. Empleado">
+                    <h:outputLabel value="#{total.puestoEmpleado.empleado.empleadoPK.codEmp}"/>
                 </p:column>
-                <p:column sortBy="#{detalle.apellido}">
-                    <f:facet name="header">
-                        Apellidos
-                    </f:facet>
-                    <h:outputLabel value="#{detalle.apellido}"/>
+                <p:column headerText="Apellidos" filterBy="#{total.puestoEmpleado.empleado.apellidos}" >
+                    <h:outputLabel value="#{total.puestoEmpleado.empleado.apellidos}"/>
                 </p:column>
-                <p:column sortBy="#{detalle.nombre}" headerText="Nombres">
-                    <h:outputLabel value="#{detalle.nombre}"/>
+                <p:column headerText="Nombres" filterBy="#{total.puestoEmpleado.empleado.nombres}" >
+                    <h:outputLabel value="#{total.puestoEmpleado.empleado.nombres}"/>
                 </p:column>
-                <p:column sortBy="#{detalle.base}" headerText="Sueldo base">
-                    <h:outputLabel value="#{detalle.base}"/>
+                <p:column headerText="Sueldo Base" sortBy="#{total.puestoEmpleado.puesto.salarioMinimo}" >
+                    <h:outputLabel value="#{total.puestoEmpleado.puesto.salarioMinimo}"/>
                 </p:column>
-                <p:column sortBy="#{detalle.prestaciones}" headerText="Prestaciones">
-                    <h:outputLabel value="#{detalle.prestaciones}" />
+                <p:column headerText="Prestaciones" sortBy="#{total.prestaciones}" >
+                    <h:outputLabel value="#{total.prestaciones}"/>
                 </p:column>
-                <p:column sortBy="#{detalle.deducciones}" headerText="Deducciones">
-                    <h:outputLabel value="#{detalle.deducciones}"/>
+                <p:column headerText="Deducciones" sortBy="#{total.deducciones}" >
+                    <h:outputLabel value="#{total.deducciones}"/>
                 </p:column>
-                <p:column sortBy="#{detalle.total}" headerText="Liq. Recibir">
-                    <h:outputLabel value="#{detalle.total}"/>
+                <p:column headerText="total" sortBy="#{total.total}" >
+                    <h:outputLabel value="#{total.total}"/>
                 </p:column>
                 <p:rowExpansion>
-            <h:panelGrid columns="2">
-                <p:dataTable emptyMessage="No se han encontrado ingresos.">
-                    <f:facet name="header">
-                        <h:outputText value="Ingresos"/>
-                    </f:facet>
-                    <p:column headerText="Descripcion"></p:column>
-                    <p:column headerText="Cantidad"></p:column>
-                </p:dataTable>
-                        
-                <p:dataTable emptyMessage="No se han encontrado egresos.">
-                    <f:facet name="header">
-                        <h:outputText value="Egresos"/>
-                    </f:facet>
-                    <p:column headerText="Descripcion"></p:column>
-                    <p:column headerText="Cantidad"></p:column>
-                </p:dataTable>
-            </h:panelGrid>              
-          
+                    <h:panelGrid columns="2">
+                        <p:dataTable emptyMessage="No se han encontrado ingresos." var="ing"
+                                     value="">
+                            <f:facet name="header">
+                                <h:outputText value="Ingresos"/>
+                            </f:facet>
+                            <p:column headerText="Descripcion">
+                                <h:outputLabel value="" />
+                            </p:column>
+                            <p:column headerText="Cantidad"></p:column>
+                        </p:dataTable>
+                        <p:dataTable emptyMessage="No se han encontrado egresos.">
+                            <f:facet name="header">
+                                <h:outputText value="Egresos"/>
+                            </f:facet>
+                            <p:column headerText="Descripcion"></p:column>
+                            <p:column headerText="Cantidad"></p:column>
+                        </p:dataTable>
+                    </h:panelGrid>              
                 </p:rowExpansion>
             </p:dataTable>
         </p:fieldset>
+
     </ui:define>
 
 </ui:composition>

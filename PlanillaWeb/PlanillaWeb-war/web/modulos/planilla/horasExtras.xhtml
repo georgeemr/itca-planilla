@@ -65,7 +65,7 @@
                     </f:facet>
                 </p:cellEditor>
             </p:column>
-            <p:column headerText="Nombre">
+            <p:column headerText="Nombre" filterBy="#{h_xtras.puestoEmpleado.empleado.nombres}" >
                 <p:cellEditor>
                     <f:facet name="output">
                         <h:outputText value="#{h_xtras.puestoEmpleado.empleado.nombres}" />
