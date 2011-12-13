@@ -6,13 +6,12 @@ package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
-import com.infosgroup.planilla.modelo.entidades.CriterioSeleccionado;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -114,7 +113,6 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
 
     public void onRowSelectConcurso(SelectEvent event) {
         getSessionBeanREC().setConcursoSeleccionado((Concurso) event.getObject());
-
     }
 
     public void onRowSelectCriterio(SelectEvent event) {
@@ -133,10 +131,15 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     }
 
     public String aplicarCriterios() {
-        
-        // procedimiento de guardar en canditados por concurso
-        addMessage("Preselección de Candidatos", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
-        limpiarCampos();
+        if (getSessionBeanREC().getConcursoSeleccionado() != null) {
+            if (getSessionBeanREC().getCandidatosSeleccionados() != null) {
+                reclutamientoSessionBean.preseleccionarCandidato(getSessionBeanREC().getConcursoSeleccionado(), Arrays.asList(getSessionBeanREC().getCandidatosSeleccionados()));
+                addMessage("Preselección de Candidatos", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+                limpiarCampos();
+                return "concursoSeleccionado";
+            }
+        }
+        addMessage("Preselección de Candidatos", "No ha seleccionado ningún concurso, reinicie el asistente.", TipoMensaje.INFORMACION);
         return "concursoSeleccionado";
     }
 
