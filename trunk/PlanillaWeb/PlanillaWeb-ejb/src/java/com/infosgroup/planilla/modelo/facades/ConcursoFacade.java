@@ -68,4 +68,5 @@ public class ConcursoFacade extends AbstractFacade<Concurso, ConcursoPK> {
         l.addAll( em.createQuery("SELECT c FROM Concurso c WHERE c.concursoPK.codCia = :codCia", Concurso.class).setParameter("codCia", empresa).getResultList() );
         return l;
     }
+    
 }

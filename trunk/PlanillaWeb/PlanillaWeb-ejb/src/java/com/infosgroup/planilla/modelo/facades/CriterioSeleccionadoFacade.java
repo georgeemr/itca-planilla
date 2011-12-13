@@ -7,8 +7,6 @@ package com.infosgroup.planilla.modelo.facades;
 import com.infosgroup.planilla.modelo.entidades.CriterioSeleccionado;
 import com.infosgroup.planilla.modelo.entidades.CriterioSeleccionadoPK;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -57,4 +55,7 @@ public class CriterioSeleccionadoFacade extends AbstractFacade<CriterioSeleccion
     public void eliminarCriterio(CriteriosXPuesto cxp, String usuario) {
         int i = getEntityManager().createNativeQuery(DELETE_NATIVE_QUERY + " and codigo = ? and tipo = ? ").setParameter(1, cxp.getCriterio1().getCriterioPK().getCodCia()).setParameter(2, usuario).setParameter(3, cxp.getCriterio1().getCriterioPK().getCodigo()).setParameter(4, cxp.getCriterio1().getCriterioPK().getTipo()).executeUpdate();
     }
+    
+    
+    
 }
