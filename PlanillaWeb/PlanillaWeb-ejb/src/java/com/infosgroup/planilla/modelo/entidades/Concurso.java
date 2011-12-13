@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToMany;
@@ -71,7 +72,7 @@ public class Concurso implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "PUESTO", referencedColumnName = "COD_PUESTO")
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch= FetchType.EAGER)
     private Puesto puesto;
 
     @JoinColumns(
