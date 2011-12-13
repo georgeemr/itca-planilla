@@ -4,7 +4,11 @@
  */
 package com.infosgroup.planilla.modelo.estructuras;
 
+import com.infosgroup.planilla.modelo.entidades.DetPlanilla;
+import com.infosgroup.planilla.modelo.entidades.Planilla;
+import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -13,105 +17,69 @@ import java.util.List;
  */
 public class DetallePlanilla implements Serializable {
 
-    private int cod_cia;
-    private int num_pla;
-    private int cod_emp;
-    private String apellido;
-    private String nombre;
-    private Double base;
-    private Double prestaciones;
-    private Double deducciones;
-    private Double total;
-    private List<DetallePlanilla> listaIng;
-    private List<DetallePlanilla> listaEgr;
+    private PuestoEmpleado puestoEmpleado;
+    private Planilla planilla;
+    private BigDecimal prestaciones;
+    private BigDecimal deducciones;
+    private BigDecimal total;
+    private List<DetPlanilla> listaIng;
+    private List<DetPlanilla> listaEgr;
 
-    public List<DetallePlanilla> getListaEgr() {
-        return listaEgr;
-    }
-
-    public void setListaEgr(List<DetallePlanilla> listaEgr) {
-        this.listaEgr = listaEgr;
-    }
-
-    public List<DetallePlanilla> getListaIng() {
-        return listaIng;
-    }
-
-    public void setListaIng(List<DetallePlanilla> listaIng) {
-        this.listaIng = listaIng;
-    }
-
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public Double getBase() {
-        return base;
-    }
-
-    public void setBase(Double base) {
-        this.base = base;
-    }
-
-    public int getCod_cia() {
-        return cod_cia;
-    }
-
-    public void setCod_cia(int cod_cia) {
-        this.cod_cia = cod_cia;
-    }
-
-    public int getCod_emp() {
-        return cod_emp;
-    }
-
-    public void setCod_emp(int cod_emp) {
-        this.cod_emp = cod_emp;
-    }
-
-    public Double getDeducciones() {
+    public BigDecimal getDeducciones() {
         return deducciones;
     }
 
-    public void setDeducciones(Double deducciones) {
+    public void setDeducciones(BigDecimal deducciones) {
         this.deducciones = deducciones;
     }
 
-    public String getNombre() {
-        return nombre;
+    public List<DetPlanilla> getListaEgr() {
+        return listaEgr;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setListaEgr(List<DetPlanilla> listaEgr) {
+        this.listaEgr = listaEgr;
     }
 
-    public int getNum_pla() {
-        return num_pla;
+    public List<DetPlanilla> getListaIng() {
+        return listaIng;
     }
 
-    public void setNum_pla(int num_pla) {
-        this.num_pla = num_pla;
+    public void setListaIng(List<DetPlanilla> listaIng) {
+        this.listaIng = listaIng;
     }
 
-    public Double getPrestaciones() {
+    public Planilla getPlanilla() {
+        return planilla;
+    }
+
+    public void setPlanilla(Planilla planilla) {
+        this.planilla = planilla;
+    }
+
+    public BigDecimal getPrestaciones() {
         return prestaciones;
     }
 
-    public void setPrestaciones(Double prestaciones) {
+    public void setPrestaciones(BigDecimal prestaciones) {
         this.prestaciones = prestaciones;
     }
 
-    public Double getTotal() {
-//        total = this.base + this.prestaciones - this.deducciones;
+    public PuestoEmpleado getPuestoEmpleado() {
+        return puestoEmpleado;
+    }
+
+    public void setPuestoEmpleado(PuestoEmpleado puestoEmpleado) {
+        this.puestoEmpleado = puestoEmpleado;
+    }
+
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
+
+    
 }
