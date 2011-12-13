@@ -11,7 +11,6 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
 import javax.annotation.security.PermitAll;
 
 /**
@@ -55,7 +54,5 @@ public class CriterioSeleccionadoFacade extends AbstractFacade<CriterioSeleccion
     public void eliminarCriterio(CriteriosXPuesto cxp, String usuario) {
         int i = getEntityManager().createNativeQuery(DELETE_NATIVE_QUERY + " and codigo = ? and tipo = ? ").setParameter(1, cxp.getCriterio1().getCriterioPK().getCodCia()).setParameter(2, usuario).setParameter(3, cxp.getCriterio1().getCriterioPK().getCodigo()).setParameter(4, cxp.getCriterio1().getCriterioPK().getTipo()).executeUpdate();
     }
-    
-    
     
 }
