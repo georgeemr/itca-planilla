@@ -7,6 +7,7 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -64,7 +65,7 @@ public class Concurso implements Serializable
     @Column(name = "NUMERO_PLAZAS")
     private Long numeroPlazas;
 
-    @ManyToMany(mappedBy = "concursoList")
+    @ManyToMany(mappedBy = "concursoList", cascade=CascadeType.ALL )
     private List<Candidato> candidatoList;
 
     @JoinColumns(
