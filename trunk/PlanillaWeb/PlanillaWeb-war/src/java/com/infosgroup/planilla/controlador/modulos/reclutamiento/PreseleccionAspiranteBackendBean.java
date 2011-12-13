@@ -6,6 +6,7 @@ package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
+import com.infosgroup.planilla.modelo.entidades.CriterioSeleccionado;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
@@ -20,6 +21,7 @@ import java.util.List;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -37,7 +39,7 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     private DataTable tableConcursos;
     private DataTable tableCriterios;
     private DataTable tableCandidatos;
-    
+
     public DataTable getTableConcursos() {
         return tableConcursos;
     }
@@ -92,7 +94,7 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     public void setTableCriterios(DataTable tableCriterios) {
         this.tableCriterios = tableCriterios;
     }
-    
+
     public String buscarConcurso$action() {
         if (fechaInicial != null && fechaFinal != null) {
             if (validaFechas(fechaInicial, fechaFinal) == true) {
@@ -114,11 +116,14 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
         getSessionBeanREC().setConcursoSeleccionado((Concurso) event.getObject());
 
     }
-    
+
     public void onRowSelectCriterio(SelectEvent event) {
-        getSessionBeanREC().setConcursoSeleccionado((Concurso) event.getObject());
+        reclutamientoSessionBean.guardarCriterioSeleccionado((CriteriosXPuesto) event.getObject(), getSessionBeanEMP().getEmpleadoSesion().getUsuario());
     }
-    
+
+    public void onRowUnSelectCriterio(UnselectEvent event) {
+        reclutamientoSessionBean.eliminarCriterioSeleccionado((CriteriosXPuesto) event.getObject(), getSessionBeanEMP().getEmpleadoSesion().getUsuario());
+    }
 
     public String onFlowListener(FlowEvent event) {
         if (getSessionBeanREC().getConcursoSeleccionado() == null) {
@@ -128,8 +133,11 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     }
 
     public String aplicarCriterios() {
-
-        return null;
+        
+        // procedimiento de guardar en canditados por concurso
+        addMessage("Preselección de Candidatos", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+        limpiarCampos();
+        return "concursoSeleccionado";
     }
 
     @Override
@@ -137,7 +145,9 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
         setFechaInicial(null);
         setFechaFinal(null);
         tableConcursos.setSelection(null);
-//        Integer s = reclutamientoSessionBean.eliminarCriteriosSeleccionados(getSessionBeanEMP().getEmpleadoSesion().getUsuario());
+        tableCriterios.setSelection(null);
+        tableCandidatos.setSelection(null);
+        reclutamientoSessionBean.eliminarCriteriosSeleccionados(getSessionBeanADM().getCompania().getIdCompania(), getSessionBeanEMP().getEmpleadoSesion().getUsuario());
         getSessionBeanREC().setConcursoSeleccionado(null);
     }
 }
