@@ -7,7 +7,10 @@ package com.infosgroup.planilla.controlador.sessionbean;
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
+import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import java.io.Serializable;
+import java.util.ArrayList;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.util.List;
@@ -22,10 +25,12 @@ import java.util.List;
 @SessionScoped
 public class SessionBeanREC implements Serializable {
 
-    /**
-     * Comun a todos los flujos de Reclutamiento 
-     */
+    @EJB
+    private ReclutamientoSessionBean reclutamientoSessionBean;
     private Concurso concursoSeleccionado;
+    private CriteriosXPuesto[] criteriosSeleccionados;
+    private Candidato[] candidatosSeleccionados;
+    private List<Candidato> listaCandidatos;
 
     public SessionBeanREC() {
     }
@@ -38,23 +43,32 @@ public class SessionBeanREC implements Serializable {
         this.concursoSeleccionado = concursoSeleccionado;
     }
 
-    public List<CriteriosXPuesto> criteriosSeleccionados;
-    public List<Candidato> candidatosSeleccionados;
-
-    public List<Candidato> getCandidatosSeleccionados() {
+    public Candidato[] getCandidatosSeleccionados() {
         return candidatosSeleccionados;
     }
 
-    public void setCandidatosSeleccionados(List<Candidato> candidatosSeleccionados) {
+    public void setCandidatosSeleccionados(Candidato[] candidatosSeleccionados) {
         this.candidatosSeleccionados = candidatosSeleccionados;
     }
 
-    public List<CriteriosXPuesto> getCriteriosSeleccionados() {
+    public CriteriosXPuesto[] getCriteriosSeleccionados() {
         return criteriosSeleccionados;
     }
 
-    public void setCriteriosSeleccionados(List<CriteriosXPuesto> criteriosSeleccionados) {
+    public void setCriteriosSeleccionados(CriteriosXPuesto[] criteriosSeleccionados) {
         this.criteriosSeleccionados = criteriosSeleccionados;
     }
-   
+
+    public List<Candidato> getListaCandidatos() {
+        if (criteriosSeleccionados == null || criteriosSeleccionados.length <= 0) {
+            listaCandidatos = reclutamientoSessionBean.getCandidatosByEmpresa(1L);
+        } else {
+            listaCandidatos = new ArrayList<Candidato>();
+        }
+        return listaCandidatos;
+    }
+
+    public void setListaCandidatos(List<Candidato> listaCandidatos) {
+        this.listaCandidatos = listaCandidatos;
+    }
 }
