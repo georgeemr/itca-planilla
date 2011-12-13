@@ -48,12 +48,8 @@ public class PlanillaSessionBean {
     @EJB
     private SucursalFacade sucursalFacade;
 
-    public List<DetallePlanilla> listarDetalle(/*int pla, int anio, int mes*/) {
-        return detPlanillaFacade.findDetalles(/*pla, anio, mes*/);
-    }
-
-    public List<DetallePlanilla> getDetalle(DetallePlanilla c) {
-        return (List<DetallePlanilla>) ((c != null) ? detPlanillaFacade.findDetalles(/*0,0,0*/) : new ArrayList<DetPlanilla>());
+    public List<DetallePlanilla> getDetallesPla(Long pla, Long anio, Long mes) {
+        return (pla != 0) ? detPlanillaFacade.findPlaDetalles(pla, anio, mes):new ArrayList<DetallePlanilla>(0);
     }
 
     public List<ResumenAsistencia> getResumen(ResumenAsistencia c) {
@@ -86,6 +82,10 @@ public class PlanillaSessionBean {
 
     public List<Sucursal> listarSucursal() {
         return sucursalFacade.findAll();
+    }
+    
+    public List<ResumenAsistencia> listarResumenByParam(Integer empresa, Integer sucursal, Integer planilla){
+        return resumenFacade.findAsistencias(empresa, sucursal, planilla);
     }
 
     public String editar$action(ResumenAsistencia resumen) {
