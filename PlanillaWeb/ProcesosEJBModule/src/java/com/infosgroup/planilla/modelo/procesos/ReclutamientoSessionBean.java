@@ -6,6 +6,7 @@ package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
+import com.infosgroup.planilla.modelo.entidades.CriterioSeleccionado;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcurso;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcursoPK;
@@ -125,20 +126,30 @@ public class ReclutamientoSessionBean {
      * @return Candidatos que cumplen con los criterios del puesto.
      */
     public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String empleado) {
-        return candidatoFacade.getCandidatoConCriteriosPuesto(c, empleado );
+        return candidatoFacade.getCandidatoConCriteriosPuesto(c, empleado);
     }
 
-    public Integer eliminarCriteriosSeleccionados(String usuario) {
-        return criterioSeleccionadoFacade.eliminarCriterioSeleccionado(usuario);
+    public void eliminarCriteriosSeleccionados(Long empresa, String usuario) {
+        criterioSeleccionadoFacade.eliminarCriteriosSeleccionados(empresa, usuario);
     }
 
-    public void seleccionarCriterio(String usuario, List<CriteriosXPuesto> listaCriterios) {
-        List<String> a = new ArrayList<String>();
-        
-        for( CriteriosXPuesto z: listaCriterios ){
-            a.add(z.toString());
-        }
-        
-        criterioSeleccionadoFacade.seleccionarCriterio(usuario, a);
+//    public void seleccionarCriterio(String usuario, List<CriteriosXPuesto> listaCriterios) {
+//        List<String> a = new ArrayList<String>();
+//
+//        for (CriteriosXPuesto z : listaCriterios) {
+//            a.add(z.toString());
+//        }
+//
+//        criterioSeleccionadoFacade.seleccionarCriterio(usuario, a);
+//    }
+    public void guardarCriterioSeleccionado(CriteriosXPuesto c, String usuario) {
+        criterioSeleccionadoFacade.guardarCriterio(c, usuario);
     }
+
+    public void eliminarCriterioSeleccionado(CriteriosXPuesto c, String usuario) {
+        criterioSeleccionadoFacade.eliminarCriterio(c, usuario);
+    }
+//    public void eliminarCriterioSeleccionado(CriteriosXPuesto c) {
+//        criterioSeleccionadoFacade.remove(c);
+//    }
 }
