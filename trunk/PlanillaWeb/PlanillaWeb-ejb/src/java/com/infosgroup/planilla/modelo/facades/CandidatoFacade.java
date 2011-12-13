@@ -64,9 +64,6 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         }
     }
 
-    /**
-     * Devuelve una lista de candidatos, con todos los criterios del puesto del concurso seleccionado.
-     */
     public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String usuario) {
         List<Candidato> listaCandidatos = new ArrayList<Candidato>();
         for (Candidato candidato : findCandidatosAPreseleccionar(c)) {
