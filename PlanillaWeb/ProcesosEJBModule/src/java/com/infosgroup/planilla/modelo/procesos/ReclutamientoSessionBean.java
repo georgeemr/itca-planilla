@@ -80,6 +80,10 @@ public class ReclutamientoSessionBean {
         return candidatoFacade.findByCanditadoByEmpresa(empresa);
     }
 
+    public List<Candidato> findCandidatosAPreseleccionar(Concurso s) {
+        return candidatoFacade.findCandidatosAPreseleccionar(s);
+    }
+
     public Puesto findPuestoById(PuestoPK pkPuesto) {
         return puestoFacade.find(pkPuesto);
     }
@@ -108,23 +112,10 @@ public class ReclutamientoSessionBean {
         return (c != null) ? concursoFacade.find(c.getConcursoPK()).getCandidatoList() : new ArrayList<Candidato>();
     }
 
-    public void CambioEstadoCandidato(Concurso concurso, List<Candidato> listaCandidatos, String estado) {
-        for (Candidato c : concurso.getCandidatoList()) {
-            c.setEstado("A");
-            candidatoFacade.edit(c);
-        }
-        for (Candidato c : listaCandidatos) {
-            c.setEstado(estado);
-            candidatoFacade.edit(c);
-        }
+    public void preseleccionarCandidato(Concurso concurso, List<Candidato> listaCandidatos) {
+        candidatoFacade.preseleccionarCandidato(concurso, listaCandidatos);
     }
 
-    /**
-     * Este método devuelve una lista de Candidatos que cumplen con 
-     * los criterios del pruesto establecido en el concurso seleccionado.
-     * @param  Concurso
-     * @return Candidatos que cumplen con los criterios del puesto.
-     */
     public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String empleado) {
         return candidatoFacade.getCandidatoConCriteriosPuesto(c, empleado);
     }
@@ -133,15 +124,6 @@ public class ReclutamientoSessionBean {
         criterioSeleccionadoFacade.eliminarCriteriosSeleccionados(empresa, usuario);
     }
 
-//    public void seleccionarCriterio(String usuario, List<CriteriosXPuesto> listaCriterios) {
-//        List<String> a = new ArrayList<String>();
-//
-//        for (CriteriosXPuesto z : listaCriterios) {
-//            a.add(z.toString());
-//        }
-//
-//        criterioSeleccionadoFacade.seleccionarCriterio(usuario, a);
-//    }
     public void guardarCriterioSeleccionado(CriteriosXPuesto c, String usuario) {
         criterioSeleccionadoFacade.guardarCriterio(c, usuario);
     }
@@ -149,7 +131,4 @@ public class ReclutamientoSessionBean {
     public void eliminarCriterioSeleccionado(CriteriosXPuesto c, String usuario) {
         criterioSeleccionadoFacade.eliminarCriterio(c, usuario);
     }
-//    public void eliminarCriterioSeleccionado(CriteriosXPuesto c) {
-//        criterioSeleccionadoFacade.remove(c);
-//    }
 }
