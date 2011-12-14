@@ -23,6 +23,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
+import org.primefaces.event.FlowEvent;
 
 /**
 *
@@ -250,5 +251,14 @@ for (PuestoEmpleado puestoEmpleadoEvaluador : puestosEmpleadosEvaluadores)
 mensaje = (excepciones == 0) ? "Todas las asignaciones de evaluaciones han sido creadas y/o modificadas exitosamente" : "Ya se habian definido " + excepciones + " de " + evaluaciones.size() + " asignaciones a evaluadores para la campa&ntilde;a y plantilla seleccionados";
 addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
 return null;
+}
+
+public String defaultFlowListener(FlowEvent flowEvt)
+{
+Boolean HayError = Boolean.FALSE;
+HayError = (campaniaSeleccionada == null);
+HayError = (tipoEvaluacionSeleccionada == null);
+HayError = (plantillaSeleccionada == null);
+return HayError ?  flowEvt.getOldStep() : flowEvt.getNewStep();
 }
 }

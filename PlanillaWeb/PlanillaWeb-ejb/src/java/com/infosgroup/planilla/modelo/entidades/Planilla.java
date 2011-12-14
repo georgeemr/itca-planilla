@@ -37,13 +37,13 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Planilla implements Serializable
 {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla")
-    private List<AccionPersonal> accionPersonalList;
-
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
     protected PlanillaPK planillaPK;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla")
+    private List<AccionPersonal> accionPersonalList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla")
     private List<ResumenAsistencia> resumenAsistenciaList;
@@ -85,6 +85,17 @@ public class Planilla implements Serializable
     public void setPlanillaPK(PlanillaPK planillaPK)
     {
         this.planillaPK = planillaPK;
+    }
+
+    @XmlTransient
+    public List<AccionPersonal> getAccionPersonalList()
+    {
+        return accionPersonalList;
+    }
+
+    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
+    {
+        this.accionPersonalList = accionPersonalList;
     }
 
     @XmlTransient
@@ -157,17 +168,6 @@ public class Planilla implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Planilla[ planillaPK=" + planillaPK + " ]";
-    }
-
-    @XmlTransient
-    public List<AccionPersonal> getAccionPersonalList()
-    {
-        return accionPersonalList;
-    }
-
-    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
-    {
-        this.accionPersonalList = accionPersonalList;
     }
     
 }

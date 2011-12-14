@@ -10,6 +10,8 @@ import com.infosgroup.planilla.modelo.entidades.DetEvaluacionPK;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.Factor;
+import com.infosgroup.planilla.modelo.entidades.Gerencia;
+import com.infosgroup.planilla.modelo.entidades.GerenciaPK;
 import com.infosgroup.planilla.modelo.entidades.Plantilla;
 import com.infosgroup.planilla.modelo.entidades.Pregunta;
 import com.infosgroup.planilla.modelo.entidades.Puesto;
@@ -18,16 +20,20 @@ import com.infosgroup.planilla.modelo.entidades.Respuesta;
 import com.infosgroup.planilla.modelo.entidades.RespuestaPK;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
 import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
+import com.infosgroup.planilla.modelo.estructuras.HeadCountModel;
 import com.infosgroup.planilla.modelo.estructuras.PreguntaRespuesta;
 import com.infosgroup.planilla.modelo.facades.CampaniaFacade;
 import com.infosgroup.planilla.modelo.facades.DetEvaluacionFacade;
 import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
 import com.infosgroup.planilla.modelo.facades.EvaluacionFacade;
 import com.infosgroup.planilla.modelo.facades.FactorFacade;
+import com.infosgroup.planilla.modelo.facades.GerenciaFacade;
 import com.infosgroup.planilla.modelo.facades.PuestoEmpleadoFacade;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.RespuestaFacade;
 import com.infosgroup.planilla.modelo.facades.TipoEvaluacionFacade;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -70,6 +76,9 @@ private PuestoFacade puestoFacade;
 
 @EJB
 private TipoEvaluacionFacade tipoEvaluacionFacade;
+
+@EJB
+private GerenciaFacade gerenciaFacade;
 
 public List<Campania> listarCampanias()
 {
@@ -216,5 +225,31 @@ catch (Exception excpt)
     excepciones += listaEvaluaciones.size();
     }
 return excepciones;
+}
+
+@PermitAll
+public List<Gerencia> listarGerencias()
+{
+return gerenciaFacade.findAll();    
+}
+
+@PermitAll
+public List<HeadCountModel> generarHeadCount(Gerencia gerencia)
+{
+List<HeadCountModel> lista = new ArrayList<HeadCountModel>(0);    
+List<Object> listaResultado = gerenciaFacade.generarHeadCount(gerencia);
+for (Object o : listaResultado)
+    {
+    Object[] fila = (Object[]) o ;
+    HeadCountModel hcm = new HeadCountModel((BigDecimal) fila[0], (BigDecimal) fila[1], (String) fila[2], (BigDecimal) fila[3], (String) fila[4], (BigDecimal) fila[5], (String) fila[6], (BigDecimal) fila[7], (String) fila[8], (BigDecimal) fila[9], (BigDecimal) fila[10]);
+    lista.add(hcm);
+    }
+return lista;
+}
+
+@PermitAll
+public Gerencia findGerenciaByPK(GerenciaPK gerenciaPK)
+{
+return gerenciaFacade.find(gerenciaPK);
 }
 }

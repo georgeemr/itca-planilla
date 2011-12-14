@@ -7,11 +7,9 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToMany;
@@ -65,7 +63,7 @@ public class Concurso implements Serializable
     @Column(name = "NUMERO_PLAZAS")
     private Long numeroPlazas;
 
-    @ManyToMany(mappedBy = "concursoList", cascade=CascadeType.ALL )
+    @ManyToMany(mappedBy = "concursoList")
     private List<Candidato> candidatoList;
 
     @JoinColumns(
@@ -73,7 +71,7 @@ public class Concurso implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "PUESTO", referencedColumnName = "COD_PUESTO")
         })
-    @ManyToOne(optional = false, fetch= FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Puesto puesto;
 
     @JoinColumns(
