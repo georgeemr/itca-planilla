@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../plantillas/defaultTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="titulo">
+        Aprobaci&oacute;n de Solicitudes
+    </ui:define>
+
+    <ui:define name="dialogos">
+        <p:confirmDialog message="¿Esta seguro de aprobar la solicitud?"
+                         showEffect="bounce" hideEffect="explode"
+                         header="Confirmacion" severity="alert" widgetVar="confir">
+            <p:commandButton value="Aceptar" update="mensajes, tablaSol, tablaAcciones"
+                             oncomplete="confir.hide()"
+                             action="#{planilla$aprobacionSolicitudes.aprobar$action}"/>
+            <p:commandButton value="Cancelar" update="mensajes, tablaSol, tablaAcciones"
+                             oncomplete="confir.hide()"/>
+        </p:confirmDialog>
+        <p:confirmDialog message="¿Esta seguro de rechazar la solicitud?"
+                         showEffect="bounce" hideEffect="explode"
+                         header="Rechazar" severity="alert" widgetVar="rechazar">
+            <p:commandButton value="Aceptar" update="mensajes, tablaSol, tablaAcciones"
+                             oncomplete="rechazar.hide()"
+                             action="#{planilla$aprobacionSolicitudes.rechazar$action}"/>
+            <p:commandButton value="Cancelar" update="mensajes, tablaSol, tablaAcciones"
+                             oncomplete="rechazar.hide()"/>
+        </p:confirmDialog>
+    </ui:define>
+
+    <ui:define name="acciones">
+        <p:tab title="Acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaSol, tablaAcciones"
+                               action="#{planilla$aprobacionSolicitudes.mostrar$action}">
+                    <p:graphicImage value="/resources/iconos/edit-find-user.png"/>
+                    <h:outputText value="Mostrar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+
+    <ui:define name="contenido">
+        <p:fieldset id="fieldset2">
+            <h:outputLabel value="Funcionario"/>
+            <h:selectOneMenu id="lstJefes" value="#{planilla$aprobacionSolicitudes.emp}" style="width:150px">
+                <f:selectItems value="#{planilla$aprobacionSolicitudes.listaJefes}" var="jefe"
+                               itemValue="#{jefe.empleadoPK.codEmp}" itemLabel="#{jefe.nombreCompleto}"/>
+            </h:selectOneMenu>
+        </p:fieldset>
+        <p:spacer height="10px"/>
+        <p:fieldset id="fieldset1">
+            <p:dataTable id="tablaSol"
+                         rows="5" paginator="true"
+                         emptyMessage="No hay solicitudes a aprobar"
+                         var="sol"
+                         value="#{planilla$aprobacionSolicitudes.listaSolicitudes}"
+                         selection="#{SessionBeanPLA.accionSeleccionada}"
+                         paginatorAlwaysVisible="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
+                <f:facet name="header">
+                    Solicitudes pendientes
+                </f:facet>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{sol.puestoEmpleado.empleado.nombreCompleto}"/>
+                </p:column>
+                <p:column headerText="Tipo de acci&oacute;n">
+                    <h:outputText value="#{sol.tipoAccion.nomTipoaccion}"/>
+                </p:column>
+                <p:column headerText="Fecha de solicitud">
+                    <h:outputText value="#{sol.fecha}"/>
+                </p:column>
+                <p:column headerText="Observaciones">
+                    <h:outputText value="#{sol.observacion}"/>
+                </p:column>
+                <p:column headerText="Fecha inicial">
+                    <h:outputText value="#{sol.fechaInicial}"/>
+                </p:column>
+                <p:column headerText="Fecha final">
+                    <h:outputText value="#{sol.fechaFinal}"/>
+                </p:column>
+                <p:column headerText="Opciones">
+
+                    <h:panelGrid columns="2">
+                        <p:commandLink styleClass="opcionMenu" update="mensajes, tablaSol"
+                                       onclick="confir.show()">
+                            <f:setPropertyActionListener value="#{sol}" 
+                                                         target="#{SessionBeanPLA.accionSeleccionada}"/>
+                            <p:graphicImage value="/resources/iconos/task-complete.png"/>
+                            <h:outputText value="Aprobar" styleClass="espacioTexto"/>
+                        </p:commandLink>
+                        <p:commandLink styleClass="opcionMenu" update="mensajes, tablaSol"
+                                       onclick="rechazar.show()">
+                            <f:setPropertyActionListener value="#{sol}" 
+                                                         target="#{SessionBeanPLA.accionSeleccionada}"/>
+                            <p:graphicImage value="/resources/iconos/dialog-cancel.png"/>
+                            <h:outputText value="Rechazar" styleClass="espacioTexto"/>
+                        </p:commandLink>
+                        
+                    </h:panelGrid>
+                </p:column>
+            </p:dataTable>
+        </p:fieldset>
+        <p:spacer height="10px"/>
+        <p:fieldset id="fieldset3">
+            <p:dataTable id="tablaAcciones"
+                         rows="5" paginator="true"
+                         emptyMessage="No hay solicitudes a aprobar"
+                         var="accion"
+                         rendered="false"
+                         paginatorAlwaysVisible="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
+                <f:facet name="header">
+                    Solicitudes aprobadas
+                </f:facet>
+                <p:column headerText="Empleado"></p:column>
+                <p:column headerText="Tipo de accion"></p:column>
+                <p:column headerText="Jefe"></p:column>
+                <p:column headerText="Opciones"></p:column>
+            </p:dataTable>
+        </p:fieldset>
+    </ui:define>
+
+</ui:composition>
