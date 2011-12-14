@@ -9,14 +9,13 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
  * @author root
  */
 @Embeddable
-public class CriterioSeleccionadoPK implements Serializable
+public class SeccionPK implements Serializable
 {
 
     @Basic(optional = false)
@@ -26,24 +25,23 @@ public class CriterioSeleccionadoPK implements Serializable
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "CORRELATIVO", nullable = false)
-    private long correlativo;
+    @Column(name = "COD_DEPTO", nullable = false)
+    private long codDepto;
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 200)
-    @Column(name = "USUARIO", nullable = false, length = 200)
-    private String usuario;
+    @Column(name = "COD_SECCION", nullable = false)
+    private long codSeccion;
 
-    public CriterioSeleccionadoPK()
+    public SeccionPK()
     {
     }
 
-    public CriterioSeleccionadoPK(long codCia, long correlativo, String usuario)
+    public SeccionPK(long codCia, long codDepto, long codSeccion)
     {
         this.codCia = codCia;
-        this.correlativo = correlativo;
-        this.usuario = usuario;
+        this.codDepto = codDepto;
+        this.codSeccion = codSeccion;
     }
 
     public long getCodCia()
@@ -56,24 +54,24 @@ public class CriterioSeleccionadoPK implements Serializable
         this.codCia = codCia;
     }
 
-    public long getCorrelativo()
+    public long getCodDepto()
     {
-        return correlativo;
+        return codDepto;
     }
 
-    public void setCorrelativo(long correlativo)
+    public void setCodDepto(long codDepto)
     {
-        this.correlativo = correlativo;
+        this.codDepto = codDepto;
     }
 
-    public String getUsuario()
+    public long getCodSeccion()
     {
-        return usuario;
+        return codSeccion;
     }
 
-    public void setUsuario(String usuario)
+    public void setCodSeccion(long codSeccion)
     {
-        this.usuario = usuario;
+        this.codSeccion = codSeccion;
     }
 
     @Override
@@ -81,8 +79,8 @@ public class CriterioSeleccionadoPK implements Serializable
     {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) correlativo;
-        hash += (usuario != null ? usuario.hashCode() : 0);
+        hash += (int) codDepto;
+        hash += (int) codSeccion;
         return hash;
     }
 
@@ -90,20 +88,20 @@ public class CriterioSeleccionadoPK implements Serializable
     public boolean equals(Object object)
     {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CriterioSeleccionadoPK))
+        if (!(object instanceof SeccionPK))
             {
             return false;
             }
-        CriterioSeleccionadoPK other = (CriterioSeleccionadoPK) object;
+        SeccionPK other = (SeccionPK) object;
         if (this.codCia != other.codCia)
             {
             return false;
             }
-        if (this.correlativo != other.correlativo)
+        if (this.codDepto != other.codDepto)
             {
             return false;
             }
-        if ((this.usuario == null && other.usuario != null) || (this.usuario != null && !this.usuario.equals(other.usuario)))
+        if (this.codSeccion != other.codSeccion)
             {
             return false;
             }
@@ -113,7 +111,7 @@ public class CriterioSeleccionadoPK implements Serializable
     @Override
     public String toString()
     {
-        return "com.infosgroup.planilla.modelo.entidades.CriterioSeleccionadoPK[ codCia=" + codCia + ", correlativo=" + correlativo + ", usuario=" + usuario + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.SeccionPK[ codCia=" + codCia + ", codDepto=" + codDepto + ", codSeccion=" + codSeccion + " ]";
     }
     
 }

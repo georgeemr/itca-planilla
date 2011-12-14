@@ -59,21 +59,6 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Empleado implements Serializable
 {
 
-    @Column(name = "FECHA_NAC")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaNac;
-
-    @Column(name = "FEC_INGRESO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecIngreso;
-
-    @Column(name = "FEC_SALIDA")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecSalida;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private List<AccionPersonal> accionPersonalList;
-
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
@@ -97,6 +82,18 @@ public class Empleado implements Serializable
     @Column(name = "AP_CASADA", length = 200)
     private String apCasada;
 
+    @Column(name = "FECHA_NAC")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNac;
+
+    @Column(name = "FEC_INGRESO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecIngreso;
+
+    @Column(name = "FEC_SALIDA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecSalida;
+
     @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
     private String observacion;
@@ -116,6 +113,9 @@ public class Empleado implements Serializable
         })
     @ManyToMany
     private List<Evaluacion> evaluacionList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private List<AccionPersonal> accionPersonalList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private List<DetPlanilla> detPlanillaList;
@@ -252,6 +252,17 @@ public class Empleado implements Serializable
     }
 
     @XmlTransient
+    public List<AccionPersonal> getAccionPersonalList()
+    {
+        return accionPersonalList;
+    }
+
+    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
+    {
+        this.accionPersonalList = accionPersonalList;
+    }
+
+    @XmlTransient
     public List<DetPlanilla> getDetPlanillaList()
     {
         return detPlanillaList;
@@ -323,17 +334,6 @@ public class Empleado implements Serializable
     {
         return "com.infosgroup.planilla.modelo.entidades.Empleado[ empleadoPK=" + empleadoPK + " ]";
     }
-
-    @XmlTransient
-    public List<AccionPersonal> getAccionPersonalList()
-    {
-        return accionPersonalList;
-    }
-
-    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
-    {
-        this.accionPersonalList = accionPersonalList;
-    }
     
     @Transient
     private String nombreCompleto;
@@ -347,7 +347,5 @@ public class Empleado implements Serializable
     public void setNombreCompleto(String nombreCompleto)
     {
         this.nombreCompleto = nombreCompleto;
-    }
-    
-    
+    }   
 }

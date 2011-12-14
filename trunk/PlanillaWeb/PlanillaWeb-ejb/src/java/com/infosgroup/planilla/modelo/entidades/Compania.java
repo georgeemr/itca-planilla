@@ -89,6 +89,9 @@ public class Compania implements Serializable
     private List<Factor> factorList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<Gerencia> gerenciaList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
     private List<Modulo> moduloList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
@@ -269,6 +272,17 @@ public class Compania implements Serializable
     public void setFactorList(List<Factor> factorList)
     {
         this.factorList = factorList;
+    }
+
+    @XmlTransient
+    public List<Gerencia> getGerenciaList()
+    {
+        return gerenciaList;
+    }
+
+    public void setGerenciaList(List<Gerencia> gerenciaList)
+    {
+        this.gerenciaList = gerenciaList;
     }
 
     @XmlTransient

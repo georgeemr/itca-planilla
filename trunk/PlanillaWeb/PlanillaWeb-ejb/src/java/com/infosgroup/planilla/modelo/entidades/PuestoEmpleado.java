@@ -45,6 +45,11 @@ import javax.xml.bind.annotation.XmlTransient;
 public class PuestoEmpleado implements Serializable
 {
 
+    private static final long serialVersionUID = 1L;
+
+    @EmbeddedId
+    protected PuestoEmpleadoPK puestoEmpleadoPK;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_ASIGNACION", nullable = false)
@@ -53,11 +58,6 @@ public class PuestoEmpleado implements Serializable
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestoEmpleado")
     private List<AccionPersonal> accionPersonalList;
-
-    private static final long serialVersionUID = 1L;
-
-    @EmbeddedId
-    protected PuestoEmpleadoPK puestoEmpleadoPK;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestoEmpleado")
     private List<ResumenAsistencia> resumenAsistenciaList;
@@ -124,6 +124,17 @@ public class PuestoEmpleado implements Serializable
     public void setFechaAsignacion(Date fechaAsignacion)
     {
         this.fechaAsignacion = fechaAsignacion;
+    }
+
+    @XmlTransient
+    public List<AccionPersonal> getAccionPersonalList()
+    {
+        return accionPersonalList;
+    }
+
+    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
+    {
+        this.accionPersonalList = accionPersonalList;
     }
 
     @XmlTransient
@@ -195,17 +206,6 @@ public class PuestoEmpleado implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.PuestoEmpleado[ puestoEmpleadoPK=" + puestoEmpleadoPK + " ]";
-    }
-
-    @XmlTransient
-    public List<AccionPersonal> getAccionPersonalList()
-    {
-        return accionPersonalList;
-    }
-
-    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
-    {
-        this.accionPersonalList = accionPersonalList;
     }
     
 }

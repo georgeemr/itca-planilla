@@ -82,10 +82,10 @@ public class Criterio implements Serializable
     private TipoCriterio tipoCriterio;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
-    private List<CriteriosXCandidato> criteriosXCandidatoList;
+    private List<CriteriosXPuesto> criteriosXPuestoList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
-    private List<CriteriosXPuesto> criteriosXPuestoList;
+    private List<CriteriosXCandidato> criteriosXCandidatoList;
 
     public Criterio()
     {
@@ -160,17 +160,6 @@ public class Criterio implements Serializable
     }
 
     @XmlTransient
-    public List<CriteriosXCandidato> getCriteriosXCandidatoList()
-    {
-        return criteriosXCandidatoList;
-    }
-
-    public void setCriteriosXCandidatoList(List<CriteriosXCandidato> criteriosXCandidatoList)
-    {
-        this.criteriosXCandidatoList = criteriosXCandidatoList;
-    }
-
-    @XmlTransient
     public List<CriteriosXPuesto> getCriteriosXPuestoList()
     {
         return criteriosXPuestoList;
@@ -179,6 +168,17 @@ public class Criterio implements Serializable
     public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList)
     {
         this.criteriosXPuestoList = criteriosXPuestoList;
+    }
+
+    @XmlTransient
+    public List<CriteriosXCandidato> getCriteriosXCandidatoList()
+    {
+        return criteriosXCandidatoList;
+    }
+
+    public void setCriteriosXCandidatoList(List<CriteriosXCandidato> criteriosXCandidatoList)
+    {
+        this.criteriosXCandidatoList = criteriosXCandidatoList;
     }
 
     @Override

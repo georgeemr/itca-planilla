@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class CandidatoPK implements Serializable
+public class GerenciaPK implements Serializable
 {
 
     @Basic(optional = false)
@@ -25,17 +25,17 @@ public class CandidatoPK implements Serializable
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "COD_CANDIDATO", nullable = false)
-    private long codCandidato;
+    @Column(name = "COD_GERENCIA", nullable = false)
+    private long codGerencia;
 
-    public CandidatoPK()
+    public GerenciaPK()
     {
     }
 
-    public CandidatoPK(long codCia, long codCandidato)
+    public GerenciaPK(long codCia, long codGerencia)
     {
         this.codCia = codCia;
-        this.codCandidato = codCandidato;
+        this.codGerencia = codGerencia;
     }
 
     public long getCodCia()
@@ -48,14 +48,14 @@ public class CandidatoPK implements Serializable
         this.codCia = codCia;
     }
 
-    public long getCodCandidato()
+    public long getCodGerencia()
     {
-        return codCandidato;
+        return codGerencia;
     }
 
-    public void setCodCandidato(long codCandidato)
+    public void setCodGerencia(long codGerencia)
     {
-        this.codCandidato = codCandidato;
+        this.codGerencia = codGerencia;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class CandidatoPK implements Serializable
     {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) codCandidato;
+        hash += (int) codGerencia;
         return hash;
     }
 
@@ -71,16 +71,16 @@ public class CandidatoPK implements Serializable
     public boolean equals(Object object)
     {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CandidatoPK))
+        if (!(object instanceof GerenciaPK))
             {
             return false;
             }
-        CandidatoPK other = (CandidatoPK) object;
+        GerenciaPK other = (GerenciaPK) object;
         if (this.codCia != other.codCia)
             {
             return false;
             }
-        if (this.codCandidato != other.codCandidato)
+        if (this.codGerencia != other.codGerencia)
             {
             return false;
             }
@@ -90,7 +90,7 @@ public class CandidatoPK implements Serializable
     @Override
     public String toString()
     {
-        return "com.infosgroup.planilla.modelo.entidades.CandidatoPK[ codCia=" + codCia + ", codCandidato=" + codCandidato + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.GerenciaPK[ codCia=" + codCia + ", codGerencia=" + codGerencia + " ]";
     }
     
 }
