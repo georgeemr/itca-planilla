@@ -7,6 +7,7 @@ package com.infosgroup.planilla.modelo.facades;
 import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.entidades.EmpleadoPK;
+import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -64,4 +65,15 @@ tq.setParameter("usuario", usuario);
 e = (Empleado) tq.getSingleResult();
 return e;
 }
+
+    public List<Empleado> findByJefes() {
+        List<Empleado> listaJefes = new ArrayList<Empleado>(0);
+
+        Query pue = em.createQuery("select e from Empleado e, PuestoEmpleado p "
+                + "where p.puesto.jefatura = 1 "
+                +"and p.empleado.empleadoPK = e.empleadoPK", Empleado.class);
+        listaJefes = pue.getResultList();
+
+        return listaJefes;
+    }
 }
