@@ -60,3 +60,27 @@ background-image: url('../iconos/system-run.png') !important;
 {
 background-image: url('../iconos/personal.png') !important;
 }
+.contratar_w
+{
+background-image: url('../iconos/personal_w.png') !important;
+}
+.nuevo
+{
+background-image: url('../iconos/add.png') !important;
+}
+
+.indicador
+{
+background-image: url('../iconos/arrow.png') !important;
+}
+
+.contrato
+{
+background-image: url('../iconos/contrato.png') !important;
+}
+
+.documentPDF
+{
+background-image: url('../iconos/document-pdf.png') !important;
+}
+
