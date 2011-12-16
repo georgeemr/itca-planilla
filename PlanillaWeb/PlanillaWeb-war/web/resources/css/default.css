@@ -35,5 +35,12 @@ body {
 
 .textonormal{
     font-weight: normal;
+<<<<<<< .mine
+}
+
+.candidatoSugerido{
+    background-color: #DEDEDE;
+=======
     text-decoration: none;
+>>>>>>> .r339
 }
