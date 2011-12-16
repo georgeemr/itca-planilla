@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/plantillas/defaultTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <!-- ===================================================================================================== -->
+    <ui:define name="titulo">
+        <h:outputText value="Evaluaci&oacute;n de empleado"/>        
+    </ui:define>
+    <!-- ===================================================================================================== -->
+    <ui:define name="acciones">
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu" ajax="true" action="#{empleados$evaluacionEmpleado.inicio$action}">
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+    <!-- ===================================================================================================== -->
+    <ui:define name="contenido">        
+        <p:fieldset legend="Evaluaci&oacute;n del empleado">
+            <h:panelGrid columns="4" width="100%">
+                <h:outputText value="Campaña" styleClass="negrita"/>
+                <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.campania.nombre}"/>
+                <h:outputText value="Tipo de evaluacion" styleClass="negrita"/>
+                <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.plantilla1.tipoEvaluacion.nomTipoEvaluacion}"/>
+                <h:outputText value="Plantilla" styleClass="negrita"/>
+                <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.plantilla1.nombre}"/>
+                <h:outputText value="Empleado" styleClass="negrita"/>
+                <h:panelGrid columns="3" cellspacing="0" cellpadding="0">
+                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleado1.nombres}"/>
+                    <p:spacer width="4"/>
+                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleado1.apellidos}"/>
+                    <p:spacer width="4"/>
+                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleado1.apCasada}" rendered="#{SessionBeanEMP.evaluacionSeleccionada.empleado1.apCasada ne null}"/>
+                </h:panelGrid>
+            </h:panelGrid>
+            <p:separator/>
+            <p:wizard id="wizard1" backLabel="Anterior" flowListener="#{empleados$evaluacionEmpleado.defaultFlowListener}" nextLabel="Siguiente" showStepStatus="true" showNavBar="true">
+                <c:forEach items="#{SessionBeanEMP.listaFactores}" var="factor" varStatus="status">
+                    <p:tab title="#{factor.nombre}" id="tab#{status.count}">
+                        <p:dataTable binding="#{empleados$evaluacionEmpleado.wizardTable[status.count-1]}" value="#{empleados$evaluacionEmpleado.listaPreguntas}" var="pregunta">
+                            <f:facet name="header">
+                                <h:outputText value="Ponderaci&oacute;n: #{factor.ponderacion}%"/>
+                            </f:facet>
+                            <p:column headerText="ID">
+                                <h:outputText value="#{pregunta.preguntaPK.codPregunta}"/>
+                            </p:column>
+                            <p:column headerText="Pregunta">
+                                <h:outputText value="#{pregunta.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Respuesta">
+                                <h:selectOneMenu value="#{pregunta.respuestaSeleccionada}">
+                                    <f:selectItems value="#{pregunta.respuestaList}" var="respuesta" itemValue="#{respuesta.respuestaPK.codCia}:#{respuesta.respuestaPK.codTipoRespuesta}:#{respuesta.respuestaPK.grupoRespuesta}:#{respuesta.respuestaPK.codRespuesta}" itemLabel="#{respuesta.nivel}" itemDescription="#{respuesta.texto}"/>                                    
+                                </h:selectOneMenu>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                </c:forEach>
+                <p:tab title="Fin" id="tab1000">
+                    <p:panel header="Fin de evaluaci&oacute;n" style="text-align: center;">
+                        <h:panelGrid columns="2" style="text-align: center;">
+                            <p:graphicImage width="64" height="64" url="/resources/imagenes/64/applications-education-university.png"/>
+                            <h:outputText value="Ha llegado al final de la evaluaci&oacute;n, puede modificar sus respuestas o cerrar esta evaluaci&oacute;n para finalizarla."/>
+                        </h:panelGrid>
+                        <f:facet name="footer">
+                            <p:commandButton value="Cerrar evaluaci&oacute;n" image="ui-icon ui-icon-circle-check" onclick="cnf1.show();"/>
+                        </f:facet>
+                    </p:panel>
+                </p:tab>
+            </p:wizard>
+        </p:fieldset>
+    </ui:define>
+    <!-- ===================================================================================================== -->
+    <ui:define name="dialogos">
+        <p:dialog id="cnf1" widgetVar="cnf1" modal="true" closeOnEscape="true" closable="true" draggable="true" showEffect="zoom" hideEffect="zoom" header="PlanillaWeb" resizable="false" width="400">
+            <h:panelGrid columns="2" width="100%">
+                <p:graphicImage width="64" height="64" url="/resources/imagenes/64/dialog-question.png"/>
+                <h:outputText value="¿Confirma que desea cerrar la evaluaci&oacute;n?"/>                
+            </h:panelGrid>
+            <p:separator/>
+            <h:panelGrid columns="2">
+                <p:commandButton value="Si" image="ui-icon ui-icon-circle-check" action="#{empleados$evaluacionEmpleado.cerrarEvaluacion$action}"/>
+                <p:commandButton value="No" image="ui-icon ui-icon-circle-close" onclick="cnf1.hide();"/>
+            </h:panelGrid>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
