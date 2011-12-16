@@ -50,6 +50,13 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class Candidato implements Serializable
 {
+    @Column(name =     "FECHA_NACIMIENTO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNacimiento;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
+    private List<Contrato> contratoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
+    private List<CandidatoConcurso> candidatoConcursoList;
 
     private static final long serialVersionUID = 1L;
 
@@ -67,11 +74,6 @@ public class Candidato implements Serializable
     @Size(min = 1, max = 200)
     @Column(name = "APELLIDO", nullable = false, length = 200)
     private String apellido;
-
-    @Column(name = "FECHA_NACIMIENTO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaNacimiento;
-
     @Size(max = 299)
     @Column(name = "AP_CASADA", length = 299)
     private String apCasada;
@@ -79,7 +81,7 @@ public class Candidato implements Serializable
     @Basic(optional = false)
     @NotNull
     @Column(name = "SEXO", nullable = false)
-    private long sexo;
+    private String sexo;
 
     @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
@@ -124,8 +126,7 @@ public class Candidato implements Serializable
         this.candidatoPK = candidatoPK;
     }
 
-    public Candidato(CandidatoPK candidatoPK, String nombre, String apellido, long sexo, String estado, long edad)
-    {
+    public Candidato(CandidatoPK candidatoPK, String nombre, String apellido, String sexo, String estado, long edad) {
         this.candidatoPK = candidatoPK;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -189,13 +190,11 @@ public class Candidato implements Serializable
         this.apCasada = apCasada;
     }
 
-    public long getSexo()
-    {
+    public String getSexo() {
         return sexo;
     }
 
-    public void setSexo(long sexo)
-    {
+    public void setSexo(String sexo) {
         this.sexo = sexo;
     }
 
@@ -290,5 +289,21 @@ public class Candidato implements Serializable
     {
         return "com.infosgroup.planilla.modelo.entidades.Candidato[ candidatoPK=" + candidatoPK + " ]";
     }
-    
+
+    public List<CandidatoConcurso> getCandidatoConcursoList() {
+        return candidatoConcursoList;
+    }
+
+    public void setCandidatoConcursoList(List<CandidatoConcurso> candidatoConcursoList) {
+        this.candidatoConcursoList = candidatoConcursoList;
+    }
+
+    public List<Contrato> getContratoList() {
+        return contratoList;
+    }
+
+    public void setContratoList(List<Contrato> contratoList) {
+        this.contratoList = contratoList;
+    }
+
 }
