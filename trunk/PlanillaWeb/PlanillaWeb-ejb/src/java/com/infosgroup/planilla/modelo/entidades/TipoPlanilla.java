@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class TipoPlanilla implements Serializable
 {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPlanilla")
+    private List<Contrato> contratoList;
 
     private static final long serialVersionUID = 1L;
 
@@ -136,6 +138,14 @@ public class TipoPlanilla implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.TipoPlanilla[ tipoPlanillaPK=" + tipoPlanillaPK + " ]";
+    }
+
+    public List<Contrato> getContratoList() {
+        return contratoList;
+    }
+
+    public void setContratoList(List<Contrato> contratoList) {
+        this.contratoList = contratoList;
     }
     
 }
