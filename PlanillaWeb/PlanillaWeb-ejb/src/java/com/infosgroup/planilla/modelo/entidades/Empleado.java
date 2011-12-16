@@ -58,6 +58,20 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class Empleado implements Serializable
 {
+    @Column(name = "FECHA_NAC")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNac;
+    @Column(name = "FEC_INGRESO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecIngreso;
+    @Column(name = "FEC_SALIDA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecSalida;
+    @Size(max = 200)
+    @Column(name = "CORREO", length = 200)
+    private String correo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private List<Contrato> contratoList;
 
     private static final long serialVersionUID = 1L;
 
@@ -81,18 +95,6 @@ public class Empleado implements Serializable
     @Size(max = 200)
     @Column(name = "AP_CASADA", length = 200)
     private String apCasada;
-
-    @Column(name = "FECHA_NAC")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaNac;
-
-    @Column(name = "FEC_INGRESO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecIngreso;
-
-    @Column(name = "FEC_SALIDA")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecSalida;
 
     @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
@@ -345,6 +347,22 @@ public class Empleado implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Empleado[ empleadoPK=" + empleadoPK + " ]";
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public List<Contrato> getContratoList() {
+        return contratoList;
+    }
+
+    public void setContratoList(List<Contrato> contratoList) {
+        this.contratoList = contratoList;
     }
     
     @Transient
