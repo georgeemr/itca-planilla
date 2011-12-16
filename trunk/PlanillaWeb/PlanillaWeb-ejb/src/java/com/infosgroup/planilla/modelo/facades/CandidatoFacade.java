@@ -29,9 +29,6 @@ import java.util.logging.Logger;
 @LocalBean
 public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
 
-    @EJB
-    private ConcursoFacade concursoFacade;
-
     private enum operacion {equal, between };
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
@@ -58,6 +55,13 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         return listaCandidatos;
     }
 
+    public List<Candidato> findByConcurso(Concurso c){
+        if ( c == null) return new ArrayList<Candidato>();
+        List<Candidato> listaCandidatos = new ArrayList<Candidato>();
+        listaCandidatos.addAll(getEntityManager().createNativeQuery("select distinct b.* from candidato_concurso a, candidato b where a.cod_cia = ? and a.concurso = ? and b.cod_cia = a.cod_cia and a.candidato = b.cod_candidato", Candidato.class).setParameter(1, c.getConcursoPK().getCodCia()).setParameter(2, c.getConcursoPK().getCodConcurso()).getResultList());
+        return listaCandidatos;
+    }
+    
     public void preseleccionarCandidato(Concurso c, List<Candidato> candidatos) {
         for (Candidato z : candidatos) {
             getEntityManager().createNativeQuery("insert into candidato_concurso values (?, ?, ?, ?)").setParameter(1, c.getConcursoPK().getCodCia()).setParameter(2, z.getCandidatoPK().getCodCandidato()).setParameter(3, "P").setParameter(4, c.getConcursoPK().getCodConcurso()).executeUpdate();
