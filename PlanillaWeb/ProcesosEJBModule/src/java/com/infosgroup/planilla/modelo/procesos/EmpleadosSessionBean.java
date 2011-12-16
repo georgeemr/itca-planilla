@@ -8,6 +8,7 @@ import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.DetEvaluacion;
 import com.infosgroup.planilla.modelo.entidades.DetEvaluacionPK;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.EmpleadoPK;
 import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.Factor;
 import com.infosgroup.planilla.modelo.entidades.Gerencia;
@@ -175,6 +176,11 @@ public Empleado buscarEmpleadoPorUsuario(String usuario)
 return empleadosFacade.findByUsuario(usuario);
 }
 
+public Empleado buscarEmpleadoPorPK(EmpleadoPK empleadoPK)
+{
+return empleadosFacade.find(empleadoPK);
+}
+
 public List<Puesto> listarPuestos()
 {
 return puestoFacade.findAll();
@@ -252,4 +258,10 @@ public Gerencia findGerenciaByPK(GerenciaPK gerenciaPK)
 {
 return gerenciaFacade.find(gerenciaPK);
 }
+
+public List<Empleado> listarEmpleados()
+{
+return empleadosFacade.findAll();
+}
+
 }
