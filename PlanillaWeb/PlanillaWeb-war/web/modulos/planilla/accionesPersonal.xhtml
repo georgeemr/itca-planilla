@@ -14,13 +14,12 @@
     <ui:define name="acciones">
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" onclick="dialogCalendario.show();">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{planilla$accionesPersonal.calendario$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/view-resource-calendar.png"/>
                     <h:outputText value="Ver calendario" styleClass="espacioTexto"/>
                 </p:commandLink>
             </h:panelGrid>
         </p:tab>
-
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{planilla$accionesPersonal.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
@@ -31,74 +30,8 @@
         </p:tab>
     </ui:define>
     <!-- ======================================================================================================= -->
-    <ui:define name="contenido">
-    </ui:define>
+    <ui:define name="contenido"/>
     <!-- ======================================================================================================= -->
-    <ui:define name="dialogos">
-    <!--script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/jquery-1.6.2.js"></script-->
-    <!--script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery-ui-1.8.16.custom.js"></script-->
-    <!--script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery.ui.core.js"></script-->
-    <!--script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery.ui.widget.js"></script>
-    <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery.ui.datepicker.js"></script>        
-        <script>
-            $(
-            function ()
-                {
-                var style = document.getElementById("form1:styleaplicado").value;
-                var cadena = document.getElementById("form1:diasMarcados").value;
-                //var cadena = "15-01-2011$17-01-2011$11-12-2010";
-                var events = cadena.split("$");
-                //alert(events[0]+" "+events[1]+" "+events[2]);
-                //var events = ['15-1-2011', '17-1-2011', '11-3-2011'];
-                $('#datepicker01').datepicker(
-                    {
-                    beforeShowDay: function(dateToShow)
-                        {
-                        var current = $.datepicker.formatDate('dd-mm-yy', dateToShow);
-                        return jQuery.inArray(current, events) == -1 ? [true, ''] : [true, style];
-                        }
-                    });
-                $( "#datepicker01" ).datepicker(
-                    {
-                    beforeShowDay: function (day)
-                        {
-                        var day = day.getDay();
-                        return ( (day == 0) || (day == 6)) ? [false, "somecssclass"] : [true, "someothercssclass"];
-                        }
-                    });
-                    
-                    $("#datepicker01").datepicker();
-                    $("#datepicker01").datepicker("option", "monthNames", ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'] );
-                    $("#datepicker01").datepicker("option", "dayNamesMin", ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa']);
-                    $("#datepicker01").datepicker("option", "numberOfMonths", [3, 4]);
-                    $("#datepicker01").datepicker("option", "stepMonths", 0);
-                    var el = document.getElementById("form1:dropAnio").value;
-                    var tx = el.substring(2,4);
-                    $("#datepicker01").datepicker({dateFormat: 'mm/dd/yy'}).datepicker('setDate', '01/01/'+ tx);
-                }
-            );
-                
-            function cal(anio)
-                {
-                 //var el = document.getElementById("form1:dropAnio").value;
-                 //var tx = el.substring(2,4);
-                 //alert(tx);
-                 $("#datepicker01")._selectDay('#datepicker01',0,2011, 18);return false;
-                };
-        </script-->
-        <p:dialog id="dialogCalendario" widgetVar="dialogCalendario" header="Calendario" width="900" height="500" modal="true" resizable="false" closeOnEscape="true" showEffect="fold" hideEffect="fold">
-            <table width="100%">
-                <tr>
-                    <td width="33%">
-                        <h:inputHidden id="diasMarcados"/>
-                        <h:inputHidden id="styleAplicado"/>
-                    </td>
-                    <td width="67%">
-                        <p:calendar mode="inline" pages="4" pattern="dd/MM/yyyy" showWeek="false" showOtherMonths="false" style="width: 400px !important; height: 400px !important;"/>
-                    </td>
-                </tr>
-            </table>
-        </p:dialog>
-    </ui:define>
+    <ui:define name="dialogos"/>
     <!-- ======================================================================================================= -->
 </ui:composition>

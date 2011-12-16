@@ -8,25 +8,147 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
     <!-- ======================================================================================================= -->
     <ui:define name="titulo">
-        <h:outputText value="Acciones de personal"/>
+        <h:outputText value="Acciones de personal (Calendario)"/>
     </ui:define>
+    <script type="text/javascript">
+        
+    </script>
     <!-- ======================================================================================================= -->
     <ui:define name="acciones">
+        <p:tab title="Calendario">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" oncomplete="leyendaDialog.show();">
+                    <p:graphicImage value="/resources/iconos/view-process-tree.png"/>
+                    <h:outputText value="Mostrar leyenda" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="false" action="#{planilla$calendario.mostrarAcciones$action}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/go-jump-today.png"/>
+                    <h:outputText value="Mostrar acciones" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{planilla$accionesPersonal.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
-                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
-                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{planilla$calendario.volver$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/arrow-left.png"/>
+                    <h:outputText value="Acciones de personal" styleClass="espacioTexto"/>
                 </p:commandLink>
             </h:panelGrid>
         </p:tab>
     </ui:define>
     <!-- ======================================================================================================= -->
     <ui:define name="contenido">
-        <p:calendar size="12"/>
+        <h:outputScript target="head">
+            var specialDays = [#{planilla$calendario.fechas}];
+
+            function highlightCalendar(specialDays, date, cssClass)
+            {
+            for (var i = 0; i &lt; specialDays.length; i++)
+                if (new Date(specialDays[i].toString()) == date.toString())
+                    return [ true, cssClass, '' ];
+            return [ true, '' ];
+            }
+            
+            jQuery(document).ready(
+            function()
+            {
+            jQuery("#datepicker01").datepicker();
+            jQuery("#datepicker01").datepicker("option", "disabled" , true);
+            jQuery("#datepicker01").datepicker("option", "monthNames", ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'] );
+            jQuery("#datepicker01").datepicker("option", "dayNamesMin", ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa']);
+            jQuery("#datepicker01").datepicker("option", "numberOfMonths", [3, 4]);
+            jQuery("#datepicker01").datepicker("option", "stepMonths", 0);
+            jQuery("#datepicker01").datepicker({dateFormat: 'mm/dd/yyyy'}).datepicker('setDate', '01/01/#{planilla$calendario.anio}');
+            jQuery("#datepicker01").datepicker("option", "beforeShowDay", function (date) { return highlightCalendar(specialDays, date, '#{planilla$calendario.estilo}'); });
+            });
+        </h:outputScript>
+        <table width="100%">
+            <tr valign="top">
+                <td width="33%">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr valign="top">
+                            <td>
+                                <h:outputText value="A&ntilde;o"/>
+                            </td>
+                            <td>
+                                <h:selectOneMenu value="#{planilla$calendario.anio}">
+                                    <f:selectItems value="#{planilla$calendario.listaAniosModel}"/>
+                                </h:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr valign="top">
+                            <td>
+                                <h:outputText value="Empleado"/>
+                            </td>
+                            <td>                                    
+                                <h:selectOneMenu value="#{planilla$calendario.empleadoSeleccionado}">
+                                    <f:selectItems value="#{planilla$calendario.empleadosListModel}"/>
+                                </h:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr valign="top">
+                            <td>
+                                <h:outputText value="Accion"/>
+                            </td>
+                            <td>
+                                <h:selectOneRadio layout="pageDirection" value="#{planilla$calendario.estilo}">
+                                    <f:selectItem itemValue="festivos" itemLabel="Festivos"/>
+                                    <f:selectItem itemValue="laborales" itemLabel="Laborales"/>
+                                    <f:selectItem itemValue="vacaciones" itemLabel="Vacaciones"/>
+                                    <f:selectItem itemValue="permisos" itemLabel="Permisos"/>
+                                    <f:selectItem itemValue="capacitaciones" itemLabel="Capacitaciones"/>
+                                    <f:selectItem itemValue="otrafecha" itemLabel="Otros"/>
+                                </h:selectOneRadio>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="67%" id="principalForm:filaCalendario">
+                    <div id="datepicker01" style="width: 100%"/>
+                </td>
+            </tr>
+        </table>
     </ui:define>
     <!-- ======================================================================================================= -->
     <ui:define name="dialogos">
+        <p:dialog id="leyendaDialog" widgetVar="leyendaDialog" header="Leyenda de colores/acciones" closable="true" resizable="false" draggable="true" closeOnEscape="true">
+            <table width="100%" border="0">
+                <thead>
+                    <tr>
+                        <td width="50%">
+                            <h:outputText value="Color" style="font-weight: bold;"/>
+                        </td>
+                        <td width="50%">
+                            <h:outputText value="Accion" style="font-weight: bold;"/>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width="50%" style="background-color: yellow;"/>
+                        <td width="50%"><h:outputText value="Festivos"/></td>
+                    </tr>
+                    <tr>
+                        <td width="50%" style="background-color: lightskyblue;"/>
+                        <td width="50%"><h:outputText value="Laborales"/></td>
+                    </tr>
+                    <tr>
+                        <td width="50%" style="background-color: orange;"/>
+                        <td width="50%"><h:outputText value="Vacaciones"/></td>
+                    </tr>
+                    <tr>
+                        <td width="50%" style="background-color: slateblue;"/>
+                        <td width="50%"><h:outputText value="Permisos"/></td>
+                    </tr>
+                    <tr>
+                        <td width="50%" style="background-color: greenyellow;"/>
+                        <td width="50%"><h:outputText value="Capacitaciones"/></td>
+                    </tr>
+                </tbody>
+            </table>
+        </p:dialog>
     </ui:define>
     <!-- ======================================================================================================= -->
 </ui:composition>
