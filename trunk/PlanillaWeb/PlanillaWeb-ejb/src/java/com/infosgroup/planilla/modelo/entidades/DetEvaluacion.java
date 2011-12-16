@@ -7,6 +7,7 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -47,7 +48,7 @@ public class DetEvaluacion implements Serializable
         @JoinColumn(name = "GRUPO_RESPUESTA", referencedColumnName = "GRUPO_RESPUESTA", nullable = false),
         @JoinColumn(name = "COD_RESPUESTA", referencedColumnName = "COD_RESPUESTA", nullable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Respuesta respuesta;
 
     @JoinColumns(
@@ -56,7 +57,7 @@ public class DetEvaluacion implements Serializable
         @JoinColumn(name = "COD_FACTOR", referencedColumnName = "COD_FACTOR", nullable = false),
         @JoinColumn(name = "COD_PREGUNTA", referencedColumnName = "COD_PREGUNTA", nullable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Pregunta pregunta;
 
     @JoinColumns(
@@ -68,7 +69,7 @@ public class DetEvaluacion implements Serializable
         @JoinColumn(name = "PLANTILLA", referencedColumnName = "PLANTILLA", nullable = false),
         @JoinColumn(name = "EMPLEADO", referencedColumnName = "EMPLEADO", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Evaluacion evaluacion;
 
     public DetEvaluacion()
@@ -142,10 +143,7 @@ public class DetEvaluacion implements Serializable
             return false;
             }
         DetEvaluacion other = (DetEvaluacion) object;
-        if ((this.detEvaluacionPK == null && other.detEvaluacionPK != null) || (this.detEvaluacionPK != null && !this.detEvaluacionPK.equals(other.detEvaluacionPK)))
-            {
-            return false;
-            }
+        if ((this.detEvaluacionPK == null && other.detEvaluacionPK != null) || (this.detEvaluacionPK != null && !this.detEvaluacionPK.equals(other.detEvaluacionPK))) return false;
         return true;
     }
 

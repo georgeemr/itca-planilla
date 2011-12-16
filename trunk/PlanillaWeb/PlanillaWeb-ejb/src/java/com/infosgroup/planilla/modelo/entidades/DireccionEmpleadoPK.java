@@ -180,38 +180,14 @@ public class DireccionEmpleadoPK implements Serializable
             return false;
             }
         DireccionEmpleadoPK other = (DireccionEmpleadoPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idSucursal != other.idSucursal)
-            {
-            return false;
-            }
-        if (this.idEmpleado != other.idEmpleado)
-            {
-            return false;
-            }
-        if (this.idPais != other.idPais)
-            {
-            return false;
-            }
-        if (this.idProvincia != other.idProvincia)
-            {
-            return false;
-            }
-        if (this.idMunicipio != other.idMunicipio)
-            {
-            return false;
-            }
-        if (this.idBarrio != other.idBarrio)
-            {
-            return false;
-            }
-        if ((this.numCasa == null && other.numCasa != null) || (this.numCasa != null && !this.numCasa.equals(other.numCasa)))
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idSucursal != other.idSucursal) return false;
+        if (this.idEmpleado != other.idEmpleado) return false;
+        if (this.idPais != other.idPais) return false;
+        if (this.idProvincia != other.idProvincia) return false;
+        if (this.idMunicipio != other.idMunicipio) return false;
+        if (this.idBarrio != other.idBarrio) return false;
+        if ((this.numCasa == null && other.numCasa != null) || (this.numCasa != null && !this.numCasa.equals(other.numCasa))) return false;
         return true;
     }
 

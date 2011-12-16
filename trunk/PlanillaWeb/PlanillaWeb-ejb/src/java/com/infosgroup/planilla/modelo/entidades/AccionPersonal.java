@@ -9,6 +9,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -124,7 +125,7 @@ public class AccionPersonal implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_TIPOACCION", referencedColumnName = "COD_TIPOACCION", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private TipoAccion tipoAccion;
 
     @JoinColumns(
@@ -135,7 +136,7 @@ public class AccionPersonal implements Serializable
         @JoinColumn(name = "ID_TIPO_PUESTO", referencedColumnName = "ID_TIPO_PUESTO", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_PUESTO", referencedColumnName = "ID_PUESTO", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private PuestoEmpleado puestoEmpleado;
 
     @JoinColumns(
@@ -143,7 +144,7 @@ public class AccionPersonal implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_PUESTONUEVO", referencedColumnName = "COD_PUESTO")
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Puesto puesto;
 
     @JoinColumns(
@@ -153,7 +154,7 @@ public class AccionPersonal implements Serializable
         @JoinColumn(name = "MES", referencedColumnName = "MES", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "NUM_PLANILLA", referencedColumnName = "NUM_PLANILLA", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Planilla planilla;
 
     @JoinColumns(
@@ -161,7 +162,7 @@ public class AccionPersonal implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_JEFE", referencedColumnName = "COD_EMP")
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Empleado empleado;
 
     public AccionPersonal()
@@ -405,10 +406,7 @@ public class AccionPersonal implements Serializable
             return false;
             }
         AccionPersonal other = (AccionPersonal) object;
-        if ((this.accionPersonalPK == null && other.accionPersonalPK != null) || (this.accionPersonalPK != null && !this.accionPersonalPK.equals(other.accionPersonalPK)))
-            {
-            return false;
-            }
+        if ((this.accionPersonalPK == null && other.accionPersonalPK != null) || (this.accionPersonalPK != null && !this.accionPersonalPK.equals(other.accionPersonalPK))) return false;
         return true;
     }
 

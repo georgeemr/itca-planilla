@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -61,14 +62,14 @@ public class Departamento implements Serializable
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "GERENCIA", referencedColumnName = "COD_GERENCIA")
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Gerencia gerencia;
 
     @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento", fetch = FetchType.EAGER)
     private List<Seccion> seccionList;
 
     public Departamento()
@@ -169,10 +170,7 @@ public class Departamento implements Serializable
             return false;
             }
         Departamento other = (Departamento) object;
-        if ((this.departamentoPK == null && other.departamentoPK != null) || (this.departamentoPK != null && !this.departamentoPK.equals(other.departamentoPK)))
-            {
-            return false;
-            }
+        if ((this.departamentoPK == null && other.departamentoPK != null) || (this.departamentoPK != null && !this.departamentoPK.equals(other.departamentoPK))) return false;
         return true;
     }
 

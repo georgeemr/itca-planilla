@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -39,8 +40,6 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class Sucursal implements Serializable
 {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursal")
-    private List<Contrato> contratoList;
 
     private static final long serialVersionUID = 1L;
 
@@ -55,7 +54,7 @@ public class Sucursal implements Serializable
     @Column(name = "DET_SUCURSAL", length = 200)
     private String detSucursal;
 
-    @ManyToMany(mappedBy = "sucursalList")
+    @ManyToMany(mappedBy = "sucursalList", fetch = FetchType.EAGER)
     private List<Direccion> direccionList;
 
     @JoinTable(name = "SUCURSAL_TELEFONO", joinColumns =
@@ -66,14 +65,17 @@ public class Sucursal implements Serializable
         {
         @JoinColumn(name = "ID_TELEFONO", referencedColumnName = "ID_TELEFONO", nullable = false)
         })
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Telefono> telefonoList;
 
     @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursal")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursal", fetch = FetchType.EAGER)
+    private List<Contrato> contratoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursal", fetch = FetchType.EAGER)
     private List<PuestoEmpleado> puestoEmpleadoList;
 
     public Sucursal()
@@ -153,6 +155,17 @@ public class Sucursal implements Serializable
     }
 
     @XmlTransient
+    public List<Contrato> getContratoList()
+    {
+        return contratoList;
+    }
+
+    public void setContratoList(List<Contrato> contratoList)
+    {
+        this.contratoList = contratoList;
+    }
+
+    @XmlTransient
     public List<PuestoEmpleado> getPuestoEmpleadoList()
     {
         return puestoEmpleadoList;
@@ -180,10 +193,7 @@ public class Sucursal implements Serializable
             return false;
             }
         Sucursal other = (Sucursal) object;
-        if ((this.sucursalPK == null && other.sucursalPK != null) || (this.sucursalPK != null && !this.sucursalPK.equals(other.sucursalPK)))
-            {
-            return false;
-            }
+        if ((this.sucursalPK == null && other.sucursalPK != null) || (this.sucursalPK != null && !this.sucursalPK.equals(other.sucursalPK))) return false;
         return true;
     }
 
@@ -191,14 +201,6 @@ public class Sucursal implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Sucursal[ sucursalPK=" + sucursalPK + " ]";
-    }
-
-    public List<Contrato> getContratoList() {
-        return contratoList;
-    }
-
-    public void setContratoList(List<Contrato> contratoList) {
-        this.contratoList = contratoList;
     }
     
 }

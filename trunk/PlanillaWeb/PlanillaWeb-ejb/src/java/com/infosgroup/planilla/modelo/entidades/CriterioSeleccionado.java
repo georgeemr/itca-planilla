@@ -117,10 +117,7 @@ public class CriterioSeleccionado implements Serializable
             return false;
             }
         CriterioSeleccionado other = (CriterioSeleccionado) object;
-        if ((this.criterioSeleccionadoPK == null && other.criterioSeleccionadoPK != null) || (this.criterioSeleccionadoPK != null && !this.criterioSeleccionadoPK.equals(other.criterioSeleccionadoPK)))
-            {
-            return false;
-            }
+        if ((this.criterioSeleccionadoPK == null && other.criterioSeleccionadoPK != null) || (this.criterioSeleccionadoPK != null && !this.criterioSeleccionadoPK.equals(other.criterioSeleccionadoPK))) return false;
         return true;
     }
 

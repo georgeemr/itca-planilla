@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
@@ -83,7 +84,7 @@ public class Menu implements Serializable
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false),
         @JoinColumn(name = "ID_ROL", referencedColumnName = "ID_ROL", nullable = false)
         })
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Rol> rolList;
 
     @JoinColumns(
@@ -91,10 +92,10 @@ public class Menu implements Serializable
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Modulo modulo;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "menu")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "menu", fetch = FetchType.EAGER)
     private List<Menu> menuList;
 
     @JoinColumns(
@@ -103,7 +104,7 @@ public class Menu implements Serializable
         @JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_MENU_PADRE", referencedColumnName = "ID_MENU")
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Menu menu;
 
     public Menu()
@@ -238,10 +239,7 @@ public class Menu implements Serializable
             return false;
             }
         Menu other = (Menu) object;
-        if ((this.menuPK == null && other.menuPK != null) || (this.menuPK != null && !this.menuPK.equals(other.menuPK)))
-            {
-            return false;
-            }
+        if ((this.menuPK == null && other.menuPK != null) || (this.menuPK != null && !this.menuPK.equals(other.menuPK))) return false;
         return true;
     }
 

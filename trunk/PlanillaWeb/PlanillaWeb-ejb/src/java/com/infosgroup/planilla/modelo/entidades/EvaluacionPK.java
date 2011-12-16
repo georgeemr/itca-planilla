@@ -144,30 +144,12 @@ public class EvaluacionPK implements Serializable
             return false;
             }
         EvaluacionPK other = (EvaluacionPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.periodo != other.periodo)
-            {
-            return false;
-            }
-        if (this.codCampania != other.codCampania)
-            {
-            return false;
-            }
-        if (this.tipoEvaluacion != other.tipoEvaluacion)
-            {
-            return false;
-            }
-        if (this.plantilla != other.plantilla)
-            {
-            return false;
-            }
-        if (this.empleado != other.empleado)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.periodo != other.periodo) return false;
+        if (this.codCampania != other.codCampania) return false;
+        if (this.tipoEvaluacion != other.tipoEvaluacion) return false;
+        if (this.plantilla != other.plantilla) return false;
+        if (this.empleado != other.empleado) return false;
         return true;
     }
 

@@ -12,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -56,18 +57,18 @@ public class PuestoEmpleado implements Serializable
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAsignacion;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestoEmpleado")
-    private List<AccionPersonal> accionPersonalList;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestoEmpleado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestoEmpleado", fetch = FetchType.EAGER)
     private List<ResumenAsistencia> resumenAsistenciaList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestoEmpleado", fetch = FetchType.EAGER)
+    private List<AccionPersonal> accionPersonalList;
 
     @JoinColumns(
         {
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_SUCURSAL", referencedColumnName = "ID_SUCURSAL", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Sucursal sucursal;
 
     @JoinColumns(
@@ -75,7 +76,7 @@ public class PuestoEmpleado implements Serializable
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_PUESTO", referencedColumnName = "COD_PUESTO", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Puesto puesto;
 
     @JoinColumns(
@@ -83,7 +84,7 @@ public class PuestoEmpleado implements Serializable
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_EMPLEADO", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Empleado empleado;
 
     public PuestoEmpleado()
@@ -127,17 +128,6 @@ public class PuestoEmpleado implements Serializable
     }
 
     @XmlTransient
-    public List<AccionPersonal> getAccionPersonalList()
-    {
-        return accionPersonalList;
-    }
-
-    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
-    {
-        this.accionPersonalList = accionPersonalList;
-    }
-
-    @XmlTransient
     public List<ResumenAsistencia> getResumenAsistenciaList()
     {
         return resumenAsistenciaList;
@@ -146,6 +136,17 @@ public class PuestoEmpleado implements Serializable
     public void setResumenAsistenciaList(List<ResumenAsistencia> resumenAsistenciaList)
     {
         this.resumenAsistenciaList = resumenAsistenciaList;
+    }
+
+    @XmlTransient
+    public List<AccionPersonal> getAccionPersonalList()
+    {
+        return accionPersonalList;
+    }
+
+    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
+    {
+        this.accionPersonalList = accionPersonalList;
     }
 
     public Sucursal getSucursal()
@@ -195,10 +196,7 @@ public class PuestoEmpleado implements Serializable
             return false;
             }
         PuestoEmpleado other = (PuestoEmpleado) object;
-        if ((this.puestoEmpleadoPK == null && other.puestoEmpleadoPK != null) || (this.puestoEmpleadoPK != null && !this.puestoEmpleadoPK.equals(other.puestoEmpleadoPK)))
-            {
-            return false;
-            }
+        if ((this.puestoEmpleadoPK == null && other.puestoEmpleadoPK != null) || (this.puestoEmpleadoPK != null && !this.puestoEmpleadoPK.equals(other.puestoEmpleadoPK))) return false;
         return true;
     }
 

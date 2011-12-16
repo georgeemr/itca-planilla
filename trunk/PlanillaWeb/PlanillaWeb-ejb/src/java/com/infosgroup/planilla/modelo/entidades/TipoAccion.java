@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -62,7 +63,7 @@ public class TipoAccion implements Serializable
     @Column(name = "COD_ROL", nullable = false)
     private long codRol;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoAccion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoAccion", fetch = FetchType.EAGER)
     private List<AccionPersonal> accionPersonalList;
 
     public TipoAccion()
@@ -163,10 +164,7 @@ public class TipoAccion implements Serializable
             return false;
             }
         TipoAccion other = (TipoAccion) object;
-        if ((this.tipoAccionPK == null && other.tipoAccionPK != null) || (this.tipoAccionPK != null && !this.tipoAccionPK.equals(other.tipoAccionPK)))
-            {
-            return false;
-            }
+        if ((this.tipoAccionPK == null && other.tipoAccionPK != null) || (this.tipoAccionPK != null && !this.tipoAccionPK.equals(other.tipoAccionPK))) return false;
         return true;
     }
 

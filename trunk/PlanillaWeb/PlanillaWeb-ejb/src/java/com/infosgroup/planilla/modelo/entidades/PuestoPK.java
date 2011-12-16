@@ -76,14 +76,8 @@ public class PuestoPK implements Serializable
             return false;
             }
         PuestoPK other = (PuestoPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codPuesto != other.codPuesto)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codPuesto != other.codPuesto) return false;
         return true;
     }
 

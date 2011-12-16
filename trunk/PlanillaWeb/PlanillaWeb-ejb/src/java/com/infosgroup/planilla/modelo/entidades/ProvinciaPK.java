@@ -76,14 +76,8 @@ public class ProvinciaPK implements Serializable
             return false;
             }
         ProvinciaPK other = (ProvinciaPK) object;
-        if (this.idPais != other.idPais)
-            {
-            return false;
-            }
-        if (this.idProvincia != other.idProvincia)
-            {
-            return false;
-            }
+        if (this.idPais != other.idPais) return false;
+        if (this.idProvincia != other.idProvincia) return false;
         return true;
     }
 

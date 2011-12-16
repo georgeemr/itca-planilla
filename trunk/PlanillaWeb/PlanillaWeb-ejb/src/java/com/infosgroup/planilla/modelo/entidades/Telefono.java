@@ -10,6 +10,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -49,10 +50,10 @@ public class Telefono implements Serializable
     @Column(name = "NUM_TELEFONO", length = 20)
     private String numTelefono;
 
-    @ManyToMany(mappedBy = "telefonoList")
+    @ManyToMany(mappedBy = "telefonoList", fetch = FetchType.EAGER)
     private List<Sucursal> sucursalList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "telefono")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "telefono", fetch = FetchType.EAGER)
     private List<EmpleadoTelefono> empleadoTelefonoList;
 
     public Telefono()
@@ -123,10 +124,7 @@ public class Telefono implements Serializable
             return false;
             }
         Telefono other = (Telefono) object;
-        if ((this.idTelefono == null && other.idTelefono != null) || (this.idTelefono != null && !this.idTelefono.equals(other.idTelefono)))
-            {
-            return false;
-            }
+        if ((this.idTelefono == null && other.idTelefono != null) || (this.idTelefono != null && !this.idTelefono.equals(other.idTelefono))) return false;
         return true;
     }
 

@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -50,11 +51,11 @@ public class Gerencia implements Serializable
     @Column(name = "NOM_GERENCIA", nullable = false, length = 200)
     private String nomGerencia;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gerencia")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gerencia", fetch = FetchType.EAGER)
     private List<Departamento> departamentoList;
 
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
     public Gerencia()
@@ -135,10 +136,7 @@ public class Gerencia implements Serializable
             return false;
             }
         Gerencia other = (Gerencia) object;
-        if ((this.gerenciaPK == null && other.gerenciaPK != null) || (this.gerenciaPK != null && !this.gerenciaPK.equals(other.gerenciaPK)))
-            {
-            return false;
-            }
+        if ((this.gerenciaPK == null && other.gerenciaPK != null) || (this.gerenciaPK != null && !this.gerenciaPK.equals(other.gerenciaPK))) return false;
         return true;
     }
 

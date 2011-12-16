@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -45,11 +46,11 @@ public class Rol implements Serializable
     @Column(name = "NOM_ROL", length = 100)
     private String nomRol;
 
-    @ManyToMany(mappedBy = "rolList")
+    @ManyToMany(mappedBy = "rolList", fetch = FetchType.EAGER)
     private List<Menu> menuList;
 
     @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
     public Rol()
@@ -124,10 +125,7 @@ public class Rol implements Serializable
             return false;
             }
         Rol other = (Rol) object;
-        if ((this.rolPK == null && other.rolPK != null) || (this.rolPK != null && !this.rolPK.equals(other.rolPK)))
-            {
-            return false;
-            }
+        if ((this.rolPK == null && other.rolPK != null) || (this.rolPK != null && !this.rolPK.equals(other.rolPK))) return false;
         return true;
     }
 

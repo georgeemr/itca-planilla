@@ -93,18 +93,9 @@ public class TransaccionPK implements Serializable
             return false;
             }
         TransaccionPK other = (TransaccionPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idTipoTransaccion != other.idTipoTransaccion)
-            {
-            return false;
-            }
-        if (this.idTransaccion != other.idTransaccion)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idTipoTransaccion != other.idTipoTransaccion) return false;
+        if (this.idTransaccion != other.idTransaccion) return false;
         return true;
     }
 

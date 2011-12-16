@@ -76,14 +76,8 @@ public class EmpleadoPK implements Serializable
             return false;
             }
         EmpleadoPK other = (EmpleadoPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codEmp != other.codEmp)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codEmp != other.codEmp) return false;
         return true;
     }
 

@@ -10,6 +10,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -48,7 +49,7 @@ public class TipoDocumento implements Serializable
     @Column(name = "NOM_TIPO_DOCUMENTO", length = 100)
     private String nomTipoDocumento;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoDocumento")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoDocumento", fetch = FetchType.EAGER)
     private List<DocumentoEmpleado> documentoEmpleadoList;
 
     public TipoDocumento()
@@ -108,10 +109,7 @@ public class TipoDocumento implements Serializable
             return false;
             }
         TipoDocumento other = (TipoDocumento) object;
-        if ((this.idTipoDocumento == null && other.idTipoDocumento != null) || (this.idTipoDocumento != null && !this.idTipoDocumento.equals(other.idTipoDocumento)))
-            {
-            return false;
-            }
+        if ((this.idTipoDocumento == null && other.idTipoDocumento != null) || (this.idTipoDocumento != null && !this.idTipoDocumento.equals(other.idTipoDocumento))) return false;
         return true;
     }
 

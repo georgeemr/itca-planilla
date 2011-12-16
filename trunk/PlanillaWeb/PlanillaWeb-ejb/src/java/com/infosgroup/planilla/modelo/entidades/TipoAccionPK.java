@@ -76,14 +76,8 @@ public class TipoAccionPK implements Serializable
             return false;
             }
         TipoAccionPK other = (TipoAccionPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codTipoaccion != other.codTipoaccion)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codTipoaccion != other.codTipoaccion) return false;
         return true;
     }
 

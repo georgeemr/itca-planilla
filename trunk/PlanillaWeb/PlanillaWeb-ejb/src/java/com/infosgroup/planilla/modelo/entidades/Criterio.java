@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -78,13 +79,13 @@ public class Criterio implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "TIPO", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private TipoCriterio tipoCriterio;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1", fetch = FetchType.EAGER)
     private List<CriteriosXPuesto> criteriosXPuestoList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1", fetch = FetchType.EAGER)
     private List<CriteriosXCandidato> criteriosXCandidatoList;
 
     public Criterio()
@@ -198,10 +199,7 @@ public class Criterio implements Serializable
             return false;
             }
         Criterio other = (Criterio) object;
-        if ((this.criterioPK == null && other.criterioPK != null) || (this.criterioPK != null && !this.criterioPK.equals(other.criterioPK)))
-            {
-            return false;
-            }
+        if ((this.criterioPK == null && other.criterioPK != null) || (this.criterioPK != null && !this.criterioPK.equals(other.criterioPK))) return false;
         return true;
     }
 

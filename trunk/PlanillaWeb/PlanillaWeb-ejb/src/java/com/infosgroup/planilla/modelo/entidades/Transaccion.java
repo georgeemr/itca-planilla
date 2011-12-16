@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToMany;
@@ -59,7 +60,7 @@ public class Transaccion implements Serializable
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechatransaccion;
 
-    @ManyToMany(mappedBy = "transaccionList")
+    @ManyToMany(mappedBy = "transaccionList", fetch = FetchType.EAGER)
     private List<Cuenta> cuentaList;
 
     @JoinColumns(
@@ -67,7 +68,7 @@ public class Transaccion implements Serializable
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_TIPO_TRANSACCION", referencedColumnName = "ID_TIPO_TRANSACCION", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private TipoTransaccion tipoTransaccion;
 
     public Transaccion()
@@ -162,10 +163,7 @@ public class Transaccion implements Serializable
             return false;
             }
         Transaccion other = (Transaccion) object;
-        if ((this.transaccionPK == null && other.transaccionPK != null) || (this.transaccionPK != null && !this.transaccionPK.equals(other.transaccionPK)))
-            {
-            return false;
-            }
+        if ((this.transaccionPK == null && other.transaccionPK != null) || (this.transaccionPK != null && !this.transaccionPK.equals(other.transaccionPK))) return false;
         return true;
     }
 

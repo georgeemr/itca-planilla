@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -42,13 +43,13 @@ public class Planilla implements Serializable
     @EmbeddedId
     protected PlanillaPK planillaPK;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla")
-    private List<AccionPersonal> accionPersonalList;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla", fetch = FetchType.EAGER)
     private List<ResumenAsistencia> resumenAsistenciaList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla", fetch = FetchType.EAGER)
+    private List<AccionPersonal> accionPersonalList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla", fetch = FetchType.EAGER)
     private List<DetPlanilla> detPlanillaList;
 
     @JoinColumns(
@@ -56,11 +57,11 @@ public class Planilla implements Serializable
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_TIPO_PLANILLA", referencedColumnName = "ID_TIPO_PLANILLA", nullable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private TipoPlanilla tipoPlanilla;
 
     @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
     public Planilla()
@@ -88,17 +89,6 @@ public class Planilla implements Serializable
     }
 
     @XmlTransient
-    public List<AccionPersonal> getAccionPersonalList()
-    {
-        return accionPersonalList;
-    }
-
-    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
-    {
-        this.accionPersonalList = accionPersonalList;
-    }
-
-    @XmlTransient
     public List<ResumenAsistencia> getResumenAsistenciaList()
     {
         return resumenAsistenciaList;
@@ -107,6 +97,17 @@ public class Planilla implements Serializable
     public void setResumenAsistenciaList(List<ResumenAsistencia> resumenAsistenciaList)
     {
         this.resumenAsistenciaList = resumenAsistenciaList;
+    }
+
+    @XmlTransient
+    public List<AccionPersonal> getAccionPersonalList()
+    {
+        return accionPersonalList;
+    }
+
+    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
+    {
+        this.accionPersonalList = accionPersonalList;
     }
 
     @XmlTransient
@@ -157,10 +158,7 @@ public class Planilla implements Serializable
             return false;
             }
         Planilla other = (Planilla) object;
-        if ((this.planillaPK == null && other.planillaPK != null) || (this.planillaPK != null && !this.planillaPK.equals(other.planillaPK)))
-            {
-            return false;
-            }
+        if ((this.planillaPK == null && other.planillaPK != null) || (this.planillaPK != null && !this.planillaPK.equals(other.planillaPK))) return false;
         return true;
     }
 

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -47,7 +48,7 @@ public class RangoAniosExperiencia implements Serializable
     @Column(name = "DESCRIPCION", length = 200)
     private String descripcion;
 
-    @OneToMany(mappedBy = "rangoAnios")
+    @OneToMany(mappedBy = "rangoAnios", fetch = FetchType.EAGER)
     private List<Puesto> puestoList;
 
     public RangoAniosExperiencia()
@@ -107,10 +108,7 @@ public class RangoAniosExperiencia implements Serializable
             return false;
             }
         RangoAniosExperiencia other = (RangoAniosExperiencia) object;
-        if ((this.codRangoAnios == null && other.codRangoAnios != null) || (this.codRangoAnios != null && !this.codRangoAnios.equals(other.codRangoAnios)))
-            {
-            return false;
-            }
+        if ((this.codRangoAnios == null && other.codRangoAnios != null) || (this.codRangoAnios != null && !this.codRangoAnios.equals(other.codRangoAnios))) return false;
         return true;
     }
 

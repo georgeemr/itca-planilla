@@ -76,14 +76,8 @@ public class SucursalPK implements Serializable
             return false;
             }
         SucursalPK other = (SucursalPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idSucursal != other.idSucursal)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idSucursal != other.idSucursal) return false;
         return true;
     }
 

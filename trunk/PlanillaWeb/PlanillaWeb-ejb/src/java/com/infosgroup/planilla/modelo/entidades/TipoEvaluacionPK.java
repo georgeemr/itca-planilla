@@ -76,14 +76,8 @@ public class TipoEvaluacionPK implements Serializable
             return false;
             }
         TipoEvaluacionPK other = (TipoEvaluacionPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codTipoEvaluacion != other.codTipoEvaluacion)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codTipoEvaluacion != other.codTipoEvaluacion) return false;
         return true;
     }
 

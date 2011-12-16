@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -36,8 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class TipoPlanilla implements Serializable
 {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPlanilla")
-    private List<Contrato> contratoList;
 
     private static final long serialVersionUID = 1L;
 
@@ -48,11 +47,14 @@ public class TipoPlanilla implements Serializable
     @Column(name = "NOM_TIPO_PLANILLA", length = 100)
     private String nomTipoPlanilla;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPlanilla", fetch = FetchType.EAGER)
+    private List<Contrato> contratoList;
+
     @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPlanilla")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPlanilla", fetch = FetchType.EAGER)
     private List<Planilla> planillaList;
 
     public TipoPlanilla()
@@ -87,6 +89,17 @@ public class TipoPlanilla implements Serializable
     public void setNomTipoPlanilla(String nomTipoPlanilla)
     {
         this.nomTipoPlanilla = nomTipoPlanilla;
+    }
+
+    @XmlTransient
+    public List<Contrato> getContratoList()
+    {
+        return contratoList;
+    }
+
+    public void setContratoList(List<Contrato> contratoList)
+    {
+        this.contratoList = contratoList;
     }
 
     public Compania getCompania()
@@ -127,10 +140,7 @@ public class TipoPlanilla implements Serializable
             return false;
             }
         TipoPlanilla other = (TipoPlanilla) object;
-        if ((this.tipoPlanillaPK == null && other.tipoPlanillaPK != null) || (this.tipoPlanillaPK != null && !this.tipoPlanillaPK.equals(other.tipoPlanillaPK)))
-            {
-            return false;
-            }
+        if ((this.tipoPlanillaPK == null && other.tipoPlanillaPK != null) || (this.tipoPlanillaPK != null && !this.tipoPlanillaPK.equals(other.tipoPlanillaPK))) return false;
         return true;
     }
 
@@ -138,14 +148,6 @@ public class TipoPlanilla implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.TipoPlanilla[ tipoPlanillaPK=" + tipoPlanillaPK + " ]";
-    }
-
-    public List<Contrato> getContratoList() {
-        return contratoList;
-    }
-
-    public void setContratoList(List<Contrato> contratoList) {
-        this.contratoList = contratoList;
     }
     
 }

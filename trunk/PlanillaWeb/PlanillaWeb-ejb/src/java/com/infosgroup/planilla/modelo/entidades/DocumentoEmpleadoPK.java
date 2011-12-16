@@ -129,26 +129,11 @@ public class DocumentoEmpleadoPK implements Serializable
             return false;
             }
         DocumentoEmpleadoPK other = (DocumentoEmpleadoPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idSucursal != other.idSucursal)
-            {
-            return false;
-            }
-        if (this.idEmpleado != other.idEmpleado)
-            {
-            return false;
-            }
-        if (this.idTipoDocumento != other.idTipoDocumento)
-            {
-            return false;
-            }
-        if ((this.numDocumento == null && other.numDocumento != null) || (this.numDocumento != null && !this.numDocumento.equals(other.numDocumento)))
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idSucursal != other.idSucursal) return false;
+        if (this.idEmpleado != other.idEmpleado) return false;
+        if (this.idTipoDocumento != other.idTipoDocumento) return false;
+        if ((this.numDocumento == null && other.numDocumento != null) || (this.numDocumento != null && !this.numDocumento.equals(other.numDocumento))) return false;
         return true;
     }
 

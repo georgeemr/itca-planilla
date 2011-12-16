@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
@@ -55,7 +56,7 @@ public class Pregunta implements Serializable
     @Column(name = "DESCRIPCION", nullable = false, length = 200)
     private String descripcion;
 
-    @ManyToMany(mappedBy = "preguntaList")
+    @ManyToMany(mappedBy = "preguntaList", fetch = FetchType.EAGER)
     private List<Plantilla> plantillaList;
 
     @JoinTable(name = "PREGUNTA_RESPUESTA", joinColumns =
@@ -70,7 +71,7 @@ public class Pregunta implements Serializable
         @JoinColumn(name = "GRUPO_RESPUESTA", referencedColumnName = "GRUPO_RESPUESTA", nullable = false),
         @JoinColumn(name = "COD_RESPUESTA", referencedColumnName = "COD_RESPUESTA", nullable = false)
         })
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Respuesta> respuestaList;
 
     @JoinColumns(
@@ -78,10 +79,10 @@ public class Pregunta implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_FACTOR", referencedColumnName = "COD_FACTOR", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Factor factor;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pregunta")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pregunta", fetch = FetchType.EAGER)
     private List<DetEvaluacion> detEvaluacionList;
 
     public Pregunta()
@@ -184,10 +185,7 @@ public class Pregunta implements Serializable
             return false;
             }
         Pregunta other = (Pregunta) object;
-        if ((this.preguntaPK == null && other.preguntaPK != null) || (this.preguntaPK != null && !this.preguntaPK.equals(other.preguntaPK)))
-            {
-            return false;
-            }
+        if ((this.preguntaPK == null && other.preguntaPK != null) || (this.preguntaPK != null && !this.preguntaPK.equals(other.preguntaPK))) return false;
         return true;
     }
 

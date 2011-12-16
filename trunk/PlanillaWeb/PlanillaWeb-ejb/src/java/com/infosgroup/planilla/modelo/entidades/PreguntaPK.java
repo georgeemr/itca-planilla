@@ -95,18 +95,9 @@ public class PreguntaPK implements Serializable
             return false;
             }
         PreguntaPK other = (PreguntaPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codFactor != other.codFactor)
-            {
-            return false;
-            }
-        if ((this.codPregunta == null && other.codPregunta != null) || (this.codPregunta != null && !this.codPregunta.equals(other.codPregunta)))
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codFactor != other.codFactor) return false;
+        if ((this.codPregunta == null && other.codPregunta != null) || (this.codPregunta != null && !this.codPregunta.equals(other.codPregunta))) return false;
         return true;
     }
 

@@ -76,14 +76,8 @@ public class RolPK implements Serializable
             return false;
             }
         RolPK other = (RolPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idRol != other.idRol)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idRol != other.idRol) return false;
         return true;
     }
 

@@ -10,6 +10,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -53,7 +54,7 @@ public class NivelAcademico implements Serializable
     @Column(name = "DET_NIVEL_ACADEMICO", length = 200)
     private String detNivelAcademico;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nivelAcademico")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nivelAcademico", fetch = FetchType.EAGER)
     private List<EmpleadoNivelAcademico> empleadoNivelAcademicoList;
 
     public NivelAcademico()
@@ -123,10 +124,7 @@ public class NivelAcademico implements Serializable
             return false;
             }
         NivelAcademico other = (NivelAcademico) object;
-        if ((this.idNivelAcademico == null && other.idNivelAcademico != null) || (this.idNivelAcademico != null && !this.idNivelAcademico.equals(other.idNivelAcademico)))
-            {
-            return false;
-            }
+        if ((this.idNivelAcademico == null && other.idNivelAcademico != null) || (this.idNivelAcademico != null && !this.idNivelAcademico.equals(other.idNivelAcademico))) return false;
         return true;
     }
 

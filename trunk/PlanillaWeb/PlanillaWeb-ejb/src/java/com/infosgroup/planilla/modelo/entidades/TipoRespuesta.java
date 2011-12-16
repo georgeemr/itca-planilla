@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -51,10 +52,10 @@ public class TipoRespuesta implements Serializable
     private String nomTipoRespuesta;
 
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoRespuesta")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoRespuesta", fetch = FetchType.EAGER)
     private List<Respuesta> respuestaList;
 
     public TipoRespuesta()
@@ -135,10 +136,7 @@ public class TipoRespuesta implements Serializable
             return false;
             }
         TipoRespuesta other = (TipoRespuesta) object;
-        if ((this.tipoRespuestaPK == null && other.tipoRespuestaPK != null) || (this.tipoRespuestaPK != null && !this.tipoRespuestaPK.equals(other.tipoRespuestaPK)))
-            {
-            return false;
-            }
+        if ((this.tipoRespuestaPK == null && other.tipoRespuestaPK != null) || (this.tipoRespuestaPK != null && !this.tipoRespuestaPK.equals(other.tipoRespuestaPK))) return false;
         return true;
     }
 

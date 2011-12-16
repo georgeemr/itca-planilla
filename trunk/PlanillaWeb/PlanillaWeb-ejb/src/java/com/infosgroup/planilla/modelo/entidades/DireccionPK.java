@@ -129,26 +129,11 @@ public class DireccionPK implements Serializable
             return false;
             }
         DireccionPK other = (DireccionPK) object;
-        if (this.idPais != other.idPais)
-            {
-            return false;
-            }
-        if (this.idProvincia != other.idProvincia)
-            {
-            return false;
-            }
-        if (this.idMunicipio != other.idMunicipio)
-            {
-            return false;
-            }
-        if (this.idBarrio != other.idBarrio)
-            {
-            return false;
-            }
-        if ((this.numCasa == null && other.numCasa != null) || (this.numCasa != null && !this.numCasa.equals(other.numCasa)))
-            {
-            return false;
-            }
+        if (this.idPais != other.idPais) return false;
+        if (this.idProvincia != other.idProvincia) return false;
+        if (this.idMunicipio != other.idMunicipio) return false;
+        if (this.idBarrio != other.idBarrio) return false;
+        if ((this.numCasa == null && other.numCasa != null) || (this.numCasa != null && !this.numCasa.equals(other.numCasa))) return false;
         return true;
     }
 

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -47,7 +48,7 @@ public class RangoEdad implements Serializable
     @Column(name = "DESCRIPCION", length = 200)
     private String descripcion;
 
-    @OneToMany(mappedBy = "rangoEdad")
+    @OneToMany(mappedBy = "rangoEdad", fetch = FetchType.EAGER)
     private List<Puesto> puestoList;
 
     public RangoEdad()
@@ -107,10 +108,7 @@ public class RangoEdad implements Serializable
             return false;
             }
         RangoEdad other = (RangoEdad) object;
-        if ((this.codRangoEdad == null && other.codRangoEdad != null) || (this.codRangoEdad != null && !this.codRangoEdad.equals(other.codRangoEdad)))
-            {
-            return false;
-            }
+        if ((this.codRangoEdad == null && other.codRangoEdad != null) || (this.codRangoEdad != null && !this.codRangoEdad.equals(other.codRangoEdad))) return false;
         return true;
     }
 

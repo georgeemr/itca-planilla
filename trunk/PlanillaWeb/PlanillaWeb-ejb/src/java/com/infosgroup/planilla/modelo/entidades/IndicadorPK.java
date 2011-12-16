@@ -93,18 +93,9 @@ public class IndicadorPK implements Serializable
             return false;
             }
         IndicadorPK other = (IndicadorPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.modulo != other.modulo)
-            {
-            return false;
-            }
-        if (this.indicador != other.indicador)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.modulo != other.modulo) return false;
+        if (this.indicador != other.indicador) return false;
         return true;
     }
 

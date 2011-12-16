@@ -127,26 +127,11 @@ public class CriteriosXCandidatoPK implements Serializable
             return false;
             }
         CriteriosXCandidatoPK other = (CriteriosXCandidatoPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.candidato != other.candidato)
-            {
-            return false;
-            }
-        if (this.criterio != other.criterio)
-            {
-            return false;
-            }
-        if (this.tipoCriterio != other.tipoCriterio)
-            {
-            return false;
-            }
-        if (this.correlativo != other.correlativo)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.candidato != other.candidato) return false;
+        if (this.criterio != other.criterio) return false;
+        if (this.tipoCriterio != other.tipoCriterio) return false;
+        if (this.correlativo != other.correlativo) return false;
         return true;
     }
 

@@ -110,22 +110,10 @@ public class SalarioBasePK implements Serializable
             return false;
             }
         SalarioBasePK other = (SalarioBasePK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idSucursal != other.idSucursal)
-            {
-            return false;
-            }
-        if (this.idEmpleado != other.idEmpleado)
-            {
-            return false;
-            }
-        if (this.idSalario != other.idSalario)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idSucursal != other.idSucursal) return false;
+        if (this.idEmpleado != other.idEmpleado) return false;
+        if (this.idSalario != other.idSalario) return false;
         return true;
     }
 

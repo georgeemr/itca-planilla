@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -52,11 +53,14 @@ public class Provincia implements Serializable
     private String detProvincia;
 
     @JoinColumn(name = "ID_PAIS", referencedColumnName = "ID_PAIS", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Pais pais;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "provincia")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "provincia", fetch = FetchType.EAGER)
     private List<Municipio> municipioList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "provincia", fetch = FetchType.EAGER)
+    private List<FestivosProvincia> festivosProvinciaList;
 
     public Provincia()
     {
@@ -123,6 +127,17 @@ public class Provincia implements Serializable
         this.municipioList = municipioList;
     }
 
+    @XmlTransient
+    public List<FestivosProvincia> getFestivosProvinciaList()
+    {
+        return festivosProvinciaList;
+    }
+
+    public void setFestivosProvinciaList(List<FestivosProvincia> festivosProvinciaList)
+    {
+        this.festivosProvinciaList = festivosProvinciaList;
+    }
+
     @Override
     public int hashCode()
     {
@@ -140,10 +155,7 @@ public class Provincia implements Serializable
             return false;
             }
         Provincia other = (Provincia) object;
-        if ((this.provinciaPK == null && other.provinciaPK != null) || (this.provinciaPK != null && !this.provinciaPK.equals(other.provinciaPK)))
-            {
-            return false;
-            }
+        if ((this.provinciaPK == null && other.provinciaPK != null) || (this.provinciaPK != null && !this.provinciaPK.equals(other.provinciaPK))) return false;
         return true;
     }
 

@@ -20,84 +20,67 @@ public class ContratoPK implements Serializable
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID_COMPANIA", nullable = false)
-    private long idCompania;
+    @Column(name = "COD_CIA", nullable = false)
+    private long codCia;
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID_SUCURSAL", nullable = false)
-    private long idSucursal;
+    @Column(name = "CODIGO", nullable = false)
+    private long codigo;
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID_EMPLEADO", nullable = false)
-    private long idEmpleado;
-
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_CONTRATO", nullable = false)
-    private long idContrato;
+    @Column(name = "CANDIDATO", nullable = false)
+    private long candidato;
 
     public ContratoPK()
     {
     }
 
-    public ContratoPK(long idCompania, long idSucursal, long idEmpleado, long idContrato)
+    public ContratoPK(long codCia, long codigo, long candidato)
     {
-        this.idCompania = idCompania;
-        this.idSucursal = idSucursal;
-        this.idEmpleado = idEmpleado;
-        this.idContrato = idContrato;
+        this.codCia = codCia;
+        this.codigo = codigo;
+        this.candidato = candidato;
     }
 
-    public long getIdCompania()
+    public long getCodCia()
     {
-        return idCompania;
+        return codCia;
     }
 
-    public void setIdCompania(long idCompania)
+    public void setCodCia(long codCia)
     {
-        this.idCompania = idCompania;
+        this.codCia = codCia;
     }
 
-    public long getIdSucursal()
+    public long getCodigo()
     {
-        return idSucursal;
+        return codigo;
     }
 
-    public void setIdSucursal(long idSucursal)
+    public void setCodigo(long codigo)
     {
-        this.idSucursal = idSucursal;
+        this.codigo = codigo;
     }
 
-    public long getIdEmpleado()
+    public long getCandidato()
     {
-        return idEmpleado;
+        return candidato;
     }
 
-    public void setIdEmpleado(long idEmpleado)
+    public void setCandidato(long candidato)
     {
-        this.idEmpleado = idEmpleado;
-    }
-
-    public long getIdContrato()
-    {
-        return idContrato;
-    }
-
-    public void setIdContrato(long idContrato)
-    {
-        this.idContrato = idContrato;
+        this.candidato = candidato;
     }
 
     @Override
     public int hashCode()
     {
         int hash = 0;
-        hash += (int) idCompania;
-        hash += (int) idSucursal;
-        hash += (int) idEmpleado;
-        hash += (int) idContrato;
+        hash += (int) codCia;
+        hash += (int) codigo;
+        hash += (int) candidato;
         return hash;
     }
 
@@ -110,29 +93,16 @@ public class ContratoPK implements Serializable
             return false;
             }
         ContratoPK other = (ContratoPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idSucursal != other.idSucursal)
-            {
-            return false;
-            }
-        if (this.idEmpleado != other.idEmpleado)
-            {
-            return false;
-            }
-        if (this.idContrato != other.idContrato)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codigo != other.codigo) return false;
+        if (this.candidato != other.candidato) return false;
         return true;
     }
 
     @Override
     public String toString()
     {
-        return "com.infosgroup.planilla.modelo.entidades.ContratoPK[ idCompania=" + idCompania + ", idSucursal=" + idSucursal + ", idEmpleado=" + idEmpleado + ", idContrato=" + idContrato + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ContratoPK[ codCia=" + codCia + ", codigo=" + codigo + ", candidato=" + candidato + " ]";
     }
     
 }

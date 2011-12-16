@@ -78,14 +78,8 @@ public class EstadoConcursoPK implements Serializable
             return false;
             }
         EstadoConcursoPK other = (EstadoConcursoPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if ((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo)))
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if ((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo))) return false;
         return true;
     }
 

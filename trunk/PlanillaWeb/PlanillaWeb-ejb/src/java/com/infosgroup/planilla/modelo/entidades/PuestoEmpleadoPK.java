@@ -127,26 +127,11 @@ public class PuestoEmpleadoPK implements Serializable
             return false;
             }
         PuestoEmpleadoPK other = (PuestoEmpleadoPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idSucursal != other.idSucursal)
-            {
-            return false;
-            }
-        if (this.idEmpleado != other.idEmpleado)
-            {
-            return false;
-            }
-        if (this.idTipoPuesto != other.idTipoPuesto)
-            {
-            return false;
-            }
-        if (this.idPuesto != other.idPuesto)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idSucursal != other.idSucursal) return false;
+        if (this.idEmpleado != other.idEmpleado) return false;
+        if (this.idTipoPuesto != other.idTipoPuesto) return false;
+        if (this.idPuesto != other.idPuesto) return false;
         return true;
     }
 

@@ -110,22 +110,10 @@ public class EmpleadoTelefonoPK implements Serializable
             return false;
             }
         EmpleadoTelefonoPK other = (EmpleadoTelefonoPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idSucursal != other.idSucursal)
-            {
-            return false;
-            }
-        if (this.idEmpleado != other.idEmpleado)
-            {
-            return false;
-            }
-        if (this.idTelefono != other.idTelefono)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idSucursal != other.idSucursal) return false;
+        if (this.idEmpleado != other.idEmpleado) return false;
+        if (this.idTelefono != other.idTelefono) return false;
         return true;
     }
 

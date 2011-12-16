@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -51,10 +52,10 @@ public class TipoPuesto implements Serializable
     private String nombre;
 
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto", fetch = FetchType.EAGER)
     private List<Puesto> puestoList;
 
     public TipoPuesto()
@@ -135,10 +136,7 @@ public class TipoPuesto implements Serializable
             return false;
             }
         TipoPuesto other = (TipoPuesto) object;
-        if ((this.tipoPuestoPK == null && other.tipoPuestoPK != null) || (this.tipoPuestoPK != null && !this.tipoPuestoPK.equals(other.tipoPuestoPK)))
-            {
-            return false;
-            }
+        if ((this.tipoPuestoPK == null && other.tipoPuestoPK != null) || (this.tipoPuestoPK != null && !this.tipoPuestoPK.equals(other.tipoPuestoPK))) return false;
         return true;
     }
 

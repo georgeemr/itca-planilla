@@ -93,18 +93,9 @@ public class MenuPK implements Serializable
             return false;
             }
         MenuPK other = (MenuPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idModulo != other.idModulo)
-            {
-            return false;
-            }
-        if (this.idMenu != other.idMenu)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idModulo != other.idModulo) return false;
+        if (this.idMenu != other.idMenu) return false;
         return true;
     }
 

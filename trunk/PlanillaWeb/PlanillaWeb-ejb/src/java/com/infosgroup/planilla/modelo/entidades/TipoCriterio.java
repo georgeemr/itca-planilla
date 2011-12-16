@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -62,11 +63,11 @@ public class TipoCriterio implements Serializable
     @Column(name = "DESCRIPCION", length = 200)
     private String descripcion;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoCriterio")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoCriterio", fetch = FetchType.EAGER)
     private List<Criterio> criterioList;
 
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
     public TipoCriterio()
@@ -157,10 +158,7 @@ public class TipoCriterio implements Serializable
             return false;
             }
         TipoCriterio other = (TipoCriterio) object;
-        if ((this.tipoCriterioPK == null && other.tipoCriterioPK != null) || (this.tipoCriterioPK != null && !this.tipoCriterioPK.equals(other.tipoCriterioPK)))
-            {
-            return false;
-            }
+        if ((this.tipoCriterioPK == null && other.tipoCriterioPK != null) || (this.tipoCriterioPK != null && !this.tipoCriterioPK.equals(other.tipoCriterioPK))) return false;
         return true;
     }
 

@@ -76,14 +76,8 @@ public class TipoCriterioPK implements Serializable
             return false;
             }
         TipoCriterioPK other = (TipoCriterioPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codigo != other.codigo)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codigo != other.codigo) return false;
         return true;
     }
 

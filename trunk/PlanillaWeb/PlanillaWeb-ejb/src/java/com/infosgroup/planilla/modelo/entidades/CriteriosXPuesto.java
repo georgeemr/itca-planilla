@@ -15,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -63,7 +62,7 @@ public class CriteriosXPuesto implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "PUESTO", referencedColumnName = "COD_PUESTO", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Puesto puesto1;
 
     @JoinColumns(
@@ -71,11 +70,9 @@ public class CriteriosXPuesto implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "TIPO_CRITERIO", referencedColumnName = "TIPO", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "CRITERIO", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)
-    })
+        })
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Criterio criterio1;
-    @Transient
-    private String descripcionRango;
 
     public CriteriosXPuesto()
     {
@@ -168,10 +165,7 @@ public class CriteriosXPuesto implements Serializable
             return false;
             }
         CriteriosXPuesto other = (CriteriosXPuesto) object;
-        if ((this.criteriosXPuestoPK == null && other.criteriosXPuestoPK != null) || (this.criteriosXPuestoPK != null && !this.criteriosXPuestoPK.equals(other.criteriosXPuestoPK)))
-            {
-            return false;
-            }
+        if ((this.criteriosXPuestoPK == null && other.criteriosXPuestoPK != null) || (this.criteriosXPuestoPK != null && !this.criteriosXPuestoPK.equals(other.criteriosXPuestoPK))) return false;
         return true;
     }
 
@@ -180,22 +174,5 @@ public class CriteriosXPuesto implements Serializable
     {
         return "com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto[ criteriosXPuestoPK=" + criteriosXPuestoPK + " ]";
     }
-
-    public String getDescripcionRango() {
-        if (getCriterio1() != null) {
-            if (getCriterio1().getOperador().equals("equal")) {
-                descripcionRango = "( igual a " + getValor() + " )";
-            } else if (getCriterio1().getOperador().equals("between")) {
-                descripcionRango = "( entre " + valorInicialRango + " y " + valorFinalRango + " )";
-            } else {
-                descripcionRango = "";
-            }
-        }
-        return descripcionRango;
-    }
-
-    public void setDescripcionRango(String descripcionRango) {
-        this.descripcionRango = descripcionRango;
-    }
-
+    
 }

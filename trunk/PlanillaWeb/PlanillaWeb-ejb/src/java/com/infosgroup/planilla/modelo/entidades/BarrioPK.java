@@ -110,22 +110,10 @@ public class BarrioPK implements Serializable
             return false;
             }
         BarrioPK other = (BarrioPK) object;
-        if (this.idPais != other.idPais)
-            {
-            return false;
-            }
-        if (this.idProvincia != other.idProvincia)
-            {
-            return false;
-            }
-        if (this.idMunicipio != other.idMunicipio)
-            {
-            return false;
-            }
-        if (this.idBarrio != other.idBarrio)
-            {
-            return false;
-            }
+        if (this.idPais != other.idPais) return false;
+        if (this.idProvincia != other.idProvincia) return false;
+        if (this.idMunicipio != other.idMunicipio) return false;
+        if (this.idBarrio != other.idBarrio) return false;
         return true;
     }
 

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -58,7 +59,7 @@ public class Indicador implements Serializable
     private Long orden;
 
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
     public Indicador()
@@ -152,10 +153,7 @@ public class Indicador implements Serializable
             return false;
             }
         Indicador other = (Indicador) object;
-        if ((this.indicadorPK == null && other.indicadorPK != null) || (this.indicadorPK != null && !this.indicadorPK.equals(other.indicadorPK)))
-            {
-            return false;
-            }
+        if ((this.indicadorPK == null && other.indicadorPK != null) || (this.indicadorPK != null && !this.indicadorPK.equals(other.indicadorPK))) return false;
         return true;
     }
 

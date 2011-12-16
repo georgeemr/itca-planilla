@@ -90,10 +90,7 @@ public class EstadoCivil implements Serializable
             return false;
             }
         EstadoCivil other = (EstadoCivil) object;
-        if ((this.idEstadoCivil == null && other.idEstadoCivil != null) || (this.idEstadoCivil != null && !this.idEstadoCivil.equals(other.idEstadoCivil)))
-            {
-            return false;
-            }
+        if ((this.idEstadoCivil == null && other.idEstadoCivil != null) || (this.idEstadoCivil != null && !this.idEstadoCivil.equals(other.idEstadoCivil))) return false;
         return true;
     }
 

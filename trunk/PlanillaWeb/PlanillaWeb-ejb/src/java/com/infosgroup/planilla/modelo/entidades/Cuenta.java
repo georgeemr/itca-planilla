@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
@@ -94,7 +95,7 @@ public class Cuenta implements Serializable
         @JoinColumn(name = "ID_TIPO_TRANSACCION", referencedColumnName = "ID_TIPO_TRANSACCION", nullable = false),
         @JoinColumn(name = "ID_TRANSACCION", referencedColumnName = "ID_TRANSACCION", nullable = false)
         })
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Transaccion> transaccionList;
 
     @JoinColumns(
@@ -102,7 +103,7 @@ public class Cuenta implements Serializable
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_TIPO_CUENTA", referencedColumnName = "ID_TIPO_CUENTA", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private TipoCuenta tipoCuenta;
 
     public Cuenta()
@@ -247,10 +248,7 @@ public class Cuenta implements Serializable
             return false;
             }
         Cuenta other = (Cuenta) object;
-        if ((this.cuentaPK == null && other.cuentaPK != null) || (this.cuentaPK != null && !this.cuentaPK.equals(other.cuentaPK)))
-            {
-            return false;
-            }
+        if ((this.cuentaPK == null && other.cuentaPK != null) || (this.cuentaPK != null && !this.cuentaPK.equals(other.cuentaPK))) return false;
         return true;
     }
 
