@@ -4,7 +4,9 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+import java.util.Date;
 import java.util.List;
+import javax.annotation.security.PermitAll;
 import javax.persistence.EntityManager;
 
 /**
@@ -28,7 +30,7 @@ public abstract class AbstractFacade<T, P> {
 
     public void edit(T entity) {
         getEntityManager().merge(entity);
-        getEntityManager().flush();
+        //getEntityManager().flush();
     }
 
     public void remove(T entity) {
@@ -65,5 +67,10 @@ public abstract class AbstractFacade<T, P> {
         cq.select(getEntityManager().getCriteriaBuilder().count(rt));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
+    }
+    
+    @PermitAll
+    public Date obtenerFecha(){
+        return (Date) getEntityManager().createNativeQuery("SELECT SYSDATE FROM DUAL").getSingleResult();
     }
 }
