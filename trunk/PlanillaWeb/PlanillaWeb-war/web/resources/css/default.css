@@ -41,3 +41,33 @@ body {
 .candidatoSugerido{
     background-color: #DEDEDE;
 }
+
+.festivos{
+    font-weight: bold !important;
+    color: white !important;
+    background-color: yellow !important;
+}
+
+.laborales{
+    font-weight:bold !important;
+    color: white !important;
+    background-color: lightskyblue !important;
+}
+
+.vacaciones{
+    font-weight:bold !important;
+    color: white !important;
+    background-color: orange !important;
+}
+
+.permisos{
+    font-weight:bold !important;
+    color: white !important;
+    background-color: slateblue !important;
+}
+
+.capacitaciones{
+    font-weight:bold !important;
+    color: white !important;
+    background-color: greenyellow !important;
+}

@@ -6,6 +6,7 @@ package com.infosgroup.planilla.controlador.modulos.planilla;
 
 import com.infosgroup.planilla.view.JSFUtil;
 import java.io.Serializable;
+import java.util.Calendar;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -18,7 +19,6 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
 {
-
 @PostConstruct
 public void init()
 {
@@ -26,7 +26,11 @@ public void init()
 
 @Override
 protected void limpiarCampos()
-{   
+{
 }
 
+public String calendario$action()
+{
+return "calendario?faces-redirect=true";
+}
 }
