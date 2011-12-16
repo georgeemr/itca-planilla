@@ -110,22 +110,10 @@ public class PlanillaPK implements Serializable
             return false;
             }
         PlanillaPK other = (PlanillaPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.anio != other.anio)
-            {
-            return false;
-            }
-        if (this.mes != other.mes)
-            {
-            return false;
-            }
-        if (this.numPlanilla != other.numPlanilla)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.anio != other.anio) return false;
+        if (this.mes != other.mes) return false;
+        if (this.numPlanilla != other.numPlanilla) return false;
         return true;
     }
 

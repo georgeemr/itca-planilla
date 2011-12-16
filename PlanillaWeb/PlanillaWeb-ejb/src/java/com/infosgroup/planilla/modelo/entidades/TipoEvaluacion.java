@@ -52,7 +52,7 @@ public class TipoEvaluacion implements Serializable
     private String nomTipoEvaluacion;
 
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion", fetch = FetchType.EAGER)
@@ -136,10 +136,7 @@ public class TipoEvaluacion implements Serializable
             return false;
             }
         TipoEvaluacion other = (TipoEvaluacion) object;
-        if ((this.tipoEvaluacionPK == null && other.tipoEvaluacionPK != null) || (this.tipoEvaluacionPK != null && !this.tipoEvaluacionPK.equals(other.tipoEvaluacionPK)))
-            {
-            return false;
-            }
+        if ((this.tipoEvaluacionPK == null && other.tipoEvaluacionPK != null) || (this.tipoEvaluacionPK != null && !this.tipoEvaluacionPK.equals(other.tipoEvaluacionPK))) return false;
         return true;
     }
 

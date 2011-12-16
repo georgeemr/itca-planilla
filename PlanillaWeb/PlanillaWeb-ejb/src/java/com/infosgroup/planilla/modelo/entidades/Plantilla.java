@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
@@ -71,7 +72,7 @@ public class Plantilla implements Serializable
         @JoinColumn(name = "FACTOR", referencedColumnName = "COD_FACTOR", nullable = false),
         @JoinColumn(name = "PREGUNTA", referencedColumnName = "COD_PREGUNTA", nullable = false)
         })
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Pregunta> preguntaList;
 
     @JoinColumns(
@@ -79,10 +80,10 @@ public class Plantilla implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_TIPO_EVALUACION", referencedColumnName = "COD_TIPO_EVALUACION", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private TipoEvaluacion tipoEvaluacion;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plantilla1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plantilla1", fetch = FetchType.EAGER)
     private List<Evaluacion> evaluacionList;
 
     public Plantilla()
@@ -188,10 +189,7 @@ public class Plantilla implements Serializable
             return false;
             }
         Plantilla other = (Plantilla) object;
-        if ((this.plantillaPK == null && other.plantillaPK != null) || (this.plantillaPK != null && !this.plantillaPK.equals(other.plantillaPK)))
-            {
-            return false;
-            }
+        if ((this.plantillaPK == null && other.plantillaPK != null) || (this.plantillaPK != null && !this.plantillaPK.equals(other.plantillaPK))) return false;
         return true;
     }
 

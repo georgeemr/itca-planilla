@@ -7,6 +7,7 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -38,7 +39,7 @@ public class EmpleadoNivelAcademico implements Serializable
     protected EmpleadoNivelAcademicoPK empleadoNivelAcademicoPK;
 
     @JoinColumn(name = "ID_NIVEL_ACADEMICO", referencedColumnName = "ID_NIVEL_ACADEMICO", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private NivelAcademico nivelAcademico;
 
     public EmpleadoNivelAcademico()
@@ -92,10 +93,7 @@ public class EmpleadoNivelAcademico implements Serializable
             return false;
             }
         EmpleadoNivelAcademico other = (EmpleadoNivelAcademico) object;
-        if ((this.empleadoNivelAcademicoPK == null && other.empleadoNivelAcademicoPK != null) || (this.empleadoNivelAcademicoPK != null && !this.empleadoNivelAcademicoPK.equals(other.empleadoNivelAcademicoPK)))
-            {
-            return false;
-            }
+        if ((this.empleadoNivelAcademicoPK == null && other.empleadoNivelAcademicoPK != null) || (this.empleadoNivelAcademicoPK != null && !this.empleadoNivelAcademicoPK.equals(other.empleadoNivelAcademicoPK))) return false;
         return true;
     }
 

@@ -110,22 +110,10 @@ public class EmpleadoNivelAcademicoPK implements Serializable
             return false;
             }
         EmpleadoNivelAcademicoPK other = (EmpleadoNivelAcademicoPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idSucursal != other.idSucursal)
-            {
-            return false;
-            }
-        if (this.idEmpleado != other.idEmpleado)
-            {
-            return false;
-            }
-        if (this.idNivelAcademico != other.idNivelAcademico)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idSucursal != other.idSucursal) return false;
+        if (this.idEmpleado != other.idEmpleado) return false;
+        if (this.idNivelAcademico != other.idNivelAcademico) return false;
         return true;
     }
 

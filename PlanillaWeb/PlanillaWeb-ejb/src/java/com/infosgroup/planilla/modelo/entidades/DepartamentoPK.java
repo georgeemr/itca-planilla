@@ -76,14 +76,8 @@ public class DepartamentoPK implements Serializable
             return false;
             }
         DepartamentoPK other = (DepartamentoPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idDepartamento != other.idDepartamento)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idDepartamento != other.idDepartamento) return false;
         return true;
     }
 

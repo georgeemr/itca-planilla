@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -60,10 +61,10 @@ public class Barrio implements Serializable
         @JoinColumn(name = "ID_PROVINCIA", referencedColumnName = "ID_PROVINCIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_MUNICIPIO", referencedColumnName = "ID_MUNICIPIO", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Municipio municipio;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "barrio")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "barrio", fetch = FetchType.EAGER)
     private List<Direccion> direccionList;
 
     public Barrio()
@@ -148,10 +149,7 @@ public class Barrio implements Serializable
             return false;
             }
         Barrio other = (Barrio) object;
-        if ((this.barrioPK == null && other.barrioPK != null) || (this.barrioPK != null && !this.barrioPK.equals(other.barrioPK)))
-            {
-            return false;
-            }
+        if ((this.barrioPK == null && other.barrioPK != null) || (this.barrioPK != null && !this.barrioPK.equals(other.barrioPK))) return false;
         return true;
     }
 

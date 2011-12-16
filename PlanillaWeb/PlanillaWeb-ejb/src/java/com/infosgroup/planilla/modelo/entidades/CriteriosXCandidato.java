@@ -9,6 +9,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -77,7 +78,7 @@ public class CriteriosXCandidato implements Serializable
         @JoinColumn(name = "TIPO_CRITERIO", referencedColumnName = "TIPO", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "CRITERIO", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Criterio criterio1;
 
     @JoinColumns(
@@ -85,7 +86,7 @@ public class CriteriosXCandidato implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Candidato candidato1;
 
     public CriteriosXCandidato()
@@ -198,10 +199,7 @@ public class CriteriosXCandidato implements Serializable
             return false;
             }
         CriteriosXCandidato other = (CriteriosXCandidato) object;
-        if ((this.criteriosXCandidatoPK == null && other.criteriosXCandidatoPK != null) || (this.criteriosXCandidatoPK != null && !this.criteriosXCandidatoPK.equals(other.criteriosXCandidatoPK)))
-            {
-            return false;
-            }
+        if ((this.criteriosXCandidatoPK == null && other.criteriosXCandidatoPK != null) || (this.criteriosXCandidatoPK != null && !this.criteriosXCandidatoPK.equals(other.criteriosXCandidatoPK))) return false;
         return true;
     }
 

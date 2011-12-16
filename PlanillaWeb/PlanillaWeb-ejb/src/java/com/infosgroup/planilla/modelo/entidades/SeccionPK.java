@@ -93,18 +93,9 @@ public class SeccionPK implements Serializable
             return false;
             }
         SeccionPK other = (SeccionPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codDepto != other.codDepto)
-            {
-            return false;
-            }
-        if (this.codSeccion != other.codSeccion)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codDepto != other.codDepto) return false;
+        if (this.codSeccion != other.codSeccion) return false;
         return true;
     }
 

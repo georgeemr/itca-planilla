@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -57,10 +58,10 @@ public class Factor implements Serializable
     private long ponderacion;
 
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "factor")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "factor", fetch = FetchType.EAGER)
     private List<Pregunta> preguntaList;
 
     public Factor()
@@ -152,10 +153,7 @@ public class Factor implements Serializable
             return false;
             }
         Factor other = (Factor) object;
-        if ((this.factorPK == null && other.factorPK != null) || (this.factorPK != null && !this.factorPK.equals(other.factorPK)))
-            {
-            return false;
-            }
+        if ((this.factorPK == null && other.factorPK != null) || (this.factorPK != null && !this.factorPK.equals(other.factorPK))) return false;
         return true;
     }
 

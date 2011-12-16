@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -53,7 +54,7 @@ public class Municipio implements Serializable
     @Column(name = "DET_MUNICIPIO", length = 200)
     private String detMunicipio;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipio")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipio", fetch = FetchType.EAGER)
     private List<Barrio> barrioList;
 
     @JoinColumns(
@@ -61,7 +62,7 @@ public class Municipio implements Serializable
         @JoinColumn(name = "ID_PAIS", referencedColumnName = "ID_PAIS", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_PROVINCIA", referencedColumnName = "ID_PROVINCIA", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Provincia provincia;
 
     public Municipio()
@@ -146,10 +147,7 @@ public class Municipio implements Serializable
             return false;
             }
         Municipio other = (Municipio) object;
-        if ((this.municipioPK == null && other.municipioPK != null) || (this.municipioPK != null && !this.municipioPK.equals(other.municipioPK)))
-            {
-            return false;
-            }
+        if ((this.municipioPK == null && other.municipioPK != null) || (this.municipioPK != null && !this.municipioPK.equals(other.municipioPK))) return false;
         return true;
     }
 

@@ -12,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -54,24 +55,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleado.findByFechaNac", query = "SELECT e FROM Empleado e WHERE e.fechaNac = :fechaNac"),
     @NamedQuery(name = "Empleado.findByFecIngreso", query = "SELECT e FROM Empleado e WHERE e.fecIngreso = :fecIngreso"),
     @NamedQuery(name = "Empleado.findByFecSalida", query = "SELECT e FROM Empleado e WHERE e.fecSalida = :fecSalida"),
-    @NamedQuery(name = "Empleado.findByObservacion", query = "SELECT e FROM Empleado e WHERE e.observacion = :observacion")
+    @NamedQuery(name = "Empleado.findByObservacion", query = "SELECT e FROM Empleado e WHERE e.observacion = :observacion"),
+    @NamedQuery(name = "Empleado.findByCorreo", query = "SELECT e FROM Empleado e WHERE e.correo = :correo")
     })
 public class Empleado implements Serializable
 {
-    @Column(name = "FECHA_NAC")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaNac;
-    @Column(name = "FEC_INGRESO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecIngreso;
-    @Column(name = "FEC_SALIDA")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecSalida;
-    @Size(max = 200)
-    @Column(name = "CORREO", length = 200)
-    private String correo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private List<Contrato> contratoList;
 
     private static final long serialVersionUID = 1L;
 
@@ -96,9 +84,25 @@ public class Empleado implements Serializable
     @Column(name = "AP_CASADA", length = 200)
     private String apCasada;
 
+    @Column(name = "FECHA_NAC")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNac;
+
+    @Column(name = "FEC_INGRESO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecIngreso;
+
+    @Column(name = "FEC_SALIDA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecSalida;
+
     @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
     private String observacion;
+
+    @Size(max = 200)
+    @Column(name = "CORREO", length = 200)
+    private String correo;
 
     @JoinTable(name = "EVALUADOR_EVALUACIONES", joinColumns =
         {
@@ -113,23 +117,26 @@ public class Empleado implements Serializable
         @JoinColumn(name = "PLANTILLA", referencedColumnName = "PLANTILLA", nullable = false),
         @JoinColumn(name = "EMPLEADO", referencedColumnName = "EMPLEADO", nullable = false)
         })
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Evaluacion> evaluacionList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado", fetch = FetchType.EAGER)
     private List<AccionPersonal> accionPersonalList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado", fetch = FetchType.EAGER)
     private List<DetPlanilla> detPlanillaList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado", fetch = FetchType.EAGER)
+    private List<Contrato> contratoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado1", fetch = FetchType.EAGER)
     private List<Evaluacion> evaluacionList1;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado", fetch = FetchType.EAGER)
     private List<PuestoEmpleado> puestoEmpleadoList;
 
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
     public Empleado()
@@ -242,11 +249,13 @@ public class Empleado implements Serializable
         this.observacion = observacion;
     }
 
-    public String getCorreo() {
+    public String getCorreo()
+    {
         return correo;
     }
 
-    public void setCorreo(String correo) {
+    public void setCorreo(String correo)
+    {
         this.correo = correo;
     }
 
@@ -281,6 +290,17 @@ public class Empleado implements Serializable
     public void setDetPlanillaList(List<DetPlanilla> detPlanillaList)
     {
         this.detPlanillaList = detPlanillaList;
+    }
+
+    @XmlTransient
+    public List<Contrato> getContratoList()
+    {
+        return contratoList;
+    }
+
+    public void setContratoList(List<Contrato> contratoList)
+    {
+        this.contratoList = contratoList;
     }
 
     @XmlTransient
@@ -332,10 +352,7 @@ public class Empleado implements Serializable
             return false;
             }
         Empleado other = (Empleado) object;
-        if ((this.empleadoPK == null && other.empleadoPK != null) || (this.empleadoPK != null && !this.empleadoPK.equals(other.empleadoPK)))
-            {
-            return false;
-            }
+        if ((this.empleadoPK == null && other.empleadoPK != null) || (this.empleadoPK != null && !this.empleadoPK.equals(other.empleadoPK))) return false;
         return true;
     }
 
@@ -343,14 +360,6 @@ public class Empleado implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Empleado[ empleadoPK=" + empleadoPK + " ]";
-    }
-
-    public List<Contrato> getContratoList() {
-        return contratoList;
-    }
-
-    public void setContratoList(List<Contrato> contratoList) {
-        this.contratoList = contratoList;
     }
     
     @Transient

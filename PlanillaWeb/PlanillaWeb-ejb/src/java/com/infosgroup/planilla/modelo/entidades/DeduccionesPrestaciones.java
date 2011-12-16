@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -49,7 +50,7 @@ public class DeduccionesPrestaciones implements Serializable
     @Column(name = "TIPO", length = 100)
     private String tipo;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deduccionesPrestaciones")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deduccionesPrestaciones", fetch = FetchType.EAGER)
     private List<DetPlanilla> detPlanillaList;
 
     public DeduccionesPrestaciones()
@@ -124,10 +125,7 @@ public class DeduccionesPrestaciones implements Serializable
             return false;
             }
         DeduccionesPrestaciones other = (DeduccionesPrestaciones) object;
-        if ((this.deduccionesPrestacionesPK == null && other.deduccionesPrestacionesPK != null) || (this.deduccionesPrestacionesPK != null && !this.deduccionesPrestacionesPK.equals(other.deduccionesPrestacionesPK)))
-            {
-            return false;
-            }
+        if ((this.deduccionesPrestacionesPK == null && other.deduccionesPrestacionesPK != null) || (this.deduccionesPrestacionesPK != null && !this.deduccionesPrestacionesPK.equals(other.deduccionesPrestacionesPK))) return false;
         return true;
     }
 

@@ -144,30 +144,12 @@ public class DetPlanillaPK implements Serializable
             return false;
             }
         DetPlanillaPK other = (DetPlanillaPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.anio != other.anio)
-            {
-            return false;
-            }
-        if (this.mes != other.mes)
-            {
-            return false;
-            }
-        if (this.numPlanilla != other.numPlanilla)
-            {
-            return false;
-            }
-        if (this.idEmpleado != other.idEmpleado)
-            {
-            return false;
-            }
-        if (this.idPrestacion != other.idPrestacion)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.anio != other.anio) return false;
+        if (this.mes != other.mes) return false;
+        if (this.numPlanilla != other.numPlanilla) return false;
+        if (this.idEmpleado != other.idEmpleado) return false;
+        if (this.idPrestacion != other.idPrestacion) return false;
         return true;
     }
 

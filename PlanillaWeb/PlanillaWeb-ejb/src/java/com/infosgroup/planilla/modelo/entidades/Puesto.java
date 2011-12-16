@@ -47,13 +47,6 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class Puesto implements Serializable
 {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
-    private List<Contrato> contratoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1", fetch= FetchType.EAGER)
-    private List<PruebaXPuesto> pruebaXPuestoList;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
-    private List<AccionPersonal> accionPersonalList;
 
     private static final long serialVersionUID = 1L;
 
@@ -92,10 +85,19 @@ public class Puesto implements Serializable
     @Column(name = "JEFATURA")
     private Long jefatura;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto", fetch= FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto", fetch = FetchType.EAGER)
     private List<Concurso> concursoList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto", fetch = FetchType.EAGER)
+    private List<AccionPersonal> accionPersonalList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto", fetch = FetchType.EAGER)
+    private List<Contrato> contratoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1", fetch = FetchType.EAGER)
+    private List<PruebaXPuesto> pruebaXPuestoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto", fetch = FetchType.EAGER)
     private List<PuestoEmpleado> puestoEmpleadoList;
 
     @JoinColumns(
@@ -103,18 +105,18 @@ public class Puesto implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "TIPO", referencedColumnName = "COD_TIPO_PUESTO")
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private TipoPuesto tipoPuesto;
 
     @JoinColumn(name = "RANGO_EDAD", referencedColumnName = "COD_RANGO_EDAD")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private RangoEdad rangoEdad;
 
     @JoinColumn(name = "RANGO_ANIOS", referencedColumnName = "COD_RANGO_ANIOS")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private RangoAniosExperiencia rangoAnios;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1", fetch= FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1", fetch = FetchType.EAGER)
     private List<CriteriosXPuesto> criteriosXPuestoList;
 
     public Puesto()
@@ -243,6 +245,39 @@ public class Puesto implements Serializable
     }
 
     @XmlTransient
+    public List<AccionPersonal> getAccionPersonalList()
+    {
+        return accionPersonalList;
+    }
+
+    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
+    {
+        this.accionPersonalList = accionPersonalList;
+    }
+
+    @XmlTransient
+    public List<Contrato> getContratoList()
+    {
+        return contratoList;
+    }
+
+    public void setContratoList(List<Contrato> contratoList)
+    {
+        this.contratoList = contratoList;
+    }
+
+    @XmlTransient
+    public List<PruebaXPuesto> getPruebaXPuestoList()
+    {
+        return pruebaXPuestoList;
+    }
+
+    public void setPruebaXPuestoList(List<PruebaXPuesto> pruebaXPuestoList)
+    {
+        this.pruebaXPuestoList = pruebaXPuestoList;
+    }
+
+    @XmlTransient
     public List<PuestoEmpleado> getPuestoEmpleadoList()
     {
         return puestoEmpleadoList;
@@ -311,10 +346,7 @@ public class Puesto implements Serializable
             return false;
             }
         Puesto other = (Puesto) object;
-        if ((this.puestoPK == null && other.puestoPK != null) || (this.puestoPK != null && !this.puestoPK.equals(other.puestoPK)))
-            {
-            return false;
-            }
+        if ((this.puestoPK == null && other.puestoPK != null) || (this.puestoPK != null && !this.puestoPK.equals(other.puestoPK))) return false;
         return true;
     }
 
@@ -322,33 +354,6 @@ public class Puesto implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Puesto[ puestoPK=" + puestoPK + " ]";
-    }
-
-    @XmlTransient
-    public List<AccionPersonal> getAccionPersonalList()
-    {
-        return accionPersonalList;
-    }
-
-    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
-    {
-        this.accionPersonalList = accionPersonalList;
-    }
-
-    public List<PruebaXPuesto> getPruebaXPuestoList() {
-        return pruebaXPuestoList;
-    }
-
-    public void setPruebaXPuestoList(List<PruebaXPuesto> pruebaXPuestoList) {
-        this.pruebaXPuestoList = pruebaXPuestoList;
-    }
-
-    public List<Contrato> getContratoList() {
-        return contratoList;
-    }
-
-    public void setContratoList(List<Contrato> contratoList) {
-        this.contratoList = contratoList;
     }
     
 }

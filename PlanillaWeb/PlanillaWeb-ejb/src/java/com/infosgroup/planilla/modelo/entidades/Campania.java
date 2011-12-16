@@ -13,6 +13,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -85,11 +86,11 @@ public class Campania implements Serializable
     @Column(name = "NOTA", precision = 11, scale = 3)
     private BigDecimal nota;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "campania")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "campania", fetch = FetchType.EAGER)
     private List<Evaluacion> evaluacionList;
 
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
     public Campania()
@@ -223,10 +224,7 @@ public class Campania implements Serializable
             return false;
             }
         Campania other = (Campania) object;
-        if ((this.campaniaPK == null && other.campaniaPK != null) || (this.campaniaPK != null && !this.campaniaPK.equals(other.campaniaPK)))
-            {
-            return false;
-            }
+        if ((this.campaniaPK == null && other.campaniaPK != null) || (this.campaniaPK != null && !this.campaniaPK.equals(other.campaniaPK))) return false;
         return true;
     }
 

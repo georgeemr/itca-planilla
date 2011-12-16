@@ -76,14 +76,8 @@ public class TipoRespuestaPK implements Serializable
             return false;
             }
         TipoRespuestaPK other = (TipoRespuestaPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codTipoRespuesta != other.codTipoRespuesta)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codTipoRespuesta != other.codTipoRespuesta) return false;
         return true;
     }
 

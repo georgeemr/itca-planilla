@@ -7,6 +7,7 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -38,7 +39,7 @@ public class EmpleadoTelefono implements Serializable
     protected EmpleadoTelefonoPK empleadoTelefonoPK;
 
     @JoinColumn(name = "ID_TELEFONO", referencedColumnName = "ID_TELEFONO", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Telefono telefono;
 
     public EmpleadoTelefono()
@@ -92,10 +93,7 @@ public class EmpleadoTelefono implements Serializable
             return false;
             }
         EmpleadoTelefono other = (EmpleadoTelefono) object;
-        if ((this.empleadoTelefonoPK == null && other.empleadoTelefonoPK != null) || (this.empleadoTelefonoPK != null && !this.empleadoTelefonoPK.equals(other.empleadoTelefonoPK)))
-            {
-            return false;
-            }
+        if ((this.empleadoTelefonoPK == null && other.empleadoTelefonoPK != null) || (this.empleadoTelefonoPK != null && !this.empleadoTelefonoPK.equals(other.empleadoTelefonoPK))) return false;
         return true;
     }
 

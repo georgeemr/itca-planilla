@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -54,7 +55,7 @@ public class DetPlanilla implements Serializable
         @JoinColumn(name = "MES", referencedColumnName = "MES", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "NUM_PLANILLA", referencedColumnName = "NUM_PLANILLA", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Planilla planilla;
 
     @JoinColumns(
@@ -62,7 +63,7 @@ public class DetPlanilla implements Serializable
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_EMPLEADO", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Empleado empleado;
 
     @JoinColumns(
@@ -70,7 +71,7 @@ public class DetPlanilla implements Serializable
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_PRESTACION", referencedColumnName = "ID_PRESTACION", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private DeduccionesPrestaciones deduccionesPrestaciones;
 
     public DetPlanilla()
@@ -154,10 +155,7 @@ public class DetPlanilla implements Serializable
             return false;
             }
         DetPlanilla other = (DetPlanilla) object;
-        if ((this.detPlanillaPK == null && other.detPlanillaPK != null) || (this.detPlanillaPK != null && !this.detPlanillaPK.equals(other.detPlanillaPK)))
-            {
-            return false;
-            }
+        if ((this.detPlanillaPK == null && other.detPlanillaPK != null) || (this.detPlanillaPK != null && !this.detPlanillaPK.equals(other.detPlanillaPK))) return false;
         return true;
     }
 

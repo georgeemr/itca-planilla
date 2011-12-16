@@ -95,18 +95,9 @@ public class CriterioSeleccionadoPK implements Serializable
             return false;
             }
         CriterioSeleccionadoPK other = (CriterioSeleccionadoPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.correlativo != other.correlativo)
-            {
-            return false;
-            }
-        if ((this.usuario == null && other.usuario != null) || (this.usuario != null && !this.usuario.equals(other.usuario)))
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.correlativo != other.correlativo) return false;
+        if ((this.usuario == null && other.usuario != null) || (this.usuario != null && !this.usuario.equals(other.usuario))) return false;
         return true;
     }
 

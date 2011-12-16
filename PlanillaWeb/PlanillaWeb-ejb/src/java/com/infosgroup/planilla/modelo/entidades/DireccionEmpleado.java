@@ -7,6 +7,7 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -50,7 +51,7 @@ public class DireccionEmpleado implements Serializable
         @JoinColumn(name = "ID_BARRIO", referencedColumnName = "ID_BARRIO", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "NUM_CASA", referencedColumnName = "NUM_CASA", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Direccion direccion;
 
     public DireccionEmpleado()
@@ -104,10 +105,7 @@ public class DireccionEmpleado implements Serializable
             return false;
             }
         DireccionEmpleado other = (DireccionEmpleado) object;
-        if ((this.direccionEmpleadoPK == null && other.direccionEmpleadoPK != null) || (this.direccionEmpleadoPK != null && !this.direccionEmpleadoPK.equals(other.direccionEmpleadoPK)))
-            {
-            return false;
-            }
+        if ((this.direccionEmpleadoPK == null && other.direccionEmpleadoPK != null) || (this.direccionEmpleadoPK != null && !this.direccionEmpleadoPK.equals(other.direccionEmpleadoPK))) return false;
         return true;
     }
 

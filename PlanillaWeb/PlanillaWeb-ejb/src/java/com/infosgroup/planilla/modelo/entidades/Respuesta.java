@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToMany;
@@ -63,19 +64,19 @@ public class Respuesta implements Serializable
     @Column(name = "VALOR")
     private Long valor;
 
-    @ManyToMany(mappedBy = "respuestaList")
+    @ManyToMany(mappedBy = "respuestaList", fetch = FetchType.EAGER)
     private List<Pregunta> preguntaList;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "respuesta")
-    private List<DetEvaluacion> detEvaluacionList;
 
     @JoinColumns(
         {
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_TIPO_RESPUESTA", referencedColumnName = "COD_TIPO_RESPUESTA", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private TipoRespuesta tipoRespuesta;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "respuesta", fetch = FetchType.EAGER)
+    private List<DetEvaluacion> detEvaluacionList;
 
     public Respuesta()
     {
@@ -148,6 +149,16 @@ public class Respuesta implements Serializable
         this.preguntaList = preguntaList;
     }
 
+    public TipoRespuesta getTipoRespuesta()
+    {
+        return tipoRespuesta;
+    }
+
+    public void setTipoRespuesta(TipoRespuesta tipoRespuesta)
+    {
+        this.tipoRespuesta = tipoRespuesta;
+    }
+
     @XmlTransient
     public List<DetEvaluacion> getDetEvaluacionList()
     {
@@ -157,16 +168,6 @@ public class Respuesta implements Serializable
     public void setDetEvaluacionList(List<DetEvaluacion> detEvaluacionList)
     {
         this.detEvaluacionList = detEvaluacionList;
-    }
-
-    public TipoRespuesta getTipoRespuesta()
-    {
-        return tipoRespuesta;
-    }
-
-    public void setTipoRespuesta(TipoRespuesta tipoRespuesta)
-    {
-        this.tipoRespuesta = tipoRespuesta;
     }
 
     @Override
@@ -186,10 +187,7 @@ public class Respuesta implements Serializable
             return false;
             }
         Respuesta other = (Respuesta) object;
-        if ((this.respuestaPK == null && other.respuestaPK != null) || (this.respuestaPK != null && !this.respuestaPK.equals(other.respuestaPK)))
-            {
-            return false;
-            }
+        if ((this.respuestaPK == null && other.respuestaPK != null) || (this.respuestaPK != null && !this.respuestaPK.equals(other.respuestaPK))) return false;
         return true;
     }
 

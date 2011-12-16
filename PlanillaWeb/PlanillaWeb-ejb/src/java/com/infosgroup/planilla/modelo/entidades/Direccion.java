@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
@@ -69,11 +70,8 @@ public class Direccion implements Serializable
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false),
         @JoinColumn(name = "ID_SUCURSAL", referencedColumnName = "ID_SUCURSAL", nullable = false)
         })
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Sucursal> sucursalList;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccion")
-    private List<DireccionEmpleado> direccionEmpleadoList;
 
     @JoinColumns(
         {
@@ -82,8 +80,11 @@ public class Direccion implements Serializable
         @JoinColumn(name = "ID_MUNICIPIO", referencedColumnName = "ID_MUNICIPIO", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_BARRIO", referencedColumnName = "ID_BARRIO", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Barrio barrio;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccion", fetch = FetchType.EAGER)
+    private List<DireccionEmpleado> direccionEmpleadoList;
 
     public Direccion()
     {
@@ -140,6 +141,16 @@ public class Direccion implements Serializable
         this.sucursalList = sucursalList;
     }
 
+    public Barrio getBarrio()
+    {
+        return barrio;
+    }
+
+    public void setBarrio(Barrio barrio)
+    {
+        this.barrio = barrio;
+    }
+
     @XmlTransient
     public List<DireccionEmpleado> getDireccionEmpleadoList()
     {
@@ -149,16 +160,6 @@ public class Direccion implements Serializable
     public void setDireccionEmpleadoList(List<DireccionEmpleado> direccionEmpleadoList)
     {
         this.direccionEmpleadoList = direccionEmpleadoList;
-    }
-
-    public Barrio getBarrio()
-    {
-        return barrio;
-    }
-
-    public void setBarrio(Barrio barrio)
-    {
-        this.barrio = barrio;
     }
 
     @Override
@@ -178,10 +179,7 @@ public class Direccion implements Serializable
             return false;
             }
         Direccion other = (Direccion) object;
-        if ((this.direccionPK == null && other.direccionPK != null) || (this.direccionPK != null && !this.direccionPK.equals(other.direccionPK)))
-            {
-            return false;
-            }
+        if ((this.direccionPK == null && other.direccionPK != null) || (this.direccionPK != null && !this.direccionPK.equals(other.direccionPK))) return false;
         return true;
     }
 

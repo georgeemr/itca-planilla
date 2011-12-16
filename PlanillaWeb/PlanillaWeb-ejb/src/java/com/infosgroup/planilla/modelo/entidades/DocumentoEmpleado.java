@@ -7,6 +7,7 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -39,7 +40,7 @@ public class DocumentoEmpleado implements Serializable
     protected DocumentoEmpleadoPK documentoEmpleadoPK;
 
     @JoinColumn(name = "ID_TIPO_DOCUMENTO", referencedColumnName = "ID_TIPO_DOCUMENTO", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private TipoDocumento tipoDocumento;
 
     public DocumentoEmpleado()
@@ -93,10 +94,7 @@ public class DocumentoEmpleado implements Serializable
             return false;
             }
         DocumentoEmpleado other = (DocumentoEmpleado) object;
-        if ((this.documentoEmpleadoPK == null && other.documentoEmpleadoPK != null) || (this.documentoEmpleadoPK != null && !this.documentoEmpleadoPK.equals(other.documentoEmpleadoPK)))
-            {
-            return false;
-            }
+        if ((this.documentoEmpleadoPK == null && other.documentoEmpleadoPK != null) || (this.documentoEmpleadoPK != null && !this.documentoEmpleadoPK.equals(other.documentoEmpleadoPK))) return false;
         return true;
     }
 

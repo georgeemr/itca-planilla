@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -51,10 +52,10 @@ public class Modulo implements Serializable
     private String nomModulo;
 
     @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modulo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modulo", fetch = FetchType.EAGER)
     private List<Menu> menuList;
 
     public Modulo()
@@ -135,10 +136,7 @@ public class Modulo implements Serializable
             return false;
             }
         Modulo other = (Modulo) object;
-        if ((this.moduloPK == null && other.moduloPK != null) || (this.moduloPK != null && !this.moduloPK.equals(other.moduloPK)))
-            {
-            return false;
-            }
+        if ((this.moduloPK == null && other.moduloPK != null) || (this.moduloPK != null && !this.moduloPK.equals(other.moduloPK))) return false;
         return true;
     }
 

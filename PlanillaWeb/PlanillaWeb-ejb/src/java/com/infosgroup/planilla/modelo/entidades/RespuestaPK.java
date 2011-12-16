@@ -110,22 +110,10 @@ public class RespuestaPK implements Serializable
             return false;
             }
         RespuestaPK other = (RespuestaPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codTipoRespuesta != other.codTipoRespuesta)
-            {
-            return false;
-            }
-        if (this.grupoRespuesta != other.grupoRespuesta)
-            {
-            return false;
-            }
-        if (this.codRespuesta != other.codRespuesta)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codTipoRespuesta != other.codTipoRespuesta) return false;
+        if (this.grupoRespuesta != other.grupoRespuesta) return false;
+        if (this.codRespuesta != other.codRespuesta) return false;
         return true;
     }
 

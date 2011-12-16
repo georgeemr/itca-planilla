@@ -127,10 +127,7 @@ public class SalarioBase implements Serializable
             return false;
             }
         SalarioBase other = (SalarioBase) object;
-        if ((this.salarioBasePK == null && other.salarioBasePK != null) || (this.salarioBasePK != null && !this.salarioBasePK.equals(other.salarioBasePK)))
-            {
-            return false;
-            }
+        if ((this.salarioBasePK == null && other.salarioBasePK != null) || (this.salarioBasePK != null && !this.salarioBasePK.equals(other.salarioBasePK))) return false;
         return true;
     }
 

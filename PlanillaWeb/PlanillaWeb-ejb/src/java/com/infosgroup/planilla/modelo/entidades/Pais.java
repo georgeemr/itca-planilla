@@ -10,6 +10,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -53,7 +54,7 @@ public class Pais implements Serializable
     @Column(name = "DET_PAIS", length = 200)
     private String detPais;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pais")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pais", fetch = FetchType.EAGER)
     private List<Provincia> provinciaList;
 
     public Pais()
@@ -123,10 +124,7 @@ public class Pais implements Serializable
             return false;
             }
         Pais other = (Pais) object;
-        if ((this.idPais == null && other.idPais != null) || (this.idPais != null && !this.idPais.equals(other.idPais)))
-            {
-            return false;
-            }
+        if ((this.idPais == null && other.idPais != null) || (this.idPais != null && !this.idPais.equals(other.idPais))) return false;
         return true;
     }
 

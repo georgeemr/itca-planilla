@@ -93,18 +93,9 @@ public class CriterioPK implements Serializable
             return false;
             }
         CriterioPK other = (CriterioPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codigo != other.codigo)
-            {
-            return false;
-            }
-        if (this.tipo != other.tipo)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codigo != other.codigo) return false;
+        if (this.tipo != other.tipo) return false;
         return true;
     }
 

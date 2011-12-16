@@ -76,14 +76,8 @@ public class CandidatoPK implements Serializable
             return false;
             }
         CandidatoPK other = (CandidatoPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codCandidato != other.codCandidato)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codCandidato != other.codCandidato) return false;
         return true;
     }
 

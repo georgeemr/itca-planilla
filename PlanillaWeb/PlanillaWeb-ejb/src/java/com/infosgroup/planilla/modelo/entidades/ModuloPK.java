@@ -76,14 +76,8 @@ public class ModuloPK implements Serializable
             return false;
             }
         ModuloPK other = (ModuloPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idModulo != other.idModulo)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idModulo != other.idModulo) return false;
         return true;
     }
 

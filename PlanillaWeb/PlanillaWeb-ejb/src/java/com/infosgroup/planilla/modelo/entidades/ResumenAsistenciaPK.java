@@ -178,38 +178,14 @@ public class ResumenAsistenciaPK implements Serializable
             return false;
             }
         ResumenAsistenciaPK other = (ResumenAsistenciaPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.anio != other.anio)
-            {
-            return false;
-            }
-        if (this.mes != other.mes)
-            {
-            return false;
-            }
-        if (this.numPlanilla != other.numPlanilla)
-            {
-            return false;
-            }
-        if (this.codEmp != other.codEmp)
-            {
-            return false;
-            }
-        if (this.idSucursal != other.idSucursal)
-            {
-            return false;
-            }
-        if (this.idTipoPuesto != other.idTipoPuesto)
-            {
-            return false;
-            }
-        if (this.idPuesto != other.idPuesto)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.anio != other.anio) return false;
+        if (this.mes != other.mes) return false;
+        if (this.numPlanilla != other.numPlanilla) return false;
+        if (this.codEmp != other.codEmp) return false;
+        if (this.idSucursal != other.idSucursal) return false;
+        if (this.idTipoPuesto != other.idTipoPuesto) return false;
+        if (this.idPuesto != other.idPuesto) return false;
         return true;
     }
 

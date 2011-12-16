@@ -76,14 +76,8 @@ public class TipoCuentaPK implements Serializable
             return false;
             }
         TipoCuentaPK other = (TipoCuentaPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idTipoCuenta != other.idTipoCuenta)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idTipoCuenta != other.idTipoCuenta) return false;
         return true;
     }
 

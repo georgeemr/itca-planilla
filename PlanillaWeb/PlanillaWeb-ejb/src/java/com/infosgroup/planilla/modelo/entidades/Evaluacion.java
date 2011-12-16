@@ -12,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToMany;
@@ -64,7 +65,7 @@ public class Evaluacion implements Serializable
     @Column(name = "FINALIZADA", nullable = false)
     private long finalizada;
 
-    @ManyToMany(mappedBy = "evaluacionList")
+    @ManyToMany(mappedBy = "evaluacionList", fetch = FetchType.EAGER)
     private List<Empleado> empleadoList;
 
     @JoinColumns(
@@ -73,7 +74,7 @@ public class Evaluacion implements Serializable
         @JoinColumn(name = "TIPO_EVALUACION", referencedColumnName = "COD_TIPO_EVALUACION", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "PLANTILLA", referencedColumnName = "COD_PLANTILLA", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Plantilla plantilla1;
 
     @JoinColumns(
@@ -81,7 +82,7 @@ public class Evaluacion implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "EMPLEADO", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Empleado empleado1;
 
     @JoinColumns(
@@ -90,10 +91,10 @@ public class Evaluacion implements Serializable
         @JoinColumn(name = "COD_CAMPANIA", referencedColumnName = "COD_CAMPANIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "PERIODO", referencedColumnName = "PERIODO", nullable = false, insertable = false, updatable = false)
         })
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Campania campania;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evaluacion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evaluacion", fetch = FetchType.EAGER)
     private List<DetEvaluacion> detEvaluacionList;
 
     public Evaluacion()
@@ -216,10 +217,7 @@ public class Evaluacion implements Serializable
             return false;
             }
         Evaluacion other = (Evaluacion) object;
-        if ((this.evaluacionPK == null && other.evaluacionPK != null) || (this.evaluacionPK != null && !this.evaluacionPK.equals(other.evaluacionPK)))
-            {
-            return false;
-            }
+        if ((this.evaluacionPK == null && other.evaluacionPK != null) || (this.evaluacionPK != null && !this.evaluacionPK.equals(other.evaluacionPK))) return false;
         return true;
     }
 

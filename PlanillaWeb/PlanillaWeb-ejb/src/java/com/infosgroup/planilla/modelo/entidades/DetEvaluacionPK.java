@@ -144,30 +144,12 @@ public class DetEvaluacionPK implements Serializable
             return false;
             }
         DetEvaluacionPK other = (DetEvaluacionPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.periodo != other.periodo)
-            {
-            return false;
-            }
-        if (this.codCampania != other.codCampania)
-            {
-            return false;
-            }
-        if (this.tipoEvaluacion != other.tipoEvaluacion)
-            {
-            return false;
-            }
-        if (this.empleado != other.empleado)
-            {
-            return false;
-            }
-        if (this.codDetEvaluacion != other.codDetEvaluacion)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.periodo != other.periodo) return false;
+        if (this.codCampania != other.codCampania) return false;
+        if (this.tipoEvaluacion != other.tipoEvaluacion) return false;
+        if (this.empleado != other.empleado) return false;
+        if (this.codDetEvaluacion != other.codDetEvaluacion) return false;
         return true;
     }
 

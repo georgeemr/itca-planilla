@@ -93,18 +93,9 @@ public class PlantillaPK implements Serializable
             return false;
             }
         PlantillaPK other = (PlantillaPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codTipoEvaluacion != other.codTipoEvaluacion)
-            {
-            return false;
-            }
-        if (this.codPlantilla != other.codPlantilla)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codTipoEvaluacion != other.codTipoEvaluacion) return false;
+        if (this.codPlantilla != other.codPlantilla) return false;
         return true;
     }
 

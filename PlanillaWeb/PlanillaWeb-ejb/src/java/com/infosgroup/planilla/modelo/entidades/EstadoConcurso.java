@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -57,11 +58,11 @@ public class EstadoConcurso implements Serializable
     @Column(name = "NOMBRE", nullable = false, length = 200)
     private String nombre;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadoConcurso")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadoConcurso", fetch = FetchType.EAGER)
     private List<Concurso> concursoList;
 
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
     public EstadoConcurso()
@@ -142,10 +143,7 @@ public class EstadoConcurso implements Serializable
             return false;
             }
         EstadoConcurso other = (EstadoConcurso) object;
-        if ((this.estadoConcursoPK == null && other.estadoConcursoPK != null) || (this.estadoConcursoPK != null && !this.estadoConcursoPK.equals(other.estadoConcursoPK)))
-            {
-            return false;
-            }
+        if ((this.estadoConcursoPK == null && other.estadoConcursoPK != null) || (this.estadoConcursoPK != null && !this.estadoConcursoPK.equals(other.estadoConcursoPK))) return false;
         return true;
     }
 

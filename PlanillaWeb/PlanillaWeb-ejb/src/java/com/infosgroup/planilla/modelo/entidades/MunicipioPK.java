@@ -93,18 +93,9 @@ public class MunicipioPK implements Serializable
             return false;
             }
         MunicipioPK other = (MunicipioPK) object;
-        if (this.idPais != other.idPais)
-            {
-            return false;
-            }
-        if (this.idProvincia != other.idProvincia)
-            {
-            return false;
-            }
-        if (this.idMunicipio != other.idMunicipio)
-            {
-            return false;
-            }
+        if (this.idPais != other.idPais) return false;
+        if (this.idProvincia != other.idProvincia) return false;
+        if (this.idMunicipio != other.idMunicipio) return false;
         return true;
     }
 

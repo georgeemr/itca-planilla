@@ -93,18 +93,9 @@ public class CampaniaPK implements Serializable
             return false;
             }
         CampaniaPK other = (CampaniaPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codCampania != other.codCampania)
-            {
-            return false;
-            }
-        if (this.periodo != other.periodo)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codCampania != other.codCampania) return false;
+        if (this.periodo != other.periodo) return false;
         return true;
     }
 

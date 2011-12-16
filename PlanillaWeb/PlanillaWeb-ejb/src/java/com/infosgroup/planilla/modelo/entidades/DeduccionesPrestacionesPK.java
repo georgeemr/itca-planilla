@@ -76,14 +76,8 @@ public class DeduccionesPrestacionesPK implements Serializable
             return false;
             }
         DeduccionesPrestacionesPK other = (DeduccionesPrestacionesPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idPrestacion != other.idPrestacion)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idPrestacion != other.idPrestacion) return false;
         return true;
     }
 

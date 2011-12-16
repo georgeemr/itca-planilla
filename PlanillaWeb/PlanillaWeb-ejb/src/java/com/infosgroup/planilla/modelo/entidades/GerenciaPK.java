@@ -76,14 +76,8 @@ public class GerenciaPK implements Serializable
             return false;
             }
         GerenciaPK other = (GerenciaPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codGerencia != other.codGerencia)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codGerencia != other.codGerencia) return false;
         return true;
     }
 

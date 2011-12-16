@@ -76,14 +76,8 @@ public class FactorPK implements Serializable
             return false;
             }
         FactorPK other = (FactorPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codFactor != other.codFactor)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codFactor != other.codFactor) return false;
         return true;
     }
 

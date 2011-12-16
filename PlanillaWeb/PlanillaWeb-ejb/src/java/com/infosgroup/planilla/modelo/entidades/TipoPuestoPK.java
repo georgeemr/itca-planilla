@@ -76,14 +76,8 @@ public class TipoPuestoPK implements Serializable
             return false;
             }
         TipoPuestoPK other = (TipoPuestoPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codTipoPuesto != other.codTipoPuesto)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codTipoPuesto != other.codTipoPuesto) return false;
         return true;
     }
 

@@ -212,46 +212,16 @@ public class AccionPersonalPK implements Serializable
             return false;
             }
         AccionPersonalPK other = (AccionPersonalPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.anio != other.anio)
-            {
-            return false;
-            }
-        if (this.mes != other.mes)
-            {
-            return false;
-            }
-        if (this.numPlanilla != other.numPlanilla)
-            {
-            return false;
-            }
-        if (this.idSucursal != other.idSucursal)
-            {
-            return false;
-            }
-        if (this.idEmpleado != other.idEmpleado)
-            {
-            return false;
-            }
-        if (this.idTipoPuesto != other.idTipoPuesto)
-            {
-            return false;
-            }
-        if (this.idPuesto != other.idPuesto)
-            {
-            return false;
-            }
-        if (this.codTipoaccion != other.codTipoaccion)
-            {
-            return false;
-            }
-        if (this.correlativo != other.correlativo)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.anio != other.anio) return false;
+        if (this.mes != other.mes) return false;
+        if (this.numPlanilla != other.numPlanilla) return false;
+        if (this.idSucursal != other.idSucursal) return false;
+        if (this.idEmpleado != other.idEmpleado) return false;
+        if (this.idTipoPuesto != other.idTipoPuesto) return false;
+        if (this.idPuesto != other.idPuesto) return false;
+        if (this.codTipoaccion != other.codTipoaccion) return false;
+        if (this.correlativo != other.correlativo) return false;
         return true;
     }
 

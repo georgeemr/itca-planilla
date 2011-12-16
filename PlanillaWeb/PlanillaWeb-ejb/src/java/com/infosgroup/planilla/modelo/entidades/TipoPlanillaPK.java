@@ -76,14 +76,8 @@ public class TipoPlanillaPK implements Serializable
             return false;
             }
         TipoPlanillaPK other = (TipoPlanillaPK) object;
-        if (this.idCompania != other.idCompania)
-            {
-            return false;
-            }
-        if (this.idTipoPlanilla != other.idTipoPlanilla)
-            {
-            return false;
-            }
+        if (this.idCompania != other.idCompania) return false;
+        if (this.idTipoPlanilla != other.idTipoPlanilla) return false;
         return true;
     }
 

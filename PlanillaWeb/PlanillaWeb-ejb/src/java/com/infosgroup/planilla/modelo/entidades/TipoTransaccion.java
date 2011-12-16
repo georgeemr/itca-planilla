@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -52,10 +53,10 @@ public class TipoTransaccion implements Serializable
     private String detTipoTransaccion;
 
     @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoTransaccion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoTransaccion", fetch = FetchType.EAGER)
     private List<Transaccion> transaccionList;
 
     public TipoTransaccion()
@@ -140,10 +141,7 @@ public class TipoTransaccion implements Serializable
             return false;
             }
         TipoTransaccion other = (TipoTransaccion) object;
-        if ((this.tipoTransaccionPK == null && other.tipoTransaccionPK != null) || (this.tipoTransaccionPK != null && !this.tipoTransaccionPK.equals(other.tipoTransaccionPK)))
-            {
-            return false;
-            }
+        if ((this.tipoTransaccionPK == null && other.tipoTransaccionPK != null) || (this.tipoTransaccionPK != null && !this.tipoTransaccionPK.equals(other.tipoTransaccionPK))) return false;
         return true;
     }
 
