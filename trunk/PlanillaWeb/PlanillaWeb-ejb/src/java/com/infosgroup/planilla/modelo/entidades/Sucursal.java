@@ -39,6 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class Sucursal implements Serializable
 {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursal")
+    private List<Contrato> contratoList;
 
     private static final long serialVersionUID = 1L;
 
@@ -189,6 +191,14 @@ public class Sucursal implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Sucursal[ sucursalPK=" + sucursalPK + " ]";
+    }
+
+    public List<Contrato> getContratoList() {
+        return contratoList;
+    }
+
+    public void setContratoList(List<Contrato> contratoList) {
+        this.contratoList = contratoList;
     }
     
 }
