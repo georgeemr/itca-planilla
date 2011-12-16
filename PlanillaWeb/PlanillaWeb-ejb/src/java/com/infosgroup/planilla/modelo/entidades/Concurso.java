@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,6 +43,14 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class Concurso implements Serializable
 {
+    @Column(name =     "FECHA_INICIAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInicial;
+    @Column(name =     "FECHA_FINAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFinal;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concurso1")
+    private List<CandidatoConcurso> candidatoConcursoList;
 
     private static final long serialVersionUID = 1L;
 
@@ -51,14 +60,6 @@ public class Concurso implements Serializable
     @Size(max = 200)
     @Column(name = "NOMBRE", length = 200)
     private String nombre;
-
-    @Column(name = "FECHA_INICIAL")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaInicial;
-
-    @Column(name = "FECHA_FINAL")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaFinal;
 
     @Column(name = "NUMERO_PLAZAS")
     private Long numeroPlazas;
@@ -81,7 +82,9 @@ public class Concurso implements Serializable
         })
     @ManyToOne(optional = false)
     private EstadoConcurso estadoConcurso;
-
+    @Column(name = "COMENTARIO_FINAL")
+    private String comentarioFinal;
+    
     public Concurso()
     {
     }
@@ -205,6 +208,22 @@ public class Concurso implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Concurso[ concursoPK=" + concursoPK + " ]";
+    }
+
+    public List<CandidatoConcurso> getCandidatoConcursoList() {
+        return candidatoConcursoList;
+    }
+
+    public void setCandidatoConcursoList(List<CandidatoConcurso> candidatoConcursoList) {
+        this.candidatoConcursoList = candidatoConcursoList;
+    }
+
+    public String getComentarioFinal() {
+        return comentarioFinal;
+    }
+
+    public void setComentarioFinal(String comentarioFinal) {
+        this.comentarioFinal = comentarioFinal;
     }
     
 }
