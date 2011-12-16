@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -46,6 +47,13 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class Puesto implements Serializable
 {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
+    private List<Contrato> contratoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1", fetch= FetchType.EAGER)
+    private List<PruebaXPuesto> pruebaXPuestoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
+    private List<AccionPersonal> accionPersonalList;
 
     private static final long serialVersionUID = 1L;
 
@@ -84,11 +92,8 @@ public class Puesto implements Serializable
     @Column(name = "JEFATURA")
     private Long jefatura;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto", fetch= FetchType.EAGER)
     private List<Concurso> concursoList;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
-    private List<AccionPersonal> accionPersonalList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto")
     private List<PuestoEmpleado> puestoEmpleadoList;
@@ -109,7 +114,7 @@ public class Puesto implements Serializable
     @ManyToOne
     private RangoAniosExperiencia rangoAnios;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1", fetch= FetchType.EAGER)
     private List<CriteriosXPuesto> criteriosXPuestoList;
 
     public Puesto()
@@ -238,17 +243,6 @@ public class Puesto implements Serializable
     }
 
     @XmlTransient
-    public List<AccionPersonal> getAccionPersonalList()
-    {
-        return accionPersonalList;
-    }
-
-    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
-    {
-        this.accionPersonalList = accionPersonalList;
-    }
-
-    @XmlTransient
     public List<PuestoEmpleado> getPuestoEmpleadoList()
     {
         return puestoEmpleadoList;
@@ -328,6 +322,33 @@ public class Puesto implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Puesto[ puestoPK=" + puestoPK + " ]";
+    }
+
+    @XmlTransient
+    public List<AccionPersonal> getAccionPersonalList()
+    {
+        return accionPersonalList;
+    }
+
+    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
+    {
+        this.accionPersonalList = accionPersonalList;
+    }
+
+    public List<PruebaXPuesto> getPruebaXPuestoList() {
+        return pruebaXPuestoList;
+    }
+
+    public void setPruebaXPuestoList(List<PruebaXPuesto> pruebaXPuestoList) {
+        this.pruebaXPuestoList = pruebaXPuestoList;
+    }
+
+    public List<Contrato> getContratoList() {
+        return contratoList;
+    }
+
+    public void setContratoList(List<Contrato> contratoList) {
+        this.contratoList = contratoList;
     }
     
 }
