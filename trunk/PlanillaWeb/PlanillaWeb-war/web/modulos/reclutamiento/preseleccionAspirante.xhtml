@@ -9,10 +9,166 @@
 
     <ui:define name="titulo">Preselecci&oacute;n de candidatos</ui:define>
 
+    <ui:define name="dialogos" >
+
+        <p:dialog id="dialogoEvaluacion" widgetVar="botonMostrarEvaluacion" header="Evaluaciones" width="650" height="300"  
+                  onCloseUpdate="principalForm:mensajes,principalForm:evCandidatoLst" closeListener="#{reclutamiento$preseleccionAspirante.handleCloseEvaluacionCandidato}"
+                  resizable="false" showEffect="clip" hideEffect="clip">  
+            <h:outputLabel id="lbl1" value="Candidato Seleccionado: "  style="font-weight: bold;"/>
+            <h:outputLabel id="lbl2" value="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado.candidato1.nombreCompleto}" />
+            <p:spacer height="30">
+                <p:dataTable id="pruebasXEvaluacionEdit" value="#{reclutamiento$preseleccionAspirante.evaluacionCandidatos}" 
+                             paginator="true" rows="10"  emptyMessage="No se han encontrado Evaluaciones." 
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;"
+                             var="evaluacion" dynamic="true" rowEditListener="#{reclutamiento$preseleccionAspirante.onEditNotasCandidato}" >
+
+                    <p:column headerText="Evaluaci&oacute;n" >  
+                        <h:outputLabel value="#{evaluacion.pruebaXPuesto.nombre}" />
+                    </p:column>  
+
+                    <p:column headerText="Nota" style="width:250px; text-align: left">  
+                        <p:cellEditor  >  
+                            <f:facet name="output">  
+                                <h:outputText value="#{evaluacion.nota}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputTextarea value="#{evaluacion.nota}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor>  
+                    </p:column>  
+
+                    <p:column headerText="Observaci&oacute;n" style="width:250px; text-align: left">  
+                        <p:cellEditor  >  
+                            <f:facet name="output">  
+                                <h:outputText value="#{evaluacion.observacion}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputTextarea value="#{evaluacion.observacion}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor>  
+                    </p:column> 
+
+                    <p:column headerText="Ingresar" style="width:50px; text-align: left;">  
+                        <p:rowEditor />  
+                    </p:column>  
+
+                </p:dataTable>
+            </p:spacer>
+
+        </p:dialog>    
+
+        <p:dialog id="dialogoCriterio" widgetVar="botonMostrarCriterios" header="Seleccionar Criterio" width="425" height="300"  
+                  onCloseUpdate="criteriosSeleccionados, mensajes"
+                  resizable="false" showEffect="clip" hideEffect="clip">  
+        </p:dialog>    
+
+        <p:confirmDialog message="&#191;Esta seguro que desea cerrar este Concurso?"  
+                         showEffect="bounce" hideEffect="explode"  modal="true" closable="false"
+                         header="Cerrar Concurso" severity="alert" widgetVar="confirmation">  
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Comentario final: " />
+                <p:inputTextarea value="#{reclutamiento$preseleccionAspirante.comentarioFinal}" />
+            </h:panelGrid>
+            <p:commandButton id="cmdOk" value="Si, estoy seguro" update="principalForm:mensajes,principalForm:cmdCerrar,principalForm:cmdOk" 
+                             action="#{reclutamiento$preseleccionAspirante.iniciar}"  />   
+            <p:commandButton id="cmdCerrar"  value="Cerrar" update="principalForm:mensajes,principalForm:candidatoContratar,principalForm:tablaConcursos" onclick="confirmation.hide()" /> 
+            <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+
+        </p:confirmDialog>  
+
+        <p:dialog id="dialogoContrato" widgetVar="botonMostrarContrato" header="Datos de Contrataci&oacute;n" width="800" height="400"  
+                  onCloseUpdate="principalForm:mensajes,principalForm:candidatoContratar" 
+                  resizable="false" showEffect="clip" hideEffect="clip">  
+            <p:spacer height="20" />
+            
+            <p:fieldset legend="Contrato de Empleado" >
+
+                <h:panelGrid columns="5" >
+                    <h:outputLabel value="Empresa" style="font-weight: bold;" />
+                    <h:outputLabel value="#{SessionBeanADM.compania.nomCompania}" />
+                    <h:outputLabel value="" />
+                    <h:outputLabel value="" />
+                    <h:outputLabel value="" />
+
+                    <h:outputLabel value="Candidato" style="font-weight: bold;" />
+                    <h:outputLabel id="lbl_candidato" value="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado.candidato1.nombreCompleto}" />
+                    <h:outputLabel value="" />
+                    <h:outputLabel value="" />
+                    <h:outputLabel value="" />
+
+                    <h:outputLabel value="Acta y Acuerdo" />
+                    <p:inputText />
+                    <h:outputLabel value="" />
+                    <h:outputLabel value="Fecha de Acuerdo" />
+                    <p:calendar  value="#{reclutamiento$preseleccionAspirante.dia}" pattern="dd/MM/yyyy" />
+
+                    <h:outputLabel value="Fecha Inicio" />
+                    <p:calendar />
+                    <h:outputLabel value="" />
+                    <h:outputLabel value="Fecha Fin" />
+                    <p:calendar />
+                </h:panelGrid>
+                <p:spacer height="15" />
+
+                <h:panelGrid columns="5">
+                    <h:outputLabel value="Puesto" style="font-weight: bold;"/>
+                    <h:outputLabel id="lbl_puesto" value="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado.concurso1.puesto.nombre}" />    
+                    <h:outputLabel value=""/>
+                    <h:outputLabel value=""/>
+                    <h:outputLabel value=""/>
+
+                    <h:outputLabel value="Representante Patronal" />
+                    <p:inputText  />    
+                    <h:outputLabel value=""/>
+                    <h:outputLabel value=""/>
+                    <h:outputLabel value=""/>
+
+                    <h:outputLabel value="Tipo de Contrato" />
+                    <h:selectOneMenu id="lst_tipoContrato" value="#{reclutamiento$preseleccionAspirante.tipoContratoSeleccionado}" >
+                        <f:selectItems var="tipoContrato" value="#{reclutamiento$preseleccionAspirante.listaTipoContrato}" itemValue="#{tipoContrato.tipoContratoPK.codigo}" itemLabel="#{tipoContrato.nombre}" />
+                    </h:selectOneMenu>
+
+
+                    <h:outputLabel value=""/>
+                    <h:outputLabel value="Estado del Contrato" />
+                    <p:inputText value="Aprobado" /> 
+                    <p:spacer height="20" />
+                    <f:facet name="footer" >
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Contratar" />
+                            <p:commandButton value="Cancelar"  onclick="botonMostrarContrato.hide()" />
+                        </h:panelGrid>
+
+                    </f:facet>
+
+                </h:panelGrid>
+
+            </p:fieldset>    
+
+
+        </p:dialog> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </ui:define>
+
     <ui:define name="acciones">
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" value="Cancelar" ajax="true" action="#{reclutamiento$concursos.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                <p:commandLink styleClass="opcionMenu textoNormal" value="Cancelar" ajax="true" action="#{reclutamiento$preseleccionAspirante.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
                     <p:graphicImage styleClass="ui-icon ui-icon-circle-close" />
                 </p:commandLink>
             </h:panelGrid>
@@ -22,95 +178,98 @@
     <ui:define name="contenido">    
         <p:spacer height="20" />
 
-        <p:wizard id="wizarPreseleccion" flowListener="#{reclutamiento$preseleccionAspirante.onFlowListener}">
-
+        <p:wizard id="wizarPreseleccion" widgetVar="wiz" flowListener="#{reclutamiento$preseleccionAspirante.onFlowListener}" 
+                  backLabel="Anterior" nextLabel="Siguiente"  >
             <p:tab id="concursoSeleccionado" title="Concursos"  >
                 <p:spacer height="20" />
-                <h:panelGrid columns="4">
-                    <h:outputLabel value=""/>
-                    <h:outputLabel value="Fecha inicial"/>
-                    <p:calendar id="calFechaInicial"  pattern="dd/MM/yyyy" showOn="button"
-                                value="#{reclutamiento$preseleccionAspirante.fechaInicial}" />
-                    <p:commandButton value="Buscar" image="buscar" 
-                                     update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos" 
-                                     action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"/>
-                    <h:outputLabel value=""/>
-                    <h:outputLabel value="Fecha final"/>
-                    <p:calendar id="calFechaFinal" 
-                                pattern="dd/MM/yyyy" 
-                                value="#{reclutamiento$preseleccionAspirante.fechaFinal}" 
-                                showOn="button" />
-                </h:panelGrid>
-                <p:spacer width="20" />
-                <p:dataTable id="tablaConcursos"
-                             var="concurso" 
-                             value="#{reclutamiento$preseleccionAspirante.listaConcurso}"
-                             rows="5" 
-                             paginator="true" 
-                             emptyMessage="No se han encontrado concursos."
-                             binding="#{reclutamiento$preseleccionAspirante.tableConcursos}"
-                             paginatorAlwaysVisible="true" 
-                             selectionMode="single"
-                             rowSelectListener="#{reclutamiento$preseleccionAspirante.onRowSelectConcurso}"
-                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
-                    <f:facet name="header">
-                        <h:outputText value="Concursos"/>
-                    </f:facet>
-
-                    <p:column sortBy="#{concurso.concursoPK.codConcurso}">
+                <p:panel header="Paso 1 de 5" >
+                    <h:panelGrid columns="4"  >
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value="Fecha inicial"/>
+                        <p:calendar id="calFechaInicial"  pattern="dd/MM/yyyy" showOn="button"
+                                    value="#{reclutamiento$preseleccionAspirante.fechaInicial}" />
+                        <p:commandButton value="Buscar" image="buscar" 
+                                         update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos" 
+                                         action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"/>
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value="Fecha final"/>
+                        <p:calendar id="calFechaFinal" 
+                                    pattern="dd/MM/yyyy" 
+                                    value="#{reclutamiento$preseleccionAspirante.fechaFinal}" 
+                                    showOn="button" />
+                    </h:panelGrid>
+                    <p:spacer width="20" />
+                    <p:dataTable id="tablaConcursos"
+                                 var="concurso" 
+                                 value="#{reclutamiento$preseleccionAspirante.listaConcurso}"
+                                 rows="5" 
+                                 paginator="true" 
+                                 emptyMessage="No se han encontrado concursos."
+                                 binding="#{reclutamiento$preseleccionAspirante.tableConcursos}"
+                                 paginatorAlwaysVisible="true" 
+                                 selectionMode="single"
+                                 rowSelectListener="#{reclutamiento$preseleccionAspirante.onRowSelectConcurso}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
                         <f:facet name="header">
-                            C&oacute;digo
+                            <h:outputText value="Concursos"/>
                         </f:facet>
-                        <h:outputLabel value="#{concurso.concursoPK.codConcurso}"/>
-                    </p:column>
 
-                    <p:column filterBy="#{concurso.nombre}" 
-                              filterMatchMode="contains"
-                              headerText="Nombre del concurso">
-                        <h:outputLabel value="#{concurso.nombre}"/>
-                    </p:column> 
+                        <p:column sortBy="#{concurso.concursoPK.codConcurso}">
+                            <f:facet name="header">
+                                C&oacute;digo
+                            </f:facet>
+                            <h:outputLabel value="#{concurso.concursoPK.codConcurso}"/>
+                        </p:column>
 
-                    <p:column sortBy="#{concurso.fechaInicial}">
-                        <f:facet name="header">
-                            Fecha inicial
-                        </f:facet>
-                        <h:outputLabel value="#{concurso.fechaInicial}" >
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputLabel>
-                    </p:column>    
+                        <p:column filterBy="#{concurso.nombre}" 
+                                  filterMatchMode="contains"
+                                  headerText="Nombre del concurso">
+                            <h:outputLabel value="#{concurso.nombre}"/>
+                        </p:column> 
 
-                    <p:column sortBy="#{concurso.fechaFinal}">
-                        <f:facet name="header">
-                            Fecha final
-                        </f:facet>
-                        <h:outputLabel value="#{concurso.fechaFinal}" >
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputLabel>
-                    </p:column>         
+                        <p:column sortBy="#{concurso.fechaInicial}">
+                            <f:facet name="header">
+                                Fecha inicial
+                            </f:facet>
+                            <h:outputLabel value="#{concurso.fechaInicial}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputLabel>
+                        </p:column>    
 
-                    <p:column sortBy="#{concurso.numeroPlazas}">
-                        <f:facet name="header">
-                            N&uacute;mero de plazas
-                        </f:facet>
-                        <h:outputLabel value="#{concurso.numeroPlazas}" />
-                    </p:column> 
+                        <p:column sortBy="#{concurso.fechaFinal}">
+                            <f:facet name="header">
+                                Fecha final
+                            </f:facet>
+                            <h:outputLabel value="#{concurso.fechaFinal}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputLabel>
+                        </p:column>         
 
-                    <p:column sortBy="#{concurso.puesto.nombre}"
-                              filterBy="#{concurso.puesto.nombre}"
-                              filterMatchMode="contains">
-                        <f:facet name="header">
-                            Puesto
-                        </f:facet>
-                        <h:outputLabel value="#{concurso.puesto.nombre}" />
-                    </p:column> 
-                </p:dataTable>
+                        <p:column sortBy="#{concurso.numeroPlazas}">
+                            <f:facet name="header">
+                                N&uacute;mero de plazas
+                            </f:facet>
+                            <h:outputLabel value="#{concurso.numeroPlazas}" />
+                        </p:column> 
+
+                        <p:column sortBy="#{concurso.puesto.nombre}"
+                                  filterBy="#{concurso.puesto.nombre}"
+                                  filterMatchMode="contains">
+                            <f:facet name="header">
+                                Puesto
+                            </f:facet>
+                            <h:outputLabel value="#{concurso.puesto.nombre}" />
+                        </p:column> 
+                    </p:dataTable>
+                    <p:spacer height="20" />
+                </p:panel>
                 <p:spacer height="20" />
             </p:tab>
 
-            <p:tab id="candidatosSeleccionados" title="Candidatos"  >
+            <p:tab id="candidatosSeleccionadosTab" title="Preselecci&oacute;n"  >
 
                 <p:spacer height="20" />
-                <p:panel >
+                <p:panel id="panelProceso" header="Paso 2 de 5" >
                     <h:panelGrid columns="5" >
                         <h:outputLabel value="Concurso Seleccionado: " style="font-weight: bold;" />
                         <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.nombre}" />
@@ -136,22 +295,21 @@
                     </h:panelGrid>
                 </p:panel>
                 <p:spacer height="20" />
-                <div>                 
-                    <div style="display: inline-block;">
-                        <p:fieldset legend="Criterios de Perfil" style="height: 406px; width: 264px;" >
+                <table width="100%" >
+                    <tr>
+                        <td valign="top">
                             <p:dataTable id="criteriosSeleccionados" 
                                          var="criterio" 
                                          value="#{SessionBeanREC.concursoSeleccionado.puesto.criteriosXPuestoList}"
                                          selection="#{SessionBeanREC.criteriosSeleccionados}"
                                          rows="5" 
                                          paginator="true" 
-                                         update="tableCanSeleccionados"
+                                         onRowSelectUpdate="tableCanSeleccionados"
+                                         onRowUnselectUpdate="tableCanSeleccionados"
                                          emptyMessage="No se han encontrado Concursos."
                                          binding="#{reclutamiento$preseleccionAspirante.tableCriterios}"
                                          paginatorAlwaysVisible="true" 
                                          selectionMode="multiple"
-                                         onRowSelectUpdate="tableCanSeleccionados"
-                                         onRowUnselectUpdate="tableCanSeleccionados"
                                          rowSelectListener="#{reclutamiento$preseleccionAspirante.onRowSelectCriterio}"
                                          rowUnselectListener="#{reclutamiento$preseleccionAspirante.onRowUnSelectCriterio}"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
@@ -164,58 +322,165 @@
                                           filterBy="#{criterio.criterio1.nombre}"
                                           filterMatchMode="contains" >
                                     <h:outputLabel value="#{criterio.criterio1.nombre}" />
+                                    <h:outputLabel value="#{criterio.descripcionRango}" />
                                 </p:column>
 
+                                <f:facet name="footer">  
+                                    <h:outputLink value="javascript:void(0)" onclick="botonMostrarCriterios.show()">Mostrar mas criterios.</h:outputLink>
+                                </f:facet>  
                             </p:dataTable>
-                        </p:fieldset>
-                    </div>
-                    <p:spacer width="80" />
-                    <div style="display: inline-block;" >
-                        <p:fieldset legend="Candidatos" style="height: 406px; width: 264px;" >
-                            <p:dataTable id="tableCanSeleccionados" 
+                        </td>
+                        <td></td>
+                        <td valign="top">
+                            <p:dataTable id="tableCanSeleccionados"  style="display: inline"
                                          var="candidato" 
                                          value="#{SessionBeanREC.listaCandidatos}"
                                          selection="#{SessionBeanREC.candidatosSeleccionados}"
                                          rows="5" 
                                          paginator="true" 
-                                         update="tableCanSeleccionados"
-                                         emptyMessage="No se han encontrado Candidatos."
-                                         binding="#{reclutamiento$preseleccionAspirante.tableCandidatos}"
+                                         emptyMessage="No se han encontrado Candidatos."                                     
                                          paginatorAlwaysVisible="true" 
                                          selectionMode="multiple"
+                                         binding="#{reclutamiento$preseleccionAspirante.tableCandidatos}"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
                                 <f:facet name="header">  
-                                    Candidatos
+                                    Precandidatos
                                 </f:facet>  
 
                                 <p:column sortBy="#{candidato.nombreCompleto}" 
                                           filterBy="#{candidato.nombreCompleto}"
                                           filterMatchMode="contains" >
-                                    <h:outputLabel value="#{candidato.nombreCompleto}" />
+                                    <p:commandLink>  
+                                        <p:graphicImage value="/resources/iconos/personal.png" rendered="#{candidato.sexo eq 'M'}" />   
+                                        <p:graphicImage value="/resources/iconos/personal_w.png" rendered="#{candidato.sexo eq 'F'}" />
+                                    </p:commandLink> 
+                                    <h:outputLabel value="#{candidato.nombreCompleto}" style="margin-left:10px"/>
                                 </p:column>
+                                <f:facet name="footer" >
+                                    <p:commandButton value="Guardar selecci&oacute;n" action="#{reclutamiento$preseleccionAspirante.aplicarCriterios}" image="guardar" update="tableCanSeleccionados, principalForm:mensajes" />
+                                </f:facet>
                             </p:dataTable>
-                        </p:fieldset>
-                    </div>
-                </div>
-
+                        </td>
+                    </tr>
+                </table>
                 <p:spacer height="20" />
             </p:tab>
 
-            <p:tab id="candidatosPreselect" title="Preseleccionar"  >
+            <p:tab id="candidatosPreselect" title="Evaluaci&oacute;n"  >
                 <p:spacer height="20" />
-                <p:panel>
-                    <p:dataList value="#{SessionBeanREC.candidatosSeleccionados}" var="can" type="ordered" paginator="true" rows="5" effectSpeed="fast"  
-                                paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"  
-                                rowsPerPageTemplate="5,10,15">
-                        <p:graphicImage value="/images/search.png"/>  
-                        <h:outputText value="#{can.nombreCompleto}" style="margin-left:10px" />  
+                <p:panel id="panelCandidatosPre" header="Paso 3 de 5" >
+                    <p:spacer height="10" />
 
-                    </p:dataList>
+                    <p:dataTable id="evCandidatoLst" value="#{reclutamiento$preseleccionAspirante.candidatosGuardados}" 
+                                 paginator="true" rows="5"  
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                 rowsPerPageTemplate="5,10,25,50,100" 
+                                 var="candidato" dynamic="true" rowEditListener="#{reclutamiento$preseleccionAspirante.onEditCandidato}" >
 
-                    <f:facet name="footer" >
-                        <p:commandButton value="Guardar Candidatos" ajax="true" action="#{reclutamiento$preseleccionAspirante.aplicarCriterios}" update="wizarPreseleccion, mensajes" />
-                    </f:facet>
+                        <p:column filterBy="#{candidato.candidato1.nombreCompleto}" filterMatchMode="contains" headerText="Candidato" style="width:450px;" >
+                            <p:commandButton image="#{candidato.candidato1.sexo eq 'M' ? 'contratar' : 'contratar_w'}" oncomplete="botonMostrarEvaluacion.show()"  update="principalForm:lbl1,principalForm:lbl2,principalForm:pruebasXEvaluacionEdit" action="#{reclutamiento$preseleccionAspirante.crearEvaluaciones}">
+                                <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
+                            </p:commandButton>
+                            <h:outputText value="#{candidato.candidato1.nombreCompleto}"  style="margin-left:10px" />
+                        </p:column>
+
+                        <p:column sortBy="#{candidato.notaEvaluacion}" headerText="Nota Obtenida" style="width:250px; text-align: left;">  
+                            <h:outputLabel value="#{candidato.notaEvaluacion}" style="margin-left:10px;"/>
+                        </p:column>  
+
+                        <p:column headerText="Observaciones" style="width:250px; text-align: left">  
+                            <p:cellEditor  >  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{candidato.observacion}" />  
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputTextarea value="#{candidato.observacion}" style="width:100%"/>  
+                                </f:facet>  
+                            </p:cellEditor>  
+                        </p:column>  
+
+                        <p:column headerText="Ingresar" style="width:50px; text-align: left;">  
+                            <p:rowEditor />  
+                        </p:column>  
+
+                    </p:dataTable>
+
                 </p:panel>
+                <p:spacer height="10" />
+            </p:tab>
+            <p:tab id="tabSeleccion" title="Selecci&oacute;n"  >
+                <p:spacer height="20" />
+                <p:panel id="panelSeleccion" header="Paso 4 de 5" >
+                    <p:spacer height="20" />
+                    <p:dataTable id="candidatoSelection" value="#{reclutamiento$preseleccionAspirante.candidatosGuardados}" var="candidato" paginator="true" rows="5"
+                                 update="principalForm:panelSeleccion,principalForm:candidatoSelection"
+                                 rowStyleClass="#{candidato.orden lt 6 ? 'candidatoSugerido' : null}" emptyMessage="No ha seleccionado ning&uacute;n candidato."
+                                 paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" binding="#{reclutamiento$preseleccionAspirante.tableSeleccion}" >
+                        <f:facet name="header">
+                            <h:outputLabel value="Candidatos evaluados" />
+                        </f:facet>
+
+                        <p:column headerText="Candidato" >  
+                            <p:commandLink>  
+                                <p:graphicImage value="/resources/iconos/personal.png" rendered="#{candidato.candidato1.sexo eq 'M'}" />  
+                                <p:graphicImage value="/resources/iconos/personal_w.png" rendered="#{candidato.candidato1.sexo eq 'F'}" />
+                            </p:commandLink>  
+                            <h:outputText value="#{candidato.candidato1.nombreCompleto}" style="margin-left:10px" />  
+                        </p:column>
+
+                        <p:column headerText="Sugerido">  
+                            <p:graphicImage value="/resources/iconos/rating.png" rendered="#{(candidato.orden lt 6)}" />   
+                        </p:column>
+
+                        <p:column headerText="Seleccionado">  
+                            <p:commandButton id="cmdSeleccionar" rendered="#{candidato.estado eq 'P'}" action="#{reclutamiento$preseleccionAspirante.seleccionarCandidato}" update="principalForm:mensajes,principalForm:candidatoSelection"  image="nuevo" />
+                            <p:tooltip for="cmdSeleccionar" value="Marcar como seleccionado" showEvent="focus" hideEvent="blur"/>                              
+                            <p:commandButton id="cmdDesSeleccionar" rendered="#{candidato.estado eq 'S'}" action="#{reclutamiento$preseleccionAspirante.deseleccionarCandidato}" update="principalForm:mensajes,principalForm:candidatoSelection"  image="button-ok" />
+                            <p:tooltip for="cmdDesSeleccionar" value="Deseleccionar este candidato" showEvent="focus" hideEvent="blur"/>                              
+                            <p:commandButton disabled="true" rendered="#{candidato.estado eq 'C'}" image="contrato" />
+                        </p:column>
+
+                    </p:dataTable>
+                </p:panel>
+                <p:spacer height="20" />
+            </p:tab>
+            <p:tab id="tabContratacion" title="Contrataci&oacute;n"  >
+                <p:spacer height="20" />
+                <p:panel id="panelContratacion" header="Paso 5 de 5" >
+                    <p:spacer height="20" />
+
+                    <p:dataTable id="candidatoContratar" value="#{reclutamiento$preseleccionAspirante.candidatosContratar}" var="candidato" paginator="true" rows="5"
+                                 update="principalForm:panelSeleccion,principalForm:candidatoContratar" emptyMessage="No ha seleccionado ning&uacute;n candidato." binding="#{reclutamiento$preseleccionAspirante.tableContratacion}"
+                                 paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100"  >
+                        <f:facet name="header">
+                            <h:outputLabel value="Candidatos a Contratar" />
+                        </f:facet>
+
+                        <p:column headerText="Candidato" >  
+                            <p:commandLink>  
+                                <p:graphicImage value="/resources/iconos/personal.png" rendered="#{candidato.candidato1.sexo eq 'M'}" />  
+                                <p:graphicImage value="/resources/iconos/personal_w.png" rendered="#{candidato.candidato1.sexo eq 'F'}" />
+                            </p:commandLink>  
+                            <h:outputText value="#{candidato.candidato1.nombreCompleto}" style="margin-left:10px" />  
+                        </p:column>
+
+                        <p:column headerText="Contratar">  <!-- action="# {reclutamiento$preseleccionAspirante.contratarCandidato}"  -->
+                            <p:commandButton id="cmdContratar" disabled="#{candidato.estado eq 'C'}" oncomplete="botonMostrarContrato.show()" image="contrato" update="principalForm:lbl_candidato,principalForm:lbl_puesto,principalForm:lbl_puesto,principalForm:cmdOk" >
+                                <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
+                            </p:commandButton>
+                        </p:column>
+
+                        <p:column headerText="Imprimir Contrato"> 
+                            <p:commandButton id="cmdImprimirContrato" disabled="#{candidato.estado ne 'C'}"  update="principalForm:mensajes,principalForm:candidatoContratar"  image="documentPDF" />
+                        </p:column>
+
+                        <f:facet name="footer">
+                            <p:commandButton id="cerrarConcurso" value="Cerrar Concurso" onclick="confirmation.show()" update="principalForm:mensajes,principalForm:candidatoContratar" />
+                        </f:facet>
+                    </p:dataTable>
+
+                </p:panel>
+                <p:spacer height="20" />
             </p:tab>
         </p:wizard>
 
