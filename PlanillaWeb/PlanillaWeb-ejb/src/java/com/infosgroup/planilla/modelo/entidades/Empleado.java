@@ -99,10 +99,6 @@ public class Empleado implements Serializable
     @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
     private String observacion;
-    
-    @Size(max = 200)
-    @Column(name = "CORREO", length = 200)
-    private String correo;
 
     @JoinTable(name = "EVALUADOR_EVALUACIONES", joinColumns =
         {
@@ -347,14 +343,6 @@ public class Empleado implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Empleado[ empleadoPK=" + empleadoPK + " ]";
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
     }
 
     public List<Contrato> getContratoList() {
