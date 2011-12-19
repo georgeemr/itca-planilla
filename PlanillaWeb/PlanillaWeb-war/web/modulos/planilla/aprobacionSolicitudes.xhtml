@@ -71,16 +71,22 @@
                     <h:outputText value="#{sol.tipoAccion.nomTipoaccion}"/>
                 </p:column>
                 <p:column headerText="Fecha de solicitud">
-                    <h:outputText value="#{sol.fecha}"/>
+                    <h:outputText value="#{sol.fecha}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
                 </p:column>
                 <p:column headerText="Observaciones">
                     <h:outputText value="#{sol.observacion}"/>
                 </p:column>
                 <p:column headerText="Fecha inicial">
-                    <h:outputText value="#{sol.fechaInicial}"/>
+                    <h:outputText value="#{sol.fechaInicial}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
                 </p:column>
                 <p:column headerText="Fecha final">
-                    <h:outputText value="#{sol.fechaFinal}"/>
+                    <h:outputText value="#{sol.fechaFinal}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
                 </p:column>
                 <p:column headerText="Opciones">
 
@@ -102,24 +108,6 @@
                         
                     </h:panelGrid>
                 </p:column>
-            </p:dataTable>
-        </p:fieldset>
-        <p:spacer height="10px"/>
-        <p:fieldset id="fieldset3">
-            <p:dataTable id="tablaAcciones"
-                         rows="5" paginator="true"
-                         emptyMessage="No hay solicitudes a aprobar"
-                         var="accion"
-                         rendered="false"
-                         paginatorAlwaysVisible="true"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
-                <f:facet name="header">
-                    Solicitudes aprobadas
-                </f:facet>
-                <p:column headerText="Empleado"></p:column>
-                <p:column headerText="Tipo de accion"></p:column>
-                <p:column headerText="Jefe"></p:column>
-                <p:column headerText="Opciones"></p:column>
             </p:dataTable>
         </p:fieldset>
     </ui:define>

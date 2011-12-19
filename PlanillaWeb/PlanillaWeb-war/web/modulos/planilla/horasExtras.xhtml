@@ -36,7 +36,7 @@
             </h:selectOneMenu>
             <h:outputLabel value="Planilla"/>
             <h:selectOneMenu id="lstPlan" label="Planilla" style="width:150px">
-                <f:selectItems value="#{planilla$horasExtras.listaPlanillas}" var="pla" itemValue="#{pla.planillaPK.numPlanilla}" itemLabel="#{pla.planillaPK.anio}" />
+                <f:selectItems value="#{planilla$horasExtras.listaPlanillas}" var="pla" itemValue="#{pla.planillaPK.numPlanilla}" itemLabel="#{pla.planillaPK.anio} #{pla.planillaPK.mes} #{pla.planillaPK.numPlanilla}" />
             </h:selectOneMenu>
             <h:outputLabel value="Sucursal"/>
             <h:selectOneMenu id="lstSuc" label="Sucursal" style="width:150px">
