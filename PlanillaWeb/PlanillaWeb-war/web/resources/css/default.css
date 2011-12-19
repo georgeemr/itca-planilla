@@ -71,3 +71,19 @@ body {
     color: white !important;
     background-color: greenyellow !important;
 }
+
+.solicitudGenerada{
+    background-color: #6666ff;
+}
+
+.solicitudPreAprobada{
+    background-color: #009999;
+}
+
+.solicitudAprobada{
+    background-color: #00cc66;
+}
+
+.solicitudRechazada{
+    background-color: #ff0033;
+}
