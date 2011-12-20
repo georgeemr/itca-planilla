@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.Campania;
+import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.entidades.EmpleadoPK;
 import java.util.ArrayList;
@@ -75,5 +76,29 @@ return e;
         listaJefes = pue.getResultList();
 
         return listaJefes;
+    }
+    
+    public Long getMax(Long empresa){
+        Long max = (Long) em.createQuery("SELECT max(e.empleadoPK.codEmp) FROM Empleado e WHERE e.empleadoPK.codCia = :codCia").setParameter("codCia", empresa).getSingleResult();
+        return max != null ? ( ++max ): 1L;
+    }
+    
+    public Empleado toEmpleado(Candidato c){
+        Empleado e = new Empleado();
+        EmpleadoPK pk = new EmpleadoPK(c.getCandidatoPK().getCodCia(), getMax(c.getCandidatoPK().getCodCia()));
+        e.setEmpleadoPK(pk);
+        if ( c != null){
+            e.setNombres( c.getNombre() );
+            e.setApellidos( e.getApellidos() );
+            e.setApCasada( c.getApCasada() );
+            e.setFechaNac( c.getFechaNacimiento() );
+            e.setObservacion( c.getObservacion() );
+            e.setCandidato(c);
+        }
+        return e;
+    }
+    
+    public String generaUsuario( Candidato c ){
+        return "ṕrueba";
     }
 }
