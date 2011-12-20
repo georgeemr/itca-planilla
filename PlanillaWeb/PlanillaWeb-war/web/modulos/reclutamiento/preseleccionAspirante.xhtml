@@ -7,7 +7,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-    <ui:define name="titulo">Preselecci&oacute;n de candidatos</ui:define>
+    <ui:define name="titulo">Reclutamiento y Selecci&oacute;n de Candidatos</ui:define>
 
     <ui:define name="dialogos" >
 
@@ -20,7 +20,7 @@
                 <p:dataTable id="pruebasXEvaluacionEdit" value="#{reclutamiento$preseleccionAspirante.evaluacionCandidatos}" 
                              paginator="true" rows="10"  emptyMessage="No se han encontrado Evaluaciones." 
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                             rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;"
+                             rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" onRowEditUpdate="principalForm:mensajes" onRowSelectUpdate="principalForm:mensajes"
                              var="evaluacion" dynamic="true" rowEditListener="#{reclutamiento$preseleccionAspirante.onEditNotasCandidato}" >
 
                     <p:column headerText="Evaluaci&oacute;n" >  
@@ -30,10 +30,14 @@
                     <p:column headerText="Nota" style="width:250px; text-align: left">  
                         <p:cellEditor  >  
                             <f:facet name="output">  
-                                <h:outputText value="#{evaluacion.nota}" />  
+                                <h:outputText value="#{evaluacion.nota}" >  
+                                    <f:convertNumber maxFractionDigits="2" />
+                                </h:outputText>
                             </f:facet>  
                             <f:facet name="input">  
-                                <p:inputTextarea value="#{evaluacion.nota}" style="width:100%"/>  
+                                <p:inputText value="#{evaluacion.nota}" validatorMessage="Debe ingresar un valor entre 0 y 10." maxlength="2" style="width:100%">  
+                                    <f:validateDoubleRange minimum="0" maximum="10"  />
+                                </p:inputText>
                             </f:facet>  
                         </p:cellEditor>  
                     </p:column>  
@@ -81,7 +85,7 @@
                   onCloseUpdate="principalForm:mensajes,principalForm:candidatoContratar" 
                   resizable="false" showEffect="clip" hideEffect="clip">  
             <p:spacer height="20" />
-            
+
             <p:fieldset legend="Contrato de Empleado" >
 
                 <h:panelGrid columns="5" >
@@ -128,16 +132,16 @@
                     <h:selectOneMenu id="lst_tipoContrato" value="#{reclutamiento$preseleccionAspirante.tipoContratoSeleccionado}" >
                         <f:selectItems var="tipoContrato" value="#{reclutamiento$preseleccionAspirante.listaTipoContrato}" itemValue="#{tipoContrato.tipoContratoPK.codigo}" itemLabel="#{tipoContrato.nombre}" />
                     </h:selectOneMenu>
-
-
                     <h:outputLabel value=""/>
                     <h:outputLabel value="Estado del Contrato" />
-                    <p:inputText value="Aprobado" /> 
+                    <h:selectOneMenu id="lst_estadoContrato" value="#{reclutamiento$preseleccionAspirante.estadoContrato}" >
+                    <f:selectItems var="estadoContrato" value="#{reclutamiento$preseleccionAspirante.listaEstadoContrato}" itemValue="#{estadoContrato.estadoContratoPK.codigo}" itemLabel="#{estadoContrato.nombre}" />
+                    </h:selectOneMenu>
                     <p:spacer height="20" />
                     <f:facet name="footer" >
 
                         <h:panelGrid columns="2">
-                            <p:commandButton value="Contratar" />
+                            <p:commandButton value="Contratar" action="#{reclutamiento$preseleccionAspirante.contratarCandidato}" update="principalForm:mensajes"/>
                             <p:commandButton value="Cancelar"  onclick="botonMostrarContrato.hide()" />
                         </h:panelGrid>
 
@@ -170,20 +174,20 @@
             <p:tab id="concursoSeleccionado" title="Concursos"  >
                 <p:spacer height="20" />
                 <p:panel header="Paso 1 de 5" >
-                    <h:panelGrid columns="4"  >
+                    <h:panelGrid columns="8"  >
                         <h:outputLabel value=""/>
                         <h:outputLabel value="Fecha inicial"/>
                         <p:calendar id="calFechaInicial"  pattern="dd/MM/yyyy" showOn="button"
                                     value="#{reclutamiento$preseleccionAspirante.fechaInicial}" />
-                        <p:commandButton value="Buscar" image="buscar" 
-                                         update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos" 
-                                         action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"/>
                         <h:outputLabel value=""/>
                         <h:outputLabel value="Fecha final"/>
                         <p:calendar id="calFechaFinal" 
                                     pattern="dd/MM/yyyy" 
                                     value="#{reclutamiento$preseleccionAspirante.fechaFinal}" 
                                     showOn="button" />
+                        <p:commandButton value="Buscar" image="buscar" 
+                                         update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos" 
+                                         action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"/>
                     </h:panelGrid>
                     <p:spacer width="20" />
                     <p:dataTable id="tablaConcursos"
@@ -372,7 +376,9 @@
                         </p:column>
 
                         <p:column sortBy="#{candidato.notaEvaluacion}" headerText="Nota Obtenida" style="width:250px; text-align: left;">  
-                            <h:outputLabel value="#{candidato.notaEvaluacion}" style="margin-left:10px;"/>
+                            <h:outputLabel value="#{candidato.notaEvaluacion}" style="margin-left:10px;">
+                                <f:convertNumber maxFractionDigits="2" />
+                            </h:outputLabel>
                         </p:column>  
 
                         <p:column headerText="Observaciones" style="width:250px; text-align: left">  
@@ -451,8 +457,8 @@
                             <h:outputText value="#{candidato.candidato1.nombreCompleto}" style="margin-left:10px" />  
                         </p:column>
 
-                        <p:column headerText="Contratar">  <!-- action="# {reclutamiento$preseleccionAspirante.contratarCandidato}"  -->
-                            <p:commandButton id="cmdContratar" disabled="#{candidato.estado eq 'C'}" oncomplete="botonMostrarContrato.show()" image="contrato" update="principalForm:lbl_candidato,principalForm:lbl_puesto,principalForm:lbl_puesto,principalForm:cmdOk" >
+                        <p:column headerText="Contratar">  <!--  action="# {reclutamiento$preseleccionAspirante.contratarCandidato}" -->
+                            <p:commandButton id="cmdContratar"  disabled="#{candidato.estado eq 'C'}" oncomplete="botonMostrarContrato.show()" image="contrato" update="principalForm:lbl_candidato,principalForm:lbl_puesto,principalForm:lbl_puesto,principalForm:cmdOk" >
                                 <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
                             </p:commandButton>
                         </p:column>
