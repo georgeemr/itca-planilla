@@ -45,13 +45,12 @@
             function()
             {
             jQuery("#datepicker01").datepicker();
-            jQuery("#datepicker01").datepicker("option", "disabled" , true);
             jQuery("#datepicker01").datepicker("option", "monthNames", ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'] );
             jQuery("#datepicker01").datepicker("option", "dayNamesMin", ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa']);
             jQuery("#datepicker01").datepicker("option", "numberOfMonths", [3, 4]);
             jQuery("#datepicker01").datepicker("option", "stepMonths", 0);
             jQuery("#datepicker01").datepicker("option", "beforeShowDay", function (date) { return highlightCalendar(date, '#{planilla$calendario.estilo}'); });
-            jQuery("#datepicker01").datepicker({dateFormat: 'mm/dd/yyyy'}).datepicker('setDate', '01/01/#{planilla$calendario.anio}');            
+            jQuery("#datepicker01").datepicker({dateFormat: 'mm/dd/yyyy'}).datepicker('setDate', '01/01/#{planilla$calendario.anio}');
             });
         </h:outputScript>
         <table width="100%">
@@ -77,11 +76,6 @@
                                 <p:spacer height="10"/>
                             </td>
                         </tr>
-                        <!--tr>
-                            <td colspan="2">
-                                <p:separator/>
-                            </td>
-                        </tr-->
                         <tr>
                             <td>
                                 <h:outputText value="Accion"/>
