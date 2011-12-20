@@ -10,18 +10,9 @@
     <ui:define name="titulo">
         <h:outputText value="Acciones de personal (Calendario)"/>
     </ui:define>
-    <script type="text/javascript">
-        
-    </script>
     <!-- ======================================================================================================= -->
     <ui:define name="acciones">
         <p:tab title="Calendario">
-            <!--h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" oncomplete="leyendaDialog.show();">
-                    <p:graphicImage value="/resources/iconos/view-process-tree.png"/>
-                    <h:outputText value="Mostrar leyenda" styleClass="espacioTexto"/>
-                </p:commandLink>
-            </h:panelGrid-->
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="false" action="#{planilla$calendario.mostrarAcciones$action}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/go-jump-today.png"/>
@@ -41,16 +32,15 @@
     <!-- ======================================================================================================= -->
     <ui:define name="contenido">
         <h:outputScript target="head">
-            var specialDays = [#{planilla$calendario.fechas}];
-
-            function highlightCalendar(specialDays, date, cssClass)
+            function highlightCalendar(date, cssClass)
             {
+            var specialDays = [#{planilla$calendario.fechas}];
             for (var i = 0; i &lt; specialDays.length; i++)
                 if (new Date(specialDays[i].toString()) == date.toString())
                     return [ true, cssClass, '' ];
             return [ true, '' ];
             }
-            
+
             jQuery(document).ready(
             function()
             {
@@ -61,7 +51,7 @@
             jQuery("#datepicker01").datepicker("option", "numberOfMonths", [3, 4]);
             jQuery("#datepicker01").datepicker("option", "stepMonths", 0);
             jQuery("#datepicker01").datepicker({dateFormat: 'mm/dd/yyyy'}).datepicker('setDate', '01/01/#{planilla$calendario.anio}');
-            jQuery("#datepicker01").datepicker("option", "beforeShowDay", function (date) { return highlightCalendar(specialDays, date, '#{planilla$calendario.estilo}'); });
+            jQuery("#datepicker01").datepicker("option", "beforeShowDay", function (date) { return highlightCalendar(date, '#{planilla$calendario.estilo}'); });
             });
         </h:outputScript>
         <table width="100%">
@@ -110,41 +100,41 @@
                         <tr valign="top">
                             <td colspan="2">
 
-            <table width="100%" border="0">
-                <thead>
-                    <tr>
-                        <td width="50%">
-                            <h:outputText value="Color" style="font-weight: bold;"/>
-                        </td>
-                        <td width="50%">
-                            <h:outputText value="Accion" style="font-weight: bold;"/>
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td width="50%" style="background-color: yellow;"/>
-                        <td width="50%"><h:outputText value="Festivos"/></td>
-                    </tr>
-                    <tr>
-                        <td width="50%" style="background-color: lightskyblue;"/>
-                        <td width="50%"><h:outputText value="Laborales"/></td>
-                    </tr>
-                    <tr>
-                        <td width="50%" style="background-color: orange;"/>
-                        <td width="50%"><h:outputText value="Vacaciones"/></td>
-                    </tr>
-                    <tr>
-                        <td width="50%" style="background-color: salmon;"/>
-                        <td width="50%"><h:outputText value="Permisos"/></td>
-                    </tr>
-                    <tr>
-                        <td width="50%" style="background-color: greenyellow;"/>
-                        <td width="50%"><h:outputText value="Capacitaciones"/></td>
-                    </tr>
-                </tbody>
-            </table>
-                                
+                                <table width="100%" border="0">
+                                    <thead>
+                                        <tr>
+                                            <td width="50%">
+                                                <h:outputText value="Color" style="font-weight: bold;"/>
+                                            </td>
+                                            <td width="50%">
+                                                <h:outputText value="Accion" style="font-weight: bold;"/>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td width="50%" style="background-color: yellow;"/>
+                                            <td width="50%"><h:outputText value="Festivos"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="50%" style="background-color: lightskyblue;"/>
+                                            <td width="50%"><h:outputText value="Laborales"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="50%" style="background-color: orange;"/>
+                                            <td width="50%"><h:outputText value="Vacaciones"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="50%" style="background-color: salmon;"/>
+                                            <td width="50%"><h:outputText value="Permisos"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="50%" style="background-color: greenyellow;"/>
+                                            <td width="50%"><h:outputText value="Capacitaciones"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
                             </td>
                         </tr>
                     </table>
@@ -156,9 +146,6 @@
         </table>
     </ui:define>
     <!-- ======================================================================================================= -->
-    <ui:define name="dialogos">
-        <p:dialog id="leyendaDialog" widgetVar="leyendaDialog" header="Leyenda de colores/acciones" closable="true" resizable="false" draggable="true" closeOnEscape="true">
-        </p:dialog>
-    </ui:define>
+    <ui:define name="dialogos"/>
     <!-- ======================================================================================================= -->
 </ui:composition>
