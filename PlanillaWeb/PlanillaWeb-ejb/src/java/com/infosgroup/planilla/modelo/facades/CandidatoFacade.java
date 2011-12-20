@@ -139,7 +139,7 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
                 }
             }
         }
-
+        
         return 1;
-    }
+    }  
 }
