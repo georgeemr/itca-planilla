@@ -105,13 +105,13 @@
                     <p:inputText />
                     <h:outputLabel value="" />
                     <h:outputLabel value="Fecha de Acuerdo" />
-                    <p:calendar  value="#{reclutamiento$preseleccionAspirante.dia}" pattern="dd/MM/yyyy" />
+                    <p:calendar  value="#{reclutamiento$preseleccionAspirante.dia}" pattern="dd/MM/yyyy" showOn="button" />
 
                     <h:outputLabel value="Fecha Inicio" />
-                    <p:calendar />
+                    <p:calendar id="calFecInicialCon" pattern="dd/MM/yyyy" showOn="button" />
                     <h:outputLabel value="" />
                     <h:outputLabel value="Fecha Fin" />
-                    <p:calendar />
+                    <p:calendar id="calFecFinalCon" pattern="dd/MM/yyyy" showOn="button" />
                 </h:panelGrid>
                 <p:spacer height="15" />
 
@@ -141,8 +141,8 @@
                     <f:facet name="footer" >
 
                         <h:panelGrid columns="2">
-                            <p:commandButton value="Contratar" action="#{reclutamiento$preseleccionAspirante.contratarCandidato}" update="principalForm:mensajes"/>
-                            <p:commandButton value="Cancelar"  onclick="botonMostrarContrato.hide()" />
+                            <p:commandButton value="Contratar" image="ui-icon-circle-check" action="#{reclutamiento$preseleccionAspirante.contratarCandidato}" update="principalForm:mensajes"/>
+                            <p:commandButton value="Cancelar"  image="ui-icon-circle-close" onclick="botonMostrarContrato.hide()" />
                         </h:panelGrid>
 
                     </f:facet>
@@ -468,7 +468,7 @@
                         </p:column>
 
                         <f:facet name="footer">
-                            <p:commandButton id="cerrarConcurso" value="Cerrar Concurso" onclick="confirmation.show()" update="principalForm:mensajes,principalForm:candidatoContratar" />
+                            <p:commandButton id="cerrarConcurso" value="Cerrar Concurso" image="ui-icon-circle-close" onclick="confirmation.show()" update="principalForm:mensajes,principalForm:candidatoContratar" />
                         </f:facet>
                     </p:dataTable>
 
