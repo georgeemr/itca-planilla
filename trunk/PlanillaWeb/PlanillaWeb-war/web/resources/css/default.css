@@ -1,3 +1,19 @@
+/* Esta regla cambia el color del los items seleccionados en las tablas
+------------------------------------------------------------------------------*/
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, 
+.ui-widget-header .ui-state-highlight{
+    border:1px solid #7096AB !important;
+    background:#9dcee8 !important;
+    background:#9dcee8 linear-gradient(top, rgba(133,178,203,0.25), rgba(0,0,0,0)) !important;
+    background:#9dcee8 -webkit-gradient(linear, left top, left bottom, from(rgba(133,178,203,0.25)), to(rgba(0,0,0,0))) !important;
+    background:#9dcee8 -moz-linear-gradient(top, rgba(133,178,203,0.25), rgba(0,0,0,0)) !important;
+    /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000, endColorstr=#00000000);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000, endColorstr=#00000000)"; */
+    color:#ffffff; text-shadow:1px 1px 1px rgba(0,0,0,0.5) !important;
+    cursor: pointer !important;
+}
+/*----------------------------------------------------------------------------*/
+
 #accionesTD {
     padding-top: 5px;
     padding-bottom: 5px;
