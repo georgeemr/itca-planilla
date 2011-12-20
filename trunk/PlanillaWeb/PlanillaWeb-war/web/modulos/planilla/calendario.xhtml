@@ -16,12 +16,12 @@
     <!-- ======================================================================================================= -->
     <ui:define name="acciones">
         <p:tab title="Calendario">
-            <h:panelGrid columns="1">
+            <!--h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" oncomplete="leyendaDialog.show();">
                     <p:graphicImage value="/resources/iconos/view-process-tree.png"/>
                     <h:outputText value="Mostrar leyenda" styleClass="espacioTexto"/>
                 </p:commandLink>
-            </h:panelGrid>
+            </h:panelGrid-->
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="false" action="#{planilla$calendario.mostrarAcciones$action}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/go-jump-today.png"/>
@@ -31,7 +31,7 @@
         </p:tab>
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{planilla$calendario.volver$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="accionesPersonal?faces-redirect=true" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/arrow-left.png"/>
                     <h:outputText value="Acciones de personal" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -99,21 +99,17 @@
                                     <f:selectItem itemValue="vacaciones" itemLabel="Vacaciones"/>
                                     <f:selectItem itemValue="permisos" itemLabel="Permisos"/>
                                     <f:selectItem itemValue="capacitaciones" itemLabel="Capacitaciones"/>
-                                    <f:selectItem itemValue="otrafecha" itemLabel="Otros"/>
                                 </h:selectOneRadio>
                             </td>
                         </tr>
-                    </table>
-                </td>
-                <td width="67%" id="principalForm:filaCalendario">
-                    <div id="datepicker01" style="width: 100%"/>
-                </td>
-            </tr>
-        </table>
-    </ui:define>
-    <!-- ======================================================================================================= -->
-    <ui:define name="dialogos">
-        <p:dialog id="leyendaDialog" widgetVar="leyendaDialog" header="Leyenda de colores/acciones" closable="true" resizable="false" draggable="true" closeOnEscape="true">
+                        <tr>
+                            <td colspan="2">
+                                <p:separator/>
+                            </td>
+                        </tr>
+                        <tr valign="top">
+                            <td colspan="2">
+
             <table width="100%" border="0">
                 <thead>
                     <tr>
@@ -139,7 +135,7 @@
                         <td width="50%"><h:outputText value="Vacaciones"/></td>
                     </tr>
                     <tr>
-                        <td width="50%" style="background-color: slateblue;"/>
+                        <td width="50%" style="background-color: salmon;"/>
                         <td width="50%"><h:outputText value="Permisos"/></td>
                     </tr>
                     <tr>
@@ -148,6 +144,20 @@
                     </tr>
                 </tbody>
             </table>
+                                
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="67%" id="principalForm:filaCalendario">
+                    <div id="datepicker01" style="width: 100%"/>
+                </td>
+            </tr>
+        </table>
+    </ui:define>
+    <!-- ======================================================================================================= -->
+    <ui:define name="dialogos">
+        <p:dialog id="leyendaDialog" widgetVar="leyendaDialog" header="Leyenda de colores/acciones" closable="true" resizable="false" draggable="true" closeOnEscape="true">
         </p:dialog>
     </ui:define>
     <!-- ======================================================================================================= -->
