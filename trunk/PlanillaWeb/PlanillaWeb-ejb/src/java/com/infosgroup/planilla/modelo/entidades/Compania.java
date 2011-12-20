@@ -38,6 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class Compania implements Serializable
 {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compania")
+    private List<EstadoContrato> estadoContratoList;
 
     private static final long serialVersionUID = 1L;
 
@@ -427,6 +429,14 @@ public class Compania implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Compania[ idCompania=" + idCompania + " ]";
+    }
+
+    public List<EstadoContrato> getEstadoContratoList() {
+        return estadoContratoList;
+    }
+
+    public void setEstadoContratoList(List<EstadoContrato> estadoContratoList) {
+        this.estadoContratoList = estadoContratoList;
     }
     
 }
