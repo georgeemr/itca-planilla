@@ -54,6 +54,8 @@ public class Candidato implements Serializable
     @Column(name =     "FECHA_NACIMIENTO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaNacimiento;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato")
+    private List<Empleado> empleadoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
     private List<Contrato> contratoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
@@ -315,5 +317,13 @@ public class Candidato implements Serializable
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
+    }
+    
+    public List<Empleado> getEmpleadoList() {
+        return empleadoList;
+    }
+
+    public void setEmpleadoList(List<Empleado> empleadoList) {
+        this.empleadoList = empleadoList;
     }
 }
