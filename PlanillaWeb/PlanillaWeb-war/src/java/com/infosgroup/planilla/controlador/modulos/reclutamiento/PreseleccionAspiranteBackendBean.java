@@ -7,11 +7,15 @@ package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.CandidatoConcurso;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
+import com.infosgroup.planilla.modelo.entidades.Contrato;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcurso;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcursoPK;
+import com.infosgroup.planilla.modelo.entidades.EstadoContrato;
+import com.infosgroup.planilla.modelo.entidades.EstadoContratoPK;
 import com.infosgroup.planilla.modelo.entidades.EvaluacionCandidato;
 import com.infosgroup.planilla.modelo.entidades.TipoContrato;
+import com.infosgroup.planilla.modelo.entidades.TipoContratoPK;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
 import com.infosgroup.planilla.view.TipoMensaje;
@@ -56,6 +60,7 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     private List<CandidatoConcurso> candidatosContratar;
     private List<CriteriosXPuesto> criteriosDisponibles;
     private List<TipoContrato> listaTipoContrato; /* Campos para generar contrato */
+    private List<EstadoContrato> listaEstadoContrato;
 
     private String actaOAcuerdo;
     private Date dia;
@@ -64,6 +69,8 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     private String representantePatronal;
     private Long tipoContratoSeleccionado;
     private String comentarioFinal;
+    private Long estadoContrato;
+    private Boolean error;
 
     public PreseleccionAspiranteBackendBean() {
     }
@@ -198,6 +205,15 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
         this.listaTipoContrato = listaTipoContrato;
     }
 
+    public List<EstadoContrato> getListaEstadoContrato() {
+        listaEstadoContrato = reclutamientoSessionBean.findEstadoContratoByEmpresa(getSessionBeanADM().getCompania().getIdCompania());
+        return listaEstadoContrato;
+    }
+
+    public void setListaEstadoContrato(List<EstadoContrato> listaEstadoContrato) {
+        this.listaEstadoContrato = listaEstadoContrato;
+    }
+    
     public Long getTipoContratoSeleccionado() {
         return tipoContratoSeleccionado;
     }
@@ -214,6 +230,46 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
         this.comentarioFinal = comentarioFinal;
     }
 
+    public String getActaOAcuerdo() {
+        return actaOAcuerdo;
+    }
+
+    public void setActaOAcuerdo(String actaOAcuerdo) {
+        this.actaOAcuerdo = actaOAcuerdo;
+    }
+
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public String getRepresentantePatronal() {
+        return representantePatronal;
+    }
+
+    public void setRepresentantePatronal(String representantePatronal) {
+        this.representantePatronal = representantePatronal;
+    }
+
+    public Long getEstadoContrato() {
+        return estadoContrato;
+    }
+
+    public void setEstadoContrato(Long estadoContrato) {
+        this.estadoContrato = estadoContrato;
+    }
+
     public String buscarConcurso$action() {
         if (fechaInicial != null && fechaFinal != null) {
             if (validaFechas(fechaInicial, fechaFinal) == true) {
@@ -228,7 +284,7 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     }
 
     public String iniciar() {
-        if (comentarioFinal == null || comentarioFinal.length() <= 0 ) {
+        if (comentarioFinal == null || comentarioFinal.length() <= 0) {
             addMessage("Cerrar Concurso", "Debe ingresar un comentario final antes de cerrar el concurso.", TipoMensaje.ERROR);
             return null;
         }
@@ -274,8 +330,10 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
         if (c.getNota() == null) {
             c.setNota(BigDecimal.ZERO);
         }
-        reclutamientoSessionBean.editarEvaluacionCandidato((EvaluacionCandidato) event.getObject());
-        reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos);
+        reclutamientoSessionBean.editarEvaluacionCandidato(c);
+        if (evaluacionCandidatos != null && evaluacionCandidatos.size() > 0) {
+            reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos);
+        }
         actualizaListas();
         addMessage("Evaluacion de Candidato", "Datos Guardados", TipoMensaje.INFORMACION);
     }
@@ -299,14 +357,12 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     public void ordenarLista() {
         if (candidatosGuardados != null) {
             Collections.sort(candidatosGuardados);
-        }
-        int k = 1;
-        for (int i = 0; i <= 4; i++) {
-            candidatosGuardados.get(i).setOrden(k);
-            if (i == 5) {
-                break;
+            for (int i = 0; i <= candidatosGuardados.size() - 1; i++) {
+                candidatosGuardados.get(i).setOrden(i);
+                if (i == 5) {
+                    break;
+                }
             }
-            k++;
         }
     }
 
@@ -342,9 +398,29 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
 
     public String contratarCandidato() {
         if (tableContratacion.getRowIndex() != -1) {
-            CandidatoConcurso c = candidatosContratar.get(tableContratacion.getRowIndex());
-            c.setEstado("C");
-            reclutamientoSessionBean.editarCandidatoConcurso(c);
+            error = false;
+            CandidatoConcurso c = (CandidatoConcurso) candidatosContratar.get(tableContratacion.getRowIndex());
+            Contrato contrato = new Contrato();
+            EstadoContrato ec = reclutamientoSessionBean.findEstadoContratoById(new EstadoContratoPK(c.getCandidato1().getCandidatoPK().getCodCia(), estadoContrato));
+            TipoContrato tc = reclutamientoSessionBean.findTipoContratoById(new TipoContratoPK(c.getCandidato1().getCandidatoPK().getCodCia(), tipoContratoSeleccionado));
+
+            if (ec == null) {
+                addMessage("Contratar Candidato", "Seleccione el Estado para el Contrato", TipoMensaje.INFORMACION);
+                error = Boolean.TRUE;
+            }
+            if (tc == null) {
+                addMessage("Contratar Candidato", "Seleccione el Tipo de Contrato", TipoMensaje.INFORMACION);
+                error = Boolean.TRUE;
+            }
+            
+            if (error)return null;
+            
+            contrato.setActa(getActaOAcuerdo());
+            contrato.setEstadoContrato(ec);
+            contrato.setTipoContrato(tc);
+            contrato.setFechaAcuerdo( getDia() );
+            
+            reclutamientoSessionBean.contratarCandidato(c, contrato);
             addMessage("Seleccionar Candidato", "Datos Guardados ", TipoMensaje.INFORMACION);
             actualizaListas();
         }
@@ -378,7 +454,9 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     }
 
     public void handleCloseEvaluacionCandidato(CloseEvent event) {
-        reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos);
+        if (evaluacionCandidatos != null && evaluacionCandidatos.size() > 0) {
+            reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos);
+        }
         setCandidatoSeleccionado(null);
     }
 
