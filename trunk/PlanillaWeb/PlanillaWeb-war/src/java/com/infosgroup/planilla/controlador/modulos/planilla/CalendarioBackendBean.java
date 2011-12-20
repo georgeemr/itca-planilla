@@ -45,11 +45,6 @@ protected void limpiarCampos()
 {
 }
 
-public String volver$action()
-{
-return "accionesPersonal?faces-redirect=true";
-}
-
 private String anio;
 
 public String getAnio()
@@ -111,7 +106,11 @@ else if (estilo.equals("laborales"))
     tipo = 2;
 else if (estilo.equals("vacaciones"))
     tipo = 3;
-fechas = planillaBean.cadenaDiasCalendario(tipo, empleado, null, null, Long.parseLong(anio));
+else if (estilo.equals("permisos"))
+    tipo = 4;
+else if (estilo.equals("capacitaciones"))
+    tipo = 5;
+fechas = planillaBean.cadenaDiasCalendario(tipo, empleado, Long.parseLong(anio));
 System.out.println(fechas);
 return null;
 }

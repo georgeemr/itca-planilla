@@ -206,6 +206,6 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     }
     
     private String nombreJefe ;
-    
+
     
 }
