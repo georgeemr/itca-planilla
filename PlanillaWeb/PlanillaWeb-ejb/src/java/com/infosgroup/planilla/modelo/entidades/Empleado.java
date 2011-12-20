@@ -370,7 +370,7 @@ public class Empleado implements Serializable
 
     public String getNombreCompleto()
     {
-        nombreCompleto = getNombres() + ((getApellidos() != null) ? "" + getApellidos() : "" );
+        nombreCompleto = getNombres() + ((getApellidos() != null) ? " " + getApellidos() : "" );
         return nombreCompleto;
     }
 
