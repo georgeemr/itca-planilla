@@ -5,7 +5,6 @@
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
 import com.infosgroup.planilla.modelo.entidades.Empleado;
-import com.infosgroup.planilla.modelo.entidades.EmpleadoPK;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
@@ -38,6 +37,7 @@ private PlanillaSessionBean planillaBean;
 public void init()
 {
 anio = "" + Calendar.getInstance().get(Calendar.YEAR);
+listaEmpleados = empleadosBean.listarEmpleados();
 }
 
 @Override
@@ -57,42 +57,14 @@ public void setAnio(String anio)
 this.anio = anio;
 }
 
-private List<SelectItem> empleadosListModel;
-
-public List<SelectItem> getEmpleadosListModel()
-{
-List<Empleado> listaEmpleados = empleadosBean.listarEmpleados();
-empleadosListModel = new ArrayList<SelectItem>(0);
-for (Empleado empleado : listaEmpleados)
-    {
-    EmpleadoPK empleadoPK = empleado.getEmpleadoPK();
-    empleadosListModel.add(new SelectItem(empleadoPK.getCodCia() + ":" + empleadoPK.getCodEmp(), empleado.getNombreCompleto()));
-    }
-return empleadosListModel;
-}
-
-public void setEmpleadosListModel(List<SelectItem> empleadosListModel)
-{
-this.empleadosListModel = empleadosListModel;
-}
-
-private String empleadoSeleccionado;
-
-public String getEmpleadoSeleccionado()
-{
-return empleadoSeleccionado;
-}
-
-public void setEmpleadoSeleccionado(String empleadoSeleccionado)
-{
-this.empleadoSeleccionado = empleadoSeleccionado;
-}
-
 public String mostrarAcciones$action()
 {
-String[] pkEmpleado = empleadoSeleccionado.split(":");
-EmpleadoPK empleadoPK = new EmpleadoPK(Long.parseLong(pkEmpleado[0]), Long.parseLong(pkEmpleado[1]));
-Empleado empleado = empleadosBean.buscarEmpleadoPorPK(empleadoPK);
+if (empleadoSeleccionado == null)
+    {
+    addMessage("RRHH", "Seleccione un empleado", TipoMensaje.INFORMACION);
+    return null;
+    }
+
 Integer tipo = null;
 if (estilo == null)
     {
@@ -110,7 +82,7 @@ else if (estilo.equals("permisos"))
     tipo = 4;
 else if (estilo.equals("capacitaciones"))
     tipo = 5;
-fechas = planillaBean.cadenaDiasCalendario(tipo, empleado, Long.parseLong(anio));
+fechas = planillaBean.cadenaDiasCalendario(tipo, empleadoSeleccionado, Long.parseLong(anio));
 System.out.println(fechas);
 return null;
 }
@@ -154,5 +126,29 @@ return estilo;
 public void setEstilo(String estilo)
 {
 this.estilo = estilo;
+}
+
+private List<Empleado> listaEmpleados;
+
+public List<Empleado> getListaEmpleados()
+{
+return listaEmpleados;
+}
+
+public void setListaEmpleados(List<Empleado> listaEmpleados)
+{
+this.listaEmpleados = listaEmpleados;
+}
+
+private Empleado empleadoSeleccionado;
+
+public Empleado getEmpleadoSeleccionado()
+{
+return empleadoSeleccionado;
+}
+
+public void setEmpleadoSeleccionado(Empleado empleadoSeleccionado)
+{
+this.empleadoSeleccionado = empleadoSeleccionado;
 }
 }
