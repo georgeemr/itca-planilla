@@ -32,13 +32,13 @@
     <!-- ======================================================================================================= -->
     <ui:define name="contenido">
         <h:outputScript target="head">           
-            function highlightCalendar(date, cssClass)
+            function highlightCalendar(fechaActual, estiloCSS)
             {
-            var specialDays = [#{planilla$calendario.fechas}];
-            for (var i = 0; i &lt; specialDays.length; i++)
-                if (new Date(specialDays[i].toString()) == date.toString())
-                    return [ true, cssClass, '' ];
-            return [ true, '' ];
+            var diasMarcados = [#{planilla$calendario.fechas}];
+            for (var i = 0; i &lt; diasMarcados.length; i++)
+                if (new Date(diasMarcados[i].toString()) == fechaActual.toString())
+                    return [true, estiloCSS, ''];
+            return [true, ''];
             }
 
             jQuery(document).ready(
@@ -50,8 +50,8 @@
             jQuery("#datepicker01").datepicker("option", "dayNamesMin", ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa']);
             jQuery("#datepicker01").datepicker("option", "numberOfMonths", [3, 4]);
             jQuery("#datepicker01").datepicker("option", "stepMonths", 0);
-            jQuery("#datepicker01").datepicker({dateFormat: 'mm/dd/yyyy'}).datepicker('setDate', '01/01/#{planilla$calendario.anio}');
             jQuery("#datepicker01").datepicker("option", "beforeShowDay", function (date) { return highlightCalendar(date, '#{planilla$calendario.estilo}'); });
+            jQuery("#datepicker01").datepicker({dateFormat: 'mm/dd/yyyy'}).datepicker('setDate', '01/01/#{planilla$calendario.anio}');            
             });
         </h:outputScript>
         <table width="100%">

@@ -22,18 +22,18 @@
                             <h:graphicImage url="/resources/imagenes/infosgroup.png" width="150" height="40"/>
                         </td>
                         <td width="300" align="left">
-                            <h:outputText value="Powered by Glassfish"/><h:graphicImage url="/resources/imagenes/glassfish.png"/>
+                            <h:outputText value="Powered by Glassfish"/>
+                            <h:graphicImage url="/resources/imagenes/glassfish.png"/>
                         </td>
                         <td>
                             <h:outputText value="Bienvenido"/>
                             <p:spacer width="5"/>
                             <h:outputText value="#{SessionBeanEMP.empleadoSesion.nombres} #{SessionBeanEMP.empleadoSesion.apellidos}" style="font-weight: bold;"/>
-                            <p:spacer width="20"/>
-                            <p:commandLink value="Cerrar sesi&oacute;n" onclick="cerrarSessionDialog.show();"/>
                         </td>
                         <td>
-                            <!--p:commandButton value="Opciones" image="opciones" onclick="dialogOpciones.show();"/-->
-                            <p:commandButton value="Opciones" image="ui-icon ui-icon-wrench" onclick="dialogOpciones.show();"/>
+                            <p:commandButton value="Opciones" image="ui-icon ui-icon-wrench" oncomplete="dialogOpciones.show();"/>
+                            <p:spacer width="5"/>
+                            <p:commandButton value="Cerrar sesi&oacute;n" image="ui-icon ui-icon-locked" oncomplete="cerrarSessionDialog.show();"/>
                             <p:dialog id="dialogOpciones" widgetVar="dialogOpciones" header="Opciones" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="zoom" showEffect="zoom" modal="true" height="400" width="500">
                                 <h:panelGrid columns="2">
                                     <h:outputText value="Tema"/>
