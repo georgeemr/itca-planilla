@@ -58,8 +58,17 @@
             <tr valign="top">
                 <td width="33%">
                     <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                        <tr valign="top">
+                        <tr>
+                            <td>
+                                <h:outputText value="A&ntilde;o"/>
+                            </td>
+                            <td>
+                                <p:spinner value="#{planilla$calendario.anio}" min="1999" max="2999" style="width: 150px;"/>
+                            </td>
+                        </tr>
+                        <tr>
                             <td colspan="2">
+                                <p:spacer height="5"/>
                                 <p:dataTable style="width: 200px;" value="#{planilla$calendario.listaEmpleados}" var="empleado" selectionMode="single" selection="#{planilla$calendario.empleadoSeleccionado}" rows="5" paginator="true" paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}">
                                     <p:column headerText="Empleado" filterBy="#{empleado.nombreCompleto}" sortBy="#{empleado.nombreCompleto}">
                                         <h:outputText value="#{empleado.nombreCompleto}"/>
@@ -68,38 +77,27 @@
                                 <p:spacer height="10"/>
                             </td>
                         </tr>
-                        <tr valign="top">
-                            <td>
-                                <h:outputText value="A&ntilde;o"/>
+                        <!--tr>
+                            <td colspan="2">
+                                <p:separator/>
                             </td>
-                            <td>
-                                <h:selectOneMenu value="#{planilla$calendario.anio}">
-                                    <f:selectItems value="#{planilla$calendario.listaAniosModel}"/>
-                                </h:selectOneMenu>
-                            </td>
-                        </tr>
-                        <tr valign="top">
+                        </tr-->
+                        <tr>
                             <td>
                                 <h:outputText value="Accion"/>
                             </td>
                             <td>
-                                <h:selectOneRadio layout="pageDirection" value="#{planilla$calendario.estilo}">
+                                <h:selectOneMenu value="#{planilla$calendario.estilo}" style="width: 150px;">
                                     <f:selectItem itemValue="festivos" itemLabel="Festivos"/>
                                     <f:selectItem itemValue="laborales" itemLabel="Laborales"/>
                                     <f:selectItem itemValue="vacaciones" itemLabel="Vacaciones"/>
                                     <f:selectItem itemValue="permisos" itemLabel="Permisos"/>
                                     <f:selectItem itemValue="capacitaciones" itemLabel="Capacitaciones"/>
-                                </h:selectOneRadio>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <p:separator/>
+                                </h:selectOneMenu>
                             </td>
                         </tr>
                         <tr valign="top">
                             <td colspan="2">
-
                                 <table width="100%" border="0">
                                     <thead>
                                         <tr>
