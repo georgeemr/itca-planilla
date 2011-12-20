@@ -7,20 +7,29 @@ package com.infosgroup.planilla.modelo.procesos;
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.CandidatoConcurso;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
+import com.infosgroup.planilla.modelo.entidades.Contrato;
+import com.infosgroup.planilla.modelo.entidades.ContratoPK;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
+import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcurso;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcursoPK;
+import com.infosgroup.planilla.modelo.entidades.EstadoContrato;
+import com.infosgroup.planilla.modelo.entidades.EstadoContratoPK;
 import com.infosgroup.planilla.modelo.entidades.EvaluacionCandidato;
 import com.infosgroup.planilla.modelo.entidades.Puesto;
 import com.infosgroup.planilla.modelo.entidades.PuestoPK;
 import com.infosgroup.planilla.modelo.entidades.TipoContrato;
+import com.infosgroup.planilla.modelo.entidades.TipoContratoPK;
 import com.infosgroup.planilla.modelo.entidades.TipoPuesto;
 import com.infosgroup.planilla.modelo.entidades.TipoPuestoPK;
 import com.infosgroup.planilla.modelo.facades.CandidatoConcursoFacade;
 import com.infosgroup.planilla.modelo.facades.CandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.ConcursoFacade;
+import com.infosgroup.planilla.modelo.facades.ContratoFacade;
 import com.infosgroup.planilla.modelo.facades.CriterioSeleccionadoFacade;
+import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
 import com.infosgroup.planilla.modelo.facades.EstadoConcursoFacade;
+import com.infosgroup.planilla.modelo.facades.EstadoContratoFacade;
 import com.infosgroup.planilla.modelo.facades.EvaluacionCandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.TipoContratoFacade;
@@ -58,6 +67,12 @@ public class ReclutamientoSessionBean {
     private ConcursoFacade concursoFacade;
     @EJB
     private TipoContratoFacade tipoContratoFacade;
+    @EJB
+    private EmpleadoFacade empleadoFacade;
+    @EJB
+    private ContratoFacade contratoFacade;
+    @EJB
+    private EstadoContratoFacade estadoContratoFacade;
 
     public List<Concurso> getListaConcursos(Date fechaInicial, Date fechaFinal) {
         return concursoFacade.getConcursosByDate(fechaInicial, fechaFinal);
@@ -182,6 +197,52 @@ public class ReclutamientoSessionBean {
     @PermitAll
     public List<TipoContrato> getTipoContratoByEmpresa(Long empresa) {
         return tipoContratoFacade.getTipoContratoByEmpresa(empresa);
+    }
+
+    public void guardarEmpleado(Empleado e) {
+        empleadoFacade.create(e);
+    }
+
+    public void guardarContrato(Contrato c) {
+        contratoFacade.create(c);
+    }
+
+    public Empleado toEmpleado(Candidato c) {
+        return empleadoFacade.toEmpleado(c);
+    }
+
+    public String generaUsuario(Candidato c) {
+        return empleadoFacade.generaUsuario(c);
+    }
+
+    public EstadoContrato findEstadoContratoById(EstadoContratoPK pk) {
+        return estadoContratoFacade.find(pk);
+    }
+
+    @PermitAll
+    public List<EstadoContrato> findEstadoContratoByEmpresa(Long empresa) {
+        return estadoContratoFacade.findEstadoContratoByEmpresa(empresa);
+    }
+
+    public void contratarCandidato(CandidatoConcurso c, Contrato contrato) {
+
+        Empleado e = toEmpleado(c.getCandidato1());
+
+        e.setUsuario(generaUsuario(c.getCandidato1()));
+        guardarEmpleado(e);
+
+        contrato.setCandidato1(c.getCandidato1());
+        contrato.setEmpleado(e);
+        contrato.setContratoPK(new ContratoPK(c.getCandidatoConcursoPK().getCodCia(), contratoFacade.getMax(c.getCandidato1()), c.getCandidato1().getCandidatoPK().getCodCandidato()));
+
+        guardarContrato(contrato);
+
+        c.setEstado("C");
+        editarCandidatoConcurso(c);
+    }
+
+    public TipoContrato findTipoContratoById(TipoContratoPK pk) {
+        return tipoContratoFacade.find(pk);
     }
 
     public List<CriteriosXPuesto> criteriosDisponibles() {
