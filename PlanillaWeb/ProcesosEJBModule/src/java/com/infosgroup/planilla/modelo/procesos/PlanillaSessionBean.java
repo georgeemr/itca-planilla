@@ -6,7 +6,6 @@ package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Compania;
-import com.infosgroup.planilla.modelo.entidades.Departamento;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.entidades.FestivosProvincia;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
@@ -14,6 +13,7 @@ import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
 import com.infosgroup.planilla.modelo.entidades.Sucursal;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
+import com.infosgroup.planilla.modelo.entidades.TipoAccionPK;
 import com.infosgroup.planilla.modelo.entidades.TipoPlanilla;
 import com.infosgroup.planilla.modelo.entidades.TipoPlanillaPK;
 import com.infosgroup.planilla.modelo.estructuras.DetallePlanilla;
@@ -44,228 +44,392 @@ import javax.ejb.LocalBean;
  */
 @Stateless(name = "PlanillaSessionBean")
 @LocalBean
-public class PlanillaSessionBean {
+public class PlanillaSessionBean
+{
+@EJB
+private DetPlanillaFacade detPlanillaFacade;
 
-    @EJB
-    private DetPlanillaFacade detPlanillaFacade;
-    @EJB
-    private PlanillaFacade planillaFacade;
-    @EJB
-    private TipoPlanillaFacade tipoPlaFacade;
-    @EJB
-    private ResumenAsistenciaFacade resumenFacade;
-    @EJB
-    private CompaniaFacade companiaFacade;
-    @EJB
-    private TipoPlanillaFacade tipoPlanillaFacade;
-    @EJB
-    private SucursalFacade sucursalFacade;
-    @EJB
-    private AccionPersonalFacade accionPersonalFacade;
-    @EJB
-    private PuestoEmpleadoFacade puestoEmpleadoFacade;
-    @EJB
-    private EmpleadoFacade empleadoFacade;
-    @EJB
-    private MailStatelessBean mailBean;
-    @EJB
-    private TipoAccionFacade tipoAccionFacade;
-    private Boolean rrhh = false;
+@EJB
+private PlanillaFacade planillaFacade;
 
-    public Boolean getRrhh() {
-        return rrhh;
-    }
+@EJB
+private TipoPlanillaFacade tipoPlaFacade;
 
-    public void setRrhh(Boolean rrhh) {
-        this.rrhh = rrhh;
-    }
-    @EJB
-    private FestivosProvinciaFacade festivosProvinciafacade;
+@EJB
+private ResumenAsistenciaFacade resumenFacade;
 
-    public List<DetallePlanilla> getDetallesPla(Long pla, Long anio, Long mes) {
-        return (pla != 0) ? detPlanillaFacade.findPlaDetalles(pla, anio, mes) : new ArrayList<DetallePlanilla>(0);
-    }
+@EJB
+private CompaniaFacade companiaFacade;
 
-    public List<ResumenAsistencia> getResumen(ResumenAsistencia c) {
-        return (c != null) ? resumenFacade.findAll() : new ArrayList<ResumenAsistencia>();
-    }
+@EJB
+private TipoPlanillaFacade tipoPlanillaFacade;
 
-    public TipoPlanilla findByTipoID(TipoPlanillaPK tipoId) {
-        return tipoPlaFacade.find(tipoId);
-    }
+@EJB
+private SucursalFacade sucursalFacade;
 
-    public List<Planilla> getPlaByTipo(TipoPlanilla tipo) {
-        return planillaFacade.findByTipoPLanilla(tipo);
-    }
+@EJB
+private AccionPersonalFacade accionPersonalFacade;
 
-    public List<ResumenAsistencia> getAsistencia() {
-        return resumenFacade.findAll();
-    }
+@EJB
+private PuestoEmpleadoFacade puestoEmpleadoFacade;
 
-    public List<Compania> listarCias() {
-        return companiaFacade.findAll();
-    }
+@EJB
+private EmpleadoFacade empleadoFacade;
 
-    public List<TipoPlanilla> listarTipos() {
-        return tipoPlanillaFacade.findAll();
-    }
+@EJB
+private MailStatelessBean mailBean;
 
-    public List<Planilla> listarPlanilla() {
-        return planillaFacade.findAll();
-    }
+@EJB
+private TipoAccionFacade tipoAccionFacade;
 
-    public List<Sucursal> listarSucursal() {
-        return sucursalFacade.findAll();
-    }
+private Boolean rrhh = false;
 
-    public List<ResumenAsistencia> listarResumenByParam(Integer empresa, Integer sucursal, Integer planilla) {
-        return resumenFacade.findAsistencias(empresa, sucursal, planilla);
-    }
+public Boolean getRrhh()
+{
+    return rrhh;
+}
 
-    public List<Empleado> listarJefes() {
-        return empleadoFacade.findByJefes();
-    }
+public void setRrhh(Boolean rrhh)
+{
+    this.rrhh = rrhh;
+}
 
-    public List<Empleado> listaEmpleados() {
-        return empleadoFacade.findAll();
-    }
+@EJB
+private FestivosProvinciaFacade festivosProvinciafacade;
 
-    public List<AccionPersonal> listaPorAprobar(Long emp) {
-        List<AccionPersonal> listaSolicitud = new ArrayList<AccionPersonal>(0);
-        long cia = 1;
-        PuestoEmpleado pueEmp = puestoEmpleadoFacade.findByEmpleado(emp, cia);
-        if (pueEmp.getPuesto().getPuestoPK().getCodPuesto() == 9) {
-            listaSolicitud = accionPersonalFacade.findAprobacionRRHH();
-            setRrhh(false);
-        } else {
-            listaSolicitud = accionPersonalFacade.findAprobacionJefe(emp, cia);
-            setRrhh(true);
+public List<DetallePlanilla> getDetallesPla(Long pla, Long anio, Long mes)
+{
+    return (pla != 0) ? detPlanillaFacade.findPlaDetalles(pla, anio, mes) : new ArrayList<DetallePlanilla>(0);
+}
+
+public List<ResumenAsistencia> getResumen(ResumenAsistencia c)
+{
+    return (c != null) ? resumenFacade.findAll() : new ArrayList<ResumenAsistencia>();
+}
+
+public TipoPlanilla findByTipoID(TipoPlanillaPK tipoId)
+{
+    return tipoPlaFacade.find(tipoId);
+}
+
+public List<Planilla> getPlaByTipo(TipoPlanilla tipo)
+{
+    return planillaFacade.findByTipoPLanilla(tipo);
+}
+
+public List<ResumenAsistencia> getAsistencia()
+{
+    return resumenFacade.findAll();
+}
+
+public List<Compania> listarCias()
+{
+    return companiaFacade.findAll();
+}
+
+public List<TipoPlanilla> listarTipos()
+{
+    return tipoPlanillaFacade.findAll();
+}
+
+public List<Planilla> listarPlanilla()
+{
+    return planillaFacade.findAll();
+}
+
+public List<Sucursal> listarSucursal()
+{
+    return sucursalFacade.findAll();
+}
+
+public List<ResumenAsistencia> listarResumenByParam(Integer empresa, Integer sucursal, Integer planilla)
+{
+    return resumenFacade.findAsistencias(empresa, sucursal, planilla);
+}
+
+public List<Empleado> listarJefes()
+{
+    return empleadoFacade.findByJefes();
+}
+
+public List<Empleado> listaEmpleados()
+{
+    return empleadoFacade.findAll();
+}
+
+public List<AccionPersonal> listaPorAprobar(Long emp)
+{
+    List<AccionPersonal> listaSolicitud = new ArrayList<AccionPersonal>(0);
+    long cia = 1;
+    PuestoEmpleado pueEmp = puestoEmpleadoFacade.findByEmpleado(emp, cia);
+    if (pueEmp.getPuesto().getPuestoPK().getCodPuesto() == 9)
+        {
+        listaSolicitud = accionPersonalFacade.findAprobacionRRHH();
+        setRrhh(false);
         }
-        return listaSolicitud;
-    }
-
-    public String aprobarSolicitud$action(AccionPersonal accion) {
-        if (accion.getStatus().matches("G")) {
-            accion.setStatus("J");
-            accionPersonalFacade.edit(accion);
-        } else {
-            accion.setStatus("B");
-            accionPersonalFacade.edit(accion);
-            mailBean.enviarCorreoElectronico("Sobre Solicitud de Personal", "Se ha aprobado una solicitud a nombre de: "
-                    + accion.getPuestoEmpleado().getEmpleado().getNombreCompleto(),
-                    accion.getPuestoEmpleado().getEmpleado().getCorreo() + ":" + accion.getEmpleado().getCorreo());
+    else
+        {
+        listaSolicitud = accionPersonalFacade.findAprobacionJefe(emp, cia);
+        setRrhh(true);
         }
-        return null;
-    }
+    return listaSolicitud;
+}
 
-    public String rechazarSolicitud$action(AccionPersonal accion) {
-        accion.setStatus("R");
+public String aprobarSolicitud$action(AccionPersonal accion)
+{
+    if (accion.getStatus().matches("G"))
+        {
+        accion.setStatus("J");
         accionPersonalFacade.edit(accion);
-        return null;
-    }
+        }
+    else
+        {
+        accion.setStatus("B");
+        accionPersonalFacade.edit(accion);
+        mailBean.enviarCorreoElectronico("Sobre Solicitud de Personal", "Se ha aprobado una solicitud a nombre de: "
+                + accion.getPuestoEmpleado().getEmpleado().getNombreCompleto(),
+                                         accion.getPuestoEmpleado().getEmpleado().getCorreo() + ":" + accion.getEmpleado().getCorreo());
+        }
+    return null;
+}
 
-    @PermitAll
-    public String cadenaDiasCalendario(Integer tipo, Empleado empleado, TipoAccion tipoAccion, Departamento departamento, Long anio) {
-        GregorianCalendar calendario = null;
-        List<FestivosProvincia> listaFestivos = null;
+public String rechazarSolicitud$action(AccionPersonal accion)
+{
+    accion.setStatus("R");
+    accionPersonalFacade.edit(accion);
+    return null;
+}
 
-        listaFestivos = festivosProvinciafacade.listarPorAnio(anio);
-        List<String> listaDiasFestivos = new ArrayList<String>(0);
-        for (Integer i = 0; i < listaFestivos.size(); i++) {
-            listaDiasFestivos.add("" + listaFestivos.get(i).getFestivosProvinciaPK().getMes() + "/" + listaFestivos.get(i).getFestivosProvinciaPK().getDia() + "/" + listaFestivos.get(i).getFestivosProvinciaPK().getAnio());
+@PermitAll
+public String cadenaDiasCalendario(Integer tipo, Empleado empleado, Long anio)
+{
+    GregorianCalendar calendario = null;
+    List<FestivosProvincia> listaFestivos = null;
+    List<AccionPersonal> listaAccionesPersonal = null;
+    List<Date> listaFechas = null;
+
+    TipoAccionPK tipoAccionPK = null;
+    TipoAccion tipoAccion = null;
+
+    listaFestivos = festivosProvinciafacade.listarPorAnio(anio);
+    List<String> listaDiasFestivos = new ArrayList<String>(0);
+    for (Integer i = 0; i < listaFestivos.size(); i++)
+        {
+        listaDiasFestivos.add("" + listaFestivos.get(i).getFestivosProvinciaPK().getMes() + "/" + listaFestivos.get(i).getFestivosProvinciaPK().getDia() + "/" + listaFestivos.get(i).getFestivosProvinciaPK().getAnio());
         }
 
-        String fechas = "";
-        switch (tipo) {
-            case 1: // Dias festivos
-                List<String> listaFinesSemana = new ArrayList<String>(0);
-                calendario = (GregorianCalendar) Calendar.getInstance();
-                calendario.set(Calendar.YEAR, anio.intValue());
-                calendario.set(Calendar.DAY_OF_YEAR, 1);
-                while (calendario.get(Calendar.YEAR) == anio.intValue()) {
-                    if (calendario.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendario.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                        listaFinesSemana.add("" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR));
+    String fechas = "";
+    switch (tipo)
+        {
+        case 1: // Dias festivos
+            List<String> listaFinesSemana = new ArrayList<String>(0);
+            calendario = (GregorianCalendar) Calendar.getInstance();
+            calendario.set(Calendar.YEAR, anio.intValue());
+            calendario.set(Calendar.DAY_OF_YEAR, 1);
+            while (calendario.get(Calendar.YEAR) == anio.intValue())
+                {
+                if (calendario.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendario.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+                    {
+                    listaFinesSemana.add("" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR));
                     }
-                    calendario.add(Calendar.DAY_OF_YEAR, 1);
+                calendario.add(Calendar.DAY_OF_YEAR, 1);
                 }
 
-                for (Integer i = 0; i < listaFinesSemana.size(); i++) {
-                    fechas += "'" + listaFinesSemana.get(i) + "'";
-                    if (i < listaFinesSemana.size() - 1) {
-                        fechas += ", ";
-                    }
-                }
-
-//            listaFestivos = festivosProvinciafacade.listarPorAnio(anio);
-                if (!listaDiasFestivos.isEmpty()) {
+            for (Integer i = 0; i < listaFinesSemana.size(); i++)
+                {
+                fechas += "'" + listaFinesSemana.get(i) + "'";
+                if (i < listaFinesSemana.size() - 1)
+                    {
                     fechas += ", ";
-                }
-                for (Integer i = 0; i < listaDiasFestivos.size(); i++) {
-                    //fechas += "'" + listaFestivos.get(i).getFestivosProvinciaPK().getMes() + "/" + listaFestivos.get(i).getFestivosProvinciaPK().getDia() + "/" + listaFestivos.get(i).getFestivosProvinciaPK().getAnio() + "'";
-                    fechas += "'" + listaDiasFestivos.get(i) + "'";
-                    if (i < listaFestivos.size() - 1) {
-                        fechas += ", ";
                     }
                 }
-                break;
-            case 2: // Dias laborales            
-                List<String> listaDiasSemana = new ArrayList<String>(0);
+
+            if (!listaDiasFestivos.isEmpty())
+                {
+                fechas += ", ";
+                }
+            for (Integer i = 0; i < listaDiasFestivos.size(); i++)
+                {
+                fechas += "'" + listaDiasFestivos.get(i) + "'";
+                if (i < listaFestivos.size() - 1)
+                    {
+                    fechas += ", ";
+                    }
+                }
+            break;
+        case 2: // Dias laborales            
+            List<String> listaDiasSemana = new ArrayList<String>(0);
+            calendario = (GregorianCalendar) Calendar.getInstance();
+            calendario.set(Calendar.YEAR, anio.intValue());
+            calendario.set(Calendar.DAY_OF_YEAR, 1);
+            while (calendario.get(Calendar.YEAR) == anio.intValue())
+                {
+                if (!((calendario.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) || (calendario.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)))
+                    {
+                    listaDiasSemana.add("" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR));
+                    }
+                calendario.add(Calendar.DAY_OF_YEAR, 1);
+                }
+
+            listaDiasSemana.removeAll(listaDiasFestivos);
+
+            for (Integer i = 0; i < listaDiasSemana.size(); i++)
+                {
+                fechas += "'" + listaDiasSemana.get(i) + "'";
+                if (i < listaDiasSemana.size() - 1)
+                    {
+                    fechas += ", ";
+                    }
+                }
+            break;
+        case 3: // Vacaciones
+            listaFechas = new ArrayList<Date>(0);
+            listaAccionesPersonal = accionPersonalFacade.findByVacacionesEmpleadoAnio(empleado, anio);
+            for (Integer i = 0; i < listaAccionesPersonal.size(); i++)
+                {
+                AccionPersonal accionPersonal = listaAccionesPersonal.get(i);
+                Date fechaInicial = accionPersonal.getFechaInicial();
+                Date fechaFinal = accionPersonal.getFechaFinal();
+
+                if ((fechaInicial == null) || ((fechaInicial == null) && (fechaFinal == null))) // en el caso de que por alguna razon la fecha inicial sea nula :(
+                    continue;
+
                 calendario = (GregorianCalendar) Calendar.getInstance();
-                calendario.set(Calendar.YEAR, anio.intValue());
-                calendario.set(Calendar.DAY_OF_YEAR, 1);
-                while (calendario.get(Calendar.YEAR) == anio.intValue()) {
-                    if (!((calendario.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) || (calendario.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY))) {
-                        listaDiasSemana.add("" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR));
-                    }
+                calendario.setTime(fechaInicial);
+                do
+                    {
+                    listaFechas.add(calendario.getTime());
                     calendario.add(Calendar.DAY_OF_YEAR, 1);
+                    } while ((fechaFinal != null) && (calendario.getTime().before(fechaFinal) || calendario.getTime().equals(fechaFinal)));
                 }
 
-                listaDiasSemana.removeAll(listaDiasFestivos);
-
-                for (Integer i = 0; i < listaDiasSemana.size(); i++) {
-                    fechas += "'" + listaDiasSemana.get(i) + "'";
-                    if (i < listaDiasSemana.size() - 1) {
-                        fechas += ", ";
+            for (Integer i = 0; i < listaFechas.size(); i++)
+                {
+                calendario.setTime(listaFechas.get(i));
+                fechas += "'" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR) + "'";
+                if (i < listaFechas.size() - 1)
+                    {
+                    fechas += ", ";
                     }
                 }
-                break;
-        }
-        return fechas;
-    }
+            break;
+        case 4: // Permisos
+            listaFechas = new ArrayList<Date>(0);
+            tipoAccionPK = new TipoAccionPK();
+            tipoAccionPK.setCodCia(1L);
+            tipoAccionPK.setCodTipoaccion(5L); // Pemiso sin goce de sueldo
+            tipoAccion = tipoAccionFacade.find(tipoAccionPK);
 
-    
-    
-     public List<AccionPersonal> listarAccionporTipo(Long cia, Long tipo){
-        return (tipo != 0) ? accionPersonalFacade.findByTipo(cia, tipo): accionPersonalFacade.findByNoAfecta(cia);
-    }
-    
-    public List<TipoAccion> listarTiposAcciones(){
-        return tipoAccionFacade.findAll();
-    }
-    
-    public List<TipoAccion> listarTipoAccionAfecta(){
-        return tipoAccionFacade.findByAfecta("S");
-    }
-    
-    public List<TipoAccion> listarTipoAccionNoAfecta(){
-        return tipoAccionFacade.findByAfecta("N");
-    }
+            listaAccionesPersonal = accionPersonalFacade.findByTipoAccionEmpleadoAnio(empleado, tipoAccion, anio);
+            for (Integer i = 0; i < listaAccionesPersonal.size(); i++)
+                {
+                AccionPersonal accionPersonal = listaAccionesPersonal.get(i);
+                Date fechaInicial = accionPersonal.getFechaInicial();
+                Date fechaFinal = accionPersonal.getFechaFinal();
+                
+                if ((fechaInicial == null) || ((fechaInicial == null) && (fechaFinal == null))) // en el caso de que por alguna razon la fecha inicial sea nula :(
+                    continue;
 
-    public String editar$action(ResumenAsistencia resumen) {
-        try {
-            resumenFacade.edit(resumen);
-            //resumenFacade.refresh(resumen);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+                calendario = (GregorianCalendar) Calendar.getInstance();
+                calendario.setTime(fechaInicial);
+                do
+                    {
+                    listaFechas.add(calendario.getTime());
+                    calendario.add(Calendar.DAY_OF_YEAR, 1);
+                    } while ((fechaFinal != null) && (calendario.getTime().before(fechaFinal) || calendario.getTime().equals(fechaFinal)));
+                }
+
+            for (Integer i = 0; i < listaFechas.size(); i++)
+                {
+                calendario.setTime(listaFechas.get(i));
+                fechas += "'" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR) + "'";
+                if (i < listaFechas.size() - 1)
+                    {
+                    fechas += ", ";
+                    }
+                }
+            break;
+        case 5: // Capacitaciones
+            listaFechas = new ArrayList<Date>(0);
+            tipoAccionPK = new TipoAccionPK();
+            tipoAccionPK.setCodCia(1L);
+            tipoAccionPK.setCodTipoaccion(11L); // Capacitaciones
+            tipoAccion = tipoAccionFacade.find(tipoAccionPK);
+
+            listaAccionesPersonal = accionPersonalFacade.findByTipoAccionEmpleadoAnio(empleado, tipoAccion, anio);
+            for (Integer i = 0; i < listaAccionesPersonal.size(); i++)
+                {
+                AccionPersonal accionPersonal = listaAccionesPersonal.get(i);
+                Date fechaInicial = accionPersonal.getFechaInicial();
+                Date fechaFinal = accionPersonal.getFechaFinal();
+
+                calendario = (GregorianCalendar) Calendar.getInstance();
+                calendario.setTime(fechaInicial);
+                do
+                    {
+                    listaFechas.add(calendario.getTime());
+                    calendario.add(Calendar.DAY_OF_YEAR, 1);
+                    } while ((fechaFinal != null) && (calendario.getTime().before(fechaFinal) || calendario.getTime().equals(fechaFinal)));
+                }
+
+            for (Integer i = 0; i < listaFechas.size(); i++)
+                {
+                calendario.setTime(listaFechas.get(i));
+                fechas += "'" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR) + "'";
+                if (i < listaFechas.size() - 1)
+                    {
+                    fechas += ", ";
+                    }
+                }
+            break;
         }
-        return null;
-    }
-    public String guardarSolAcc$action(AccionPersonal accion){
-        try{
-            accionPersonalFacade.create(accion);
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
+    return fechas;
+}
+
+public List<AccionPersonal> listarAccionporTipo(Long cia, Long tipo)
+{
+    return (tipo != 0) ? accionPersonalFacade.findByTipo(cia, tipo) : accionPersonalFacade.findByNoAfecta(cia);
+}
+
+public List<TipoAccion> listarTiposAcciones()
+{
+    return tipoAccionFacade.findAll();
+}
+
+public List<TipoAccion> listarTipoAccionAfecta()
+{
+    return tipoAccionFacade.findByAfecta("S");
+}
+
+@PermitAll
+public List<TipoAccion> listarTipoAccionNoAfecta()
+{
+    return tipoAccionFacade.findByAfecta("N");
+}
+
+public String editar$action(ResumenAsistencia resumen)
+{
+    try
+        {
+        resumenFacade.edit(resumen);
         }
-        return null;
-    }
+    catch (Exception e)
+        {
+        System.out.println(e.getMessage());
+        }
+    return null;
+}
+
+public String guardarSolAcc$action(AccionPersonal accion)
+{
+    try
+        {
+        accionPersonalFacade.create(accion);
+        }
+    catch (Exception e)
+        {
+        System.out.println(e.getMessage());
+        }
+    return null;
+}
 }
