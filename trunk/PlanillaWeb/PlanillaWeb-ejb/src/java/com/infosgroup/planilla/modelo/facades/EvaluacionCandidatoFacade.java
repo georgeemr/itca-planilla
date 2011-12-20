@@ -60,14 +60,11 @@ public class EvaluacionCandidatoFacade extends AbstractFacade<EvaluacionCandidat
                     c.getConcurso1().getConcursoPK().getCodConcurso());
             avc.setEvaluacionCandidatoPK(pk);
             avc.setCandidatoConcurso(c);
-            avc.setPruebaXPuesto( pxp );
+            avc.setPruebaXPuesto(pxp);
             avc.setNota(BigDecimal.ZERO);
             avc.setFecha(new Date());
             try {
-                if (find(pk) == null) {
-                    create(avc);
-                }
-
+                if (find(pk) == null) {create(avc);};
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -79,17 +76,10 @@ public class EvaluacionCandidatoFacade extends AbstractFacade<EvaluacionCandidat
         Double total = 0D;
         CandidatoConcurso n;
         for (int i = 0; i < lc.size(); i++) {
-            if (i == 0) {
-                n = lc.get(i).getCandidatoConcurso();
-                n.setNotaEvaluacion(BigDecimal.ZERO);
-                candidatoConcursoFacade.edit(n);
-            }
-            total += lc.get(i).getNota() != null ? lc.get(i).getNota().doubleValue() : 0D;
-            if (i == (lc.size() - 1)) {
-                n = lc.get(i).getCandidatoConcurso();
-                n.setNotaEvaluacion( new BigDecimal( total));
-                candidatoConcursoFacade.edit(n);
-            }
+            total +=  lc.get(i).getNota() != null ? lc.get(i).getNota().doubleValue() : 0D;
         }
+        n = lc.get(0).getCandidatoConcurso();
+        n.setNotaEvaluacion( new BigDecimal(  total / lc.size() ));
+        candidatoConcursoFacade.edit(n);
     }
 }
