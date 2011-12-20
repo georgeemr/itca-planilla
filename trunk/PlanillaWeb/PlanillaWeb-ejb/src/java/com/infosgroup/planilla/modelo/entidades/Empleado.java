@@ -14,6 +14,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -60,6 +61,20 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class Empleado implements Serializable
 {
+    @Column(name =     "FECHA_NAC")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNac;
+    @Column(name =     "FEC_INGRESO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecIngreso;
+    @Column(name =     "FEC_SALIDA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecSalida;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false)})
+    @ManyToOne(optional = false)
+    private Candidato candidato;
 
     private static final long serialVersionUID = 1L;
 
@@ -83,18 +98,6 @@ public class Empleado implements Serializable
     @Size(max = 200)
     @Column(name = "AP_CASADA", length = 200)
     private String apCasada;
-
-    @Column(name = "FECHA_NAC")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaNac;
-
-    @Column(name = "FEC_INGRESO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecIngreso;
-
-    @Column(name = "FEC_SALIDA")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecSalida;
 
     @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
@@ -374,5 +377,13 @@ public class Empleado implements Serializable
     public void setNombreCompleto(String nombreCompleto)
     {
         this.nombreCompleto = nombreCompleto;
-    }   
+    }
+    public Candidato getCandidato() {
+        return candidato;
+    }
+
+    public void setCandidato(Candidato candidato) {
+        this.candidato = candidato;
+    }
+    
 }
