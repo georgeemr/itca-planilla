@@ -42,22 +42,33 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Contrato.findByActa", query = "SELECT c FROM Contrato c WHERE c.acta = :acta"),
     @NamedQuery(name = "Contrato.findBySalario", query = "SELECT c FROM Contrato c WHERE c.salario = :salario"),
     @NamedQuery(name = "Contrato.findByFechaInicio", query = "SELECT c FROM Contrato c WHERE c.fechaInicio = :fechaInicio"),
-    @NamedQuery(name = "Contrato.findByEstado", query = "SELECT c FROM Contrato c WHERE c.estado = :estado"),
     @NamedQuery(name = "Contrato.findByFechaFinal", query = "SELECT c FROM Contrato c WHERE c.fechaFinal = :fechaFinal")
     })
 public class Contrato implements Serializable
 {
-
-    private static final long serialVersionUID = 1L;
-
-    @EmbeddedId
-    protected ContratoPK contratoPK;
-
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_ACUERDO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAcuerdo;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FECHA_INICIO", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInicio;
+    @Column(name = "FECHA_FINAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFinal;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ESTADO", referencedColumnName = "CODIGO", nullable = false)})
+    @ManyToOne(optional = false)
+    private EstadoContrato estadoContrato;
+
+    private static final long serialVersionUID = 1L;
+
+    @EmbeddedId
+    protected ContratoPK contratoPK;
 
     @Size(max = 500)
     @Column(name = "OBSERVACION", length = 500)
@@ -72,21 +83,6 @@ public class Contrato implements Serializable
     @NotNull
     @Column(name = "SALARIO", nullable = false, precision = 16, scale = 2)
     private BigDecimal salario;
-
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHA_INICIO", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaInicio;
-
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ESTADO", nullable = false)
-    private long estado;
-
-    @Column(name = "FECHA_FINAL")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaFinal;
 
     @JoinColumns(
         {
@@ -145,13 +141,12 @@ public class Contrato implements Serializable
         this.contratoPK = contratoPK;
     }
 
-    public Contrato(ContratoPK contratoPK, Date fechaAcuerdo, BigDecimal salario, Date fechaInicio, long estado)
+    public Contrato(ContratoPK contratoPK, Date fechaAcuerdo, BigDecimal salario, Date fechaInicio)
     {
         this.contratoPK = contratoPK;
         this.fechaAcuerdo = fechaAcuerdo;
         this.salario = salario;
         this.fechaInicio = fechaInicio;
-        this.estado = estado;
     }
 
     public Contrato(long codCia, long codigo, long candidato)
@@ -217,16 +212,6 @@ public class Contrato implements Serializable
     public void setFechaInicio(Date fechaInicio)
     {
         this.fechaInicio = fechaInicio;
-    }
-
-    public long getEstado()
-    {
-        return estado;
-    }
-
-    public void setEstado(long estado)
-    {
-        this.estado = estado;
     }
 
     public Date getFechaFinal()
@@ -324,6 +309,14 @@ public class Contrato implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Contrato[ contratoPK=" + contratoPK + " ]";
+    }
+
+    public EstadoContrato getEstadoContrato() {
+        return estadoContrato;
+    }
+
+    public void setEstadoContrato(EstadoContrato estadoContrato) {
+        this.estadoContrato = estadoContrato;
     }
     
 }
