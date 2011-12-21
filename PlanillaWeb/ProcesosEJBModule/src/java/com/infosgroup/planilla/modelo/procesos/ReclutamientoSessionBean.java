@@ -6,6 +6,7 @@ package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.CandidatoConcurso;
+import com.infosgroup.planilla.modelo.entidades.Compania;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
 import com.infosgroup.planilla.modelo.entidades.Contrato;
 import com.infosgroup.planilla.modelo.entidades.ContratoPK;
@@ -18,8 +19,12 @@ import com.infosgroup.planilla.modelo.entidades.EstadoContratoPK;
 import com.infosgroup.planilla.modelo.entidades.EvaluacionCandidato;
 import com.infosgroup.planilla.modelo.entidades.Puesto;
 import com.infosgroup.planilla.modelo.entidades.PuestoPK;
+import com.infosgroup.planilla.modelo.entidades.Sucursal;
+import com.infosgroup.planilla.modelo.entidades.SucursalPK;
 import com.infosgroup.planilla.modelo.entidades.TipoContrato;
 import com.infosgroup.planilla.modelo.entidades.TipoContratoPK;
+import com.infosgroup.planilla.modelo.entidades.TipoPlanilla;
+import com.infosgroup.planilla.modelo.entidades.TipoPlanillaPK;
 import com.infosgroup.planilla.modelo.entidades.TipoPuesto;
 import com.infosgroup.planilla.modelo.entidades.TipoPuestoPK;
 import com.infosgroup.planilla.modelo.facades.CandidatoConcursoFacade;
@@ -32,7 +37,9 @@ import com.infosgroup.planilla.modelo.facades.EstadoConcursoFacade;
 import com.infosgroup.planilla.modelo.facades.EstadoContratoFacade;
 import com.infosgroup.planilla.modelo.facades.EvaluacionCandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
+import com.infosgroup.planilla.modelo.facades.SucursalFacade;
 import com.infosgroup.planilla.modelo.facades.TipoContratoFacade;
+import com.infosgroup.planilla.modelo.facades.TipoPlanillaFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPuestoFacade;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -48,7 +55,11 @@ import javax.annotation.security.PermitAll;
 @Stateless
 @LocalBean
 public class ReclutamientoSessionBean {
-
+    
+    @EJB
+    private TipoPlanillaFacade tipoPlanillaFacade;
+    @EJB
+    private SucursalFacade sucursalFacade;
     @EJB
     private EvaluacionCandidatoFacade evaluacionCandidatoFacade;
     @EJB
@@ -73,6 +84,7 @@ public class ReclutamientoSessionBean {
     private ContratoFacade contratoFacade;
     @EJB
     private EstadoContratoFacade estadoContratoFacade;
+    
 
     public List<Concurso> getListaConcursos(Date fechaInicial, Date fechaFinal) {
         return concursoFacade.getConcursosByDate(fechaInicial, fechaFinal);
@@ -224,19 +236,14 @@ public class ReclutamientoSessionBean {
         return estadoContratoFacade.findEstadoContratoByEmpresa(empresa);
     }
 
-    public void contratarCandidato(CandidatoConcurso c, Contrato contrato) {
-
+    public void contratarCandidato(CandidatoConcurso c, Contrato contrato, String usuario) {
         Empleado e = toEmpleado(c.getCandidato1());
-
-        e.setUsuario(generaUsuario(c.getCandidato1()));
+        e.setUsuario(usuario);
         guardarEmpleado(e);
-
         contrato.setCandidato1(c.getCandidato1());
         contrato.setEmpleado(e);
         contrato.setContratoPK(new ContratoPK(c.getCandidatoConcursoPK().getCodCia(), contratoFacade.getMax(c.getCandidato1()), c.getCandidato1().getCandidatoPK().getCodCandidato()));
-
         guardarContrato(contrato);
-
         c.setEstado("C");
         editarCandidatoConcurso(c);
     }
@@ -247,5 +254,26 @@ public class ReclutamientoSessionBean {
 
     public List<CriteriosXPuesto> criteriosDisponibles() {
         return null;
+    }
+   
+    public List<Empleado> findByUsuario(String usuario){
+        return empleadoFacade.findEmpleadosByUsuario(usuario);
+    }
+    
+    @PermitAll
+    public List<Sucursal> findSucursalByEmpresa(Compania empresa){
+        return  sucursalFacade.findByCompania(empresa);
+    }
+    @PermitAll
+    public List<TipoPlanilla> findTipoPlanillaByEmpresa(Compania empresa){
+        return tipoPlanillaFacade.findByCompania(empresa);
+    }
+    
+    public Sucursal findSucursalById(SucursalPK id){
+        return sucursalFacade.find(id);
+    }
+    
+    public TipoPlanilla findTipoPlanillaById(TipoPlanillaPK id){
+        return tipoPlanillaFacade.find(id);
     }
 }
