@@ -75,82 +75,130 @@
                 <p:inputTextarea value="#{reclutamiento$preseleccionAspirante.comentarioFinal}" />
             </h:panelGrid>
             <p:commandButton id="cmdOk" value="Si, estoy seguro" update="principalForm:mensajes,principalForm:cmdCerrar,principalForm:cmdOk" 
-                             action="#{reclutamiento$preseleccionAspirante.iniciar}"  />   
-            <p:commandButton id="cmdCerrar"  value="Cerrar" update="principalForm:mensajes,principalForm:candidatoContratar,principalForm:tablaConcursos" onclick="confirmation.hide()" /> 
+                             action="#{reclutamiento$preseleccionAspirante.iniciar}" onclick="confirmation.hide()" />   
             <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
 
         </p:confirmDialog>  
 
-        <p:dialog id="dialogoContrato" widgetVar="botonMostrarContrato" header="Datos de Contrataci&oacute;n" width="800" height="400"  
-                  onCloseUpdate="principalForm:mensajes,principalForm:candidatoContratar" 
+        <p:dialog id="dialogoContrato" widgetVar="botonMostrarContrato" header="Datos de Contrataci&oacute;n" width="820" height="470"  
+                  onCloseUpdate="principalForm:mensajes,principalForm:candidatoContratar,principalForm:mensajesContrato" 
                   resizable="false" showEffect="clip" hideEffect="clip">  
             <p:spacer height="20" />
 
             <p:fieldset legend="Contrato de Empleado" >
 
-                <h:panelGrid columns="5" >
-                    <h:outputLabel value="Empresa" style="font-weight: bold;" />
-                    <h:outputLabel value="#{SessionBeanADM.compania.nomCompania}" />
-                    <h:outputLabel value="" />
-                    <h:outputLabel value="" />
-                    <h:outputLabel value="" />
+                <table border="0" >
+                    <tr align="right">
+                        <td colspan="5" align="right">
+                            <h:panelGrid columns="3">
+                                <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                                <h:outputLabel value=" son requeridos" style="font-style: italic;" />
+                            </h:panelGrid>
+                            <p:messages id="mensajesContrato" showDetail="true" showSummary="true"/>  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="Empresa" style="font-weight: bold;" /></td>
+                        <td colspan="3"><h:outputLabel value="#{SessionBeanADM.compania.nomCompania}" /></td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="Candidato" style="font-weight: bold;" /></td>
+                        <td colspan="3" ><h:outputLabel id="lbl_candidato" value="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado.candidato1.nombreCompleto}" /></td>
+                    </tr>
+                    <tr>
+                        <td> 
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Acta y Acuerdo" style="font-weight: bold;"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><p:inputText id="txAreaOAcuerdo" value="#{reclutamiento$preseleccionAspirante.actaOAcuerdo}"/></td>
+                        <td></td>
+                        <td>
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Fecha de Acuerdo" style="font-weight: bold;"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><p:calendar  value="#{reclutamiento$preseleccionAspirante.dia}" pattern="dd/MM/yyyy" showOn="button" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Fecha Inicio" style="font-weight: bold;"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><p:calendar id="calFecInicialCon" pattern="dd/MM/yyyy" showOn="button" value="#{reclutamiento$preseleccionAspirante.fechaInicio}" /></td>
+                        <td></td>
+                        <td><h:outputLabel value="Fecha Fin" /></td>
+                        <td><p:calendar id="calFecFinalCon" pattern="dd/MM/yyyy" showOn="button" value="#{reclutamiento$preseleccionAspirante.fechaFin}"/></td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="Puesto" style="font-weight: bold;"/></td>
+                        <td><h:outputLabel id="lbl_puesto" value="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado.concurso1.puesto.nombre}" /></td>
+                        <td></td>
+                        <td>
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Salario $" style="font-weight: bold;"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><p:inputText id="txSalarioCan" value="#{reclutamiento$preseleccionAspirante.salario}" >
+                                <f:convertNumber maxFractionDigits="2" />
+                            </p:inputText></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Representante Patronal" style="font-weight: bold;" />                          
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td colspan="3" ><p:inputText id="txtRepresentanteP" value="#{reclutamiento$preseleccionAspirante.representantePatronal}" /></td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="Tipo de Contrato" style="font-weight: bold;" /></td>
+                        <td><h:selectOneMenu id="lst_tipoContrato" value="#{reclutamiento$preseleccionAspirante.tipoContratoSeleccionado}" >
+                                <f:selectItems var="tipoContrato" value="#{reclutamiento$preseleccionAspirante.listaTipoContrato}" itemValue="#{tipoContrato.tipoContratoPK.codigo}" itemLabel="#{tipoContrato.nombre}" />
+                            </h:selectOneMenu></td>
+                        <td></td>
+                        <td><h:outputLabel value="Estado del Contrato" style="font-weight: bold;" /></td>
+                        <td><h:selectOneMenu id="lst_estadoContrato" value="#{reclutamiento$preseleccionAspirante.estadoContrato}" >
+                                <f:selectItems var="estadoContrato" value="#{reclutamiento$preseleccionAspirante.listaEstadoContrato}" itemValue="#{estadoContrato.estadoContratoPK.codigo}" itemLabel="#{estadoContrato.nombre}" />
+                            </h:selectOneMenu></td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="Tipo de Planilla" style="font-weight: bold;" /></td>
+                        <td><h:selectOneMenu id="lst_tipoPlanilla" value="#{reclutamiento$preseleccionAspirante.tipoPlanilla}" >
+                                <f:selectItems var="tipoPlanilla" value="#{reclutamiento$preseleccionAspirante.listaTipoPlanilla}" itemValue="#{tipoPlanilla.tipoPlanillaPK.idTipoPlanilla}" itemLabel="#{tipoPlanilla.nomTipoPlanilla}" />
+                            </h:selectOneMenu></td>
+                        <td></td>
+                        <td><h:outputLabel value="Sucursal" style="font-weight: bold;" /></td>
+                        <td><h:selectOneMenu id="lst_sucursal" value="#{reclutamiento$preseleccionAspirante.sucursal}" >
+                                <f:selectItems var="sucursal" value="#{reclutamiento$preseleccionAspirante.listaSucursales}" itemValue="#{sucursal.sucursalPK.idSucursal}" itemLabel="#{sucursal.nomSucursal}" />
+                            </h:selectOneMenu></td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><h:outputLabel value="Observaciones" style="font-weight: bold;" /></td>
+                        <td colspan="3" ><p:inputTextarea id="txObservaciones" value="#{reclutamiento$preseleccionAspirante.observaciones}" /></td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><h:outputLabel value="Usuario" style="font-weight: bold;" /></td>
+                        <td colspan="3" ><p:inputText id="txtUsuario" value="#{reclutamiento$preseleccionAspirante.usuario}" /></td>
+                    </tr>
+                </table>
 
-                    <h:outputLabel value="Candidato" style="font-weight: bold;" />
-                    <h:outputLabel id="lbl_candidato" value="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado.candidato1.nombreCompleto}" />
-                    <h:outputLabel value="" />
-                    <h:outputLabel value="" />
-                    <h:outputLabel value="" />
-
-                    <h:outputLabel value="Acta y Acuerdo" />
-                    <p:inputText />
-                    <h:outputLabel value="" />
-                    <h:outputLabel value="Fecha de Acuerdo" />
-                    <p:calendar  value="#{reclutamiento$preseleccionAspirante.dia}" pattern="dd/MM/yyyy" showOn="button" />
-
-                    <h:outputLabel value="Fecha Inicio" />
-                    <p:calendar id="calFecInicialCon" pattern="dd/MM/yyyy" showOn="button" />
-                    <h:outputLabel value="" />
-                    <h:outputLabel value="Fecha Fin" />
-                    <p:calendar id="calFecFinalCon" pattern="dd/MM/yyyy" showOn="button" />
-                </h:panelGrid>
-                <p:spacer height="15" />
-
-                <h:panelGrid columns="5">
-                    <h:outputLabel value="Puesto" style="font-weight: bold;"/>
-                    <h:outputLabel id="lbl_puesto" value="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado.concurso1.puesto.nombre}" />    
-                    <h:outputLabel value=""/>
-                    <h:outputLabel value=""/>
-                    <h:outputLabel value=""/>
-
-                    <h:outputLabel value="Representante Patronal" />
-                    <p:inputText  />    
-                    <h:outputLabel value=""/>
-                    <h:outputLabel value=""/>
-                    <h:outputLabel value=""/>
-
-                    <h:outputLabel value="Tipo de Contrato" />
-                    <h:selectOneMenu id="lst_tipoContrato" value="#{reclutamiento$preseleccionAspirante.tipoContratoSeleccionado}" >
-                        <f:selectItems var="tipoContrato" value="#{reclutamiento$preseleccionAspirante.listaTipoContrato}" itemValue="#{tipoContrato.tipoContratoPK.codigo}" itemLabel="#{tipoContrato.nombre}" />
-                    </h:selectOneMenu>
-                    <h:outputLabel value=""/>
-                    <h:outputLabel value="Estado del Contrato" />
-                    <h:selectOneMenu id="lst_estadoContrato" value="#{reclutamiento$preseleccionAspirante.estadoContrato}" >
-                    <f:selectItems var="estadoContrato" value="#{reclutamiento$preseleccionAspirante.listaEstadoContrato}" itemValue="#{estadoContrato.estadoContratoPK.codigo}" itemLabel="#{estadoContrato.nombre}" />
-                    </h:selectOneMenu>
-                    <p:spacer height="20" />
+                <h:panelGrid columns="2">
                     <f:facet name="footer" >
-
                         <h:panelGrid columns="2">
-                            <p:commandButton value="Contratar" image="ui-icon-circle-check" action="#{reclutamiento$preseleccionAspirante.contratarCandidato}" update="principalForm:mensajes"/>
-                            <p:commandButton value="Cancelar"  image="ui-icon-circle-close" onclick="botonMostrarContrato.hide()" />
+                            <p:commandButton value="Contratar" image="ui-icon-circle-check" action="#{reclutamiento$preseleccionAspirante.contratarCandidato}" update="principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtRepresentanteP,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" />
+                            <p:commandButton value="Cancelar"  image="ui-icon-circle-close" onclick="botonMostrarContrato.hide()" update="principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtRepresentanteP,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" />
                         </h:panelGrid>
-
                     </f:facet>
-
                 </h:panelGrid>
-
             </p:fieldset>    
-
 
         </p:dialog> 
 
@@ -458,7 +506,7 @@
                         </p:column>
 
                         <p:column headerText="Contratar">  <!--  action="# {reclutamiento$preseleccionAspirante.contratarCandidato}" -->
-                            <p:commandButton id="cmdContratar"  disabled="#{candidato.estado eq 'C'}" oncomplete="botonMostrarContrato.show()" image="contrato" update="principalForm:lbl_candidato,principalForm:lbl_puesto,principalForm:lbl_puesto,principalForm:cmdOk" >
+                            <p:commandButton id="cmdContratar"  disabled="#{candidato.estado eq 'C'}" oncomplete="botonMostrarContrato.show()" image="contrato" update="principalForm:lbl_candidato,principalForm:lbl_puesto,principalForm:lbl_puesto,principalForm:cmdOk,principalForm:txtUsuario,principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtRepresentanteP,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" >
                                 <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
                             </p:commandButton>
                         </p:column>
