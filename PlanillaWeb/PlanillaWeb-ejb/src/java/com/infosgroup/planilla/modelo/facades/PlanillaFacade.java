@@ -44,4 +44,11 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
         return listPla;
     }
     
+    public Long max() {
+        Long max = null;
+        Query q = getEntityManager().createNamedQuery("Planilla.max");
+        max = (Long) q.getSingleResult();
+        return (max == null) ? 0L : max;
+    }
+    
 }
