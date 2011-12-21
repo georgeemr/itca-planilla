@@ -37,6 +37,11 @@ public AccionPersonalFacade()
 super(AccionPersonal.class);
 }
 
+public Long max() {
+        Long max = (Long) getEntityManager().createQuery("select count(p) from AccionPersonal p").getSingleResult();
+        return (max == null) ? 0L : ++max;
+    }
+
 /**
 * Listado de solicitudes de accion de personal por jefe
 * @param jefe

@@ -31,7 +31,7 @@ public class PuestoEmpleadoFacade extends AbstractFacade<PuestoEmpleado, PuestoE
         super(PuestoEmpleado.class);
     }
     
-    public PuestoEmpleado findByEmpleado(Long emp, Long cia){
+    public PuestoEmpleado findByEmpleado(Long emp, long cia){
         PuestoEmpleado pueEmp = new PuestoEmpleado();
         
         Query pue = em.createQuery("select p from PuestoEmpleado p "
