@@ -33,10 +33,6 @@ import org.primefaces.event.FlowEvent;
 @ViewScoped
 public class DefinirEvaluacionesBackendBean extends JSFUtil implements Serializable
 {
-///** Creates a new instance of DefinirEvaluacionesBackendBean */
-//public DefinirEvaluacionesBackendBean()
-//{
-//}
 @EJB
 private EmpleadosSessionBean empleadosBean;
 
@@ -219,37 +215,47 @@ if (HayError)
     return null;
     }
 
-List<Evaluacion> evaluaciones = new ArrayList<Evaluacion>(0);
-for (PuestoEmpleado puestoEmpleado : puestosEmpleadosEvaluados)
-    {
-    EvaluacionPK evaluacionPK = new EvaluacionPK();
-    evaluacionPK.setCodCia(campaniaSeleccionada.getCampaniaPK().getCodCia());
-    evaluacionPK.setPeriodo(campaniaSeleccionada.getCampaniaPK().getPeriodo());
-    evaluacionPK.setCodCampania(campaniaSeleccionada.getCampaniaPK().getCodCampania());
-    evaluacionPK.setTipoEvaluacion(plantillaSeleccionada.getPlantillaPK().getCodTipoEvaluacion());
-    evaluacionPK.setPlantilla(plantillaSeleccionada.getPlantillaPK().getCodPlantilla());
-    evaluacionPK.setEmpleado(puestoEmpleado.getEmpleado().getEmpleadoPK().getCodEmp());
+List<Evaluacion> evaluaciones = null;
 
-    Evaluacion evaluacion = new Evaluacion();
-    evaluacion.setEvaluacionPK(evaluacionPK);
-    evaluacion.setCampania(campaniaSeleccionada);
-    evaluacion.setPlantilla1(plantillaSeleccionada);
-    evaluacion.setEmpleado1(puestoEmpleado.getEmpleado());
-    evaluacion.setFecha(Calendar.getInstance().getTime());
-    evaluacion.setFinalizada(0L);
-    evaluaciones.add(evaluacion);
-    }
-excepciones = empleadosBean.crearEvaluaciones(evaluaciones);
-mensaje = (excepciones == 0) ? "Todas las evaluaciones han sido creadas exitosamente" : "Ya se han definido " + excepciones + " de " + evaluaciones.size() + " evaluaciones para la campa&ntilde;a, plantilla y empleados seleccionados";
-addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
-
-excepciones = 0;
-for (PuestoEmpleado puestoEmpleadoEvaluador : puestosEmpleadosEvaluadores)
+if (empleadosBean.tieneEvaluaciones(campaniaSeleccionada))
     {
-    excepciones += empleadosBean.asignarEvaluaciones(evaluaciones, puestoEmpleadoEvaluador.getEmpleado());
+    addMessage("PlanillaWeb", "La campa&ntilde;a seleccionada ya tiene definidos tipo de evaluaci&oacute;n y plantilla", TipoMensaje.ADVERTENCIA);
+    evaluaciones = campaniaSeleccionada.getEvaluacionList();
     }
-mensaje = (excepciones == 0) ? "Todas las asignaciones de evaluaciones han sido creadas y/o modificadas exitosamente" : "Ya se habian definido " + excepciones + " de " + evaluaciones.size() + " asignaciones a evaluadores para la campa&ntilde;a y plantilla seleccionados";
-addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
+else
+    {
+    evaluaciones = new ArrayList<Evaluacion>(0);
+    for (PuestoEmpleado puestoEmpleado : puestosEmpleadosEvaluados)
+        {
+        EvaluacionPK evaluacionPK = new EvaluacionPK();
+        evaluacionPK.setCodCia(campaniaSeleccionada.getCampaniaPK().getCodCia());
+        evaluacionPK.setPeriodo(campaniaSeleccionada.getCampaniaPK().getPeriodo());
+        evaluacionPK.setCodCampania(campaniaSeleccionada.getCampaniaPK().getCodCampania());
+        evaluacionPK.setTipoEvaluacion(plantillaSeleccionada.getPlantillaPK().getCodTipoEvaluacion());
+        evaluacionPK.setPlantilla(plantillaSeleccionada.getPlantillaPK().getCodPlantilla());
+        evaluacionPK.setEmpleado(puestoEmpleado.getEmpleado().getEmpleadoPK().getCodEmp());
+
+        Evaluacion evaluacion = new Evaluacion();
+        evaluacion.setEvaluacionPK(evaluacionPK);
+        evaluacion.setCampania(campaniaSeleccionada);
+        evaluacion.setPlantilla1(plantillaSeleccionada);
+        evaluacion.setEmpleado1(puestoEmpleado.getEmpleado());
+        evaluacion.setFecha(Calendar.getInstance().getTime());
+        evaluacion.setFinalizada(0L);
+        evaluaciones.add(evaluacion);
+        }
+    excepciones = empleadosBean.crearEvaluaciones(evaluaciones);
+    mensaje = (excepciones == 0) ? "Todas las evaluaciones han sido creadas exitosamente" : "Ya se han definido " + excepciones + " de " + evaluaciones.size() + " evaluaciones para la campa&ntilde;a, plantilla y empleados seleccionados";
+    addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
+
+    excepciones = 0;
+    for (PuestoEmpleado puestoEmpleadoEvaluador : puestosEmpleadosEvaluadores)
+        {
+        excepciones += empleadosBean.asignarEvaluaciones(evaluaciones, puestoEmpleadoEvaluador.getEmpleado());
+        }
+    mensaje = (excepciones == 0) ? "Todas las asignaciones de evaluaciones han sido creadas y/o modificadas exitosamente" : "Ya se habian definido " + excepciones + " de " + evaluaciones.size() + " asignaciones a evaluadores para la campa&ntilde;a y plantilla seleccionados";
+    addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
+    }
 return null;
 }
 
@@ -259,6 +265,6 @@ Boolean HayError = Boolean.FALSE;
 HayError = (campaniaSeleccionada == null);
 HayError = (tipoEvaluacionSeleccionada == null);
 HayError = (plantillaSeleccionada == null);
-return HayError ?  flowEvt.getOldStep() : flowEvt.getNewStep();
+return HayError ? flowEvt.getOldStep() : flowEvt.getNewStep();
 }
 }

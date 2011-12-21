@@ -209,6 +209,11 @@ for (Evaluacion evaluacion : listaEvaluaciones)
 return excepciones;
 }
 
+public Boolean tieneEvaluaciones(Campania c)
+{
+return (evaluacionFacade.findEvaluacionesByCampania(c) != 0);
+}
+
 @PermitAll
 public Integer asignarEvaluaciones(List<Evaluacion> listaEvaluaciones, Empleado evaluador)
 {
