@@ -9,6 +9,7 @@ import com.infosgroup.planilla.modelo.entidades.Sucursal;
 import com.infosgroup.planilla.modelo.entidades.SucursalPK;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,6 +33,7 @@ public class SucursalFacade extends AbstractFacade<Sucursal, SucursalPK> {
         super(Sucursal.class);
     }
 
+    @PermitAll
     public List<Sucursal> findByCompania(Compania compania) {
         List<Sucursal> lista = null;
         Query q = getEntityManager().createNamedQuery("Sucursal.findByIdCompania", Sucursal.class);
