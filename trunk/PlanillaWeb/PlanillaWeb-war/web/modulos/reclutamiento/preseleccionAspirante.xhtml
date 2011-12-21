@@ -159,23 +159,43 @@
                         <td colspan="3" ><p:inputText id="txtRepresentanteP" value="#{reclutamiento$preseleccionAspirante.representantePatronal}" /></td>
                     </tr>
                     <tr>
-                        <td><h:outputLabel value="Tipo de Contrato" style="font-weight: bold;" /></td>
+                        <td>
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Tipo de Contrato" style="font-weight: bold;" />
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
                         <td><h:selectOneMenu id="lst_tipoContrato" value="#{reclutamiento$preseleccionAspirante.tipoContratoSeleccionado}" >
                                 <f:selectItems var="tipoContrato" value="#{reclutamiento$preseleccionAspirante.listaTipoContrato}" itemValue="#{tipoContrato.tipoContratoPK.codigo}" itemLabel="#{tipoContrato.nombre}" />
                             </h:selectOneMenu></td>
                         <td></td>
-                        <td><h:outputLabel value="Estado del Contrato" style="font-weight: bold;" /></td>
+                        <td>
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Estado del Contrato" style="font-weight: bold;" />
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
                         <td><h:selectOneMenu id="lst_estadoContrato" value="#{reclutamiento$preseleccionAspirante.estadoContrato}" >
                                 <f:selectItems var="estadoContrato" value="#{reclutamiento$preseleccionAspirante.listaEstadoContrato}" itemValue="#{estadoContrato.estadoContratoPK.codigo}" itemLabel="#{estadoContrato.nombre}" />
                             </h:selectOneMenu></td>
                     </tr>
                     <tr>
-                        <td><h:outputLabel value="Tipo de Planilla" style="font-weight: bold;" /></td>
+                        <td>
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Tipo de Planilla" style="font-weight: bold;" />
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
                         <td><h:selectOneMenu id="lst_tipoPlanilla" value="#{reclutamiento$preseleccionAspirante.tipoPlanilla}" >
                                 <f:selectItems var="tipoPlanilla" value="#{reclutamiento$preseleccionAspirante.listaTipoPlanilla}" itemValue="#{tipoPlanilla.tipoPlanillaPK.idTipoPlanilla}" itemLabel="#{tipoPlanilla.nomTipoPlanilla}" />
                             </h:selectOneMenu></td>
                         <td></td>
-                        <td><h:outputLabel value="Sucursal" style="font-weight: bold;" /></td>
+                        <td>
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Sucursal" style="font-weight: bold;" />
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>                            
+                        </td>
                         <td><h:selectOneMenu id="lst_sucursal" value="#{reclutamiento$preseleccionAspirante.sucursal}" >
                                 <f:selectItems var="sucursal" value="#{reclutamiento$preseleccionAspirante.listaSucursales}" itemValue="#{sucursal.sucursalPK.idSucursal}" itemLabel="#{sucursal.nomSucursal}" />
                             </h:selectOneMenu></td>
@@ -185,7 +205,12 @@
                         <td colspan="3" ><p:inputTextarea id="txObservaciones" value="#{reclutamiento$preseleccionAspirante.observaciones}" /></td>
                     </tr>
                     <tr>
-                        <td valign="top"><h:outputLabel value="Usuario" style="font-weight: bold;" /></td>
+                        <td valign="top">
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Usuario" style="font-weight: bold;" />
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
                         <td colspan="3" ><p:inputText id="txtUsuario" value="#{reclutamiento$preseleccionAspirante.usuario}" /></td>
                     </tr>
                 </table>
