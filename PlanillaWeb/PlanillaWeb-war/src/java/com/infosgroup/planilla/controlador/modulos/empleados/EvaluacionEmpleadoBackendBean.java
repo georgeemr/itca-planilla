@@ -104,7 +104,7 @@ return event.getNewStep();
 
 public String cerrarEvaluacion$action()
 {
-return empleadosBean.cerrarEvaluacion(sessionBeanEMP.getEvaluacionSeleccionada(), sessionBeanEMP.getDetalleEvaluacionTemporal()) ? inicio$action() : null;
+return empleadosBean.cerrarEvaluacion(sessionBeanEMP.getEvaluacionSeleccionada(), sessionBeanEMP.getDetalleEvaluacionTemporal()) ? "seleccionEvaluacion?faces-redirect=true" : null;
 }
 
 @Override

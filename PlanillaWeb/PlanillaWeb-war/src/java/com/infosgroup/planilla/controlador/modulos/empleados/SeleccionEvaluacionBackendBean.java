@@ -91,9 +91,10 @@ String outcome = null;
 
 if (getSessionBeanEMP().getEvaluacionSeleccionada() == null)
     {
-    addMessage("Seleccion de evaluacion", "Seleccione un tipo de evaluaci&oacute;n", TipoMensaje.ADVERTENCIA);
+    addMessage("Seleccion de evaluacion", "Seleccione el empleado a evaluar", TipoMensaje.ADVERTENCIA);
     hayError = true;
     }
+
 if (!hayError)
     {
     List<Factor> listaFactores = empleadosBean.listarFactoresPorPlantilla(getSessionBeanEMP().getEvaluacionSeleccionada().getPlantilla1());

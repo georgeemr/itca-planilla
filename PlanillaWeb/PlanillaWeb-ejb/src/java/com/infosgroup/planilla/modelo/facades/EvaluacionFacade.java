@@ -35,8 +35,15 @@ super(Evaluacion.class);
 
 public List<Evaluacion> findEvaluacionesAbiertasByCampania(Campania campania)
 {
-TypedQuery<Evaluacion> tq = em.createQuery("SELECT e FROM Evaluacion e WHERE e.campania = :campania and e.finalizada = 0", null);
+TypedQuery<Evaluacion> tq = em.createQuery("SELECT e FROM Evaluacion e WHERE e.campania = :campania and e.finalizada = 0", Evaluacion.class);
 tq.setParameter("campania", campania);
 return tq.getResultList();
+}
+
+public Integer findEvaluacionesByCampania(Campania campania)
+{
+TypedQuery<Evaluacion> tq = em.createQuery("SELECT e FROM Evaluacion e WHERE e.campania = :campania", Evaluacion.class);
+tq.setParameter("campania", campania);
+return (tq.getResultList() != null) ? tq.getResultList().size() : 0;
 }
 }

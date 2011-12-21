@@ -14,7 +14,7 @@
     <ui:define name="acciones">
         <p:tab title="Evaluaci&oacute;n">
             <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
-                <p:commandLink styleClass="opcionMenu" action="#{empleados$seleccionEvaluacion.evaluarEmpleado$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                <p:commandLink styleClass="opcionMenu" action="#{empleados$seleccionEvaluacion.evaluarEmpleado$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/meeting-participant-request-response.png"/>
                     <h:outputText value="Evaluar empleado" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -22,7 +22,7 @@
         </p:tab>
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{empleados$seleccionEvaluacion.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{empleados$seleccionEvaluacion.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/application-exit.png"/>
                     <h:outputText value="Cancelar" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -30,33 +30,32 @@
         </p:tab>
     </ui:define>
     <!-- ======================================================================================================= -->
-    <ui:define name="contenido">        
-        <p:fieldset id="fieldset1" legend="Selecci&oacute;n de empleados">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <ui:define name="contenido">
+        <p:fieldset id="fieldset1" legend="Selecci&oacute;n de empleado a evaluar">
+            <table width="100%" border="0">
                 <tr valign="top">
-                    <td width="30%">
-                        <p:dataTable id="campaniasTable" value="#{empleados$seleccionEvaluacion.listaCampanias}" var="campania" selection="#{empleados$seleccionEvaluacion.campaniaSeleccionada}" selectionMode="single" emptyMessage="[No hay campa&ntilde;as abiertas]" paginatorAlwaysVisible="true" paginator="true" update="evaluacionesTable">
+                    <td width="50%">
+                        <p:dataTable id="campaniasTable" value="#{empleados$seleccionEvaluacion.listaCampanias}" var="campania" selection="#{empleados$seleccionEvaluacion.campaniaSeleccionada}" selectionMode="single" emptyMessage="[No hay campa&ntilde;as abiertas]" rows="5" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25" update="evaluacionesTable">
                             <f:facet name="header">
                                 <h:outputText value="Campa&ntilde;as"/>
                             </f:facet>
                             <p:column headerText="Campa&ntilde;a">
-                                <h:outputText value="#{campania.nombre}"/>
+                                <p:graphicImage url="/resources/iconos/rating.png" height="16" width="16"/>
+                                <p:spacer width="5"/>
+                                <h:outputText value="#{campania.nombre}" title="del #{campania.fechaInicial} al #{campania.fechaFinal}"/>
                             </p:column>
                         </p:dataTable>
                     </td>
-                    <td width="70%">
-                        <p:dataTable id="evaluacionesTable" value="#{empleados$seleccionEvaluacion.listaEvaluaciones}" var="evaluacion" emptyMessage="[No hay evaluaciones pendientes]" paginatorAlwaysVisible="true" paginator="true" selectionMode="single" selection="#{SessionBeanEMP.evaluacionSeleccionada}">
+                    <td width="50%">
+                        <p:dataTable id="evaluacionesTable" value="#{empleados$seleccionEvaluacion.listaEvaluaciones}" var="evaluacion" emptyMessage="[No hay evaluaciones pendientes]" rows="5" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25" selectionMode="single" selection="#{SessionBeanEMP.evaluacionSeleccionada}">
                             <f:facet name="header">
                                 <h:outputText value="Evaluaciones"/>
                             </f:facet>
                             <p:column headerText="Empleado">
+                                <p:graphicImage url="/resources/iconos/meeting-participant.png" height="16" width="16" rendered="#{evaluacion.empleado1.candidato.sexo eq 'M'}"/>
+                                <p:graphicImage url="/resources/iconos/personal_w.png" height="16" width="16" rendered="#{evaluacion.empleado1.candidato.sexo eq 'F'}"/>
+                                <p:spacer width="5"/>
                                 <h:outputText value="#{evaluacion.empleado1.nombres} #{evaluacion.empleado1.apellidos}"/>
-                            </p:column>
-                            <p:column headerText="Tipo de evaluaci&oacute;n">
-                                <h:outputText value="#{evaluacion.plantilla1.tipoEvaluacion.nomTipoEvaluacion}"/>
-                            </p:column>
-                            <p:column headerText="Plantilla">
-                                <h:outputText value="#{evaluacion.plantilla1.nombre}"/>
                             </p:column>
                         </p:dataTable>
                     </td>
