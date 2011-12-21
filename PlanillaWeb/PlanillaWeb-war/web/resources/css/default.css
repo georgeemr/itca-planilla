@@ -89,7 +89,7 @@ body {
 }
 
 .solicitudGenerada{
-    background-color: #6666ff;
+    background-color: #9999FF;
 }
 
 .solicitudPreAprobada{
@@ -97,9 +97,9 @@ body {
 }
 
 .solicitudAprobada{
-    background-color: #00cc66;
+    background-color: #00CC66;
 }
 
 .solicitudRechazada{
-    background-color: #ff0033;
+    background-color: #ff6666
 }
