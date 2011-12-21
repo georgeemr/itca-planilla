@@ -14,7 +14,8 @@
     <ui:define name="acciones">
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" onclick="dialogNoAfecta.show();">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, lstTipos"
+                               onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" onclick="dialogNoAfecta.show();">
                     <p:graphicImage value="/resources/iconos/new.png"/>
                     <h:outputText value="Nuevo" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -54,7 +55,7 @@
                                    itemValue="#{empresa.idCompania}" itemLabel="#{empresa.nomCompania}"/>
                 </h:selectOneMenu>
                 <h:outputLabel value="Acci&oacute;n de Personal"/>
-                <h:selectOneMenu id="lstAcc" style="width: 250px"
+                <h:selectOneMenu id="lstAcc" style="width: 250px" 
                                  value="#{planilla$accionesPersonal.tipo}">
                     <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipo"
                                    itemValue="#{tipo.tipoAccionPK.codTipoaccion}" itemLabel="#{tipo.nomTipoaccion}"/>
@@ -71,11 +72,11 @@
         <p:dataTable id="tablSol"
                      rows="5" paginator="true"
                      emptyMessage="No hay solicitudes a aprobar"
-                     var="sol"
+                     var="sol" rendered="true" widgetVar="tablSol"
                      value="#{planilla$accionesPersonal.listaSolicitudes}"
                      selection="#{SessionBeanPLA.accionSeleccionada}"
                      selectionMode="single"
-                     rowStyleClass="#{sol.status eq 'G' ? 'solicitudGenerada' : sol.status eq 'J' ? solicitudPreAprobada : sol.status eq 'B' ? solicitudAprobada : sol.status eq 'R' ? solicitudRechazada : null }"
+                     rowStyleClass="#{sol.status eq 'G' ? 'solicitudGenerada' : sol.status eq 'J' ? 'solicitudPreAprobada' : sol.status eq 'B' ? 'solicitudAprobada' : sol.status eq 'R' ? 'solicitudRechazada' : null }"
                      paginatorAlwaysVisible="true"
                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
             <f:facet name="header">
@@ -126,22 +127,22 @@
                 <h:panelGrid columns="2" cellpadding="4" style="width: 200px" 
                              styleClass="ui-widget-content" columnClasses="label, value">
                     <h:outputText value="A&ntilde;o"/>
-                    <h:outputText value="#{sol.accionPersonalPK.anio}"/>
+                    <h:outputText value="# {sol.accionPersonalPK.anio}"/>
                     <h:outputText value="Mes"/>
-                    <h:outputText value="#{sol.accionPersonalPK.mes}"/>
+                    <h:outputText value="# {sol.accionPersonalPK.mes}"/>
                     <h:outputText value="Num Planilla"/>
-                    <h:outputText value="#{sol.accionPersonalPK.numPlanilla}"/>
+                    <h:outputText value="# {sol.accionPersonalPK.numPlanilla}"/>
                 </h:panelGrid>
             </p:rowExpansion-->
         </p:dataTable>
     </ui:define>
     <!-- ======================================================================================================= -->
     <ui:define name="dialogos">
-    <!--script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/jquery-1.6.2.js"></script-->
-    <!--script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery-ui-1.8.16.custom.js"></script-->
-    <!--script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery.ui.core.js"></script-->
-    <!--script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery.ui.widget.js"></script>
-    <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery.ui.datepicker.js"></script>        
+    <!--script type="text/javascript" src="# {facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/jquery-1.6.2.js"></script-->
+    <!--script type="text/javascript" src="# {facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery-ui-1.8.16.custom.js"></script-->
+    <!--script type="text/javascript" src="# {facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery.ui.core.js"></script-->
+    <!--script type="text/javascript" src="# {facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="# {facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery.ui.datepicker.js"></script>        
         <script>
             $(
             function ()
@@ -202,11 +203,10 @@
             </table>
         </p:dialog>
 
-        <p:dialog id="dialogNoAfecta" widgetVar="dialogNoAfecta" header="No Afecta Planilla" showEffect="fold" hideEffect="fold" width="450" height="350" >
+        <p:dialog id="dialogNoAfecta" widgetVar="dialogNoAfecta" header="Accion No Afecta Planilla" showEffect="fold" hideEffect="fold" width="400" height="350" >
             <h:panelGrid columns="2">
                 <h:outputLabel value="Fecha"/>
-                <p:calendar showOn="button" pattern="dd/MM/yyyy">
-                </p:calendar>
+                <p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.fecha}" />
                 <h:outputLabel value="Empleado"/>
                 <p:toolbar id="tlEmp" >
                     <p:toolbarGroup align="left">
@@ -228,16 +228,16 @@
                                    itemLabel="#{tipo2.nomTipoaccion}" itemValue="#{tipo2.tipoAccionPK.codTipoaccion}"/>
                 </h:selectOneMenu>
                 <h:outputLabel value="Observacion"/>
-                <p:inputTextarea style="width:200px;height:100px;"/>
+                <p:inputTextarea style="width:200px;height:100px;" value="#{planilla$accionesPersonal.obsv}" />
             </h:panelGrid>
             <h:panelGrid columns="2">
-                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaSol"
-                               onclick="confir.show()">
+                <p:commandLink styleClass="opcionMenu" update="mensajes, principalForm:tablSol" action="#{planilla$accionesPersonal.nuevaAccionNoAfecta$action}"
+                               onclick="dialogNoAfecta.hide()" ajax="true" >
                     <p:graphicImage value="/resources/iconos/task-complete.png"/>
                     <h:outputText value="Aceptar" styleClass="espacioTexto"/>
                 </p:commandLink>
                 <p:commandLink styleClass="opcionMenu" update="mensajes, tablaSol"
-                               onclick="rechazar.show()">
+                               onclick="dialogNoAfecta.hide()">
                     <p:graphicImage value="/resources/iconos/dialog-cancel.png"/>
                     <h:outputText value="Cancelar" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -245,7 +245,7 @@
             </h:panelGrid>
         </p:dialog>
 
-        <p:dialog id="dialogBuscaEmp" widgetVar="dialogBuscaEmp" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="400" height="250">
+        <p:dialog id="dialogBuscaEmp" widgetVar="dialogBuscaEmp" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="500" height="350">
             <p:dataTable id="tablBusEmp"
                          rows="3" paginator="true"
                          emptyMessage="No hay empleados que mostrar"
@@ -267,12 +267,14 @@
             </p:dataTable>
         </p:dialog>
 
-        <p:dialog id="dialogBuscaJefe" widgetVar="dialogBuscaJefe" header="Buscar Jefe" showEffect="fold" hideEffect="fold" width="400" height="250">
+        <p:dialog id="dialogBuscaJefe" widgetVar="dialogBuscaJefe" header="Buscar Jefe" showEffect="fold" hideEffect="fold" width="500" height="350">
             <p:dataTable id="tablBusJefe"
                          rows="3" paginator="true"
                          emptyMessage="No hay jefes que mostrar"
                          var="jefe"
                          value="#{planilla$accionesPersonal.listaJefes}"
+                         selection="#{planilla$accionesPersonal.jefeSeleccionado}"
+                         selectionMode="single"
                          paginatorAlwaysVisible="true"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
                 <p:column headerText="Codigo" filterBy="#{jefe.empleadoPK.codEmp}" >
@@ -281,12 +283,14 @@
                 <p:column headerText="Nombre" filterBy="#{jefe.nombreCompleto}" >
                     <h:outputText value="#{jefe.nombreCompleto}"/>
                 </p:column>
-                <p:column>
-                    <p:commandButton update="dialogBuscaJefe, dialogNoAfecta, txtJefe, tlJefe" oncomplete="dialogBuscaJefe.hide()" value="Seleccionar">
-                        <f:setPropertyActionListener value="#{jefe}" target="#{planilla$accionesPersonal.jefeSeleccionado}"/>
-                    </p:commandButton>
-                </p:column>
-
+                <f:facet name="footer">
+                    <p:commandButton value="Seleccionar jefe" update="principalForm:txtJefe" oncomplete="dialogBuscaJefe.hide();"/>
+                </f:facet>
+                <!--p:column>
+                        <p:commandButton update="dialogBuscaJefe, dialogNoAfecta, txtJefe, tlJefe" onclick="dialogBuscaJefe.hide()" value="Seleccionar" >
+                            <f:setPropertyActionListener value="# {jefe}" target="# {planilla$accionesPersonal.jefeSeleccionado}"/>
+                        </p:commandButton>
+                </p:column-->
             </p:dataTable>
         </p:dialog>
     </ui:define>
