@@ -11,13 +11,18 @@ import com.infosgroup.planilla.modelo.entidades.Sucursal;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+import javax.swing.event.ChangeEvent;
 import org.primefaces.component.datatable.DataTable;
 
 /**
@@ -35,6 +40,11 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
 
     @Override
     protected void limpiarCampos() {
+        tipoSec = 0;
+        empleadoSeleccionado = null;
+        jefeSeleccionado = null;
+        obsv = null;
+        fecha = null;
     }
     @EJB
     private PlanillaSessionBean planillaSessionBean;
@@ -45,13 +55,32 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     private List<TipoAccion> listaTipoNoAfecta;
     private List<Empleado> listaJefes;
     private List<Empleado> listaEmp;
-    long cia = 1;
-    long suc;
-    long tipo;
-    long tipoSec;
+    private long cia = 1;
+    private long suc;
+    private long tipo;
+    private long tipoSec;
     private DataTable tablaEmpleado;
     private Empleado empleadoSeleccionado;
     private Empleado jefeSeleccionado;
+    private String obsv;
+    private Date fecha;
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getObsv() {
+        return obsv;
+    }
+
+    public void setObsv(String obsv) {
+        this.obsv = obsv;
+    }
+    
 
     public Empleado getEmpleadoSeleccionado() {
         return empleadoSeleccionado;
@@ -176,6 +205,14 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
         listaSolicitudes = planillaSessionBean.listarAccionporTipo(cia, tipo);
         return null;
     }
+    
+    public void lstTiposChangeListener(ChangeEvent event){
+        if(tipo != 0){
+            listaTipoNoAfecta = planillaSessionBean.listarTipoAccionAfecta();
+        }else{
+            listaTipoNoAfecta = planillaSessionBean.listarTipoAccionNoAfecta();
+        }
+    }
 
     public void cmdEmpActionListener(ActionEvent event) {
         sessionBeanPLA.setTbEmp(Boolean.TRUE);
@@ -206,6 +243,14 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     }
     
     private String nombreJefe ;
-
+    
+    public String nuevaAccionNoAfecta$action(){
+        TipoAccion tipoAcc = planillaSessionBean.buscarTipoAccion(tipoSec);
+        planillaSessionBean.guardarSolAcc$action(tipoAcc, empleadoSeleccionado, jefeSeleccionado, fecha, obsv, null, null, null, null, null, null, null, null, null, null, null);
+        mostrarMensaje(FacesMessage.SEVERITY_INFO, "Solicitud de accion guardada exitosamente");
+        limpiarCampos();
+        listaSolicitudes = planillaSessionBean.listarAccionporTipo(cia, tipo);
+        return null;
+    }
     
 }
