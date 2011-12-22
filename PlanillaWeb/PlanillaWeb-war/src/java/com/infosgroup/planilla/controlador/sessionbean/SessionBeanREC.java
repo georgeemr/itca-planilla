@@ -30,6 +30,7 @@ public class SessionBeanREC implements Serializable {
     private ReclutamientoSessionBean reclutamientoSessionBean;
     private Concurso concursoSeleccionado;
     private CriteriosXPuesto[] criteriosSeleccionados;
+    private CriteriosXPuesto[] criteriosAdicionales;
     private Candidato[] candidatosSeleccionados;
     private List<Candidato> listaCandidatos;
     @ManagedProperty(value="#{SessionBeanEMP}")
@@ -81,6 +82,14 @@ public class SessionBeanREC implements Serializable {
 
     public void setSessionBeanEMP(SessionBeanEMP sessionBeanEMP) {
         this.sessionBeanEMP = sessionBeanEMP;
+    }
+
+    public CriteriosXPuesto[] getCriteriosAdicionales() {
+        return criteriosAdicionales;
+    }
+
+    public void setCriteriosAdicionales(CriteriosXPuesto[] criteriosAdicionales) {
+        this.criteriosAdicionales = criteriosAdicionales;
     }
     
 }
