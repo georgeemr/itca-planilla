@@ -11,9 +11,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -40,11 +40,18 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Concurso.findByFechaInicial", query = "SELECT c FROM Concurso c WHERE c.fechaInicial = :fechaInicial"),
     @NamedQuery(name = "Concurso.findByFechaFinal", query = "SELECT c FROM Concurso c WHERE c.fechaFinal = :fechaFinal"),
     @NamedQuery(name = "Concurso.findByNumeroPlazas", query = "SELECT c FROM Concurso c WHERE c.numeroPlazas = :numeroPlazas"),
-    @NamedQuery(name = "Concurso.findByCodConcurso", query = "SELECT c FROM Concurso c WHERE c.concursoPK.codConcurso = :codConcurso"),
-    @NamedQuery(name = "Concurso.findByComentarioFinal", query = "SELECT c FROM Concurso c WHERE c.comentarioFinal = :comentarioFinal")
+    @NamedQuery(name = "Concurso.findByCodConcurso", query = "SELECT c FROM Concurso c WHERE c.concursoPK.codConcurso = :codConcurso")
     })
 public class Concurso implements Serializable
 {
+    @Column(name =     "FECHA_INICIAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInicial;
+    @Column(name =     "FECHA_FINAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFinal;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concurso1")
+    private List<CandidatoConcurso> candidatoConcursoList;
 
     private static final long serialVersionUID = 1L;
 
@@ -55,27 +62,18 @@ public class Concurso implements Serializable
     @Column(name = "NOMBRE", length = 200)
     private String nombre;
 
-    @Column(name = "FECHA_INICIAL")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaInicial;
-
-    @Column(name = "FECHA_FINAL")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaFinal;
-
     @Column(name = "NUMERO_PLAZAS")
     private Long numeroPlazas;
 
-    @Size(max = 200)
-    @Column(name = "COMENTARIO_FINAL", length = 200)
-    private String comentarioFinal;
+    @ManyToMany(mappedBy = "concursoList")
+    private List<Candidato> candidatoList;
 
     @JoinColumns(
         {
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "PUESTO", referencedColumnName = "COD_PUESTO")
         })
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Puesto puesto;
 
     @JoinColumns(
@@ -83,12 +81,11 @@ public class Concurso implements Serializable
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ESTADO", referencedColumnName = "CODIGO", nullable = false)
         })
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private EstadoConcurso estadoConcurso;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concurso1", fetch = FetchType.EAGER)
-    private List<CandidatoConcurso> candidatoConcursoList;
-
+    @Column(name = "COMENTARIO_FINAL")
+    private String comentarioFinal;
+    
     public Concurso()
     {
     }
@@ -153,14 +150,15 @@ public class Concurso implements Serializable
         this.numeroPlazas = numeroPlazas;
     }
 
-    public String getComentarioFinal()
+    @XmlTransient
+    public List<Candidato> getCandidatoList()
     {
-        return comentarioFinal;
+        return candidatoList;
     }
 
-    public void setComentarioFinal(String comentarioFinal)
+    public void setCandidatoList(List<Candidato> candidatoList)
     {
-        this.comentarioFinal = comentarioFinal;
+        this.candidatoList = candidatoList;
     }
 
     public Puesto getPuesto()
@@ -183,17 +181,6 @@ public class Concurso implements Serializable
         this.estadoConcurso = estadoConcurso;
     }
 
-    @XmlTransient
-    public List<CandidatoConcurso> getCandidatoConcursoList()
-    {
-        return candidatoConcursoList;
-    }
-
-    public void setCandidatoConcursoList(List<CandidatoConcurso> candidatoConcursoList)
-    {
-        this.candidatoConcursoList = candidatoConcursoList;
-    }
-
     @Override
     public int hashCode()
     {
@@ -211,7 +198,10 @@ public class Concurso implements Serializable
             return false;
             }
         Concurso other = (Concurso) object;
-        if ((this.concursoPK == null && other.concursoPK != null) || (this.concursoPK != null && !this.concursoPK.equals(other.concursoPK))) return false;
+        if ((this.concursoPK == null && other.concursoPK != null) || (this.concursoPK != null && !this.concursoPK.equals(other.concursoPK)))
+            {
+            return false;
+            }
         return true;
     }
 
@@ -219,6 +209,22 @@ public class Concurso implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Concurso[ concursoPK=" + concursoPK + " ]";
+    }
+
+    public List<CandidatoConcurso> getCandidatoConcursoList() {
+        return candidatoConcursoList;
+    }
+
+    public void setCandidatoConcursoList(List<CandidatoConcurso> candidatoConcursoList) {
+        this.candidatoConcursoList = candidatoConcursoList;
+    }
+
+    public String getComentarioFinal() {
+        return comentarioFinal;
+    }
+
+    public void setComentarioFinal(String comentarioFinal) {
+        this.comentarioFinal = comentarioFinal;
     }
     
 }
