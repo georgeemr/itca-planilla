@@ -15,36 +15,34 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
  * @author root
  */
 @Stateless
-public class ResumenAsistenciaFacade extends AbstractFacade<ResumenAsistencia, ResumenAsistenciaPK> {
-    @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
-    private EntityManager em;
+public class ResumenAsistenciaFacade extends AbstractFacade<ResumenAsistencia, ResumenAsistenciaPK>
+{
+@PersistenceContext(unitName = "PlanillaWeb-ejbPU")
+private EntityManager em;
 
-    protected EntityManager getEntityManager() {
-        return em;
-    }
+protected EntityManager getEntityManager()
+{
+    return em;
+}
 
-    public ResumenAsistenciaFacade() {
-        super(ResumenAsistencia.class);
-    }
-    
-    public List<ResumenAsistencia> findAsistencias(Integer empresa, Integer sucursal, Integer planilla){
-        List<ResumenAsistencia> listAsis = new ArrayList<ResumenAsistencia>(0);
-        
-        Query q = em.createQuery("select p from ResumenAsistencia p "
-                +"where p.resumenAsistenciaPK.idCompania = :empresa and p.planilla.planillaPK.numPlanilla = :planilla "
-                +"and p.puestoEmpleado.sucursal.sucursalPK.idSucursal = :sucursal", ResumenAsistencia.class);
-        q.setParameter("empresa", empresa);
-        q.setParameter("planilla", planilla);
-        q.setParameter("sucursal", sucursal);
-        listAsis = q.getResultList();
-        
-        return listAsis;
-    }
-    
+public ResumenAsistenciaFacade()
+{
+    super(ResumenAsistencia.class);
+}
+
+public List<ResumenAsistencia> findAsistenciasByPlanillaSucursal(Planilla planilla, Sucursal sucursal)
+{
+TypedQuery<ResumenAsistencia> tq = em.createQuery("SELECT r FROM ResumenAsistencia r WHERE r.planilla = :planilla and r.sucursal = :sucursal", ResumenAsistencia.class);
+tq.setParameter("planilla", planilla);
+tq.setParameter("sucursal", sucursal);
+return tq.getResultList();
+}
+
 }
