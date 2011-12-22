@@ -32,6 +32,7 @@ import com.infosgroup.planilla.modelo.facades.CandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.ConcursoFacade;
 import com.infosgroup.planilla.modelo.facades.ContratoFacade;
 import com.infosgroup.planilla.modelo.facades.CriterioSeleccionadoFacade;
+import com.infosgroup.planilla.modelo.facades.CriteriosXPuestoFacade;
 import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
 import com.infosgroup.planilla.modelo.facades.EstadoConcursoFacade;
 import com.infosgroup.planilla.modelo.facades.EstadoContratoFacade;
@@ -55,7 +56,7 @@ import javax.annotation.security.PermitAll;
 @Stateless
 @LocalBean
 public class ReclutamientoSessionBean {
-    
+
     @EJB
     private TipoPlanillaFacade tipoPlanillaFacade;
     @EJB
@@ -84,7 +85,8 @@ public class ReclutamientoSessionBean {
     private ContratoFacade contratoFacade;
     @EJB
     private EstadoContratoFacade estadoContratoFacade;
-    
+    @EJB
+    private CriteriosXPuestoFacade criteriosXPuestoFacade;
 
     public List<Concurso> getListaConcursos(Date fechaInicial, Date fechaFinal) {
         return concursoFacade.getConcursosByDate(fechaInicial, fechaFinal);
@@ -252,28 +254,30 @@ public class ReclutamientoSessionBean {
         return tipoContratoFacade.find(pk);
     }
 
-    public List<CriteriosXPuesto> criteriosDisponibles() {
-        return null;
+    @PermitAll
+    public List<CriteriosXPuesto> criteriosDisponibles(Compania empresa) {
+        return criteriosXPuestoFacade.getListaCriteriosByEmpresa(empresa);
     }
-   
-    public List<Empleado> findByUsuario(String usuario){
+
+    public List<Empleado> findByUsuario(String usuario) {
         return empleadoFacade.findEmpleadosByUsuario(usuario);
     }
-    
+
     @PermitAll
-    public List<Sucursal> findSucursalByEmpresa(Compania empresa){
-        return  sucursalFacade.findByCompania(empresa);
+    public List<Sucursal> findSucursalByEmpresa(Compania empresa) {
+        return sucursalFacade.findByCompania(empresa);
     }
+
     @PermitAll
-    public List<TipoPlanilla> findTipoPlanillaByEmpresa(Compania empresa){
+    public List<TipoPlanilla> findTipoPlanillaByEmpresa(Compania empresa) {
         return tipoPlanillaFacade.findByCompania(empresa);
     }
-    
-    public Sucursal findSucursalById(SucursalPK id){
+
+    public Sucursal findSucursalById(SucursalPK id) {
         return sucursalFacade.find(id);
     }
-    
-    public TipoPlanilla findTipoPlanillaById(TipoPlanillaPK id){
+
+    public TipoPlanilla findTipoPlanillaById(TipoPlanillaPK id) {
         return tipoPlanillaFacade.find(id);
     }
 }
