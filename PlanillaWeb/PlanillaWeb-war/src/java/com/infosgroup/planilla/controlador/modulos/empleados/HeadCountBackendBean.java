@@ -116,7 +116,7 @@ for (Gerencia g : listaGerencias)
         }
     if (cantidad == BigDecimal.ZERO)
         continue;
-    nodoGerencia[((int) g.getGerenciaPK().getCodGerencia())-1] = new DefaultTreeNode(new HeadCountModel(BigDecimal.ZERO, BigDecimal.ZERO, g.getNomGerencia(), BigDecimal.ZERO, gerenciaSeleccionada, BigDecimal.ZERO, g.getNomGerencia(), BigDecimal.ZERO, g.getNomGerencia(), cantidad, salario), raiz);
+    nodoGerencia[((int) g.getGerenciaPK().getCodGerencia())-1] = new DefaultTreeNode(new HeadCountModel(BigDecimal.ZERO, BigDecimal.ZERO, g.getNomGerencia(), BigDecimal.ZERO, gerenciaSeleccionada, BigDecimal.ZERO, g.getNomGerencia(), cantidad, salario), raiz);
     }
 for (HeadCountModel hcm : listaHCM)
     new DefaultTreeNode(hcm, nodoGerencia[hcm.getIdGerencia().intValueExact()-1]);
