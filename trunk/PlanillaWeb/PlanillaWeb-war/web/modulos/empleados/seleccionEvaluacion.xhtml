@@ -42,7 +42,7 @@
                             <p:column headerText="Campa&ntilde;a" filterBy="#{campania.nombre}" sortBy="#{campania.nombre}">
                                 <p:graphicImage url="/resources/iconos/rating.png" height="16" width="16"/>
                                 <p:spacer width="5"/>
-                                <h:outputText id="nombreCompania" value="#{campania.nombre}"/>
+                                <h:outputText id="nombreCompania" value="#{campania.nombre} - Evaluados: #{empleados$seleccionEvaluacion.cantEmpEvaluados}"/>
                                 <p:tooltip for="nombreCompania" showEffect="grow" hideEffect="grow">
                                     <p:graphicImage url="/resources/iconos/help-hint.png" height="16" width="16"/>
                                     <p:spacer width="5"/>
@@ -56,6 +56,9 @@
                                     </h:outputText>
                                     <h:outputText value=")"/>
                                 </p:tooltip>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <h:outputText  value="#{campania.descripcionEstado}" />
                             </p:column>
                         </p:dataTable>
                     </td>
