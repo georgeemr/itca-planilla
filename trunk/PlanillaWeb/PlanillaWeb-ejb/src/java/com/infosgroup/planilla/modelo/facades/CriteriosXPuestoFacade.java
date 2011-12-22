@@ -4,14 +4,17 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+import com.infosgroup.planilla.modelo.entidades.Compania;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -33,4 +36,11 @@ public class CriteriosXPuestoFacade extends AbstractFacade<CriteriosXPuesto, Cri
         return em;
     }
 
+    @PermitAll
+    public List<CriteriosXPuesto> getListaCriteriosByEmpresa(Compania empresa) {
+        List<CriteriosXPuesto> l = new ArrayList<CriteriosXPuesto>();
+        Query q = em.createNamedQuery("CriteriosXPuesto.findByCodCia", CriteriosXPuesto.class).setParameter("codCia", empresa.getIdCompania());
+        l = q.getResultList();
+        return l != null ? l : new ArrayList<CriteriosXPuesto>();
+    }
 }
