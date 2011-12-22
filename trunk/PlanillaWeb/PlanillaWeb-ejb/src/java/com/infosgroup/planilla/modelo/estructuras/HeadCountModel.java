@@ -23,10 +23,6 @@ private BigDecimal idDepartamento;
 
 private String nombreDepartamento;
 
-private BigDecimal idSeccion;
-
-private String nombreSeccion;
-
 private BigDecimal idPuesto;
 
 private String nombrePuesto;
@@ -35,15 +31,13 @@ private BigDecimal cantidad;
 
 private BigDecimal salario;
 
-public HeadCountModel(BigDecimal idCompania, BigDecimal idGerencia, String nombreGerencia, BigDecimal idDepartamento, String nombreDepartamento, BigDecimal idSeccion, String nombreSeccion, BigDecimal idPuesto, String nombrePuesto, BigDecimal cantidad, BigDecimal salario)
+public HeadCountModel(BigDecimal idCompania, BigDecimal idGerencia, String nombreGerencia, BigDecimal idDepartamento, String nombreDepartamento, BigDecimal idPuesto, String nombrePuesto, BigDecimal cantidad, BigDecimal salario)
 {
 this.idCompania = idCompania;
 this.idGerencia = idGerencia;
 this.nombreGerencia = nombreGerencia;
 this.idDepartamento = idDepartamento;
 this.nombreDepartamento = nombreDepartamento;
-this.idSeccion = idSeccion;
-this.nombreSeccion = nombreSeccion;
 this.idPuesto = idPuesto;
 this.nombrePuesto = nombrePuesto;
 this.cantidad = cantidad;
@@ -100,16 +94,6 @@ public void setIdPuesto(BigDecimal idPuesto)
 this.idPuesto = idPuesto;
 }
 
-public BigDecimal getIdSeccion()
-{
-return idSeccion;
-}
-
-public void setIdSeccion(BigDecimal idSeccion)
-{
-this.idSeccion = idSeccion;
-}
-
 public String getNombreDepartamento()
 {
 return nombreDepartamento;
@@ -138,16 +122,6 @@ return nombrePuesto;
 public void setNombrePuesto(String nombrePuesto)
 {
 this.nombrePuesto = nombrePuesto;
-}
-
-public String getNombreSeccion()
-{
-return nombreSeccion;
-}
-
-public void setNombreSeccion(String nombreSeccion)
-{
-this.nombreSeccion = nombreSeccion;
 }
 
 public BigDecimal getSalario()
