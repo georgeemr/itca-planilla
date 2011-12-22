@@ -457,34 +457,34 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
     }
     
     public void ordenarLista() {
-//        if (candidatosGuardados != null) {
-//            Collections.sort(candidatosGuardados);
-//            for (int i = 0; i <= candidatosGuardados.size() - 1; i++) {
-//                candidatosGuardados.get(i).setOrden(i);
-//                if (i == 5) {
-//                    break;
-//                }
-//            }
-//        }
+        if (candidatosGuardados != null) {
+            Collections.sort(candidatosGuardados);
+            for (int i = 0; i <= candidatosGuardados.size() - 1; i++) {
+                candidatosGuardados.get(i).setOrden(i);
+                if (i == 5) {
+                    break;
+                }
+            }
+        }
     }
     
     public String aplicarCriterios() {
-//        if (sessionBeanREC.getConcursoSeleccionado() != null) {
-//            if (sessionBeanREC.getCandidatosSeleccionados() != null) {
-//                for (Candidato n : sessionBeanREC.getCandidatosSeleccionados()) {
-//                    if (n.getConcursoList() == null) {
-//                        n.setConcursoList(new ArrayList<Concurso>());
-//                        n.getConcursoList().add(sessionBeanREC.getConcursoSeleccionado());
-//                    } else if (!n.getConcursoList().contains(sessionBeanREC.getConcursoSeleccionado())) {
-//                        n.getConcursoList().add(sessionBeanREC.getConcursoSeleccionado());
-//                    }
-//                    reclutamientoSessionBean.editarCandidato(n);
-//                }
-//                addMessage("Preselección de Candidatos", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
-//                return "concursoSeleccionado";
-//            }
-//        }
-//        addMessage("Preselección de Candidatos", "No ha seleccionado ningún concurso, de clic en Atrás para reiniciar el asistente.", TipoMensaje.INFORMACION);
+        if (sessionBeanREC.getConcursoSeleccionado() != null) {
+            if (sessionBeanREC.getCandidatosSeleccionados() != null) {
+                for (Candidato n : sessionBeanREC.getCandidatosSeleccionados()) {
+                    if (n.getConcursoList() == null) {
+                        n.setConcursoList(new ArrayList<Concurso>());
+                        n.getConcursoList().add(sessionBeanREC.getConcursoSeleccionado());
+                    } else if (!n.getConcursoList().contains(sessionBeanREC.getConcursoSeleccionado())) {
+                        n.getConcursoList().add(sessionBeanREC.getConcursoSeleccionado());
+                    }
+                    reclutamientoSessionBean.editarCandidato(n);
+                }
+                addMessage("Preselección de Candidatos", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+                return "concursoSeleccionado";
+            }
+        }
+        addMessage("Preselección de Candidatos", "No ha seleccionado ningún concurso, de clic en Atrás para reiniciar el asistente.", TipoMensaje.INFORMACION);
         return "concursoSeleccionado";
     }
     
@@ -624,7 +624,7 @@ public class PreseleccionAspiranteBackendBean extends JSFUtil implements Seriali
             CandidatoConcurso c = candidatosGuardados.get(tableSeleccion.getRowIndex());
             c.setEstado(estado);
             reclutamientoSessionBean.editarCandidatoConcurso(c);
-//            addMessage("Seleccionar Candidato", "Datos Guardados " + candidatosGuardados.get(tableSeleccion.getRowIndex()).getCandidato1().getNombreCompleto(), TipoMensaje.INFORMACION);
+            addMessage("Seleccionar Candidato", "Datos Guardados " + candidatosGuardados.get(tableSeleccion.getRowIndex()).getCandidato1().getNombreCompleto(), TipoMensaje.INFORMACION);
             actualizaListas();
             ordenarLista();
         }
