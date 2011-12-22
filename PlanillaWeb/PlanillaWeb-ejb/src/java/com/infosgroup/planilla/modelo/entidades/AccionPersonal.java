@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -414,6 +415,30 @@ public class AccionPersonal implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.AccionPersonal[ accionPersonalPK=" + accionPersonalPK + " ]";
+    }
+    
+        @Transient
+    private String accEstado;
+
+    public String getAccEstado() {
+        if (getStatus().matches("G")) {
+            accEstado = "Solicitada";
+        } else {
+            if (getStatus().matches("J")) {
+                accEstado = "pre-Aprobada";
+            } else {
+                if (getStatus().matches("R")) {
+                    accEstado = "Rechazada";
+                } else {
+                    accEstado = "Aprobada";
+                }
+            }
+        }
+        return accEstado;
+    }
+
+    public void setAccEstado(String accEstado) {
+        this.accEstado = accEstado;
     }
     
 }
