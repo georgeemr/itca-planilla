@@ -442,5 +442,5 @@ public class Compania implements Serializable
     {
         return "com.infosgroup.planilla.modelo.entidades.Compania[ idCompania=" + idCompania + " ]";
     }
-    
+       
 }
