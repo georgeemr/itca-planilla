@@ -73,6 +73,9 @@ public class Sucursal implements Serializable
     private Compania compania;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursal", fetch = FetchType.EAGER)
+    private List<ResumenAsistencia> resumenAsistenciaList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursal", fetch = FetchType.EAGER)
     private List<Contrato> contratoList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursal", fetch = FetchType.EAGER)
@@ -152,6 +155,17 @@ public class Sucursal implements Serializable
     public void setCompania(Compania compania)
     {
         this.compania = compania;
+    }
+
+    @XmlTransient
+    public List<ResumenAsistencia> getResumenAsistenciaList()
+    {
+        return resumenAsistenciaList;
+    }
+
+    public void setResumenAsistenciaList(List<ResumenAsistencia> resumenAsistenciaList)
+    {
+        this.resumenAsistenciaList = resumenAsistenciaList;
     }
 
     @XmlTransient

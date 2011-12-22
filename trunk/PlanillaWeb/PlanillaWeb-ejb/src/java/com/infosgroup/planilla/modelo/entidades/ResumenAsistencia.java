@@ -107,6 +107,14 @@ public class ResumenAsistencia implements Serializable
     @JoinColumns(
         {
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ID_SUCURSAL", referencedColumnName = "ID_SUCURSAL", nullable = false, insertable = false, updatable = false)
+        })
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Sucursal sucursal;
+
+    @JoinColumns(
+        {
+        @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_SUCURSAL", referencedColumnName = "ID_SUCURSAL", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_EMP", referencedColumnName = "ID_EMPLEADO", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_TIPO_PUESTO", referencedColumnName = "ID_TIPO_PUESTO", nullable = false, insertable = false, updatable = false),
@@ -287,6 +295,16 @@ public class ResumenAsistencia implements Serializable
     public void setAguinaldo(String aguinaldo)
     {
         this.aguinaldo = aguinaldo;
+    }
+
+    public Sucursal getSucursal()
+    {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal)
+    {
+        this.sucursal = sucursal;
     }
 
     public PuestoEmpleado getPuestoEmpleado()

@@ -46,29 +46,17 @@ import javax.xml.bind.annotation.XmlRootElement;
     })
 public class Contrato implements Serializable
 {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHA_ACUERDO", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaAcuerdo;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHA_INICIO", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaInicio;
-    @Column(name = "FECHA_FINAL")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaFinal;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "ESTADO", referencedColumnName = "CODIGO", nullable = false)})
-    @ManyToOne(optional = false)
-    private EstadoContrato estadoContrato;
 
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
     protected ContratoPK contratoPK;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FECHA_ACUERDO", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaAcuerdo;
 
     @Size(max = 500)
     @Column(name = "OBSERVACION", length = 500)
@@ -83,6 +71,16 @@ public class Contrato implements Serializable
     @NotNull
     @Column(name = "SALARIO", nullable = false, precision = 16, scale = 2)
     private BigDecimal salario;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FECHA_INICIO", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInicio;
+
+    @Column(name = "FECHA_FINAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFinal;
 
     @JoinColumns(
         {
@@ -115,6 +113,14 @@ public class Contrato implements Serializable
         })
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Puesto puesto;
+
+    @JoinColumns(
+        {
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ESTADO", referencedColumnName = "CODIGO", nullable = false)
+        })
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private EstadoContrato estadoContrato;
 
     @JoinColumns(
         {
@@ -264,6 +270,16 @@ public class Contrato implements Serializable
         this.puesto = puesto;
     }
 
+    public EstadoContrato getEstadoContrato()
+    {
+        return estadoContrato;
+    }
+
+    public void setEstadoContrato(EstadoContrato estadoContrato)
+    {
+        this.estadoContrato = estadoContrato;
+    }
+
     public Empleado getEmpleado()
     {
         return empleado;
@@ -309,14 +325,6 @@ public class Contrato implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Contrato[ contratoPK=" + contratoPK + " ]";
-    }
-
-    public EstadoContrato getEstadoContrato() {
-        return estadoContrato;
-    }
-
-    public void setEstadoContrato(EstadoContrato estadoContrato) {
-        this.estadoContrato = estadoContrato;
     }
     
 }

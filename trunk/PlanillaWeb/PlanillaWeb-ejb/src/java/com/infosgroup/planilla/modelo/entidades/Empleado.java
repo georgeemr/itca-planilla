@@ -61,20 +61,6 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class Empleado implements Serializable
 {
-    @Column(name =     "FECHA_NAC")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaNac;
-    @Column(name =     "FEC_INGRESO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecIngreso;
-    @Column(name =     "FEC_SALIDA")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecSalida;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false)})
-    @ManyToOne(optional = false)
-    private Candidato candidato;
 
     private static final long serialVersionUID = 1L;
 
@@ -98,6 +84,18 @@ public class Empleado implements Serializable
     @Size(max = 200)
     @Column(name = "AP_CASADA", length = 200)
     private String apCasada;
+
+    @Column(name = "FECHA_NAC")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNac;
+
+    @Column(name = "FEC_INGRESO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecIngreso;
+
+    @Column(name = "FEC_SALIDA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecSalida;
 
     @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
@@ -138,9 +136,25 @@ public class Empleado implements Serializable
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado", fetch = FetchType.EAGER)
     private List<PuestoEmpleado> puestoEmpleadoList;
 
+    @JoinColumns(
+        {
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "DEPARTAMENTO", referencedColumnName = "ID_DEPARTAMENTO")
+        })
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Departamento departamento;
+
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
+
+    @JoinColumns(
+        {
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false)
+        })
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Candidato candidato;
 
     public Empleado()
     {
@@ -328,6 +342,16 @@ public class Empleado implements Serializable
         this.puestoEmpleadoList = puestoEmpleadoList;
     }
 
+    public Departamento getDepartamento()
+    {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento)
+    {
+        this.departamento = departamento;
+    }
+
     public Compania getCompania()
     {
         return compania;
@@ -336,6 +360,16 @@ public class Empleado implements Serializable
     public void setCompania(Compania compania)
     {
         this.compania = compania;
+    }
+
+    public Candidato getCandidato()
+    {
+        return candidato;
+    }
+
+    public void setCandidato(Candidato candidato)
+    {
+        this.candidato = candidato;
     }
 
     @Override
@@ -372,18 +406,10 @@ public class Empleado implements Serializable
     {
         nombreCompleto = getNombres() + ((getApellidos() != null) ? " " + getApellidos() : "" );
         return nombreCompleto;
-    }
+}
 
     public void setNombreCompleto(String nombreCompleto)
     {
         this.nombreCompleto = nombreCompleto;
-    }
-    public Candidato getCandidato() {
-        return candidato;
-    }
-
-    public void setCandidato(Candidato candidato) {
-        this.candidato = candidato;
-    }
-    
+    }    
 }

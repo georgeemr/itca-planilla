@@ -56,6 +56,9 @@ public class TipoPuesto implements Serializable
     private Compania compania;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto", fetch = FetchType.EAGER)
+    private List<PuestoEmpleado> puestoEmpleadoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto", fetch = FetchType.EAGER)
     private List<Puesto> puestoList;
 
     public TipoPuesto()
@@ -106,6 +109,17 @@ public class TipoPuesto implements Serializable
     public void setCompania(Compania compania)
     {
         this.compania = compania;
+    }
+
+    @XmlTransient
+    public List<PuestoEmpleado> getPuestoEmpleadoList()
+    {
+        return puestoEmpleadoList;
+    }
+
+    public void setPuestoEmpleadoList(List<PuestoEmpleado> puestoEmpleadoList)
+    {
+        this.puestoEmpleadoList = puestoEmpleadoList;
     }
 
     @XmlTransient

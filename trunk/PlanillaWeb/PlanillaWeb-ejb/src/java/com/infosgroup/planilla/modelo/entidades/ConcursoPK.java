@@ -76,14 +76,8 @@ public class ConcursoPK implements Serializable
             return false;
             }
         ConcursoPK other = (ConcursoPK) object;
-        if (this.codCia != other.codCia)
-            {
-            return false;
-            }
-        if (this.codConcurso != other.codConcurso)
-            {
-            return false;
-            }
+        if (this.codCia != other.codCia) return false;
+        if (this.codConcurso != other.codConcurso) return false;
         return true;
     }
 

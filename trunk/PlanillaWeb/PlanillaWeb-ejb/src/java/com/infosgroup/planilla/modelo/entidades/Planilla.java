@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.entidades;
 
+import com.infosgroup.planilla.modelo.estructuras.Meses;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -17,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -166,6 +168,20 @@ public class Planilla implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Planilla[ planillaPK=" + planillaPK + " ]";
+    }
+    
+    @Transient
+    private String descripcionPlanilla ;
+
+    public String getDescripcionPlanilla()
+    {
+        descripcionPlanilla = "Planilla " + planillaPK.getNumPlanilla() + " de " + Meses.values()[((int) planillaPK.getMes())-1] + " de " + planillaPK.getAnio() ;
+        return descripcionPlanilla;
+    }
+
+    public void setDescripcionPlanilla(String descripcionPlanilla)
+    {
+        this.descripcionPlanilla = descripcionPlanilla;
     }
     
 }
