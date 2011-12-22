@@ -63,9 +63,29 @@
         </p:dialog>    
 
         <p:dialog id="dialogoCriterio" widgetVar="botonMostrarCriterios" header="Seleccionar Criterio" width="425" height="300"  
-                  onCloseUpdate="criteriosSeleccionados, mensajes"
-                  resizable="false" showEffect="clip" hideEffect="clip">  
-        </p:dialog>    
+                  onCloseUpdate="principalForm:criteriosSeleccionados,principalForm:mensajes" resizable="false" showEffect="clip" hideEffect="clip"
+                  closeListener="#{reclutamiento$preseleccionAspirante.handleCloseCriterioAdicional}" >
+
+            <p:fieldset legend="Criterios diponibles">
+
+                <p:dataTable id="criteriosDisponibles" var="criterio" value="#{reclutamiento$preseleccionAspirante.criteriosDisponibles}" emptyMessage="No se han encontrado mas Criterios" 
+                             paginator="true" rows="10" selectionMode="multiple" onRowSelectUpdate="principalForm:criteriosDisponibles,principalForm:criteriosSeleccionados"
+                             selection="#{SessionBeanREC.criteriosAdicionales}" binding="#{reclutamiento$preseleccionAspirante.tableCriteriosAdicionales}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10,25,50,100" >  
+
+                    <p:column headerText="Criterio" 
+                              filterBy="#{criterio.criterio1.nombre}"
+                              filterMatchMode="contains" >  
+                        <h:outputLabel value="#{criterio.criterio1.nombre}" />  
+                        <h:outputLabel value="#{criterio.descripcionRango}" />
+                    </p:column>  
+
+                </p:dataTable>  
+
+            </p:fieldset>
+
+        </p:dialog> 
 
         <p:confirmDialog message="&#191;Esta seguro que desea cerrar este Concurso?"  
                          showEffect="bounce" hideEffect="explode"  modal="true" closable="false"
@@ -259,7 +279,7 @@
                                     value="#{reclutamiento$preseleccionAspirante.fechaFinal}" 
                                     showOn="button" />
                         <p:commandButton value="Buscar" image="buscar" 
-                                         update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos" 
+                                         update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos, principalForm:criteriosDisponibles" 
                                          action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"/>
                     </h:panelGrid>
                     <p:spacer width="20" />
@@ -334,18 +354,15 @@
 
                 <p:spacer height="20" />
                 <p:panel id="panelProceso" header="Paso 2 de 5" >
-                    <h:panelGrid columns="5" >
+                    <h:panelGrid columns="8" >
                         <h:outputLabel value="Concurso Seleccionado: " style="font-weight: bold;" />
                         <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.nombre}" />
                         <h:outputLabel value=""/>
-                        <h:outputLabel value="Plazas necesarias: " style="font-weight: bold;" />
-                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.numeroPlazas}" />
-
                         <h:outputLabel value="Puesto al que aplica: " style="font-weight: bold;" />
                         <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.puesto.nombre}" />
                         <h:outputLabel value=""/>
-                        <h:outputLabel value="" />
-                        <h:outputLabel value="" />
+                        <h:outputLabel value="Plazas necesarias: " style="font-weight: bold;" />
+                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.numeroPlazas}" />
 
                         <h:outputLabel value="Fecha Inicial: " style="font-weight: bold;" />
                         <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.fechaInicial}" >
@@ -356,21 +373,25 @@
                         <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.fechaFinal}" >
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputLabel>
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value=""/>
                     </h:panelGrid>
                 </p:panel>
                 <p:spacer height="20" />
                 <table width="100%" >
                     <tr>
                         <td valign="top">
+                            <!-- value="# {SessionBeanREC.concursoSeleccionado.puesto.criteriosXPuestoList}" -->
                             <p:dataTable id="criteriosSeleccionados" 
                                          var="criterio" 
-                                         value="#{SessionBeanREC.concursoSeleccionado.puesto.criteriosXPuestoList}"
+                                         value="#{reclutamiento$preseleccionAspirante.criteriosPrincipales}"
                                          selection="#{SessionBeanREC.criteriosSeleccionados}"
                                          rows="5" 
                                          paginator="true" 
                                          onRowSelectUpdate="tableCanSeleccionados"
                                          onRowUnselectUpdate="tableCanSeleccionados"
-                                         emptyMessage="No se han encontrado Concursos."
+                                         emptyMessage="No se han encontrado Criterios."
                                          binding="#{reclutamiento$preseleccionAspirante.tableCriterios}"
                                          paginatorAlwaysVisible="true" 
                                          selectionMode="multiple"
@@ -390,7 +411,7 @@
                                 </p:column>
 
                                 <f:facet name="footer">  
-                                    <h:outputLink value="javascript:void(0)" onclick="botonMostrarCriterios.show()">Mostrar mas criterios.</h:outputLink>
+                                    <p:commandButton oncomplete="botonMostrarCriterios.show()" value="Mostrar mas criterios" image="ui-icon-plusthick" />
                                 </f:facet>  
                             </p:dataTable>
                         </td>
@@ -421,7 +442,7 @@
                                     <h:outputLabel value="#{candidato.nombreCompleto}" style="margin-left:10px"/>
                                 </p:column>
                                 <f:facet name="footer" >
-                                    <p:commandButton value="Guardar selecci&oacute;n" action="#{reclutamiento$preseleccionAspirante.aplicarCriterios}" image="guardar" update="tableCanSeleccionados, principalForm:mensajes" />
+                                    <p:commandButton value="Guardar selecci&oacute;n" action="#{reclutamiento$preseleccionAspirante.aplicarCriterios}" image="ui-icon-disk" update="tableCanSeleccionados, principalForm:mensajes" />
                                 </f:facet>
                             </p:dataTable>
                         </td>
