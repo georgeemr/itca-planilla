@@ -70,6 +70,9 @@ public class Departamento implements Serializable
     private Compania compania;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento", fetch = FetchType.EAGER)
+    private List<Empleado> empleadoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento", fetch = FetchType.EAGER)
     private List<Seccion> seccionList;
 
     public Departamento()
@@ -140,6 +143,17 @@ public class Departamento implements Serializable
     public void setCompania(Compania compania)
     {
         this.compania = compania;
+    }
+
+    @XmlTransient
+    public List<Empleado> getEmpleadoList()
+    {
+        return empleadoList;
+    }
+
+    public void setEmpleadoList(List<Empleado> empleadoList)
+    {
+        this.empleadoList = empleadoList;
     }
 
     @XmlTransient

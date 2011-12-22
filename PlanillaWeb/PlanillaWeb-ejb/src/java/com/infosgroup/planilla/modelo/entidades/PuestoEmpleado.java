@@ -65,6 +65,14 @@ public class PuestoEmpleado implements Serializable
 
     @JoinColumns(
         {
+        @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ID_TIPO_PUESTO", referencedColumnName = "COD_TIPO_PUESTO", nullable = false, insertable = false, updatable = false)
+        })
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private TipoPuesto tipoPuesto;
+
+    @JoinColumns(
+        {
         @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ID_SUCURSAL", referencedColumnName = "ID_SUCURSAL", nullable = false, insertable = false, updatable = false)
         })
@@ -147,6 +155,16 @@ public class PuestoEmpleado implements Serializable
     public void setAccionPersonalList(List<AccionPersonal> accionPersonalList)
     {
         this.accionPersonalList = accionPersonalList;
+    }
+
+    public TipoPuesto getTipoPuesto()
+    {
+        return tipoPuesto;
+    }
+
+    public void setTipoPuesto(TipoPuesto tipoPuesto)
+    {
+        this.tipoPuesto = tipoPuesto;
     }
 
     public Sucursal getSucursal()

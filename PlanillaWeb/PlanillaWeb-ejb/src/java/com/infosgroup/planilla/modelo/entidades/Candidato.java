@@ -12,9 +12,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -51,15 +49,6 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class Candidato implements Serializable
 {
-    @Column(name =     "FECHA_NACIMIENTO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaNacimiento;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato")
-    private List<Empleado> empleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
-    private List<Contrato> contratoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
-    private List<CandidatoConcurso> candidatoConcursoList;
 
     private static final long serialVersionUID = 1L;
 
@@ -77,13 +66,19 @@ public class Candidato implements Serializable
     @Size(min = 1, max = 200)
     @Column(name = "APELLIDO", nullable = false, length = 200)
     private String apellido;
+
+    @Column(name = "FECHA_NACIMIENTO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNacimiento;
+
     @Size(max = 299)
     @Column(name = "AP_CASADA", length = 299)
     private String apCasada;
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "SEXO", nullable = false)
+    @Size(min = 1, max = 1)
+    @Column(name = "SEXO", nullable = false, length = 1)
     private String sexo;
 
     @Size(max = 200)
@@ -101,26 +96,22 @@ public class Candidato implements Serializable
     @Column(name = "EDAD", nullable = false)
     private long edad;
 
-    @JoinTable(name = "CANDIDATO_CONCURSO", joinColumns =
-        {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false)
-        }, inverseJoinColumns =
-        {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "CONCURSO", referencedColumnName = "COD_CONCURSO", nullable = false)
-        })
-    @ManyToMany
-    private List<Concurso> concursoList;
-
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1", fetch = FetchType.EAGER)
+    private List<Contrato> contratoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato", fetch = FetchType.EAGER)
+    private List<Empleado> empleadoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1", fetch = FetchType.EAGER)
+    private List<CandidatoConcurso> candidatoConcursoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1", fetch = FetchType.EAGER)
     private List<CriteriosXCandidato> criteriosXCandidatoList;
-    @Transient
-    private String nombreCompleto;
+
     public Candidato()
     {
     }
@@ -130,7 +121,8 @@ public class Candidato implements Serializable
         this.candidatoPK = candidatoPK;
     }
 
-    public Candidato(CandidatoPK candidatoPK, String nombre, String apellido, String sexo, String estado, long edad) {
+    public Candidato(CandidatoPK candidatoPK, String nombre, String apellido, String sexo, String estado, long edad)
+    {
         this.candidatoPK = candidatoPK;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -194,11 +186,13 @@ public class Candidato implements Serializable
         this.apCasada = apCasada;
     }
 
-    public String getSexo() {
+    public String getSexo()
+    {
         return sexo;
     }
 
-    public void setSexo(String sexo) {
+    public void setSexo(String sexo)
+    {
         this.sexo = sexo;
     }
 
@@ -232,17 +226,6 @@ public class Candidato implements Serializable
         this.edad = edad;
     }
 
-    @XmlTransient
-    public List<Concurso> getConcursoList()
-    {
-        return concursoList;
-    }
-
-    public void setConcursoList(List<Concurso> concursoList)
-    {
-        this.concursoList = concursoList;
-    }
-
     public Compania getCompania()
     {
         return compania;
@@ -251,6 +234,39 @@ public class Candidato implements Serializable
     public void setCompania(Compania compania)
     {
         this.compania = compania;
+    }
+
+    @XmlTransient
+    public List<Contrato> getContratoList()
+    {
+        return contratoList;
+    }
+
+    public void setContratoList(List<Contrato> contratoList)
+    {
+        this.contratoList = contratoList;
+    }
+
+    @XmlTransient
+    public List<Empleado> getEmpleadoList()
+    {
+        return empleadoList;
+    }
+
+    public void setEmpleadoList(List<Empleado> empleadoList)
+    {
+        this.empleadoList = empleadoList;
+    }
+
+    @XmlTransient
+    public List<CandidatoConcurso> getCandidatoConcursoList()
+    {
+        return candidatoConcursoList;
+    }
+
+    public void setCandidatoConcursoList(List<CandidatoConcurso> candidatoConcursoList)
+    {
+        this.candidatoConcursoList = candidatoConcursoList;
     }
 
     @XmlTransient
@@ -281,10 +297,7 @@ public class Candidato implements Serializable
             return false;
             }
         Candidato other = (Candidato) object;
-        if ((this.candidatoPK == null && other.candidatoPK != null) || (this.candidatoPK != null && !this.candidatoPK.equals(other.candidatoPK)))
-            {
-            return false;
-            }
+        if ((this.candidatoPK == null && other.candidatoPK != null) || (this.candidatoPK != null && !this.candidatoPK.equals(other.candidatoPK))) return false;
         return true;
     }
 
@@ -293,37 +306,5 @@ public class Candidato implements Serializable
     {
         return "com.infosgroup.planilla.modelo.entidades.Candidato[ candidatoPK=" + candidatoPK + " ]";
     }
-
-    public List<CandidatoConcurso> getCandidatoConcursoList() {
-        return candidatoConcursoList;
-    }
-
-    public void setCandidatoConcursoList(List<CandidatoConcurso> candidatoConcursoList) {
-        this.candidatoConcursoList = candidatoConcursoList;
-    }
-
-    public List<Contrato> getContratoList() {
-        return contratoList;
-    }
-
-    public void setContratoList(List<Contrato> contratoList) {
-        this.contratoList = contratoList;
-    }
-
-    public String getNombreCompleto() {
-        nombreCompleto = getNombre()  + " " + getApellido();
-        return nombreCompleto;
-    }
-
-    public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
-    }
     
-    public List<Empleado> getEmpleadoList() {
-        return empleadoList;
-    }
-
-    public void setEmpleadoList(List<Empleado> empleadoList) {
-        this.empleadoList = empleadoList;
-    }
 }
