@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -232,6 +233,23 @@ public class Campania implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.Campania[ campaniaPK=" + campaniaPK + " ]";
+    }
+    
+    @Transient
+    private String descripcionEstado ;
+
+    public String getDescripcionEstado()
+    {        
+        if (estado.equals("0"))
+            descripcionEstado = "Cerrada";
+        else if (estado.equals("1"))
+            descripcionEstado = "Abierta";
+        return descripcionEstado;
+    }
+
+    public void setDescripcionEstado(String descripcionEstado)
+    {
+        this.descripcionEstado = descripcionEstado;
     }
     
 }
