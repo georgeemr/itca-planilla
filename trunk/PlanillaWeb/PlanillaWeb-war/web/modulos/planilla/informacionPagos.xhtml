@@ -1,58 +1,61 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../plantillas/defaultTemplate.xhtml"
+<ui:composition
+                template="/plantillas/defaultTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:f="http://java.sun.com/jsf/core">
->
-
+    <!-- ================================================================================================================ -->
     <ui:define name="titulo">
-        <h:outputText value="Informaci&oacute;n de Pagos"/>   
+        <h:outputText value="Informaci&oacute;n de Pagos"/>
     </ui:define>
-
+    <!-- ================================================================================================================ -->
     <ui:define name="acciones">
-        acciones
+        <p:tab title="Evaluaci&oacute;n">
+            <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <p:commandLink styleClass="opcionMenu" action="#{planilla$informacionPagos.buscarPlanilla$action}" update="principalForm:mensajes, principalForm:tablaDetalle" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                    <p:graphicImage value="/resources/iconos/edit-find.png"/>
+                    <h:outputText value="Mostrar datos de planilla" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{planilla$informacionPagos.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
     </ui:define>
-
+    <!-- ================================================================================================================ -->
     <ui:define name="contenido">
-                <p:fieldset id="fieldset2" legend="Elegir Planilla">
-            <h:outputLabel value="Anio"/>
-            <p:spinner id="txtAnio" value="#{planilla$informacionPagos.anio}" min="1" max="3000" stepFactor="1"/>
-            <h:outputLabel value="Mes"/>
-            <p:spinner id="txtMes" value="#{planilla$informacionPagos.mes}" min="1" max="12" stepFactor="1"/>
-            <h:outputLabel value="Planilla"/>
-            <p:spinner id="txtPlan" value="#{planilla$informacionPagos.pla}" min="1" max="4" stepFactor="1"/>
-            <p:spacer width="10px" />
-            <p:commandButton value="Buscar" 
-                             image="buscar" 
-                             update="principalForm:mensajes, principalForm:tablaDetalle" 
-                             action="#{planilla$informacionPagos.buscarPlanilla$action()}"/>
-            
-        </p:fieldset>
-        <p:spacer height="10px" />
-        <p:fieldset id="fieldset3" legend="Planilla">
-            <p:dataTable id="tablaDetalle"
-                         var="total"
-                         value="#{planilla$informacionPagos.listaPlaDetalles}"
-                         rows="5"
-                         paginator="true"
-                         binding="#{planilla$informacionPagos.tablaPrueba}" 
-                         emptyMessage="No se han encontrado datos."
-                         paginatorAlwaysVisible="true" 
-                         update="panelContenido"
-                         onRowSelectUpdate="panelContenido"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
+        <p:fieldset id="fieldset2" legend="Planilla">            
+            <p:dataTable value="#{planilla$informacionPagos.listaPlanillas}" var="planilla" selectionMode="single" selection="#{planilla$informacionPagos.planillaSeleccionada}" rows="3" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">
+                <p:column headerText="Planilla" filterBy="#{planilla.descripcionPlanilla}" filterMatchMode="contains" sortBy="#{planilla.descripcionPlanilla}">
+                    <p:graphicImage url="/resources/iconos/view-calendar-journal.png" height="16" width="16"/>
+                    <p:spacer width="5"/>
+                    <h:outputText value="#{planilla.descripcionPlanilla}"/>
+                </p:column>
+                <p:column headerText="Tipo de planilla" sortBy="#{planilla.tipoPlanilla.nomTipoPlanilla}" filterBy="#{planilla.tipoPlanilla.nomTipoPlanilla}" filterMatchMode="contains">
+                    <p:graphicImage url="/resources/iconos/documentinfo.png" height="16" width="16"/>
+                    <p:spacer width="5"/>
+                    <h:outputText value="#{planilla.tipoPlanilla.nomTipoPlanilla}"/>
+                </p:column>
+            </p:dataTable>
+            <p:spacer height="10"/>
+            <p:dataTable id="tablaDetalle" var="total" value="#{planilla$informacionPagos.listaPlaDetalles}" rows="5" paginator="true" binding="#{planilla$informacionPagos.tablaPrueba}" emptyMessage="No se han encontrado datos." paginatorAlwaysVisible="true" update="panelContenido" onRowSelectUpdate="panelContenido" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
                 <p:column>
                     <p:rowToggler/>
                 </p:column>
-                <p:column headerText="Cod. Empleado">
+                <p:column headerText="Cod. Empleado" sortBy="#{total.puestoEmpleado.empleado.empleadoPK.codEmp}">
                     <h:outputLabel value="#{total.puestoEmpleado.empleado.empleadoPK.codEmp}"/>
                 </p:column>
-                <p:column headerText="Apellidos" filterBy="#{total.puestoEmpleado.empleado.apellidos}" >
+                <p:column headerText="Apellidos" filterBy="#{total.puestoEmpleado.empleado.apellidos}" filterMatchMode="contains" sortBy="#{total.puestoEmpleado.empleado.apellidos}">
                     <h:outputLabel value="#{total.puestoEmpleado.empleado.apellidos}"/>
                 </p:column>
-                <p:column headerText="Nombres" filterBy="#{total.puestoEmpleado.empleado.nombres}" >
+                <p:column headerText="Nombres" filterBy="#{total.puestoEmpleado.empleado.nombres}" filterMatchMode="contains" sortBy="#{total.puestoEmpleado.empleado.nombres}">
                     <h:outputLabel value="#{total.puestoEmpleado.empleado.nombres}"/>
                 </p:column>
                 <p:column headerText="Sueldo Base" sortBy="#{total.puestoEmpleado.puesto.salarioMinimo}" >
@@ -64,33 +67,43 @@
                 <p:column headerText="Deducciones" sortBy="#{total.deducciones}" >
                     <h:outputLabel value="#{total.deducciones}"/>
                 </p:column>
-                <p:column headerText="total" sortBy="#{total.total}" >
+                <p:column headerText="Total" sortBy="#{total.total}" >
                     <h:outputLabel value="#{total.total}"/>
                 </p:column>
                 <p:rowExpansion>
-                    <h:panelGrid columns="2">
-                        <p:dataTable emptyMessage="No se han encontrado ingresos." var="ing"
-                                     value="">
-                            <f:facet name="header">
-                                <h:outputText value="Ingresos"/>
-                            </f:facet>
-                            <p:column headerText="Descripcion">
-                                <h:outputLabel value="" />
-                            </p:column>
-                            <p:column headerText="Cantidad"></p:column>
-                        </p:dataTable>
-                        <p:dataTable emptyMessage="No se han encontrado egresos.">
-                            <f:facet name="header">
-                                <h:outputText value="Egresos"/>
-                            </f:facet>
-                            <p:column headerText="Descripcion"></p:column>
-                            <p:column headerText="Cantidad"></p:column>
-                        </p:dataTable>
-                    </h:panelGrid>              
+                    <table width="100%" border="0">
+                        <tr valign="top">
+                            <td width="50%">
+                                <p:dataTable emptyMessage="No se han encontrado ingresos" value="#{total.listaIng}" var="ingreso">
+                                    <f:facet name="header">
+                                        <h:outputText value="Ingresos"/>
+                                    </f:facet>
+                                    <p:column headerText="Descripcion">
+                                        <h:outputText value="#{ingreso.deduccionesPrestaciones.nomPrestacion}"/>
+                                    </p:column>
+                                    <p:column headerText="Cantidad">
+                                        <h:outputText value="#{ingreso.monto}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </td>
+                            <td width="50%">
+                                <p:dataTable emptyMessage="No se han encontrado egresos" value="#{total.listaEgr}" var="egreso">
+                                    <f:facet name="header">
+                                        <h:outputText value="Egresos"/>
+                                    </f:facet>
+                                    <p:column headerText="Descripcion">
+                                        <h:outputText value="#{egreso.deduccionesPrestaciones.nomPrestacion}"/>
+                                    </p:column>
+                                    <p:column headerText="Cantidad">
+                                        <h:outputText value="#{egreso.monto}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </td>
+                        </tr>
+                    </table>
                 </p:rowExpansion>
             </p:dataTable>
         </p:fieldset>
-
     </ui:define>
-
+    <!-- ================================================================================================================ -->
 </ui:composition>
