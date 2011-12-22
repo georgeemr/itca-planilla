@@ -1,174 +1,182 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../plantillas/defaultTemplate.xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.prime.com.tr/ui"
-                xmlns:f="http://java.sun.com/jsf/core">
-
+<ui:composition
+    template="/plantillas/defaultTemplate.xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    xmlns:f="http://java.sun.com/jsf/core">
+    <!-- =========================================================================================================== -->
     <ui:define name="titulo">
         <h:outputText value="Resumen de Asistencia"/>   
     </ui:define>
-
+    <!-- =========================================================================================================== -->
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" action="#{planilla$horasExtras.mostrar$action}">
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" action="#{planilla$horasExtras.mostrarResumenAsistencias$action}">
                     <p:graphicImage value="/resources/iconos/edit-find-user.png"/>
-                    <h:outputText value="Mostrar" styleClass="espacioTexto"/>
-                </p:commandLink>
-                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" >
-                    <h:outputText value="Guardar cambios" styleClass="espacioTexto"/>
+                    <h:outputText value="Mostrar resumen" styleClass="espacioTexto"/>
                 </p:commandLink>
             </h:panelGrid>
         </p:tab>
     </ui:define>
-
+    <!-- =========================================================================================================== -->
     <ui:define name="contenido">
-        <h:panelGrid columns="2">
-            <h:outputLabel value="Compa&ntilde;ia"/>
-            <h:selectOneMenu id="lstCia" value="#{planilla$horasExtras.cia}" style="width:150px" disabled="true" >
-                <f:selectItems value="#{planilla$horasExtras.listaCias}" var="empresa" itemValue="#{empresa.idCompania}" itemLabel="#{empresa.nomCompania}" />
-            </h:selectOneMenu>
-            <h:outputLabel value="Tipo Planilla"/>
-            <h:selectOneMenu id="lstTipo_plan" label="Tipo Planilla" style="width:150px" >
-                <f:selectItems value="#{planilla$horasExtras.listaTipos}" var="tipo" itemValue="#{tipo.tipoPlanillaPK.idTipoPlanilla}" itemLabel="#{tipo.nomTipoPlanilla}"/>
-            </h:selectOneMenu>
-            <h:outputLabel value="Planilla"/>
-            <h:selectOneMenu id="lstPlan" label="Planilla" style="width:150px">
-                <f:selectItems value="#{planilla$horasExtras.listaPlanillas}" var="pla" itemValue="#{pla.planillaPK.numPlanilla}" itemLabel="#{pla.planillaPK.anio} #{pla.planillaPK.mes} #{pla.planillaPK.numPlanilla}" />
-            </h:selectOneMenu>
-            <h:outputLabel value="Sucursal"/>
-            <h:selectOneMenu id="lstSuc" label="Sucursal" style="width:150px">
-                <f:selectItems value="#{planilla$horasExtras.listaSucursales}" var="sucursal" itemValue="#{sucursal.sucursalPK.idSucursal}" itemLabel="#{sucursal.nomSucursal}"/>
-            </h:selectOneMenu>
-        </h:panelGrid>
-        <p:spacer height="10px"/>
-        <p:dataTable id="tablaResumen" 
-                     emptyMessage="No se han encontrado asistencias" 
-                     var="h_xtras" rows="5" paginator="true" 
-                     rowEditListener="#{planilla$horasExtras.rowEditListener}"
-                     selection="#{SessionBeanPLA.resumenSeleccionado}"
-                     value="#{planilla$horasExtras.horasExtras}"                      
-                     paginatorAlwaysVisible="true"
-                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
+        <table width="100%" border="0">
+            <tr valign="top">
+                <td width="66%">
+                    <p:dataTable value="#{planilla$horasExtras.listaPlanillas}" var="planilla" selectionMode="single" selection="#{planilla$horasExtras.planillaSeleccionada}" rows="3" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">
+                        <f:facet name="header">
+                            <h:outputText value="Planillas"/>
+                        </f:facet>
+                        <p:column headerText="Planilla" filterBy="#{planilla.descripcionPlanilla}" filterMatchMode="contains" sortBy="#{planilla.descripcionPlanilla}">
+                            <p:graphicImage url="/resources/iconos/view-calendar-journal.png" height="16" width="16"/>
+                            <p:spacer width="5"/>
+                            <h:outputText value="#{planilla.descripcionPlanilla}"/>
+                        </p:column>
+                        <p:column headerText="Tipo de planilla" sortBy="#{planilla.tipoPlanilla.nomTipoPlanilla}" filterBy="#{planilla.tipoPlanilla.nomTipoPlanilla}" filterMatchMode="contains">
+                            <p:graphicImage url="/resources/iconos/documentinfo.png" height="16" width="16"/>
+                            <p:spacer width="5"/>
+                            <h:outputText value="#{planilla.tipoPlanilla.nomTipoPlanilla}"/>
+                        </p:column>
+                    </p:dataTable>
+                </td>
+                <td width="34%">
+                    <p:dataTable value="#{planilla$horasExtras.listaSucursales}" var="sucursal" selectionMode="single" selection="#{planilla$horasExtras.sucursalSeleccionada}" rows="3" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">
+                        <f:facet name="header">
+                            <h:outputText value="Sucursales"/>
+                        </f:facet>
+                        <p:column headerText="Sucursal" sortBy="#{sucursal.nomSucursal}" filterBy="#{sucursal.nomSucursal}" filterMatchMode="contains">
+                            <p:graphicImage url="/resources/iconos/rating.png" height="16" width="16"/>
+                            <p:spacer width="5"/>
+                            <h:outputText value="#{sucursal.nomSucursal}"/>
+                        </p:column>
+                    </p:dataTable>
+                </td>
+            </tr>
+        </table>
+        <p:spacer height="10"/>
+        <p:dataTable id="tablaResumen" emptyMessage="No se han encontrado asistencias" var="h_xtras" rows="5" paginator="true" rowEditListener="#{planilla$horasExtras.rowEditListener}" selection="#{SessionBeanPLA.resumenSeleccionado}" value="#{planilla$horasExtras.horasExtras}" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
             <f:facet name="header">
-                Resumen de asistencia
+                <h:outputText value="Resumen de asistencia"/>                
             </f:facet>
-            <p:column headerText="Cod">
+            <p:column headerText="Cod" sortBy="#{h_xtras.puestoEmpleado.empleado.empleadoPK.codEmp}">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <h:outputText value="#{h_xtras.puestoEmpleado.empleado.empleadoPK.codEmp}" />
+                        <h:outputText value="#{h_xtras.puestoEmpleado.empleado.empleadoPK.codEmp}"/>
                     </f:facet>
                     <f:facet name="input">
                         <h:outputText value="#{h_xtras.puestoEmpleado.empleado.empleadoPK.codEmp}"/>
                     </f:facet>
                 </p:cellEditor>
             </p:column>
-            <p:column headerText="Nombre" filterBy="#{h_xtras.puestoEmpleado.empleado.nombres}" >
+            <p:column headerText="Nombre" filterBy="#{h_xtras.puestoEmpleado.empleado.nombreCompleto}" filterMatchMode="contains" sortBy="#{h_xtras.puestoEmpleado.empleado.nombreCompleto}">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <h:outputText value="#{h_xtras.puestoEmpleado.empleado.nombres}" />
+                        <h:outputText value="#{h_xtras.puestoEmpleado.empleado.nombreCompleto}"/>
                     </f:facet>
                     <f:facet name="input">
-                        <h:outputText value="#{h_xtras.puestoEmpleado.empleado.nombres}"/>
+                        <h:outputText value="#{h_xtras.puestoEmpleado.empleado.nombreCompleto}"/>
                     </f:facet>
                 </p:cellEditor>
             </p:column>
             <p:column headerText="Lab.">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <h:outputLabel value="#{h_xtras.DLaborados}" />
+                        <h:outputLabel value="#{h_xtras.DLaborados}"/>
                     </f:facet>
                     <f:facet name="input">
-                        <p:inputText value="#{h_xtras.DLaborados}" style="width:100%" maxlength="10" />
+                        <p:inputText value="#{h_xtras.DLaborados}" maxlength="4" size="4"/>
                     </f:facet>
                 </p:cellEditor>
             </p:column>
             <p:column headerText="No Lab.">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <h:outputLabel value="#{h_xtras.dnLaborados}" />
+                        <h:outputLabel value="#{h_xtras.dnLaborados}"/>
                     </f:facet>
                     <f:facet name="input">
-                        <p:inputText value="#{h_xtras.dnLaborados}" style="width:100%" maxlength="10" />
+                        <p:inputText value="#{h_xtras.dnLaborados}" maxlength="4" size="4"/>
                     </f:facet>
                 </p:cellEditor>
             </p:column>
             <p:column headerText="Noct">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <h:outputLabel value="#{h_xtras.DNocturnidad}" />
+                        <h:outputLabel value="#{h_xtras.DNocturnidad}"/>
                     </f:facet>
                     <f:facet name="input">
-                        <p:inputText value="#{h_xtras.DNocturnidad}" style="width:100%" maxlength="10" />
+                        <p:inputText value="#{h_xtras.DNocturnidad}" maxlength="4" size="4"/>
                     </f:facet>
                 </p:cellEditor>
             </p:column>
             <p:column headerText="Had">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <h:outputLabel value="#{h_xtras.viaticos}" />
+                        <h:outputLabel value="#{h_xtras.viaticos}"/>
                     </f:facet>
                     <f:facet name="input">
-                        <p:inputText value="#{h_xtras.viaticos}" style="width:100%" maxlength="10" />
+                        <p:inputText value="#{h_xtras.viaticos}" maxlength="4" size="4"/>
                     </f:facet>
                 </p:cellEditor>
             </p:column>
             <p:column headerText="Diur">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <h:outputLabel value="#{h_xtras.HXsencillas}" />
+                        <h:outputLabel value="#{h_xtras.HXsencillas}"/>
                     </f:facet>
                     <f:facet name="input">
-                        <p:inputText value="#{h_xtras.HXsencillas}" style="width:100%" maxlength="10" />
+                        <p:inputText value="#{h_xtras.HXsencillas}" maxlength="4" size="4"/>
                     </f:facet>
                 </p:cellEditor>
             </p:column>
             <p:column headerText="Noct">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <h:outputLabel value="#{h_xtras.HXdobles}" />
+                        <h:outputText value="#{h_xtras.HXdobles}"/>
                     </f:facet>
                     <f:facet name="input">
-                        <p:inputText value="#{h_xtras.HXdobles}" style="width:100%" maxlength="10" />
+                        <p:inputText value="#{h_xtras.HXdobles}" maxlength="4" size="4"/>
                     </f:facet>
                 </p:cellEditor>
             </p:column>
             <p:column headerText="D. Fest">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <h:outputLabel/>
+                        <h:outputText value="#{h_xtras.HXf150}"/>
                     </f:facet>
                     <f:facet name="input">
-                        <p:inputText style="width:100%" maxlength="10" />
+                        <p:inputText value="#{h_xtras.HXf150}" maxlength="4" size="4"/>
                     </f:facet>
                 </p:cellEditor>
             </p:column>
-            <p:column headerText="No Fest">
+            <p:column headerText="D. No Fest">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <h:outputLabel/>
+                        <h:outputText value="#{h_xtras.HXf250}"/>
                     </f:facet>
                     <f:facet name="input">
-                        <p:inputText style="width:100%" maxlength="10" />
+                        <p:inputText value="#{h_xtras.HXf250}" maxlength="4" size="4"/>
                     </f:facet>
                 </p:cellEditor>
             </p:column>
             <p:column headerText="Dias Vac">
                 <p:cellEditor>
                     <f:facet name="output">
-                        <h:outputLabel value="#{h_xtras.vacaciones}" />
+                        <h:outputLabel value="#{h_xtras.vacaciones}"/>
                     </f:facet>
                     <f:facet name="input">
-                        <p:inputText value="#{h_xtras.vacaciones}" style="width:100%" maxlength="10" />
+                        <p:inputText value="#{h_xtras.vacaciones}" maxlength="4" size="4"/>
                     </f:facet>
                 </p:cellEditor>
             </p:column>
-            <p:column headerText="Opciones" styleClass="ui-editable-column-options" >
+            <p:column headerText="Opciones" styleClass="ui-editable-column-options">
                 <p:rowEditor/>
             </p:column>
         </p:dataTable>
     </ui:define>
-
+    <!-- =========================================================================================================== -->
+    <ui:define name="dialogos"/>
+    <!-- =========================================================================================================== -->
 </ui:composition>
