@@ -41,4 +41,11 @@ q.setParameter(1, empleado.getEmpleadoPK().getCodCia());
 q.setParameter(2, empleado.getEmpleadoPK().getCodEmp());
 return (List<Campania>) q.getResultList();
 }
+
+public Integer calcularEmpleadosEvaluados(Campania c)
+{
+Query q = em.createQuery("SELECT count(e.finalizada) FROM Evaluacion e WHERE e.finalizada = '1' and e.campania = :campania");
+q.setParameter("campania", c);
+return (Integer) q.getSingleResult();
+}
 }
