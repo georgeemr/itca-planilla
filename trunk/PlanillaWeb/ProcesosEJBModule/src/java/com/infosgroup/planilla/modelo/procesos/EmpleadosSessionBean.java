@@ -252,7 +252,7 @@ List<Object> listaResultado = gerenciaFacade.generarHeadCount(gerencia);
 for (Object o : listaResultado)
     {
     Object[] fila = (Object[]) o ;
-    HeadCountModel hcm = new HeadCountModel((BigDecimal) fila[0], (BigDecimal) fila[1], (String) fila[2], (BigDecimal) fila[3], (String) fila[4], (BigDecimal) fila[5], (String) fila[6], (BigDecimal) fila[7], (String) fila[8], (BigDecimal) fila[9], (BigDecimal) fila[10]);
+    HeadCountModel hcm = new HeadCountModel((BigDecimal) fila[0], (BigDecimal) fila[1], (String) fila[2], (BigDecimal) fila[3], (String) fila[4], (BigDecimal) fila[5], (String) fila[6], (BigDecimal) fila[7], (BigDecimal) fila[8]);
     lista.add(hcm);
     }
 return lista;
@@ -267,6 +267,13 @@ return gerenciaFacade.find(gerenciaPK);
 public List<Empleado> listarEmpleados()
 {
 return empleadosFacade.findAll();
+}
+
+public Integer calcularEmpleadosEvaluados(Campania c)
+{
+Integer r ;
+r = campaniasFacade.calcularEmpleadosEvaluados(c);
+return r;
 }
 
 }
