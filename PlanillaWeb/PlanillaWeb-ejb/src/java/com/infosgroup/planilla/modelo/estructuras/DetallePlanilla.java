@@ -1,7 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
+*/
 package com.infosgroup.planilla.modelo.estructuras;
 
 import com.infosgroup.planilla.modelo.entidades.DetPlanilla;
@@ -12,74 +12,92 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- *
- * @author root
- */
-public class DetallePlanilla implements Serializable {
+*
+* @author root
+*/
+public class DetallePlanilla implements Serializable
+{
+private PuestoEmpleado puestoEmpleado;
 
-    private PuestoEmpleado puestoEmpleado;
-    private Planilla planilla;
-    private BigDecimal prestaciones;
-    private BigDecimal deducciones;
-    private BigDecimal total;
-    private List<DetPlanilla> listaIng;
-    private List<DetPlanilla> listaEgr;
+private Planilla planilla;
 
-    public BigDecimal getDeducciones() {
-        return deducciones;
-    }
+private BigDecimal prestaciones;
 
-    public void setDeducciones(BigDecimal deducciones) {
-        this.deducciones = deducciones;
-    }
+private BigDecimal deducciones;
 
-    public List<DetPlanilla> getListaEgr() {
-        return listaEgr;
-    }
+private BigDecimal total;
 
-    public void setListaEgr(List<DetPlanilla> listaEgr) {
-        this.listaEgr = listaEgr;
-    }
+private List<DetPlanilla> listaIng;
 
-    public List<DetPlanilla> getListaIng() {
-        return listaIng;
-    }
+private List<DetPlanilla> listaEgr;
 
-    public void setListaIng(List<DetPlanilla> listaIng) {
-        this.listaIng = listaIng;
-    }
+public BigDecimal getDeducciones()
+{
+return deducciones;
+}
 
-    public Planilla getPlanilla() {
-        return planilla;
-    }
+public void setDeducciones(BigDecimal deducciones)
+{
+this.deducciones = deducciones;
+}
 
-    public void setPlanilla(Planilla planilla) {
-        this.planilla = planilla;
-    }
+public List<DetPlanilla> getListaEgr()
+{
+return listaEgr;
+}
 
-    public BigDecimal getPrestaciones() {
-        return prestaciones;
-    }
+public void setListaEgr(List<DetPlanilla> listaEgr)
+{
+this.listaEgr = listaEgr;
+}
 
-    public void setPrestaciones(BigDecimal prestaciones) {
-        this.prestaciones = prestaciones;
-    }
+public List<DetPlanilla> getListaIng()
+{
+return listaIng;
+}
 
-    public PuestoEmpleado getPuestoEmpleado() {
-        return puestoEmpleado;
-    }
+public void setListaIng(List<DetPlanilla> listaIng)
+{
+this.listaIng = listaIng;
+}
 
-    public void setPuestoEmpleado(PuestoEmpleado puestoEmpleado) {
-        this.puestoEmpleado = puestoEmpleado;
-    }
+public Planilla getPlanilla()
+{
+return planilla;
+}
 
-    public BigDecimal getTotal() {
-        return total;
-    }
+public void setPlanilla(Planilla planilla)
+{
+this.planilla = planilla;
+}
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
+public BigDecimal getPrestaciones()
+{
+return prestaciones;
+}
 
-    
+public void setPrestaciones(BigDecimal prestaciones)
+{
+this.prestaciones = prestaciones;
+}
+
+public PuestoEmpleado getPuestoEmpleado()
+{
+return puestoEmpleado;
+}
+
+public void setPuestoEmpleado(PuestoEmpleado puestoEmpleado)
+{
+this.puestoEmpleado = puestoEmpleado;
+}
+
+public BigDecimal getTotal()
+{
+return total;
+}
+
+public void setTotal(BigDecimal total)
+{
+this.total = total;
+}
 }
