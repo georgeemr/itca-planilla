@@ -115,4 +115,18 @@ if (!hayError)
     }
 return outcome;
 }
+
+private Integer cantEmpEvaluados ;
+
+    public Integer getCantEmpEvaluados()
+    {
+        cantEmpEvaluados = 10 ;//empleadosBean.calcularEmpleadosEvaluados(campaniaSeleccionada) ;
+        return cantEmpEvaluados;
+    }
+
+    public void setCantEmpEvaluados(Integer cantEmpEvaluados)
+    {
+        this.cantEmpEvaluados = cantEmpEvaluados;
+    }
+
 }
