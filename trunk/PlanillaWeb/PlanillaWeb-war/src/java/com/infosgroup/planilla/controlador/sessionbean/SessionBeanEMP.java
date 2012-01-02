@@ -7,6 +7,7 @@ package com.infosgroup.planilla.controlador.sessionbean;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.Factor;
+import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import java.util.List;
@@ -98,5 +99,28 @@ public void setDetalleEvaluacionTemporal(List<DetalleEvaluacion> detalleEvaluaci
 this.detalleEvaluacionTemporal = detalleEvaluacionTemporal;
 }
 
+private PuestoEmpleado[] puestosEmpleadosEvaluadores;
+
+public PuestoEmpleado[] getPuestosEmpleadosEvaluadores()
+{
+return puestosEmpleadosEvaluadores;
+}
+
+public void setPuestosEmpleadosEvaluadores(PuestoEmpleado[] puestosEmpleadosEvaluadores)
+{
+this.puestosEmpleadosEvaluadores = puestosEmpleadosEvaluadores;
+}
+
+private PuestoEmpleado[] puestosEmpleadosEvaluados;
+
+public PuestoEmpleado[] getPuestosEmpleadosEvaluados()
+{
+return puestosEmpleadosEvaluados;
+}
+
+public void setPuestosEmpleadosEvaluados(PuestoEmpleado[] puestosEmpleadosEvaluados)
+{
+this.puestosEmpleadosEvaluados = puestosEmpleadosEvaluados;
+}
 
 }
