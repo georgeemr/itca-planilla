@@ -32,7 +32,7 @@
     <!-- ======================================================================================================= -->
     <ui:define name="contenido">
         <p:wizard flowListener="#{empleados$definirEvaluaciones.defaultFlowListener}" showNavBar="true" showStepStatus="true" backLabel="Anterior" nextLabel="Siguiente">
-            <p:tab title="Evaluaci&oacute;n">
+            <p:tab id="tab0" title="Evaluaci&oacute;n">
                 <table width="100%" cellpadding="0" cellspacing="5" border="0">
                     <tr valign="center">
                         <td width="34%">
@@ -82,7 +82,7 @@
                     </tr>
                 </table>
             </p:tab>
-            <p:tab title="Evaluadores/Evaluados">
+            <p:tab id="tab1" title="Evaluadores">
                 <h:panelGrid columns="4" width="100%">
                     <h:outputText value="Campa&ntilde;a"/>
                     <h:outputLabel value="#{empleados$definirEvaluaciones.campaniaSeleccionada.nombre}" style="font-weight: bold"/>
@@ -92,39 +92,39 @@
                     <h:outputLabel value="#{empleados$definirEvaluaciones.plantillaSeleccionada.nombre}" style="font-weight: bold"/>
                 </h:panelGrid>
                 <p:spacer height="10"/>
-                <p:separator/>
-                <table width="100%" cellspacing="5" cellpadding="0" border="0">
-                    <tr align="center" valign="top">
-                        <td>
-                            <h:outputText value="Evaluadores" style="font-weight: bold;"/>
-                        </td>
-                        <td>
-                            <h:outputText value="Empleados evaluados" style="font-weight: bold;"/>
-                        </td>
-                    </tr>
-                    <tr align="center" valign="top">
-                        <td width="50%">
-                            <p:dataTable value="#{empleados$definirEvaluaciones.listaPuestosEmpleados}" var="puestoEmpleado1" selectionMode="multiple" selection="#{empleados$definirEvaluaciones.puestosEmpleadosEvaluadores}" rows="5" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25">
-                                <p:column headerText="Puesto" filterBy="#{puestoEmpleado1.puesto.nombre}" filterMatchMode="exact" filterOptions="#{empleados$definirEvaluaciones.puestosOptions}">
-                                    <h:outputText value="#{puestoEmpleado1.puesto.nombre}"/>
-                                </p:column>
-                                <p:column headerText="Empleado" filterBy="#{puestoEmpleado1.empleado.nombreCompleto}" filterMatchMode="contains">
-                                    <h:outputText value="#{puestoEmpleado1.empleado.nombreCompleto}"/>
-                                </p:column>
-                            </p:dataTable>
-                        </td>
-                        <td width="50%">
-                            <p:dataTable value="#{empleados$definirEvaluaciones.listaPuestosEmpleados}" var="puestoEmpleado2" selectionMode="multiple" selection="#{empleados$definirEvaluaciones.puestosEmpleadosEvaluados}" rows="5" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25">
-                                <p:column headerText="Puesto" filterBy="#{puestoEmpleado2.puesto.nombre}" filterMatchMode="exact" filterOptions="#{empleados$definirEvaluaciones.puestosOptions}">
-                                    <h:outputText value="#{puestoEmpleado2.puesto.nombre}"/>
-                                </p:column>
-                                <p:column headerText="Empleado" filterBy="#{puestoEmpleado2.empleado.nombreCompleto}" filterMatchMode="contains">
-                                    <h:outputText value="#{puestoEmpleado2.empleado.nombreCompleto}"/>
-                                </p:column>
-                            </p:dataTable>
-                        </td>
-                    </tr>
-                </table>
+                <p:dataTable value="#{empleados$definirEvaluaciones.listaPuestosEmpleados}" var="puestoEmpleado1" selectionMode="multiple" selection="#{empleados$definirEvaluaciones.puestosEmpleadosEvaluadores}" rows="5" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25">
+                    <f:facet name="header">
+                        <h:outputText value="Empleados evaluadores"/>
+                    </f:facet>
+                    <p:column headerText="Puesto" filterBy="#{puestoEmpleado1.puesto.nombre}" filterMatchMode="exact" filterOptions="#{empleados$definirEvaluaciones.puestosOptions}">
+                        <h:outputText value="#{puestoEmpleado1.puesto.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Empleado" filterBy="#{puestoEmpleado1.empleado.nombreCompleto}" filterMatchMode="contains">
+                        <h:outputText value="#{puestoEmpleado1.empleado.nombreCompleto}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
+            <p:tab id="tab2" title="Evaluados">
+                <h:panelGrid columns="4" width="100%">
+                    <h:outputText value="Campa&ntilde;a"/>
+                    <h:outputLabel value="#{empleados$definirEvaluaciones.campaniaSeleccionada.nombre}" style="font-weight: bold"/>
+                    <h:outputText value="Tipo de evaluaci&oacute;n"/>
+                    <h:outputLabel value="#{empleados$definirEvaluaciones.tipoEvaluacionSeleccionada.nomTipoEvaluacion}" style="font-weight: bold"/>
+                    <h:outputText value="Plantilla"/>
+                    <h:outputLabel value="#{empleados$definirEvaluaciones.plantillaSeleccionada.nombre}" style="font-weight: bold"/>
+                </h:panelGrid>
+                <p:spacer height="10"/>
+                <p:dataTable value="#{empleados$definirEvaluaciones.listaPuestosEmpleados}" var="puestoEmpleado2" selectionMode="multiple" selection="#{empleados$definirEvaluaciones.puestosEmpleadosEvaluados}" rows="5" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25">
+                    <f:facet name="header">
+                        <h:outputText value="Empleados evaluados"/>
+                    </f:facet>
+                    <p:column headerText="Puesto" filterBy="#{puestoEmpleado2.puesto.nombre}" filterMatchMode="exact" filterOptions="#{empleados$definirEvaluaciones.puestosOptions}">
+                        <h:outputText value="#{puestoEmpleado2.puesto.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Empleado" filterBy="#{puestoEmpleado2.empleado.nombreCompleto}" filterMatchMode="contains">
+                        <h:outputText value="#{puestoEmpleado2.empleado.nombreCompleto}"/>
+                    </p:column>
+                </p:dataTable>
             </p:tab>
         </p:wizard>
     </ui:define>
