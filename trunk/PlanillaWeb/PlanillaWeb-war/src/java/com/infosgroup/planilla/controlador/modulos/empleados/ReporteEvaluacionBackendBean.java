@@ -138,8 +138,8 @@ public String mostrarReporteEvaluacion$action()
 List<ReporteEvaluacion> lr = reportesBean.listarReporteEvaluacion(evaluacionSeleccionada);
 //mailBean.enviarCorreoElectronico("Correo de prueba", "Esta es una prueba de envio de correo electronico via GMail XD", "echopin@infosgroup.com");
 List<DetalleAdjuntoCorreo> listaAdjuntos = new ArrayList<DetalleAdjuntoCorreo>(0);
-listaAdjuntos.add(new DetalleAdjuntoCorreo("reporteprueba1.pdf", "application/pdf", reportesBean.generarDatosReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr)));
-listaAdjuntos.add(new DetalleAdjuntoCorreo("reporteprueba2.pdf", "application/pdf", reportesBean.generarDatosReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr)));
+//listaAdjuntos.add(new DetalleAdjuntoCorreo("reporteprueba1.pdf", "application/pdf", reportesBean.generarDatosReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr)));
+//listaAdjuntos.add(new DetalleAdjuntoCorreo("reporteprueba2.pdf", "application/pdf", reportesBean.generarDatosReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr)));
 
 String destinatarios = "gbran@infosgroup.com:echopin@infosgroup.com:vmercado@infosgroup.com:gsalazar@infosgroup.com";
 mailBean.enviarCorreoElectronicoAdjuntos("Correo de prueba", "Prueba de correo con adjuntos", destinatarios, listaAdjuntos);

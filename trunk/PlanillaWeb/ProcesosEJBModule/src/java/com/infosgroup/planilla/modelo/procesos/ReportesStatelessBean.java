@@ -19,10 +19,10 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+//import net.sf.jasperreports.engine.JasperExportManager;
+//import net.sf.jasperreports.engine.JasperFillManager;
+//import net.sf.jasperreports.engine.JasperPrint;
+//import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 /**
  *
  * @author root
@@ -49,11 +49,11 @@ try
     System.out.println("[REPORTE] Ruta:      " + rutaReporte);
     System.out.println("[REPORTE] Parametros:" + parametros);
     System.out.println("[REPORTE] Conexion:  " + conexion);
-    JasperPrint jrPrint = JasperFillManager.fillReport(rutaReporte, parametros, conexion);
-    byte[] bytesReporte = JasperExportManager.exportReportToPdf(jrPrint);
+//    JasperPrint jrPrint = JasperFillManager.fillReport(rutaReporte, parametros, conexion);
+//    byte[] bytesReporte = JasperExportManager.exportReportToPdf(jrPrint);
     response.setContentType("application/pdf");
     response.setHeader("Content-Disposition", "attachment;filename=\"" + nombreArchivoReporte + ".pdf\";");
-    response.getOutputStream().write(bytesReporte);
+//    response.getOutputStream().write(bytesReporte);
     response.getOutputStream().flush();
     conexion.close();
     facesContext.responseComplete();
@@ -73,19 +73,19 @@ public Boolean generarReporteBean(FacesContext facesContext, HashMap<String, Obj
 String rutaReporte = null;
 try
     {
-    JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(datos);
+//    JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(datos);
     String r = ((ServletContext) facesContext.getExternalContext().getContext()).getRealPath("/");
     HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
     rutaReporte = r + "resources" + java.io.File.separator + "reportes" + java.io.File.separator + nombreArchivoReporte + ".jasper";
     parametros.put("SUBREPORT_DIR", r + "resources" + java.io.File.separator + "reportes" + java.io.File.separator);
     System.out.println("[ReporteBean] Ruta:       " + rutaReporte);
     System.out.println("[ReporteBean] Parametros: " + parametros);
-    System.out.println("[ReporteBean] Datasource: " + ds);
-    JasperPrint jrPrint = JasperFillManager.fillReport(rutaReporte, parametros, ds) ;
-    byte[] bytesReporte = JasperExportManager.exportReportToPdf(jrPrint);
+//    System.out.println("[ReporteBean] Datasource: " + ds);
+//    JasperPrint jrPrint = JasperFillManager.fillReport(rutaReporte, parametros, ds) ;
+//    byte[] bytesReporte = JasperExportManager.exportReportToPdf(jrPrint);
     response.setContentType("application/pdf");
     response.setHeader("Content-Disposition", "attachment;filename=\"" + nombreArchivoReporte + ".pdf\";");
-    response.getOutputStream().write(bytesReporte);
+//    response.getOutputStream().write(bytesReporte);
     response.getOutputStream().flush();
     facesContext.responseComplete();
     return Boolean.TRUE;
@@ -98,30 +98,30 @@ catch (Exception excpt)
     }    
 }
 
-@PermitAll
-public byte[] generarDatosReporteBean(FacesContext facesContext, HashMap<String, Object> parametros, String nombreArchivoReporte, Collection datos)
-{
-String rutaReporte = null;
-try
-    {
-    JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(datos);
-    String r = ((ServletContext) facesContext.getExternalContext().getContext()).getRealPath("/");
-    rutaReporte = r + "resources" + java.io.File.separator + "reportes" + java.io.File.separator + nombreArchivoReporte + ".jasper";
-    parametros.put("SUBREPORT_DIR", r + "resources" + java.io.File.separator + "reportes" + java.io.File.separator);
-    System.out.println("[ReporteBean] Ruta:       " + rutaReporte);
-    System.out.println("[ReporteBean] Parametros: " + parametros);
-    System.out.println("[ReporteBean] Datasource: " + ds);
-    JasperPrint jrPrint = JasperFillManager.fillReport(rutaReporte, parametros, ds) ;
-    byte[] bytesReporte = JasperExportManager.exportReportToPdf(jrPrint);
-    return bytesReporte;
-    }
-catch (Exception excpt)
-    {
-    System.out.println(excpt.getClass().getName() + ": " + excpt.getLocalizedMessage());
-    System.out.println(excpt.getMessage());
-    return null;
-    }    
-}
+//@PermitAll
+//public byte[] generarDatosReporteBean(FacesContext facesContext, HashMap<String, Object> parametros, String nombreArchivoReporte, Collection datos)
+//{
+//String rutaReporte = null;
+//try
+//    {
+////    JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(datos);
+//    String r = ((ServletContext) facesContext.getExternalContext().getContext()).getRealPath("/");
+//    rutaReporte = r + "resources" + java.io.File.separator + "reportes" + java.io.File.separator + nombreArchivoReporte + ".jasper";
+//    parametros.put("SUBREPORT_DIR", r + "resources" + java.io.File.separator + "reportes" + java.io.File.separator);
+//    System.out.println("[ReporteBean] Ruta:       " + rutaReporte);
+//    System.out.println("[ReporteBean] Parametros: " + parametros);
+////    System.out.println("[ReporteBean] Datasource: " + ds);
+////    JasperPrint jrPrint = JasperFillManager.fillReport(rutaReporte, parametros, ds) ;
+////    byte[] bytesReporte = JasperExportManager.exportReportToPdf(jrPrint);
+//    return bytesReporte;
+//    }
+//catch (Exception excpt)
+//    {
+//    System.out.println(excpt.getClass().getName() + ": " + excpt.getLocalizedMessage());
+//    System.out.println(excpt.getMessage());
+//    return null;
+//    }    
+//}
 
 @PermitAll
 public List<ReporteEvaluacion> listarReporteEvaluacion(Evaluacion evaluacion)

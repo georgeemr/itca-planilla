@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition
-                template="/plantillas/defaultTemplate.xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"                
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.prime.com.tr/ui"
-                xmlns:f="http://java.sun.com/jsf/core">
+    template="/plantillas/defaultTemplate.xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"                
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    xmlns:f="http://java.sun.com/jsf/core">
     <!-- ================================================================================================================ -->
     <ui:define name="titulo">
         <h:outputText value="Informaci&oacute;n de Pagos"/>
@@ -15,7 +15,7 @@
         <p:tab title="Evaluaci&oacute;n">
             <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
                 <p:commandLink styleClass="opcionMenu" action="#{planilla$informacionPagos.buscarPlanilla$action}" update="principalForm:mensajes, principalForm:tablaDetalle" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
-                    <p:graphicImage value="/resources/iconos/edit-find.png"/>
+                    <p:graphicImage value="/resources/iconos/meeting-participant-request-response.png"/>
                     <h:outputText value="Mostrar datos de planilla" styleClass="espacioTexto"/>
                 </p:commandLink>
             </h:panelGrid>
@@ -58,17 +58,25 @@
                 <p:column headerText="Nombres" filterBy="#{total.puestoEmpleado.empleado.nombres}" filterMatchMode="contains" sortBy="#{total.puestoEmpleado.empleado.nombres}">
                     <h:outputLabel value="#{total.puestoEmpleado.empleado.nombres}"/>
                 </p:column>
-                <p:column headerText="Sueldo Base" sortBy="#{total.puestoEmpleado.puesto.salarioMinimo}" >
-                    <h:outputLabel value="#{total.puestoEmpleado.puesto.salarioMinimo}"/>
+                <p:column headerText="Sueldo Base" sortBy="#{total.puestoEmpleado.puesto.salarioMinimo}" style="text-align: right;">
+                    <h:outputText value="#{total.puestoEmpleado.puesto.salarioMinimo}">
+                        <f:convertNumber type="currency" currencySymbol="$" pattern="$#.00"/>
+                    </h:outputText>
                 </p:column>
-                <p:column headerText="Prestaciones" sortBy="#{total.prestaciones}" >
-                    <h:outputLabel value="#{total.prestaciones}"/>
+                <p:column headerText="Prestaciones" sortBy="#{total.prestaciones}" style="text-align: right;">
+                    <h:outputText value="#{total.prestaciones}">
+                        <f:convertNumber type="currency" currencySymbol="$" pattern="$#.00"/>
+                    </h:outputText>
                 </p:column>
-                <p:column headerText="Deducciones" sortBy="#{total.deducciones}" >
-                    <h:outputLabel value="#{total.deducciones}"/>
+                <p:column headerText="Deducciones" sortBy="#{total.deducciones}" style="text-align: right;">
+                    <h:outputText value="#{total.deducciones}">
+                        <f:convertNumber type="currency" currencySymbol="$" pattern="$#.00"/>
+                    </h:outputText>
                 </p:column>
-                <p:column headerText="Total" sortBy="#{total.total}" >
-                    <h:outputLabel value="#{total.total}"/>
+                <p:column headerText="Total" sortBy="#{total.total}" style="text-align: right;">
+                    <h:outputText value="#{total.total}">
+                        <f:convertNumber type="currency" currencySymbol="$" pattern="$#.00"/>
+                    </h:outputText>
                 </p:column>
                 <p:rowExpansion>
                     <table width="100%" border="0">
