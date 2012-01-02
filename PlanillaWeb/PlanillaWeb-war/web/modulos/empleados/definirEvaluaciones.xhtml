@@ -114,7 +114,7 @@
                     <h:outputLabel value="#{empleados$definirEvaluaciones.plantillaSeleccionada.nombre}" style="font-weight: bold"/>
                 </h:panelGrid>
                 <p:spacer height="10"/>
-                <p:dataTable value="#{empleados$definirEvaluaciones.listaPuestosEmpleados}" var="puestoEmpleado2" selectionMode="multiple" selection="#{empleados$definirEvaluaciones.puestosEmpleadosEvaluados}" rows="5" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25">
+                <p:dataTable value="#{empleados$definirEvaluaciones.listaPuestosEmpleados}" var="puestoEmpleado2" selectionMode="multiple" selection="#{SessionBeanEMP.puestosEmpleadosEvaluados}" rows="5" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25">
                     <f:facet name="header">
                         <h:outputText value="Empleados evaluados"/>
                     </f:facet>

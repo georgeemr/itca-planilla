@@ -148,28 +148,6 @@ public void setPlantillaSeleccionada(Plantilla plantillaSeleccionada)
 {
 this.plantillaSeleccionada = plantillaSeleccionada;
 }
-private PuestoEmpleado[] puestosEmpleadosEvaluadores;
-
-public PuestoEmpleado[] getPuestosEmpleadosEvaluadores()
-{
-return puestosEmpleadosEvaluadores;
-}
-
-public void setPuestosEmpleadosEvaluadores(PuestoEmpleado[] puestosEmpleadosEvaluadores)
-{
-this.puestosEmpleadosEvaluadores = puestosEmpleadosEvaluadores;
-}
-private PuestoEmpleado[] puestosEmpleadosEvaluados;
-
-public PuestoEmpleado[] getPuestosEmpleadosEvaluados()
-{
-return puestosEmpleadosEvaluados;
-}
-
-public void setPuestosEmpleadosEvaluados(PuestoEmpleado[] puestosEmpleadosEvaluados)
-{
-this.puestosEmpleadosEvaluados = puestosEmpleadosEvaluados;
-}
 
 public String definirEvaluaciones$action()
 {
@@ -191,12 +169,12 @@ if ( plantillaSeleccionada == null )
     addMessage( "PlanillaWeb", "Seleccione la plantilla", TipoMensaje.ADVERTENCIA );
     HayError = Boolean.TRUE;
     }
-if ( (puestosEmpleadosEvaluadores == null) || (puestosEmpleadosEvaluadores.length == 0) )
+if ( (sessionBeanEMP.getPuestosEmpleadosEvaluadores() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluadores().length == 0) )
     {
     addMessage( "PlanillaWeb", "Seleccione al menos un empleado como evaluador", TipoMensaje.ADVERTENCIA );
     HayError = Boolean.TRUE;
     }
-if ( (puestosEmpleadosEvaluados == null) || (puestosEmpleadosEvaluados.length == 0) )
+if ( (sessionBeanEMP.getPuestosEmpleadosEvaluados() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluados().length == 0) )
     {
     addMessage( "PlanillaWeb", "Seleccione al menos un empleado a evaluar", TipoMensaje.ADVERTENCIA );
     HayError = Boolean.TRUE;
@@ -217,7 +195,7 @@ if ( empleadosBean.tieneEvaluaciones( campaniaSeleccionada ) )
 else
     {
     evaluaciones = new ArrayList<Evaluacion>( 0 );
-    for (PuestoEmpleado puestoEmpleado : puestosEmpleadosEvaluados)
+    for (PuestoEmpleado puestoEmpleado : sessionBeanEMP.getPuestosEmpleadosEvaluados())
         {
         EvaluacionPK evaluacionPK = new EvaluacionPK();
         evaluacionPK.setCodCia( campaniaSeleccionada.getCampaniaPK().getCodCia() );
@@ -241,7 +219,7 @@ else
     addMessage( "PlanillaWeb", mensaje, TipoMensaje.INFORMACION );
 
     excepciones = 0;
-    for (PuestoEmpleado puestoEmpleadoEvaluador : puestosEmpleadosEvaluadores)
+    for (PuestoEmpleado puestoEmpleadoEvaluador : sessionBeanEMP.getPuestosEmpleadosEvaluadores())
         {
         excepciones += empleadosBean.asignarEvaluaciones( evaluaciones, puestoEmpleadoEvaluador.getEmpleado() );
         }
@@ -255,9 +233,7 @@ public String defaultFlowListener(FlowEvent flowEvt)
 {
 Boolean HayError = Boolean.FALSE;
 String anterior = flowEvt.getOldStep();
-String siguiente = flowEvt.getNewStep();
 Integer a = Integer.parseInt( anterior.replaceAll( "tab", "" ) );
-Integer b = Integer.parseInt( siguiente.replaceAll( "tab", "" ) );
 switch (a)
     {
 case 0:
@@ -267,11 +243,37 @@ case 0:
     break;
 case 1:
     HayError = ((puestosEmpleadosEvaluadores == null) || (puestosEmpleadosEvaluadores.length == 0));
+    if (!HayError)
+        sessionBeanEMP.setPuestosEmpleadosEvaluadores( puestosEmpleadosEvaluadores );
     break;
 case 2:
-    HayError = ((puestosEmpleadosEvaluados == null) || (puestosEmpleadosEvaluados.length == 0));
+    HayError = ((sessionBeanEMP.getPuestosEmpleadosEvaluados() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluados().length == 0));
     break;
     }
 return HayError ? flowEvt.getOldStep() : flowEvt.getNewStep();
 }
+
+private PuestoEmpleado[] puestosEmpleadosEvaluadores;
+
+public PuestoEmpleado[] getPuestosEmpleadosEvaluadores()
+{
+return puestosEmpleadosEvaluadores;
+}
+
+public void setPuestosEmpleadosEvaluadores(PuestoEmpleado[] puestosEmpleadosEvaluadores)
+{
+this.puestosEmpleadosEvaluadores = puestosEmpleadosEvaluadores;
+}
+
+//private PuestoEmpleado[] puestosEmpleadosEvaluados;
+//
+//public PuestoEmpleado[] getPuestosEmpleadosEvaluados()
+//{
+//return puestosEmpleadosEvaluados;
+//}
+//
+//public void setPuestosEmpleadosEvaluados(PuestoEmpleado[] puestosEmpleadosEvaluados)
+//{
+//this.puestosEmpleadosEvaluados = puestosEmpleadosEvaluados;
+//}
 }
