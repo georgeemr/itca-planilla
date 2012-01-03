@@ -8,21 +8,17 @@ import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
 import com.infosgroup.planilla.modelo.estructuras.DetalleAdjuntoCorreo;
-import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
+import com.infosgroup.planilla.modelo.estructuras.reportes.ReporteEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.MailStatelessBean;
 import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
-import com.infosgroup.planilla.modelo.reportes.ReporteEvaluacion;
 import com.infosgroup.planilla.view.JSFUtil;
-import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 ;
 
@@ -34,9 +30,6 @@ import javax.faces.context.FacesContext;
 @ViewScoped
 public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializable
 {
-@EJB
-private EmpleadosSessionBean empleadosBean;
-
 @EJB
 private ReportesStatelessBean reportesBean;
 
@@ -145,5 +138,11 @@ String destinatarios = "gbran@infosgroup.com:echopin@infosgroup.com:vmercado@inf
 mailBean.enviarCorreoElectronicoAdjuntos("Correo de prueba", "Prueba de correo con adjuntos", destinatarios, listaAdjuntos);
 //reportesBean.generarReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr);
 return null;
+}
+
+@PermitAll
+public static List<ReporteEvaluacion> listarReporteEvaluacion()
+{
+return new ArrayList<ReporteEvaluacion>(10);
 }
 }
