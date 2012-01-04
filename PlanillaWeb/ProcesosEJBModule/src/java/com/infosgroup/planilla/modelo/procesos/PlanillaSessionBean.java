@@ -432,7 +432,7 @@ catch (Exception e)
 return null;
 }
 
-public String guardarSolAcc$action(TipoAccion tipo, Empleado emp, Empleado jefe, Date fecha, String obsv, Long cantidad, String devengadas, Long dias, Date fechaCaja, Date fechaFinal, Date fechaInicial, Long hora, Date periodo, Date periodoFinal, Long sueldoAnterior, String tipoPermiso)
+public String guardarSolAcc$action(TipoAccion tipo, Empleado emp, Empleado jefe, Date fecha, String obsv, Long cantidad, String devengadas, Long dias, Date fechaCaja, Date fechaFinal, Date fechaInicial, Long hora, Date periodo, Date periodoFinal, Long sueldoAnterior, String tipoPermiso, Planilla pla)
 {
 long cia = 1;
 PuestoEmpleado pueEmp = puestoEmpleadoFacade.findByEmpleado(emp.getEmpleadoPK().getCodEmp(), cia);
@@ -458,6 +458,7 @@ try
     nuevaAccion.setPuestoEmpleado(pueEmp);
     nuevaAccion.setTipoAccion(tipo);
     nuevaAccion.setEmpleado(jefe);
+    nuevaAccion.setPlanilla(pla);
     nuevaAccion.setFecha(fecha);
     nuevaAccion.setObservacion(obsv);
     nuevaAccion.setStatus("G");
