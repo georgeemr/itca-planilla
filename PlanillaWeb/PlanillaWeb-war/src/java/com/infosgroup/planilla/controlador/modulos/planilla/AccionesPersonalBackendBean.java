@@ -39,6 +39,7 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     @PostConstruct
     public void init() {
         listaEmp = planillaSessionBean.listaEmpleados();
+        listaPlanillas = planillaSessionBean.listarPlanilla();
     }
 
     @Override
@@ -48,6 +49,7 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
         jefeSeleccionado = null;
         obsv = null;
         fecha = null;
+        planillaSeleccionada = null;
     }
     @EJB
     private PlanillaSessionBean planillaSessionBean;
@@ -64,6 +66,7 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     private long suc;
     private long tipo;
     private long tipoSec;
+    private long dias;
     private DataTable tablaEmpleado;
     private Empleado empleadoSeleccionado;
     private Empleado jefeSeleccionado;
@@ -75,6 +78,7 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     private Date fechaFinal;
     private Date periodoFechaInicio;
     private Date periodoFechaFin;
+    private Date fechaIngreso;
     private long detAccion;
 
     public long getDetAccion() {
@@ -125,6 +129,15 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
         this.periodoFechaInicio = periodoFechaInicio;
     }
 
+    public Date getFechaIngreso() {
+        fechaIngreso = (empleadoSeleccionado != null) ? empleadoSeleccionado.getFecIngreso() : null;
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(Date fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
+
     public String getObsv() {
         return obsv;
     }
@@ -140,7 +153,7 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     public void setDevengadas(String devengadas) {
         this.devengadas = devengadas;
     }
-    
+
     public Empleado getEmpleadoSeleccionado() {
         return empleadoSeleccionado;
     }
@@ -165,7 +178,7 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
         this.planillaSeleccionada = planillaSeleccionada;
     }
 
-    public List<Empleado> getListaEmp() {       
+    public List<Empleado> getListaEmp() {
         return listaEmp;
     }
 
@@ -232,6 +245,17 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
         this.cia = cia;
     }
 
+    public long getDias() {
+        if ((fechaInicial != null) && (fechaFinal != null)) {
+            dias = (validaFechas(fechaInicial, fechaFinal)) ? fechaFinal.compareTo(fechaInicial) : null;
+        }
+        return dias;
+    }
+
+    public void setDias(long dias) {
+        this.dias = dias;
+    }
+
     public List<Compania> getListaCias() {
         listaCias = planillaSessionBean.listarCias();
         return listaCias;
@@ -290,19 +314,17 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
         listaSolicitudes = planillaSessionBean.listarAccionporTipo(cia, tipo);
         return null;
     }
-    
-    public void lstTiposChangeListener(ValueChangeEvent event){
-        
+
+    public void lstTiposChangeListener(ValueChangeEvent event) {
     }
-    
-    public void pruebaListener(AjaxBehaviorEvent evt)
-    {
-       // tipo = (Long) evt.getSource();
-        if(tipo != 0){
+
+    public void pruebaListener(AjaxBehaviorEvent evt) {
+        // tipo = (Long) evt.getSource();
+        if (tipo != 0) {
             listaTipoNoAfecta = planillaSessionBean.listarTipoAccionAfecta();
             detAccion = tipo;
             tipoSec = tipo;
-        }else{
+        } else {
             listaTipoNoAfecta = planillaSessionBean.listarTipoAccionNoAfecta();
             detAccion = 0;
         }
@@ -315,11 +337,10 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     public void cmdJefeActionListener(ActionEvent event) {
         sessionBeanPLA.setTbJefes(Boolean.TRUE);
     }
-
     private String nombreEmpleado;
 
     public String getNombreEmpleado() {
-        nombreEmpleado = (empleadoSeleccionado != null) ? empleadoSeleccionado.getNombreCompleto() : "" ;
+        nombreEmpleado = (empleadoSeleccionado != null) ? empleadoSeleccionado.getNombreCompleto() : "";
         return nombreEmpleado;
     }
 
@@ -328,28 +349,26 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     }
 
     public String getNombreJefe() {
-        nombreJefe = (jefeSeleccionado != null) ? jefeSeleccionado.getNombreCompleto() : "" ;
+        nombreJefe = (jefeSeleccionado != null) ? jefeSeleccionado.getNombreCompleto() : "";
         return nombreJefe;
     }
 
     public void setNombreJefe(String nombreJefe) {
         this.nombreJefe = nombreJefe;
     }
-    
-    private String nombreJefe ;
-    
-    public String nuevaAccionNoAfecta$action(){
+    private String nombreJefe;
+
+    public String nuevaAccionNoAfecta$action() {
         TipoAccion tipoAcc = planillaSessionBean.buscarTipoAccion(tipoSec);
-        planillaSessionBean.guardarSolAcc$action(tipoAcc, empleadoSeleccionado, jefeSeleccionado, fecha, obsv, null, null, null, null, fechaFinal, fechaFinal, null, periodoFechaInicio, periodoFechaFin, null, null/*, planillaSeleccionada*/);
+        planillaSessionBean.guardarSolAcc$action(tipoAcc, empleadoSeleccionado, jefeSeleccionado, fecha, obsv, null, null, dias, null, fechaFinal, fechaFinal, null, periodoFechaInicio, periodoFechaFin, null, null, planillaSeleccionada);
         mostrarMensaje(FacesMessage.SEVERITY_INFO, "Solicitud de accion guardada exitosamente");
         limpiarCampos();
         listaSolicitudes = planillaSessionBean.listarAccionporTipo(cia, tipo);
         return null;
     }
-    
-    public String cancelar$action(){
+
+    public String cancelar$action() {
         limpiarCampos();
         return null;
     }
-    
 }
