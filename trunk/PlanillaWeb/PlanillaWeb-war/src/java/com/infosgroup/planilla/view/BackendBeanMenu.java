@@ -9,6 +9,7 @@ import com.infosgroup.planilla.modelo.facades.MenuFacade;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Stack;
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
@@ -38,6 +39,7 @@ ExpressionFactory expFact = FacesContext.getCurrentInstance().getApplication().g
 MethodExpression methodExpression = expFact.createMethodExpression( FacesContext.getCurrentInstance().getELContext(), "#{menu.seleccionMenu}", null, new Class<?>[0] );
 MenuActionListener mal = new MenuActionListener();
 
+@PermitAll
 public MenuModel getMenuModel()
 {
 menuModel = new DefaultMenuModel();
