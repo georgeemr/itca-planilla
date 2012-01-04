@@ -51,7 +51,7 @@
                 <h:outputLabel value="Acci&oacute;n de Personal"/>
                 
                 <h:selectOneMenu id="lstAcc" style="width: 250px" value="#{planilla$accionesPersonal.tipo}">
-                    <f:ajax event="change" listener="#{planilla$accionesPersonal.pruebaListener}" execute="lstAcc" render="@all" />
+                    <f:ajax event="change" listener="#{planilla$accionesPersonal.pruebaListener}" execute="lstAcc" render="@form" />
                     <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc"
                                    itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
                 </h:selectOneMenu>
@@ -202,7 +202,7 @@
             <p:dataTable id="tablBusEmp"
                          rows="3" paginator="true"
                          emptyMessage="No hay empleados que mostrar"
-                         var="emp"  update="txtEmp"
+                         var="emp"  update="txtEmp, clIngr"
                          value="#{planilla$accionesPersonal.listaEmp}"
                          selection="#{planilla$accionesPersonal.empleadoSeleccionado}"
                          selectionMode="single"
@@ -302,7 +302,7 @@
                     <h:outputLabel value="Fecha fin"/>
                     <p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.fechaFinal}" />
                     <h:outputLabel value="Fecha de ingreso"/>
-                    <p:calendar pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.fecha}" disabled="true" />
+                    <p:calendar pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.fechaIngreso}" disabled="true" id="clIngr" />
                     <h:outputLabel value="Fecha inicio"/>
                     <p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.periodoFechaInicio}" />
                     <h:outputLabel value="Fecha fin"/>
@@ -322,7 +322,31 @@
                     <p:spacer width="10px"/>
                     <h:outputLabel value="Planilla"/>
                     <h:selectOneMenu id="lstPlan" label="Planilla" style="width:150px">
-                        <f:selectItems value="#{planilla$accionesPersonal.listaPlanillas}" var="pla" itemValue="#{pla}" 
+                        <f:selectItems value="#{planilla$informacionPagos.listaPlanillas}" var="pla" 
+                               itemLabel="#{pla.planillaPK.anio} ------ #{pla.planillaPK.mes} ------ #{pla.planillaPK.numPlanilla}" />
+                    </h:selectOneMenu>
+            
+                </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset id="fldIncapacidad" rendered="#{planilla$accionesPersonal.detAccion eq 4}" >
+                <h:panelGrid columns="6">
+                    <h:outputLabel value="Fecha inicio"/>
+                    <p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.periodoFechaInicio}" />
+                    <h:outputLabel value="Fecha fin"/>
+                    <p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.periodoFechaFin}" />
+                    <h:outputLabel value="Dias"/>
+                    <p:inputText value="#{planilla$accionesPersonal.dias}" id="txtDias" />
+                    <h:outputLabel value="Tipo Planilla"/>
+                    <h:selectOneMenu id="lstTipo_plan2" label="Tipo Planilla" style="width:150px" >
+                        <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tipoPlanillaPK.idTipoPlanilla}" itemLabel="#{tipo.nomTipoPlanilla}"/>
+                    </h:selectOneMenu>
+                    <p:spacer width="10px"/>
+                    <p:spacer width="10px"/>
+                    <p:spacer width="10px"/>
+                    <p:spacer width="10px"/>
+                    <h:outputLabel value="Planilla"/>
+                    <h:selectOneMenu id="lstPlan2" label="Planilla" style="width:150px">
+                        <f:selectItems value="#{planilla$informacionPagos.listaPlanillas}" var="pla" 
                                itemLabel="#{pla.planillaPK.anio} ------ #{pla.planillaPK.mes} ------ #{pla.planillaPK.numPlanilla}" />
                     </h:selectOneMenu>
             
