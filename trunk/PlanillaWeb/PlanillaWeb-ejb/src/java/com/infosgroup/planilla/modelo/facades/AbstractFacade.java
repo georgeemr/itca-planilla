@@ -28,7 +28,7 @@ protected abstract EntityManager getEntityManager();
 public void create(T entity)
 {
 getEntityManager().persist( entity );
-getEntityManager().flush();
+//getEntityManager().flush();
 }
 
 public void edit(T entity)
