@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -15,84 +16,77 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class PlanillaPK implements Serializable
-{
+public class PlanillaPK implements Serializable {
 
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID_COMPANIA", nullable = false)
     private long idCompania;
-
     @Basic(optional = false)
     @NotNull
     @Column(name = "ANIO", nullable = false)
     private long anio;
-
     @Basic(optional = false)
     @NotNull
     @Column(name = "MES", nullable = false)
     private long mes;
-
     @Basic(optional = false)
     @NotNull
     @Column(name = "NUM_PLANILLA", nullable = false)
     private long numPlanilla;
+    @Transient
+    private String pkAsString;
 
-    public PlanillaPK()
-    {
-    }
+    public PlanillaPK() {}
 
-    public PlanillaPK(long idCompania, long anio, long mes, long numPlanilla)
-    {
+    public PlanillaPK(long idCompania, long anio, long mes, long numPlanilla) {
         this.idCompania = idCompania;
         this.anio = anio;
         this.mes = mes;
         this.numPlanilla = numPlanilla;
     }
 
-    public long getIdCompania()
-    {
+    public PlanillaPK(String p) {
+        this.idCompania = new Long(p.split(":")[0]);
+        this.anio = new Long(p.split(":")[1]);
+        this.mes = new Long(p.split(":")[2]);
+        this.numPlanilla = new Long(p.split(":")[3]);
+    }
+
+    public long getIdCompania() {
         return idCompania;
     }
 
-    public void setIdCompania(long idCompania)
-    {
+    public void setIdCompania(long idCompania) {
         this.idCompania = idCompania;
     }
 
-    public long getAnio()
-    {
+    public long getAnio() {
         return anio;
     }
 
-    public void setAnio(long anio)
-    {
+    public void setAnio(long anio) {
         this.anio = anio;
     }
 
-    public long getMes()
-    {
+    public long getMes() {
         return mes;
     }
 
-    public void setMes(long mes)
-    {
+    public void setMes(long mes) {
         this.mes = mes;
     }
 
-    public long getNumPlanilla()
-    {
+    public long getNumPlanilla() {
         return numPlanilla;
     }
 
-    public void setNumPlanilla(long numPlanilla)
-    {
+    public void setNumPlanilla(long numPlanilla) {
         this.numPlanilla = numPlanilla;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (int) idCompania;
         hash += (int) anio;
@@ -102,25 +96,34 @@ public class PlanillaPK implements Serializable
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PlanillaPK))
-            {
+        if (!(object instanceof PlanillaPK)) {
             return false;
-            }
+        }
         PlanillaPK other = (PlanillaPK) object;
-        if (this.idCompania != other.idCompania) return false;
-        if (this.anio != other.anio) return false;
-        if (this.mes != other.mes) return false;
-        if (this.numPlanilla != other.numPlanilla) return false;
+        if (this.idCompania != other.idCompania) {
+            return false;
+        }
+        if (this.anio != other.anio) {
+            return false;
+        }
+        if (this.mes != other.mes) {
+            return false;
+        }
+        if (this.numPlanilla != other.numPlanilla) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.PlanillaPK[ idCompania=" + idCompania + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + " ]";
     }
-    
+
+    public String getPkAsString() {
+        pkAsString = "" + idCompania + ":" + anio + ":" + mes + ":" + numPlanilla;
+        return pkAsString;
+    }
 }
