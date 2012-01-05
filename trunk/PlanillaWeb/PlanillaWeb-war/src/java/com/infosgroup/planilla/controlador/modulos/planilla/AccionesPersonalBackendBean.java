@@ -8,6 +8,7 @@ import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Compania;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
+import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
 import com.infosgroup.planilla.modelo.entidades.Sucursal;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.entidades.TipoPlanilla;
@@ -15,12 +16,10 @@ import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
@@ -36,40 +35,26 @@ import org.primefaces.component.datatable.DataTable;
 @ViewScoped
 public class AccionesPersonalBackendBean extends JSFUtil implements Serializable {
 
-    @PostConstruct
-    public void init() {
-        listaEmp = planillaSessionBean.listaEmpleados();
-        listaPlanillas = planillaSessionBean.listarPlanilla();
-    }
-
-    @Override
-    protected void limpiarCampos() {
-        tipoSec = 0;
-        empleadoSeleccionado = null;
-        jefeSeleccionado = null;
-        obsv = null;
-        fecha = null;
-        planillaSeleccionada = null;
-    }
     @EJB
     private PlanillaSessionBean planillaSessionBean;
     private List<Compania> listaCias;
-    private List<Sucursal> listaSucursales;
     private List<AccionPersonal> listaSolicitudes;
+    private long tipo;
     private List<TipoAccion> listaTipo;
     private List<TipoAccion> listaTipoNoAfecta;
+    private List<Sucursal> listaSucursales;
     private List<Empleado> listaJefes;
     private List<Empleado> listaEmp;
     private List<TipoPlanilla> listaTipos;
     private List<Planilla> listaPlanillas;
-    private long cia = 1;
-    private long suc;
-    private long tipo;
-    private long tipoSec;
-    private long dias;
+    private Long empresa;
+    private Long sucursal;
+    private Long tipoPlanilla;
+    private String planilla;
+    private Long tipoAccion;
+    private Long dias;
     private DataTable tablaEmpleado;
     private Empleado empleadoSeleccionado;
-    private Empleado jefeSeleccionado;
     private Planilla planillaSeleccionada;
     private String obsv;
     private String devengadas;
@@ -80,9 +65,47 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     private Date periodoFechaFin;
     private Date fechaIngreso;
     private long detAccion;
+    private String nombreEmpleado;
+    private String nombreJefe;
+
+    public AccionesPersonalBackendBean() {
+    }
+
+    @PostConstruct
+    public void init() {
+        listaEmp = planillaSessionBean.listaEmpleados();
+        listaPlanillas = planillaSessionBean.listarPlanilla();
+        empresa = getSessionBeanADM().getCompania().getIdCompania();
+        fecha = new Date();
+    }
+
+    public List<Sucursal> getListaSucursales() {
+        listaSucursales = planillaSessionBean.listarSucursal();
+        return listaSucursales;
+    }
+
+    public void setListaSucursales(List<Sucursal> listaSucursales) {
+        this.listaSucursales = listaSucursales;
+    }
+
+    public long getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(long tipo) {
+        this.tipo = tipo;
+    }
 
     public long getDetAccion() {
         return detAccion;
+    }
+
+    public Long getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Long sucursal) {
+        this.sucursal = sucursal;
     }
 
     public void setDetAccion(long detAccion) {
@@ -162,14 +185,6 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
         this.empleadoSeleccionado = empleadoSeleccionado;
     }
 
-    public Empleado getJefeSeleccionado() {
-        return jefeSeleccionado;
-    }
-
-    public void setJefeSeleccionado(Empleado jefeSeleccionado) {
-        this.jefeSeleccionado = jefeSeleccionado;
-    }
-
     public Planilla getPlanillaSeleccionada() {
         return planillaSeleccionada;
     }
@@ -221,33 +236,33 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
         this.tablaEmpleado = tablaEmpleado;
     }
 
-    public long getTipoSec() {
-        return tipoSec;
+    public Long getTipoAccion() {
+        return tipoAccion;
     }
 
-    public void setTipoSec(long tipoSec) {
-        this.tipoSec = tipoSec;
+    public void setTipoAccion(Long tipoAccion) {
+        this.tipoAccion = tipoAccion;
     }
 
-    public long getTipo() {
-        return tipo;
+    public long getTipoPlanilla() {
+        return tipoPlanilla;
     }
 
-    public void setTipo(long tipo) {
-        this.tipo = tipo;
+    public void setTipoPlanilla(long tipoPlanilla) {
+        this.tipoPlanilla = tipoPlanilla;
     }
 
-    public long getCia() {
-        return cia;
+    public long getEmpresa() {
+        return empresa;
     }
 
-    public void setCia(long cia) {
-        this.cia = cia;
+    public void setCia(long empresa) {
+        this.empresa = empresa;
     }
 
     public long getDias() {
         if ((fechaInicial != null) && (fechaFinal != null)) {
-            dias = (validaFechas(fechaInicial, fechaFinal)) ? fechaFinal.compareTo(fechaInicial) : null;
+            dias = new Long((validaFechas(fechaInicial, fechaFinal)) ? fechaFinal.compareTo(fechaInicial) : null);
         }
         return dias;
     }
@@ -266,7 +281,7 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     }
 
     public List<AccionPersonal> getListaSolicitudes() {
-        listaSolicitudes = planillaSessionBean.listarAccionporTipo(cia, tipo);
+        listaSolicitudes = planillaSessionBean.listarAccionporTipo(empresa, tipoPlanilla);
         return listaSolicitudes;
     }
 
@@ -274,18 +289,8 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
         this.listaSolicitudes = listaSolicitudes;
     }
 
-    public List<Sucursal> getListaSucursales() {
-        listaSucursales = planillaSessionBean.listarSucursal();
-        return listaSucursales;
-    }
-
-    public void setListaSucursales(List<Sucursal> listaSucursales) {
-        this.listaSucursales = listaSucursales;
-    }
-
     public List<TipoAccion> getListaTipo() {
         listaTipo = planillaSessionBean.listarTipoAccionAfecta();
-        //listaTipo = planillaSessionBean.listarTiposAcciones();
         return listaTipo;
     }
 
@@ -294,7 +299,6 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     }
 
     public List<TipoAccion> getListaTipoNoAfecta() {
-        //listaTipoNoAfecta = planillaSessionBean.listarTipoAccionNoAfecta();
         return listaTipoNoAfecta;
     }
 
@@ -302,32 +306,12 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
         this.listaTipoNoAfecta = listaTipoNoAfecta;
     }
 
-    public long getSuc() {
-        return suc;
-    }
-
-    public void setSuc(long suc) {
-        this.suc = suc;
-    }
-
     public String consulta$action() {
-        listaSolicitudes = planillaSessionBean.listarAccionporTipo(cia, tipo);
+        listaSolicitudes = planillaSessionBean.listarAccionporTipo(empresa, tipoPlanilla);
         return null;
     }
 
     public void lstTiposChangeListener(ValueChangeEvent event) {
-    }
-
-    public void pruebaListener(AjaxBehaviorEvent evt) {
-        // tipo = (Long) evt.getSource();
-        if (tipo != 0) {
-            listaTipoNoAfecta = planillaSessionBean.listarTipoAccionAfecta();
-            detAccion = tipo;
-            tipoSec = tipo;
-        } else {
-            listaTipoNoAfecta = planillaSessionBean.listarTipoAccionNoAfecta();
-            detAccion = 0;
-        }
     }
 
     public void cmdEmpActionListener(ActionEvent event) {
@@ -337,7 +321,6 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     public void cmdJefeActionListener(ActionEvent event) {
         sessionBeanPLA.setTbJefes(Boolean.TRUE);
     }
-    private String nombreEmpleado;
 
     public String getNombreEmpleado() {
         nombreEmpleado = (empleadoSeleccionado != null) ? empleadoSeleccionado.getNombreCompleto() : "";
@@ -348,27 +331,125 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
         this.nombreEmpleado = nombreEmpleado;
     }
 
+    public String getPlanilla() {
+        return planilla;
+    }
+
+    public void setPlanilla(String planilla) {
+        this.planilla = planilla;
+    }
+
     public String getNombreJefe() {
-        nombreJefe = (jefeSeleccionado != null) ? jefeSeleccionado.getNombreCompleto() : "";
+        nombreJefe = "Ninguno";
+        if (empleadoSeleccionado != null) {
+            if (empleadoSeleccionado.getEmpleado() != null) {
+                nombreJefe = empleadoSeleccionado.getEmpleado().getNombreCompleto();
+            }
+        } else {
+            nombreJefe = "Seleccione el empleado.";
+        }
         return nombreJefe;
     }
 
     public void setNombreJefe(String nombreJefe) {
         this.nombreJefe = nombreJefe;
     }
-    private String nombreJefe;
 
     public String nuevaAccionNoAfecta$action() {
-        TipoAccion tipoAcc = planillaSessionBean.buscarTipoAccion(tipoSec);
-        planillaSessionBean.guardarSolAcc$action(tipoAcc, empleadoSeleccionado, jefeSeleccionado, fecha, obsv, null, null, dias, null, fechaFinal, fechaFinal, null, periodoFechaInicio, periodoFechaFin, null, null, planillaSeleccionada);
-        mostrarMensaje(FacesMessage.SEVERITY_INFO, "Solicitud de accion guardada exitosamente");
+        if (validaFormulario()) {
+            return null;
+        }
+        TipoAccion tipoAccionSeleccionada = planillaSessionBean.buscarTipoAccion(empresa, tipoAccion);
+        planillaSeleccionada = planillaSessionBean.findPlanillaById(new PlanillaPK(planilla));
+
+        planillaSessionBean.guardarSolVacaciones$action(empresa,
+                empleadoSeleccionado,
+                tipoAccionSeleccionada,
+                obsv,
+                fechaInicial,
+                fechaFinal,
+                devengadas,
+                planillaSeleccionada);
+        addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
         limpiarCampos();
-        listaSolicitudes = planillaSessionBean.listarAccionporTipo(cia, tipo);
+        listaSolicitudes = planillaSessionBean.listarAccionporTipo(empresa, tipo);
         return null;
+    }
+
+    public Boolean validaFormulario() {
+        Boolean error = Boolean.FALSE;
+
+        if (empleadoSeleccionado == null) {
+            addMessage("Acciones de Personal", "No ha seleccionado ningún Empleado", TipoMensaje.ERROR);
+            error = Boolean.TRUE;
+        }
+
+        if (tipoAccion == null) {
+            addMessage("Acciones de Personal", "Tipo de acción es un campo requerido", TipoMensaje.ERROR);
+            error = Boolean.TRUE;
+        }
+
+        if (fechaInicial == null) {
+            addMessage("Acciones de Personal", "Fecha inicio es un campo requerido.", TipoMensaje.ERROR);
+            error = Boolean.TRUE;
+        }
+
+        if (fechaFinal == null) {
+            addMessage("Acciones de Personal", "Fecha final es un campo requerido.", TipoMensaje.ERROR);
+            error = Boolean.TRUE;
+        }
+
+        if (fechaInicial != null || fechaFinal != null) {
+            if (!validaFechas(fechaInicial, fechaFinal)) {
+                addMessage("Acciones de Personal", "Los datos de Fecha inicia y Fecha fin no son consistentes.", TipoMensaje.ERROR);
+                error = Boolean.TRUE;
+            }
+        }
+
+        if (tipoPlanilla == null) {
+            addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
+            error = Boolean.TRUE;
+        }
+
+        if (planilla == null) {
+            addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
+            error = Boolean.TRUE;
+        }
+        
+        if ( empleadoSeleccionado.getPuestoEmpleadoList() == null || empleadoSeleccionado.getPuestoEmpleadoList().isEmpty() ){
+            addMessage("Acciones de Personal", "El empleado no tiene asignado ningún puesto.", TipoMensaje.ERROR);
+            error = Boolean.TRUE;            
+        }
+
+        return error;
     }
 
     public String cancelar$action() {
         limpiarCampos();
         return null;
+    }
+
+    public void pruebaListener(AjaxBehaviorEvent evt) {
+        // tipo = (Long) evt.getSource();
+        if (tipo != 0) {
+            listaTipoNoAfecta = planillaSessionBean.listarTipoAccionAfecta();
+            detAccion = tipo;
+            tipoPlanilla = tipo;
+        } else {
+            listaTipoNoAfecta = planillaSessionBean.listarTipoAccionNoAfecta();
+            detAccion = 0;
+        }
+    }
+
+    @Override
+    protected void limpiarCampos() {
+        tipoAccion = 0L;
+        empleadoSeleccionado = null;
+        obsv = null;
+        planillaSeleccionada = null;
+        fechaInicial =null;
+        fechaFinal = null;
+        nombreEmpleado = null;
+        nombreJefe= "Seleccione un Empleado";
     }
 }
