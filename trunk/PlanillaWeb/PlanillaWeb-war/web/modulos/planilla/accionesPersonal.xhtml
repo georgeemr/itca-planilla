@@ -49,7 +49,7 @@
         <p:fieldset id="fieldset1">
             <h:panelGrid columns="2">
                 <h:outputLabel value="Acci&oacute;n de Personal"/>
-                
+
                 <h:selectOneMenu id="lstAcc" style="width: 250px" value="#{planilla$accionesPersonal.tipo}">
                     <f:ajax event="change" listener="#{planilla$accionesPersonal.pruebaListener}" execute="lstAcc" render="@form" />
                     <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc"
@@ -57,7 +57,7 @@
                 </h:selectOneMenu>
                 <h:outputLabel value="Sucursal"/>
                 <h:selectOneMenu id="lstSuc" style="width: 250px"
-                                 value="#{planilla$accionesPersonal.suc}">
+                                 value="#{planilla$accionesPersonal.sucursal}">
                     <f:selectItems value="#{planilla$accionesPersonal.listaSucursales}" var="sucursal"
                                    itemValue="#{sucursal.sucursalPK.idSucursal}" itemLabel="#{sucursal.nomSucursal}"/>
                 </h:selectOneMenu>
@@ -77,9 +77,6 @@
             <f:facet name="header">
                 Acciones de personal
             </f:facet>
-            <!--p:column>
-                <p:rowToggler/>
-            </p:column-->
             <p:column headerText="Emp.">
                 <h:outputText value="#{sol.puestoEmpleado.empleado.empleadoPK.codEmp}"/>
             </p:column>
@@ -118,72 +115,10 @@
             <p:column headerText="D&iacute;as">
                 <h:outputText value="#{sol.dias}"/>
             </p:column>
-            <!--p:rowExpansion>
-                <h:panelGrid columns="2" cellpadding="4" style="width: 200px" 
-                             styleClass="ui-widget-content" columnClasses="label, value">
-                    <h:outputText value="A&ntilde;o"/>
-                    <h:outputText value="# {sol.accionPersonalPK.anio}"/>
-                    <h:outputText value="Mes"/>
-                    <h:outputText value="# {sol.accionPersonalPK.mes}"/>
-                    <h:outputText value="Num Planilla"/>
-                    <h:outputText value="# {sol.accionPersonalPK.numPlanilla}"/>
-                </h:panelGrid>
-            </p:rowExpansion-->
         </p:dataTable>
     </ui:define>
-    <!-- ======================================================================================================= -->
+
     <ui:define name="dialogos">
-        <!--script type="text/javascript" src="# {facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/jquery-1.6.2.js"></script-->
-        <!--script type="text/javascript" src="# {facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery-ui-1.8.16.custom.js"></script-->
-        <!--script type="text/javascript" src="# {facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery.ui.core.js"></script-->
-        <!--script type="text/javascript" src="# {facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery.ui.widget.js"></script>
-        <script type="text/javascript" src="# {facesContext.externalContext.requestContextPath}/resources/jquery-ui-1.8.16/development-bundle/ui/jquery.ui.datepicker.js"></script>        
-            <script>
-                $(
-                function ()
-                    {
-                    var style = document.getElementById("form1:styleaplicado").value;
-                    var cadena = document.getElementById("form1:diasMarcados").value;
-                    //var cadena = "15-01-2011$17-01-2011$11-12-2010";
-                    var events = cadena.split("$");
-                    //alert(events[0]+" "+events[1]+" "+events[2]);
-                    //var events = ['15-1-2011', '17-1-2011', '11-3-2011'];
-                    $('#datepicker01').datepicker(
-                        {
-                        beforeShowDay: function(dateToShow)
-                            {
-                            var current = $.datepicker.formatDate('dd-mm-yy', dateToShow);
-                            return jQuery.inArray(current, events) == -1 ? [true, ''] : [true, style];
-                            }
-                        });
-                    $( "#datepicker01" ).datepicker(
-                        {
-                        beforeShowDay: function (day)
-                            {
-                            var day = day.getDay();
-                            return ( (day == 0) || (day == 6)) ? [false, "somecssclass"] : [true, "someothercssclass"];
-                            }
-                        });
-                        
-                        $("#datepicker01").datepicker();
-                        $("#datepicker01").datepicker("option", "monthNames", ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'] );
-                        $("#datepicker01").datepicker("option", "dayNamesMin", ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa']);
-                        $("#datepicker01").datepicker("option", "numberOfMonths", [3, 4]);
-                        $("#datepicker01").datepicker("option", "stepMonths", 0);
-                        var el = document.getElementById("form1:dropAnio").value;
-                        var tx = el.substring(2,4);
-                        $("#datepicker01").datepicker({dateFormat: 'mm/dd/yy'}).datepicker('setDate', '01/01/'+ tx);
-                    }
-                );
-                    
-                function cal(anio)
-                    {
-                     //var el = document.getElementById("form1:dropAnio").value;
-                     //var tx = el.substring(2,4);
-                     //alert(tx);
-                     $("#datepicker01")._selectDay('#datepicker01',0,2011, 18);return false;
-                    };
-            </script-->
         <p:dialog id="dialogCalendario" widgetVar="dialogCalendario" header="Calendario" width="900" height="500" modal="true" resizable="false" closeOnEscape="true" showEffect="fold" hideEffect="fold">
             <table width="100%">
                 <tr>
@@ -197,12 +132,12 @@
                 </tr>
             </table>
         </p:dialog>
-
+        <!--  -->
         <p:dialog id="dialogBuscaEmp" widgetVar="dialogBuscaEmp" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="500" height="350">
             <p:dataTable id="tablBusEmp"
                          rows="3" paginator="true"
                          emptyMessage="No hay empleados que mostrar"
-                         var="emp"  update="txtEmp, clIngr"
+                         var="emp"  update="txtEmp,clIngr,txtJefe"
                          value="#{planilla$accionesPersonal.listaEmp}"
                          selection="#{planilla$accionesPersonal.empleadoSeleccionado}"
                          selectionMode="single"
@@ -214,120 +149,126 @@
                 <p:column headerText="Nombre" filterBy="#{emp.nombreCompleto}" >
                     <h:outputText value="#{emp.nombreCompleto}"/>
                 </p:column>      
-                <!--p:column>
-                        <p:commandButton update="@this, dialogBuscaEmp, dialogNoAfecta, txtEmp, tlEmp" onclick="dialogBuscaEmp.hide()" value="Seleccionar" >
-                            <f:setPropertyActionListener value="# {emp}" target="# {planilla$accionesPersonal.empleadoSeleccionado}"/>
-                        </p:commandButton>
-                </p:column-->
-                <!--f:facet name="footer">
-                    <p:commandButton value="Seleccionar empleado" oncomplete="dialogBuscaEmp.hide();"/>
-                </f:facet-->
             </p:dataTable>
         </p:dialog>
 
-        <p:dialog id="dialogBuscaJefe" widgetVar="dialogBuscaJefe" header="Buscar Jefe" showEffect="fold" hideEffect="fold" width="500" height="350">
-            <p:dataTable id="tablBusJefe"
-                         rows="3" paginator="true"
-                         emptyMessage="No hay jefes que mostrar"
-                         var="jefe" update="txtJefe"
-                         value="#{planilla$accionesPersonal.listaJefes}"
-                         selection="#{planilla$accionesPersonal.jefeSeleccionado}"
-                         selectionMode="single"
-                         paginatorAlwaysVisible="true"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
-                <p:column headerText="Codigo" filterBy="#{jefe.empleadoPK.codEmp}" >
-                    <h:outputText value="#{jefe.empleadoPK.codEmp}"/>
-                </p:column>
-                <p:column headerText="Nombre" filterBy="#{jefe.nombreCompleto}" >
-                    <h:outputText value="#{jefe.nombreCompleto}"/>
-                </p:column>
-                <!--f:facet name="footer">
-                    <p:commandButton value="Seleccionar jefe" oncomplete="dialogBuscaJefe.hide();"/>
-                </f:facet-->
-                <!--p:column>
-                        <p:commandButton update="dialogBuscaJefe, dialogNoAfecta, txtJefe, tlJefe" onclick="dialogBuscaJefe.hide()" value="Seleccionar" >
-                            <f:setPropertyActionListener value="# {jefe}" target="# {planilla$accionesPersonal.jefeSeleccionado}"/>
-                        </p:commandButton>
-                </p:column-->
-            </p:dataTable>
-        </p:dialog>
+        <p:dialog id="dialogNoAfecta" widgetVar="dialogNoAfecta" header="Acci&oacute;n No Afecta Planilla" showEffect="fold" hideEffect="fold" width="745" height="550" >
 
-        
-        <p:dialog id="dialogNoAfecta" widgetVar="dialogNoAfecta" header="Accion No Afecta Planilla" showEffect="fold" hideEffect="fold" width="700" height="550" >
+            <p:panel style="border:none;" >
+                <h:panelGrid columns="4" >
+                    <p:graphicImage value="/resources/imagenes/64/info.png" />
+                    <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
+                    <h:outputLabel value="*" styleClass="requerido"/>                                
+                    <h:outputLabel value=" son requeridos." style="font-style: italic;" />
+                </h:panelGrid>
+            </p:panel>
+
             <p:fieldset id="fldComun">
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="Fecha"/>
-                    <p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.fecha}" />
-                    <h:outputLabel value="Empleado"/>
-                    <p:toolbar id="tlEmp" >
-                        <p:toolbarGroup align="left">
-                            <p:inputText value="#{planilla$accionesPersonal.nombreEmpleado}" id="txtEmp" immediate="true" />
-                            <p:commandButton id="cmdBusca" onclick="dialogBuscaEmp.show()" type="button" image="ui-icon ui-icon-search" />
-                        </p:toolbarGroup>
-                    </p:toolbar>
-                    <h:outputLabel value="Jefe"/>
-                    <p:toolbar id="tlJefe" >
-                        <p:toolbarGroup align="left">
-                            <p:inputText value="#{planilla$accionesPersonal.nombreJefe}" id="txtJefe" immediate="true" />
-                            <p:commandButton id="cmdBuscaJ" onclick="dialogBuscaJefe.show()"
-                                             type="button" image="ui-icon ui-icon-search" />
-                        </p:toolbarGroup>
-                    </p:toolbar>
-                    <h:outputLabel value="Tipo de accion"/>
-                    <h:selectOneMenu id="lstTipos" value="#{planilla$accionesPersonal.tipoSec}" >
-                        <f:selectItems value="#{planilla$accionesPersonal.listaTipoNoAfecta}" var="tipo2" 
-                                       itemLabel="#{tipo2.nomTipoaccion}" itemValue="#{tipo2.tipoAccionPK.codTipoaccion}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="Observacion"/>
-                    <p:inputTextarea style="width:200px;height:100px;" value="#{planilla$accionesPersonal.obsv}" />
-                </h:panelGrid>
-                <h:panelGrid columns="2">
-                    <p:commandLink styleClass="opcionMenu" update="mensajes, tablSol" action="#{planilla$accionesPersonal.nuevaAccionNoAfecta$action}"
-                                   onclick="dialogNoAfecta.hide()" ajax="true" >
-                        <p:graphicImage value="/resources/iconos/task-complete.png"/>
-                        <h:outputText value="Aceptar" styleClass="espacioTexto"/>
-                    </p:commandLink>
-                    <p:commandLink styleClass="opcionMenu" update="mensajes, tablaSol, txtEmp, txtJefe"
-                                   onclick="dialogNoAfecta.hide()" action="#{planilla$accionesPersonal.cancelar$action}" >
-                        <p:graphicImage value="/resources/iconos/dialog-cancel.png"/>
-                        <h:outputText value="Cancelar" styleClass="espacioTexto"/>
-                    </p:commandLink>
-                </h:panelGrid>
+                <table border="0" width="100%" >
+                    <tr>
+                        <td><h:outputLabel value="Fecha"/></td>
+                        <td><p:calendar showOn="button" pattern="dd/MM/yyyy" disabled="true" value="#{planilla$accionesPersonal.fecha}" /></td>
+                        <td></td>
+                        <td>                            
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Empleado"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td>
+                            <p:toolbar id="tlEmp" >
+                                <p:toolbarGroup align="left">
+                                    <p:inputText value="#{planilla$accionesPersonal.nombreEmpleado}" readonly="true" id="txtEmp" immediate="true" />
+                                    <p:commandButton id="cmdBusca" onclick="dialogBuscaEmp.show()" type="button" image="ui-icon ui-icon-search" />
+                                </p:toolbarGroup>
+                            </p:toolbar></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Tipo de acci&oacute;n" />
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><h:selectOneMenu id="lstTipos" style="margin:0 0 0 -3px;padding:0;" value="#{planilla$accionesPersonal.tipoAccion}" >
+                                <f:selectItems value="#{planilla$accionesPersonal.listaTipoNoAfecta}" var="tipo2" itemLabel="#{tipo2.nomTipoaccion}" itemValue="#{tipo2.tipoAccionPK.codTipoaccion}"/>
+                            </h:selectOneMenu></td>
+                        <td></td>
+                        <td><h:outputLabel value="Jefe" /></td>
+                        <td><h:outputLabel id="txtJefe" value="#{planilla$accionesPersonal.nombreJefe}" style="font-weight: bold;" /></td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="Observacion"/></td>
+                        <td colspan="3"><p:inputTextarea style="width:100%;" value="#{planilla$accionesPersonal.obsv}" /></td>
+                    </tr>
+                </table>
             </p:fieldset>
-                <p:spacer height="10px"/>
+            <p:spacer height="10px"/>
             <p:fieldset id="fldPagoVacacion" rendered="#{planilla$accionesPersonal.detAccion eq 3}" >
-                <h:panelGrid columns="6">
-                    <h:outputLabel value="Fecha inicio"/>
-                    <p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.fechaInicial}" />
-                    <h:outputLabel value="Fecha fin"/>
-                    <p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.fechaFinal}" />
-                    <h:outputLabel value="Fecha de ingreso"/>
-                    <p:calendar pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.fechaIngreso}" disabled="true" id="clIngr" />
-                    <h:outputLabel value="Fecha inicio"/>
-                    <p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.periodoFechaInicio}" />
-                    <h:outputLabel value="Fecha fin"/>
-                    <p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.periodoFechaFin}" />
-                    <h:outputLabel value="Devengadas"/>
-                    <h:selectOneMenu id="lstDeven" value="#{planilla$accionesPersonal.devengadas}">
-                        <f:selectItem itemLabel="Si" itemValue="S" />
-                        <f:selectItem itemLabel="No" itemValue="N"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="Tipo Planilla"/>
-                    <h:selectOneMenu id="lstTipo_plan" label="Tipo Planilla" style="width:150px" >
-                        <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tipoPlanillaPK.idTipoPlanilla}" itemLabel="#{tipo.nomTipoPlanilla}"/>
-                    </h:selectOneMenu>
-                    <p:spacer width="10px"/>
-                    <p:spacer width="10px"/>
-                    <p:spacer width="10px"/>
-                    <p:spacer width="10px"/>
-                    <h:outputLabel value="Planilla"/>
-                    <h:selectOneMenu id="lstPlan" label="Planilla" style="width:150px">
-                        <f:selectItems value="#{planilla$informacionPagos.listaPlanillas}" var="pla" 
-                               itemLabel="#{pla.planillaPK.anio} ------ #{pla.planillaPK.mes} ------ #{pla.planillaPK.numPlanilla}" />
-                    </h:selectOneMenu>
-            
-                </h:panelGrid>
+
+                <table border="0" width="100%" >
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Fecha inicio"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.fechaInicial}" /></td>
+                        <td></td>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Fecha fin"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.fechaFinal}" /></td>
+                    </tr>
+                    <tr>
+                        <td>                            
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Devengadas"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td>
+                            <h:selectOneMenu id="lstDeven" style="width:168px;height:20px;" value="#{planilla$accionesPersonal.devengadas}">
+                                <f:selectItem itemLabel="Si" itemValue="S" />
+                                <f:selectItem itemLabel="No" itemValue="N"/>
+                            </h:selectOneMenu>
+                        </td>
+                        <td></td>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Tipo Planilla"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>    
+                        </td>
+                        <td>                
+                            <h:selectOneMenu id="lstTipo_plan" label="Tipo Planilla" style="width:168px;height:20px;" value="#{planilla$accionesPersonal.tipoPlanilla}" >
+                                <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tipoPlanillaPK.idTipoPlanilla}" itemLabel="#{tipo.nomTipoPlanilla}"/>
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Planilla"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>  
+                        </td>
+                        <td>
+                            <h:selectOneMenu id="lstPlan" label="Planilla" style="width:168px;height:20px;" value="#{planilla$accionesPersonal.planilla}" >
+                                <f:selectItems value="#{planilla$accionesPersonal.listaPlanillas}" var="pla" 
+                                               itemValue="#{pla.planillaPK.pkAsString}"
+                                               itemLabel="#{pla.planillaPK.anio} ------ #{pla.planillaPK.mes} ------ #{pla.planillaPK.numPlanilla}" />
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                </table>
+
             </p:fieldset>
+
             <p:fieldset id="fldIncapacidad" rendered="#{planilla$accionesPersonal.detAccion eq 4}" >
                 <h:panelGrid columns="6">
                     <h:outputLabel value="Fecha inicio"/>
@@ -347,16 +288,25 @@
                     <h:outputLabel value="Planilla"/>
                     <h:selectOneMenu id="lstPlan2" label="Planilla" style="width:150px">
                         <f:selectItems value="#{planilla$informacionPagos.listaPlanillas}" var="pla" 
-                               itemLabel="#{pla.planillaPK.anio} ------ #{pla.planillaPK.mes} ------ #{pla.planillaPK.numPlanilla}" />
+                                       itemLabel="#{pla.planillaPK.anio} ------ #{pla.planillaPK.mes} ------ #{pla.planillaPK.numPlanilla}" />
                     </h:selectOneMenu>
-            
+
                 </h:panelGrid>
             </p:fieldset>
-                
-            
-            
+            <p:spacer height="10" />
+            <h:panelGrid columns="2">
+                <p:commandButton value="Aceptar" styleClass="opcionMenu" action="#{planilla$accionesPersonal.nuevaAccionNoAfecta$action}"
+                                 update="mensajes, tablSol"
+                                 ajax="true" image="ui-icon-circle-check" />
+
+                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="mensajes, tablaSol, txtEmp, txtJefe"  action="#{planilla$accionesPersonal.cancelar$action}"
+                                 onclick="dialogNoAfecta.hide()" image="ui-icon-closethick" /> 
+
+                <!--p:graphicImage value="/resources/iconos/task-complete.png"/> <p:graphicImage value="/resources/iconos/dialog-cancel.png"/ --> 
+            </h:panelGrid>
+
         </p:dialog>
 
     </ui:define>
-    <!-- ======================================================================================================= -->
+
 </ui:composition>
