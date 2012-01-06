@@ -12,6 +12,7 @@ public class DetalleReporteEvaluacion
 {
 
 private String nivel;
+private Integer puntaje;
 private Integer valor;
 private Integer ponderacion;
 private Integer subTotal;
@@ -54,5 +55,15 @@ return valor;
 public void setValor(Integer valor)
 {
 this.valor = valor;
+}
+
+public Integer getPuntaje()
+{
+return puntaje;
+}
+
+public void setPuntaje(Integer puntaje)
+{
+this.puntaje = puntaje;
 }
 }
