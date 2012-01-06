@@ -105,7 +105,7 @@ public class Factor implements Serializable
         this.nombre = nombre;
     }
 
-    public long getPonderacion()
+    public Long getPonderacion()
     {
         return ponderacion;
     }

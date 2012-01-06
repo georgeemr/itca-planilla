@@ -9,17 +9,21 @@ import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
 import com.infosgroup.planilla.modelo.estructuras.DetalleAdjuntoCorreo;
 import com.infosgroup.planilla.modelo.estructuras.reportes.ReporteEvaluacion;
+import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.modelo.procesos.MailStatelessBean;
 import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
 import com.infosgroup.planilla.view.JSFUtil;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -28,7 +32,9 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean(name = "empleados$reporteEvaluacion")
 @ViewScoped
 public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializable {
-
+    
+    @EJB
+    private EmpleadosSessionBean empleadosSessionBean;
     @EJB
     private ReportesStatelessBean reportesBean;
     @EJB
@@ -40,7 +46,7 @@ public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializabl
     private List<Campania> listaCampanias;
 
     public List<Campania> getListaCampanias() {
-//listaCampanias = empleadosBean.listarCampanias();
+        listaCampanias = empleadosSessionBean.findAllByCia( getSessionBeanADM().getCompania().getIdCompania() );
         return listaCampanias;
     }
 
@@ -60,6 +66,7 @@ public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializabl
     private List<Evaluacion> listaEvaluaciones;
 
     public List<Evaluacion> getListaEvaluaciones() {
+        listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosSessionBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada) : null;
         return listaEvaluaciones;
     }
 
@@ -96,10 +103,10 @@ public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializabl
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public String seleccionCampania$action() {
+    /*public String seleccionCampania$action() {
 
         return null;
-    }
+    }*/
 
     public String seleccionTipoEvaluacion$action() {
 
@@ -115,12 +122,13 @@ public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializabl
         }
         
         List<ReporteEvaluacion> lr = reportesBean.listarReporteEvaluacion(evaluacionSeleccionada);
+        reportesBean.generarReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr) ;
         //mailBean.enviarCorreoElectronico("Correo de prueba", "Esta es una prueba de envio de correo electronico via GMail XD", "echopin@infosgroup.com");
         List<DetalleAdjuntoCorreo> listaAdjuntos = new ArrayList<DetalleAdjuntoCorreo>(0);
         //listaAdjuntos.add(new DetalleAdjuntoCorreo("reporteprueba1.pdf", "application/pdf", reportesBean.generarDatosReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr)));
         //listaAdjuntos.add(new DetalleAdjuntoCorreo("reporteprueba2.pdf", "application/pdf", reportesBean.generarDatosReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr)));
 
-        String destinatarios = "gbran@infosgroup.com:echopin@infosgroup.com:vmercado@infosgroup.com:gsalazar@infosgroup.com";
+        String destinatarios = "echopin@infosgroup.com:vmercado@infosgroup.com:gsalazar@infosgroup.com";
         mailBean.enviarCorreoElectronicoAdjuntos("Correo de prueba", "Prueba de correo con adjuntos", destinatarios, listaAdjuntos);
         //reportesBean.generarReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr);
         return null;
@@ -130,4 +138,20 @@ public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializabl
     public static List<ReporteEvaluacion> listarReporteEvaluacion() {
         return new ArrayList<ReporteEvaluacion>(10);
     }
+    
+//    @PostConstruct
+//    public void init() {
+////        listaCampanias = empleadosBean.listarCampaniasPorEmpleado(sessionBeanEMP.getEmpleadoSesion());
+//    }
+    
+    private Campania campaniaSeleccionada;
+
+    public Campania getCampaniaSeleccionada() {
+        return campaniaSeleccionada;
+    }
+
+    public void setCampaniaSeleccionada(Campania campaniaSeleccionada) {
+        this.campaniaSeleccionada = campaniaSeleccionada;
+    }
+    
 }

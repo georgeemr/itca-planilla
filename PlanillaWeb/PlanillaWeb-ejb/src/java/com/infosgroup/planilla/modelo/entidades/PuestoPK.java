@@ -48,7 +48,7 @@ public class PuestoPK implements Serializable
         this.codCia = codCia;
     }
 
-    public long getCodPuesto()
+    public Long getCodPuesto()
     {
         return codPuesto;
     }

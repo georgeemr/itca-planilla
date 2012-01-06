@@ -283,4 +283,10 @@ public void editarCampania(Campania c)
 campaniasFacade.edit(c);
 }
 
+@PermitAll
+public List<Campania> findAllByCia (Long empresa) 
+{
+return campaniasFacade.findAllByCia(empresa);
+}
+
 }

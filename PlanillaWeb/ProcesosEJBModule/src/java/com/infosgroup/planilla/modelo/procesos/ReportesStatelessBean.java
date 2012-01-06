@@ -4,7 +4,9 @@
  */
 package com.infosgroup.planilla.modelo.procesos;
 
+import com.infosgroup.planilla.modelo.entidades.DetEvaluacion;
 import com.infosgroup.planilla.modelo.entidades.Evaluacion;
+import com.infosgroup.planilla.modelo.estructuras.reportes.DetalleReporteEvaluacion;
 import com.infosgroup.planilla.modelo.estructuras.reportes.ReporteEvaluacion;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -115,10 +117,24 @@ public class ReportesStatelessBean {
     public List<ReporteEvaluacion> listarReporteEvaluacion(Evaluacion evaluacion) {
         List<ReporteEvaluacion> l = new ArrayList<ReporteEvaluacion>(0);
         ReporteEvaluacion reporte = new ReporteEvaluacion();
+        reporte.setIdEmpresa( evaluacion.getPlantilla1().getTipoEvaluacion().getCompania().getIdCompania().intValue() );
         reporte.setNombreEmpresa(evaluacion.getPlantilla1().getTipoEvaluacion().getCompania().getNomCompania());
-        reporte.setNombreEmpleado(evaluacion.getEmpleado1().getNombres());
+        reporte.setNombreTipoEvaluacion( evaluacion.getPlantilla1().getTipoEvaluacion().getNomTipoEvaluacion() );
+        reporte.setIdEmpleado( evaluacion.getEmpleado1().getEmpleadoPK().getCodEmp().intValue() );
+        reporte.setNombreEmpleado(evaluacion.getEmpleado1().getNombreCompleto() );
+        reporte.setFechaInicioCampania(evaluacion.getCampania().getFechaInicial());
+        reporte.setFechaFinCampania(evaluacion.getCampania().getFechaFinal());
+        reporte.setDetalleEvaluacion( getDetalleReporteEvaluacion(evaluacion.getDetEvaluacionList() ));
         l.add(reporte);
         return l;
+    }
+    
+    public List<DetalleReporteEvaluacion> getDetalleReporteEvaluacion( List<DetEvaluacion> detalle ){
+        List<DetalleReporteEvaluacion> det = new ArrayList<DetalleReporteEvaluacion>();
+        for ( DetEvaluacion e: detalle ){            
+            det.add( new DetalleReporteEvaluacion( e.getRespuesta().getNivel(), 0  , e.getRespuesta().getValor().intValue(), e.getPregunta().getFactor().getPonderacion().intValue(), 0  ));
+        }
+        return det != null ? det:new ArrayList<DetalleReporteEvaluacion>();
     }
 
     /*@PermitAll
