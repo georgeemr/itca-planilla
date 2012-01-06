@@ -134,4 +134,12 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
         tq.setParameter("status", "B");
         return tq.getResultList();
     }
+    
+    @PermitAll
+    public List<AccionPersonal> findSolicitudesPendientes(Long empresa) {
+        TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.status = 'G'", AccionPersonal.class);
+        tq.setParameter("codCia", empresa);
+        return tq.getResultList();
+    }    
+    
 }

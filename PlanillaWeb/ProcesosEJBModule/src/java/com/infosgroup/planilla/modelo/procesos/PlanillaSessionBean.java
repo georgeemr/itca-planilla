@@ -447,4 +447,9 @@ public class PlanillaSessionBean {
     public Planilla findPlanillaById(PlanillaPK planillaPK){
         return planillaFacade.find(planillaPK);
     }
+    
+    @PermitAll
+    public List<AccionPersonal> findSolicitudesPendientes(Long empresa) {
+        return accionPersonalFacade.findSolicitudesPendientes(empresa);
+    }
 }

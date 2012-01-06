@@ -269,11 +269,18 @@ public List<Empleado> listarEmpleados()
 return empleadosFacade.findAll();
 }
 
+@PermitAll
 public Integer calcularEmpleadosEvaluados(Campania c)
 {
 Integer r ;
 r = campaniasFacade.calcularEmpleadosEvaluados(c);
 return r;
+}
+
+@PermitAll
+public void editarCampania(Campania c)
+{
+campaniasFacade.edit(c);
 }
 
 }

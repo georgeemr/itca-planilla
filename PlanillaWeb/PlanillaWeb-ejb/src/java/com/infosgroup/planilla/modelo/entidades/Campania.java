@@ -35,8 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "CAMPANIA")
 @XmlRootElement
-@NamedQueries(
-    {
+@NamedQueries({
     @NamedQuery(name = "Campania.findAll", query = "SELECT c FROM Campania c"),
     @NamedQuery(name = "Campania.findByCodCia", query = "SELECT c FROM Campania c WHERE c.campaniaPK.codCia = :codCia"),
     @NamedQuery(name = "Campania.findByCodCampania", query = "SELECT c FROM Campania c WHERE c.campaniaPK.codCampania = :codCampania"),
@@ -46,65 +45,52 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Campania.findByEstado", query = "SELECT c FROM Campania c WHERE c.estado = :estado"),
     @NamedQuery(name = "Campania.findByPeriodo", query = "SELECT c FROM Campania c WHERE c.campaniaPK.periodo = :periodo"),
     @NamedQuery(name = "Campania.findByArea", query = "SELECT c FROM Campania c WHERE c.area = :area"),
+    @NamedQuery(name = "Campania.cantidadEvaluados", query = "SELECT count(e.finalizada) FROM Evaluacion e WHERE e.finalizada = '1' and e.campania = :campania" ),
     @NamedQuery(name = "Campania.findByNota", query = "SELECT c FROM Campania c WHERE c.nota = :nota")
-    })
-public class Campania implements Serializable
-{
+})
+public class Campania implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @EmbeddedId
     protected CampaniaPK campaniaPK;
-
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
     @Column(name = "NOMBRE", nullable = false, length = 200)
     private String nombre;
-
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_INICIAL", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicial;
-
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_FINAL", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFinal;
-
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "ESTADO", nullable = false, length = 100)
     private String estado;
-
     @Column(name = "AREA")
     private Long area;
-
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "NOTA", precision = 11, scale = 3)
     private BigDecimal nota;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "campania", fetch = FetchType.EAGER)
     private List<Evaluacion> evaluacionList;
-
     @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Compania compania;
 
-    public Campania()
-    {
+    public Campania() {
     }
 
-    public Campania(CampaniaPK campaniaPK)
-    {
+    public Campania(CampaniaPK campaniaPK) {
         this.campaniaPK = campaniaPK;
     }
 
-    public Campania(CampaniaPK campaniaPK, String nombre, Date fechaInicial, Date fechaFinal, String estado)
-    {
+    public Campania(CampaniaPK campaniaPK, String nombre, Date fechaInicial, Date fechaFinal, String estado) {
         this.campaniaPK = campaniaPK;
         this.nombre = nombre;
         this.fechaInicial = fechaInicial;
@@ -112,144 +98,131 @@ public class Campania implements Serializable
         this.estado = estado;
     }
 
-    public Campania(long codCia, long codCampania, long periodo)
-    {
+    public Campania(long codCia, long codCampania, long periodo) {
         this.campaniaPK = new CampaniaPK(codCia, codCampania, periodo);
     }
 
-    public CampaniaPK getCampaniaPK()
-    {
+    public CampaniaPK getCampaniaPK() {
         return campaniaPK;
     }
 
-    public void setCampaniaPK(CampaniaPK campaniaPK)
-    {
+    public void setCampaniaPK(CampaniaPK campaniaPK) {
         this.campaniaPK = campaniaPK;
     }
 
-    public String getNombre()
-    {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre)
-    {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public Date getFechaInicial()
-    {
+    public Date getFechaInicial() {
         return fechaInicial;
     }
 
-    public void setFechaInicial(Date fechaInicial)
-    {
+    public void setFechaInicial(Date fechaInicial) {
         this.fechaInicial = fechaInicial;
     }
 
-    public Date getFechaFinal()
-    {
+    public Date getFechaFinal() {
         return fechaFinal;
     }
 
-    public void setFechaFinal(Date fechaFinal)
-    {
+    public void setFechaFinal(Date fechaFinal) {
         this.fechaFinal = fechaFinal;
     }
 
-    public String getEstado()
-    {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado)
-    {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 
-    public Long getArea()
-    {
+    public Long getArea() {
         return area;
     }
 
-    public void setArea(Long area)
-    {
+    public void setArea(Long area) {
         this.area = area;
     }
 
-    public BigDecimal getNota()
-    {
+    public BigDecimal getNota() {
         return nota;
     }
 
-    public void setNota(BigDecimal nota)
-    {
+    public void setNota(BigDecimal nota) {
         this.nota = nota;
     }
 
     @XmlTransient
-    public List<Evaluacion> getEvaluacionList()
-    {
+    public List<Evaluacion> getEvaluacionList() {
         return evaluacionList;
     }
 
-    public void setEvaluacionList(List<Evaluacion> evaluacionList)
-    {
+    public void setEvaluacionList(List<Evaluacion> evaluacionList) {
         this.evaluacionList = evaluacionList;
     }
 
-    public Compania getCompania()
-    {
+    public Compania getCompania() {
         return compania;
     }
 
-    public void setCompania(Compania compania)
-    {
+    public void setCompania(Compania compania) {
         this.compania = compania;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (campaniaPK != null ? campaniaPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Campania))
-            {
+        if (!(object instanceof Campania)) {
             return false;
-            }
+        }
         Campania other = (Campania) object;
-        if ((this.campaniaPK == null && other.campaniaPK != null) || (this.campaniaPK != null && !this.campaniaPK.equals(other.campaniaPK))) return false;
+        if ((this.campaniaPK == null && other.campaniaPK != null) || (this.campaniaPK != null && !this.campaniaPK.equals(other.campaniaPK))) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.Campania[ campaniaPK=" + campaniaPK + " ]";
     }
-    
     @Transient
-    private String descripcionEstado ;
+    private String descripcionEstado;
+    @Transient
+    private Integer empleadosEvaluados;
 
-    public String getDescripcionEstado()
-    {        
-        if (estado.equals("0"))
+    public String getDescripcionEstado() {
+        if (estado.equals("0")) {
             descripcionEstado = "Cerrada";
-        else if (estado.equals("1"))
+        } else if (estado.equals("1")) {
             descripcionEstado = "Abierta";
+        }
         return descripcionEstado;
     }
 
-    public void setDescripcionEstado(String descripcionEstado)
-    {
+    public void setDescripcionEstado(String descripcionEstado) {
         this.descripcionEstado = descripcionEstado;
     }
-    
+
+    public Integer getEmpleadosEvaluados() {
+        return empleadosEvaluados;
+    }
+
+    public void setEmpleadosEvaluados(Integer empleadosEvaluados) {
+        this.empleadosEvaluados = empleadosEvaluados;
+    }
+
 }
