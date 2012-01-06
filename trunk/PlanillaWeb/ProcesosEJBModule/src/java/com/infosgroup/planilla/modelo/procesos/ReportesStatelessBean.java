@@ -8,6 +8,7 @@ import com.infosgroup.planilla.modelo.entidades.DetEvaluacion;
 import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.estructuras.reportes.DetalleReporteEvaluacion;
 import com.infosgroup.planilla.modelo.estructuras.reportes.ReporteEvaluacion;
+import com.infosgroup.planilla.modelo.facades.EscalaEvaluacionFacade;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.faces.context.FacesContext;
@@ -33,6 +35,9 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 @Stateless(name = "ReportesStatelessBean")
 @LocalBean
 public class ReportesStatelessBean {
+    
+    @EJB
+    private EscalaEvaluacionFacade escalaEvaluacionFacade;
 
     @Resource(name = "jdbc/PlanillaDatasource")
     private DataSource planillaJDBCDatasource;
@@ -125,7 +130,7 @@ public class ReportesStatelessBean {
         reporte.setFechaInicioCampania(evaluacion.getCampania().getFechaInicial());
         reporte.setFechaFinCampania(evaluacion.getCampania().getFechaFinal());
         reporte.setDetalleEvaluacion( getDetalleReporteEvaluacion(evaluacion.getDetEvaluacionList() ));
-        reporte.setCalificacionFinal( getNotaFinal(evaluacion.getDetEvaluacionList() ));
+        reporte.setCalificacionFinal( getNotaFinal( evaluacion ));
         reporte.setIdPuesto( evaluacion.getEmpleado1().getUltimoPuesto().getPuestoPK().getCodPuesto().intValue() );
         reporte.setNombrePuesto( evaluacion.getEmpleado1().getUltimoPuesto().getNombre() );
         reporte.setIdDepartamento( evaluacion.getEmpleado1().getDepartamento().getDepartamentoPK().getIdDepartamento().intValue() );
@@ -135,6 +140,7 @@ public class ReportesStatelessBean {
         return l;
     }
     
+    @PermitAll
     public List<DetalleReporteEvaluacion> getDetalleReporteEvaluacion( List<DetEvaluacion> detalle ){
         List<DetalleReporteEvaluacion> det = new ArrayList<DetalleReporteEvaluacion>();
         for ( DetEvaluacion e: detalle ){            
@@ -143,8 +149,9 @@ public class ReportesStatelessBean {
         return det != null ? det : new ArrayList<DetalleReporteEvaluacion>();
     }
 
-    public String getNotaFinal(List<DetEvaluacion> detalle){
-        return "0";
+    @PermitAll
+    public String getNotaFinal(Evaluacion e){
+        return escalaEvaluacionFacade.getEscalaByEvaluacion(e);
     }
     /*@PermitAll
     public List<ReporteEvaluacion> listarReporteEvaluacion() {
