@@ -117,7 +117,7 @@ public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializabl
     public String mostrarReporteEvaluacion$action() {
         
         if ( evaluacionSeleccionada == null ){
-            addMessage("Reporte de Evalución", "No ha seleccionado ninguna evalución", TipoMensaje.INFORMACION);
+            addMessage("Reporte de Evalución", "No ha seleccionado ninguna evalución", TipoMensaje.ERROR);
             return null;
         }
         
