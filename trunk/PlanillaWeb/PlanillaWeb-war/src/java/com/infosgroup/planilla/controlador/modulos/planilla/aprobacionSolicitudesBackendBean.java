@@ -11,11 +11,11 @@ import com.infosgroup.planilla.view.JSFUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import org.primefaces.component.datatable.DataTable;
 
 /**
  *
@@ -34,6 +34,11 @@ public class aprobacionSolicitudesBackendBean extends JSFUtil implements Seriali
     private List<Empleado> listaJefes;
     private List<AccionPersonal> listaSolicitudes;
     private long emp = 0;
+    
+    @PostConstruct
+    public void listarSolicitudesPendientes(){
+        listaSolicitudes = planillaSessionBean.findSolicitudesPendientes( getSessionBeanADM().getCompania().getIdCompania() );
+    }
     
     public long getEmp() {
         return emp;
@@ -55,9 +60,9 @@ public class aprobacionSolicitudesBackendBean extends JSFUtil implements Seriali
     public List<AccionPersonal> getListaSolicitudes() {
         if (emp != 0) {
             listaSolicitudes = planillaSessionBean.listaPorAprobar(emp);
-        } else {
+        } /*else {
             listaSolicitudes = new ArrayList<AccionPersonal>(0);
-        }
+        }*/
         return listaSolicitudes;
     }
 
