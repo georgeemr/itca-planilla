@@ -43,12 +43,12 @@ public class EmpleadoPK implements Serializable
         return codCia;
     }
 
-    public void setCodCia(long codCia)
+    public void setCodCia(Long codCia)
     {
         this.codCia = codCia;
     }
 
-    public long getCodEmp()
+    public Long getCodEmp()
     {
         return codEmp;
     }

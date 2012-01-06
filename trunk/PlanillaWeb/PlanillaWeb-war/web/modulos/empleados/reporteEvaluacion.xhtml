@@ -38,9 +38,9 @@
             <table width="100%">
                 <tr valign="top">
                     <td colspan="2">
-                        <p:dataList id="campaniasDataList" value="#{empleados$reporteEvaluacion.listaCampanias}" var="campania" paginator="true" rows="3" effectSpeed="fast" paginatorAlwaysVisible="true" paginatorPosition="top" paginatorTemplate="Campa&ntilde;a {PreviousPageLink} {CurrentPageReport} {NextPageLink}" itemType="none">
+                        <p:dataList id="campaniasDataList"  value="#{empleados$reporteEvaluacion.listaCampanias}" var="campania" paginator="true" rows="3" effectSpeed="fast" paginatorAlwaysVisible="true" paginatorPosition="top" paginatorTemplate="Campa&ntilde;a {PreviousPageLink} {CurrentPageReport} {NextPageLink}" itemType="none"  >
                             <p:column>  
-                                <p:commandLink title="Seleccionar campa&ntilde;a: #{campania.nombre}" style="text-decoration: none;" action="#{empleados$reporteEvaluacion.seleccionCampania$action}" update="principalForm:mensajes" onmouseover="this.className='textonegrita';" onmouseout="this.className='textonormal';">
+                                <p:commandLink title="Seleccionar campa&ntilde;a: #{campania.nombre}" style="text-decoration: none;" update="principalForm:mensajes,principalForm:tablaEmpleados,principalForm:campaniasDataList,principalForm:fieldset1" onmouseover="this.className='textonegrita';" onmouseout="this.className='textonormal';" >
                                     <p:graphicImage value="/resources/iconos/task-delegate.png"/>
                                     <h:outputText value="#{campania.nombre} (del " style="margin-left: 10px;"/>
                                     <h:outputText value="#{campania.fechaInicial}">
@@ -51,7 +51,7 @@
                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                     </h:outputText>                                
                                     <h:outputText value=")"/>
-                                    <f:setPropertyActionListener value="#{campania}" target="#{SessionBeanEMP.campania}"/>
+                                    <f:setPropertyActionListener value="#{campania}" target="#{empleados$reporteEvaluacion.campaniaSeleccionada}" />
                                 </p:commandLink>                        
                             </p:column>
                         </p:dataList>
