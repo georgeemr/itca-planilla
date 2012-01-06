@@ -5,6 +5,8 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -361,6 +363,21 @@ public class Empleado implements Serializable {
 
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
+    }
+
+    @Transient
+    private Puesto ultimoPuesto;
+
+    public Puesto getUltimoPuesto() {
+        if (puestoEmpleadoList != null){
+            Collections.sort(puestoEmpleadoList);
+            ultimoPuesto = puestoEmpleadoList.get(0).getPuesto();
+        }
+        return ultimoPuesto;
+    }
+
+    public void setUltimoPuesto(Puesto ultimoPuesto) {
+        this.ultimoPuesto = ultimoPuesto;
     }
 
 }
