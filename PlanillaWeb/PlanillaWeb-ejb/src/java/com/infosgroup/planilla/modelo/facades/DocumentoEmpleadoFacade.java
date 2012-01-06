@@ -19,6 +19,7 @@ public class DocumentoEmpleadoFacade extends AbstractFacade<DocumentoEmpleado, D
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }

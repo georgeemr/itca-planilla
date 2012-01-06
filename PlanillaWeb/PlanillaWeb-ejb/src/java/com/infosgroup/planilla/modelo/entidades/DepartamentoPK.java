@@ -48,7 +48,7 @@ public class DepartamentoPK implements Serializable
         this.idCompania = idCompania;
     }
 
-    public long getIdDepartamento()
+    public Long getIdDepartamento()
     {
         return idDepartamento;
     }

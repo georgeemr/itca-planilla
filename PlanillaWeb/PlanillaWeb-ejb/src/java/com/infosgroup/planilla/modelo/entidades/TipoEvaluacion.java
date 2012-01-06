@@ -39,6 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class TipoEvaluacion implements Serializable
 {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion1")
+    private List<EscalaEvaluacion> escalaEvaluacionList;
 
     private static final long serialVersionUID = 1L;
 
@@ -144,6 +146,15 @@ public class TipoEvaluacion implements Serializable
     public String toString()
     {
         return "com.infosgroup.planilla.modelo.entidades.TipoEvaluacion[ tipoEvaluacionPK=" + tipoEvaluacionPK + " ]";
+    }
+
+    @XmlTransient
+    public List<EscalaEvaluacion> getEscalaEvaluacionList() {
+        return escalaEvaluacionList;
+    }
+
+    public void setEscalaEvaluacionList(List<EscalaEvaluacion> escalaEvaluacionList) {
+        this.escalaEvaluacionList = escalaEvaluacionList;
     }
     
 }
