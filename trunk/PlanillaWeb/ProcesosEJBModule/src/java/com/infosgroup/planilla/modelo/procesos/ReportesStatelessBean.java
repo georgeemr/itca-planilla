@@ -125,6 +125,12 @@ public class ReportesStatelessBean {
         reporte.setFechaInicioCampania(evaluacion.getCampania().getFechaInicial());
         reporte.setFechaFinCampania(evaluacion.getCampania().getFechaFinal());
         reporte.setDetalleEvaluacion( getDetalleReporteEvaluacion(evaluacion.getDetEvaluacionList() ));
+        reporte.setCalificacionFinal( getNotaFinal(evaluacion.getDetEvaluacionList() ));
+        reporte.setIdPuesto( evaluacion.getEmpleado1().getUltimoPuesto().getPuestoPK().getCodPuesto().intValue() );
+        reporte.setNombrePuesto( evaluacion.getEmpleado1().getUltimoPuesto().getNombre() );
+        reporte.setIdDepartamento( evaluacion.getEmpleado1().getDepartamento().getDepartamentoPK().getIdDepartamento().intValue() );
+        reporte.setNombreDepartamento( evaluacion.getEmpleado1().getDepartamento().getNomDepartamento() );
+
         l.add(reporte);
         return l;
     }
@@ -134,9 +140,12 @@ public class ReportesStatelessBean {
         for ( DetEvaluacion e: detalle ){            
             det.add( new DetalleReporteEvaluacion( e.getRespuesta().getNivel(), 0  , e.getRespuesta().getValor().intValue(), e.getPregunta().getFactor().getPonderacion().intValue(), 0  ));
         }
-        return det != null ? det:new ArrayList<DetalleReporteEvaluacion>();
+        return det != null ? det : new ArrayList<DetalleReporteEvaluacion>();
     }
 
+    public String getNotaFinal(List<DetEvaluacion> detalle){
+        return "0";
+    }
     /*@PermitAll
     public List<ReporteEvaluacion> listarReporteEvaluacion() {
         List<ReporteEvaluacion> l = new ArrayList<ReporteEvaluacion>();
