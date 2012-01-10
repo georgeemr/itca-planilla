@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./../template.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <ui:define name="contenido">
+
+        <h:form id="frmConsulta"  >
+            <p:growl id="growlMensajes" showDetail="true"/>
+            <p:panel id="panelConsultaWeb" header="Consulta de operaciones">
+                <div class="sectionGraf">
+
+                        Seleccione los datos de prueba
+                        <p:ajaxStatus >
+                            <f:facet name="prestart">
+                                <h:graphicImage value="../resources/images/loading.gif" />
+                            </f:facet>
+                            <f:facet name="start">
+                                <h:graphicImage value="../resources/images/loading.gif" />
+                            </f:facet>
+                            <f:facet name="complete">
+                                <h:outputText value="" />
+                            </f:facet>
+                        </p:ajaxStatus>
+                    </div>
+                <div class="column">
+                    <div class="section">
+                        <h:outputLabel id="lbFechaInicial" value="Fecha inicial: " />
+                        <p:calendar id="caFechaInicial" pattern="dd/MM/yyyy" value="#{venta.fechaInicial}" effect="drop" onSelectUpdate="growlMensajes" selectListener="#{venta.seleccionaFechaInicial}" />
+                    </div>
+                    <div class="section">
+                        <h:outputLabel id="lbfechaFinal" value="Fecha final: " />
+                        <p:calendar id="caFechaFinal" pattern="dd/MM/yyyy" value="#{venta.fechaFinal}" effect="drop" onSelectUpdate="growlMensajes" selectListener="#{venta.seleccionaFechaFinal}" />
+                    </div>
+                    <div class="section">
+                        <h:outputLabel value="Agencia: " />
+                        <h:selectOneMenu id="ddAgencias" value="#{venta.codigoAgencia}" >
+                            <f:selectItems value="#{venta.listaAgencias}" var="agencia" itemLabel="#{agencia.nomAgencia}" itemValue="#{agencia.agenciasPK.codAgencia}"/>
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+
+                <div class="tableColumn">
+                    <div class="sectionTable">
+                        <p:dataTable id="tblProductos" var="producto" value="#{venta.listaProductos}">
+                            <p:column >
+                                <f:facet name="header">
+                                    Productos
+                                </f:facet>
+                                <h:outputText value="#{producto.nombre}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    Cantidad vendida
+                                </f:facet>
+                                <h:outputText value="#{producto.cantidad}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    Monto Total
+                                </f:facet>
+                                <h:outputText value="$ #{producto.total}" >
+                                    <f:convertNumber type="currency" />
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+                <div class="clearfloat"></div>
+                <div class="section">
+                    <p:commandButton value="Consulta en tiempo real" ajax="true" update="tblProductos growlMensajes" action="#{venta.consultaOperaciones}" />
+                    <p:commandButton value="Generacion rapida" ajax="true" update="tblProductos growlMensajes" action="#{venta.consultaOperacionesEst}"/>
+                    <p:commandButton value="Imprimir" ajax="false" image="printIcon" action="#{venta.imprimirReporte}"/>
+                </div>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

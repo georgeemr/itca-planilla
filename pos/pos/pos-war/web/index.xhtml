@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <ui:composition template="templateLogin.xhtml"
+                        xmlns="http://www.w3.org/1999/xhtml"
+                        xmlns:h="http://java.sun.com/jsf/html"
+                        xmlns:p="http://primefaces.prime.com.tr/ui"
+                        xmlns:ui="http://java.sun.com/jsf/facelets"
+                        >
+            <ui:define name="frmLogin">
+                <h:form>
+                    <h:outputLabel id="lblTitulo" value="#{mensajes.TITULO_INDEX}"/><br></br>
+                    <h:panelGrid columns="3"> 
+                        <h:outputLabel id="lbUsuario" value="#{mensajes.LB_USUARIO_INDEX}"/>
+                        <p:inputText id="txUsuario" value="#{index.usuario}" />
+                        <p:message id="msgTxUsuario" for="txUsuario"/>
+                        <h:outputLabel id="lbPassword" value="#{mensajes.LB_PASSWORD_INDEX}"/>
+                        <p:password id="txPassword" value="#{index.password}"  minLength="5" feedback=""/>
+                        <p:message id="msgtxPassword" for="txPassword"/>
+                        <p:commandButton ajax="false"  id="btLogin"  value="#{mensajes.BT_USUARIO_INDEX}" update="msgTxUsuario msgtxPassword" action="#{index.validaUsuario}">
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+        </ui:composition>

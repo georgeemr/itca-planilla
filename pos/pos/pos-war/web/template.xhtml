@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="resources/css/styleContent.css" type="text/css" media="screen" rel="stylesheet" />
+        <title>Biggest</title>
+    </h:head>
+
+    <h:body>
+        <div id="top">
+            <div class="wrapper">
+                <ui:insert name="cabecera">
+                    <h1>Consola de Administracion Web</h1>
+                </ui:insert>
+            </div>
+        </div>
+
+        <div id="menu">
+            <div class="wrapper">
+                <ui:insert name="menu">
+                    <ul>
+                        <li><a href="#" tittle="">Administración</a></li>
+                        <li><a href="#" tittle="">Reportes</a></li>
+                        <li><a href="#" tittle="">Operaciones</a></li>
+                        <li><a href="#" tittle="">Catálogo</a></li>
+                    </ul>
+                </ui:insert>
+            </div>
+        </div>
+
+        <div id="main">
+            <div class="wrapper">
+                <div class="content">
+                    <ui:insert name="contenido">
+                        <h1>Consulta de operaciones</h1>
+                        <h2>Ventas diarias</h2>
+                    </ui:insert>
+                </div>
+            </div>
+        </div>
+
+    </h:body>
+</html>
