@@ -4,15 +4,20 @@
  */
 package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 
+import com.infosgroup.planilla.modelo.entidades.Candidato;
+import com.infosgroup.planilla.modelo.entidades.TipoDocumento;
+import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.view.JSFUtil;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
+import org.primefaces.event.FlowEvent;
 
 /**
  *
@@ -22,15 +27,47 @@ import javax.faces.model.SelectItem;
 @ViewScoped
 public class CandidatoBackendBean extends JSFUtil implements Serializable {
 
+    @EJB
+    private ReclutamientoSessionBean reclutamientoSessionBean;
     private String nombre;
     private String apellido;
     private String apellidoDeCasada;
     private Date fechaNacimiento;
     private String sexo;
     private String observaciones;
+    private Long tipoDocumentoSeleccionado;
     private List<SelectItem> selectSexo;
+    private List<TipoDocumento> listaTipoDocumentos;
+    private List<Candidato> listaCandidatos;
+    private Boolean isError;
 
     public CandidatoBackendBean() {
+    }
+
+    public List<Candidato> getListaCandidatos() {
+        listaCandidatos = reclutamientoSessionBean.getCandidatosByEmpresa(getSessionBeanADM().getCompania().getIdCompania());
+        return listaCandidatos;
+    }
+
+    public void setListaCandidatos(List<Candidato> listaCandidatos) {
+        this.listaCandidatos = listaCandidatos;
+    }
+
+    public List<TipoDocumento> getListaTipoDocumentos() {
+        listaTipoDocumentos = reclutamientoSessionBean.findAllTipoDocumento();
+        return listaTipoDocumentos;
+    }
+
+    public void setListaTipoDocumentos(List<TipoDocumento> listaTipoDocumentos) {
+        this.listaTipoDocumentos = listaTipoDocumentos;
+    }
+
+    public Long getTipoDocumentoSeleccionado() {
+        return tipoDocumentoSeleccionado;
+    }
+
+    public void setTipoDocumentoSeleccionado(Long tipoDocumentoSeleccionado) {
+        this.tipoDocumentoSeleccionado = tipoDocumentoSeleccionado;
     }
 
     public String getApellido() {
@@ -103,8 +140,40 @@ public class CandidatoBackendBean extends JSFUtil implements Serializable {
         return null;
     }
 
+    public void nuevo$vh$action() {
+        setEstadoAccion(0);
+    }
+
+    public void consultar$vh$action() {
+        setEstadoAccion(2);
+    }
+    
+    public String editar$crud$action() {
+        getSessionBeanADM().setEstadoAccion( 1 );
+        return null;
+    }
+    
+    public void setEstadoAccion(Integer estadoAccion) {
+        getSessionBeanADM().setEstadoAccion(estadoAccion);
+        limpiarCampos();
+    }
+
+    public String guardar$crud$action() {
+        isError = Boolean.FALSE;
+        return null;
+    }
+
+    public String onFlowProcess(FlowEvent event) {
+        return event.getNewStep();
+    }
+
     @Override
     protected void limpiarCampos() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        nombre = null;
+        apellido = null;
+        apellidoDeCasada = null;;
+        fechaNacimiento = null;
+        sexo = null;
+        observaciones = null;
     }
 }
