@@ -18,7 +18,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -75,17 +74,6 @@ public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializabl
     }
 
     public String mostrarEvaluaciones$action() {
-//boolean hayError = false;
-//if (sessionBeanEMP.getCampania() == null)
-//    {
-//    addMessage("Seleccion de evaluacion", "Seleccione una campa&ntilde;a", TipoMensaje.ADVERTENCIA);
-//    hayError = true;
-//    }
-//if (!hayError)
-//    {
-//    addMessage("Seleccion de evaluacion", "Mostrando los empleados evaluados en la campa&ntilde;a " + sessionBeanEMP.getCampania().getNombre(), TipoMensaje.INFORMACION);
-//    listaEvaluaciones = sessionBeanEMP.getCampania().getEvaluacionList(); //empleadosBean.listarEmpleadosEvaluados(sessionBeanEMP.getCampania());
-//    }
         return null;
     }
     private Evaluacion evaluacionSeleccionada;
@@ -103,25 +91,19 @@ public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializabl
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    /*public String seleccionCampania$action() {
-
-        return null;
-    }*/
-
     public String seleccionTipoEvaluacion$action() {
-
         return null;
     }
 
     @PermitAll
     public String mostrarReporteEvaluacion$action() {
-        
-        if ( evaluacionSeleccionada == null ){
+        Evaluacion ev = evaluacionSeleccionada;
+        if ( ev == null ){
             addMessage("Reporte de Evalución", "No ha seleccionado ninguna evalución", TipoMensaje.ERROR);
             return null;
         }
         
-        List<ReporteEvaluacion> lr = reportesBean.listarReporteEvaluacion(evaluacionSeleccionada);
+        List<ReporteEvaluacion> lr = reportesBean.listarReporteEvaluacion(ev);
         reportesBean.generarReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr) ;
         //mailBean.enviarCorreoElectronico("Correo de prueba", "Esta es una prueba de envio de correo electronico via GMail XD", "echopin@infosgroup.com");
         List<DetalleAdjuntoCorreo> listaAdjuntos = new ArrayList<DetalleAdjuntoCorreo>(0);
@@ -138,11 +120,6 @@ public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializabl
     public static List<ReporteEvaluacion> listarReporteEvaluacion() {
         return new ArrayList<ReporteEvaluacion>(10);
     }
-    
-//    @PostConstruct
-//    public void init() {
-////        listaCampanias = empleadosBean.listarCampaniasPorEmpleado(sessionBeanEMP.getEmpleadoSesion());
-//    }
     
     private Campania campaniaSeleccionada;
 
