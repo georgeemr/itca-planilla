@@ -88,7 +88,7 @@ public class ConcursoBackendBean extends JSFUtil implements Serializable {
     }
 
     public List<Puesto> getListaPuestos() {
-        listaPuestos = reclutamientoFacade.getPuestosByEmpresa(1L);
+        listaPuestos = reclutamientoFacade.getPuestosByEmpresa( getSessionBeanADM().getCompania().getIdCompania() );
         return listaPuestos;
     }
 
@@ -261,7 +261,7 @@ public class ConcursoBackendBean extends JSFUtil implements Serializable {
 
     @Override
     protected void limpiarCampos() {
-        tableConcursos.setSelection(null);
+        if (tableConcursos != null){tableConcursos.setSelection(null);}
         setNombreConcurso(null);
         setFechaInicial(null);
         setFechaFinal(null);
