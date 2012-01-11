@@ -24,10 +24,6 @@
                     <p:graphicImage value="/resources/iconos/search.png"/>
                     <h:outputText value="Consultar" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" onclick="dialogCalendario.show();">
-                    <p:graphicImage value="/resources/iconos/edit.png"/>
-                    <h:outputText value="Editar" styleClass="espacioTexto"/>
-                </p:commandLink>
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="calendario?faces-redirect=true" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/view-resource-calendar.png"/>
                     <h:outputText value="Ver calendario" styleClass="espacioTexto"/>
@@ -66,55 +62,126 @@
         <p:spacer height="10px"/>
         <p:dataTable id="tablSol"
                      rows="5" paginator="true"
-                     emptyMessage="No hay solicitudes a aprobar"
+                     emptyMessage="No hay Solicitudes pendientes para aprobar"
                      var="sol" rendered="true" widgetVar="tablSol"
                      value="#{planilla$accionesPersonal.listaSolicitudes}"
                      selection="#{SessionBeanPLA.accionSeleccionada}"
                      selectionMode="single"
+                     rowEditListener="#{planilla$accionesPersonal.onEditAccionPersonal}"
+                     onRowEditUpdate="tablSol,principalForm:mensajes"
                      rowStyleClass="#{sol.status eq 'G' ? 'solicitudGenerada' : sol.status eq 'J' ? 'solicitudPreAprobada' : sol.status eq 'B' ? 'solicitudAprobada' : sol.status eq 'R' ? 'solicitudRechazada' : null }"
                      paginatorAlwaysVisible="true"
                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
             <f:facet name="header">
                 Acciones de personal
             </f:facet>
+
             <p:column headerText="Emp.">
                 <h:outputText value="#{sol.puestoEmpleado.empleado.empleadoPK.codEmp}"/>
             </p:column>
+
             <p:column headerText="Nombre" filterBy="#{sol.puestoEmpleado.empleado.nombreCompleto}" >
                 <h:outputText value="#{sol.puestoEmpleado.empleado.nombreCompleto}"/>
             </p:column>
+
             <p:column headerText="Nombre Acci&oacute;n" filterBy="#{sol.tipoAccion.nomTipoaccion}" >
                 <h:outputText value="#{sol.tipoAccion.nomTipoaccion}"/>
             </p:column>
+
             <p:column headerText="Estado">
-                <h:outputText value="#{sol.accEstado}"/>
+                <p:cellEditor>  
+                    <f:facet name="output">  
+                        <h:outputText value="#{sol.accEstado}"/>
+                    </f:facet>  
+                    <f:facet name="input">          
+                        <h:selectOneMenu value="#{sol.status}" >
+                            <f:selectItem itemValue="G" itemLabel="Solicitada" />
+                            <f:selectItem itemValue="J" itemLabel="Pre-Aprobada" />
+                            <f:selectItem itemValue="R" itemLabel="Rechazada" />
+                            <f:selectItem itemValue="A" itemLabel="Aprobada" />
+                        </h:selectOneMenu>
+                    </f:facet>  
+                </p:cellEditor>
             </p:column>
+
             <p:column headerText="Observaci&oacute;n">
-                <h:outputText value="#{sol.observacion}"/>
+                <p:cellEditor>  
+                    <f:facet name="output">  
+                        <h:outputText value="#{sol.observacion}"/>
+                    </f:facet>  
+                    <f:facet name="input">          
+                        <p:inputText value="#{sol.observacion}" style="width:70px;" label="Observaci&oacute;"/>  
+                    </f:facet>  
+                </p:cellEditor>
             </p:column>
+
             <p:column headerText="P. Ini" sortBy="#{sol.periodo}" >
-                <h:outputText value="#{sol.periodo}">
-                    <f:convertDateTime pattern="dd/MM/yyyy"/>
-                </h:outputText>
+                <p:cellEditor>  
+                    <f:facet name="output">  
+                        <h:outputText value="#{sol.periodo}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </f:facet>  
+                    <f:facet name="input">          
+                        <p:calendar value="#{sol.periodo}" inputStyle="width:72px;" pattern="dd/MM/yyyy"  />
+                    </f:facet>  
+                </p:cellEditor>
             </p:column>
+
             <p:column headerText="P. Fin" sortBy="#{sol.periodoFinal}" >
-                <h:outputText value="#{sol.periodoFinal}">
-                    <f:convertDateTime pattern="dd/MM/yyyy"/>
-                </h:outputText>
+                <p:cellEditor>  
+                    <f:facet name="output">  
+                        <h:outputText value="#{sol.periodoFinal}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </f:facet>  
+                    <f:facet name="input">          
+                        <p:calendar value="#{sol.periodoFinal}" inputStyle="width:72px;" pattern="dd/MM/yyyy"  />
+                    </f:facet>  
+                </p:cellEditor>
             </p:column>
+
             <p:column headerText="F. Ini" sortBy="#{sol.fechaInicial}" >
-                <h:outputText value="#{sol.fechaInicial}">
-                    <f:convertDateTime pattern="dd/MM/yyyy"/>
-                </h:outputText>
+                <p:cellEditor>  
+                    <f:facet name="output">  
+                        <h:outputText value="#{sol.fechaInicial}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </f:facet>  
+                    <f:facet name="input">          
+                        <p:calendar value="#{sol.fechaInicial}" inputStyle="width:72px;" pattern="dd/MM/yyyy"  />
+                    </f:facet>  
+                </p:cellEditor>
             </p:column>
+
             <p:column headerText="F. Fin" sortBy="#{sol.fechaFinal}" >
-                <h:outputText value="#{sol.fechaFinal}">
-                    <f:convertDateTime pattern="dd/MM/yyyy"/>
-                </h:outputText>
+                <p:cellEditor>  
+                    <f:facet name="output">  
+                        <h:outputText value="#{sol.fechaFinal}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </f:facet>  
+                    <f:facet name="input">          
+                        <p:calendar value="#{sol.fechaFinal}" inputStyle="width:72px;" pattern="dd/MM/yyyy"  />
+                    </f:facet>  
+                </p:cellEditor>
             </p:column>
-            <p:column headerText="D&iacute;as">
-                <h:outputText value="#{sol.dias}"/>
+
+            <p:column headerText="D&iacute;as">               
+                <p:cellEditor>  
+                    <f:facet name="output">  
+                        <h:outputText value="#{sol.dias}"/>
+                    </f:facet>  
+                    <f:facet name="input">  
+                        <p:inputText value="#{sol.dias}" maxlength="3" style="width:40px;" label="Year"/>  
+                    </f:facet>  
+                </p:cellEditor>  
             </p:column>
+
+            <p:column headerText="Editar" style="width:50px">  
+                <p:rowEditor />  
+            </p:column>  
+
         </p:dataTable>
     </ui:define>
 
