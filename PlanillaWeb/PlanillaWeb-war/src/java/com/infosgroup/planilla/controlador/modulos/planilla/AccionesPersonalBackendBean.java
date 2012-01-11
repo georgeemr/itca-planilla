@@ -26,6 +26,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -75,6 +76,7 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     public void init() {
         listaEmp = planillaSessionBean.listaEmpleados();
         listaPlanillas = planillaSessionBean.listarPlanilla();
+        listaSolicitudes = planillaSessionBean.findSolicitudesPendientes(getSessionBeanADM().getCompania().getIdCompania())/*planillaSessionBean.listarAccionporTipo(empresa, tipoPlanilla)*/;
         empresa = getSessionBeanADM().getCompania().getIdCompania();
         fecha = new Date();
     }
@@ -281,7 +283,7 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
     }
 
     public List<AccionPersonal> getListaSolicitudes() {
-        listaSolicitudes = planillaSessionBean.listarAccionporTipo(empresa, tipoPlanilla);
+        //listaSolicitudes = planillaSessionBean.listarAccionporTipo(empresa, tipoPlanilla);
         return listaSolicitudes;
     }
 
@@ -415,10 +417,10 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
             addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
             error = Boolean.TRUE;
         }
-        
-        if ( empleadoSeleccionado.getPuestoEmpleadoList() == null || empleadoSeleccionado.getPuestoEmpleadoList().isEmpty() ){
+
+        if (empleadoSeleccionado.getPuestoEmpleadoList() == null || empleadoSeleccionado.getPuestoEmpleadoList().isEmpty()) {
             addMessage("Acciones de Personal", "El empleado no tiene asignado ningún puesto.", TipoMensaje.ERROR);
-            error = Boolean.TRUE;            
+            error = Boolean.TRUE;
         }
 
         return error;
@@ -447,9 +449,19 @@ public class AccionesPersonalBackendBean extends JSFUtil implements Serializable
         empleadoSeleccionado = null;
         obsv = null;
         planillaSeleccionada = null;
-        fechaInicial =null;
+        fechaInicial = null;
         fechaFinal = null;
         nombreEmpleado = null;
-        nombreJefe= "Seleccione un Empleado";
+        nombreJefe = "Seleccione un Empleado";
+    }
+
+    public void onEditAccionPersonal(RowEditEvent event) {
+        try {
+            AccionPersonal accionPersonal = (AccionPersonal) event.getObject();
+            planillaSessionBean.editAccionPersonal(accionPersonal);
+            addMessage("Evaluacion de Candidato", "Datos Guardados", TipoMensaje.INFORMACION);
+        } catch (Exception e) {
+            addMessage("Evaluacion de Candidato", "Ocurrio un error al intentar guardar.", TipoMensaje.INFORMACION);
+        }
     }
 }
