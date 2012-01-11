@@ -26,7 +26,7 @@ public class FactorPK implements Serializable
     @Basic(optional = false)
     @NotNull
     @Column(name = "COD_FACTOR", nullable = false)
-    private long codFactor;
+    private Long codFactor;
 
     public FactorPK()
     {
@@ -48,12 +48,12 @@ public class FactorPK implements Serializable
         this.codCia = codCia;
     }
 
-    public long getCodFactor()
+    public Long getCodFactor()
     {
         return codFactor;
     }
 
-    public void setCodFactor(long codFactor)
+    public void setCodFactor(Long codFactor)
     {
         this.codFactor = codFactor;
     }
@@ -63,7 +63,7 @@ public class FactorPK implements Serializable
     {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) codFactor;
+        hash += (long) codFactor;
         return hash;
     }
 
