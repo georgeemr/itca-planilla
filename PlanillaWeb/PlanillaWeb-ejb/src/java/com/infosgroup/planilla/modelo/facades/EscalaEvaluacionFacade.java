@@ -34,14 +34,13 @@ public class EscalaEvaluacionFacade extends AbstractFacade<EscalaEvaluacion, Esc
     }
     
     @PermitAll
-    public String getEscalaByEvaluacion( Evaluacion ev ){
+    public String getEscalaByEvaluacion( Evaluacion ev, Integer valor ){
         List<EscalaEvaluacion> e = new ArrayList<EscalaEvaluacion>();
-        e = em.createQuery("SELECT e FROM EscalaEvaluacion e WHERE e.escalaEvaluacionPK.codCia = :codCia", EscalaEvaluacion.class).setParameter("codCia", ev.getEvaluacionPK().getCodCia()).getResultList();
-        
-        if (e!= null){
+        e = em.createNativeQuery("select * from escala_evaluacion where cod_cia = ? and tipo_evaluacion = ? and " + valor +" between rango_inicial and rango_final ", EscalaEvaluacion.class)
+                .setParameter(1, ev.getEvaluacionPK().getCodCia()).setParameter(2, ev.getEvaluacionPK().getTipoEvaluacion()).getResultList();
+        if (e!= null && e.size() > 0){
             return e.get(0).getCalificacion();
         }
-        
         return "Nota en un rango indefinido.";
     }
     
