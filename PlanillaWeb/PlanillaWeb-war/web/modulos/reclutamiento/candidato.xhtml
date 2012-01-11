@@ -13,16 +13,32 @@
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <!-- p:commandLink styleClass="opcionMenu" action="# {reclutamiento$candidato.guardarDatos$action()}" update="mensajes">
-                    <p:graphicImage value="/resources/iconos/document-save.png"/>
-                    <h:outputText value="Guardar" styleClass="espacioTexto"/>
+                <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true"
+                               action="#{reclutamiento$candidato.nuevo$vh$action()}" update="panelContenido">
+                    <p:graphicImage value="/resources/iconos/new.png"/>
+                    <h:outputText value="Nuevo" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu" action="# {reclutamiento$candidato.guardarDatos$action()}" update="mensajes">
-                    <p:graphicImage value="/resources/iconos/document-save.png"/>
-                    <h:outputText value="Guardar" styleClass="espacioTexto"/>
-                </p:commandLink -->
+
+                <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true"
+                               action="#{reclutamiento$candidato.consultar$vh$action()}" update="tablaConcursos, panelContenido">
+                    <p:graphicImage value="/resources/iconos/search.png"/>
+                    <h:outputText value="Consultar" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true"
+                               action="#{reclutamiento$candidato.editar$crud$action()}" update="mensajes, panelContenido">
+                    <p:graphicImage value="/resources/iconos/edit.png"/>
+                    <h:outputText value="Editar" styleClass="espacioTexto"/>
+                </p:commandLink>
+
             </h:panelGrid>
         </p:tab>  
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" value="Cancelar" ajax="true" action="#{reclutamiento$concursos.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                    <p:graphicImage styleClass="ui-icon ui-icon-circle-close" />
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
     </ui:define>
 
     <ui:define name="titulo">
@@ -31,34 +47,132 @@
 
     <ui:define name="contenido">
 
-        <p:fieldset legend="Datos personales">
+        <p:wizard id="wizardCandidato" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" flowListener="#{reclutamiento$candidato.onFlowProcess}" >
+            <p:tab title="Datos Personales" >
 
-            <h:panelGrid columns="6">
-                <h:outputLabel value="Nombre: "/>
-                <p:inputText id="txNombre" value="#{reclutamiento$candidato.nombre}" />
-                <h:outputLabel value="Apellido: "/>
-                <p:inputText id="txApellido" value="#{reclutamiento$candidato.apellido}" />
-                <h:outputLabel value="Apellido de Casada: "/>
-                <p:inputText id="txApellidoCasada" value="#{reclutamiento$candidato.apellidoDeCasada}" />
-                <h:outputLabel value="Fecha de Nacimiento: "/>
-                <p:calendar id="calFechaNacimiento" pattern="dd/MM/yyyy" 
-                            value="#{reclutamiento$candidato.fechaNacimiento}"
-                            showOn="button"  />
-                <h:outputLabel value="Sexo: "/>
-                <h:selectOneMenu id="lstSexo" value="#{reclutamiento$candidato.sexo}" >
-                    <f:selectItems var="sexo" value="#{reclutamiento$candidato.selectSexo}" itemValue="#{sexo.value}" itemLabel="#{sexo.label}" />
-                </h:selectOneMenu>
-                <h:outputLabel value="Observaciones:"/>
-                <p:inputTextarea id="txObservaciones" />
-            </h:panelGrid>
+                <p:spacer height="20" />
 
-        </p:fieldset>
+                <p:fieldset legend="Datos personales">
 
-        <p:spacer height="20px" />
+                    <h:panelGrid columns="6">
+                        <h:outputLabel value="Nombre: "/>
+                        <p:inputText id="txNombre" value="#{reclutamiento$candidato.nombre}" />
+                        <h:outputLabel value="Apellido: "/>
+                        <p:inputText id="txApellido" value="#{reclutamiento$candidato.apellido}" />
+                        <h:outputLabel value="Apellido de Casada: "/>
+                        <p:inputText id="txApellidoCasada" value="#{reclutamiento$candidato.apellidoDeCasada}" />
+                        <h:outputLabel value="Fecha de Nacimiento: "/>
+                        <p:calendar id="calFechaNacimiento" pattern="dd/MM/yyyy"  value="#{reclutamiento$candidato.fechaNacimiento}" showOn="button"  />
+                        <h:outputLabel value="Sexo: "/>
+                        <h:selectOneMenu id="lstSexo" value="#{reclutamiento$candidato.sexo}" >
+                            <f:selectItems var="sexo" value="#{reclutamiento$candidato.selectSexo}" itemValue="#{sexo.value}" itemLabel="#{sexo.label}" />
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Observaciones:"/>
+                        <p:inputTextarea id="txObservaciones" />
+                    </h:panelGrid>
+                    <p:spacer height="10" />
+                    <h:panelGrid columns="1">
+                        <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{reclutamiento$candidato.guardar$crud$action()}" update="formPrincipal:mensajes" />          
+                    </h:panelGrid>
+                </p:fieldset>
 
-        <p:fieldset legend="Documentos de Identidad" >
+            </p:tab>
 
-        </p:fieldset>
+            <p:tab title="Documentos" >
+                <p:spacer height="20" />
+                <p:fieldset legend="Documentos de Identidad" >
+                    <h:panelGrid columns="5">
+                        <h:outputLabel value="Tipo de Documento: " />
+                        <h:selectOneMenu id="lstTipoDocumentos" value="#{reclutamiento$candidato.tipoDocumentoSeleccionado}" >
+                            <f:selectItems var="tipoDocumento" itemLabel="#{tipoDocumento.nomTipoDocumento}" itemValue="#{tipoDocumento.idTipoDocumento}" value="#{reclutamiento$candidato.listaTipoDocumentos}" />
+                        </h:selectOneMenu>
+                        <h:outputLabel value="N&uacute;mero: " />
+                        <p:inputText />
+                        <p:commandButton value="Guardar" image="guardar" />
+                    </h:panelGrid>
+                    <p:spacer height="10" />
+                    <p:dataTable id="tableDocumentos" emptyMessage="No se ha encontrado ning&uacute;n Documento" >
+
+                        <f:facet name="header">
+                            Documentos de identidad del Candidato
+                        </f:facet>
+
+                        <p:column headerText="Tipo de Documento" >
+
+
+                        </p:column>
+
+                        <p:column headerText="N&uacute;mero de Documento" >
+
+
+                        </p:column>
+                        <p:column headerText="Editar" >
+                            <p:rowEditor id="docRowEdit" />
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+
+            </p:tab>
+
+            <p:tab title="Criterios" >
+                <p:spacer height="20" />
+                <p:fieldset legend="Registrar Criterios" >
+
+                </p:fieldset>
+            </p:tab>
+
+            <p:tab title="Finalizar" >
+                <p:spacer height="20" />
+                <h:outputLabel value="Ha registrado correctamente un nuevo Candidato." />
+            </p:tab>
+        </p:wizard>
+
+        <p:panel style="border: none;" rendered="#{(SessionBeanADM.estadoAccion eq 2)}" >
+            <p:dataTable id="tableConsultaCandidato" var="candidato" value="#{reclutamiento$candidato.listaCandidatos}"
+                         emptyMessage="No se ha encontrado ning&uacute;n Candidato" paginator="true" rows="10" rowsPerPageTemplate="5,10,25,50,100"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >
+
+                <f:facet name="header">
+                    Consulta de Candidatos
+                </f:facet>
+
+                <p:column headerText="C&oacute;digo" >
+                    <h:outputLabel value="#{candidato.candidatoPK.codCandidato}"/>
+                </p:column>
+
+                <p:column headerText="Nombre" filterBy="#{candidato.nombreCompleto}" filterMatchMode="contains" >
+                    <p:graphicImage value="/resources/iconos/personal.png" rendered="#{candidato.sexo eq 'M'}" />  
+                    <p:graphicImage value="/resources/iconos/personal_w.png" rendered="#{candidato.sexo eq 'F'}" />
+                    <h:outputLabel value="#{candidato.nombreCompleto}"/>
+                </p:column>
+
+                <p:column headerText="Fecha de Nacimiento">
+                    <h:outputLabel value="#{candidato.fechaNacimiento}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputLabel>
+                </p:column>
+
+                <p:column headerText="Sexo">
+                    <h:outputLabel value="#{candidato.sexo}"/>
+                </p:column>
+
+                <p:column headerText="Observaci&oacute;n">
+                    <h:outputLabel value="#{candidato.observacion}"/>
+                </p:column>
+
+                <p:column headerText="Estado">
+                    <h:outputLabel value="#{candidato.estado}"/>
+                </p:column>
+
+                <p:column headerText="Edad">
+                    <h:outputLabel value="#{candidato.edad}"/>
+                </p:column>
+
+                <p:column headerText="Editar" >
+                    <p:rowEditor id="docRowEdit" />
+                </p:column>
+            </p:dataTable>
+        </p:panel>
 
     </ui:define>
 
