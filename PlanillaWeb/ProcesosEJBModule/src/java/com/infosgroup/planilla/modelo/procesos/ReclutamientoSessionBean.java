@@ -23,6 +23,7 @@ import com.infosgroup.planilla.modelo.entidades.Sucursal;
 import com.infosgroup.planilla.modelo.entidades.SucursalPK;
 import com.infosgroup.planilla.modelo.entidades.TipoContrato;
 import com.infosgroup.planilla.modelo.entidades.TipoContratoPK;
+import com.infosgroup.planilla.modelo.entidades.TipoDocumento;
 import com.infosgroup.planilla.modelo.entidades.TipoPlanilla;
 import com.infosgroup.planilla.modelo.entidades.TipoPlanillaPK;
 import com.infosgroup.planilla.modelo.entidades.TipoPuesto;
@@ -40,6 +41,7 @@ import com.infosgroup.planilla.modelo.facades.EvaluacionCandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.SucursalFacade;
 import com.infosgroup.planilla.modelo.facades.TipoContratoFacade;
+import com.infosgroup.planilla.modelo.facades.TipoDocumentoFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPlanillaFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPuestoFacade;
 import javax.ejb.EJB;
@@ -87,7 +89,9 @@ public class ReclutamientoSessionBean {
     private EstadoContratoFacade estadoContratoFacade;
     @EJB
     private CriteriosXPuestoFacade criteriosXPuestoFacade;
-
+    @EJB
+    private TipoDocumentoFacade tipoDocumentoFacade;
+    
     public List<Concurso> getListaConcursos(Date fechaInicial, Date fechaFinal) {
         return concursoFacade.getConcursosByDate(fechaInicial, fechaFinal);
     }
@@ -116,6 +120,7 @@ public class ReclutamientoSessionBean {
         return concursoFacade.getMax(empresa).intValue();
     }
 
+    @PermitAll
     public List<Candidato> getCandidatosByEmpresa(Long empresa) {
         return candidatoFacade.findByCanditadoByEmpresa(empresa);
     }
@@ -279,5 +284,10 @@ public class ReclutamientoSessionBean {
 
     public TipoPlanilla findTipoPlanillaById(TipoPlanillaPK id) {
         return tipoPlanillaFacade.find(id);
+    }
+    
+    @PermitAll
+    public List<TipoDocumento> findAllTipoDocumento(){
+        return tipoDocumentoFacade.findAll();
     }
 }
