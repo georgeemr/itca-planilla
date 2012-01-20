@@ -9,8 +9,6 @@
 	<queryString>
 		<![CDATA[select a.cod_emp,
          upper(nvl(a.nombres, '' ) || ' ' || nvl(a.apellidos, a.ap_casada)) as nombre,
-a.num_igss,
-a.num_nit as nit,
          nvl(c.salario_ordinario,0) as salario_ordinario,
          nvl(c.cantidad_horas_extras,0) as cantidad_horas_extras,
          nvl(c.valor_horas_extras,0) as valor_horas_extras,
@@ -20,28 +18,29 @@ a.num_nit as nit,
          0 as otros_pagos,
          nvl(d.nom_nivel_academico, '') as nivel_academico,
          nvl(e.nom_profesion, '') as profesion,
-         nvl(f.nombre, '') as etnia
-    from empleados a,
-( select b.cod_emp, sum(b.valor) as aguinaldo from mov_dp b where b.cod_cia = $P{empresa} and b.anio = $P{anio} and b.cod_dp = $P{codDpAguinaldo} group by b.cod_emp ) b,
+         nvl(f.nombre, '') as etnia,
+         g.nomb_pais as pais_nacimiento
+    from rh_humanos.empleados a,
+( select b.cod_emp, sum(b.valor) as aguinaldo from rh_humanos.mov_dp b where b.cod_cia = $P{empresa} and b.anio = $P{anio} and b.cod_dp = $P{codDpAguinaldo} group by b.cod_emp ) b,
 ( select c.cod_emp,
        sum(nvl(c.ch_xsencilla,0)) + sum(nvl(c.ch_xdoble,0)) + sum(nvl(c.chr_noche,0)) + sum(nvl(c.ch_x250,0))+ sum(nvl(c.ch_x150,0))+ sum(nvl(c.ch_hora,0)) as cantidad_horas_extras,
        sum(nvl(c.vh_xsencilla,0)) + sum(nvl(c.vh_xdoble,0)) + sum(nvl(c.vhr_noche,0)) + sum(nvl(c.vh_x250,0))+ sum(nvl(c.vh_x150,0))+ sum(nvl(c.vh_hora,0)) as valor_horas_extras,
-       sum(c.tot_debenga) as salario_ordinario, sum(c.prestaciones) as prestaciones from planilla c where c.cod_cia = $P{empresa} and c.anio = $P{anio} group by c.cod_emp ) c,
-( select d.cod_nivel_academico, d.nom_nivel_academico from nivel_academico d where d.cod_cia = $P{empresa} ) d,
-( select e.cod_profesion, e.nom_profesion from profesion e where e.cod_cia = $P{empresa}  ) e,
-( select f.codigo, f.nombre from etnia f where cod_cia = $P{empresa} ) f
+       sum(c.tot_debenga) as salario_ordinario, sum(c.prestaciones) as prestaciones from rh_humanos.planilla c where c.cod_cia = $P{empresa} and c.anio = $P{anio} group by c.cod_emp ) c,
+( select d.cod_nivel_academico, d.nom_nivel_academico from rh_humanos.nivel_academico d where d.cod_cia = $P{empresa} ) d,
+( select e.cod_profesion, e.nom_profesion from rh_humanos.profesion e where e.cod_cia = $P{empresa}  ) e,
+( select f.codigo, f.nombre from rh_humanos.etnia f where cod_cia = $P{empresa} ) f,
+( select g.cod_pais, g.nomb_pais from parametros.paises g ) g
    where a.cod_cia = $P{empresa}
      and b.cod_emp(+) =  a.cod_emp
      and c.cod_emp(+) =  a.cod_emp
      and a.cod_nivel_academico = d.cod_nivel_academico(+)
      and a.cod_profesion = e.cod_profesion(+)
      and a.etnia = f.codigo(+)
+     and a.cod_pais_nacimiento = g.cod_pais(+)
 order by a.cod_emp]]>
 	</queryString>
 	<field name="COD_EMP" class="java.math.BigDecimal"/>
 	<field name="NOMBRE" class="java.lang.String"/>
-	<field name="NUM_IGSS" class="java.lang.String"/>
-	<field name="NIT" class="java.lang.String"/>
 	<field name="SALARIO_ORDINARIO" class="java.math.BigDecimal"/>
 	<field name="CANTIDAD_HORAS_EXTRAS" class="java.math.BigDecimal"/>
 	<field name="VALOR_HORAS_EXTRAS" class="java.math.BigDecimal"/>
@@ -52,6 +51,7 @@ order by a.cod_emp]]>
 	<field name="NIVEL_ACADEMICO" class="java.lang.String"/>
 	<field name="PROFESION" class="java.lang.String"/>
 	<field name="ETNIA" class="java.lang.String"/>
+	<field name="PAIS_NACIMIENTO" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
