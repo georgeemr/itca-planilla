@@ -5,14 +5,16 @@
 package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
+import com.infosgroup.planilla.modelo.entidades.CandidatoPK;
 import com.infosgroup.planilla.modelo.entidades.TipoDocumento;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -25,7 +27,7 @@ import org.primefaces.event.FlowEvent;
  */
 @ManagedBean(name = "reclutamiento$candidato")
 @ViewScoped
-public class CandidatoBackendBean extends JSFUtil implements Serializable {
+public class CandidatoBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
     private ReclutamientoSessionBean reclutamientoSessionBean;
@@ -44,8 +46,12 @@ public class CandidatoBackendBean extends JSFUtil implements Serializable {
     public CandidatoBackendBean() {
     }
 
-    public List<Candidato> getListaCandidatos() {
+    @PostConstruct
+    public void initComponents(){
         listaCandidatos = reclutamientoSessionBean.getCandidatosByEmpresa(getSessionBeanADM().getCompania().getIdCompania());
+    }
+    
+    public List<Candidato> getListaCandidatos() {
         return listaCandidatos;
     }
 
@@ -130,10 +136,16 @@ public class CandidatoBackendBean extends JSFUtil implements Serializable {
     }
 
     public String guardarDatos$action() {
+        
+        Candidato candidato = new Candidato();
+        CandidatoPK pkCandidato = new CandidatoPK();
+        
+        
+        
         try {
             addMessage("Registro de Candidatos", "Datos guardados satisfactoriamente.", TipoMensaje.INFORMACION);
-        } catch (Exception e) {
-            addMessage("Registro de Candidatos", "Ocurrio un error al intentar almacenar la información.", TipoMensaje.ERROR_FATAL);
+        } catch (javax.persistence.EntityExistsException e) {
+            addMessage("Registro de Candidatos", "El candidato ingresado ya existe.", TipoMensaje.ERROR_FATAL);
             System.out.println(e.getMessage());
         }
 

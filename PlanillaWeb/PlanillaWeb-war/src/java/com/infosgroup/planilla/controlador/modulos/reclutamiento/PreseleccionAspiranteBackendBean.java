@@ -22,7 +22,7 @@ import com.infosgroup.planilla.modelo.entidades.TipoPlanilla;
 import com.infosgroup.planilla.modelo.entidades.TipoPlanillaPK;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.modelo.procesos.SeguridadSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -47,7 +47,7 @@ import org.primefaces.event.UnselectEvent;
  */
 @ManagedBean(name = "reclutamiento$preseleccionAspirante")
 @ViewScoped
-public class PreseleccionAspiranteBackendBean extends JSFUtil implements Serializable {
+public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements Serializable {
     
     @EJB
     private SeguridadSessionBean seguridadSessionBean;

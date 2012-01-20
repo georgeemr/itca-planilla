@@ -12,7 +12,7 @@ import com.infosgroup.planilla.modelo.estructuras.reportes.ReporteEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.modelo.procesos.MailStatelessBean;
 import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean(name = "empleados$reporteEvaluacion")
 @ViewScoped
-public class ReporteEvaluacionBackendBean extends JSFUtil implements Serializable {
+public class ReporteEvaluacionBackendBean extends AbstractJSFPage implements Serializable {
     
     @EJB
     private EmpleadosSessionBean empleadosSessionBean;

@@ -5,7 +5,7 @@
 package com.infosgroup.planilla.controlador.modulos;
 
 import com.infosgroup.planilla.modelo.procesos.SeguridadSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -18,7 +18,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean(name = "index")
 @ViewScoped
-public class IndexBackendBean extends JSFUtil implements Serializable {
+public class IndexBackendBean extends AbstractJSFPage implements Serializable {
     
    
     @EJB

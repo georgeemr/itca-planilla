@@ -9,7 +9,7 @@ import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.Factor;
 import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean(name = "empleados$seleccionEvaluacion")
 @ViewScoped
-public class SeleccionEvaluacionBackendBean extends JSFUtil implements Serializable {
+public class SeleccionEvaluacionBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
     private EmpleadosSessionBean empleadosBean;

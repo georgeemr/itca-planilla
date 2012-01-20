@@ -10,7 +10,7 @@ import com.infosgroup.planilla.modelo.entidades.RespuestaPK;
 import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
 import com.infosgroup.planilla.modelo.estructuras.PreguntaRespuesta;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.ejb.EJB;
@@ -27,7 +27,7 @@ import org.primefaces.event.FlowEvent;
 */
 @ManagedBean(name = "empleados$evaluacionEmpleado")
 @ViewScoped
-public class EvaluacionEmpleadoBackendBean extends JSFUtil implements Serializable
+public class EvaluacionEmpleadoBackendBean extends AbstractJSFPage implements Serializable
 {
 @EJB
 private EmpleadosSessionBean empleadosBean;

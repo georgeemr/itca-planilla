@@ -12,7 +12,7 @@ import com.infosgroup.planilla.modelo.entidades.Puesto;
 import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import org.primefaces.event.FlowEvent;
 */
 @ManagedBean(name = "empleados$definirEvaluaciones")
 @ViewScoped
-public class DefinirEvaluacionesBackendBean extends JSFUtil implements Serializable
+public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements Serializable
 {
 
 @EJB

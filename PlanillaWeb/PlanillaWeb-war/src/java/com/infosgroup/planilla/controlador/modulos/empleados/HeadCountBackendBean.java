@@ -8,7 +8,7 @@ import com.infosgroup.planilla.modelo.entidades.Gerencia;
 import com.infosgroup.planilla.modelo.entidades.GerenciaPK;
 import com.infosgroup.planilla.modelo.estructuras.HeadCountModel;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import org.primefaces.model.TreeNode;
 */
 @ManagedBean(name = "empleados$HeadCount")
 @ViewScoped
-public class HeadCountBackendBean extends JSFUtil implements Serializable
+public class HeadCountBackendBean extends AbstractJSFPage implements Serializable
 {
 ///** Creates a new instance of DefinirEvaluacionesBackendBean */
 //public DefinirEvaluacionesBackendBean()

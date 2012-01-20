@@ -9,7 +9,7 @@ import com.infosgroup.planilla.modelo.entidades.PuestoPK;
 import com.infosgroup.planilla.modelo.entidades.TipoPuesto;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPuestoFacade;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
@@ -23,7 +23,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean(name = "administracionPuestoBackingBean")
 @ViewScoped
-public class PuestoBackingBean extends JSFUtil implements Serializable {
+public class PuestoBackingBean extends AbstractJSFPage implements Serializable {
 
     @EJB
     private PuestoFacade puestoFacade;

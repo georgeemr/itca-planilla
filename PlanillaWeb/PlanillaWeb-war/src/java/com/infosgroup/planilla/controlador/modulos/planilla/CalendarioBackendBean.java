@@ -7,7 +7,7 @@ package com.infosgroup.planilla.controlador.modulos.planilla;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import javax.faces.model.SelectItem;
 */
 @ManagedBean(name = "planilla$calendario")
 @ViewScoped
-public class CalendarioBackendBean extends JSFUtil implements Serializable
+public class CalendarioBackendBean extends AbstractJSFPage implements Serializable
 {
 @EJB
 private EmpleadosSessionBean empleadosBean;

@@ -7,7 +7,7 @@ package com.infosgroup.planilla.controlador.modulos.planilla;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.estructuras.DetallePlanilla;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
@@ -23,7 +23,7 @@ import org.primefaces.component.datatable.DataTable;
 */
 @ManagedBean(name = "planilla$informacionPagos")
 @ViewScoped
-public class InformacionPagosBackendBean extends JSFUtil implements Serializable
+public class InformacionPagosBackendBean extends AbstractJSFPage implements Serializable
 {
 @EJB
 private PlanillaSessionBean planillaSessionBean;
