@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="repDetPagosEmpleado" language="groovy" pageWidth="1450" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1410" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="134"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="anio" class="java.lang.String"/>
+	<parameter name="empresa" class="java.lang.String"/>
+	<parameter name="codDpAguinaldo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select a.cod_emp,
+         upper(nvl(a.nombres, '' ) || ' ' || nvl(a.apellidos, a.ap_casada)) as nombre,
+         nvl(c.salario_ordinario,0) as salario_ordinario,
+         nvl(c.cantidad_horas_extras,0) as cantidad_horas_extras,
+         nvl(c.valor_horas_extras,0) as valor_horas_extras,
+         nvl(b.aguinaldo,0) as aguinaldo,
+         0 as bono14,
+         0 as comisiones,
+         0 as otros_pagos,
+         nvl(d.nom_nivel_academico, '') as nivel_academico,
+         nvl(e.nom_profesion, '') as profesion,
+         nvl(f.nombre, '') as etnia,
+         g.nomb_pais as pais_nacimiento
+    from rh_humanos.empleados a,
+( select b.cod_emp, sum(b.valor) as aguinaldo from rh_humanos.mov_dp b where b.cod_cia = $P{empresa} and b.anio = $P{anio} and b.cod_dp = $P{codDpAguinaldo} group by b.cod_emp ) b,
+( select c.cod_emp,
+       sum(nvl(c.ch_xsencilla,0)) + sum(nvl(c.ch_xdoble,0)) + sum(nvl(c.chr_noche,0)) + sum(nvl(c.ch_x250,0))+ sum(nvl(c.ch_x150,0))+ sum(nvl(c.ch_hora,0)) as cantidad_horas_extras,
+       sum(nvl(c.vh_xsencilla,0)) + sum(nvl(c.vh_xdoble,0)) + sum(nvl(c.vhr_noche,0)) + sum(nvl(c.vh_x250,0))+ sum(nvl(c.vh_x150,0))+ sum(nvl(c.vh_hora,0)) as valor_horas_extras,
+       sum(c.tot_debenga) as salario_ordinario, sum(c.prestaciones) as prestaciones from rh_humanos.planilla c where c.cod_cia = $P{empresa} and c.anio = $P{anio} group by c.cod_emp ) c,
+( select d.cod_nivel_academico, d.nom_nivel_academico from rh_humanos.nivel_academico d where d.cod_cia = $P{empresa} ) d,
+( select e.cod_profesion, e.nom_profesion from rh_humanos.profesion e where e.cod_cia = $P{empresa}  ) e,
+( select f.codigo, f.nombre from rh_humanos.etnia f where cod_cia = $P{empresa} ) f,
+( select g.cod_pais, g.nomb_pais from parametros.paises g ) g
+   where a.cod_cia = $P{empresa}
+     and b.cod_emp(+) =  a.cod_emp
+     and c.cod_emp(+) =  a.cod_emp
+     and a.cod_nivel_academico = d.cod_nivel_academico(+)
+     and a.cod_profesion = e.cod_profesion(+)
+     and a.etnia = f.codigo(+)
+     and a.cod_pais_nacimiento = g.cod_pais(+)
+order by a.cod_emp]]>
+	</queryString>
+	<field name="COD_EMP" class="java.math.BigDecimal"/>
+	<field name="NOMBRE" class="java.lang.String"/>
+	<field name="SALARIO_ORDINARIO" class="java.math.BigDecimal"/>
+	<field name="CANTIDAD_HORAS_EXTRAS" class="java.math.BigDecimal"/>
+	<field name="VALOR_HORAS_EXTRAS" class="java.math.BigDecimal"/>
+	<field name="AGUINALDO" class="java.math.BigDecimal"/>
+	<field name="BONO14" class="java.math.BigDecimal"/>
+	<field name="COMISIONES" class="java.math.BigDecimal"/>
+	<field name="OTROS_PAGOS" class="java.math.BigDecimal"/>
+	<field name="NIVEL_ACADEMICO" class="java.lang.String"/>
+	<field name="PROFESION" class="java.lang.String"/>
+	<field name="ETNIA" class="java.lang.String"/>
+	<field name="PAIS_NACIMIENTO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="106" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="18" width="1410" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Informe de Ingresos por Empleado.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="44" width="1410" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Comprendidos en el periodo de 01/01/" + $P{anio} + " hasta 31/12/" + $P{anio}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="71" width="1410" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="72" width="42" height="34"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="72" width="271" height="34"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="513" y="72" width="50" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Salario Ordinario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="563" y="72" width="51" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Horas Extras]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="614" y="72" width="61" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Salario Extra Ordinario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="675" y="72" width="59" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aguinaldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="734" y="72" width="49" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bono 14]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="783" y="72" width="63" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comisiones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="846" y="72" width="59" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Otros Pagos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="905" y="72" width="132" height="34"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nivel Academico]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1037" y="72" width="224" height="34"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Profesión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1261" y="72" width="149" height="34"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Etnia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="72" width="66" height="34"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IGSS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="72" width="134" height="34"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIT]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="42" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COD_EMP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="42" y="0" width="271" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="513" y="0" width="51" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALARIO_ORDINARIO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="564" y="0" width="50" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CANTIDAD_HORAS_EXTRAS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="614" y="0" width="61" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALOR_HORAS_EXTRAS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="675" y="0" width="59" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{AGUINALDO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="734" y="0" width="49" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{BONO14}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="783" y="0" width="63" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COMISIONES}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="846" y="0" width="59" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{OTROS_PAGOS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="905" y="0" width="132" height="19" isRemoveLineWhenBlank="true"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{NIVEL_ACADEMICO} != null ? $F{NIVEL_ACADEMICO} :"")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1037" y="0" width="224" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{PROFESION} != null ? $F{PROFESION}:"")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1261" y="0" width="149" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{ETNIA} != null ? $F{ETNIA}:"")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="313" y="0" width="66" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NUM_IGSS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="379" y="0" width="134" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NIT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
