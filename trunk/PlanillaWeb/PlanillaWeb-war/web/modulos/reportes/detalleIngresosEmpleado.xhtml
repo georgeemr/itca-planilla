@@ -1,29 +1,37 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition
+                xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
-                template="./../../plantillas/defaultTemplate.xhtml"
-                xmlns:h="http://java.sun.com/jsf/html">
-
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/plantillas/defaultTemplate.xhtml">
     <ui:define name="titulo">
-        Detalle de Ingresos por Empleado
+        <h:outputText value="Detalle de Ingresos por Empleado"/>
     </ui:define>
-
     <ui:define name="dialogos">
     </ui:define>
-
     <ui:define name="acciones">
+        <p:tab title="Reporte">
+            <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <p:commandLink styleClass="opcionMenu" action="#{reportes$detalleIngresos.mostrarReporte$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';" ajax="false">
+                    <p:graphicImage value="/resources/iconos/meeting-participant-request-response.png"/>
+                    <h:outputText value="Mostrar reporte" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" value="Cancelar" ajax="true" action="#{reclutamiento$concursos.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
-                    <p:graphicImage styleClass="ui-icon ui-icon-circle-close" />
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{reportes$detalleIngresos.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';" immediate="true">
+                    <p:graphicImage styleClass="/resources/iconos/cancel.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
                 </p:commandLink>
             </h:panelGrid>
         </p:tab>
     </ui:define>
-
     <ui:define name="contenido">
-        contenido
+        <h:panelGrid columns="2" width="100%">
+            <h:outputText value="A&ntilde;o"/>
+            <p:spinner min="1900" max="2999" stepFactor="1" value="#{reportes$detalleIngresos.anio}"/>
+        </h:panelGrid>
     </ui:define>
-
 </ui:composition>

@@ -1,7 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
+*/
 package com.infosgroup.planilla.controlador.modulos.empleados;
 
 import com.infosgroup.planilla.modelo.entidades.Campania;
@@ -25,110 +25,126 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 /**
- *
- * @author root
- */
+*
+* @author root
+*/
 @ManagedBean(name = "empleados$reporteEvaluacion")
 @ViewScoped
-public class ReporteEvaluacionBackendBean extends AbstractJSFPage implements Serializable {
-    
-    @EJB
-    private EmpleadosSessionBean empleadosSessionBean;
-    @EJB
-    private ReportesStatelessBean reportesBean;
-    @EJB
-    private MailStatelessBean mailBean;
+public class ReporteEvaluacionBackendBean extends AbstractJSFPage implements Serializable
+{
 
-    /** Creates a new instance of SeleccionEvaluacionBackendBean */
-    public ReporteEvaluacionBackendBean() {
-    }
-    private List<Campania> listaCampanias;
+@EJB
+private EmpleadosSessionBean empleadosSessionBean;
+@EJB
+private ReportesStatelessBean reportesBean;
+@EJB
+private MailStatelessBean mailBean;
 
-    public List<Campania> getListaCampanias() {
-        listaCampanias = empleadosSessionBean.findAllByCia( getSessionBeanADM().getCompania().getIdCompania() );
-        return listaCampanias;
-    }
+/** Creates a new instance of SeleccionEvaluacionBackendBean */
+public ReporteEvaluacionBackendBean()
+{
+}
+private List<Campania> listaCampanias;
 
-    public void setListaCampanias(List<Campania> listaCampanias) {
-        this.listaCampanias = listaCampanias;
-    }
-    private List<TipoEvaluacion> listaTiposEvaluacion;
+public List<Campania> getListaCampanias()
+{
+listaCampanias = empleadosSessionBean.findAllByCia(getSessionBeanADM().getCompania().getIdCompania());
+return listaCampanias;
+}
 
-    public List<TipoEvaluacion> getListaTiposEvaluacion() {
+public void setListaCampanias(List<Campania> listaCampanias)
+{
+this.listaCampanias = listaCampanias;
+}
+private List<TipoEvaluacion> listaTiposEvaluacion;
+
+public List<TipoEvaluacion> getListaTiposEvaluacion()
+{
 //listaTiposEvaluacion = empleadosBean.listarTiposEvaluacion();
-        return listaTiposEvaluacion;
+return listaTiposEvaluacion;
+}
+
+public void setListaTiposEvaluacion(List<TipoEvaluacion> listaTiposEvaluacion)
+{
+this.listaTiposEvaluacion = listaTiposEvaluacion;
+}
+private List<Evaluacion> listaEvaluaciones;
+
+public List<Evaluacion> getListaEvaluaciones()
+{
+listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosSessionBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada) : null;
+return listaEvaluaciones;
+}
+
+public void setListaEvaluaciones(List<Evaluacion> listaEvaluaciones)
+{
+this.listaEvaluaciones = listaEvaluaciones;
+}
+
+public String mostrarEvaluaciones$action()
+{
+return null;
+}
+private Evaluacion evaluacionSeleccionada;
+
+public Evaluacion getEvaluacionSeleccionada()
+{
+return evaluacionSeleccionada;
+}
+
+public void setEvaluacionSeleccionada(Evaluacion evaluacionSeleccionada)
+{
+this.evaluacionSeleccionada = evaluacionSeleccionada;
+}
+
+@Override
+protected void limpiarCampos()
+{
+throw new UnsupportedOperationException("Not supported yet.");
+}
+
+public String seleccionTipoEvaluacion$action()
+{
+return null;
+}
+
+@PermitAll
+public String mostrarReporteEvaluacion$action()
+{
+Evaluacion ev = evaluacionSeleccionada;
+if ( ev == null )
+    {
+    addMessage("Reporte de Evalución", "No ha seleccionado ninguna evaluación", TipoMensaje.ERROR);
+    return null;
     }
 
-    public void setListaTiposEvaluacion(List<TipoEvaluacion> listaTiposEvaluacion) {
-        this.listaTiposEvaluacion = listaTiposEvaluacion;
-    }
-    private List<Evaluacion> listaEvaluaciones;
+List<ReporteEvaluacion> lr = reportesBean.listarReporteEvaluacion(ev);
+reportesBean.generarReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr);
+//mailBean.enviarCorreoElectronico("Correo de prueba", "Esta es una prueba de envio de correo electronico via GMail XD", "echopin@infosgroup.com");
+List<DetalleAdjuntoCorreo> listaAdjuntos = new ArrayList<DetalleAdjuntoCorreo>(0);
+//listaAdjuntos.add(new DetalleAdjuntoCorreo("reporteprueba1.pdf", "application/pdf", reportesBean.generarDatosReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr)));
+//listaAdjuntos.add(new DetalleAdjuntoCorreo("reporteprueba2.pdf", "application/pdf", reportesBean.generarDatosReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr)));
 
-    public List<Evaluacion> getListaEvaluaciones() {
-        listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosSessionBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada) : null;
-        return listaEvaluaciones;
-    }
+String destinatarios = "echopin@infosgroup.com:vmercado@infosgroup.com:gsalazar@infosgroup.com";
+mailBean.enviarCorreoElectronicoAdjuntos("Correo de prueba", "Prueba de correo con adjuntos", destinatarios, listaAdjuntos);
+//reportesBean.generarReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr);
+return null;
+}
 
-    public void setListaEvaluaciones(List<Evaluacion> listaEvaluaciones) {
-        this.listaEvaluaciones = listaEvaluaciones;
-    }
+@PermitAll
+public static List<ReporteEvaluacion> listarReporteEvaluacion()
+{
+return new ArrayList<ReporteEvaluacion>(10);
+}
+private Campania campaniaSeleccionada;
 
-    public String mostrarEvaluaciones$action() {
-        return null;
-    }
-    private Evaluacion evaluacionSeleccionada;
+public Campania getCampaniaSeleccionada()
+{
+return campaniaSeleccionada;
+}
 
-    public Evaluacion getEvaluacionSeleccionada() {
-        return evaluacionSeleccionada;
-    }
-
-    public void setEvaluacionSeleccionada(Evaluacion evaluacionSeleccionada) {
-        this.evaluacionSeleccionada = evaluacionSeleccionada;
-    }
-
-    @Override
-    protected void limpiarCampos() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public String seleccionTipoEvaluacion$action() {
-        return null;
-    }
-
-    @PermitAll
-    public String mostrarReporteEvaluacion$action() {
-        Evaluacion ev = evaluacionSeleccionada;
-        if ( ev == null ){
-            addMessage("Reporte de Evalución", "No ha seleccionado ninguna evalución", TipoMensaje.ERROR);
-            return null;
-        }
-        
-        List<ReporteEvaluacion> lr = reportesBean.listarReporteEvaluacion(ev);
-        reportesBean.generarReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr) ;
-        //mailBean.enviarCorreoElectronico("Correo de prueba", "Esta es una prueba de envio de correo electronico via GMail XD", "echopin@infosgroup.com");
-        List<DetalleAdjuntoCorreo> listaAdjuntos = new ArrayList<DetalleAdjuntoCorreo>(0);
-        //listaAdjuntos.add(new DetalleAdjuntoCorreo("reporteprueba1.pdf", "application/pdf", reportesBean.generarDatosReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr)));
-        //listaAdjuntos.add(new DetalleAdjuntoCorreo("reporteprueba2.pdf", "application/pdf", reportesBean.generarDatosReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr)));
-
-        String destinatarios = "echopin@infosgroup.com:vmercado@infosgroup.com:gsalazar@infosgroup.com";
-        mailBean.enviarCorreoElectronicoAdjuntos("Correo de prueba", "Prueba de correo con adjuntos", destinatarios, listaAdjuntos);
-        //reportesBean.generarReporteBean(FacesContext.getCurrentInstance(), new HashMap<String, Object>(), "reporteEvaluacion", lr);
-        return null;
-    }
-
-    @PermitAll
-    public static List<ReporteEvaluacion> listarReporteEvaluacion() {
-        return new ArrayList<ReporteEvaluacion>(10);
-    }
-    
-    private Campania campaniaSeleccionada;
-
-    public Campania getCampaniaSeleccionada() {
-        return campaniaSeleccionada;
-    }
-
-    public void setCampaniaSeleccionada(Campania campaniaSeleccionada) {
-        this.campaniaSeleccionada = campaniaSeleccionada;
-    }
-    
+public void setCampaniaSeleccionada(Campania campaniaSeleccionada)
+{
+this.campaniaSeleccionada = campaniaSeleccionada;
+}
 }
