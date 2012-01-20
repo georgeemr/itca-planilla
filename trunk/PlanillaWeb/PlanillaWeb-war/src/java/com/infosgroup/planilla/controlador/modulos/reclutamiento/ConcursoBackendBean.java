@@ -4,7 +4,7 @@
  */
 package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.view.TipoMensaje;
@@ -26,7 +26,7 @@ import org.primefaces.event.UnselectEvent;
  */
 @ManagedBean(name = "reclutamiento$concursos")
 @ViewScoped
-public class ConcursoBackendBean extends JSFUtil implements Serializable {
+public class ConcursoBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
     private ReclutamientoSessionBean reclutamientoFacade;

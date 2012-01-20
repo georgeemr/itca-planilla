@@ -7,7 +7,7 @@ package com.infosgroup.planilla.controlador.modulos.administracion;
 import com.infosgroup.planilla.modelo.entidades.Rol;
 import com.infosgroup.planilla.modelo.entidades.RolPK;
 import com.infosgroup.planilla.modelo.facades.RolFacade;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
@@ -22,7 +22,7 @@ import org.primefaces.event.SelectEvent;
  */
 @ManagedBean(name = "usuarioBackendBean")
 @ViewScoped
-public class UsuarioBackendBean extends JSFUtil implements Serializable {
+public class UsuarioBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
     private RolFacade rolFacade;

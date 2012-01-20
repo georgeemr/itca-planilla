@@ -5,7 +5,7 @@
 package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import java.util.List;
@@ -23,7 +23,7 @@ import org.primefaces.event.FlowEvent;
  */
 @ManagedBean(name = "reclutamiento$contratacion")
 @ViewScoped
-public class ContratacionBackendBean extends JSFUtil implements Serializable {
+public class ContratacionBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
     private ReclutamientoSessionBean reclutamientoSessionBean;

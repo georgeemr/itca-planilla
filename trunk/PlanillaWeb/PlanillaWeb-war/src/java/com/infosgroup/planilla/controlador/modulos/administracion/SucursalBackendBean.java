@@ -7,7 +7,7 @@ package com.infosgroup.planilla.controlador.modulos.administracion;
 import com.infosgroup.planilla.modelo.entidades.Sucursal;
 import com.infosgroup.planilla.modelo.entidades.SucursalPK;
 import com.infosgroup.planilla.modelo.facades.SucursalFacade;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
@@ -22,7 +22,7 @@ import org.primefaces.event.SelectEvent;
  */
 @ManagedBean(name = "administracion$sucursalBackendBean")
 @ViewScoped
-public class SucursalBackendBean extends JSFUtil implements Serializable {
+public class SucursalBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
     private SucursalFacade sucursalFacade;

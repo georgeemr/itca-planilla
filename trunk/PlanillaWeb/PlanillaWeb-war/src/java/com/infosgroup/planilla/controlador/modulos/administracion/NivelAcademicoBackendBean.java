@@ -6,7 +6,7 @@ package com.infosgroup.planilla.controlador.modulos.administracion;
 
 import com.infosgroup.planilla.modelo.entidades.NivelAcademico;
 import com.infosgroup.planilla.modelo.facades.NivelAcademicoFacade;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -21,7 +21,7 @@ import javax.faces.application.FacesMessage;
  */
 @ManagedBean(name = "administracion$nivelAcademico")
 @ViewScoped
-public class NivelAcademicoBackendBean extends JSFUtil implements Serializable {
+public class NivelAcademicoBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
     private NivelAcademicoFacade nivelAcademicoFacade;

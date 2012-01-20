@@ -6,7 +6,7 @@ package com.infosgroup.planilla.controlador.modulos.administracion;
 
 import com.infosgroup.planilla.modelo.entidades.Compania;
 import com.infosgroup.planilla.modelo.facades.CompaniaFacade;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
@@ -20,7 +20,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean(name = "administracion$companias")
 @ViewScoped
-public class CompaniasBackendBean extends JSFUtil implements Serializable {
+public class CompaniasBackendBean extends AbstractJSFPage implements Serializable {
 
     /** Creates a new instance of CompaniasBackendBean */
     public CompaniasBackendBean() {

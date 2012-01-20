@@ -8,7 +8,7 @@ import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
 import com.infosgroup.planilla.modelo.entidades.Sucursal;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import org.primefaces.event.RowEditEvent;
 */
 @ManagedBean(name = "planilla$horasExtras")
 @ViewScoped
-public class horasExtrasBackendBean extends JSFUtil implements Serializable
+public class horasExtrasBackendBean extends AbstractJSFPage implements Serializable
 {
 @EJB
 private PlanillaSessionBean planillaSessionBean;

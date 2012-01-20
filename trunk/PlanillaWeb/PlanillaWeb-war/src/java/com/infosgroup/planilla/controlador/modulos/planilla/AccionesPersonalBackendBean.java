@@ -13,7 +13,7 @@ import com.infosgroup.planilla.modelo.entidades.Sucursal;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.entidades.TipoPlanilla;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.Date;
@@ -34,7 +34,7 @@ import org.primefaces.event.RowEditEvent;
  */
 @ManagedBean(name = "planilla$accionesPersonal")
 @ViewScoped
-public class AccionesPersonalBackendBean extends JSFUtil implements Serializable {
+public class AccionesPersonalBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
     private PlanillaSessionBean planillaSessionBean;

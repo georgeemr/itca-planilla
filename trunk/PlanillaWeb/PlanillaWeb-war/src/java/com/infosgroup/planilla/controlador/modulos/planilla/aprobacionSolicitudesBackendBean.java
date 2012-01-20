@@ -7,7 +7,7 @@ package com.infosgroup.planilla.controlador.modulos.planilla;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean(name = "planilla$aprobacionSolicitudes")
 @ViewScoped
-public class aprobacionSolicitudesBackendBean extends JSFUtil implements Serializable {
+public class aprobacionSolicitudesBackendBean extends AbstractJSFPage implements Serializable {
 
     @Override
     protected void limpiarCampos() {

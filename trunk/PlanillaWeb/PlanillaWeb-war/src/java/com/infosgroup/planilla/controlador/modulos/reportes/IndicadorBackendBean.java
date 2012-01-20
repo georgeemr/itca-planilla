@@ -13,7 +13,7 @@ import com.infosgroup.planilla.modelo.entidades.Indicador;
 import com.infosgroup.planilla.modelo.entidades.IndicadorPK;
 import com.infosgroup.planilla.modelo.facades.IndicadorFacade;
 import com.infosgroup.planilla.modelo.procesos.IndicadorSessionBean;
-import com.infosgroup.planilla.view.JSFUtil;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
@@ -25,7 +25,7 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 
 
-public class IndicadorBackendBean extends JSFUtil implements Serializable {
+public class IndicadorBackendBean extends AbstractJSFPage implements Serializable {
   @EJB
   private IndicadorSessionBean indicadorBean;
             
