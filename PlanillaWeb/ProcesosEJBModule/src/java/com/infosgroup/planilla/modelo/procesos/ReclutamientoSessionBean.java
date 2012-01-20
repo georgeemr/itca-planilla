@@ -50,6 +50,7 @@ import javax.ejb.LocalBean;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.security.PermitAll;
+import javax.persistence.EntityExistsException;
 
 /**
  *
@@ -290,4 +291,9 @@ public class ReclutamientoSessionBean {
     public List<TipoDocumento> findAllTipoDocumento(){
         return tipoDocumentoFacade.findAll();
     }
+    
+    public void guardarCandidato(Candidato c) throws javax.persistence.EntityExistsException{
+        candidatoFacade.create(c);
+    }
+    
 }
