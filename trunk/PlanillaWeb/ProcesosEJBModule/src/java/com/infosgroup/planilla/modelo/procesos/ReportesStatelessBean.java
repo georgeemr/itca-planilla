@@ -227,8 +227,7 @@ public class ReportesStatelessBean {
                     response.getOutputStream().flush();
                     break;
                 case EXCEL:
-                    JRExporter exporter = null;
-                    exporter = new net.sf.jasperreports.engine.export.JRXlsExporter();
+                    JRExporter exporter = new net.sf.jasperreports.engine.export.JRXlsExporter();
                     exporter.setParameter(JRExporterParameter.JASPER_PRINT, jrPrint);
                     exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, response.getOutputStream());
                     response.setContentType("application/vnd.ms-excel");
