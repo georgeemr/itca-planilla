@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="#{facesContext.externalContext.requestContextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
+        <link href="#{facesContext.externalContext.requestContextPath}/resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
+    </h:head>
+
+    <h:body>
+        <p:panel id="panelInformacion" style="border:none;" >
+            <h:panelGrid columns="4" >
+                <p:graphicImage value="#{facesContext.externalContext.requestContextPath}/resources/imagenes/64/info.png" />
+                <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
+                <h:outputLabel value="*" styleClass="requerido"/>                                
+                <h:outputLabel value=" son requeridos." style="font-style: italic;" />
+            </h:panelGrid>
+        </p:panel>
+
+        <p:fieldset id="fieldsetEncabezado">
+            <table border="0" width="100%" >
+                <tr>
+                    <td><h:outputLabel value="Fecha de Solicitud"/></td>
+                    <td><p:calendar showOn="button" pattern="dd/MM/yyyy" disabled="true" value="#{planilla$accionesPersonal.fecha}" /></td>
+                    <td></td>
+                    <td>                            
+                        <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                            <h:outputLabel value="Empleado"/>
+                        </h:panelGrid>
+                    </td>
+                    <td>
+                        <p:inputText value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" readonly="true" id="txtEmp" immediate="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="Jefe" /></td>
+                    <td><h:outputLabel id="txtJefe" value="#{planilla$accionesPersonal.nombreJefe}" style="font-weight: bold;" /></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="Observacion"/></td>
+                    <td colspan="3"><p:inputTextarea style="width:100%;" value="#{planilla$accionesPersonal.obsv}" /></td>
+                </tr>
+            </table>
+        </p:fieldset>
+        <p:spacer height="10px"/>
+        <ui:insert name="detalleSolicitud" ></ui:insert>
+        <p:spacer height="20" />
+        <h:panelGrid columns="2">
+            <ui:insert name="cmdGuardarSolicitud" ></ui:insert>
+            <p:commandButton value="Cerrar" styleClass="opcionMenu" update="mensajes, tablaSol, txtEmp, txtJefe"  action="#{planilla$accionesPersonal.cancelar$action}"
+                             onclick="dialogSolicitudes.hide()" image="ui-icon-closethick" /> 
+        </h:panelGrid>
+
+    </h:body>
+
+</html>
