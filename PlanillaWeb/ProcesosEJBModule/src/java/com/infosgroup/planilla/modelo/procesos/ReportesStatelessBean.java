@@ -62,7 +62,6 @@ public class ReportesStatelessBean {
             System.out.println("[REPORTE] Conexion:  " + conexion);
             JasperPrint jrPrint = JasperFillManager.fillReport(rutaReporte, parametros, conexion);
             byte[] bytesReporte = JasperExportManager.exportReportToPdf(jrPrint);
-            //byte[] bytesReporte = JasperExportManager.exportReportToPdf(jrPrint);
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "attachment;filename=\"" + nombreArchivoReporte + ".pdf\";");
             response.getOutputStream().write(bytesReporte);
