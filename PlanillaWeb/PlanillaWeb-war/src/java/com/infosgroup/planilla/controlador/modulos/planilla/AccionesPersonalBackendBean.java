@@ -57,7 +57,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private DataTable tablaEmpleado;
     private Empleado empleadoSeleccionado;
     private Planilla planillaSeleccionada;
-    private String obsv;
+    private String observacion;
     private String devengadas;
     private Date fecha;
     private Date fechaInicial;
@@ -163,12 +163,12 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.fechaIngreso = fechaIngreso;
     }
 
-    public String getObsv() {
-        return obsv;
+    public String getObservacion() {
+        return observacion;
     }
 
-    public void setObsv(String obsv) {
-        this.obsv = obsv;
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 
     public String getDevengadas() {
@@ -347,9 +347,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
             if (empleadoSeleccionado.getEmpleado() != null) {
                 nombreJefe = empleadoSeleccionado.getEmpleado().getNombreCompleto();
             }
-        } else {
-            nombreJefe = "Seleccione el empleado.";
-        }
+        } 
         return nombreJefe;
     }
 
@@ -367,7 +365,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         planillaSessionBean.guardarSolVacaciones$action(empresa,
                 empleadoSeleccionado,
                 tipoAccionSeleccionada,
-                obsv,
+                observacion,
                 fechaInicial,
                 fechaFinal,
                 devengadas,
@@ -432,7 +430,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public void pruebaListener(AjaxBehaviorEvent evt) {
-        // tipo = (Long) evt.getSource();
         if (tipo != 0) {
             listaTipoNoAfecta = planillaSessionBean.listarTipoAccionAfecta();
             detAccion = tipo;
@@ -447,7 +444,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     protected void limpiarCampos() {
         tipoAccion = 0L;
         empleadoSeleccionado = null;
-        obsv = null;
+        observacion = null;
         planillaSeleccionada = null;
         fechaInicial = null;
         fechaFinal = null;
