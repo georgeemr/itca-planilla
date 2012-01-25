@@ -86,7 +86,6 @@ public class PlanillaSessionBean {
     
     public List<DetallePlanilla> getDetallesPla(Planilla planilla) {
         return (planilla != null) ? detPlanillaFacade.findPlaDetalles(planilla.getPlanillaPK()) : new ArrayList<DetallePlanilla>(0);
-//return (planilla != null) ? planilla.getDetPlanillaList() : new ArrayList<DetallePlanilla>(0);
     }
     
     public List<ResumenAsistencia> getResumen(ResumenAsistencia c) {
