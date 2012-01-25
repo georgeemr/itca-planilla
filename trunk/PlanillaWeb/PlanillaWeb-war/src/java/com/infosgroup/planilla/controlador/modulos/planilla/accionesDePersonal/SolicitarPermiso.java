@@ -14,6 +14,7 @@ import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.Date;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -38,34 +39,14 @@ public class SolicitarPermiso extends AbstractJSFPage implements Serializable, S
     private Long empresa;
     private Planilla planillaSeleccionada;
     private String afectaPlanilla;
+    private String devengadas;
 
     public SolicitarPermiso() {
-        empresa = empresa = getSessionBeanADM().getCompania().getIdCompania();
     }
 
-    /* Acciones */
-    public String guardarSolicitud$action() {
-
-        if (!validarSolicitud()) {
-            return null;
-        }
-
-        TipoAccion tipoAccionSeleccionada = planillaSessionBean.buscarTipoAccion(empresa, getEncabezadoSolicitud().getTipoAccion());
-        planillaSeleccionada = planillaSessionBean.findPlanillaById(new PlanillaPK(planilla));
-
-        planillaSessionBean.guardarSolVacaciones$action(empresa,
-                getSessionBeanEMP().getEmpleadoSesion(),
-                tipoAccionSeleccionada,
-                getEncabezadoSolicitud().getObservacion(),
-                fechaInicial,
-                fechaFinal,
-                afectaPlanilla,
-                planillaSeleccionada);
-        addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
-        limpiarCampos();
-        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean.listarAccionporTipo(empresa, getEncabezadoSolicitud().getTipoAccion()));
-
-        return null;
+    @PostConstruct
+    public void _init() {
+        empresa = empresa = getSessionBeanADM().getCompania().getIdCompania();
     }
 
     /* Getter & Setter */
@@ -78,6 +59,78 @@ public class SolicitarPermiso extends AbstractJSFPage implements Serializable, S
         return encabezadoSolicitud;
     }
 
+    public String getAfectaPlanilla() {
+        return afectaPlanilla;
+    }
+
+    public void setAfectaPlanilla(String afectaPlanilla) {
+        this.afectaPlanilla = afectaPlanilla;
+    }
+
+    public Long getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Long empresa) {
+        this.empresa = empresa;
+    }
+
+    public Date getFechaFinal() {
+        return fechaFinal;
+    }
+
+    public void setFechaFinal(Date fechaFinal) {
+        this.fechaFinal = fechaFinal;
+    }
+
+    public Date getFechaInicial() {
+        return fechaInicial;
+    }
+
+    public void setFechaInicial(Date fechaInicial) {
+        this.fechaInicial = fechaInicial;
+    }
+
+    public String getPlanilla() {
+        return planilla;
+    }
+
+    public void setPlanilla(String planilla) {
+        this.planilla = planilla;
+    }
+
+    public Planilla getPlanillaSeleccionada() {
+        return planillaSeleccionada;
+    }
+
+    public void setPlanillaSeleccionada(Planilla planillaSeleccionada) {
+        this.planillaSeleccionada = planillaSeleccionada;
+    }
+
+    public PlanillaSessionBean getPlanillaSessionBean() {
+        return planillaSessionBean;
+    }
+
+    public void setPlanillaSessionBean(PlanillaSessionBean planillaSessionBean) {
+        this.planillaSessionBean = planillaSessionBean;
+    }
+
+    public Long getTipoPlanilla() {
+        return tipoPlanilla;
+    }
+
+    public void setTipoPlanilla(Long tipoPlanilla) {
+        this.tipoPlanilla = tipoPlanilla;
+    }
+
+    public String getDevengadas() {
+        return devengadas;
+    }
+
+    public void setDevengadas(String devengadas) {
+        this.devengadas = devengadas;
+    }
+
     /* - */
     @Override
     protected void limpiarCampos() {
@@ -85,7 +138,6 @@ public class SolicitarPermiso extends AbstractJSFPage implements Serializable, S
         fechaFinal = null;
         tipoPlanilla = null;
         planilla = null;
-        empresa = null;
         planillaSeleccionada = null;
         afectaPlanilla = null;
     }
@@ -98,7 +150,7 @@ public class SolicitarPermiso extends AbstractJSFPage implements Serializable, S
     @Override
     public boolean validarSolicitud() {
         Boolean error = Boolean.TRUE;
-        if (encabezadoSolicitud.getTipoAccion() == null) {
+        if (encabezadoSolicitud.getTipo() == null) {
             addMessage("Acciones de Personal", "Tipo de acción es un campo requerido", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
@@ -136,5 +188,24 @@ public class SolicitarPermiso extends AbstractJSFPage implements Serializable, S
         }
 
         return error;
+    }
+
+    /* Acciones */
+    public String guardarSolicitud$action() {
+        if (!validarSolicitud()) { return null; }
+        TipoAccion tipoAccionSeleccionada = planillaSessionBean.buscarTipoAccion(empresa, getEncabezadoSolicitud().getTipo());
+        planillaSeleccionada = planillaSessionBean.findPlanillaById(new PlanillaPK(planilla));
+        planillaSessionBean.guardarSolVacaciones$action(empresa,
+                getSessionBeanEMP().getEmpleadoSesion(),
+                tipoAccionSeleccionada,
+                getEncabezadoSolicitud().getObservacion(),
+                fechaInicial,
+                fechaFinal,
+                afectaPlanilla,
+                planillaSeleccionada);
+        addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
+        limpiarCampos();
+        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean.listarAccionporTipo(empresa, getEncabezadoSolicitud().getTipo()));
+        return null;
     }
 }
