@@ -7,7 +7,7 @@
                 template="./../../../plantillas/AccionesDePersonal.xhtml">
 
     <ui:define name="detalleSolicitud">
-        <p:fieldset id="fldPagoVacacion" rendered="#{planilla$accionesPersonal.detAccion eq 3}" >
+        <p:fieldset id="fldPagoVacacion" >
 
             <table border="0" width="100%" >
                 <tr>
@@ -17,7 +17,7 @@
                             <h:outputLabel value="*" styleClass="requerido"/>                                
                         </h:panelGrid>
                     </td>
-                    <td><p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.fechaInicial}" /></td>
+                    <td><p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{accionesPersonal$solicitarPermiso.fechaInicial}" /></td>
                     <td></td>
                     <td>
                         <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
@@ -25,7 +25,7 @@
                             <h:outputLabel value="*" styleClass="requerido"/>                                
                         </h:panelGrid>
                     </td>
-                    <td><p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.fechaFinal}" /></td>
+                    <td><p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{accionesPersonal$solicitarPermiso.fechaFinal}" /></td>
                 </tr>
                 <tr>
                     <td>                            
@@ -35,7 +35,7 @@
                         </h:panelGrid>
                     </td>
                     <td>
-                        <h:selectOneMenu id="lstDeven" style="width:168px;height:20px;" value="#{planilla$accionesPersonal.devengadas}">
+                        <h:selectOneMenu id="lstDevengado" style="width:168px;height:20px;" value="#{accionesPersonal$solicitarPermiso.devengadas}">
                             <f:selectItem itemLabel="Si" itemValue="S" />
                             <f:selectItem itemLabel="No" itemValue="N"/>
                         </h:selectOneMenu>
@@ -48,7 +48,7 @@
                         </h:panelGrid>    
                     </td>
                     <td>                
-                        <h:selectOneMenu id="lstTipo_plan" label="Tipo Planilla" style="width:168px;height:20px;" value="#{planilla$accionesPersonal.tipoPlanilla}" >
+                        <h:selectOneMenu id="lstTipoPlanilla" label="Tipo Planilla" style="width:168px;height:20px;" value="#{accionesPersonal$solicitarPermiso.tipoPlanilla}" >
                             <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tipoPlanillaPK.idTipoPlanilla}" itemLabel="#{tipo.nomTipoPlanilla}"/>
                         </h:selectOneMenu>
                     </td>
@@ -61,7 +61,7 @@
                         </h:panelGrid>  
                     </td>
                     <td>
-                        <h:selectOneMenu id="lstPlan" label="Planilla" style="width:168px;height:20px;" value="#{planilla$accionesPersonal.planilla}" >
+                        <h:selectOneMenu id="lstPlanilla" label="Planilla" style="width:168px;height:20px;" value="#{accionesPersonal$solicitarPermiso.planilla}" >
                             <f:selectItems value="#{planilla$accionesPersonal.listaPlanillas}" var="pla" 
                                            itemValue="#{pla.planillaPK.pkAsString}"
                                            itemLabel="#{pla.planillaPK.anio} ------ #{pla.planillaPK.mes} ------ #{pla.planillaPK.numPlanilla}" />
