@@ -40,22 +40,15 @@
             </h:panelGrid>
         </p:tab>
     </ui:define>
-    <!-- ======================================================================================================= -->
+
     <ui:define name="contenido">
         <p:fieldset id="fieldset1">
             <h:panelGrid columns="2">
                 <h:outputLabel value="Acci&oacute;n de Personal"/>
-
                 <h:selectOneMenu id="lstAcc" style="width: 250px" value="#{planilla$accionesPersonal.tipo}">
-                    <f:ajax event="change" listener="#{planilla$accionesPersonal.pruebaListener}" execute="lstAcc" render="@form" />
+                    <f:ajax event="change" listener="#{planilla$accionesPersonal.seleccionarAccion}" execute="lstAcc" render="@form" />
                     <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc"
                                    itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
-                </h:selectOneMenu>
-                <h:outputLabel value="Sucursal"/>
-                <h:selectOneMenu id="lstSuc" style="width: 250px"
-                                 value="#{planilla$accionesPersonal.sucursal}">
-                    <f:selectItems value="#{planilla$accionesPersonal.listaSucursales}" var="sucursal"
-                                   itemValue="#{sucursal.sucursalPK.idSucursal}" itemLabel="#{sucursal.nomSucursal}"/>
                 </h:selectOneMenu>
             </h:panelGrid>
         </p:fieldset>
@@ -199,28 +192,9 @@
                 </tr>
             </table>
         </p:dialog>
-        <!--  -->
-        <p:dialog id="dialogBuscaEmp" widgetVar="dialogBuscaEmp" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="500" height="350">
-            <p:dataTable id="tablBusEmp"
-                         rows="3" paginator="true"
-                         emptyMessage="No hay empleados que mostrar"
-                         var="emp"  update="txtEmp,clIngr,txtJefe"
-                         value="#{planilla$accionesPersonal.listaEmp}"
-                         selection="#{planilla$accionesPersonal.empleadoSeleccionado}"
-                         selectionMode="single"
-                         paginatorAlwaysVisible="true"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
-                <p:column headerText="Codigo" filterBy="#{emp.empleadoPK.codEmp}" >
-                    <h:outputText value="#{emp.empleadoPK.codEmp}"/>
-                </p:column>
-                <p:column headerText="Nombre" filterBy="#{emp.nombreCompleto}" >
-                    <h:outputText value="#{emp.nombreCompleto}"/>
-                </p:column>      
-            </p:dataTable>
-        </p:dialog>
 
-        <p:dialog id="dialogSolicitudes" widgetVar="dialogSolicitudes" header="Acci&oacute;n No Afecta Planilla" showEffect="fold" hideEffect="fold" width="745" height="550" >
-            <ui:include src="acciones/permisos.xhtml" />
+        <p:dialog id="dialogSolicitudes" widgetVar="dialogSolicitudes" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="745" height="550" >
+            <ui:include src="#{planilla$accionesPersonal.urlPlantilla}" /><!-- acciones/permisos.xhtml -->
         </p:dialog>
 
     </ui:define>
