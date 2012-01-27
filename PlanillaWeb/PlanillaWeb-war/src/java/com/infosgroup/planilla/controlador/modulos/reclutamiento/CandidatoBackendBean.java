@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
@@ -30,7 +31,7 @@ import org.primefaces.event.FlowEvent;
 public class CandidatoBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
-    private ReclutamientoSessionBean reclutamientoSessionBean;
+    private ReclutamientoSessionBean reclutamientoFacade;
     private String nombre;
     private String apellido;
     private String apellidoDeCasada;
@@ -48,7 +49,7 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
 
     @PostConstruct
     public void initComponents(){
-        listaCandidatos = reclutamientoSessionBean.getCandidatosByEmpresa(getSessionBeanADM().getCompania().getIdCompania());
+        listaCandidatos = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania().getIdCompania());
     }
     
     public List<Candidato> getListaCandidatos() {
@@ -60,7 +61,7 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
     }
 
     public List<TipoDocumento> getListaTipoDocumentos() {
-        listaTipoDocumentos = reclutamientoSessionBean.findAllTipoDocumento();
+        listaTipoDocumentos = reclutamientoFacade.findAllTipoDocumento();
         return listaTipoDocumentos;
     }
 
@@ -139,10 +140,21 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
         
         Candidato candidato = new Candidato();
         CandidatoPK pkCandidato = new CandidatoPK();
-        
-        
-        
+        Long c = getSessionBeanADM().getCompania().getIdCompania();
         try {
+            
+            pkCandidato.setCodCia(c);
+            pkCandidato.setCodCandidato(reclutamientoFacade.getMaxCandidato(c));
+            candidato.setCandidatoPK(pkCandidato);
+            candidato.setNombre(nombre);
+            candidato.setFechaNacimiento(fechaNacimiento);
+            candidato.setApellido(apellido);
+            candidato.setApCasada(apellidoDeCasada);
+            candidato.setSexo(sexo);
+            candidato.setObservacion(observaciones);
+            candidato.setEstado("A");
+            reclutamientoFacade.guardarCandidato(candidato);
+            
             addMessage("Registro de Candidatos", "Datos guardados satisfactoriamente.", TipoMensaje.INFORMACION);
         } catch (javax.persistence.EntityExistsException e) {
             addMessage("Registro de Candidatos", "El candidato ingresado ya existe.", TipoMensaje.ERROR_FATAL);
