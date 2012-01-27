@@ -4,60 +4,35 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
-import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
-import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
-import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
-import java.io.Serializable;
 import java.util.Date;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author root
  */
-@ManagedBean(name = "accionesPersonal$solicitarPermiso")
+@ManagedBean(name = "accionesPersonal$solicitarVacaciones")
 @ViewScoped
-public class SolicitarPermiso extends AbstractJSFPage implements Serializable, SolicitudDePersonal {
+public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.Serializable {
 
     @EJB
     private PlanillaSessionBean planillaSessionBean;
-    @ManagedProperty(value = "#{planilla$accionesPersonal}")
-    private AccionesPersonalBackendBean encabezadoSolicitud;
     private Date fechaInicial;
     private Date fechaFinal;
     private Long tipoPlanilla;
     private String planilla;
-    private Long empresa;
     private Planilla planillaSeleccionada;
     private String afectaPlanilla;
     private String devengadas;
 
-    public SolicitarPermiso() {
-    }
-
-    @PostConstruct
-    public void _init() {
-        empresa = empresa = getSessionBeanADM().getCompania().getIdCompania();
-    }
-
-    /* Getter & Setter */
-    public void setEncabezadoSolicitud(AccionesPersonalBackendBean encabezadoSolicitud) {
-        this.encabezadoSolicitud = encabezadoSolicitud;
-    }
-
-    @Override
-    public AccionesPersonalBackendBean getEncabezadoSolicitud() {
-        return encabezadoSolicitud;
-    }
+    public SolicitarVacaciones() {}
 
     public String getAfectaPlanilla() {
         return afectaPlanilla;
@@ -66,15 +41,7 @@ public class SolicitarPermiso extends AbstractJSFPage implements Serializable, S
     public void setAfectaPlanilla(String afectaPlanilla) {
         this.afectaPlanilla = afectaPlanilla;
     }
-
-    public Long getEmpresa() {
-        return empresa;
-    }
-
-    public void setEmpresa(Long empresa) {
-        this.empresa = empresa;
-    }
-
+    
     public Date getFechaFinal() {
         return fechaFinal;
     }
@@ -131,7 +98,6 @@ public class SolicitarPermiso extends AbstractJSFPage implements Serializable, S
         this.devengadas = devengadas;
     }
 
-    /* - */
     @Override
     protected void limpiarCampos() {
         fechaInicial = null;
@@ -143,14 +109,9 @@ public class SolicitarPermiso extends AbstractJSFPage implements Serializable, S
     }
 
     @Override
-    public void guardarSolicitud(AccionPersonal accionPersonal) {
-        throw new UnsupportedOperationException("No soportado aun.");
-    }
-
-    @Override
     public boolean validarSolicitud() {
         Boolean error = Boolean.TRUE;
-        if (encabezadoSolicitud.getTipo() == null) {
+        if (getEncabezadoSolicitud().getTipo() == null) {
             addMessage("Acciones de Personal", "Tipo de acción es un campo requerido", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
@@ -190,22 +151,26 @@ public class SolicitarPermiso extends AbstractJSFPage implements Serializable, S
         return error;
     }
 
-    /* Acciones */
     public String guardarSolicitud$action() {
-        if (!validarSolicitud()) { return null; }
-        TipoAccion tipoAccionSeleccionada = planillaSessionBean.buscarTipoAccion(empresa, getEncabezadoSolicitud().getTipo());
+        if (!validarSolicitud()) {
+            return null;
+        }
         planillaSeleccionada = planillaSessionBean.findPlanillaById(new PlanillaPK(planilla));
-        planillaSessionBean.guardarSolVacaciones$action(empresa,
-                getSessionBeanEMP().getEmpleadoSesion(),
-                tipoAccionSeleccionada,
-                getEncabezadoSolicitud().getObservacion(),
-                fechaInicial,
-                fechaFinal,
-                afectaPlanilla,
-                planillaSeleccionada);
+        AccionPersonal accionPersonal = new AccionPersonal();
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(planillaSeleccionada));
+        accionPersonal.setTipoAccion(getTipoAccion());
+        accionPersonal.setEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+        accionPersonal.setFecha(new Date());
+        accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
+        accionPersonal.setStatus("G");
+        accionPersonal.setDevengadas(devengadas);
+        accionPersonal.setFechaFinal(fechaFinal);
+        accionPersonal.setFechaInicial(fechaInicial);
+        accionPersonal.setPlanilla(planillaSeleccionada);
+        guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
+        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean.listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo()));
         limpiarCampos();
-        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean.listarAccionporTipo(empresa, getEncabezadoSolicitud().getTipo()));
         return null;
     }
 }
