@@ -28,11 +28,17 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
     @ManagedProperty(value = "#{planilla$accionesPersonal}")
     private AccionesPersonalBackendBean encabezadoSolicitud;
 
-    abstract boolean validarSolicitud();
-
     public AccionesPersonalBackendBean getEncabezadoSolicitud() {
         return encabezadoSolicitud;
     }
+
+    public void setEncabezadoSolicitud(AccionesPersonalBackendBean encabezadoSolicitud) {
+        this.encabezadoSolicitud = encabezadoSolicitud;
+    }
+
+    public SolicitudDePersonal() {}
+
+    abstract boolean validarSolicitud();
 
     public AccionPersonalPK getAccionPersonalPK(Planilla planilla) {
         AccionPersonalPK nuevaPK = new AccionPersonalPK();

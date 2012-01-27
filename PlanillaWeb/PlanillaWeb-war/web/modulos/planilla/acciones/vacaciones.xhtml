@@ -74,9 +74,9 @@
     </ui:define>
 
     <ui:define name="cmdGuardarSolicitud">
-        <p:commandButton value="Aceptar" styleClass="opcionMenu" 
+        <p:commandButton id="cmdAceptar" value="Aceptar" 
                          update="mensajes, tablSol" action="#{accionesPersonal$solicitarVacaciones.guardarSolicitud$action}"
-                         ajax="true" image="ui-icon-circle-check" />
+                         image="ui-icon-circle-check" />
     </ui:define>
 
 </ui:composition>

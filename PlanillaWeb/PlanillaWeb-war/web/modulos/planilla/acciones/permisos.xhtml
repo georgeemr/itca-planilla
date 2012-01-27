@@ -12,7 +12,7 @@
 
     <ui:define name="cmdGuardarSolicitud">
         <p:commandButton value="Aceptar" styleClass="opcionMenu" 
-                         update="mensajes, tablSol" action="#{accionesPersonal$solicitarPermisos.guardarSolicitud$action}"
+                         update="principalForm:mensajes,principalForm:tablSol" action="#{accionesPersonal$solicitarPermisos.guardarSolicitud$action}"
                          ajax="true" image="ui-icon-circle-check" />
     </ui:define>
 

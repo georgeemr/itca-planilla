@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
+import com.infosgroup.planilla.view.TipoMensaje;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -20,6 +21,7 @@ public class SolicitarPermisos extends SolicitudDePersonal implements java.io.Se
     }
 
     public String guardarSolicitud$action() {
+        addMessage("Solicitar Permisos", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
         return null;
     }
 
