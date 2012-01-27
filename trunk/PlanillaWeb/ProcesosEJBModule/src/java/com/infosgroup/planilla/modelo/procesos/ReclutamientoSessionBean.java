@@ -174,6 +174,10 @@ public class ReclutamientoSessionBean {
     public void editarEvaluacionCandidato(EvaluacionCandidato ec) {
         evaluacionCandidatoFacade.edit(ec);
     }
+    
+    public Long getMaxCandidato(Long empresa) {
+        return candidatoFacade.getMax(empresa).longValue();
+    }
 
     public void editarCandidato(Candidato c) {
         candidatoFacade.edit(c);
