@@ -60,6 +60,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         for (TipoAccion a : listaTipo) {
             if (a.getTipoAccionPK().getCodCia() == empresa && a.getTipoAccionPK().getCodTipoaccion() == tipo) {
                 accionSeleccionada = a;
+                continue;
             }
         }
         urlPlantilla = accionSeleccionada != null ? accionSeleccionada.getUrlPlantilla() : null;

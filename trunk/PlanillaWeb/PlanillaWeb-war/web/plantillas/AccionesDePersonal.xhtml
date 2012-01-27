@@ -14,7 +14,7 @@
     <h:body>
         <p:panel id="panelInformacion" style="border:none;" >
             <h:panelGrid columns="4" >
-                <p:graphicImage value="#{facesContext.externalContext.requestContextPath}/resources/imagenes/64/info.png" />
+                <p:graphicImage value="../resources/imagenes/64/info.png" />
                 <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
                 <h:outputLabel value="*" styleClass="requerido"/>                                
                 <h:outputLabel value=" son requeridos." style="font-style: italic;" />
@@ -46,15 +46,15 @@
                 </tr>
             </table>
         </p:fieldset>
+
         <p:spacer height="10px"/>
-        <ui:insert name="detalleSolicitud" ></ui:insert>
+        <ui:insert name="detalleSolicitud" />
         <p:spacer height="20" />
         <h:panelGrid columns="2">
-            <ui:insert name="cmdGuardarSolicitud" ></ui:insert>
+            <ui:insert name="cmdGuardarSolicitud" />
             <p:commandButton value="Cerrar" styleClass="opcionMenu" update="mensajes, tablaSol, txtEmp, txtJefe"  action="#{planilla$accionesPersonal.cancelar$action}"
                              onclick="dialogSolicitudes.hide()" image="ui-icon-closethick" /> 
         </h:panelGrid>
-
     </h:body>
 
 </html>

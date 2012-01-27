@@ -32,7 +32,8 @@ public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.
     private String afectaPlanilla;
     private String devengadas;
 
-    public SolicitarVacaciones() {}
+    public SolicitarVacaciones() {
+    }
 
     public String getAfectaPlanilla() {
         return afectaPlanilla;
@@ -41,7 +42,7 @@ public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.
     public void setAfectaPlanilla(String afectaPlanilla) {
         this.afectaPlanilla = afectaPlanilla;
     }
-    
+
     public Date getFechaFinal() {
         return fechaFinal;
     }
@@ -152,9 +153,7 @@ public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.
     }
 
     public String guardarSolicitud$action() {
-        if (!validarSolicitud()) {
-            return null;
-        }
+        if (!validarSolicitud()) { return null; }
         planillaSeleccionada = planillaSessionBean.findPlanillaById(new PlanillaPK(planilla));
         AccionPersonal accionPersonal = new AccionPersonal();
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(planillaSeleccionada));
