@@ -24,7 +24,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean(name = "SessionBeanEMP")
 @SessionScoped
-public class SessionBeanEMP {
+public class SessionBeanEMP implements java.io.Serializable{
 
     @EJB
     private EmpleadosSessionBean empleadosBean;
