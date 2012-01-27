@@ -186,4 +186,9 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
 
         return 1;
     }
+    
+    public Long getMax(Long empresa) {
+        Long max = (Long) em.createQuery("SELECT max(c.candidatoPK.codCandidato) FROM Candidato c WHERE c.candidatoPK.codCia = :codCia").setParameter("codCia", empresa).getSingleResult();
+        return max != null ? ( ++max ): 1L;
+    }
 }
