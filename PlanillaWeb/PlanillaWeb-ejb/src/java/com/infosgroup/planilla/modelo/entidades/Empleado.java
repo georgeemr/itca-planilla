@@ -5,7 +5,6 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -60,15 +59,20 @@ import javax.xml.bind.annotation.XmlTransient;
 })
 public class Empleado implements Serializable {
 
-    @Column(name = "FECHA_NAC")
+    @Column(name =     "FECHA_NAC")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaNac;
-    @Column(name = "FEC_INGRESO")
+    @Column(name =     "FEC_INGRESO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecIngreso;
-    @Column(name = "FEC_SALIDA")
+    @Column(name =     "FEC_SALIDA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecSalida;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "SUCURSAL", referencedColumnName = "ID_SUCURSAL", nullable = false)})
+    @ManyToOne(optional = false)
+    private Sucursal sucursal;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private List<Empleado> empleadoList;
     @JoinColumns({
@@ -378,6 +382,14 @@ public class Empleado implements Serializable {
 
     public void setUltimoPuesto(Puesto ultimoPuesto) {
         this.ultimoPuesto = ultimoPuesto;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
 }
