@@ -10,6 +10,7 @@ import com.infosgroup.planilla.modelo.entidades.AccionPersonalPK;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.facades.AccionPersonalFacade;
+import com.infosgroup.planilla.modelo.procesos.MailStatelessBean;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.util.logging.Level;
@@ -36,7 +37,8 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         this.encabezadoSolicitud = encabezadoSolicitud;
     }
 
-    public SolicitudDePersonal() {}
+    public SolicitudDePersonal() {
+    }
 
     abstract boolean validarSolicitud();
 
@@ -85,6 +87,26 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         try {
             Context c = new InitialContext();
             return (PlanillaSessionBean) c.lookup("java:global/PlanillaWeb/ProcesosEJBModule/PlanillaSessionBean!com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public boolean enviarCorreo(AccionPersonal accionPersonal) {
+        
+        String mensaje = "";
+        if ( accionPersonal.getEmpleado().getCorreo() == null ) return false;
+        mailStatelessBean().enviarCorreoElectronico("Acciones de Personal - " +accionPersonal.getTipoAccion().getNomTipoaccion() , mensaje, accionPersonal.getEmpleado().getCorreo() );
+        
+                
+        return Boolean.FALSE;
+    }
+
+    private MailStatelessBean mailStatelessBean() {
+        try {
+            Context c = new InitialContext();
+            return (MailStatelessBean) c.lookup("java:global/PlanillaWeb/ProcesosEJBModule/MailStatelessBean!com.infosgroup.planilla.modelo.procesos.MailStatelessBean");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
