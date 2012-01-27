@@ -434,7 +434,6 @@ public class PlanillaSessionBean {
             nuevaAccion.setDevengadas(devengadas);
             nuevaAccion.setFechaFinal(fechaFinal);
             nuevaAccion.setFechaInicial(fechaInicial);
-            nuevaAccion.setPlanilla(planilla);
             accionPersonalFacade.create(nuevaAccion);
         } catch (Exception e) {
             System.out.println(e.getMessage());

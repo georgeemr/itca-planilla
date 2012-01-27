@@ -1,7 +1,7 @@
 /*
-* To change this template, choose Tools | Templates
-* and open the template in the editor.
-*/
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.Campania;
@@ -44,249 +44,199 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 
 /**
-*
-* @author root
-*/
+ *
+ * @author root
+ */
 @Stateless
 @LocalBean
-public class EmpleadosSessionBean
-{
-@EJB
-private CampaniaFacade campaniasFacade;
+public class EmpleadosSessionBean {
 
-@EJB
-private EmpleadoFacade empleadosFacade;
+    @EJB
+    private CampaniaFacade campaniasFacade;
+    @EJB
+    private EmpleadoFacade empleadosFacade;
+    @EJB
+    private PuestoEmpleadoFacade puestoEmpleadoFacade;
+    @EJB
+    private FactorFacade factorFacade;
+    @EJB
+    private RespuestaFacade respuestaFacade;
+    @EJB
+    private DetEvaluacionFacade detalleEvaluacionFacade;
+    @EJB
+    private EvaluacionFacade evaluacionFacade;
+    @EJB
+    private PuestoFacade puestoFacade;
+    @EJB
+    private TipoEvaluacionFacade tipoEvaluacionFacade;
+    @EJB
+    private GerenciaFacade gerenciaFacade;
 
-@EJB
-private PuestoEmpleadoFacade puestoEmpleadoFacade;
+    public List<Campania> listarCampanias() {
+        return campaniasFacade.findAll();
+    }
 
-@EJB
-private FactorFacade factorFacade;
+    @PermitAll
+    public List<Campania> listarCampaniasPorEmpleado(Empleado empleado) {
+        return campaniasFacade.findByEmpleadoEvaluador(empleado);
+    }
 
-@EJB
-private RespuestaFacade respuestaFacade;
+    public List<Plantilla> listarPlantillasPorTipoEvaluacion(TipoEvaluacion tipoEvaluacion) {
+        return (tipoEvaluacion != null) ? tipoEvaluacion.getPlantillaList() : null;
+    }
 
-@EJB
-private DetEvaluacionFacade detalleEvaluacionFacade;
+    public List<Factor> listarFactoresPorPlantilla(Plantilla plantilla) {
+        return factorFacade.findByPlantilla(plantilla);
+    }
 
-@EJB
-private EvaluacionFacade evaluacionFacade;
+    @PermitAll
+    public List<Pregunta> listarPreguntasPorFactor(Factor factor) {
+        return (factor != null) ? factor.getPreguntaList() : null;
+    }
 
-@EJB
-private PuestoFacade puestoFacade;
+    public Respuesta findRespuestaById(RespuestaPK pk) {
+        return respuestaFacade.find(pk);
+    }
 
-@EJB
-private TipoEvaluacionFacade tipoEvaluacionFacade;
+    public List<Evaluacion> listarEvaluacionesAbiertasPorCampania(Campania campania) {
+        return evaluacionFacade.findEvaluacionesAbiertasByCampania(campania);
+    }
 
-@EJB
-private GerenciaFacade gerenciaFacade;
+    public boolean cerrarEvaluacion(Evaluacion ev, List<DetalleEvaluacion> det) {
+        boolean result = true;
+        Integer i = 1;
+        try {
+            for (DetalleEvaluacion d : det) {
+                List<PreguntaRespuesta> preguntasRespuestasList = d.getRespuestas();
+                for (PreguntaRespuesta pr : preguntasRespuestasList) {
+                    DetEvaluacionPK detEvaluacionPK = new DetEvaluacionPK();
+                    detEvaluacionPK.setCodCia(ev.getEvaluacionPK().getCodCia());
+                    detEvaluacionPK.setPeriodo(ev.getEvaluacionPK().getPeriodo());
+                    detEvaluacionPK.setCodCampania(ev.getEvaluacionPK().getCodCampania());
+                    detEvaluacionPK.setEmpleado(ev.getEvaluacionPK().getEmpleado());
+                    detEvaluacionPK.setTipoEvaluacion(ev.getEvaluacionPK().getTipoEvaluacion());
+                    detEvaluacionPK.setCodDetEvaluacion(i++);
 
-public List<Campania> listarCampanias()
-{
-return campaniasFacade.findAll();
-}
+                    DetEvaluacion detEvaluacion = new DetEvaluacion();
+                    detEvaluacion.setEvaluacion(ev);
+                    detEvaluacion.setDetEvaluacionPK(detEvaluacionPK);
+                    detEvaluacion.setPregunta(pr.getPregunta());
+                    detEvaluacion.setRespuesta(pr.getRespuesta());
 
-@PermitAll
-public List<Campania> listarCampaniasPorEmpleado(Empleado empleado)
-{
-return campaniasFacade.findByEmpleadoEvaluador(empleado);
-}
+                    detalleEvaluacionFacade.create(detEvaluacion);
+                }
+            }
+            ev.setFinalizada(1L);
+            evaluacionFacade.edit(ev);
+        } catch (Exception excpt) {
+            result = false;
+        }
+        return result;
+    }
 
-public List<Plantilla> listarPlantillasPorTipoEvaluacion(TipoEvaluacion tipoEvaluacion)
-{
-return (tipoEvaluacion != null) ? tipoEvaluacion.getPlantillaList() : null;
-}
+    public List<PuestoEmpleado> listarPuestosEmpleados() {
+        return puestoEmpleadoFacade.findAll();
+    }
 
-public List<Factor> listarFactoresPorPlantilla(Plantilla plantilla)
-{
-return factorFacade.findByPlantilla(plantilla);
-}
+    public List<Empleado> listarEmpleadosEvaluados(Campania c) {
+        return empleadosFacade.findEmpleadosEvaluados(c);
+    }
 
-@PermitAll
-public List<Pregunta> listarPreguntasPorFactor(Factor factor)
-{
-return (factor != null) ? factor.getPreguntaList() : null;
-}
+    public List<Empleado> listarEmpleadosNoEvaluados(Campania c) {
+        return empleadosFacade.findEmpleadosNoEvaluados(c);
+    }
 
-public Respuesta findRespuestaById(RespuestaPK pk)
-{
-return respuestaFacade.find(pk);
-}
+    public Empleado buscarEmpleadoPorUsuario(String usuario) {
+        return empleadosFacade.findByUsuario(usuario);
+    }
 
-public List<Evaluacion> listarEvaluacionesAbiertasPorCampania(Campania campania)
-{
-return evaluacionFacade.findEvaluacionesAbiertasByCampania(campania);
-}
+    public Empleado buscarEmpleadoPorPK(EmpleadoPK empleadoPK) {
+        return empleadosFacade.find(empleadoPK);
+    }
 
-public boolean cerrarEvaluacion(Evaluacion ev, List<DetalleEvaluacion> det)
-{
-boolean result = true;
-Integer i = 1;
-try
-    {
-    for (DetalleEvaluacion d : det)
-        {
-        List<PreguntaRespuesta> preguntasRespuestasList = d.getRespuestas();
-        for (PreguntaRespuesta pr : preguntasRespuestasList)
-            {
-            DetEvaluacionPK detEvaluacionPK = new DetEvaluacionPK();
-            detEvaluacionPK.setCodCia(ev.getEvaluacionPK().getCodCia());
-            detEvaluacionPK.setPeriodo(ev.getEvaluacionPK().getPeriodo());
-            detEvaluacionPK.setCodCampania(ev.getEvaluacionPK().getCodCampania());
-            detEvaluacionPK.setEmpleado(ev.getEvaluacionPK().getEmpleado());
-            detEvaluacionPK.setTipoEvaluacion(ev.getEvaluacionPK().getTipoEvaluacion());
-            detEvaluacionPK.setCodDetEvaluacion(i++);
+    public List<Puesto> listarPuestos() {
+        return puestoFacade.findAll();
+    }
 
-            DetEvaluacion detEvaluacion = new DetEvaluacion();
-            detEvaluacion.setEvaluacion(ev);
-            detEvaluacion.setDetEvaluacionPK(detEvaluacionPK);
-            detEvaluacion.setPregunta(pr.getPregunta());
-            detEvaluacion.setRespuesta(pr.getRespuesta());
+    public List<TipoEvaluacion> listarTiposEvaluacion() {
+        return tipoEvaluacionFacade.findAll();
+    }
 
-            detalleEvaluacionFacade.create(detEvaluacion);
+    @PermitAll
+    public Integer crearEvaluaciones(List<Evaluacion> listaEvaluaciones) {
+        Integer excepciones = 0;
+        for (Evaluacion evaluacion : listaEvaluaciones) {
+            try {
+                evaluacionFacade.create(evaluacion);
+            } catch (Exception excpt) {
+                excepciones++;
             }
         }
-    ev.setFinalizada(1L);
-    evaluacionFacade.edit(ev);
+        return excepciones;
     }
-catch (Exception excpt)
-    {
-    result = false;
+
+    public Boolean tieneEvaluaciones(Campania c) {
+        return (evaluacionFacade.findEvaluacionesByCampania(c) != 0);
     }
-return result;
-}
 
-public List<PuestoEmpleado> listarPuestosEmpleados()
-{
-return puestoEmpleadoFacade.findAll();
-}
-
-public List<Empleado> listarEmpleadosEvaluados(Campania c)
-{
-return empleadosFacade.findEmpleadosEvaluados(c);
-}
-
-public List<Empleado> listarEmpleadosNoEvaluados(Campania c)
-{
-return empleadosFacade.findEmpleadosNoEvaluados(c);
-}
-
-public Empleado buscarEmpleadoPorUsuario(String usuario)
-{
-return empleadosFacade.findByUsuario(usuario);
-}
-
-public Empleado buscarEmpleadoPorPK(EmpleadoPK empleadoPK)
-{
-return empleadosFacade.find(empleadoPK);
-}
-
-public List<Puesto> listarPuestos()
-{
-return puestoFacade.findAll();
-}
-
-public List<TipoEvaluacion> listarTiposEvaluacion()
-{
-return tipoEvaluacionFacade.findAll();
-}
-
-@PermitAll
-public Integer crearEvaluaciones(List<Evaluacion> listaEvaluaciones)
-{
-Integer excepciones = 0;
-for (Evaluacion evaluacion : listaEvaluaciones)
-    {
-    try
-        {
-        evaluacionFacade.create(evaluacion);
+    @PermitAll
+    public Integer asignarEvaluaciones(List<Evaluacion> listaEvaluaciones, Empleado evaluador) {
+        Integer excepciones = 0;
+        List<Evaluacion> evaluacionesActuales = evaluador.getEvaluacionList();
+        for (Evaluacion evaluacion : listaEvaluaciones) {
+            if (!evaluacionesActuales.contains(evaluacion)) {
+                evaluacionesActuales.add(evaluacion);
+            }
         }
-    catch (Exception excpt)
-        {
-        excepciones++;
+        try {
+            evaluador.setEvaluacionList(evaluacionesActuales);
+            empleadosFacade.edit(evaluador);
+        } catch (Exception excpt) {
+            excepciones += listaEvaluaciones.size();
         }
+        return excepciones;
     }
-return excepciones;
-}
 
-public Boolean tieneEvaluaciones(Campania c)
-{
-return (evaluacionFacade.findEvaluacionesByCampania(c) != 0);
-}
+    @PermitAll
+    public List<Gerencia> listarGerencias() {
+        return gerenciaFacade.findAll();
+    }
 
-@PermitAll
-public Integer asignarEvaluaciones(List<Evaluacion> listaEvaluaciones, Empleado evaluador)
-{
-Integer excepciones = 0;
-List<Evaluacion> evaluacionesActuales = evaluador.getEvaluacionList();
-for (Evaluacion evaluacion : listaEvaluaciones)
-    {
-    if (!evaluacionesActuales.contains(evaluacion))
-        {
-        evaluacionesActuales.add(evaluacion);
+    @PermitAll
+    public List<HeadCountModel> generarHeadCount(Gerencia gerencia) {
+        List<HeadCountModel> lista = new ArrayList<HeadCountModel>(0);
+        List<Object> listaResultado = gerenciaFacade.generarHeadCount(gerencia);
+        for (Object o : listaResultado) {
+            Object[] fila = (Object[]) o;
+            HeadCountModel hcm = new HeadCountModel((BigDecimal) fila[0], (BigDecimal) fila[1], (String) fila[2], (BigDecimal) fila[3], (String) fila[4], (BigDecimal) fila[5], (String) fila[6], (BigDecimal) fila[7], (BigDecimal) fila[8]);
+            lista.add(hcm);
         }
+        return lista;
     }
-try
-    {
-    evaluador.setEvaluacionList(evaluacionesActuales);
-    empleadosFacade.edit(evaluador);
+
+    @PermitAll
+    public Gerencia findGerenciaByPK(GerenciaPK gerenciaPK) {
+        return gerenciaFacade.find(gerenciaPK);
     }
-catch (Exception excpt)
-    {
-    excepciones += listaEvaluaciones.size();
+
+    public List<Empleado> listarEmpleados() {
+        return empleadosFacade.findAll();
     }
-return excepciones;
-}
 
-@PermitAll
-public List<Gerencia> listarGerencias()
-{
-return gerenciaFacade.findAll();    
-}
-
-@PermitAll
-public List<HeadCountModel> generarHeadCount(Gerencia gerencia)
-{
-List<HeadCountModel> lista = new ArrayList<HeadCountModel>(0);    
-List<Object> listaResultado = gerenciaFacade.generarHeadCount(gerencia);
-for (Object o : listaResultado)
-    {
-    Object[] fila = (Object[]) o ;
-    HeadCountModel hcm = new HeadCountModel((BigDecimal) fila[0], (BigDecimal) fila[1], (String) fila[2], (BigDecimal) fila[3], (String) fila[4], (BigDecimal) fila[5], (String) fila[6], (BigDecimal) fila[7], (BigDecimal) fila[8]);
-    lista.add(hcm);
+    @PermitAll
+    public Integer calcularEmpleadosEvaluados(Campania c) {
+        Integer r;
+        r = campaniasFacade.calcularEmpleadosEvaluados(c);
+        return r;
     }
-return lista;
-}
 
-@PermitAll
-public Gerencia findGerenciaByPK(GerenciaPK gerenciaPK)
-{
-return gerenciaFacade.find(gerenciaPK);
-}
+    @PermitAll
+    public void editarCampania(Campania c) {
+        campaniasFacade.edit(c);
+    }
 
-public List<Empleado> listarEmpleados()
-{
-return empleadosFacade.findAll();
-}
-
-@PermitAll
-public Integer calcularEmpleadosEvaluados(Campania c)
-{
-Integer r ;
-r = campaniasFacade.calcularEmpleadosEvaluados(c);
-return r;
-}
-
-@PermitAll
-public void editarCampania(Campania c)
-{
-campaniasFacade.edit(c);
-}
-
-@PermitAll
-public List<Campania> findAllByCia (Long empresa) 
-{
-return campaniasFacade.findAllByCia(empresa);
-}
-
+    @PermitAll
+    public List<Campania> findAllByCia(Long empresa) {
+        return campaniasFacade.findAllByCia(empresa);
+    }
 }
