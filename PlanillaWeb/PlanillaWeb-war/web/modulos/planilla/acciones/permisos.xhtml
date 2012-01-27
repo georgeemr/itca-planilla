@@ -2,80 +2,17 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
                 template="./../../../plantillas/AccionesDePersonal.xhtml">
 
     <ui:define name="detalleSolicitud">
-        <p:fieldset id="fldPagoVacacion" >
-
-            <table border="0" width="100%" >
-                <tr>
-                    <td>
-                        <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                            <h:outputLabel value="Fecha inicio"/>
-                            <h:outputLabel value="*" styleClass="requerido"/>                                
-                        </h:panelGrid>
-                    </td>
-                    <td><p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{accionesPersonal$solicitarPermiso.fechaInicial}" /></td>
-                    <td></td>
-                    <td>
-                        <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                            <h:outputLabel value="Fecha fin"/>
-                            <h:outputLabel value="*" styleClass="requerido"/>                                
-                        </h:panelGrid>
-                    </td>
-                    <td><p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{accionesPersonal$solicitarPermiso.fechaFinal}" /></td>
-                </tr>
-                <tr>
-                    <td>                            
-                        <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                            <h:outputLabel value="Devengadas"/>
-                            <h:outputLabel value="*" styleClass="requerido"/>                                
-                        </h:panelGrid>
-                    </td>
-                    <td>
-                        <h:selectOneMenu id="lstDevengado" style="width:168px;height:20px;" value="#{accionesPersonal$solicitarPermiso.devengadas}">
-                            <f:selectItem itemLabel="Si" itemValue="S" />
-                            <f:selectItem itemLabel="No" itemValue="N"/>
-                        </h:selectOneMenu>
-                    </td>
-                    <td></td>
-                    <td>
-                        <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                            <h:outputLabel value="Tipo Planilla"/>
-                            <h:outputLabel value="*" styleClass="requerido"/>                                
-                        </h:panelGrid>    
-                    </td>
-                    <td>                
-                        <h:selectOneMenu id="lstTipoPlanilla" label="Tipo Planilla" style="width:168px;height:20px;" value="#{accionesPersonal$solicitarPermiso.tipoPlanilla}" >
-                            <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tipoPlanillaPK.idTipoPlanilla}" itemLabel="#{tipo.nomTipoPlanilla}"/>
-                        </h:selectOneMenu>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                            <h:outputLabel value="Planilla"/>
-                            <h:outputLabel value="*" styleClass="requerido"/>                                
-                        </h:panelGrid>  
-                    </td>
-                    <td>
-                        <h:selectOneMenu id="lstPlanilla" label="Planilla" style="width:168px;height:20px;" value="#{accionesPersonal$solicitarPermiso.planilla}" >
-                            <f:selectItems value="#{planilla$accionesPersonal.listaPlanillas}" var="pla" 
-                                           itemValue="#{pla.planillaPK.pkAsString}"
-                                           itemLabel="#{pla.planillaPK.anio} ------ #{pla.planillaPK.mes} ------ #{pla.planillaPK.numPlanilla}" />
-                        </h:selectOneMenu>
-                    </td>
-                </tr>
-            </table>
+        <p:fieldset id="fldPermisos" >
 
         </p:fieldset>
     </ui:define>
 
     <ui:define name="cmdGuardarSolicitud">
         <p:commandButton value="Aceptar" styleClass="opcionMenu" 
-                         update="mensajes, tablSol" action="#{accionesPersonal$solicitarPermiso.guardarSolicitud$action}"
+                         update="mensajes, tablSol" action="#{accionesPersonal$solicitarPermisos.guardarSolicitud$action}"
                          ajax="true" image="ui-icon-circle-check" />
     </ui:define>
 
