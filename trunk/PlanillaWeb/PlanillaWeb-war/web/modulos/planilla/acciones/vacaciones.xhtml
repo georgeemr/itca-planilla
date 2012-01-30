@@ -75,7 +75,8 @@
 
     <ui:define name="cmdGuardarSolicitud">
         <p:commandButton id="cmdAceptar" value="Aceptar" 
-                         update="mensajes, tablSol" action="#{accionesPersonal$solicitarVacaciones.guardarSolicitud$action}"
+                         update="principalForm:mensajes, principalForm:tablSol" 
+                         actionListener="#{planilla$accionesPersonal.prueba}"
                          image="ui-icon-circle-check" />
     </ui:define>
 
