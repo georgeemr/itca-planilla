@@ -14,7 +14,8 @@
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, lstTipos"
-                               onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" onclick="dialogSolicitudes.show();">
+                               onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" 
+                               onclick="#{planilla$accionesPersonal.urlPlantilla}.show();">
                     <p:graphicImage value="/resources/iconos/new.png"/>
                     <h:outputText value="Nuevo" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -60,7 +61,7 @@
                      selection="#{SessionBeanPLA.accionSeleccionada}"
                      selectionMode="single"
                      rowEditListener="#{planilla$accionesPersonal.onEditAccionPersonal}"
-                     onRowEditUpdate="tablSol,principalForm:mensajes"
+                     onRowEditUpdate="principalForm:tablSol,principalForm:mensajes"
                      rowStyleClass="#{sol.status eq 'G' ? 'solicitudGenerada' : sol.status eq 'J' ? 'solicitudPreAprobada' : sol.status eq 'B' ? 'solicitudAprobada' : sol.status eq 'R' ? 'solicitudRechazada' : null }"
                      paginatorAlwaysVisible="true"
                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
@@ -69,11 +70,11 @@
             </f:facet>
 
             <p:column headerText="Emp.">
-                <h:outputText value="#{sol.puestoEmpleado.empleado.empleadoPK.codEmp}"/>
+                <h:outputText value="#{sol.empleado.empleadoPK.codEmp}"/>
             </p:column>
 
-            <p:column headerText="Nombre" filterBy="#{sol.puestoEmpleado.empleado.nombreCompleto}" >
-                <h:outputText value="#{sol.puestoEmpleado.empleado.nombreCompleto}"/>
+            <p:column headerText="Nombre" filterBy="#{sol.empleado.nombreCompleto}" >
+                <h:outputText value="#{sol.empleado.nombreCompleto}"/>
             </p:column>
 
             <p:column headerText="Nombre Acci&oacute;n" filterBy="#{sol.tipoAccion.nomTipoaccion}" >
@@ -192,7 +193,7 @@
             </table>
         </p:dialog>
 
-        <p:dialog id="dialogSolicitudes" widgetVar="dialogSolicitudes" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="745" height="550" >
+        <p:dialog id="dialogSolicitudPermiso" widgetVar="dialogSolicitudPermiso" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="745" height="550" >
             <p:spacer height="10px"/>
             <p:panel id="panelInformacion" style="border:none;" >
                 <h:panelGrid columns="4" >
@@ -231,7 +232,102 @@
 
             <p:spacer height="10px"/>
 
-            <ui:include id="contenedorSolicitudes" src="#{planilla$accionesPersonal.urlPlantilla}" />
+            <p:fieldset id="fldPermisos" >
+
+                <table border="0" width="100%" >
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Fecha inicio"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaInicial}" /></td>
+                        <td></td>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Fecha fin"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaFinal}" /></td>
+                    </tr>
+
+                    <tr>
+                        <td>                            
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Dias"/>
+                            </h:panelGrid>
+                        </td>
+                        <td>
+                            <p:inputText id="txtDias"  value="#{planilla$accionesPersonal.solicitudPermiso.dias}" readonly="true" />
+                        </td>
+                        <td></td>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Horas"/>
+                            </h:panelGrid>    
+                        </td>
+                        <td>                
+                            <p:inputText id="txtHoras"  value="#{planilla$accionesPersonal.solicitudPermiso.horas}" readonly="true" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Valor del Descuento"/>
+                            </h:panelGrid> 
+                        </td>
+                        <td>
+                            <p:inputText id="txtDescuento"  value="#{planilla$accionesPersonal.solicitudPermiso.descuento}" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>                   
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Tipo Planilla"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>    
+                        </td>
+                        <td>                
+                            <h:selectOneMenu id="lstTipoPlanilla" label="Tipo Planilla" style="width:168px;height:20px;" value="#{planilla$accionesPersonal.solicitudPermiso.tipoPlanilla}" >
+                                <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tipoPlanillaPK.idTipoPlanilla}" itemLabel="#{tipo.nomTipoPlanilla}"/>
+                            </h:selectOneMenu>
+                        </td>
+                        <td></td>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Planilla"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>  
+                        </td>
+                        <td>
+                            <h:selectOneMenu id="lstPlanilla" label="Planilla" style="width:168px;height:20px;" value="#{planilla$accionesPersonal.solicitudPermiso.planilla}" >
+                                <f:selectItems value="#{planilla$accionesPersonal.listaPlanillas}" var="pla" 
+                                               itemValue="#{pla.planillaPK.pkAsString}"
+                                               itemLabel="#{pla.planillaPK.anio} ------ #{pla.planillaPK.mes} ------ #{pla.planillaPK.numPlanilla}" />
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                </table>
+
+            </p:fieldset>
+
+            <h:panelGrid columns="2">
+                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tablSol"
+                                 action="#{planilla$accionesPersonal.solicitudPermiso.guardarSolicitud$action}"
+                                 ajax="true" image="ui-icon-circle-check" />
+                
+                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="mensajes, tablaSol, txtEmp, txtJefe"  action="#{planilla$accionesPersonal.cancelar$action}"
+                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
+            </h:panelGrid>
+
+
 
         </p:dialog>
 
