@@ -118,6 +118,8 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
         getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo()));
+        StringBuilder mensaje = new StringBuilder();
+        
         enviarCorreo(accionPersonal, "Mensaje de Prueba de accion de personal");
         limpiarCampos();
         return null;
