@@ -259,11 +259,16 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         try {
             AccionPersonal accionPersonal = (AccionPersonal) event.getObject();
             planillaSessionBean.editAccionPersonal(accionPersonal);
-            solicitudPermiso.enviarCorreo(accionPersonal, "Solicitud Procesada.\n\nResultado: Solicitud " + accionPersonal.getAccEstado()
-                    + "\n\nAtte. \n\nDepartamento de Recursos Humanos " + getSessionBeanADM().getCompania().getNomCompania());
-            addMessage("Evaluacion de Candidato", "Datos Guardados", TipoMensaje.INFORMACION);
+            StringBuilder mensaje = new StringBuilder();
+            mensaje.append("Solicitud Procesada.\n\n");
+            mensaje.append("Detalle:\n\n\n\n");
+            
+            mensaje.append("\n\nResultado: Solicitud ").append(accionPersonal.getAccEstado());
+            mensaje.append("\n\nAtte. \n\nDepartamento de Recursos Humanos ").append(getSessionBeanADM().getCompania().getNomCompania());
+            SolicitudPermiso.enviarCorreo(accionPersonal, mensaje.toString());
+            addMessage("Acciones de Personal", "Datos Guardados", TipoMensaje.INFORMACION);
         } catch (Exception e) {
-            addMessage("Evaluacion de Candidato", "Ocurrio un error al intentar guardar.", TipoMensaje.INFORMACION);
+            addMessage("Acciones de Personal", "Ocurrio un error al intentar guardar.", TipoMensaje.INFORMACION);
         }
     }
 }
