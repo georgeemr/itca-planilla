@@ -47,7 +47,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
             nuevaPK.setIdSucursal(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getSucursal().getSucursalPK().getIdSucursal());
             nuevaPK.setCodTipoaccion(encabezadoSolicitud.getAccionSeleccionada().getTipoAccionPK().getCodTipoaccion());
             nuevaPK.setIdEmpleado(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadoPK().getCodEmp());
-            nuevaPK.setIdPuesto(encabezadoSolicitud.getSessionBeanEMP().getPuestoEmpleadoSession().getPuesto().getPuestoPK().getCodPuesto());            
+            nuevaPK.setIdPuesto(encabezadoSolicitud.getSessionBeanEMP().getPuestoEmpleadoSession().getPuesto().getPuestoPK().getCodPuesto());
             nuevaPK.setIdTipoPuesto(encabezadoSolicitud.getSessionBeanEMP().getPuestoEmpleadoSession().getPuestoEmpleadoPK().getIdTipoPuesto());
             nuevaPK.setCorrelativo(accionPersonalFacade().max(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadoPK().getCodEmp()));
         } catch (Exception e) {
@@ -88,22 +88,21 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         }
     }
 
-    public boolean enviarCorreo(AccionPersonal accionPersonal) {
-        
-        String mensaje = "";
-        if ( accionPersonal.getEmpleado().getCorreo() == null ) return false;
-        mailStatelessBean().enviarCorreoElectronico("Acciones de Personal - " +accionPersonal.getTipoAccion().getNomTipoaccion() , mensaje, accionPersonal.getEmpleado().getCorreo() );
-        
-                
-        return Boolean.FALSE;
+    public static boolean enviarCorreo(AccionPersonal accionPersonal, String mensaje) {
+
+        if (accionPersonal.getEmpleado().getCorreo() == null) {
+            return false;
+        }
+        mailStatelessBean().enviarCorreoElectronico("Acciones de Personal - " + accionPersonal.getTipoAccion().getNomTipoaccion(), mensaje, accionPersonal.getEmpleado().getCorreo());
+        return Boolean.TRUE;
     }
 
-    private MailStatelessBean mailStatelessBean() {
+    private static MailStatelessBean mailStatelessBean() {
         try {
             Context c = new InitialContext();
             return (MailStatelessBean) c.lookup("java:global/PlanillaWeb/ProcesosEJBModule/MailStatelessBean!com.infosgroup.planilla.modelo.procesos.MailStatelessBean");
         } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            ne.printStackTrace();
             throw new RuntimeException(ne);
         }
     }
