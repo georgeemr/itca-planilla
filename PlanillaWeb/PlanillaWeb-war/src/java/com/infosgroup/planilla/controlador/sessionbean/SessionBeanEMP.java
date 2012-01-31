@@ -9,13 +9,14 @@ import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.Factor;
 import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
+import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.annotation.security.PermitAll;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-
-import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 
 /**
@@ -24,8 +25,10 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean(name = "SessionBeanEMP")
 @SessionScoped
-public class SessionBeanEMP implements java.io.Serializable{
+public class SessionBeanEMP implements java.io.Serializable {
 
+    @EJB
+    private EmpleadoFacade empleadoFacade;
     @EJB
     private EmpleadosSessionBean empleadosBean;
     private Empleado empleadoSesion;
@@ -40,7 +43,11 @@ public class SessionBeanEMP implements java.io.Serializable{
 
     @PostConstruct
     public void postConstruct() {
-        empleadoSesion = (FacesContext.getCurrentInstance().getExternalContext().getRemoteUser() != null) ? empleadosBean.buscarEmpleadoPorUsuario(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser()) : null;
+        try {
+            empleadoSesion = (FacesContext.getCurrentInstance().getExternalContext().getRemoteUser() != null) ? empleadosBean.buscarEmpleadoPorUsuario(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser()) : null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private Evaluacion evaluacionSeleccionada;
 
@@ -98,5 +105,18 @@ public class SessionBeanEMP implements java.io.Serializable{
 
     public void setPuestosEmpleadosEvaluados(PuestoEmpleado[] puestosEmpleadosEvaluados) {
         this.puestosEmpleadosEvaluados = puestosEmpleadosEvaluados;
+    }
+    private PuestoEmpleado puestoEmpleadoSession;
+
+    @PermitAll
+    public PuestoEmpleado getPuestoEmpleadoSession() {
+        if (empleadoSesion != null) {
+            puestoEmpleadoSession = empleadoFacade.getUltimoPuesto(empleadoSesion);
+        }
+        return puestoEmpleadoSession;
+    }
+
+    public void setPuestoEmpleadoSession(PuestoEmpleado puestoEmpleadoSession) {
+        this.puestoEmpleadoSession = puestoEmpleadoSession;
     }
 }

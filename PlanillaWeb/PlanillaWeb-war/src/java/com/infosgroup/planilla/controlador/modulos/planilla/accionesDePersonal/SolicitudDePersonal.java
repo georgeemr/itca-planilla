@@ -15,7 +15,6 @@ import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.bean.ManagedProperty;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -26,18 +25,14 @@ import javax.naming.NamingException;
  */
 public abstract class SolicitudDePersonal extends AbstractJSFPage implements java.io.Serializable {
 
-    @ManagedProperty(value = "#{planilla$accionesPersonal}")
     private AccionesPersonalBackendBean encabezadoSolicitud;
 
     public AccionesPersonalBackendBean getEncabezadoSolicitud() {
         return encabezadoSolicitud;
     }
 
-    public void setEncabezadoSolicitud(AccionesPersonalBackendBean encabezadoSolicitud) {
-        this.encabezadoSolicitud = encabezadoSolicitud;
-    }
-
-    public SolicitudDePersonal() {
+    public SolicitudDePersonal(AccionesPersonalBackendBean formularioSolicitud) {
+        this.encabezadoSolicitud = formularioSolicitud;
     }
 
     abstract boolean validarSolicitud();
@@ -49,12 +44,12 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
             nuevaPK.setAnio(planilla.getPlanillaPK().getAnio());
             nuevaPK.setMes(planilla.getPlanillaPK().getMes());
             nuevaPK.setNumPlanilla(planilla.getPlanillaPK().getNumPlanilla());
-            nuevaPK.setIdSucursal(getSessionBeanEMP().getEmpleadoSesion().getSucursal().getSucursalPK().getIdSucursal());
-            nuevaPK.setCodTipoaccion(getEncabezadoSolicitud().getAccionSeleccionada().getTipoAccionPK().getCodTipoaccion());
-            nuevaPK.setIdEmpleado(getSessionBeanEMP().getEmpleadoSesion().getEmpleadoPK().getCodEmp());
-            nuevaPK.setIdPuesto(getSessionBeanEMP().getEmpleadoSesion().getUltimoPuesto().getPuestoPK().getCodPuesto());
-            nuevaPK.setIdTipoPuesto(getSessionBeanEMP().getEmpleadoSesion().getUltimoPuesto().getTipoPuesto().getTipoPuestoPK().getCodTipoPuesto());
-            nuevaPK.setCorrelativo(accionPersonalFacade().max(getSessionBeanEMP().getEmpleadoSesion().getEmpleadoPK().getCodEmp()));
+            nuevaPK.setIdSucursal(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getSucursal().getSucursalPK().getIdSucursal());
+            nuevaPK.setCodTipoaccion(encabezadoSolicitud.getAccionSeleccionada().getTipoAccionPK().getCodTipoaccion());
+            nuevaPK.setIdEmpleado(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadoPK().getCodEmp());
+            nuevaPK.setIdPuesto(encabezadoSolicitud.getSessionBeanEMP().getPuestoEmpleadoSession().getPuesto().getPuestoPK().getCodPuesto());            
+            nuevaPK.setIdTipoPuesto(encabezadoSolicitud.getSessionBeanEMP().getPuestoEmpleadoSession().getPuestoEmpleadoPK().getIdTipoPuesto());
+            nuevaPK.setCorrelativo(accionPersonalFacade().max(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadoPK().getCodEmp()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,7 +65,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
     }
 
     public TipoAccion getTipoAccion() {
-        return planillaSessionBean().buscarTipoAccion(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
+        return planillaSessionBean().buscarTipoAccion(encabezadoSolicitud.getEmpresa(), encabezadoSolicitud.getTipo());
     }
 
     private AccionPersonalFacade accionPersonalFacade() {

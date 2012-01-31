@@ -4,25 +4,26 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
+import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.Date;
-import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+//import javax.ejb.EJB;
+//import javax.faces.bean.ManagedBean;
+//import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author root
  */
-@ManagedBean(name = "accionesPersonal$solicitarVacaciones")
-@ViewScoped
+//@ManagedBean(name = "accionesPersonal$solicitarVacaciones")
+//@ViewScoped
 public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.Serializable {
 
-    @EJB
+//    @EJB
     private PlanillaSessionBean planillaSessionBean;
     private Date fechaInicial;
     private Date fechaFinal;
@@ -32,7 +33,8 @@ public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.
     private String afectaPlanilla;
     private String devengadas;
 
-    public SolicitarVacaciones() {
+    public SolicitarVacaciones(AccionesPersonalBackendBean encabezadoSolicitud) {
+        super(encabezadoSolicitud);
     }
 
     public String getAfectaPlanilla() {
@@ -73,14 +75,6 @@ public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.
 
     public void setPlanillaSeleccionada(Planilla planillaSeleccionada) {
         this.planillaSeleccionada = planillaSeleccionada;
-    }
-
-    public PlanillaSessionBean getPlanillaSessionBean() {
-        return planillaSessionBean;
-    }
-
-    public void setPlanillaSessionBean(PlanillaSessionBean planillaSessionBean) {
-        this.planillaSessionBean = planillaSessionBean;
     }
 
     public Long getTipoPlanilla() {
@@ -153,7 +147,9 @@ public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.
     }
 
     public String guardarSolicitud$action() {
-        if (!validarSolicitud()) { return null; }
+        if (!validarSolicitud()) {
+            return null;
+        }
         planillaSeleccionada = planillaSessionBean.findPlanillaById(new PlanillaPK(planilla));
         AccionPersonal accionPersonal = new AccionPersonal();
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(planillaSeleccionada));
