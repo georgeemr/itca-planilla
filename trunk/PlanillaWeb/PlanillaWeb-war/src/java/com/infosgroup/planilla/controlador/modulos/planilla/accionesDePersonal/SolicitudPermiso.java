@@ -4,27 +4,25 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
+import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.Date;
-import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 /**
  *
  * @author root
  */
-@ManagedBean(name = "accionesPersonal$solicitarPermisos")
-@ViewScoped
-public class SolicitarPermisos extends SolicitudDePersonal implements java.io.Serializable {
-
-    @EJB
-    private PlanillaSessionBean planillaSessionBean;
+public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Serializable {
+    
     private java.util.Date fechaInicial;
     private java.util.Date fechaFinal;
     private Long tipoPlanilla;
@@ -32,16 +30,17 @@ public class SolicitarPermisos extends SolicitudDePersonal implements java.io.Se
     private Planilla planillaSeleccionada;
     private Integer dias = 0;
     private Integer horas = 0;
-    private Double descuento = 0.0;
+    private double descuento = 0.0;
 
-    public SolicitarPermisos() {
+    public SolicitudPermiso(AccionesPersonalBackendBean encabezadoSolicitud) {
+        super(encabezadoSolicitud);
     }
 
-    public Double getDescuento() {
+    public double getDescuento() {
         return descuento;
     }
 
-    public void setDescuento(Double descuento) {
+    public void setDescuento(double descuento) {
         this.descuento = descuento;
     }
 
@@ -103,31 +102,28 @@ public class SolicitarPermisos extends SolicitudDePersonal implements java.io.Se
 
     public String guardarSolicitud$action() {
         if (!validarSolicitud()) { return null; }
-        planillaSeleccionada = planillaSessionBean.findPlanillaById(new PlanillaPK(planilla));
+        planillaSeleccionada = planillaSessionBean().findPlanillaById(new PlanillaPK(planilla));
         AccionPersonal accionPersonal = new AccionPersonal();
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(planillaSeleccionada));
         accionPersonal.setTipoAccion(getTipoAccion());
-        accionPersonal.setEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+        accionPersonal.setEmpleado(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
         accionPersonal.setStatus("G");
-        //accionPersonal.setDevengadas(devengadas);
         accionPersonal.setFechaFinal(fechaFinal);
         accionPersonal.setFechaInicial(fechaInicial);
         accionPersonal.setPlanilla(planillaSeleccionada);
+        accionPersonal.setPuesto( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUltimoPuesto() );
+        accionPersonal.setPuestoEmpleado( getEncabezadoSolicitud().getSessionBeanEMP().getPuestoEmpleadoSession() );
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
-        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean.listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo()));
+        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo()));
         limpiarCampos();
         return null;
     }
 
-    @PostConstruct
-    public void _init() {
-    }
-
     @Override
-    protected void limpiarCampos() {
+    public void limpiarCampos() {
         fechaInicial = null;
         fechaFinal = null;
         tipoPlanilla = null;
@@ -156,7 +152,7 @@ public class SolicitarPermisos extends SolicitudDePersonal implements java.io.Se
             error = Boolean.FALSE;
         }
 
-        if (fechaInicial != null || fechaFinal != null) {
+        if (fechaInicial != null && fechaFinal != null) {
             if (!validaFechas(fechaInicial, fechaFinal)) {
                 addMessage("Acciones de Personal", "Los datos de Fecha inicia y Fecha fin no son consistentes.", TipoMensaje.ERROR);
                 error = Boolean.FALSE;
@@ -173,10 +169,21 @@ public class SolicitarPermisos extends SolicitudDePersonal implements java.io.Se
             error = Boolean.FALSE;
         }
 
-        if (getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList() == null || getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList().isEmpty()) {
+        if (getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList() == null || getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList().isEmpty()) {
             addMessage("Acciones de Personal", "Usted no tiene ningún puesto asignado.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
         return error;
     }
+
+    private PlanillaSessionBean planillaSessionBean() {
+        try {
+            Context c = new InitialContext();
+            return (PlanillaSessionBean) c.lookup("java:global/PlanillaWeb/ProcesosEJBModule/PlanillaSessionBean!com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+    
 }

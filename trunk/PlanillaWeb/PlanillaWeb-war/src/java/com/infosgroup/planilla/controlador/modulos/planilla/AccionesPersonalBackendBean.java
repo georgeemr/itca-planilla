@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
+import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudPermiso;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
@@ -45,15 +46,26 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private Long empresa;
     private Long tipoAccion;
     private DataTable tablaEmpleado;
-    private String observacion; // Datos del encabezado 
+    private String observacion;
     private Date fecha;
     private String nombreJefe;
     private String urlPlantilla;
     private String urlPlantillaDefault = "/modulos/planilla/acciones/ninguna.xhtml";
     private TipoAccion accionSeleccionada;
+    
+    
+    /* Campos de Detalle de Solicitud */
+    private SolicitudPermiso solicitudPermiso;
 
-    public AccionesPersonalBackendBean() {
+    public SolicitudPermiso getSolicitudPermiso() {
+        return solicitudPermiso;
     }
+
+    public void setSolicitudPermiso(SolicitudPermiso solicitudPermiso) {
+        this.solicitudPermiso = solicitudPermiso;
+    }
+
+    public AccionesPersonalBackendBean() {}
 
     public void seleccionarAccion(AjaxBehaviorEvent event) {
         accionSeleccionada = null;
@@ -72,6 +84,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         listaPlanillas = planillaSessionBean.listarPlanilla();
         listaSolicitudes = planillaSessionBean.findSolicitudesPendientes(getSessionBeanADM().getCompania().getIdCompania());
         empresa = getSessionBeanADM().getCompania().getIdCompania();
+        solicitudPermiso = new SolicitudPermiso( this );
         fecha = new Date();
     }
 
@@ -231,6 +244,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     public String cancelar$action() {
         limpiarCampos();
+        if (solicitudPermiso != null) solicitudPermiso.limpiarCampos() ;
         return null;
     }
 
