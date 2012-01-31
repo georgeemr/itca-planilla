@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
@@ -141,10 +140,14 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
         Candidato candidato = new Candidato();
         CandidatoPK pkCandidato = new CandidatoPK();
         Long c = getSessionBeanADM().getCompania().getIdCompania();
+        Date hoy = new Date();
+        Integer anioHoy = hoy.getYear();
+        Integer nac = fechaNacimiento.getYear();
+        Integer edad = anioHoy - nac;
         try {
             
             pkCandidato.setCodCia(c);
-            pkCandidato.setCodCandidato(reclutamientoFacade.getMaxCandidato(c));
+            pkCandidato.setCodCandidato(reclutamientoFacade.getMaxCandidato(1L));
             candidato.setCandidatoPK(pkCandidato);
             candidato.setNombre(nombre);
             candidato.setFechaNacimiento(fechaNacimiento);
@@ -153,6 +156,7 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
             candidato.setSexo(sexo);
             candidato.setObservacion(observaciones);
             candidato.setEstado("A");
+            candidato.setEdad(edad.longValue());
             reclutamientoFacade.guardarCandidato(candidato);
             
             addMessage("Registro de Candidatos", "Datos guardados satisfactoriamente.", TipoMensaje.INFORMACION);
