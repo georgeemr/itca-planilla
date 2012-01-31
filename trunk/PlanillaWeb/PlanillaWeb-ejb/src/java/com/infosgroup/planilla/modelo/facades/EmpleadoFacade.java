@@ -9,11 +9,13 @@ import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.entidades.EmpleadoPK;
+import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import javax.annotation.security.PermitAll;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -97,8 +99,8 @@ public class EmpleadoFacade extends AbstractFacade<Empleado, EmpleadoPK> {
     public String generaUsuario(Candidato c) {
         String nombre = "", apellido = "", user = "";
         int n = 0;
-        nombre  = c.getNombre()!= null ? c.getNombre().split(" ")[0]: "";
-        apellido = c.getApellido() != null ?  c.getApellido().split(" ")[0]: "";
+        nombre = c.getNombre() != null ? c.getNombre().split(" ")[0] : "";
+        apellido = c.getApellido() != null ? c.getApellido().split(" ")[0] : "";
         user = nombre + apellido;
         for (;;) {
             if (em.createNamedQuery("Empleado.findByUsuario", Empleado.class).setParameter("usuario", user).getResultList().isEmpty()) {
@@ -109,12 +111,24 @@ public class EmpleadoFacade extends AbstractFacade<Empleado, EmpleadoPK> {
         }
         return user;
     }
-    
+
     public List<Empleado> findEmpleadosByUsuario(String usuario) {
         List<Empleado> lista = null;
         Query q = em.createNamedQuery("Empleado.findByUsuario", Empleado.class);
         q.setParameter("usuario", usuario);
         lista = q.getResultList();
-        return lista != null? lista: new ArrayList<Empleado>();
+        return lista != null ? lista : new ArrayList<Empleado>();
     }
+
+    @PermitAll
+    public PuestoEmpleado getUltimoPuesto(Empleado empleado) {
+        PuestoEmpleado puestoEmpleado =  new PuestoEmpleado();
+        Query q = em.createNativeQuery("select * from PLANILLA.PUESTO_EMPLEADO where id_compania = ? and id_sucursal = ? and id_empleado = ? and rownum = 1 order by fecha_asignacion desc", PuestoEmpleado.class);
+        q.setParameter(1, empleado.getEmpleadoPK().getCodCia());
+        q.setParameter(2, empleado.getSucursal().getSucursalPK().getIdSucursal());
+        q.setParameter(3, empleado.getEmpleadoPK().getCodEmp());
+        puestoEmpleado = (PuestoEmpleado)q.getSingleResult();        
+        return puestoEmpleado;
+    }
+
 }
