@@ -6,7 +6,6 @@ package com.infosgroup.planilla.controlador.sessionbean;
 
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.DetPlanilla;
-import com.infosgroup.planilla.modelo.entidades.Empleado;
 import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;

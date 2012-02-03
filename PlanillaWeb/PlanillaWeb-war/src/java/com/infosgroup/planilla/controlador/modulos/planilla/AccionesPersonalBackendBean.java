@@ -14,6 +14,7 @@ import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -83,7 +84,15 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public void init() {
         listaEmp = planillaSessionBean.listaEmpleados();
         listaPlanillas = planillaSessionBean.listarPlanilla();
-        listaSolicitudes = planillaSessionBean.findSolicitudesPendientes(getSessionBeanADM().getCompania().getIdCompania());
+        if (isInRole("rrhh")) {
+            listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
+        } else if (isInRole("jefes")) {
+            listaSolicitudes = planillaSessionBean.findSolicitudesByJefe(getSessionBeanEMP().getEmpleadoSesion());
+        } else if (isInRole("empleados")) {
+            listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+        } else {
+            listaSolicitudes = new ArrayList<AccionPersonal>();
+        }
         empresa = getSessionBeanADM().getCompania().getIdCompania();
         solicitudPermiso = new SolicitudPermiso(this);
         fecha = new Date();
@@ -265,5 +274,4 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         observacion = null;
         nombreJefe = "Seleccione un Empleado";
     }
-    
 }

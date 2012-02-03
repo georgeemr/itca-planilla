@@ -367,9 +367,19 @@ public class PlanillaSessionBean {
         return planillaFacade.find(planillaPK);
     }
 
-    @PermitAll
-    public List<AccionPersonal> findSolicitudesPendientes(Long empresa) {
-        return accionPersonalFacade.findSolicitudesPendientes(empresa);
+    @RolesAllowed({"empleados"})
+    public List<AccionPersonal> findSolicitudesByEmpleado(Empleado empleado) {
+        return accionPersonalFacade.findSolicitudesByEmpleado(empleado);
+    }
+
+    @RolesAllowed({"rrhh"})
+    public List<AccionPersonal> findSolicitudesByRRHH(Empleado empleado) {
+        return accionPersonalFacade.findSolicitudesByRRHH(empleado);
+    }
+
+    @RolesAllowed({"jefes"})
+    public List<AccionPersonal> findSolicitudesByJefe(Empleado empleado) {
+        return accionPersonalFacade.findSolicitudesByJefe(empleado);
     }
 
     @RolesAllowed({"jefes"})

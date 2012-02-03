@@ -11,6 +11,7 @@ import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,7 +37,7 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
         super(AccionPersonal.class);
     }
 
-    public Long max( Long  empleado ) {
+    public Long max(Long empleado) {
         Long max = (Long) getEntityManager().createQuery("select max(p.accionPersonalPK.correlativo) from AccionPersonal p where p.accionPersonalPK.idEmpleado = :idEmpleado").setParameter("idEmpleado", empleado).getSingleResult();
         return (max == null) ? 1L : ++max;
     }
@@ -101,7 +102,7 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
         acc.setParameter("cia", cia);
         acc.setParameter("tipo", tipo);
         listaAccion = (List<AccionPersonal>) acc.getResultList();
-        return listaAccion != null ? listaAccion: new ArrayList<AccionPersonal>(0);
+        return listaAccion != null ? listaAccion : new ArrayList<AccionPersonal>(0);
     }
 
     public List<AccionPersonal> findByNoAfecta(long cia) {
@@ -109,7 +110,7 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
         Query acc = em.createQuery("select a from AccionPersonal a where a.tipoAccion.tipoAccionPK.codCia = :cia and a.tipoAccion.afectaSal = 'N'", AccionPersonal.class);
         acc.setParameter("cia", cia);
         listaAccion = (List<AccionPersonal>) acc.getResultList();
-        return listaAccion != null? listaAccion : new ArrayList<AccionPersonal>();
+        return listaAccion != null ? listaAccion : new ArrayList<AccionPersonal>();
     }
 
     @PermitAll
@@ -132,12 +133,25 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
         tq.setParameter("status", "B");
         return tq.getResultList();
     }
-    
-    @PermitAll
-    public List<AccionPersonal> findSolicitudesPendientes(Long empresa) {
+
+    @RolesAllowed({"empleados"})
+    public List<AccionPersonal> findSolicitudesByEmpleado(Empleado empleado) {
         TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.status = 'G'", AccionPersonal.class);
-        tq.setParameter("codCia", empresa);
+        tq.setParameter("codCia", empleado.getEmpleadoPK().getCodCia());
         return tq.getResultList();
-    }    
-    
+    }
+
+    @RolesAllowed({"rrhh"})
+    public List<AccionPersonal> findSolicitudesByRRHH(Empleado empleado) {
+        TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.status = 'G'", AccionPersonal.class);
+        tq.setParameter("codCia", empleado.getEmpleadoPK().getCodCia());
+        return tq.getResultList();
+    }
+
+    @RolesAllowed({"jefes"})
+    public List<AccionPersonal> findSolicitudesByJefe(Empleado empleado) {
+        TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.status = 'G'", AccionPersonal.class);
+        tq.setParameter("codCia", empleado.getEmpleadoPK().getCodCia());
+        return tq.getResultList();
+    }
 }

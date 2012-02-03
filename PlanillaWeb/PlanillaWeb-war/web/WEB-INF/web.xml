@@ -35,6 +35,7 @@
             <role-name>administradores</role-name>
             <role-name>rrhh</role-name>
             <role-name>jefes</role-name>
+            <role-name>empleados</role-name>
         </auth-constraint>
     </security-constraint>
     <login-config>
@@ -56,5 +57,9 @@
     <security-role>
         <description>Rol de Jefes</description>
         <role-name>jefes</role-name>
+    </security-role>
+    <security-role>
+        <description>Rol de Empleados</description>
+        <role-name>empleados</role-name>
     </security-role>
 </web-app>
