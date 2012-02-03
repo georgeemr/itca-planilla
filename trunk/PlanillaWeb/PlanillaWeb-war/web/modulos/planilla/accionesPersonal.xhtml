@@ -11,7 +11,7 @@
     </ui:define>
 
     <ui:define name="acciones">
-        <p:tab title="Otras acciones">
+        <p:tab id="tabAcciones" title="Otras acciones">
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, lstTipos"
                                onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" 
@@ -19,8 +19,12 @@
                     <p:graphicImage value="/resources/iconos/new.png"/>
                     <h:outputText value="Nuevo" styleClass="espacioTexto"/>
                 </p:commandLink>
+                <p:commandLink id="editarSolicitud" styleClass="opcionMenu textoNormal" ajax="true" action="acciones/editarSolicitud?faces-redirect=true" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" rendered="#{SessionBeanPLA.accionSeleccionada ne null}">
+                    <p:graphicImage value="/resources/iconos/document-edit.png"/>
+                    <h:outputText value="Editar Solicitud" styleClass="espacioTexto"/>
+                </p:commandLink>
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{planilla$accionesPersonal.consulta$action}" 
-                               update="principalForm:mensajes, tablSol" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                               update="principalForm:mensajes, tableSolicitud" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/search.png"/>
                     <h:outputText value="Consultar" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -53,23 +57,23 @@
             </h:panelGrid>
         </p:fieldset>
         <p:spacer height="10px"/>
-        <p:dataTable id="tablSol"
+        <p:dataTable id="tableSolicitud"
                      rows="5" paginator="true"
                      emptyMessage="No hay Solicitudes pendientes para aprobar"
-                     var="sol" rendered="true" widgetVar="tablSol"
+                     var="sol" rendered="true" widgetVar="tableSolicitud"
                      value="#{planilla$accionesPersonal.listaSolicitudes}"
                      selection="#{SessionBeanPLA.accionSeleccionada}"
                      selectionMode="single"
-                     rowEditListener="#{planilla$accionesPersonal.onEditAccionPersonal}"
-                     onRowEditUpdate="principalForm:tablSol,principalForm:mensajes"
+                     update="tabAcciones,editarSolicitud"
+                     binding="#{planilla$accionesPersonal.tablaSolicitudes}"
                      rowStyleClass="#{sol.status eq 'G' ? 'solicitudGenerada' : sol.status eq 'J' ? 'solicitudPreAprobada' : sol.status eq 'B' ? 'solicitudAprobada' : sol.status eq 'R' ? 'solicitudRechazada' : null }"
                      paginatorAlwaysVisible="true"
-                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
             <f:facet name="header">
                 Acciones de personal
             </f:facet>
 
-            <p:column headerText="Emp.">
+            <p:column headerText="C&oacute;digo">
                 <h:outputText value="#{sol.empleado.empleadoPK.codEmp}"/>
             </p:column>
 
@@ -82,116 +86,22 @@
             </p:column>
 
             <p:column headerText="Estado">
-                <p:cellEditor>  
-                    <f:facet name="output">  
-                        <h:outputText value="#{sol.accEstado}"/>
-                    </f:facet>  
-                    <f:facet name="input">          
-                        <h:selectOneMenu value="#{sol.status}" >
-                            <f:selectItem itemValue="G" itemLabel="Solicitada" />
-                            <f:selectItem itemValue="J" itemLabel="Pre-Aprobada" />
-                            <f:selectItem itemValue="R" itemLabel="Rechazada" />
-                            <f:selectItem itemValue="A" itemLabel="Aprobada" />
-                        </h:selectOneMenu>
-                    </f:facet>  
-                </p:cellEditor>
+                <h:outputText value="#{sol.accEstado}"/>
             </p:column>
-
+            
+            <p:column headerText="Fecha Solicitud" sortBy="#{sol.fecha}">
+                <h:outputText value="#{sol.fecha}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText>
+            </p:column>
+            
             <p:column headerText="Observaci&oacute;n">
-                <p:cellEditor>  
-                    <f:facet name="output">  
-                        <h:outputText value="#{sol.observacion}"/>
-                    </f:facet>  
-                    <f:facet name="input">          
-                        <p:inputText value="#{sol.observacion}" style="width:70px;" label="Observaci&oacute;"/>  
-                    </f:facet>  
-                </p:cellEditor>
+                <h:outputText value="#{sol.observacion}"/>
             </p:column>
-
-            <p:column headerText="P. Ini" sortBy="#{sol.periodo}" >
-                <p:cellEditor>  
-                    <f:facet name="output">  
-                        <h:outputText value="#{sol.periodo}">
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
-                        </h:outputText>
-                    </f:facet>  
-                    <f:facet name="input">          
-                        <p:calendar value="#{sol.periodo}" inputStyle="width:72px;" pattern="dd/MM/yyyy"  />
-                    </f:facet>  
-                </p:cellEditor>
-            </p:column>
-
-            <p:column headerText="P. Fin" sortBy="#{sol.periodoFinal}" >
-                <p:cellEditor>  
-                    <f:facet name="output">  
-                        <h:outputText value="#{sol.periodoFinal}">
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
-                        </h:outputText>
-                    </f:facet>  
-                    <f:facet name="input">          
-                        <p:calendar value="#{sol.periodoFinal}" inputStyle="width:72px;" pattern="dd/MM/yyyy"  />
-                    </f:facet>  
-                </p:cellEditor>
-            </p:column>
-
-            <p:column headerText="F. Ini" sortBy="#{sol.fechaInicial}" >
-                <p:cellEditor>  
-                    <f:facet name="output">  
-                        <h:outputText value="#{sol.fechaInicial}">
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
-                        </h:outputText>
-                    </f:facet>  
-                    <f:facet name="input">          
-                        <p:calendar value="#{sol.fechaInicial}" inputStyle="width:72px;" pattern="dd/MM/yyyy"  />
-                    </f:facet>  
-                </p:cellEditor>
-            </p:column>
-
-            <p:column headerText="F. Fin" sortBy="#{sol.fechaFinal}" >
-                <p:cellEditor>  
-                    <f:facet name="output">  
-                        <h:outputText value="#{sol.fechaFinal}">
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
-                        </h:outputText>
-                    </f:facet>  
-                    <f:facet name="input">          
-                        <p:calendar value="#{sol.fechaFinal}" inputStyle="width:72px;" pattern="dd/MM/yyyy"  />
-                    </f:facet>  
-                </p:cellEditor>
-            </p:column>
-
-            <p:column headerText="D&iacute;as">               
-                <p:cellEditor>  
-                    <f:facet name="output">  
-                        <h:outputText value="#{sol.dias}"/>
-                    </f:facet>  
-                    <f:facet name="input">  
-                        <p:inputText value="#{sol.dias}" maxlength="3" style="width:40px;" label="Year"/>  
-                    </f:facet>  
-                </p:cellEditor>  
-            </p:column>
-
-            <p:column headerText="Editar" style="width:50px">  
-                <p:rowEditor />  
-            </p:column>  
-
         </p:dataTable>
     </ui:define>
 
     <ui:define name="dialogos">
-        <p:dialog id="dialogCalendario" widgetVar="dialogCalendario" header="Calendario" width="900" height="500" modal="true" resizable="false" closeOnEscape="true" showEffect="fold" hideEffect="fold">
-            <table width="100%">
-                <tr>
-                    <td width="33%">
-                        <h:inputHidden id="diasMarcados"/>
-                        <h:inputHidden id="styleAplicado"/>
-                    </td>
-                    <td width="67%">
-                        <p:calendar mode="inline" pages="4" pattern="dd/MM/yyyy" showWeek="false" showOtherMonths="false" style="width: 400px !important; height: 400px !important;"/>
-                    </td>
-                </tr>
-            </table>
-        </p:dialog>
 
         <p:dialog id="dialogSolicitudPermiso" widgetVar="dialogSolicitudPermiso" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="745" height="550" >
             <p:spacer height="10px"/>
@@ -242,7 +152,8 @@
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
-                        <td><p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaInicial}" /></td>
+                        <td><p:calendar id="spFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaInicial}" selectListener="#{planilla$accionesPersonal.solicitudPermiso.handleFechaInicial}" onSelectUpdate="txtDias" />
+                        </td>
                         <td></td>
                         <td>
                             <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
@@ -250,9 +161,9 @@
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
-                        <td><p:calendar showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaFinal}" /></td>
+                        <td><p:calendar id="spFecFinal" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaFinal}" selectListener="#{planilla$accionesPersonal.solicitudPermiso.handleFechaFinal}" onSelectUpdate="txtDias"/>
+                        </td>
                     </tr>
-
                     <tr>
                         <td>                            
                             <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
@@ -260,7 +171,7 @@
                             </h:panelGrid>
                         </td>
                         <td>
-                            <p:inputText id="txtDias"  value="#{planilla$accionesPersonal.solicitudPermiso.dias}" readonly="true" />
+                            <p:inputText id="txtDias"  value="#{planilla$accionesPersonal.solicitudPermiso.dias}" />
                         </td>
                         <td></td>
                         <td>
@@ -269,10 +180,9 @@
                             </h:panelGrid>    
                         </td>
                         <td>                
-                            <p:inputText id="txtHoras"  value="#{planilla$accionesPersonal.solicitudPermiso.horas}" readonly="true" />
+                            <p:inputText id="txtHoras"  value="#{planilla$accionesPersonal.solicitudPermiso.horas}" />
                         </td>
                     </tr>
-
                     <tr>
                         <td>
                             <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
@@ -282,9 +192,7 @@
                         <td>
                             <p:inputText id="txtDescuento"  value="#{planilla$accionesPersonal.solicitudPermiso.descuento}" />
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td colspan="3" />
                     </tr>
 
                     <tr>                   
@@ -319,15 +227,13 @@
             </p:fieldset>
 
             <h:panelGrid columns="2">
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tablSol"
+                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud"
                                  action="#{planilla$accionesPersonal.solicitudPermiso.guardarSolicitud$action}"
                                  ajax="true" image="ui-icon-circle-check" />
-                
+
                 <p:commandButton value="Cerrar" styleClass="opcionMenu" update="mensajes, tablaSol, txtEmp, txtJefe"  action="#{planilla$accionesPersonal.cancelar$action}"
                                  onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
             </h:panelGrid>
-
-
 
         </p:dialog>
 
