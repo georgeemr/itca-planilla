@@ -9,15 +9,23 @@ import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonalPK;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
+import com.infosgroup.planilla.modelo.estructuras.DetalleAdjuntoCorreo;
 import com.infosgroup.planilla.modelo.facades.AccionPersonalFacade;
 import com.infosgroup.planilla.modelo.procesos.MailStatelessBean;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 
 /**
  *
@@ -25,6 +33,7 @@ import javax.naming.NamingException;
  */
 public abstract class SolicitudDePersonal extends AbstractJSFPage implements java.io.Serializable {
 
+    public static long MILISEGUNDOS_POR_DIA = 24 * 60 * 60 * 1000;
     private AccionesPersonalBackendBean encabezadoSolicitud;
 
     public AccionesPersonalBackendBean getEncabezadoSolicitud() {
@@ -89,12 +98,29 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
     }
 
     public static boolean enviarCorreo(AccionPersonal accionPersonal, String mensaje) {
-
         if (accionPersonal.getEmpleado().getCorreo() == null) {
             return false;
         }
-        mailStatelessBean().enviarCorreoElectronico("Acciones de Personal - " + accionPersonal.getTipoAccion().getNomTipoaccion(), mensaje, accionPersonal.getEmpleado().getCorreo());
+        byte[] bytesImagen = new byte[(int) getImage("infosgroup.png").length()];
+        try {
+            ImageIO.createImageInputStream(getImage("infosgroup.png")).read(bytesImagen);
+        } catch (IOException ex) {
+            Logger.getLogger(SolicitudDePersonal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        DetalleAdjuntoCorreo detalleAdjunto = new DetalleAdjuntoCorreo("infosgroup.png", "image/png", bytesImagen);
+        List<DetalleAdjuntoCorreo> adjuntos = new ArrayList<DetalleAdjuntoCorreo>();
+        adjuntos.add(detalleAdjunto);
+        mailStatelessBean().enviarCorreoElectronicoAdjuntos("Acciones de Personal - " + accionPersonal.getTipoAccion().getNomTipoaccion(), mensaje, accionPersonal.getEmpleado().getCorreo(), adjuntos);
         return Boolean.TRUE;
+    }
+
+    public static File getImage(String archivo) {
+        File f = null;
+        String r = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("/");
+        String ruta = r + "resources" + java.io.File.separator + "imagenes" + java.io.File.separator + archivo;
+        f = new File(ruta);
+        return f;
     }
 
     private static MailStatelessBean mailStatelessBean() {
