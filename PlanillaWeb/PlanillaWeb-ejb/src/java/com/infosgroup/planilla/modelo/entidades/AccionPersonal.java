@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -65,8 +66,8 @@ public class AccionPersonal implements Serializable {
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-    @Column(name = "CANTIDAD")
-    private Long cantidad;
+    @Column(name = "CANTIDAD", precision = 12, scale = 2)
+    private BigDecimal cantidad;
     @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
     private String observacion;
@@ -102,6 +103,12 @@ public class AccionPersonal implements Serializable {
     @Size(max = 108)
     @Column(name = "TIPO_PERMISO", length = 108)
     private String tipoPermiso;
+    @Column(name = "APROBADO_JEFE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date aprobadoJefe;
+    @Column(name = "APROBADO_RH")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date aprobadoRh;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_TIPOACCION", referencedColumnName = "COD_TIPOACCION", nullable = false, insertable = false, updatable = false)
@@ -165,11 +172,11 @@ public class AccionPersonal implements Serializable {
         this.fecha = fecha;
     }
 
-    public Long getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Long cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -316,7 +323,22 @@ public class AccionPersonal implements Serializable {
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
     }
+    
+    public Date getAprobadoJefe() {
+        return aprobadoJefe;
+    }
 
+    public void setAprobadoJefe(Date aprobadoJefe) {
+        this.aprobadoJefe = aprobadoJefe;
+    }
+
+    public Date getAprobadoRh() {
+        return aprobadoRh;
+    }
+
+    public void setAprobadoRh(Date aprobadoRh) {
+        this.aprobadoRh = aprobadoRh;
+    }
     @Override
     public int hashCode() {
         int hash = 0;

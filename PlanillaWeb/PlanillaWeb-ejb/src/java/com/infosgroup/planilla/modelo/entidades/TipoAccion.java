@@ -19,7 +19,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -58,6 +57,12 @@ public class TipoAccion implements Serializable {
     @Size(max = 200)
     @Column(name = "URL_PLANTILLA", length = 200)
     private String urlPlantilla;
+    @Basic(optional = false)
+    @Column(name = "FIRMA_JEFE", nullable = false, length = 1)
+    private String firmaJefe;
+    @Basic(optional = false)
+    @Column(name = "FIRMA_RH", nullable = false, length = 1)
+    private String firmaRh;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoAccion", fetch = FetchType.EAGER)
     private List<AccionPersonal> accionPersonalList;
 
@@ -68,9 +73,11 @@ public class TipoAccion implements Serializable {
         this.tipoAccionPK = tipoAccionPK;
     }
 
-    public TipoAccion(TipoAccionPK tipoAccionPK, long codRol) {
+    public TipoAccion(TipoAccionPK tipoAccionPK, long codRol, String firmaJefe, String firmaRh) {
         this.tipoAccionPK = tipoAccionPK;
         this.codRol = codRol;
+        this.firmaJefe = firmaJefe;
+        this.firmaRh = firmaRh;
     }
 
     public TipoAccion(long codCia, long codTipoaccion) {
@@ -116,8 +123,22 @@ public class TipoAccion implements Serializable {
     public void setCodRol(long codRol) {
         this.codRol = codRol;
     }
+    public String getFirmaJefe() {
+        return firmaJefe;
+    }
 
-    @XmlTransient
+    public void setFirmaJefe(String firmaJefe) {
+        this.firmaJefe = firmaJefe;
+    }
+
+    public String getFirmaRh() {
+        return firmaRh;
+    }
+
+    public void setFirmaRh(String firmaRh) {
+        this.firmaRh = firmaRh;
+    }
+    
     public List<AccionPersonal> getAccionPersonalList() {
         return accionPersonalList;
     }
