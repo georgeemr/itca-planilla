@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -47,7 +48,7 @@ import javax.ejb.LocalBean;
 @Stateless(name = "PlanillaSessionBean")
 @LocalBean
 public class PlanillaSessionBean {
-    
+
     @EJB
     private DetPlanillaFacade detPlanillaFacade;
     @EJB
@@ -73,72 +74,72 @@ public class PlanillaSessionBean {
     @EJB
     private TipoAccionFacade tipoAccionFacade;
     private Boolean rrhh = false;
-    
+
     public Boolean getRrhh() {
         return rrhh;
     }
-    
+
     public void setRrhh(Boolean rrhh) {
         this.rrhh = rrhh;
     }
     @EJB
     private FestivosProvinciaFacade festivosProvinciafacade;
-    
+
     public List<DetallePlanilla> getDetallesPla(Planilla planilla) {
         return (planilla != null) ? detPlanillaFacade.findPlaDetalles(planilla.getPlanillaPK()) : new ArrayList<DetallePlanilla>(0);
     }
-    
+
     public List<ResumenAsistencia> getResumen(ResumenAsistencia c) {
         return (c != null) ? resumenFacade.findAll() : new ArrayList<ResumenAsistencia>();
     }
-    
+
     public TipoPlanilla findByTipoID(TipoPlanillaPK tipoId) {
         return tipoPlaFacade.find(tipoId);
     }
-    
+
     public List<Planilla> getPlaByTipo(TipoPlanilla tipo) {
         return planillaFacade.findByTipoPLanilla(tipo);
     }
-    
+
     public List<ResumenAsistencia> getAsistencia() {
         return resumenFacade.findAll();
     }
-    
+
     public List<Compania> listarCias() {
         return companiaFacade.findAll();
     }
-    
+
     public List<TipoPlanilla> listarTipos() {
         return tipoPlanillaFacade.findAll();
     }
-    
+
     public List<Planilla> listarPlanilla() {
         return planillaFacade.findAll();
     }
-    
+
     public List<Sucursal> listarSucursal() {
         return sucursalFacade.findAll();
     }
-    
+
     public List<ResumenAsistencia> listarResumenByPlanillaSucursal(Planilla planilla, Sucursal sucursal) {
         return resumenFacade.findAsistenciasByPlanillaSucursal(planilla, sucursal);
     }
-    
+
     public List<Empleado> listarJefes() {
         return empleadoFacade.findByJefes();
     }
-    
+
     public List<Empleado> listaEmpleados() {
         return empleadoFacade.findAll();
     }
-    
+
     public TipoAccion buscarTipoAccion(Long empresa, Long tipo) {
         TipoAccionPK pk = new TipoAccionPK();
         pk.setCodCia(empresa);
         pk.setCodTipoaccion(tipo);
         return tipoAccionFacade.find(pk);
     }
-    
+
     public List<AccionPersonal> listaPorAprobar(Long emp) {
         List<AccionPersonal> listaSolicitud = new ArrayList<AccionPersonal>(0);
         long cia = 1;
@@ -152,7 +153,7 @@ public class PlanillaSessionBean {
         }
         return listaSolicitud;
     }
-    
+
     public String aprobarSolicitud$action(AccionPersonal accion) {
         if (accion.getStatus().matches("G")) {
             accion.setStatus("J");
@@ -164,29 +165,29 @@ public class PlanillaSessionBean {
         }
         return null;
     }
-    
+
     public String rechazarSolicitud$action(AccionPersonal accion) {
         accion.setStatus("R");
         accionPersonalFacade.edit(accion);
         return null;
     }
-    
+
     @PermitAll
     public String cadenaDiasCalendario(Integer tipo, Empleado empleado, Long anio) {
         GregorianCalendar calendario = null;
         List<FestivosProvincia> listaFestivos = null;
         List<AccionPersonal> listaAccionesPersonal = null;
         List<Date> listaFechas = null;
-        
+
         TipoAccionPK tipoAccionPK = null;
         TipoAccion tipoAccion = null;
-        
+
         listaFestivos = festivosProvinciafacade.listarPorAnio(anio);
         List<String> listaDiasFestivos = new ArrayList<String>(0);
         for (Integer i = 0; i < listaFestivos.size(); i++) {
             listaDiasFestivos.add("" + listaFestivos.get(i).getFestivosProvinciaPK().getMes() + "/" + listaFestivos.get(i).getFestivosProvinciaPK().getDia() + "/" + listaFestivos.get(i).getFestivosProvinciaPK().getAnio());
         }
-        
+
         String fechas = "";
         switch (tipo) {
             case 1: // Dias festivos
@@ -200,14 +201,14 @@ public class PlanillaSessionBean {
                     }
                     calendario.add(Calendar.DAY_OF_YEAR, 1);
                 }
-                
+
                 for (Integer i = 0; i < listaFinesSemana.size(); i++) {
                     fechas += "'" + listaFinesSemana.get(i) + "'";
                     if (i < listaFinesSemana.size() - 1) {
                         fechas += ", ";
                     }
                 }
-                
+
                 if (!listaDiasFestivos.isEmpty()) {
                     fechas += ", ";
                 }
@@ -229,9 +230,9 @@ public class PlanillaSessionBean {
                     }
                     calendario.add(Calendar.DAY_OF_YEAR, 1);
                 }
-                
+
                 listaDiasSemana.removeAll(listaDiasFestivos);
-                
+
                 for (Integer i = 0; i < listaDiasSemana.size(); i++) {
                     fechas += "'" + listaDiasSemana.get(i) + "'";
                     if (i < listaDiasSemana.size() - 1) {
@@ -246,12 +247,12 @@ public class PlanillaSessionBean {
                     AccionPersonal accionPersonal = listaAccionesPersonal.get(i);
                     Date fechaInicial = accionPersonal.getFechaInicial();
                     Date fechaFinal = accionPersonal.getFechaFinal();
-                    
+
                     if ((fechaInicial == null) || ((fechaInicial == null) && (fechaFinal == null))) // en el caso de que por alguna razon la fecha inicial sea nula :(
                     {
                         continue;
                     }
-                    
+
                     calendario = (GregorianCalendar) Calendar.getInstance();
                     calendario.setTime(fechaInicial);
                     do {
@@ -259,7 +260,7 @@ public class PlanillaSessionBean {
                         calendario.add(Calendar.DAY_OF_YEAR, 1);
                     } while ((fechaFinal != null) && (calendario.getTime().before(fechaFinal) || calendario.getTime().equals(fechaFinal)));
                 }
-                
+
                 for (Integer i = 0; i < listaFechas.size(); i++) {
                     calendario.setTime(listaFechas.get(i));
                     fechas += "'" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR) + "'";
@@ -274,18 +275,18 @@ public class PlanillaSessionBean {
                 tipoAccionPK.setCodCia(1L);
                 tipoAccionPK.setCodTipoaccion(5L); // Pemiso sin goce de sueldo
                 tipoAccion = tipoAccionFacade.find(tipoAccionPK);
-                
+
                 listaAccionesPersonal = accionPersonalFacade.findByTipoAccionEmpleadoAnio(empleado, tipoAccion, anio);
                 for (Integer i = 0; i < listaAccionesPersonal.size(); i++) {
                     AccionPersonal accionPersonal = listaAccionesPersonal.get(i);
                     Date fechaInicial = accionPersonal.getFechaInicial();
                     Date fechaFinal = accionPersonal.getFechaFinal();
-                    
+
                     if ((fechaInicial == null) || ((fechaInicial == null) && (fechaFinal == null))) // en el caso de que por alguna razon la fecha inicial sea nula :(
                     {
                         continue;
                     }
-                    
+
                     calendario = (GregorianCalendar) Calendar.getInstance();
                     calendario.setTime(fechaInicial);
                     do {
@@ -293,7 +294,7 @@ public class PlanillaSessionBean {
                         calendario.add(Calendar.DAY_OF_YEAR, 1);
                     } while ((fechaFinal != null) && (calendario.getTime().before(fechaFinal) || calendario.getTime().equals(fechaFinal)));
                 }
-                
+
                 for (Integer i = 0; i < listaFechas.size(); i++) {
                     calendario.setTime(listaFechas.get(i));
                     fechas += "'" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR) + "'";
@@ -308,13 +309,13 @@ public class PlanillaSessionBean {
                 tipoAccionPK.setCodCia(1L);
                 tipoAccionPK.setCodTipoaccion(11L); // Capacitaciones
                 tipoAccion = tipoAccionFacade.find(tipoAccionPK);
-                
+
                 listaAccionesPersonal = accionPersonalFacade.findByTipoAccionEmpleadoAnio(empleado, tipoAccion, anio);
                 for (Integer i = 0; i < listaAccionesPersonal.size(); i++) {
                     AccionPersonal accionPersonal = listaAccionesPersonal.get(i);
                     Date fechaInicial = accionPersonal.getFechaInicial();
                     Date fechaFinal = accionPersonal.getFechaFinal();
-                    
+
                     calendario = (GregorianCalendar) Calendar.getInstance();
                     calendario.setTime(fechaInicial);
                     do {
@@ -322,7 +323,7 @@ public class PlanillaSessionBean {
                         calendario.add(Calendar.DAY_OF_YEAR, 1);
                     } while ((fechaFinal != null) && (calendario.getTime().before(fechaFinal) || calendario.getTime().equals(fechaFinal)));
                 }
-                
+
                 for (Integer i = 0; i < listaFechas.size(); i++) {
                     calendario.setTime(listaFechas.get(i));
                     fechas += "'" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR) + "'";
@@ -334,24 +335,24 @@ public class PlanillaSessionBean {
         }
         return fechas;
     }
-    
+
     public List<AccionPersonal> listarAccionporTipo(Long cia, Long tipo) {
         return (tipo != null /*||tipo != 0 */) ? accionPersonalFacade.findByTipo(cia, tipo) : accionPersonalFacade.findByNoAfecta(cia);
     }
-    
+
     public List<TipoAccion> listarTiposAcciones() {
         return tipoAccionFacade.findAll();
     }
-    
+
     public List<TipoAccion> listarTipoAccionAfecta() {
         return tipoAccionFacade.findByAfecta("S");
     }
-    
+
     @PermitAll
     public List<TipoAccion> listarTipoAccionNoAfecta() {
         return tipoAccionFacade.findByAfecta("N");
     }
-    
+
     public String editar$action(ResumenAsistencia resumen) {
         try {
             resumenFacade.edit(resumen);
@@ -360,99 +361,28 @@ public class PlanillaSessionBean {
         }
         return null;
     }
-    
-    public String guardarSolAcc$action(Long compania, TipoAccion tipo, Empleado empleado, Date fecha, String observacion, Long cantidad, String devengadas, Long dias, Date fechaCaja, Date fechaFinal, Date fechaInicial, Long hora, /*Date periodo, Date periodoFinal,*/ Long sueldoAnterior, String tipoPermiso, Planilla pla) {
-        PuestoEmpleado pueEmp = puestoEmpleadoFacade.findByEmpleado(empleado.getEmpleadoPK().getCodEmp(), compania);
-        AccionPersonal nuevaAccion = new AccionPersonal();
-        AccionPersonalPK nuevaPK = new AccionPersonalPK();
-        Calendar c = Calendar.getInstance();
-        Integer anio = c.get(Calendar.YEAR);
-        Integer mes = c.get(Calendar.MONTH);
-        try {
-            nuevaPK.setAnio(anio.longValue());
-            nuevaPK.setMes(mes.longValue());
-            nuevaPK.setCodCia(compania);
-            nuevaPK.setNumPlanilla(pla.getPlanillaPK().getNumPlanilla());
-            nuevaPK.setCodTipoaccion(tipo.getTipoAccionPK().getCodTipoaccion());
-            nuevaPK.setIdEmpleado(empleado.getEmpleadoPK().getCodEmp());
-            nuevaPK.setIdPuesto(pueEmp.getPuestoEmpleadoPK().getIdPuesto());
-            nuevaPK.setIdSucursal(pueEmp.getPuestoEmpleadoPK().getIdSucursal());
-            nuevaPK.setIdTipoPuesto(pueEmp.getPuestoEmpleadoPK().getIdTipoPuesto());
-            nuevaPK.setCorrelativo(accionPersonalFacade.max(empleado.getEmpleadoPK().getCodEmp()) + 1);
-            
-            nuevaAccion.setAccionPersonalPK(nuevaPK);
-            nuevaAccion.setPuestoEmpleado(pueEmp);
-            nuevaAccion.setTipoAccion(tipo);
-            nuevaAccion.setEmpleado(empleado.getEmpleado());
-            nuevaAccion.setPlanilla(pla);
-            nuevaAccion.setFecha(fecha);
-            nuevaAccion.setObservacion(observacion);
-            nuevaAccion.setStatus("G");
-            nuevaAccion.setCantidad(cantidad);
-            nuevaAccion.setDevengadas(devengadas);
-            nuevaAccion.setDias(dias);
-            nuevaAccion.setFechaCanje(fechaCaja);
-            nuevaAccion.setFechaFinal(fechaFinal);
-            nuevaAccion.setFechaInicial(fechaInicial);
-            nuevaAccion.setHoras(hora);
-            //nuevaAccion.setPeriodo(periodo);
-            //nuevaAccion.setPeriodoFinal(periodoFinal);
-            nuevaAccion.setSueldoAnterior(sueldoAnterior);
-            nuevaAccion.setTipoPermiso(tipoPermiso);
-            
-            accionPersonalFacade.create(nuevaAccion);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
-    
-    public String guardarSolVacaciones$action(Long compania, Empleado empleado, TipoAccion tipoAccion, String observacion, Date fechaFinal, Date fechaInicial, String devengadas, Planilla planilla) {
-        PuestoEmpleado pueEmp = puestoEmpleadoFacade.findByEmpleado(empleado.getEmpleadoPK().getCodEmp(), compania);
-        AccionPersonal nuevaAccion = new AccionPersonal();
-        AccionPersonalPK nuevaPK = new AccionPersonalPK();
-        try {
-            nuevaPK.setAnio(planilla.getPlanillaPK().getAnio());
-            nuevaPK.setMes(planilla.getPlanillaPK().getMes());
-            nuevaPK.setCodCia(compania);
-            nuevaPK.setNumPlanilla(planilla.getPlanillaPK().getNumPlanilla());
-            nuevaPK.setCodTipoaccion(tipoAccion.getTipoAccionPK().getCodTipoaccion());
-            nuevaPK.setIdEmpleado(empleado.getEmpleadoPK().getCodEmp());
-            nuevaPK.setIdPuesto(pueEmp.getPuestoEmpleadoPK().getIdPuesto());
-            nuevaPK.setIdSucursal(pueEmp.getPuestoEmpleadoPK().getIdSucursal());
-            nuevaPK.setIdTipoPuesto(pueEmp.getPuestoEmpleadoPK().getIdTipoPuesto());
-            nuevaPK.setCorrelativo(accionPersonalFacade.max(empleado.getEmpleadoPK().getCodEmp()));
-            
-            nuevaAccion.setAccionPersonalPK(nuevaPK);
-            nuevaAccion.setPuestoEmpleado(pueEmp);
-            nuevaAccion.setTipoAccion(tipoAccion);
-            nuevaAccion.setEmpleado(empleado.getEmpleado());
-            nuevaAccion.setPlanilla(planilla);
-            nuevaAccion.setFecha(new Date());
-            nuevaAccion.setObservacion(observacion);
-            nuevaAccion.setStatus("G");
-            nuevaAccion.setDevengadas(devengadas);
-            nuevaAccion.setFechaFinal(fechaFinal);
-            nuevaAccion.setFechaInicial(fechaInicial);
-            accionPersonalFacade.create(nuevaAccion);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
-    
+
     @PermitAll
     public Planilla findPlanillaById(PlanillaPK planillaPK) {
         return planillaFacade.find(planillaPK);
     }
-    
+
     @PermitAll
     public List<AccionPersonal> findSolicitudesPendientes(Long empresa) {
         return accionPersonalFacade.findSolicitudesPendientes(empresa);
     }
-    
-    @PermitAll
-    public void editAccionPersonal(AccionPersonal a) {
+
+    @RolesAllowed({"jefes"})
+    public void jefeEditaSolicitud(AccionPersonal a, String estado) {
+        a.setAprobadoJefe(new java.util.Date());
+        a.setStatus(estado);
+        accionPersonalFacade.edit(a);
+    }
+
+    @RolesAllowed({"rrhh"})
+    public void rrhhEditaSolicitud(AccionPersonal a, String estado) {
+        a.setAprobadoRh(new java.util.Date());
+        a.setStatus(estado);
         accionPersonalFacade.edit(a);
     }
 }
