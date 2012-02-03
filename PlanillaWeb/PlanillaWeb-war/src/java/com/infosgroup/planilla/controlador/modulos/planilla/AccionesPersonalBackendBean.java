@@ -23,6 +23,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -35,6 +36,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     @EJB
     private PlanillaSessionBean planillaSessionBean;
+    private DataTable tablaSolicitudes;
     private List<AccionPersonal> listaSolicitudes;
     private Long tipo;
     private List<TipoAccion> listaTipo;
@@ -52,8 +54,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private String urlPlantilla;
     private String urlPlantillaDefault = "/modulos/planilla/acciones/ninguna.xhtml";
     private TipoAccion accionSeleccionada;
-    
-    
     /* Campos de Detalle de Solicitud */
     private SolicitudPermiso solicitudPermiso;
 
@@ -65,7 +65,8 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.solicitudPermiso = solicitudPermiso;
     }
 
-    public AccionesPersonalBackendBean() {}
+    public AccionesPersonalBackendBean() {
+    }
 
     public void seleccionarAccion(AjaxBehaviorEvent event) {
         accionSeleccionada = null;
@@ -84,7 +85,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         listaPlanillas = planillaSessionBean.listarPlanilla();
         listaSolicitudes = planillaSessionBean.findSolicitudesPendientes(getSessionBeanADM().getCompania().getIdCompania());
         empresa = getSessionBeanADM().getCompania().getIdCompania();
-        solicitudPermiso = new SolicitudPermiso( this );
+        solicitudPermiso = new SolicitudPermiso(this);
         fecha = new Date();
     }
 
@@ -244,8 +245,18 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     public String cancelar$action() {
         limpiarCampos();
-        if (solicitudPermiso != null) solicitudPermiso.limpiarCampos() ;
+        if (solicitudPermiso != null) {
+            solicitudPermiso.limpiarCampos();
+        }
         return null;
+    }
+
+    public DataTable getTablaSolicitudes() {
+        return tablaSolicitudes;
+    }
+
+    public void setTablaSolicitudes(DataTable tablaSolicitudes) {
+        this.tablaSolicitudes = tablaSolicitudes;
     }
 
     @Override
@@ -254,21 +265,5 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         observacion = null;
         nombreJefe = "Seleccione un Empleado";
     }
-
-    public void onEditAccionPersonal(RowEditEvent event) {
-        try {
-            AccionPersonal accionPersonal = (AccionPersonal) event.getObject();
-            planillaSessionBean.editAccionPersonal(accionPersonal);
-            StringBuilder mensaje = new StringBuilder();
-            mensaje.append("Solicitud Procesada.\n\n");
-            mensaje.append("Detalle:\n\n\n\n");
-            
-            mensaje.append("\n\nResultado: Solicitud ").append(accionPersonal.getAccEstado());
-            mensaje.append("\n\nAtte. \n\nDepartamento de Recursos Humanos ").append(getSessionBeanADM().getCompania().getNomCompania());
-            SolicitudPermiso.enviarCorreo(accionPersonal, mensaje.toString());
-            addMessage("Acciones de Personal", "Datos Guardados", TipoMensaje.INFORMACION);
-        } catch (Exception e) {
-            addMessage("Acciones de Personal", "Ocurrio un error al intentar guardar.", TipoMensaje.INFORMACION);
-        }
-    }
+    
 }
