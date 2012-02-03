@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./../../../plantillas/defaultTemplate.xhtml">
+
+    <ui:define name="titulo">Editar Solicitud</ui:define>
+
+    <ui:define name="dialogos" />
+
+    <ui:define name="acciones">
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" action="#{editarSolicitud.regresar}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/arrow-left.png"/>
+                    <h:outputText value="Acciones de personal" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+
+    <ui:define name="titulo">
+        Edici&oacute;n de Acciones de Personal - #{SessionBeanPLA.accionSeleccionada!= null ? SessionBeanPLA.accionSeleccionada.tipoAccion.nomTipoaccion : 'Ninguna Acción Seleccionada'}
+    </ui:define>
+
+    <ui:define name="contenido">
+        <p:fieldset id="editSolicitud" style="border: none;" >
+            <p:spacer height="15" />
+            <h:panelGrid columns="5" >
+                <h:outputLabel value="Nombre" /> 
+                <p:inputText value="#{SessionBeanPLA.accionSeleccionada.empleado.nombreCompleto}" readonly="true" />
+                <h:panelGroup > <p:spacer width="30" /> </h:panelGroup>
+                <h:outputLabel value="Fecha de Solicitud" /> 
+                <p:calendar value="#{SessionBeanPLA.accionSeleccionada.fecha}" pattern="dd/MM/yyyy" disabled="true" />
+                <h:outputLabel value="Observaci&oacute;n" /> 
+                <p:inputText value="#{SessionBeanPLA.accionSeleccionada.observacion}" />
+                <h:panelGroup /><h:panelGroup /><h:panelGroup />
+                <h:outputLabel value="Fecha Inicial" />
+                <p:calendar value="#{SessionBeanPLA.accionSeleccionada.fechaInicial}" pattern="dd/MM/yyyy" showOn="button" /><h:panelGroup />
+                <h:outputLabel value="Fecha Final" />
+                <p:calendar value="#{SessionBeanPLA.accionSeleccionada.fechaFinal}" pattern="dd/MM/yyyy" showOn="button" onSelectUpdate="txtEditDias,principalForm:mensajes" selectListener="#{editarSolicitud.handleFechaFinal}" />
+                <h:outputLabel value="Dias" /><p:inputText id="txtEditDias" value="#{SessionBeanPLA.accionSeleccionada.dias}" disabled="true" /><h:panelGroup />
+                <h:outputLabel value="Horas" /><p:inputText value="#{SessionBeanPLA.accionSeleccionada.horas}"  />
+                <h:outputLabel value="Estado" /><h:outputLabel value="#{SessionBeanPLA.accionSeleccionada.accEstado}" /><h:panelGroup />
+                <h:outputLabel value="Valor descuento" /><p:inputText value="#{SessionBeanPLA.accionSeleccionada.cantidad}"  />
+
+                <h:outputLabel value="" rendered="#{!request.isUserInRole('jefes') and !request.isUserInRole('rrhh')}" />
+                <h:panelGroup rendered="#{!request.isUserInRole('jefes') and !request.isUserInRole('rrhh')}" >
+                    <p:graphicImage value="/resources/iconos/window-close.png"/>
+                    <h:outputLabel value="Usuario no autorizado para aprobar solicitudes." styleClass="opcionMenu textoNormal" style="font-weight: bold; color: #DF0000;" />
+                </h:panelGroup>
+
+                <h:outputLabel value="Aprobaci&oacute;n Jefe" rendered="#{request.isUserInRole('jefes')}" />
+
+                <h:panelGroup rendered="#{request.isUserInRole('jefes')}"  >
+                    <p:commandButton value="Aprobar" image="ui-icon-circle-check" action="#{editarSolicitud.aprobarSolicitudJefe}" update="principalForm:mensajes" />
+                    <p:spacer width="15" />
+                    <p:commandButton value="Rechazar"  image="ui-icon-closethick" action="#{editarSolicitud.rechazarSolicitudJefe}" update="principalForm:mensajes" />
+                </h:panelGroup >
+
+                <h:outputLabel value="Aprobaci&oacute;n Recursos Humanos" rendered="#{request.isUserInRole('rrhh')}" />
+                <h:panelGroup rendered="#{request.isUserInRole('rrhh')}" >
+                    <p:commandButton value="Aprobar" image="ui-icon-circle-check" action="#{editarSolicitud.aprobarSolicitudRH}" update="principalForm:mensajes" />
+                    <p:spacer width="15" />
+                    <p:commandButton value="Rechazar"  image="ui-icon-closethick" action="#{editarSolicitud.rechazarSolicitudRH}" update="principalForm:mensajes" />
+                </h:panelGroup>
+            </h:panelGrid>
+            <p:spacer height="15" />
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

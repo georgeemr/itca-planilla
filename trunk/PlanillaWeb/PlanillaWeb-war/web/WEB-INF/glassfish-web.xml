@@ -16,5 +16,10 @@
         <role-name>jefes</role-name>
         <group-name>jefes</group-name>
     </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>empleados</role-name>
+        <group-name>empleados</group-name>
+    </security-role-mapping>
     
 </glassfish-web-app>

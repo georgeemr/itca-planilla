@@ -34,12 +34,20 @@ public class aprobacionSolicitudesBackendBean extends AbstractJSFPage implements
     private List<Empleado> listaJefes;
     private List<AccionPersonal> listaSolicitudes;
     private long emp = 0;
-    
+
     @PostConstruct
-    public void listarSolicitudesPendientes(){
-        listaSolicitudes = planillaSessionBean.findSolicitudesPendientes( getSessionBeanADM().getCompania().getIdCompania() );
+    public void listarSolicitudesPendientes() {
+        if (isInRole("rrhh")) {
+            listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
+        } else if (isInRole("jefes")) {
+            listaSolicitudes = planillaSessionBean.findSolicitudesByJefe(getSessionBeanEMP().getEmpleadoSesion());
+        } else if (isInRole("empleados")) {
+            listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+        } else {
+            listaSolicitudes = new ArrayList<AccionPersonal>();
+        }
     }
-    
+
     public long getEmp() {
         return emp;
     }
@@ -61,7 +69,7 @@ public class aprobacionSolicitudesBackendBean extends AbstractJSFPage implements
         if (emp != 0) {
             listaSolicitudes = planillaSessionBean.listaPorAprobar(emp);
         } /*else {
-            listaSolicitudes = new ArrayList<AccionPersonal>(0);
+        listaSolicitudes = new ArrayList<AccionPersonal>(0);
         }*/
         return listaSolicitudes;
     }

@@ -106,4 +106,8 @@ public abstract class AbstractJSFPage {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "/modulos/inicio.xhtml?faces-redirect=true";
     }
+    
+    public boolean isInRole(String rol){
+        return FacesContext.getCurrentInstance().getExternalContext().isUserInRole( rol );
+    }
 }
