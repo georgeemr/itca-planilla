@@ -33,6 +33,8 @@
         <auth-constraint>
             <description>Administradores authorization constraint</description>
             <role-name>administradores</role-name>
+            <role-name>rrhh</role-name>
+            <role-name>jefes</role-name>
         </auth-constraint>
     </security-constraint>
     <login-config>
@@ -46,5 +48,13 @@
     <security-role>
         <description>Rol de Administradores</description>
         <role-name>administradores</role-name>
+    </security-role>
+    <security-role>
+        <description>Rol de Recursos Humanos</description>
+        <role-name>rrhh</role-name>
+    </security-role>
+    <security-role>
+        <description>Rol de Jefes</description>
+        <role-name>jefes</role-name>
     </security-role>
 </web-app>
