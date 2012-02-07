@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -58,28 +59,29 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AccionPersonal.findByCodTiporetiro", query = "SELECT a FROM AccionPersonal a WHERE a.codTiporetiro = :codTiporetiro"),
     @NamedQuery(name = "AccionPersonal.findByCodPuestoNuevo", query = "SELECT a FROM AccionPersonal a WHERE a.codPuestoNuevo = :codPuestoNuevo")})
 public class AccionPersonal implements Serializable {
-    @Column(name =     "FECHA")
+
+    @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-    @Column(name =     "PERIODO")
+    @Column(name = "PERIODO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date periodo;
-    @Column(name =     "FECHA_INICIAL")
+    @Column(name = "FECHA_INICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicial;
-    @Column(name =     "FECHA_FINAL")
+    @Column(name = "FECHA_FINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFinal;
-    @Column(name =     "PERIODO_FINAL")
+    @Column(name = "PERIODO_FINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date periodoFinal;
-    @Column(name =     "FECHA_CANJE")
+    @Column(name = "FECHA_CANJE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCanje;
-    @Column(name =     "APROBADO_JEFE")
+    @Column(name = "APROBADO_JEFE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date aprobadoJefe;
-    @Column(name =     "APROBADO_RH")
+    @Column(name = "APROBADO_RH")
     @Temporal(TemporalType.TIMESTAMP)
     private Date aprobadoRh;
     @JoinColumns({
@@ -145,6 +147,15 @@ public class AccionPersonal implements Serializable {
         @JoinColumn(name = "COD_JEFE", referencedColumnName = "COD_EMP")})
     @ManyToOne(optional = false)
     private Empleados jefe;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA"),
+        @JoinColumn(name = "ANIO", referencedColumnName = "ANIO"),
+        @JoinColumn(name = "MES", referencedColumnName = "MES"),
+        @JoinColumn(name = "NUM_PLANILLA", referencedColumnName = "NUM_PLANILLA"),
+        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private Planilla planilla;
     
     public AccionPersonal() {
     }
@@ -428,6 +439,37 @@ public class AccionPersonal implements Serializable {
 
     public void setJefe(Empleados jefe) {
         this.jefe = jefe;
+    }
+    @Transient
+    private String accEstado;
+
+    public String getAccEstado() {
+        if (getStatus().matches("G")) {
+            accEstado = "Solicitada";
+        } else {
+            if (getStatus().matches("J")) {
+                accEstado = "pre-Aprobada";
+            } else {
+                if (getStatus().matches("R")) {
+                    accEstado = "Rechazada";
+                } else {
+                    accEstado = "Aprobada";
+                }
+            }
+        }
+        return accEstado;
+    }
+
+    public void setAccEstado(String accEstado) {
+        this.accEstado = accEstado;
+    }
+
+    public Planilla getPlanilla() {
+        return planilla;
+    }
+
+    public void setPlanilla(Planilla planilla) {
+        this.planilla = planilla;
     }
     
 }
