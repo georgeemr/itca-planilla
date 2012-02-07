@@ -106,8 +106,6 @@ public class AccionPersonal implements Serializable {
     private BigDecimal cantidad;
     @Column(name = "OBSERVACION", length = 500)
     private String observacion;
-    @Column(name = "COD_JEFE")
-    private Integer codJefe;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
     @Column(name = "DEVENGADAS", length = 1)
@@ -142,7 +140,12 @@ public class AccionPersonal implements Serializable {
         @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Empleados empleados;
-
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_JEFE", referencedColumnName = "COD_EMP")})
+    @ManyToOne(optional = false)
+    private Empleados jefe;
+    
     public AccionPersonal() {
     }
 
@@ -200,14 +203,6 @@ public class AccionPersonal implements Serializable {
 
     public void setObservacion(String observacion) {
         this.observacion = observacion;
-    }
-
-    public Integer getCodJefe() {
-        return codJefe;
-    }
-
-    public void setCodJefe(Integer codJefe) {
-        this.codJefe = codJefe;
     }
 
     public Short getCodDepto() {
@@ -425,6 +420,14 @@ public class AccionPersonal implements Serializable {
 
     public void setPeriodo(Date periodo) {
         this.periodo = periodo;
+    }
+
+    public Empleados getJefe() {
+        return jefe;
+    }
+
+    public void setJefe(Empleados jefe) {
+        this.jefe = jefe;
     }
     
 }
