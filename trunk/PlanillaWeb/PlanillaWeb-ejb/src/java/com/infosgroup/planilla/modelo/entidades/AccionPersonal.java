@@ -10,7 +10,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -19,8 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,22 +30,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "AccionPersonal.findAll", query = "SELECT a FROM AccionPersonal a"),
     @NamedQuery(name = "AccionPersonal.findByCodCia", query = "SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia"),
-    @NamedQuery(name = "AccionPersonal.findByAnio", query = "SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.anio = :anio"),
-    @NamedQuery(name = "AccionPersonal.findByMes", query = "SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.mes = :mes"),
-    @NamedQuery(name = "AccionPersonal.findByNumPlanilla", query = "SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.numPlanilla = :numPlanilla"),
-    @NamedQuery(name = "AccionPersonal.findByIdSucursal", query = "SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.idSucursal = :idSucursal"),
-    @NamedQuery(name = "AccionPersonal.findByIdEmpleado", query = "SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.idEmpleado = :idEmpleado"),
-    @NamedQuery(name = "AccionPersonal.findByIdTipoPuesto", query = "SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.idTipoPuesto = :idTipoPuesto"),
-    @NamedQuery(name = "AccionPersonal.findByIdPuesto", query = "SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.idPuesto = :idPuesto"),
+    @NamedQuery(name = "AccionPersonal.findByCodEmp", query = "SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codEmp = :codEmp"),
     @NamedQuery(name = "AccionPersonal.findByCodTipoaccion", query = "SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codTipoaccion = :codTipoaccion"),
     @NamedQuery(name = "AccionPersonal.findByCorrelativo", query = "SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.correlativo = :correlativo"),
+    @NamedQuery(name = "AccionPersonal.findByAnio", query = "SELECT a FROM AccionPersonal a WHERE a.anio = :anio"),
+    @NamedQuery(name = "AccionPersonal.findByMes", query = "SELECT a FROM AccionPersonal a WHERE a.mes = :mes"),
+    @NamedQuery(name = "AccionPersonal.findByNumPlanilla", query = "SELECT a FROM AccionPersonal a WHERE a.numPlanilla = :numPlanilla"),
     @NamedQuery(name = "AccionPersonal.findByFecha", query = "SELECT a FROM AccionPersonal a WHERE a.fecha = :fecha"),
     @NamedQuery(name = "AccionPersonal.findByCantidad", query = "SELECT a FROM AccionPersonal a WHERE a.cantidad = :cantidad"),
     @NamedQuery(name = "AccionPersonal.findByObservacion", query = "SELECT a FROM AccionPersonal a WHERE a.observacion = :observacion"),
+    @NamedQuery(name = "AccionPersonal.findByCodJefe", query = "SELECT a FROM AccionPersonal a WHERE a.codJefe = :codJefe"),
+    @NamedQuery(name = "AccionPersonal.findByCodDepto", query = "SELECT a FROM AccionPersonal a WHERE a.codDepto = :codDepto"),
     @NamedQuery(name = "AccionPersonal.findByPeriodo", query = "SELECT a FROM AccionPersonal a WHERE a.periodo = :periodo"),
     @NamedQuery(name = "AccionPersonal.findByFechaInicial", query = "SELECT a FROM AccionPersonal a WHERE a.fechaInicial = :fechaInicial"),
     @NamedQuery(name = "AccionPersonal.findByFechaFinal", query = "SELECT a FROM AccionPersonal a WHERE a.fechaFinal = :fechaFinal"),
     @NamedQuery(name = "AccionPersonal.findByDevengadas", query = "SELECT a FROM AccionPersonal a WHERE a.devengadas = :devengadas"),
+    @NamedQuery(name = "AccionPersonal.findByCodTipopla", query = "SELECT a FROM AccionPersonal a WHERE a.codTipopla = :codTipopla"),
+    @NamedQuery(name = "AccionPersonal.findByCodPuesto", query = "SELECT a FROM AccionPersonal a WHERE a.codPuesto = :codPuesto"),
+    @NamedQuery(name = "AccionPersonal.findByCodPosicion", query = "SELECT a FROM AccionPersonal a WHERE a.codPosicion = :codPosicion"),
+    @NamedQuery(name = "AccionPersonal.findByCodDeptoNuevo", query = "SELECT a FROM AccionPersonal a WHERE a.codDeptoNuevo = :codDeptoNuevo"),
     @NamedQuery(name = "AccionPersonal.findByDias", query = "SELECT a FROM AccionPersonal a WHERE a.dias = :dias"),
     @NamedQuery(name = "AccionPersonal.findByHoras", query = "SELECT a FROM AccionPersonal a WHERE a.horas = :horas"),
     @NamedQuery(name = "AccionPersonal.findByPeriodoFinal", query = "SELECT a FROM AccionPersonal a WHERE a.periodoFinal = :periodoFinal"),
@@ -56,94 +56,92 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AccionPersonal.findByStatus", query = "SELECT a FROM AccionPersonal a WHERE a.status = :status"),
     @NamedQuery(name = "AccionPersonal.findByFechaCanje", query = "SELECT a FROM AccionPersonal a WHERE a.fechaCanje = :fechaCanje"),
     @NamedQuery(name = "AccionPersonal.findByCodTiporetiro", query = "SELECT a FROM AccionPersonal a WHERE a.codTiporetiro = :codTiporetiro"),
-    @NamedQuery(name = "AccionPersonal.findByTipoPermiso", query = "SELECT a FROM AccionPersonal a WHERE a.tipoPermiso = :tipoPermiso")
-})
+    @NamedQuery(name = "AccionPersonal.findByCodPuestoNuevo", query = "SELECT a FROM AccionPersonal a WHERE a.codPuestoNuevo = :codPuestoNuevo")})
 public class AccionPersonal implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected AccionPersonalPK accionPersonalPK;
-    @Column(name = "FECHA")
+    @Column(name =     "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-    @Column(name = "CANTIDAD", precision = 12, scale = 2)
-    private BigDecimal cantidad;
-    @Size(max = 200)
-    @Column(name = "OBSERVACION", length = 200)
-    private String observacion;
-    @Column(name = "PERIODO")
+    @Column(name =     "PERIODO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date periodo;
-    @Column(name = "FECHA_INICIAL")
+    @Column(name =     "FECHA_INICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicial;
-    @Column(name = "FECHA_FINAL")
+    @Column(name =     "FECHA_FINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFinal;
-    @Size(max = 200)
-    @Column(name = "DEVENGADAS", length = 200)
-    private String devengadas;
-    @Column(name = "DIAS")
-    private Long dias;
-    @Column(name = "HORAS")
-    private Long horas;
-    @Column(name = "PERIODO_FINAL")
+    @Column(name =     "PERIODO_FINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date periodoFinal;
-    @Column(name = "SUELDO_ANTERIOR")
-    private Long sueldoAnterior;
-    @Size(max = 100)
-    @Column(name = "STATUS", length = 100)
-    private String status;
-    @Column(name = "FECHA_CANJE")
+    @Column(name =     "FECHA_CANJE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCanje;
-    @Column(name = "COD_TIPORETIRO")
-    private Long codTiporetiro;
-    @Size(max = 108)
-    @Column(name = "TIPO_PERMISO", length = 108)
-    private String tipoPermiso;
-    @Column(name = "APROBADO_JEFE")
+    @Column(name =     "APROBADO_JEFE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date aprobadoJefe;
-    @Column(name = "APROBADO_RH")
+    @Column(name =     "APROBADO_RH")
     @Temporal(TemporalType.TIMESTAMP)
     private Date aprobadoRh;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_TIPOACCION", referencedColumnName = "COD_TIPOACCION", nullable = false, insertable = false, updatable = false)
-    })
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+        @JoinColumn(name = "COD_PUESTO_NUEVO", referencedColumnName = "COD_PUESTO")})
+    @ManyToOne(optional = false)
+    private Puestos puestosNuevo;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_PUESTO", referencedColumnName = "COD_PUESTO")})
+    @ManyToOne(optional = false)
+    private Puestos puestos;
+    private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    protected AccionPersonalPK accionPersonalPK;
+    @Column(name = "ANIO")
+    private Short anio;
+    @Column(name = "MES")
+    private Short mes;
+    @Column(name = "NUM_PLANILLA")
+    private Short numPlanilla;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "CANTIDAD", precision = 12, scale = 2)
+    private BigDecimal cantidad;
+    @Column(name = "OBSERVACION", length = 500)
+    private String observacion;
+    @Column(name = "COD_JEFE")
+    private Integer codJefe;
+    @Column(name = "COD_DEPTO")
+    private Short codDepto;
+    @Column(name = "DEVENGADAS", length = 1)
+    private String devengadas;
+    @Column(name = "COD_TIPOPLA")
+    private Short codTipopla;
+    @Column(name = "COD_PUESTO")
+    private Short codPuesto;
+    @Column(name = "COD_POSICION")
+    private Short codPosicion;
+    @Column(name = "COD_DEPTO_NUEVO")
+    private Short codDeptoNuevo;
+    @Column(name = "DIAS", precision = 5, scale = 2)
+    private BigDecimal dias;
+    @Column(name = "HORAS")
+    private Short horas;
+    @Column(name = "SUELDO_ANTERIOR", precision = 12, scale = 2)
+    private BigDecimal sueldoAnterior;
+    @Column(name = "STATUS", length = 1)
+    private String status;
+    @Column(name = "COD_TIPORETIRO")
+    private Short codTiporetiro;
+    @Column(name = "COD_PUESTO_NUEVO")
+    private Short codPuestoNuevo;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_TIPOACCION", referencedColumnName = "COD_TIPOACCION", nullable = false, insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
     private TipoAccion tipoAccion;
     @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "ID_SUCURSAL", referencedColumnName = "ID_SUCURSAL", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "ID_EMPLEADO", referencedColumnName = "ID_EMPLEADO", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "ID_TIPO_PUESTO", referencedColumnName = "ID_TIPO_PUESTO", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "ID_PUESTO", referencedColumnName = "ID_PUESTO", nullable = false, insertable = false, updatable = false)
-    })
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private PuestoEmpleado puestoEmpleado;
-    @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_PUESTONUEVO", referencedColumnName = "COD_PUESTO")
-    })
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Puesto puesto;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "ANIO", referencedColumnName = "ANIO", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "MES", referencedColumnName = "MES", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "NUM_PLANILLA", referencedColumnName = "NUM_PLANILLA", nullable = false, insertable = false, updatable = false)
-    })
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Planilla planilla;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_JEFE", referencedColumnName = "COD_EMP")
-    })
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Empleado empleado;
+        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private Empleados empleados;
 
     public AccionPersonal() {
     }
@@ -152,8 +150,8 @@ public class AccionPersonal implements Serializable {
         this.accionPersonalPK = accionPersonalPK;
     }
 
-    public AccionPersonal(long codCia, long anio, long mes, long numPlanilla, long idSucursal, long idEmpleado, long idTipoPuesto, long idPuesto, long codTipoaccion, long correlativo) {
-        this.accionPersonalPK = new AccionPersonalPK(codCia, anio, mes, numPlanilla, idSucursal, idEmpleado, idTipoPuesto, idPuesto, codTipoaccion, correlativo);
+    public AccionPersonal(short codCia, int codEmp, short codTipoaccion, int correlativo) {
+        this.accionPersonalPK = new AccionPersonalPK(codCia, codEmp, codTipoaccion, correlativo);
     }
 
     public AccionPersonalPK getAccionPersonalPK() {
@@ -164,12 +162,28 @@ public class AccionPersonal implements Serializable {
         this.accionPersonalPK = accionPersonalPK;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public Short getAnio() {
+        return anio;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setAnio(Short anio) {
+        this.anio = anio;
+    }
+
+    public Short getMes() {
+        return mes;
+    }
+
+    public void setMes(Short mes) {
+        this.mes = mes;
+    }
+
+    public Short getNumPlanilla() {
+        return numPlanilla;
+    }
+
+    public void setNumPlanilla(Short numPlanilla) {
+        this.numPlanilla = numPlanilla;
     }
 
     public BigDecimal getCantidad() {
@@ -188,12 +202,20 @@ public class AccionPersonal implements Serializable {
         this.observacion = observacion;
     }
 
-    public Date getPeriodo() {
-        return periodo;
+    public Integer getCodJefe() {
+        return codJefe;
     }
 
-    public void setPeriodo(Date periodo) {
-        this.periodo = periodo;
+    public void setCodJefe(Integer codJefe) {
+        this.codJefe = codJefe;
+    }
+
+    public Short getCodDepto() {
+        return codDepto;
+    }
+
+    public void setCodDepto(Short codDepto) {
+        this.codDepto = codDepto;
     }
 
     public Date getFechaInicial() {
@@ -220,19 +242,51 @@ public class AccionPersonal implements Serializable {
         this.devengadas = devengadas;
     }
 
-    public Long getDias() {
+    public Short getCodTipopla() {
+        return codTipopla;
+    }
+
+    public void setCodTipopla(Short codTipopla) {
+        this.codTipopla = codTipopla;
+    }
+
+    public Short getCodPuesto() {
+        return codPuesto;
+    }
+
+    public void setCodPuesto(Short codPuesto) {
+        this.codPuesto = codPuesto;
+    }
+
+    public Short getCodPosicion() {
+        return codPosicion;
+    }
+
+    public void setCodPosicion(Short codPosicion) {
+        this.codPosicion = codPosicion;
+    }
+
+    public Short getCodDeptoNuevo() {
+        return codDeptoNuevo;
+    }
+
+    public void setCodDeptoNuevo(Short codDeptoNuevo) {
+        this.codDeptoNuevo = codDeptoNuevo;
+    }
+
+    public BigDecimal getDias() {
         return dias;
     }
 
-    public void setDias(Long dias) {
+    public void setDias(BigDecimal dias) {
         this.dias = dias;
     }
 
-    public Long getHoras() {
+    public Short getHoras() {
         return horas;
     }
 
-    public void setHoras(Long horas) {
+    public void setHoras(Short horas) {
         this.horas = horas;
     }
 
@@ -244,11 +298,11 @@ public class AccionPersonal implements Serializable {
         this.periodoFinal = periodoFinal;
     }
 
-    public Long getSueldoAnterior() {
+    public BigDecimal getSueldoAnterior() {
         return sueldoAnterior;
     }
 
-    public void setSueldoAnterior(Long sueldoAnterior) {
+    public void setSueldoAnterior(BigDecimal sueldoAnterior) {
         this.sueldoAnterior = sueldoAnterior;
     }
 
@@ -268,20 +322,20 @@ public class AccionPersonal implements Serializable {
         this.fechaCanje = fechaCanje;
     }
 
-    public Long getCodTiporetiro() {
+    public Short getCodTiporetiro() {
         return codTiporetiro;
     }
 
-    public void setCodTiporetiro(Long codTiporetiro) {
+    public void setCodTiporetiro(Short codTiporetiro) {
         this.codTiporetiro = codTiporetiro;
     }
 
-    public String getTipoPermiso() {
-        return tipoPermiso;
+    public Short getCodPuestoNuevo() {
+        return codPuestoNuevo;
     }
 
-    public void setTipoPermiso(String tipoPermiso) {
-        this.tipoPermiso = tipoPermiso;
+    public void setCodPuestoNuevo(Short codPuestoNuevo) {
+        this.codPuestoNuevo = codPuestoNuevo;
     }
 
     public TipoAccion getTipoAccion() {
@@ -292,53 +346,14 @@ public class AccionPersonal implements Serializable {
         this.tipoAccion = tipoAccion;
     }
 
-    public PuestoEmpleado getPuestoEmpleado() {
-        return puestoEmpleado;
+    public Empleados getEmpleados() {
+        return empleados;
     }
 
-    public void setPuestoEmpleado(PuestoEmpleado puestoEmpleado) {
-        this.puestoEmpleado = puestoEmpleado;
+    public void setEmpleados(Empleados empleados) {
+        this.empleados = empleados;
     }
 
-    public Puesto getPuesto() {
-        return puesto;
-    }
-
-    public void setPuesto(Puesto puesto) {
-        this.puesto = puesto;
-    }
-
-    public Planilla getPlanilla() {
-        return planilla;
-    }
-
-    public void setPlanilla(Planilla planilla) {
-        this.planilla = planilla;
-    }
-
-    public Empleado getEmpleado() {
-        return empleado;
-    }
-
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
-    }
-    
-    public Date getAprobadoJefe() {
-        return aprobadoJefe;
-    }
-
-    public void setAprobadoJefe(Date aprobadoJefe) {
-        this.aprobadoJefe = aprobadoJefe;
-    }
-
-    public Date getAprobadoRh() {
-        return aprobadoRh;
-    }
-
-    public void setAprobadoRh(Date aprobadoRh) {
-        this.aprobadoRh = aprobadoRh;
-    }
     @Override
     public int hashCode() {
         int hash = 0;
@@ -363,27 +378,53 @@ public class AccionPersonal implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.AccionPersonal[ accionPersonalPK=" + accionPersonalPK + " ]";
     }
-    @Transient
-    private String accEstado;
 
-    public String getAccEstado() {
-        if (getStatus().matches("G")) {
-            accEstado = "Solicitada";
-        } else {
-            if (getStatus().matches("J")) {
-                accEstado = "pre-Aprobada";
-            } else {
-                if (getStatus().matches("R")) {
-                    accEstado = "Rechazada";
-                } else {
-                    accEstado = "Aprobada";
-                }
-            }
-        }
-        return accEstado;
+    public Date getAprobadoJefe() {
+        return aprobadoJefe;
     }
 
-    public void setAccEstado(String accEstado) {
-        this.accEstado = accEstado;
+    public void setAprobadoJefe(Date aprobadoJefe) {
+        this.aprobadoJefe = aprobadoJefe;
     }
+
+    public Date getAprobadoRh() {
+        return aprobadoRh;
+    }
+
+    public void setAprobadoRh(Date aprobadoRh) {
+        this.aprobadoRh = aprobadoRh;
+    }
+
+    public Puestos getPuestosNuevo() {
+        return puestosNuevo;
+    }
+
+    public void setPuestosNuevo(Puestos puestosNuevo) {
+        this.puestosNuevo = puestosNuevo;
+    }
+
+    public Puestos getPuestos() {
+        return puestos;
+    }
+
+    public void setPuestos(Puestos puestos) {
+        this.puestos = puestos;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public Date getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(Date periodo) {
+        this.periodo = periodo;
+    }
+    
 }
