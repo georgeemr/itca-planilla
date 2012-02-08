@@ -13,7 +13,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -45,9 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Campania.findByEstado", query = "SELECT c FROM Campania c WHERE c.estado = :estado"),
     @NamedQuery(name = "Campania.findByPeriodo", query = "SELECT c FROM Campania c WHERE c.campaniaPK.periodo = :periodo"),
     @NamedQuery(name = "Campania.findByArea", query = "SELECT c FROM Campania c WHERE c.area = :area"),
-    @NamedQuery(name = "Campania.cantidadEvaluados", query = "SELECT count(e.finalizada) FROM Evaluacion e WHERE e.finalizada = '1' and e.campania = :campania" ),
-    @NamedQuery(name = "Campania.findByNota", query = "SELECT c FROM Campania c WHERE c.nota = :nota")
-})
+    @NamedQuery(name = "Campania.findByNota", query = "SELECT c FROM Campania c WHERE c.nota = :nota")})
 public class Campania implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -75,13 +72,14 @@ public class Campania implements Serializable {
     private String estado;
     @Column(name = "AREA")
     private Long area;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "NOTA", precision = 11, scale = 3)
     private BigDecimal nota;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "campania", fetch = FetchType.EAGER)
+    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Cias cias;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "campania")
     private List<Evaluacion> evaluacionList;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Compania compania;
 
     public Campania() {
     }
@@ -158,6 +156,14 @@ public class Campania implements Serializable {
         this.nota = nota;
     }
 
+    public Cias getCias() {
+        return cias;
+    }
+
+    public void setCias(Cias cias) {
+        this.cias = cias;
+    }
+
     @XmlTransient
     public List<Evaluacion> getEvaluacionList() {
         return evaluacionList;
@@ -165,14 +171,6 @@ public class Campania implements Serializable {
 
     public void setEvaluacionList(List<Evaluacion> evaluacionList) {
         this.evaluacionList = evaluacionList;
-    }
-
-    public Compania getCompania() {
-        return compania;
-    }
-
-    public void setCompania(Compania compania) {
-        this.compania = compania;
     }
 
     @Override
@@ -224,5 +222,4 @@ public class Campania implements Serializable {
     public void setEmpleadosEvaluados(Integer empleadosEvaluados) {
         this.empleadosEvaluados = empleadosEvaluados;
     }
-
 }

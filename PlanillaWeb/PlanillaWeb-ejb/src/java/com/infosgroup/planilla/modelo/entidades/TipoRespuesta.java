@@ -5,23 +5,16 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,119 +23,84 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "TIPO_RESPUESTA")
 @XmlRootElement
-@NamedQueries(
-    {
+@NamedQueries({
     @NamedQuery(name = "TipoRespuesta.findAll", query = "SELECT t FROM TipoRespuesta t"),
     @NamedQuery(name = "TipoRespuesta.findByCodCia", query = "SELECT t FROM TipoRespuesta t WHERE t.tipoRespuestaPK.codCia = :codCia"),
     @NamedQuery(name = "TipoRespuesta.findByCodTipoRespuesta", query = "SELECT t FROM TipoRespuesta t WHERE t.tipoRespuestaPK.codTipoRespuesta = :codTipoRespuesta"),
-    @NamedQuery(name = "TipoRespuesta.findByNomTipoRespuesta", query = "SELECT t FROM TipoRespuesta t WHERE t.nomTipoRespuesta = :nomTipoRespuesta")
-    })
-public class TipoRespuesta implements Serializable
-{
-
+    @NamedQuery(name = "TipoRespuesta.findByNomTipoRespuesta", query = "SELECT t FROM TipoRespuesta t WHERE t.nomTipoRespuesta = :nomTipoRespuesta")})
+public class TipoRespuesta implements Serializable {
     private static final long serialVersionUID = 1L;
-
     @EmbeddedId
     protected TipoRespuestaPK tipoRespuestaPK;
-
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
     @Column(name = "NOM_TIPO_RESPUESTA", nullable = false, length = 200)
     private String nomTipoRespuesta;
+    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Cias cias;
 
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Compania compania;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoRespuesta", fetch = FetchType.EAGER)
-    private List<Respuesta> respuestaList;
-
-    public TipoRespuesta()
-    {
+    public TipoRespuesta() {
     }
 
-    public TipoRespuesta(TipoRespuestaPK tipoRespuestaPK)
-    {
+    public TipoRespuesta(TipoRespuestaPK tipoRespuestaPK) {
         this.tipoRespuestaPK = tipoRespuestaPK;
     }
 
-    public TipoRespuesta(TipoRespuestaPK tipoRespuestaPK, String nomTipoRespuesta)
-    {
+    public TipoRespuesta(TipoRespuestaPK tipoRespuestaPK, String nomTipoRespuesta) {
         this.tipoRespuestaPK = tipoRespuestaPK;
         this.nomTipoRespuesta = nomTipoRespuesta;
     }
 
-    public TipoRespuesta(long codCia, long codTipoRespuesta)
-    {
+    public TipoRespuesta(long codCia, long codTipoRespuesta) {
         this.tipoRespuestaPK = new TipoRespuestaPK(codCia, codTipoRespuesta);
     }
 
-    public TipoRespuestaPK getTipoRespuestaPK()
-    {
+    public TipoRespuestaPK getTipoRespuestaPK() {
         return tipoRespuestaPK;
     }
 
-    public void setTipoRespuestaPK(TipoRespuestaPK tipoRespuestaPK)
-    {
+    public void setTipoRespuestaPK(TipoRespuestaPK tipoRespuestaPK) {
         this.tipoRespuestaPK = tipoRespuestaPK;
     }
 
-    public String getNomTipoRespuesta()
-    {
+    public String getNomTipoRespuesta() {
         return nomTipoRespuesta;
     }
 
-    public void setNomTipoRespuesta(String nomTipoRespuesta)
-    {
+    public void setNomTipoRespuesta(String nomTipoRespuesta) {
         this.nomTipoRespuesta = nomTipoRespuesta;
     }
 
-    public Compania getCompania()
-    {
-        return compania;
+    public Cias getCias() {
+        return cias;
     }
 
-    public void setCompania(Compania compania)
-    {
-        this.compania = compania;
-    }
-
-    @XmlTransient
-    public List<Respuesta> getRespuestaList()
-    {
-        return respuestaList;
-    }
-
-    public void setRespuestaList(List<Respuesta> respuestaList)
-    {
-        this.respuestaList = respuestaList;
+    public void setCias(Cias cias) {
+        this.cias = cias;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (tipoRespuestaPK != null ? tipoRespuestaPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoRespuesta))
-            {
+        if (!(object instanceof TipoRespuesta)) {
             return false;
-            }
+        }
         TipoRespuesta other = (TipoRespuesta) object;
-        if ((this.tipoRespuestaPK == null && other.tipoRespuestaPK != null) || (this.tipoRespuestaPK != null && !this.tipoRespuestaPK.equals(other.tipoRespuestaPK))) return false;
+        if ((this.tipoRespuestaPK == null && other.tipoRespuestaPK != null) || (this.tipoRespuestaPK != null && !this.tipoRespuestaPK.equals(other.tipoRespuestaPK))) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.TipoRespuesta[ tipoRespuestaPK=" + tipoRespuestaPK + " ]";
     }
     

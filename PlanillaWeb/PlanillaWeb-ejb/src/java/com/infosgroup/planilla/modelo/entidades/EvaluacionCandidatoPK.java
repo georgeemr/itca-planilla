@@ -8,47 +8,33 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author root
  */
 @Embeddable
-public class EvaluacionCandidatoPK implements Serializable
-{
-
+public class EvaluacionCandidatoPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private long codCia;
-
     @Basic(optional = false)
-    @NotNull
     @Column(name = "PUESTO", nullable = false)
     private long puesto;
-
     @Basic(optional = false)
-    @NotNull
     @Column(name = "PRUEBA", nullable = false)
     private long prueba;
-
     @Basic(optional = false)
-    @NotNull
     @Column(name = "CANDIDATO", nullable = false)
     private long candidato;
-
     @Basic(optional = false)
-    @NotNull
     @Column(name = "CONCURSO", nullable = false)
     private long concurso;
 
-    public EvaluacionCandidatoPK()
-    {
+    public EvaluacionCandidatoPK() {
     }
 
-    public EvaluacionCandidatoPK(long codCia, long puesto, long prueba, long candidato, long concurso)
-    {
+    public EvaluacionCandidatoPK(long codCia, long puesto, long prueba, long candidato, long concurso) {
         this.codCia = codCia;
         this.puesto = puesto;
         this.prueba = prueba;
@@ -56,59 +42,48 @@ public class EvaluacionCandidatoPK implements Serializable
         this.concurso = concurso;
     }
 
-    public long getCodCia()
-    {
+    public long getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia)
-    {
+    public void setCodCia(long codCia) {
         this.codCia = codCia;
     }
 
-    public long getPuesto()
-    {
+    public long getPuesto() {
         return puesto;
     }
 
-    public void setPuesto(long puesto)
-    {
+    public void setPuesto(long puesto) {
         this.puesto = puesto;
     }
 
-    public long getPrueba()
-    {
+    public long getPrueba() {
         return prueba;
     }
 
-    public void setPrueba(long prueba)
-    {
+    public void setPrueba(long prueba) {
         this.prueba = prueba;
     }
 
-    public long getCandidato()
-    {
+    public long getCandidato() {
         return candidato;
     }
 
-    public void setCandidato(long candidato)
-    {
+    public void setCandidato(long candidato) {
         this.candidato = candidato;
     }
 
-    public long getConcurso()
-    {
+    public long getConcurso() {
         return concurso;
     }
 
-    public void setConcurso(long concurso)
-    {
+    public void setConcurso(long concurso) {
         this.concurso = concurso;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) puesto;
@@ -119,25 +94,32 @@ public class EvaluacionCandidatoPK implements Serializable
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EvaluacionCandidatoPK))
-            {
+        if (!(object instanceof EvaluacionCandidatoPK)) {
             return false;
-            }
+        }
         EvaluacionCandidatoPK other = (EvaluacionCandidatoPK) object;
-        if (this.codCia != other.codCia) return false;
-        if (this.puesto != other.puesto) return false;
-        if (this.prueba != other.prueba) return false;
-        if (this.candidato != other.candidato) return false;
-        if (this.concurso != other.concurso) return false;
+        if (this.codCia != other.codCia) {
+            return false;
+        }
+        if (this.puesto != other.puesto) {
+            return false;
+        }
+        if (this.prueba != other.prueba) {
+            return false;
+        }
+        if (this.candidato != other.candidato) {
+            return false;
+        }
+        if (this.concurso != other.concurso) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.EvaluacionCandidatoPK[ codCia=" + codCia + ", puesto=" + puesto + ", prueba=" + prueba + ", candidato=" + candidato + ", concurso=" + concurso + " ]";
     }
     

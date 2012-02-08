@@ -8,101 +8,87 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author root
  */
 @Embeddable
-public class MenuPK implements Serializable
-{
-
+public class MenuPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_COMPANIA", nullable = false)
-    private long idCompania;
-
+    @Column(name = "COD_CIA", nullable = false)
+    private long codCia;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_MODULO", nullable = false)
-    private long idModulo;
-
+    @Column(name = "COD_MODULO", nullable = false)
+    private long codModulo;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_MENU", nullable = false)
-    private long idMenu;
+    @Column(name = "COD_MENU", nullable = false)
+    private long codMenu;
 
-    public MenuPK()
-    {
+    public MenuPK() {
     }
 
-    public MenuPK(long idCompania, long idModulo, long idMenu)
-    {
-        this.idCompania = idCompania;
-        this.idModulo = idModulo;
-        this.idMenu = idMenu;
+    public MenuPK(long codCia, long codModulo, long codMenu) {
+        this.codCia = codCia;
+        this.codModulo = codModulo;
+        this.codMenu = codMenu;
     }
 
-    public long getIdCompania()
-    {
-        return idCompania;
+    public long getCodCia() {
+        return codCia;
     }
 
-    public void setIdCompania(long idCompania)
-    {
-        this.idCompania = idCompania;
+    public void setCodCia(long codCia) {
+        this.codCia = codCia;
     }
 
-    public long getIdModulo()
-    {
-        return idModulo;
+    public long getCodModulo() {
+        return codModulo;
     }
 
-    public void setIdModulo(long idModulo)
-    {
-        this.idModulo = idModulo;
+    public void setCodModulo(long codModulo) {
+        this.codModulo = codModulo;
     }
 
-    public long getIdMenu()
-    {
-        return idMenu;
+    public long getCodMenu() {
+        return codMenu;
     }
 
-    public void setIdMenu(long idMenu)
-    {
-        this.idMenu = idMenu;
+    public void setCodMenu(long codMenu) {
+        this.codMenu = codMenu;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
-        hash += (int) idCompania;
-        hash += (int) idModulo;
-        hash += (int) idMenu;
+        hash += (int) codCia;
+        hash += (int) codModulo;
+        hash += (int) codMenu;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MenuPK))
-            {
+        if (!(object instanceof MenuPK)) {
             return false;
-            }
+        }
         MenuPK other = (MenuPK) object;
-        if (this.idCompania != other.idCompania) return false;
-        if (this.idModulo != other.idModulo) return false;
-        if (this.idMenu != other.idMenu) return false;
+        if (this.codCia != other.codCia) {
+            return false;
+        }
+        if (this.codModulo != other.codModulo) {
+            return false;
+        }
+        if (this.codMenu != other.codMenu) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
-        return "com.infosgroup.planilla.modelo.entidades.MenuPK[ idCompania=" + idCompania + ", idModulo=" + idModulo + ", idMenu=" + idMenu + " ]";
+    public String toString() {
+        return "com.infosgroup.planilla.modelo.entidades.MenuPK[ codCia=" + codCia + ", codModulo=" + codModulo + ", codMenu=" + codMenu + " ]";
     }
     
 }

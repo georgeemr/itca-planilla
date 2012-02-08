@@ -8,7 +8,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -17,15 +16,12 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class EscalaEvaluacionPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private long codCia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "TIPO_EVALUACION", nullable = false)
     private long tipoEvaluacion;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ESCALA", nullable = false)
     private long escala;
 

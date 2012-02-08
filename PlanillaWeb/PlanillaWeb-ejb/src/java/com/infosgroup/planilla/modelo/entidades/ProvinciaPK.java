@@ -8,83 +8,71 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author root
  */
 @Embeddable
-public class ProvinciaPK implements Serializable
-{
-
+public class ProvinciaPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_PAIS", nullable = false)
-    private long idPais;
-
+    @Column(name = "COD_PAIS", nullable = false)
+    private long codPais;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_PROVINCIA", nullable = false)
-    private long idProvincia;
+    @Column(name = "COD_PROVINCIA", nullable = false)
+    private long codProvincia;
 
-    public ProvinciaPK()
-    {
+    public ProvinciaPK() {
     }
 
-    public ProvinciaPK(long idPais, long idProvincia)
-    {
-        this.idPais = idPais;
-        this.idProvincia = idProvincia;
+    public ProvinciaPK(long codPais, long codProvincia) {
+        this.codPais = codPais;
+        this.codProvincia = codProvincia;
     }
 
-    public long getIdPais()
-    {
-        return idPais;
+    public long getCodPais() {
+        return codPais;
     }
 
-    public void setIdPais(long idPais)
-    {
-        this.idPais = idPais;
+    public void setCodPais(long codPais) {
+        this.codPais = codPais;
     }
 
-    public long getIdProvincia()
-    {
-        return idProvincia;
+    public long getCodProvincia() {
+        return codProvincia;
     }
 
-    public void setIdProvincia(long idProvincia)
-    {
-        this.idProvincia = idProvincia;
+    public void setCodProvincia(long codProvincia) {
+        this.codProvincia = codProvincia;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
-        hash += (int) idPais;
-        hash += (int) idProvincia;
+        hash += (int) codPais;
+        hash += (int) codProvincia;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProvinciaPK))
-            {
+        if (!(object instanceof ProvinciaPK)) {
             return false;
-            }
+        }
         ProvinciaPK other = (ProvinciaPK) object;
-        if (this.idPais != other.idPais) return false;
-        if (this.idProvincia != other.idProvincia) return false;
+        if (this.codPais != other.codPais) {
+            return false;
+        }
+        if (this.codProvincia != other.codProvincia) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
-        return "com.infosgroup.planilla.modelo.entidades.ProvinciaPK[ idPais=" + idPais + ", idProvincia=" + idProvincia + " ]";
+    public String toString() {
+        return "com.infosgroup.planilla.modelo.entidades.ProvinciaPK[ codPais=" + codPais + ", codProvincia=" + codProvincia + " ]";
     }
     
 }

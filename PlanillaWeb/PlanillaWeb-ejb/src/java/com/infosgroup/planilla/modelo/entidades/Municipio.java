@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -18,7 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -29,131 +27,103 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "MUNICIPIO")
 @XmlRootElement
-@NamedQueries(
-    {
+@NamedQueries({
     @NamedQuery(name = "Municipio.findAll", query = "SELECT m FROM Municipio m"),
-    @NamedQuery(name = "Municipio.findByIdPais", query = "SELECT m FROM Municipio m WHERE m.municipioPK.idPais = :idPais"),
-    @NamedQuery(name = "Municipio.findByIdProvincia", query = "SELECT m FROM Municipio m WHERE m.municipioPK.idProvincia = :idProvincia"),
-    @NamedQuery(name = "Municipio.findByIdMunicipio", query = "SELECT m FROM Municipio m WHERE m.municipioPK.idMunicipio = :idMunicipio"),
+    @NamedQuery(name = "Municipio.findByCodPais", query = "SELECT m FROM Municipio m WHERE m.municipioPK.codPais = :codPais"),
+    @NamedQuery(name = "Municipio.findByCodProvincia", query = "SELECT m FROM Municipio m WHERE m.municipioPK.codProvincia = :codProvincia"),
+    @NamedQuery(name = "Municipio.findByCodMunicipio", query = "SELECT m FROM Municipio m WHERE m.municipioPK.codMunicipio = :codMunicipio"),
     @NamedQuery(name = "Municipio.findByNomMunicipio", query = "SELECT m FROM Municipio m WHERE m.nomMunicipio = :nomMunicipio"),
-    @NamedQuery(name = "Municipio.findByDetMunicipio", query = "SELECT m FROM Municipio m WHERE m.detMunicipio = :detMunicipio")
-    })
-public class Municipio implements Serializable
-{
-
+    @NamedQuery(name = "Municipio.findByDetMunicipio", query = "SELECT m FROM Municipio m WHERE m.detMunicipio = :detMunicipio")})
+public class Municipio implements Serializable {
     private static final long serialVersionUID = 1L;
-
     @EmbeddedId
     protected MunicipioPK municipioPK;
-
-    @Size(max = 200)
     @Column(name = "NOM_MUNICIPIO", length = 200)
     private String nomMunicipio;
-
-    @Size(max = 200)
     @Column(name = "DET_MUNICIPIO", length = 200)
     private String detMunicipio;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipio", fetch = FetchType.EAGER)
+    @JoinColumns({
+        @JoinColumn(name = "COD_PAIS", referencedColumnName = "COD_PAIS", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_PROVINCIA", referencedColumnName = "COD_PROVINCIA", nullable = false, insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private Provincia provincia;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipio")
     private List<Barrio> barrioList;
 
-    @JoinColumns(
-        {
-        @JoinColumn(name = "ID_PAIS", referencedColumnName = "ID_PAIS", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "ID_PROVINCIA", referencedColumnName = "ID_PROVINCIA", nullable = false, insertable = false, updatable = false)
-        })
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Provincia provincia;
-
-    public Municipio()
-    {
+    public Municipio() {
     }
 
-    public Municipio(MunicipioPK municipioPK)
-    {
+    public Municipio(MunicipioPK municipioPK) {
         this.municipioPK = municipioPK;
     }
 
-    public Municipio(long idPais, long idProvincia, long idMunicipio)
-    {
-        this.municipioPK = new MunicipioPK(idPais, idProvincia, idMunicipio);
+    public Municipio(long codPais, long codProvincia, long codMunicipio) {
+        this.municipioPK = new MunicipioPK(codPais, codProvincia, codMunicipio);
     }
 
-    public MunicipioPK getMunicipioPK()
-    {
+    public MunicipioPK getMunicipioPK() {
         return municipioPK;
     }
 
-    public void setMunicipioPK(MunicipioPK municipioPK)
-    {
+    public void setMunicipioPK(MunicipioPK municipioPK) {
         this.municipioPK = municipioPK;
     }
 
-    public String getNomMunicipio()
-    {
+    public String getNomMunicipio() {
         return nomMunicipio;
     }
 
-    public void setNomMunicipio(String nomMunicipio)
-    {
+    public void setNomMunicipio(String nomMunicipio) {
         this.nomMunicipio = nomMunicipio;
     }
 
-    public String getDetMunicipio()
-    {
+    public String getDetMunicipio() {
         return detMunicipio;
     }
 
-    public void setDetMunicipio(String detMunicipio)
-    {
+    public void setDetMunicipio(String detMunicipio) {
         this.detMunicipio = detMunicipio;
     }
 
-    @XmlTransient
-    public List<Barrio> getBarrioList()
-    {
-        return barrioList;
-    }
-
-    public void setBarrioList(List<Barrio> barrioList)
-    {
-        this.barrioList = barrioList;
-    }
-
-    public Provincia getProvincia()
-    {
+    public Provincia getProvincia() {
         return provincia;
     }
 
-    public void setProvincia(Provincia provincia)
-    {
+    public void setProvincia(Provincia provincia) {
         this.provincia = provincia;
     }
 
+    @XmlTransient
+    public List<Barrio> getBarrioList() {
+        return barrioList;
+    }
+
+    public void setBarrioList(List<Barrio> barrioList) {
+        this.barrioList = barrioList;
+    }
+
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (municipioPK != null ? municipioPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Municipio))
-            {
+        if (!(object instanceof Municipio)) {
             return false;
-            }
+        }
         Municipio other = (Municipio) object;
-        if ((this.municipioPK == null && other.municipioPK != null) || (this.municipioPK != null && !this.municipioPK.equals(other.municipioPK))) return false;
+        if ((this.municipioPK == null && other.municipioPK != null) || (this.municipioPK != null && !this.municipioPK.equals(other.municipioPK))) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.Municipio[ municipioPK=" + municipioPK + " ]";
     }
     

@@ -20,137 +20,56 @@ public class AccionPersonalPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ANIO", nullable = false)
-    private long anio;
+    @Column(name = "COD_EMP", nullable = false)
+    private int codEmp;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "MES", nullable = false)
-    private long mes;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "NUM_PLANILLA", nullable = false)
-    private long numPlanilla;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_SUCURSAL", nullable = false)
-    private long idSucursal;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_EMPLEADO", nullable = false)
-    private long idEmpleado;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_TIPO_PUESTO", nullable = false)
-    private long idTipoPuesto;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_PUESTO", nullable = false)
-    private long idPuesto;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_TIPOACCION", nullable = false)
-    private long codTipoaccion;
+    private short codTipoaccion;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "CORRELATIVO", nullable = false)
-    private long correlativo;
+    private int correlativo;
 
     public AccionPersonalPK() {
     }
 
-    public AccionPersonalPK(long codCia, long anio, long mes, long numPlanilla, long idSucursal, long idEmpleado, long idTipoPuesto, long idPuesto, long codTipoaccion, long correlativo) {
+    public AccionPersonalPK(short codCia, int codEmp, short codTipoaccion, int correlativo) {
         this.codCia = codCia;
-        this.anio = anio;
-        this.mes = mes;
-        this.numPlanilla = numPlanilla;
-        this.idSucursal = idSucursal;
-        this.idEmpleado = idEmpleado;
-        this.idTipoPuesto = idTipoPuesto;
-        this.idPuesto = idPuesto;
+        this.codEmp = codEmp;
         this.codTipoaccion = codTipoaccion;
         this.correlativo = correlativo;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
-    public long getAnio() {
-        return anio;
+    public int getCodEmp() {
+        return codEmp;
     }
 
-    public void setAnio(long anio) {
-        this.anio = anio;
+    public void setCodEmp(int codEmp) {
+        this.codEmp = codEmp;
     }
 
-    public long getMes() {
-        return mes;
-    }
-
-    public void setMes(long mes) {
-        this.mes = mes;
-    }
-
-    public long getNumPlanilla() {
-        return numPlanilla;
-    }
-
-    public void setNumPlanilla(long numPlanilla) {
-        this.numPlanilla = numPlanilla;
-    }
-
-    public long getIdSucursal() {
-        return idSucursal;
-    }
-
-    public void setIdSucursal(long idSucursal) {
-        this.idSucursal = idSucursal;
-    }
-
-    public long getIdEmpleado() {
-        return idEmpleado;
-    }
-
-    public void setIdEmpleado(long idEmpleado) {
-        this.idEmpleado = idEmpleado;
-    }
-
-    public long getIdTipoPuesto() {
-        return idTipoPuesto;
-    }
-
-    public void setIdTipoPuesto(long idTipoPuesto) {
-        this.idTipoPuesto = idTipoPuesto;
-    }
-
-    public long getIdPuesto() {
-        return idPuesto;
-    }
-
-    public void setIdPuesto(long idPuesto) {
-        this.idPuesto = idPuesto;
-    }
-
-    public long getCodTipoaccion() {
+    public short getCodTipoaccion() {
         return codTipoaccion;
     }
 
-    public void setCodTipoaccion(long codTipoaccion) {
+    public void setCodTipoaccion(short codTipoaccion) {
         this.codTipoaccion = codTipoaccion;
     }
 
-    public long getCorrelativo() {
+    public int getCorrelativo() {
         return correlativo;
     }
 
-    public void setCorrelativo(long correlativo) {
+    public void setCorrelativo(int correlativo) {
         this.correlativo = correlativo;
     }
 
@@ -158,13 +77,7 @@ public class AccionPersonalPK implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) anio;
-        hash += (int) mes;
-        hash += (int) numPlanilla;
-        hash += (int) idSucursal;
-        hash += (int) idEmpleado;
-        hash += (int) idTipoPuesto;
-        hash += (int) idPuesto;
+        hash += (int) codEmp;
         hash += (int) codTipoaccion;
         hash += (int) correlativo;
         return hash;
@@ -180,25 +93,7 @@ public class AccionPersonalPK implements Serializable {
         if (this.codCia != other.codCia) {
             return false;
         }
-        if (this.anio != other.anio) {
-            return false;
-        }
-        if (this.mes != other.mes) {
-            return false;
-        }
-        if (this.numPlanilla != other.numPlanilla) {
-            return false;
-        }
-        if (this.idSucursal != other.idSucursal) {
-            return false;
-        }
-        if (this.idEmpleado != other.idEmpleado) {
-            return false;
-        }
-        if (this.idTipoPuesto != other.idTipoPuesto) {
-            return false;
-        }
-        if (this.idPuesto != other.idPuesto) {
+        if (this.codEmp != other.codEmp) {
             return false;
         }
         if (this.codTipoaccion != other.codTipoaccion) {
@@ -212,6 +107,7 @@ public class AccionPersonalPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.AccionPersonalPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", idSucursal=" + idSucursal + ", idEmpleado=" + idEmpleado + ", idTipoPuesto=" + idTipoPuesto + ", idPuesto=" + idPuesto + ", codTipoaccion=" + codTipoaccion + ", correlativo=" + correlativo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.AccionPersonalPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", codTipoaccion=" + codTipoaccion + ", correlativo=" + correlativo + " ]";
     }
+    
 }
