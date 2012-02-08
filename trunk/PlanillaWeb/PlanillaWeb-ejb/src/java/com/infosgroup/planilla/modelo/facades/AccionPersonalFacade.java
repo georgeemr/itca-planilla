@@ -6,7 +6,7 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonalPK;
-import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +37,9 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
         super(AccionPersonal.class);
     }
 
-    public Long max(Long empleado) {
-        Long max = (Long) getEntityManager().createQuery("select max(p.accionPersonalPK.correlativo) from AccionPersonal p where p.accionPersonalPK.idEmpleado = :idEmpleado").setParameter("idEmpleado", empleado).getSingleResult();
-        return (max == null) ? 1L : ++max;
+    public Integer max(Integer empleado) {
+        Integer max = (Integer) getEntityManager().createQuery("select max(p.accionPersonalPK.correlativo) from AccionPersonal p where p.accionPersonalPK.codEmp = :codEmp").setParameter("codEmp", empleado).getSingleResult();
+        return (max == null) ? 1 : ++max;
     }
 
     /**
@@ -48,31 +48,13 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
      * @param cia
      * @return 
      */
-    public List<AccionPersonal> findAprobacionJefe(Long jefe, Long cia) {
+    public List<AccionPersonal> findAprobacionJefe(Integer jefe, Short cia) {
         List<AccionPersonal> listaAccion = new ArrayList<AccionPersonal>(0);
-
-        Query acc = em.createQuery("select a from AccionPersonal a "
-                + "where a.accionPersonalPK.codCia = :cia "
-                + "and a.empleado.empleadoPK.codEmp = :jefe "
-                + "and a.status = 'G'", AccionPersonal.class);
+        Query acc = em.createQuery("select a from AccionPersonal a where a.accionPersonalPK.codCia = :cia "
+                + "and a.empleado.empleadoPK.codEmp = :jefe and a.status = 'G'", AccionPersonal.class);
         acc.setParameter("cia", cia);
         acc.setParameter("jefe", jefe);
         listaAccion = (List<AccionPersonal>) acc.getResultList();
-
-        return listaAccion;
-    }
-
-    /**
-     * Listado de solicitudes de accion de personal a ser aprobadas por RRHH
-     * @return 
-     */
-    public List<AccionPersonal> findAprobacionRRHH() {
-        List<AccionPersonal> listaAccion = new ArrayList<AccionPersonal>(0);
-
-        Query acc = em.createQuery("select a from AccionPersonal a "
-                + "where a.status = 'J'", AccionPersonal.class);
-        listaAccion = (List<AccionPersonal>) acc.getResultList();
-
         return listaAccion;
     }
 
@@ -114,44 +96,59 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
     }
 
     @PermitAll
-    public List<AccionPersonal> findByTipoAccionEmpleadoAnio(Empleado empleado, TipoAccion tipoAccion, Long anio) {
+    public List<AccionPersonal> findByTipoAccionEmpleadoAnio(Empleados empleado, TipoAccion tipoAccion, Long anio) {
         TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.accionPersonalPK.anio = :anio AND a.accionPersonalPK.idEmpleado = :idEmpleado AND a.accionPersonalPK.codTipoaccion = :codTipoaccion AND a.status = :status", AccionPersonal.class);
         tq.setParameter("codCia", 1);
         tq.setParameter("anio", anio);
-        tq.setParameter("idEmpleado", empleado.getEmpleadoPK().getCodEmp());
+        tq.setParameter("idEmpleado", empleado.getEmpleadosPK().getCodEmp());
         tq.setParameter("codTipoaccion", tipoAccion.getTipoAccionPK().getCodTipoaccion());
         tq.setParameter("status", "B");
         return tq.getResultList();
     }
 
     @PermitAll
-    public List<AccionPersonal> findByVacacionesEmpleadoAnio(Empleado empleado, Long anio) {
+    public List<AccionPersonal> findByVacacionesEmpleadoAnio(Empleados empleado, Long anio) {
+        List<AccionPersonal> l = new ArrayList<AccionPersonal>();
         TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.accionPersonalPK.anio = :anio AND a.accionPersonalPK.idEmpleado = :idEmpleado AND (a.accionPersonalPK.codTipoaccion = 1 OR a.accionPersonalPK.codTipoaccion = 2) AND a.status = :status", AccionPersonal.class);
         tq.setParameter("codCia", 1);
         tq.setParameter("anio", anio);
-        tq.setParameter("idEmpleado", empleado.getEmpleadoPK().getCodEmp());
+        tq.setParameter("idEmpleado", empleado.getEmpleadosPK().getCodEmp());
         tq.setParameter("status", "B");
-        return tq.getResultList();
+        l = tq.getResultList();
+        return l != null ? l : new ArrayList<AccionPersonal>();
     }
 
     @RolesAllowed({"empleados"})
-    public List<AccionPersonal> findSolicitudesByEmpleado(Empleado empleado) {
-        TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.status = 'G'", AccionPersonal.class);
-        tq.setParameter("codCia", empleado.getEmpleadoPK().getCodCia());
-        return tq.getResultList();
+    public List<AccionPersonal> findSolicitudesByEmpleado(Empleados empleado) {
+        List<AccionPersonal> l = new ArrayList<AccionPersonal>();
+        TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.accionPersonalPK.idEmpleado = :idEmpleado", AccionPersonal.class);
+        tq.setParameter("codCia", empleado.getEmpleadosPK().getCodCia());
+        tq.setParameter("idEmpleado", empleado.getEmpleadosPK().getCodEmp());
+        l = tq.getResultList();
+        return l != null ? l : new ArrayList<AccionPersonal>();
     }
 
     @RolesAllowed({"rrhh"})
-    public List<AccionPersonal> findSolicitudesByRRHH(Empleado empleado) {
+    public List<AccionPersonal> findSolicitudesByRRHH(Empleados empleado) {
+        List<AccionPersonal> l = new ArrayList<AccionPersonal>();
         TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.status = 'G'", AccionPersonal.class);
-        tq.setParameter("codCia", empleado.getEmpleadoPK().getCodCia());
-        return tq.getResultList();
+        tq.setParameter("codCia", empleado.getEmpleadosPK().getCodCia());
+        l = tq.getResultList();
+        return l != null ? l : new ArrayList<AccionPersonal>();
     }
 
     @RolesAllowed({"jefes"})
-    public List<AccionPersonal> findSolicitudesByJefe(Empleado empleado) {
-        TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.status = 'G'", AccionPersonal.class);
-        tq.setParameter("codCia", empleado.getEmpleadoPK().getCodCia());
-        return tq.getResultList();
+    public List<AccionPersonal> findSolicitudesByJefe(Empleados empleado) {
+        List<AccionPersonal> l = new ArrayList<AccionPersonal>();
+        Query q = em.createNativeQuery("select * from accion_personal where cod_cia = ? and id_empleado in ( "
+                + " select cod_emp from empleado where cod_cia = ? and cod_emp = ? union select cod_emp from empleado where cod_cia = ? and jefe = ? ) and aprobado_jefe is null",
+                AccionPersonal.class);
+        q.setParameter(1, empleado.getEmpleadosPK().getCodCia());
+        q.setParameter(2, empleado.getEmpleadosPK().getCodCia());
+        q.setParameter(3, empleado.getEmpleadosPK().getCodEmp());
+        q.setParameter(4, empleado.getEmpleadosPK().getCodCia());
+        q.setParameter(5, empleado.getEmpleadosPK().getCodEmp());
+        l = q.getResultList();
+        return l != null ? l : new ArrayList<AccionPersonal>();
     }
 }

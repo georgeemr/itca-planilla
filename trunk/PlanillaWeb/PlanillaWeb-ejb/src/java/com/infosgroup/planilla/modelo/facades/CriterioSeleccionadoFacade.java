@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.CriterioSeleccionado;
 import com.infosgroup.planilla.modelo.entidades.CriterioSeleccionadoPK;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
@@ -35,8 +36,8 @@ public class CriterioSeleccionadoFacade extends AbstractFacade<CriterioSeleccion
     }
 
     @PermitAll
-    public void eliminarCriteriosSeleccionados(Long empresa, String usuario) {
-        getEntityManager().createNativeQuery(DELETE_NATIVE_QUERY).setParameter(1, empresa).setParameter(2, usuario).executeUpdate();
+    public void eliminarCriteriosSeleccionados(Cias empresa, String usuario) {
+        getEntityManager().createNativeQuery(DELETE_NATIVE_QUERY).setParameter(1, empresa.getCodCia()).setParameter(2, usuario).executeUpdate();
     }
 
     private Long correlativo(String usuario) {

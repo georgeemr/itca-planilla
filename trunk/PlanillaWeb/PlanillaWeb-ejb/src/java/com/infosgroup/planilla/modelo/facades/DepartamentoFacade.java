@@ -4,8 +4,8 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
-import com.infosgroup.planilla.modelo.entidades.Departamento;
-import com.infosgroup.planilla.modelo.entidades.DepartamentoPK;
+import com.infosgroup.planilla.modelo.entidades.Departamentos;
+import com.infosgroup.planilla.modelo.entidades.DepartamentosPK;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,16 +15,17 @@ import javax.persistence.PersistenceContext;
  * @author root
  */
 @Stateless
-public class DepartamentoFacade extends AbstractFacade<Departamento, DepartamentoPK> {
+public class DepartamentoFacade extends AbstractFacade<Departamentos, DepartamentosPK> {
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
     public DepartamentoFacade() {
-        super(Departamento.class);
+        super(Departamentos.class);
     }
     
 }

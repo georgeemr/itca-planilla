@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcurso;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcursoPK;
 import java.util.ArrayList;
@@ -31,9 +32,9 @@ public class EstadoConcursoFacade extends AbstractFacade<EstadoConcurso, EstadoC
         return em;
     }
 
-    public List<EstadoConcurso> findEstadoConcursoByEmpresa(Long empresa) {
+    public List<EstadoConcurso> findEstadoConcursoByEmpresa(Cias empresa) {
         List<EstadoConcurso> puestos = new ArrayList<EstadoConcurso>();
-        puestos.addAll(getEntityManager().createNamedQuery("EstadoConcurso.findByCodCia", EstadoConcurso.class).setParameter("codCia", empresa).getResultList());
+        puestos.addAll(getEntityManager().createNamedQuery("EstadoConcurso.findByCodCia", EstadoConcurso.class).setParameter("codCia", empresa.getCodCia()).getResultList());
         return puestos;
     }
 }

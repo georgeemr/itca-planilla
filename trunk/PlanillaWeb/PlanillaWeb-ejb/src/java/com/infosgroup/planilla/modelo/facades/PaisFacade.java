@@ -19,6 +19,7 @@ public class PaisFacade extends AbstractFacade<Pais, Long> {
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
@@ -28,10 +29,8 @@ public class PaisFacade extends AbstractFacade<Pais, Long> {
     }
     
     public Long max() {
-        Long max = null;
-        Query q = getEntityManager().createNamedQuery("Pais.max");
-        max = (Long) q.getSingleResult();
-        return (max == null) ? 0L : max;
+        Long max = (Long) getEntityManager().createQuery("SELECT max(p.codPais) FROM Pais p").getSingleResult();
+        return (max == null) ? 1L : ++max;
     }
     
 }

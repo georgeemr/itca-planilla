@@ -33,19 +33,17 @@ public class TipoAccionFacade extends AbstractFacade<TipoAccion, TipoAccionPK> {
     public List<TipoAccion> findByAfecta(String afecta){
         List<TipoAccion> listaTipo = new ArrayList<TipoAccion>(0);
         
-        Query tip = em.createQuery("select a from TipoAccion a "
-                +"where a.afectaSal = :af ", TipoAccion.class);
+        Query tip = em.createQuery("select a from TipoAccion a where a.afectaSal = :af ", TipoAccion.class);
         tip.setParameter("af", afecta);
         listaTipo = (List<TipoAccion>)tip.getResultList();
         
         if(afecta.matches("S")){
             TipoAccion noAfecta = new TipoAccion();
             TipoAccionPK pk = new TipoAccionPK();
-            pk.setCodCia(1);
-            pk.setCodTipoaccion(0);
+//            pk.setCodCia(1);
+//            pk.setCodTipoaccion(0);
             noAfecta.setTipoAccionPK(pk);
             noAfecta.setNomTipoaccion("NO AFECTA PLANILLA");
-            
             listaTipo.add(noAfecta);
         }
         

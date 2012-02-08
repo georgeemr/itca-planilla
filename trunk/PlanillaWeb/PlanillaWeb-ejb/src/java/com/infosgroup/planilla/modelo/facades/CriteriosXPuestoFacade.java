@@ -4,7 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
-import com.infosgroup.planilla.modelo.entidades.Compania;
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK;
 import java.util.ArrayList;
@@ -37,9 +37,9 @@ public class CriteriosXPuestoFacade extends AbstractFacade<CriteriosXPuesto, Cri
     }
 
     @PermitAll
-    public List<CriteriosXPuesto> getListaCriteriosByEmpresa(Compania empresa) {
+    public List<CriteriosXPuesto> getListaCriteriosByEmpresa(Cias empresa) {
         List<CriteriosXPuesto> l = new ArrayList<CriteriosXPuesto>();
-        Query q = em.createNamedQuery("CriteriosXPuesto.findByCodCia", CriteriosXPuesto.class).setParameter("codCia", empresa.getIdCompania());
+        Query q = em.createQuery("SELECT c FROM CriteriosXPuesto c WHERE c.criteriosXPuestoPK.codCia = :codCia", CriteriosXPuesto.class).setParameter("codCia", empresa.getCodCia());
         l = q.getResultList();
         return l != null ? l : new ArrayList<CriteriosXPuesto>();
     }

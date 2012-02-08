@@ -6,7 +6,7 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.CampaniaPK;
-import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Empleados;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -34,11 +34,11 @@ public class CampaniaFacade extends AbstractFacade<Campania, CampaniaPK> {
         super(Campania.class);
     }
 
-    public List<Campania> findByEmpleadoEvaluador(Empleado empleado) {
+    public List<Campania> findByEmpleadoEvaluador(Empleados empleado) {
         List<Campania> l = new ArrayList<Campania>();
         Query q = em.createNativeQuery("select distinct c.* from campania c where (cod_cia, periodo, cod_campania) in (select distinct eva.cod_cia, eva.periodo, eva.campania from evaluador_evaluaciones eva where cod_cia = ? and evaluador = ?) and c.estado = '1'", Campania.class);
-        q.setParameter(1, empleado.getEmpleadoPK().getCodCia());
-        q.setParameter(2, empleado.getEmpleadoPK().getCodEmp());
+        q.setParameter(1, empleado.getEmpleadosPK().getCodCia());
+        q.setParameter(2, empleado.getEmpleadosPK().getCodEmp());
         l = q.getResultList();
 
         if (l != null) {
@@ -50,11 +50,11 @@ public class CampaniaFacade extends AbstractFacade<Campania, CampaniaPK> {
         return l != null ? l : new ArrayList<Campania>();
     }
 
-    public List<Campania> findByEmpleadoEvaluadorReport(Empleado empleado) {
+    public List<Campania> findByEmpleadoEvaluadorReport(Empleados empleado) {
         List<Campania> l = new ArrayList<Campania>();
         Query q = em.createNativeQuery("select distinct c.* from campania c where (cod_cia, periodo, cod_campania) in (select distinct eva.cod_cia, eva.periodo, eva.campania from evaluador_evaluaciones eva where cod_cia = ? and evaluador = ?) and c.estado = '1'", Campania.class);
-        q.setParameter(1, empleado.getEmpleadoPK().getCodCia());
-        q.setParameter(2, empleado.getEmpleadoPK().getCodEmp());
+        q.setParameter(1, empleado.getEmpleadosPK().getCodCia());
+        q.setParameter(2, empleado.getEmpleadosPK().getCodEmp());
         l = q.getResultList();
 
         if (l != null) {
@@ -75,9 +75,9 @@ public class CampaniaFacade extends AbstractFacade<Campania, CampaniaPK> {
     }
 
     @PermitAll
-    public List<Campania> findAllByCia (Long empresa) {
+    public List<Campania> findAllByCia (Short empresa) {
         List<Campania> l = new ArrayList<Campania>();
-        l = em.createNamedQuery("Campania.findByCodCia", Campania.class).setParameter("codCia", empresa).getResultList();
+        l = em.createQuery("SELECT c FROM Campania c WHERE c.campaniaPK.codCia = :codCia", Campania.class).setParameter("codCia", empresa).getResultList();
         return l != null ? l : new ArrayList<Campania>();
     }
 }

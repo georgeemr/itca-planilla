@@ -4,34 +4,32 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
-import com.infosgroup.planilla.modelo.entidades.Compania;
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
  * @author root
  */
 @Stateless
-public class CompaniaFacade extends AbstractFacade<Compania, Long> {
+public class CiasFacade extends AbstractFacade<Cias, Short> {
 
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
-    public CompaniaFacade() {
-        super(Compania.class);
+    public CiasFacade() {
+        super(Cias.class);
     }
 
-    public Long max() {
-        Long max = null;
-        Query q = getEntityManager().createNamedQuery("Compania.max");
-        max = (Long) q.getSingleResult();
-        return (max == null) ? 0L : max;
+    public short max() {
+        Short max = (Short) getEntityManager().createQuery("SELECT max(c.codCia) FROM Cias c").getSingleResult();
+        return (max == null) ? 1 : ++max;
     }
 }

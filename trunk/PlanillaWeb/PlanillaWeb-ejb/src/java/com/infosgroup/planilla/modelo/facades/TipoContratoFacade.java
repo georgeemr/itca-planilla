@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.TipoContrato;
 import com.infosgroup.planilla.modelo.entidades.TipoContratoPK;
 import java.util.ArrayList;
@@ -35,9 +36,9 @@ public class TipoContratoFacade extends AbstractFacade<TipoContrato, TipoContrat
     }
 
     @PermitAll
-    public List<TipoContrato> getTipoContratoByEmpresa( Long empresa ) {
+    public List<TipoContrato> getTipoContratoByEmpresa( Cias empresa ) {
         List<TipoContrato> l = new ArrayList<TipoContrato>();
-        l.addAll( em.createQuery("SELECT t FROM TipoContrato t WHERE t.tipoContratoPK.codCia = :codCia", TipoContrato.class).setParameter("codCia", empresa) .getResultList() );
+        l.addAll( em.createQuery("SELECT t FROM TipoContrato t WHERE t.tipoContratoPK.codCia = :codCia", TipoContrato.class).setParameter("codCia", empresa.getCodCia()) .getResultList() );
         return l;
     }
 }
