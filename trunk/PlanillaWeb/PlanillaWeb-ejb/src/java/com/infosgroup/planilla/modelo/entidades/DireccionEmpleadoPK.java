@@ -8,193 +8,167 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
  * @author root
  */
 @Embeddable
-public class DireccionEmpleadoPK implements Serializable
-{
-
+public class DireccionEmpleadoPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_COMPANIA", nullable = false)
-    private long idCompania;
-
+    @Column(name = "COD_CIA", nullable = false)
+    private long codCia;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_SUCURSAL", nullable = false)
-    private long idSucursal;
-
+    @Column(name = "COD_SUCURSAL", nullable = false)
+    private long codSucursal;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_EMPLEADO", nullable = false)
-    private long idEmpleado;
-
+    @Column(name = "COD_EMPLEADO", nullable = false)
+    private long codEmpleado;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_PAIS", nullable = false)
-    private long idPais;
-
+    @Column(name = "COD_PAIS", nullable = false)
+    private long codPais;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_PROVINCIA", nullable = false)
-    private long idProvincia;
-
+    @Column(name = "COD_PROVINCIA", nullable = false)
+    private long codProvincia;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_MUNICIPIO", nullable = false)
-    private long idMunicipio;
-
+    @Column(name = "COD_MUNICIPIO", nullable = false)
+    private long codMunicipio;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_BARRIO", nullable = false)
-    private long idBarrio;
-
+    @Column(name = "COD_BARRIO", nullable = false)
+    private long codBarrio;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "NUM_CASA", nullable = false, length = 100)
     private String numCasa;
 
-    public DireccionEmpleadoPK()
-    {
+    public DireccionEmpleadoPK() {
     }
 
-    public DireccionEmpleadoPK(long idCompania, long idSucursal, long idEmpleado, long idPais, long idProvincia, long idMunicipio, long idBarrio, String numCasa)
-    {
-        this.idCompania = idCompania;
-        this.idSucursal = idSucursal;
-        this.idEmpleado = idEmpleado;
-        this.idPais = idPais;
-        this.idProvincia = idProvincia;
-        this.idMunicipio = idMunicipio;
-        this.idBarrio = idBarrio;
+    public DireccionEmpleadoPK(long codCia, long codSucursal, long codEmpleado, long codPais, long codProvincia, long codMunicipio, long codBarrio, String numCasa) {
+        this.codCia = codCia;
+        this.codSucursal = codSucursal;
+        this.codEmpleado = codEmpleado;
+        this.codPais = codPais;
+        this.codProvincia = codProvincia;
+        this.codMunicipio = codMunicipio;
+        this.codBarrio = codBarrio;
         this.numCasa = numCasa;
     }
 
-    public long getIdCompania()
-    {
-        return idCompania;
+    public long getCodCia() {
+        return codCia;
     }
 
-    public void setIdCompania(long idCompania)
-    {
-        this.idCompania = idCompania;
+    public void setCodCia(long codCia) {
+        this.codCia = codCia;
     }
 
-    public long getIdSucursal()
-    {
-        return idSucursal;
+    public long getCodSucursal() {
+        return codSucursal;
     }
 
-    public void setIdSucursal(long idSucursal)
-    {
-        this.idSucursal = idSucursal;
+    public void setCodSucursal(long codSucursal) {
+        this.codSucursal = codSucursal;
     }
 
-    public long getIdEmpleado()
-    {
-        return idEmpleado;
+    public long getCodEmpleado() {
+        return codEmpleado;
     }
 
-    public void setIdEmpleado(long idEmpleado)
-    {
-        this.idEmpleado = idEmpleado;
+    public void setCodEmpleado(long codEmpleado) {
+        this.codEmpleado = codEmpleado;
     }
 
-    public long getIdPais()
-    {
-        return idPais;
+    public long getCodPais() {
+        return codPais;
     }
 
-    public void setIdPais(long idPais)
-    {
-        this.idPais = idPais;
+    public void setCodPais(long codPais) {
+        this.codPais = codPais;
     }
 
-    public long getIdProvincia()
-    {
-        return idProvincia;
+    public long getCodProvincia() {
+        return codProvincia;
     }
 
-    public void setIdProvincia(long idProvincia)
-    {
-        this.idProvincia = idProvincia;
+    public void setCodProvincia(long codProvincia) {
+        this.codProvincia = codProvincia;
     }
 
-    public long getIdMunicipio()
-    {
-        return idMunicipio;
+    public long getCodMunicipio() {
+        return codMunicipio;
     }
 
-    public void setIdMunicipio(long idMunicipio)
-    {
-        this.idMunicipio = idMunicipio;
+    public void setCodMunicipio(long codMunicipio) {
+        this.codMunicipio = codMunicipio;
     }
 
-    public long getIdBarrio()
-    {
-        return idBarrio;
+    public long getCodBarrio() {
+        return codBarrio;
     }
 
-    public void setIdBarrio(long idBarrio)
-    {
-        this.idBarrio = idBarrio;
+    public void setCodBarrio(long codBarrio) {
+        this.codBarrio = codBarrio;
     }
 
-    public String getNumCasa()
-    {
+    public String getNumCasa() {
         return numCasa;
     }
 
-    public void setNumCasa(String numCasa)
-    {
+    public void setNumCasa(String numCasa) {
         this.numCasa = numCasa;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
-        hash += (int) idCompania;
-        hash += (int) idSucursal;
-        hash += (int) idEmpleado;
-        hash += (int) idPais;
-        hash += (int) idProvincia;
-        hash += (int) idMunicipio;
-        hash += (int) idBarrio;
+        hash += (int) codCia;
+        hash += (int) codSucursal;
+        hash += (int) codEmpleado;
+        hash += (int) codPais;
+        hash += (int) codProvincia;
+        hash += (int) codMunicipio;
+        hash += (int) codBarrio;
         hash += (numCasa != null ? numCasa.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DireccionEmpleadoPK))
-            {
+        if (!(object instanceof DireccionEmpleadoPK)) {
             return false;
-            }
+        }
         DireccionEmpleadoPK other = (DireccionEmpleadoPK) object;
-        if (this.idCompania != other.idCompania) return false;
-        if (this.idSucursal != other.idSucursal) return false;
-        if (this.idEmpleado != other.idEmpleado) return false;
-        if (this.idPais != other.idPais) return false;
-        if (this.idProvincia != other.idProvincia) return false;
-        if (this.idMunicipio != other.idMunicipio) return false;
-        if (this.idBarrio != other.idBarrio) return false;
-        if ((this.numCasa == null && other.numCasa != null) || (this.numCasa != null && !this.numCasa.equals(other.numCasa))) return false;
+        if (this.codCia != other.codCia) {
+            return false;
+        }
+        if (this.codSucursal != other.codSucursal) {
+            return false;
+        }
+        if (this.codEmpleado != other.codEmpleado) {
+            return false;
+        }
+        if (this.codPais != other.codPais) {
+            return false;
+        }
+        if (this.codProvincia != other.codProvincia) {
+            return false;
+        }
+        if (this.codMunicipio != other.codMunicipio) {
+            return false;
+        }
+        if (this.codBarrio != other.codBarrio) {
+            return false;
+        }
+        if ((this.numCasa == null && other.numCasa != null) || (this.numCasa != null && !this.numCasa.equals(other.numCasa))) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
-        return "com.infosgroup.planilla.modelo.entidades.DireccionEmpleadoPK[ idCompania=" + idCompania + ", idSucursal=" + idSucursal + ", idEmpleado=" + idEmpleado + ", idPais=" + idPais + ", idProvincia=" + idProvincia + ", idMunicipio=" + idMunicipio + ", idBarrio=" + idBarrio + ", numCasa=" + numCasa + " ]";
+    public String toString() {
+        return "com.infosgroup.planilla.modelo.entidades.DireccionEmpleadoPK[ codCia=" + codCia + ", codSucursal=" + codSucursal + ", codEmpleado=" + codEmpleado + ", codPais=" + codPais + ", codProvincia=" + codProvincia + ", codMunicipio=" + codMunicipio + ", codBarrio=" + codBarrio + ", numCasa=" + numCasa + " ]";
     }
     
 }

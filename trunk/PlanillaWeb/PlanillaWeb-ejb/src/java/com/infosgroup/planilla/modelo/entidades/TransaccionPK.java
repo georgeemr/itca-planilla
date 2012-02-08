@@ -8,101 +8,87 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author root
  */
 @Embeddable
-public class TransaccionPK implements Serializable
-{
-
+public class TransaccionPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_COMPANIA", nullable = false)
-    private long idCompania;
-
+    @Column(name = "COD_CIA", nullable = false)
+    private long codCia;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_TIPO_TRANSACCION", nullable = false)
-    private long idTipoTransaccion;
-
+    @Column(name = "COD_TIPO_TRANSACCION", nullable = false)
+    private long codTipoTransaccion;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_TRANSACCION", nullable = false)
-    private long idTransaccion;
+    @Column(name = "COD_TRANSACCION", nullable = false)
+    private long codTransaccion;
 
-    public TransaccionPK()
-    {
+    public TransaccionPK() {
     }
 
-    public TransaccionPK(long idCompania, long idTipoTransaccion, long idTransaccion)
-    {
-        this.idCompania = idCompania;
-        this.idTipoTransaccion = idTipoTransaccion;
-        this.idTransaccion = idTransaccion;
+    public TransaccionPK(long codCia, long codTipoTransaccion, long codTransaccion) {
+        this.codCia = codCia;
+        this.codTipoTransaccion = codTipoTransaccion;
+        this.codTransaccion = codTransaccion;
     }
 
-    public long getIdCompania()
-    {
-        return idCompania;
+    public long getCodCia() {
+        return codCia;
     }
 
-    public void setIdCompania(long idCompania)
-    {
-        this.idCompania = idCompania;
+    public void setCodCia(long codCia) {
+        this.codCia = codCia;
     }
 
-    public long getIdTipoTransaccion()
-    {
-        return idTipoTransaccion;
+    public long getCodTipoTransaccion() {
+        return codTipoTransaccion;
     }
 
-    public void setIdTipoTransaccion(long idTipoTransaccion)
-    {
-        this.idTipoTransaccion = idTipoTransaccion;
+    public void setCodTipoTransaccion(long codTipoTransaccion) {
+        this.codTipoTransaccion = codTipoTransaccion;
     }
 
-    public long getIdTransaccion()
-    {
-        return idTransaccion;
+    public long getCodTransaccion() {
+        return codTransaccion;
     }
 
-    public void setIdTransaccion(long idTransaccion)
-    {
-        this.idTransaccion = idTransaccion;
+    public void setCodTransaccion(long codTransaccion) {
+        this.codTransaccion = codTransaccion;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
-        hash += (int) idCompania;
-        hash += (int) idTipoTransaccion;
-        hash += (int) idTransaccion;
+        hash += (int) codCia;
+        hash += (int) codTipoTransaccion;
+        hash += (int) codTransaccion;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TransaccionPK))
-            {
+        if (!(object instanceof TransaccionPK)) {
             return false;
-            }
+        }
         TransaccionPK other = (TransaccionPK) object;
-        if (this.idCompania != other.idCompania) return false;
-        if (this.idTipoTransaccion != other.idTipoTransaccion) return false;
-        if (this.idTransaccion != other.idTransaccion) return false;
+        if (this.codCia != other.codCia) {
+            return false;
+        }
+        if (this.codTipoTransaccion != other.codTipoTransaccion) {
+            return false;
+        }
+        if (this.codTransaccion != other.codTransaccion) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
-        return "com.infosgroup.planilla.modelo.entidades.TransaccionPK[ idCompania=" + idCompania + ", idTipoTransaccion=" + idTipoTransaccion + ", idTransaccion=" + idTransaccion + " ]";
+    public String toString() {
+        return "com.infosgroup.planilla.modelo.entidades.TransaccionPK[ codCia=" + codCia + ", codTipoTransaccion=" + codTipoTransaccion + ", codTransaccion=" + codTransaccion + " ]";
     }
     
 }

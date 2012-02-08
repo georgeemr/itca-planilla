@@ -5,21 +5,15 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,126 +22,89 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "TIPO_CUENTA")
 @XmlRootElement
-@NamedQueries(
-    {
+@NamedQueries({
     @NamedQuery(name = "TipoCuenta.findAll", query = "SELECT t FROM TipoCuenta t"),
-    @NamedQuery(name = "TipoCuenta.findByIdCompania", query = "SELECT t FROM TipoCuenta t WHERE t.tipoCuentaPK.idCompania = :idCompania"),
-    @NamedQuery(name = "TipoCuenta.findByIdTipoCuenta", query = "SELECT t FROM TipoCuenta t WHERE t.tipoCuentaPK.idTipoCuenta = :idTipoCuenta"),
+    @NamedQuery(name = "TipoCuenta.findByCodCia", query = "SELECT t FROM TipoCuenta t WHERE t.tipoCuentaPK.codCia = :codCia"),
+    @NamedQuery(name = "TipoCuenta.findByCodTipoCuenta", query = "SELECT t FROM TipoCuenta t WHERE t.tipoCuentaPK.codTipoCuenta = :codTipoCuenta"),
     @NamedQuery(name = "TipoCuenta.findByNomTipoCuenta", query = "SELECT t FROM TipoCuenta t WHERE t.nomTipoCuenta = :nomTipoCuenta"),
-    @NamedQuery(name = "TipoCuenta.findByDetTipoCuenta", query = "SELECT t FROM TipoCuenta t WHERE t.detTipoCuenta = :detTipoCuenta")
-    })
-public class TipoCuenta implements Serializable
-{
-
+    @NamedQuery(name = "TipoCuenta.findByDetTipoCuenta", query = "SELECT t FROM TipoCuenta t WHERE t.detTipoCuenta = :detTipoCuenta")})
+public class TipoCuenta implements Serializable {
     private static final long serialVersionUID = 1L;
-
     @EmbeddedId
     protected TipoCuentaPK tipoCuentaPK;
-
-    @Size(max = 100)
     @Column(name = "NOM_TIPO_CUENTA", length = 100)
     private String nomTipoCuenta;
-
-    @Size(max = 200)
     @Column(name = "DET_TIPO_CUENTA", length = 200)
     private String detTipoCuenta;
+    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Cias cias;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoCuenta", fetch = FetchType.EAGER)
-    private List<Cuenta> cuentaList;
-
-    @JoinColumn(name = "ID_COMPANIA", referencedColumnName = "ID_COMPANIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Compania compania;
-
-    public TipoCuenta()
-    {
+    public TipoCuenta() {
     }
 
-    public TipoCuenta(TipoCuentaPK tipoCuentaPK)
-    {
+    public TipoCuenta(TipoCuentaPK tipoCuentaPK) {
         this.tipoCuentaPK = tipoCuentaPK;
     }
 
-    public TipoCuenta(long idCompania, long idTipoCuenta)
-    {
-        this.tipoCuentaPK = new TipoCuentaPK(idCompania, idTipoCuenta);
+    public TipoCuenta(long codCia, long codTipoCuenta) {
+        this.tipoCuentaPK = new TipoCuentaPK(codCia, codTipoCuenta);
     }
 
-    public TipoCuentaPK getTipoCuentaPK()
-    {
+    public TipoCuentaPK getTipoCuentaPK() {
         return tipoCuentaPK;
     }
 
-    public void setTipoCuentaPK(TipoCuentaPK tipoCuentaPK)
-    {
+    public void setTipoCuentaPK(TipoCuentaPK tipoCuentaPK) {
         this.tipoCuentaPK = tipoCuentaPK;
     }
 
-    public String getNomTipoCuenta()
-    {
+    public String getNomTipoCuenta() {
         return nomTipoCuenta;
     }
 
-    public void setNomTipoCuenta(String nomTipoCuenta)
-    {
+    public void setNomTipoCuenta(String nomTipoCuenta) {
         this.nomTipoCuenta = nomTipoCuenta;
     }
 
-    public String getDetTipoCuenta()
-    {
+    public String getDetTipoCuenta() {
         return detTipoCuenta;
     }
 
-    public void setDetTipoCuenta(String detTipoCuenta)
-    {
+    public void setDetTipoCuenta(String detTipoCuenta) {
         this.detTipoCuenta = detTipoCuenta;
     }
 
-    @XmlTransient
-    public List<Cuenta> getCuentaList()
-    {
-        return cuentaList;
+    public Cias getCias() {
+        return cias;
     }
 
-    public void setCuentaList(List<Cuenta> cuentaList)
-    {
-        this.cuentaList = cuentaList;
-    }
-
-    public Compania getCompania()
-    {
-        return compania;
-    }
-
-    public void setCompania(Compania compania)
-    {
-        this.compania = compania;
+    public void setCias(Cias cias) {
+        this.cias = cias;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (tipoCuentaPK != null ? tipoCuentaPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoCuenta))
-            {
+        if (!(object instanceof TipoCuenta)) {
             return false;
-            }
+        }
         TipoCuenta other = (TipoCuenta) object;
-        if ((this.tipoCuentaPK == null && other.tipoCuentaPK != null) || (this.tipoCuentaPK != null && !this.tipoCuentaPK.equals(other.tipoCuentaPK))) return false;
+        if ((this.tipoCuentaPK == null && other.tipoCuentaPK != null) || (this.tipoCuentaPK != null && !this.tipoCuentaPK.equals(other.tipoCuentaPK))) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.TipoCuenta[ tipoCuentaPK=" + tipoCuentaPK + " ]";
     }
     

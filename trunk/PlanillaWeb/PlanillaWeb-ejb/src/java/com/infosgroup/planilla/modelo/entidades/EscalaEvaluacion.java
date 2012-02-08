@@ -15,8 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -39,16 +37,12 @@ public class EscalaEvaluacion implements Serializable {
     @EmbeddedId
     protected EscalaEvaluacionPK escalaEvaluacionPK;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "RANGO_INICIAL", nullable = false)
     private short rangoInicial;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "RANGO_FINAL", nullable = false)
     private short rangoFinal;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25)
     @Column(name = "CALIFICACION", nullable = false, length = 25)
     private String calificacion;
     @JoinColumns({

@@ -15,52 +15,43 @@ import javax.validation.constraints.NotNull;
  * @author root
  */
 @Embeddable
-public class CandidatoPK implements Serializable
-{
-
+public class CandidatoPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
 
     @Basic(optional = false)
     @NotNull
     @Column(name = "COD_CANDIDATO", nullable = false)
     private long codCandidato;
 
-    public CandidatoPK()
-    {
+    public CandidatoPK() {
     }
 
-    public CandidatoPK(long codCia, long codCandidato)
-    {
+    public CandidatoPK(short codCia, long codCandidato) {
         this.codCia = codCia;
         this.codCandidato = codCandidato;
     }
 
-    public long getCodCia()
-    {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia)
-    {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
-    public long getCodCandidato()
-    {
+    public long getCodCandidato() {
         return codCandidato;
     }
 
-    public void setCodCandidato(long codCandidato)
-    {
+    public void setCodCandidato(long codCandidato) {
         this.codCandidato = codCandidato;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codCandidato;
@@ -68,22 +59,23 @@ public class CandidatoPK implements Serializable
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CandidatoPK))
-            {
+        if (!(object instanceof CandidatoPK)) {
             return false;
-            }
+        }
         CandidatoPK other = (CandidatoPK) object;
-        if (this.codCia != other.codCia) return false;
-        if (this.codCandidato != other.codCandidato) return false;
+        if (this.codCia != other.codCia) {
+            return false;
+        }
+        if (this.codCandidato != other.codCandidato) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.CandidatoPK[ codCia=" + codCia + ", codCandidato=" + codCandidato + " ]";
     }
     

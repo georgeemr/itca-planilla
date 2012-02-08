@@ -8,191 +8,135 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author root
  */
 @Embeddable
-public class ResumenAsistenciaPK implements Serializable
-{
-
+public class ResumenAsistenciaPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_COMPANIA", nullable = false)
-    private long idCompania;
-
+    @Column(name = "COD_CIA", nullable = false)
+    private short codCia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ANIO", nullable = false)
-    private long anio;
-
+    private short anio;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "MES", nullable = false)
-    private long mes;
-
+    private short mes;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "NUM_PLANILLA", nullable = false)
-    private long numPlanilla;
-
+    private short numPlanilla;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_EMP", nullable = false)
-    private long codEmp;
-
+    private int codEmp;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_SUCURSAL", nullable = false)
-    private long idSucursal;
+    @Column(name = "COD_TIPOPLA", nullable = false)
+    private short codTipopla;
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_TIPO_PUESTO", nullable = false)
-    private long idTipoPuesto;
-
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_PUESTO", nullable = false)
-    private long idPuesto;
-
-    public ResumenAsistenciaPK()
-    {
+    public ResumenAsistenciaPK() {
     }
 
-    public ResumenAsistenciaPK(long idCompania, long anio, long mes, long numPlanilla, long codEmp, long idSucursal, long idTipoPuesto, long idPuesto)
-    {
-        this.idCompania = idCompania;
+    public ResumenAsistenciaPK(short codCia, short anio, short mes, short numPlanilla, int codEmp, short codTipopla) {
+        this.codCia = codCia;
         this.anio = anio;
         this.mes = mes;
         this.numPlanilla = numPlanilla;
         this.codEmp = codEmp;
-        this.idSucursal = idSucursal;
-        this.idTipoPuesto = idTipoPuesto;
-        this.idPuesto = idPuesto;
+        this.codTipopla = codTipopla;
     }
 
-    public long getIdCompania()
-    {
-        return idCompania;
+    public short getCodCia() {
+        return codCia;
     }
 
-    public void setIdCompania(long idCompania)
-    {
-        this.idCompania = idCompania;
+    public void setCodCia(short codCia) {
+        this.codCia = codCia;
     }
 
-    public long getAnio()
-    {
+    public short getAnio() {
         return anio;
     }
 
-    public void setAnio(long anio)
-    {
+    public void setAnio(short anio) {
         this.anio = anio;
     }
 
-    public long getMes()
-    {
+    public short getMes() {
         return mes;
     }
 
-    public void setMes(long mes)
-    {
+    public void setMes(short mes) {
         this.mes = mes;
     }
 
-    public long getNumPlanilla()
-    {
+    public short getNumPlanilla() {
         return numPlanilla;
     }
 
-    public void setNumPlanilla(long numPlanilla)
-    {
+    public void setNumPlanilla(short numPlanilla) {
         this.numPlanilla = numPlanilla;
     }
 
-    public long getCodEmp()
-    {
+    public int getCodEmp() {
         return codEmp;
     }
 
-    public void setCodEmp(long codEmp)
-    {
+    public void setCodEmp(int codEmp) {
         this.codEmp = codEmp;
     }
 
-    public long getIdSucursal()
-    {
-        return idSucursal;
+    public short getCodTipopla() {
+        return codTipopla;
     }
 
-    public void setIdSucursal(long idSucursal)
-    {
-        this.idSucursal = idSucursal;
-    }
-
-    public long getIdTipoPuesto()
-    {
-        return idTipoPuesto;
-    }
-
-    public void setIdTipoPuesto(long idTipoPuesto)
-    {
-        this.idTipoPuesto = idTipoPuesto;
-    }
-
-    public long getIdPuesto()
-    {
-        return idPuesto;
-    }
-
-    public void setIdPuesto(long idPuesto)
-    {
-        this.idPuesto = idPuesto;
+    public void setCodTipopla(short codTipopla) {
+        this.codTipopla = codTipopla;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
-        hash += (int) idCompania;
+        hash += (int) codCia;
         hash += (int) anio;
         hash += (int) mes;
         hash += (int) numPlanilla;
         hash += (int) codEmp;
-        hash += (int) idSucursal;
-        hash += (int) idTipoPuesto;
-        hash += (int) idPuesto;
+        hash += (int) codTipopla;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ResumenAsistenciaPK))
-            {
+        if (!(object instanceof ResumenAsistenciaPK)) {
             return false;
-            }
+        }
         ResumenAsistenciaPK other = (ResumenAsistenciaPK) object;
-        if (this.idCompania != other.idCompania) return false;
-        if (this.anio != other.anio) return false;
-        if (this.mes != other.mes) return false;
-        if (this.numPlanilla != other.numPlanilla) return false;
-        if (this.codEmp != other.codEmp) return false;
-        if (this.idSucursal != other.idSucursal) return false;
-        if (this.idTipoPuesto != other.idTipoPuesto) return false;
-        if (this.idPuesto != other.idPuesto) return false;
+        if (this.codCia != other.codCia) {
+            return false;
+        }
+        if (this.anio != other.anio) {
+            return false;
+        }
+        if (this.mes != other.mes) {
+            return false;
+        }
+        if (this.numPlanilla != other.numPlanilla) {
+            return false;
+        }
+        if (this.codEmp != other.codEmp) {
+            return false;
+        }
+        if (this.codTipopla != other.codTipopla) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
-        return "com.infosgroup.planilla.modelo.entidades.ResumenAsistenciaPK[ idCompania=" + idCompania + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", codEmp=" + codEmp + ", idSucursal=" + idSucursal + ", idTipoPuesto=" + idTipoPuesto + ", idPuesto=" + idPuesto + " ]";
+    public String toString() {
+        return "com.infosgroup.planilla.modelo.entidades.ResumenAsistenciaPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", codEmp=" + codEmp + ", codTipopla=" + codTipopla + " ]";
     }
     
 }

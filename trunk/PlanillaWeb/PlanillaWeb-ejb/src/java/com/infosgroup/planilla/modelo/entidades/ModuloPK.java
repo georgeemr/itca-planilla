@@ -8,83 +8,71 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author root
  */
 @Embeddable
-public class ModuloPK implements Serializable
-{
-
+public class ModuloPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_COMPANIA", nullable = false)
-    private long idCompania;
-
+    @Column(name = "COD_CIA", nullable = false)
+    private long codCia;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_MODULO", nullable = false)
-    private long idModulo;
+    @Column(name = "COD_MODULO", nullable = false)
+    private long codModulo;
 
-    public ModuloPK()
-    {
+    public ModuloPK() {
     }
 
-    public ModuloPK(long idCompania, long idModulo)
-    {
-        this.idCompania = idCompania;
-        this.idModulo = idModulo;
+    public ModuloPK(long codCia, long codModulo) {
+        this.codCia = codCia;
+        this.codModulo = codModulo;
     }
 
-    public long getIdCompania()
-    {
-        return idCompania;
+    public long getCodCia() {
+        return codCia;
     }
 
-    public void setIdCompania(long idCompania)
-    {
-        this.idCompania = idCompania;
+    public void setCodCia(long codCia) {
+        this.codCia = codCia;
     }
 
-    public long getIdModulo()
-    {
-        return idModulo;
+    public long getCodModulo() {
+        return codModulo;
     }
 
-    public void setIdModulo(long idModulo)
-    {
-        this.idModulo = idModulo;
+    public void setCodModulo(long codModulo) {
+        this.codModulo = codModulo;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
-        hash += (int) idCompania;
-        hash += (int) idModulo;
+        hash += (int) codCia;
+        hash += (int) codModulo;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ModuloPK))
-            {
+        if (!(object instanceof ModuloPK)) {
             return false;
-            }
+        }
         ModuloPK other = (ModuloPK) object;
-        if (this.idCompania != other.idCompania) return false;
-        if (this.idModulo != other.idModulo) return false;
+        if (this.codCia != other.codCia) {
+            return false;
+        }
+        if (this.codModulo != other.codModulo) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
-        return "com.infosgroup.planilla.modelo.entidades.ModuloPK[ idCompania=" + idCompania + ", idModulo=" + idModulo + " ]";
+    public String toString() {
+        return "com.infosgroup.planilla.modelo.entidades.ModuloPK[ codCia=" + codCia + ", codModulo=" + codModulo + " ]";
     }
     
 }

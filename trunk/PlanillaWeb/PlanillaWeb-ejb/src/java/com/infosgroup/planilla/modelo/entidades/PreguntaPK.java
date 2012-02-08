@@ -8,77 +8,58 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
  * @author root
  */
 @Embeddable
-public class PreguntaPK implements Serializable
-{
-
+public class PreguntaPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private long codCia;
-
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_FACTOR", nullable = false)
     private long codFactor;
-
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
     @Column(name = "COD_PREGUNTA", nullable = false, length = 200)
     private String codPregunta;
 
-    public PreguntaPK()
-    {
+    public PreguntaPK() {
     }
 
-    public PreguntaPK(long codCia, long codFactor, String codPregunta)
-    {
+    public PreguntaPK(long codCia, long codFactor, String codPregunta) {
         this.codCia = codCia;
         this.codFactor = codFactor;
         this.codPregunta = codPregunta;
     }
 
-    public long getCodCia()
-    {
+    public long getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia)
-    {
+    public void setCodCia(long codCia) {
         this.codCia = codCia;
     }
 
-    public long getCodFactor()
-    {
+    public long getCodFactor() {
         return codFactor;
     }
 
-    public void setCodFactor(long codFactor)
-    {
+    public void setCodFactor(long codFactor) {
         this.codFactor = codFactor;
     }
 
-    public String getCodPregunta()
-    {
+    public String getCodPregunta() {
         return codPregunta;
     }
 
-    public void setCodPregunta(String codPregunta)
-    {
+    public void setCodPregunta(String codPregunta) {
         this.codPregunta = codPregunta;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codFactor;
@@ -87,23 +68,26 @@ public class PreguntaPK implements Serializable
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PreguntaPK))
-            {
+        if (!(object instanceof PreguntaPK)) {
             return false;
-            }
+        }
         PreguntaPK other = (PreguntaPK) object;
-        if (this.codCia != other.codCia) return false;
-        if (this.codFactor != other.codFactor) return false;
-        if ((this.codPregunta == null && other.codPregunta != null) || (this.codPregunta != null && !this.codPregunta.equals(other.codPregunta))) return false;
+        if (this.codCia != other.codCia) {
+            return false;
+        }
+        if (this.codFactor != other.codFactor) {
+            return false;
+        }
+        if ((this.codPregunta == null && other.codPregunta != null) || (this.codPregunta != null && !this.codPregunta.equals(other.codPregunta))) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.PreguntaPK[ codCia=" + codCia + ", codFactor=" + codFactor + ", codPregunta=" + codPregunta + " ]";
     }
     

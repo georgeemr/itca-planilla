@@ -8,8 +8,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -19,79 +17,102 @@ import javax.validation.constraints.NotNull;
 public class PlanillaPK implements Serializable {
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_COMPANIA", nullable = false)
-    private long idCompania;
+    @Column(name = "COD_CIA", nullable = false)
+    private short codCia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ANIO", nullable = false)
-    private long anio;
+    private short anio;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "MES", nullable = false)
-    private long mes;
+    private short mes;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "NUM_PLANILLA", nullable = false)
-    private long numPlanilla;
-    @Transient
-    private String pkAsString;
+    private short numPlanilla;
+    @Basic(optional = false)
+    @Column(name = "COD_EMP", nullable = false)
+    private int codEmp;
+    @Basic(optional = false)
+    @Column(name = "COD_TIPOPLA", nullable = false)
+    private short codTipopla;
 
-    public PlanillaPK() {}
+    public PlanillaPK() {
+    }
 
-    public PlanillaPK(long idCompania, long anio, long mes, long numPlanilla) {
-        this.idCompania = idCompania;
+    public PlanillaPK(short codCia, short anio, short mes, short numPlanilla, int codEmp, short codTipopla) {
+        this.codCia = codCia;
         this.anio = anio;
         this.mes = mes;
         this.numPlanilla = numPlanilla;
+        this.codEmp = codEmp;
+        this.codTipopla = codTipopla;
     }
 
     public PlanillaPK(String p) {
-        this.idCompania = new Long(p.split(":")[0]);
-        this.anio = new Long(p.split(":")[1]);
-        this.mes = new Long(p.split(":")[2]);
-        this.numPlanilla = new Long(p.split(":")[3]);
+        this.codCia = new Short(p.split(":")[0]);
+        this.anio = new Short(p.split(":")[1]);
+        this.mes = new Short(p.split(":")[2]);
+        this.numPlanilla = new Short(p.split(":")[3]);
+        this.codEmp = new Integer(p.split(":")[4]);
+        this.codTipopla = new Short(p.split(":")[5]);
     }
 
-    public long getIdCompania() {
-        return idCompania;
+    public short getCodCia() {
+        return codCia;
     }
 
-    public void setIdCompania(long idCompania) {
-        this.idCompania = idCompania;
+    public void setCodCia(short codCia) {
+        this.codCia = codCia;
     }
 
-    public long getAnio() {
+    public short getAnio() {
         return anio;
     }
 
-    public void setAnio(long anio) {
+    public void setAnio(short anio) {
         this.anio = anio;
     }
 
-    public long getMes() {
+    public short getMes() {
         return mes;
     }
 
-    public void setMes(long mes) {
+    public void setMes(short mes) {
         this.mes = mes;
     }
 
-    public long getNumPlanilla() {
+    public short getNumPlanilla() {
         return numPlanilla;
     }
 
-    public void setNumPlanilla(long numPlanilla) {
+    public void setNumPlanilla(short numPlanilla) {
         this.numPlanilla = numPlanilla;
+    }
+
+    public int getCodEmp() {
+        return codEmp;
+    }
+
+    public void setCodEmp(int codEmp) {
+        this.codEmp = codEmp;
+    }
+
+    public short getCodTipopla() {
+        return codTipopla;
+    }
+
+    public void setCodTipopla(short codTipopla) {
+        this.codTipopla = codTipopla;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) idCompania;
+        hash += (int) codCia;
         hash += (int) anio;
         hash += (int) mes;
         hash += (int) numPlanilla;
+        hash += (int) codEmp;
+        hash += (int) codTipopla;
         return hash;
     }
 
@@ -102,7 +123,7 @@ public class PlanillaPK implements Serializable {
             return false;
         }
         PlanillaPK other = (PlanillaPK) object;
-        if (this.idCompania != other.idCompania) {
+        if (this.codCia != other.codCia) {
             return false;
         }
         if (this.anio != other.anio) {
@@ -114,16 +135,17 @@ public class PlanillaPK implements Serializable {
         if (this.numPlanilla != other.numPlanilla) {
             return false;
         }
+        if (this.codEmp != other.codEmp) {
+            return false;
+        }
+        if (this.codTipopla != other.codTipopla) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PlanillaPK[ idCompania=" + idCompania + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + " ]";
-    }
-
-    public String getPkAsString() {
-        pkAsString = "" + idCompania + ":" + anio + ":" + mes + ":" + numPlanilla;
-        return pkAsString;
+        return "com.infosgroup.planilla.modelo.entidades.PlanillaPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", codEmp=" + codEmp + ", codTipopla=" + codTipopla + " ]";
     }
 }

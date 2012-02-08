@@ -8,119 +8,103 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author root
  */
 @Embeddable
-public class BarrioPK implements Serializable
-{
-
+public class BarrioPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_PAIS", nullable = false)
-    private long idPais;
-
+    @Column(name = "COD_PAIS", nullable = false)
+    private long codPais;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_PROVINCIA", nullable = false)
-    private long idProvincia;
-
+    @Column(name = "COD_PROVINCIA", nullable = false)
+    private long codProvincia;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_MUNICIPIO", nullable = false)
-    private long idMunicipio;
-
+    @Column(name = "COD_MUNICIPIO", nullable = false)
+    private long codMunicipio;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_BARRIO", nullable = false)
-    private long idBarrio;
+    @Column(name = "COD_BARRIO", nullable = false)
+    private long codBarrio;
 
-    public BarrioPK()
-    {
+    public BarrioPK() {
     }
 
-    public BarrioPK(long idPais, long idProvincia, long idMunicipio, long idBarrio)
-    {
-        this.idPais = idPais;
-        this.idProvincia = idProvincia;
-        this.idMunicipio = idMunicipio;
-        this.idBarrio = idBarrio;
+    public BarrioPK(long codPais, long codProvincia, long codMunicipio, long codBarrio) {
+        this.codPais = codPais;
+        this.codProvincia = codProvincia;
+        this.codMunicipio = codMunicipio;
+        this.codBarrio = codBarrio;
     }
 
-    public long getIdPais()
-    {
-        return idPais;
+    public long getCodPais() {
+        return codPais;
     }
 
-    public void setIdPais(long idPais)
-    {
-        this.idPais = idPais;
+    public void setCodPais(long codPais) {
+        this.codPais = codPais;
     }
 
-    public long getIdProvincia()
-    {
-        return idProvincia;
+    public long getCodProvincia() {
+        return codProvincia;
     }
 
-    public void setIdProvincia(long idProvincia)
-    {
-        this.idProvincia = idProvincia;
+    public void setCodProvincia(long codProvincia) {
+        this.codProvincia = codProvincia;
     }
 
-    public long getIdMunicipio()
-    {
-        return idMunicipio;
+    public long getCodMunicipio() {
+        return codMunicipio;
     }
 
-    public void setIdMunicipio(long idMunicipio)
-    {
-        this.idMunicipio = idMunicipio;
+    public void setCodMunicipio(long codMunicipio) {
+        this.codMunicipio = codMunicipio;
     }
 
-    public long getIdBarrio()
-    {
-        return idBarrio;
+    public long getCodBarrio() {
+        return codBarrio;
     }
 
-    public void setIdBarrio(long idBarrio)
-    {
-        this.idBarrio = idBarrio;
+    public void setCodBarrio(long codBarrio) {
+        this.codBarrio = codBarrio;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
-        hash += (int) idPais;
-        hash += (int) idProvincia;
-        hash += (int) idMunicipio;
-        hash += (int) idBarrio;
+        hash += (int) codPais;
+        hash += (int) codProvincia;
+        hash += (int) codMunicipio;
+        hash += (int) codBarrio;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BarrioPK))
-            {
+        if (!(object instanceof BarrioPK)) {
             return false;
-            }
+        }
         BarrioPK other = (BarrioPK) object;
-        if (this.idPais != other.idPais) return false;
-        if (this.idProvincia != other.idProvincia) return false;
-        if (this.idMunicipio != other.idMunicipio) return false;
-        if (this.idBarrio != other.idBarrio) return false;
+        if (this.codPais != other.codPais) {
+            return false;
+        }
+        if (this.codProvincia != other.codProvincia) {
+            return false;
+        }
+        if (this.codMunicipio != other.codMunicipio) {
+            return false;
+        }
+        if (this.codBarrio != other.codBarrio) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
-        return "com.infosgroup.planilla.modelo.entidades.BarrioPK[ idPais=" + idPais + ", idProvincia=" + idProvincia + ", idMunicipio=" + idMunicipio + ", idBarrio=" + idBarrio + " ]";
+    public String toString() {
+        return "com.infosgroup.planilla.modelo.entidades.BarrioPK[ codPais=" + codPais + ", codProvincia=" + codProvincia + ", codMunicipio=" + codMunicipio + ", codBarrio=" + codBarrio + " ]";
     }
     
 }

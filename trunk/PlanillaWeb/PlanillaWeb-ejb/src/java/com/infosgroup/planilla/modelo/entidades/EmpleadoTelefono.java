@@ -7,7 +7,6 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -22,84 +21,69 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "EMPLEADO_TELEFONO")
 @XmlRootElement
-@NamedQueries(
-    {
+@NamedQueries({
     @NamedQuery(name = "EmpleadoTelefono.findAll", query = "SELECT e FROM EmpleadoTelefono e"),
-    @NamedQuery(name = "EmpleadoTelefono.findByIdCompania", query = "SELECT e FROM EmpleadoTelefono e WHERE e.empleadoTelefonoPK.idCompania = :idCompania"),
-    @NamedQuery(name = "EmpleadoTelefono.findByIdSucursal", query = "SELECT e FROM EmpleadoTelefono e WHERE e.empleadoTelefonoPK.idSucursal = :idSucursal"),
-    @NamedQuery(name = "EmpleadoTelefono.findByIdEmpleado", query = "SELECT e FROM EmpleadoTelefono e WHERE e.empleadoTelefonoPK.idEmpleado = :idEmpleado"),
-    @NamedQuery(name = "EmpleadoTelefono.findByIdTelefono", query = "SELECT e FROM EmpleadoTelefono e WHERE e.empleadoTelefonoPK.idTelefono = :idTelefono")
-    })
-public class EmpleadoTelefono implements Serializable
-{
-
+    @NamedQuery(name = "EmpleadoTelefono.findByCodCia", query = "SELECT e FROM EmpleadoTelefono e WHERE e.empleadoTelefonoPK.codCia = :codCia"),
+    @NamedQuery(name = "EmpleadoTelefono.findByCodSucursal", query = "SELECT e FROM EmpleadoTelefono e WHERE e.empleadoTelefonoPK.codSucursal = :codSucursal"),
+    @NamedQuery(name = "EmpleadoTelefono.findByCodEmpleado", query = "SELECT e FROM EmpleadoTelefono e WHERE e.empleadoTelefonoPK.codEmpleado = :codEmpleado"),
+    @NamedQuery(name = "EmpleadoTelefono.findByCodTelefono", query = "SELECT e FROM EmpleadoTelefono e WHERE e.empleadoTelefonoPK.codTelefono = :codTelefono")})
+public class EmpleadoTelefono implements Serializable {
     private static final long serialVersionUID = 1L;
-
     @EmbeddedId
     protected EmpleadoTelefonoPK empleadoTelefonoPK;
-
-    @JoinColumn(name = "ID_TELEFONO", referencedColumnName = "ID_TELEFONO", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "COD_TELEFONO", referencedColumnName = "COD_TELEFONO", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
     private Telefono telefono;
 
-    public EmpleadoTelefono()
-    {
+    public EmpleadoTelefono() {
     }
 
-    public EmpleadoTelefono(EmpleadoTelefonoPK empleadoTelefonoPK)
-    {
+    public EmpleadoTelefono(EmpleadoTelefonoPK empleadoTelefonoPK) {
         this.empleadoTelefonoPK = empleadoTelefonoPK;
     }
 
-    public EmpleadoTelefono(long idCompania, long idSucursal, long idEmpleado, long idTelefono)
-    {
-        this.empleadoTelefonoPK = new EmpleadoTelefonoPK(idCompania, idSucursal, idEmpleado, idTelefono);
+    public EmpleadoTelefono(long codCia, long codSucursal, long codEmpleado, long codTelefono) {
+        this.empleadoTelefonoPK = new EmpleadoTelefonoPK(codCia, codSucursal, codEmpleado, codTelefono);
     }
 
-    public EmpleadoTelefonoPK getEmpleadoTelefonoPK()
-    {
+    public EmpleadoTelefonoPK getEmpleadoTelefonoPK() {
         return empleadoTelefonoPK;
     }
 
-    public void setEmpleadoTelefonoPK(EmpleadoTelefonoPK empleadoTelefonoPK)
-    {
+    public void setEmpleadoTelefonoPK(EmpleadoTelefonoPK empleadoTelefonoPK) {
         this.empleadoTelefonoPK = empleadoTelefonoPK;
     }
 
-    public Telefono getTelefono()
-    {
+    public Telefono getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(Telefono telefono)
-    {
+    public void setTelefono(Telefono telefono) {
         this.telefono = telefono;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (empleadoTelefonoPK != null ? empleadoTelefonoPK.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EmpleadoTelefono))
-            {
+        if (!(object instanceof EmpleadoTelefono)) {
             return false;
-            }
+        }
         EmpleadoTelefono other = (EmpleadoTelefono) object;
-        if ((this.empleadoTelefonoPK == null && other.empleadoTelefonoPK != null) || (this.empleadoTelefonoPK != null && !this.empleadoTelefonoPK.equals(other.empleadoTelefonoPK))) return false;
+        if ((this.empleadoTelefonoPK == null && other.empleadoTelefonoPK != null) || (this.empleadoTelefonoPK != null && !this.empleadoTelefonoPK.equals(other.empleadoTelefonoPK))) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.EmpleadoTelefono[ empleadoTelefonoPK=" + empleadoTelefonoPK + " ]";
     }
     

@@ -8,83 +8,71 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author root
  */
 @Embeddable
-public class RolPK implements Serializable
-{
-
+public class RolPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_COMPANIA", nullable = false)
-    private long idCompania;
-
+    @Column(name = "COD_CIA", nullable = false)
+    private long codCia;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_ROL", nullable = false)
-    private long idRol;
+    @Column(name = "COD_ROL", nullable = false)
+    private long codRol;
 
-    public RolPK()
-    {
+    public RolPK() {
     }
 
-    public RolPK(long idCompania, long idRol)
-    {
-        this.idCompania = idCompania;
-        this.idRol = idRol;
+    public RolPK(long codCia, long codRol) {
+        this.codCia = codCia;
+        this.codRol = codRol;
     }
 
-    public long getIdCompania()
-    {
-        return idCompania;
+    public long getCodCia() {
+        return codCia;
     }
 
-    public void setIdCompania(long idCompania)
-    {
-        this.idCompania = idCompania;
+    public void setCodCia(long codCia) {
+        this.codCia = codCia;
     }
 
-    public long getIdRol()
-    {
-        return idRol;
+    public long getCodRol() {
+        return codRol;
     }
 
-    public void setIdRol(long idRol)
-    {
-        this.idRol = idRol;
+    public void setCodRol(long codRol) {
+        this.codRol = codRol;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
-        hash += (int) idCompania;
-        hash += (int) idRol;
+        hash += (int) codCia;
+        hash += (int) codRol;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof RolPK))
-            {
+        if (!(object instanceof RolPK)) {
             return false;
-            }
+        }
         RolPK other = (RolPK) object;
-        if (this.idCompania != other.idCompania) return false;
-        if (this.idRol != other.idRol) return false;
+        if (this.codCia != other.codCia) {
+            return false;
+        }
+        if (this.codRol != other.codRol) {
+            return false;
+        }
         return true;
     }
 
     @Override
-    public String toString()
-    {
-        return "com.infosgroup.planilla.modelo.entidades.RolPK[ idCompania=" + idCompania + ", idRol=" + idRol + " ]";
+    public String toString() {
+        return "com.infosgroup.planilla.modelo.entidades.RolPK[ codCia=" + codCia + ", codRol=" + codRol + " ]";
     }
     
 }

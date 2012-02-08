@@ -12,7 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -22,7 +21,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,23 +30,22 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "CANDIDATO_CONCURSO")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CandidatoConcurso.findAll", query = "SELECT c FROM CandidatoConcurso c"),
     @NamedQuery(name = "CandidatoConcurso.findByCodCia", query = "SELECT c FROM CandidatoConcurso c WHERE c.candidatoConcursoPK.codCia = :codCia"),
     @NamedQuery(name = "CandidatoConcurso.findByCandidato", query = "SELECT c FROM CandidatoConcurso c WHERE c.candidatoConcursoPK.candidato = :candidato"),
     @NamedQuery(name = "CandidatoConcurso.findByEstado", query = "SELECT c FROM CandidatoConcurso c WHERE c.estado = :estado"),
     @NamedQuery(name = "CandidatoConcurso.findByConcurso", query = "SELECT c FROM CandidatoConcurso c WHERE c.candidatoConcursoPK.concurso = :concurso"),
-    @NamedQuery(name = "CandidatoConcurso.findByNotaEvaluacion", query = "SELECT c FROM CandidatoConcurso c WHERE c.notaEvaluacion = :notaEvaluacion")})
-public class CandidatoConcurso implements Serializable, Comparable<CandidatoConcurso>{
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidatoConcurso")
-    private List<EvaluacionCandidato> evaluacionCandidatoList;
+    @NamedQuery(name = "CandidatoConcurso.findByNotaEvaluacion", query = "SELECT c FROM CandidatoConcurso c WHERE c.notaEvaluacion = :notaEvaluacion"),
+    @NamedQuery(name = "CandidatoConcurso.findByObservacion", query = "SELECT c FROM CandidatoConcurso c WHERE c.observacion = :observacion")})
+public class CandidatoConcurso implements Serializable, Comparable<CandidatoConcurso> {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CandidatoConcursoPK candidatoConcursoPK;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "ESTADO", nullable = false, length = 100)
     private String estado;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -54,6 +53,9 @@ public class CandidatoConcurso implements Serializable, Comparable<CandidatoConc
     @NotNull
     @Column(name = "NOTA_EVALUACION", nullable = false, precision = 5, scale = 2)
     private BigDecimal notaEvaluacion;
+    @Basic(optional = false)
+    @Column(name = "OBSERVACION", nullable = false, length = 200)
+    private String observacion;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "CONCURSO", referencedColumnName = "COD_CONCURSO", nullable = false, insertable = false, updatable = false)})
@@ -62,13 +64,10 @@ public class CandidatoConcurso implements Serializable, Comparable<CandidatoConc
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Candidato candidato1;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "OBSERVACION", nullable = false, length = 200)
-    private String observacion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidatoConcurso")
+    private List<EvaluacionCandidato> evaluacionCandidatoList;
     @Transient
     private Integer orden = 10;
 
@@ -79,10 +78,11 @@ public class CandidatoConcurso implements Serializable, Comparable<CandidatoConc
         this.candidatoConcursoPK = candidatoConcursoPK;
     }
 
-    public CandidatoConcurso(CandidatoConcursoPK candidatoConcursoPK, String estado, BigDecimal notaEvaluacion) {
+    public CandidatoConcurso(CandidatoConcursoPK candidatoConcursoPK, String estado, BigDecimal notaEvaluacion, String observacion) {
         this.candidatoConcursoPK = candidatoConcursoPK;
         this.estado = estado;
         this.notaEvaluacion = notaEvaluacion;
+        this.observacion = observacion;
     }
 
     public CandidatoConcurso(long codCia, long candidato, long concurso) {
@@ -113,6 +113,14 @@ public class CandidatoConcurso implements Serializable, Comparable<CandidatoConc
         this.notaEvaluacion = notaEvaluacion;
     }
 
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+
     public Concurso getConcurso1() {
         return concurso1;
     }
@@ -129,12 +137,13 @@ public class CandidatoConcurso implements Serializable, Comparable<CandidatoConc
         this.candidato1 = candidato1;
     }
 
-    public String getObservacion() {
-        return observacion;
+    @XmlTransient
+    public List<EvaluacionCandidato> getEvaluacionCandidatoList() {
+        return evaluacionCandidatoList;
     }
 
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
+    public void setEvaluacionCandidatoList(List<EvaluacionCandidato> evaluacionCandidatoList) {
+        this.evaluacionCandidatoList = evaluacionCandidatoList;
     }
 
     public Integer getOrden() {
@@ -172,14 +181,6 @@ public class CandidatoConcurso implements Serializable, Comparable<CandidatoConc
 
     @Override
     public int compareTo(CandidatoConcurso t) {
-        return (this.notaEvaluacion.compareTo(t.notaEvaluacion)*-1);
-    }
-
-    public List<EvaluacionCandidato> getEvaluacionCandidatoList() {
-        return evaluacionCandidatoList;
-    }
-
-    public void setEvaluacionCandidatoList(List<EvaluacionCandidato> evaluacionCandidatoList) {
-        this.evaluacionCandidatoList = evaluacionCandidatoList;
+        return (this.notaEvaluacion.compareTo(t.notaEvaluacion) * -1);
     }
 }
