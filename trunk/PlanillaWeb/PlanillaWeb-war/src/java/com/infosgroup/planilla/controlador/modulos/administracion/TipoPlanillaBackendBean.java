@@ -4,11 +4,13 @@
  */
 package com.infosgroup.planilla.controlador.modulos.administracion;
 
-import com.infosgroup.planilla.modelo.entidades.Compania;
-import com.infosgroup.planilla.modelo.entidades.TipoPlanilla;
-import com.infosgroup.planilla.modelo.entidades.TipoPlanillaPK;
-import com.infosgroup.planilla.modelo.facades.CompaniaFacade;
+import com.infosgroup.planilla.modelo.entidades.Cias;
+import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
+import com.infosgroup.planilla.modelo.entidades.TiposPlanillaPK;
+import com.infosgroup.planilla.modelo.facades.CiasFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPlanillaFacade;
+import com.infosgroup.planilla.view.AbstractJSFPage;
+import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
@@ -21,20 +23,23 @@ import javax.faces.application.FacesMessage;
  *
  * @author root
  */
-@ManagedBean(name="administracion$tipoPlanilla")
+@ManagedBean(name = "administracion$tipoPlanilla")
 @ViewScoped
-public class TipoPlanillaBackendBean implements Serializable{
+public class TipoPlanillaBackendBean extends AbstractJSFPage implements Serializable {
 
-    /** Creates a new instance of TipoPlanillaBackendBean */
+    @EJB
+    private CiasFacade companiasFacade;
+    @EJB
+    private TipoPlanillaFacade tipoPlanillaFacade;
+    private Short idTipoPlanilla;
+    private String nombreTipoPlanilla;
+    private List<Cias> listaCompanias;
+    private Integer compania;
+    private List<TiposPlanilla> ListaTiposPlanilla;
+    private TiposPlanilla tipoPlanillaSeleccionado;
+
     public TipoPlanillaBackendBean() {
     }
-    
- @EJB
- private CompaniaFacade companiasFacade; 
- 
-    @EJB
-      private TipoPlanillaFacade tipoPlanillaFacade;
-      private Integer idTipoPlanilla;
 
     public Integer getCompania() {
         return compania;
@@ -43,13 +48,12 @@ public class TipoPlanillaBackendBean implements Serializable{
     public void setCompania(Integer compania) {
         this.compania = compania;
     }
-      private Integer compania;
 
-    public Integer getIdTipoPlanilla() {
+    public Short getIdTipoPlanilla() {
         return idTipoPlanilla;
     }
 
-    public void setIdTipoPlanilla(Integer idTipoPlanilla) {
+    public void setIdTipoPlanilla(Short idTipoPlanilla) {
         this.idTipoPlanilla = idTipoPlanilla;
     }
 
@@ -60,71 +64,58 @@ public class TipoPlanillaBackendBean implements Serializable{
     public void setNombreTipoPlanilla(String nombreTipoPlanilla) {
         this.nombreTipoPlanilla = nombreTipoPlanilla;
     }
-      private String nombreTipoPlanilla;
-      
-      private List<Compania> listaCompanias;
 
-    public List<Compania> getListaCompanias() {
+    public List<Cias> getListaCompanias() {
         listaCompanias = companiasFacade.findAll();
         return listaCompanias;
     }
 
-    public void setListaCompanias(List<Compania> listaCompanias) {
+    public void setListaCompanias(List<Cias> listaCompanias) {
         this.listaCompanias = listaCompanias;
     }
-      
-      
-      
-      private List<TipoPlanilla> ListaTiposPlanilla;
 
-    public List<TipoPlanilla> getListaTiposPlanilla() {
+    public List<TiposPlanilla> getListaTiposPlanilla() {
         ListaTiposPlanilla = tipoPlanillaFacade.findAll();
         return ListaTiposPlanilla;
     }
 
-    public void setListaTiposPLanilla(List<TipoPlanilla> ListaTiposPlanilla) {
+    public void setListaTiposPLanilla(List<TiposPlanilla> ListaTiposPlanilla) {
         this.ListaTiposPlanilla = ListaTiposPlanilla;
     }
-      //-------
-    
-    private TipoPlanilla tipoPlanillaSeleccionado;
 
-    public TipoPlanilla getTipoPlanillaSeleccionado() {
+    public TiposPlanilla getTipoPlanillaSeleccionado() {
         return tipoPlanillaSeleccionado;
     }
 
-    public void setTipoPlanillaSeleccionado(TipoPlanilla tipoPlanillaSeleccionado) {
+    public void setTipoPlanillaSeleccionado(TiposPlanilla tipoPlanillaSeleccionado) {
         this.tipoPlanillaSeleccionado = tipoPlanillaSeleccionado;
     }
-    
-    // =============================================================================================
-      public String guardar_action(){
-      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ha guardado el Tipo Planilla", ""));
-      TipoPlanilla e = new TipoPlanilla();
-      e.setNomTipoPlanilla(nombreTipoPlanilla);
-      e.setTipoPlanillaPK(new TipoPlanillaPK(1 ,idTipoPlanilla) );
-      tipoPlanillaFacade.create(e);
-      idTipoPlanilla = null;
-      nombreTipoPlanilla = null;
-      e.setNomTipoPlanilla(null);
-      e.setTipoPlanillaPK(null);
-      
-      return null;
-      }
-        
-      public String eliminar_action() {
+
+    public String guardar_action() {
+        TiposPlanilla e = new TiposPlanilla();
+        e.setNomTipopla(nombreTipoPlanilla);
+        e.setTiposPlanillaPK(new TiposPlanillaPK(getSessionBeanADM().getCompania().getCodCia(), idTipoPlanilla));
+        tipoPlanillaFacade.create(e);
+        idTipoPlanilla = null;
+        limpiarCampos();
+        addMessage("Tipo Planilla", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+        return null;
+    }
+
+    public String eliminar_action() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ha eliminado el registro", ""));
         if (tipoPlanillaSeleccionado == null) {
             return null;
         }
-        TipoPlanilla e = tipoPlanillaFacade.find(tipoPlanillaSeleccionado.getTipoPlanillaPK());
+        TiposPlanilla e = tipoPlanillaFacade.find(tipoPlanillaSeleccionado.getTiposPlanillaPK());
 
         tipoPlanillaFacade.remove(e);
 
         return null;
     }
-      
-            
-            
-    
+
+    @Override
+    protected void limpiarCampos() {
+        nombreTipoPlanilla = null;
+    }
 }

@@ -1,10 +1,10 @@
 /*
-* To change this template, choose Tools | Templates
-* and open the template in the editor.
-*/
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
-import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
@@ -20,135 +20,111 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
 /**
-*
-* @author root
-*/
+ *
+ * @author root
+ */
 @ManagedBean(name = "planilla$calendario")
 @ViewScoped
-public class CalendarioBackendBean extends AbstractJSFPage implements Serializable
-{
-@EJB
-private EmpleadosSessionBean empleadosBean;
+public class CalendarioBackendBean extends AbstractJSFPage implements Serializable {
 
-@EJB
-private PlanillaSessionBean planillaBean;
+    @EJB
+    private EmpleadosSessionBean empleadosBean;
+    @EJB
+    private PlanillaSessionBean planillaBean;
+    private String anio;
+    private String estilo;
+    private List<SelectItem> listaAniosModel;
+    private List<Empleados> listaEmpleados;
+    private String fechas;
+    private Empleados empleadoSeleccionado;
 
-@PostConstruct
-public void init()
-{
-anio = "" + Calendar.getInstance().get(Calendar.YEAR);
-listaEmpleados = empleadosBean.listarEmpleados();
-}
-
-@Override
-protected void limpiarCampos()
-{
-}
-
-private String anio;
-
-public String getAnio()
-{
-return anio;
-}
-
-public void setAnio(String anio)
-{
-this.anio = anio;
-}
-
-public String mostrarAcciones$action()
-{
-if (empleadoSeleccionado == null)
-    {
-    addMessage("RRHH", "Seleccione un empleado", TipoMensaje.INFORMACION);
-    return null;
+    @PostConstruct
+    public void init() {
+        anio = "" + Calendar.getInstance().get(Calendar.YEAR);
+        listaEmpleados = empleadosBean.listarEmpleados();
     }
 
-Integer tipo = null;
-if (estilo == null)
-    {
-    addMessage("RRHH", "Seleccione la acci&oacute;n que desea mostrar en el calendario", TipoMensaje.INFORMACION);
-    return null;
+    @Override
+    protected void limpiarCampos() {
     }
 
-if (estilo.equals("festivos"))
-    tipo = 1;
-else if (estilo.equals("laborales"))
-    tipo = 2;
-else if (estilo.equals("vacaciones"))
-    tipo = 3;
-else if (estilo.equals("permisos"))
-    tipo = 4;
-else if (estilo.equals("capacitaciones"))
-    tipo = 5;
-fechas = planillaBean.cadenaDiasCalendario(tipo, empleadoSeleccionado, Long.parseLong(anio));
-System.out.println(fechas);
-return null;
-}
-
-private List<SelectItem> listaAniosModel;
-
-public List<SelectItem> getListaAniosModel()
-{
-listaAniosModel = new ArrayList<SelectItem>(0);
-for (Integer i = 2000; i < 2100; i++)
-    {
-    listaAniosModel.add(new SelectItem(i.toString()));
+    public String getAnio() {
+        return anio;
     }
-return listaAniosModel;
-}
 
-public void setListaAniosModel(List<SelectItem> listaAniosModel)
-{
-this.listaAniosModel = listaAniosModel;
-}
+    public void setAnio(String anio) {
+        this.anio = anio;
+    }
 
-private String fechas;
+    public String mostrarAcciones$action() {
+        if (empleadoSeleccionado == null) {
+            addMessage("RRHH", "Seleccione un empleado", TipoMensaje.INFORMACION);
+            return null;
+        }
 
-public String getFechas()
-{
-return fechas;
-}
+        Integer tipo = null;
+        if (estilo == null) {
+            addMessage("RRHH", "Seleccione la acci&oacute;n que desea mostrar en el calendario", TipoMensaje.INFORMACION);
+            return null;
+        }
 
-public void setFechas(String fechas)
-{
-this.fechas = fechas;
-}
+        if (estilo.equals("festivos")) {
+            tipo = 1;
+        } else if (estilo.equals("laborales")) {
+            tipo = 2;
+        } else if (estilo.equals("vacaciones")) {
+            tipo = 3;
+        } else if (estilo.equals("permisos")) {
+            tipo = 4;
+        } else if (estilo.equals("capacitaciones")) {
+            tipo = 5;
+        }
+        fechas = planillaBean.cadenaDiasCalendario(tipo, empleadoSeleccionado, Long.parseLong(anio));
+        System.out.println(fechas);
+        return null;
+    }
 
-private String estilo;
+    public List<SelectItem> getListaAniosModel() {
+        listaAniosModel = new ArrayList<SelectItem>(0);
+        for (Integer i = 2000; i < 2100; i++) {
+            listaAniosModel.add(new SelectItem(i.toString()));
+        }
+        return listaAniosModel;
+    }
 
-public String getEstilo()
-{
-return estilo;
-}
+    public void setListaAniosModel(List<SelectItem> listaAniosModel) {
+        this.listaAniosModel = listaAniosModel;
+    }
 
-public void setEstilo(String estilo)
-{
-this.estilo = estilo;
-}
+    public String getFechas() {
+        return fechas;
+    }
 
-private List<Empleado> listaEmpleados;
+    public void setFechas(String fechas) {
+        this.fechas = fechas;
+    }
 
-public List<Empleado> getListaEmpleados()
-{
-return listaEmpleados;
-}
+    public String getEstilo() {
+        return estilo;
+    }
 
-public void setListaEmpleados(List<Empleado> listaEmpleados)
-{
-this.listaEmpleados = listaEmpleados;
-}
+    public void setEstilo(String estilo) {
+        this.estilo = estilo;
+    }
 
-private Empleado empleadoSeleccionado;
+    public List<Empleados> getListaEmpleados() {
+        return listaEmpleados;
+    }
 
-public Empleado getEmpleadoSeleccionado()
-{
-return empleadoSeleccionado;
-}
+    public void setListaEmpleados(List<Empleados> listaEmpleados) {
+        this.listaEmpleados = listaEmpleados;
+    }
 
-public void setEmpleadoSeleccionado(Empleado empleadoSeleccionado)
-{
-this.empleadoSeleccionado = empleadoSeleccionado;
-}
+    public Empleados getEmpleadoSeleccionado() {
+        return empleadoSeleccionado;
+    }
+
+    public void setEmpleadoSeleccionado(Empleados empleadoSeleccionado) {
+        this.empleadoSeleccionado = empleadoSeleccionado;
+    }
 }

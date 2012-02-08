@@ -45,7 +45,7 @@ public class ReporteEvaluacionBackendBean extends AbstractJSFPage implements Ser
     private List<Campania> listaCampanias;
 
     public List<Campania> getListaCampanias() {
-        listaCampanias = empleadosSessionBean.findAllByCia(getSessionBeanADM().getCompania().getIdCompania());
+        listaCampanias = empleadosSessionBean.findAllByCia(getSessionBeanADM().getCompania().getCodCia());
         return listaCampanias;
     }
 

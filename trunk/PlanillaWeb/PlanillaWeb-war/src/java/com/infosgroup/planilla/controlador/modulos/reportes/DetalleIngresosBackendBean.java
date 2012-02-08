@@ -49,7 +49,7 @@ public class DetalleIngresosBackendBean extends AbstractJSFPage implements Seria
         }
         HashMap<String, Object> parametros = new HashMap<String, Object>();
         parametros.put("anio", anio.toString());
-        parametros.put("empresa", getSessionBeanADM().getCompania().getIdCompania().toString());
+        parametros.put("empresa", getSessionBeanADM().getCompania().getCodCia().toString());
         parametros.put("codDpAguinaldo", "6");
         reportesBean.generarReporteSQL(FacesContext.getCurrentInstance(), parametros, "repDetPagosEmpleado", FormatoReporte.EXCEL);
         return null;

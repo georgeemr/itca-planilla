@@ -11,7 +11,6 @@ import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,8 +30,8 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
     private Long tipoPlanilla;
     private String planilla;
     private Planilla planillaSeleccionada;
-    private Integer dias = 0;
-    private Integer horas = 0;
+    private Short dias = 0;
+    private Short horas = 0;
     private Double descuento = 0.0;
 
     public SolicitudPermiso(AccionesPersonalBackendBean encabezadoSolicitud) {
@@ -47,11 +46,11 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         this.descuento = descuento;
     }
 
-    public Integer getDias() {
+    public Short getDias() {
         return dias;
     }
 
-    public void setDias(Integer dias) {
+    public void setDias(Short dias) {
         this.dias = dias;
     }
 
@@ -71,11 +70,11 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         this.fechaInicial = fechaInicial;
     }
 
-    public Integer getHoras() {
+    public Short getHoras() {
         return horas;
     }
 
-    public void setHoras(Integer horas) {
+    public void setHoras(Short horas) {
         this.horas = horas;
     }
 
@@ -111,21 +110,21 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         AccionPersonal accionPersonal = new AccionPersonal();
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(planillaSeleccionada));
         accionPersonal.setTipoAccion(getTipoAccion());
-        accionPersonal.setEmpleado(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
+        accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
         accionPersonal.setStatus("G");
         accionPersonal.setFechaFinal(fechaFinal);
         accionPersonal.setFechaInicial(fechaInicial);
         accionPersonal.setPlanilla(planillaSeleccionada);
-        accionPersonal.setDias(dias.longValue());
+        accionPersonal.setDias( new BigDecimal(dias.shortValue()));
         accionPersonal.setCantidad(descuento != null ? new BigDecimal(descuento) : BigDecimal.ZERO);
-        accionPersonal.setHoras(horas != null ? horas.longValue() : null);
-        accionPersonal.setPuesto(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUltimoPuesto());
-        accionPersonal.setPuestoEmpleado(getEncabezadoSolicitud().getSessionBeanEMP().getPuestoEmpleadoSession());
+        accionPersonal.setHoras(horas != null ? horas.shortValue() : null);
+        accionPersonal.setPuestos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestos());
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
-        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo()));
+        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
+        planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
         StringBuilder mensaje = new StringBuilder();
 
         enviarCorreo(accionPersonal, "Mensaje de Prueba de accion de personal");
@@ -212,14 +211,14 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         setFechaFinal(event.getDate());
         if (getFechaInicial() != null && getFechaFinal() != null) {
             Long d = (getFechaFinal().getTime() - getFechaInicial().getTime()) / MILISEGUNDOS_POR_DIA;
-            setDias(d.intValue());
+            setDias(d.shortValue());
             d.intValue();
         } else {
             addMessage("Acciones de Personal", "Complete los campos de Fecha Inicial y Final", TipoMensaje.ERROR);
         }
     }
 
-    public boolean validaAccionPersonal( java.util.Date f1, java.util.Date f2 ) {
+    public boolean validaAccionPersonal(java.util.Date f1, java.util.Date f2) {
         Boolean error = Boolean.TRUE;
         if (f1 == null) {
             addMessage("Acciones de Personal", "Fecha inicio es un campo requerido.", TipoMensaje.ERROR);

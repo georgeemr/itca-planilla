@@ -22,7 +22,6 @@ import javax.faces.context.FacesContext;
 @ViewScoped
 public class EstadoCivilBackendBean implements Serializable {
 
-    /** Creates a new instance of EstadoCivilBackendBean */
     public EstadoCivilBackendBean() {
     }
     @EJB
@@ -48,25 +47,12 @@ public class EstadoCivilBackendBean implements Serializable {
     // =============================================================================================
 
     public String guardar_action() {
-        
-        FacesContext.getCurrentInstance().addMessage(null, 
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Salvado con exito", ""));
-        
         EstadoCivil e = new EstadoCivil();
-        e.setIdEstadoCivil(idEstadoCivil);
+        e.setCodEstadoCivil(idEstadoCivil);
         e.setNomEstadoCivil(nombreEstadoCivil);
-
-        
         estadoCivilFacade.create(e);
-
-
-
         idEstadoCivil = null;
         nombreEstadoCivil = null;
-
-        e.setIdEstadoCivil(null);
-        e.setNomEstadoCivil(null);
-
         return null;
     }
     // =============================================================================================
@@ -97,10 +83,8 @@ public class EstadoCivilBackendBean implements Serializable {
         if (estadoCivilSeleccionado == null) {
             return null;
         }
-        EstadoCivil e = estadoCivilFacade.find(estadoCivilSeleccionado.getIdEstadoCivil());
-
+        EstadoCivil e = estadoCivilFacade.find(estadoCivilSeleccionado.getCodEstadoCivil());
         estadoCivilFacade.remove(e);
-
         return null;
     }
 }

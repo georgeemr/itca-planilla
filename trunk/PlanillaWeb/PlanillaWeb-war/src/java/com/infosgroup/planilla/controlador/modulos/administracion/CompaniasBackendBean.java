@@ -4,8 +4,8 @@
  */
 package com.infosgroup.planilla.controlador.modulos.administracion;
 
-import com.infosgroup.planilla.modelo.entidades.Compania;
-import com.infosgroup.planilla.modelo.facades.CompaniaFacade;
+import com.infosgroup.planilla.modelo.entidades.Cias;
+import com.infosgroup.planilla.modelo.facades.CiasFacade;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
 import java.util.List;
@@ -27,15 +27,15 @@ public class CompaniasBackendBean extends AbstractJSFPage implements Serializabl
     }
 // ===================================================================================================
     @EJB
-    private CompaniaFacade companiaFacade;
+    private CiasFacade companiaFacade;
 // ===================================================================================================
-    private Long idCompania;
+    private Short idCompania;
 
-    public Long getIdCompania() {
+    public Short getIdCompania() {
         return idCompania;
     }
 
-    public void setIdCompania(Long idCompania) {
+    public void setIdCompania(Short idCompania) {
         this.idCompania = idCompania;
     }
     private String nomCompania;
@@ -66,14 +66,14 @@ public class CompaniasBackendBean extends AbstractJSFPage implements Serializabl
         this.razonSocial = razonSocial;
     }
 // ===================================================================================================
-    private List<Compania> listaCompanias;
+    private List<Cias> listaCompanias;
 
-    public List<Compania> getListaCompanias() {
+    public List<Cias> getListaCompanias() {
         listaCompanias = companiaFacade.findAll();
         return listaCompanias;
     }
 
-    public void setListaCompanias(List<Compania> listaCompanias) {
+    public void setListaCompanias(List<Cias> listaCompanias) {
         this.listaCompanias = listaCompanias;
     }
 // =============================================================================================
@@ -94,11 +94,10 @@ public class CompaniasBackendBean extends AbstractJSFPage implements Serializabl
 
         try {
                 if (estado == EstadoAccion.CREANDO) {
-                Compania c = new Compania();
+                Cias c = new Cias();
                
-                c.setIdCompania(companiaFacade.max() + 1L);
-                c.setNomCompania(nomCompania);
-                c.setDetCompania(detCompania);
+                c.setCodCia(companiaFacade.max());
+                c.setNomComercial(nomCompania);
                 c.setRazonSocial(razonSocial);
                 companiaFacade.create(c);
                 companiaSeleccionada = null;
@@ -109,14 +108,13 @@ public class CompaniasBackendBean extends AbstractJSFPage implements Serializabl
                     mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se ha seleccionado la compañia");
                     return null;
                 }
-                Compania c = companiaFacade.find(companiaSeleccionada.getIdCompania());
+                Cias c = companiaFacade.find(companiaSeleccionada.getCodCia());
                 if (c == null) {
                     mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se encontró la compañia");
                     return null;
                 }
                
-                c.setNomCompania(nomCompania);
-                c.setDetCompania(detCompania);
+                c.setNomComercial(nomCompania);
                 c.setRazonSocial(razonSocial);
                 companiaFacade.edit(c);
                 mostrarMensaje(FacesMessage.SEVERITY_INFO, "Datos de la compañia modificados");
@@ -142,9 +140,8 @@ public class CompaniasBackendBean extends AbstractJSFPage implements Serializabl
             return null;
         }
         estado = EstadoAccion.MODIFICANDO;
-        idCompania = companiaSeleccionada.getIdCompania();
-        nomCompania = companiaSeleccionada.getNomCompania();
-        detCompania = companiaSeleccionada.getDetCompania();
+        idCompania = companiaSeleccionada.getCodCia();
+        nomCompania = companiaSeleccionada.getNomComercial();
         razonSocial = companiaSeleccionada.getRazonSocial();
         return null;
     }
@@ -155,7 +152,7 @@ public class CompaniasBackendBean extends AbstractJSFPage implements Serializabl
             mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se ha seleccionado la compañia");
             return null;
         }
-        Compania c = companiaFacade.find(companiaSeleccionada.getIdCompania());
+        Cias c = companiaFacade.find(companiaSeleccionada.getCodCia());
         if (c == null) {
             mostrarMensaje(FacesMessage.SEVERITY_WARN, "Seleccione la compañia");
             return null;
@@ -167,13 +164,13 @@ public class CompaniasBackendBean extends AbstractJSFPage implements Serializabl
         return null;
     }
 // =============================================================================================
-    private Compania companiaSeleccionada;
+    private Cias companiaSeleccionada;
 
-    public Compania getCompaniaSeleccionada() {
+    public Cias getCompaniaSeleccionada() {
         return companiaSeleccionada;
     }
 
-    public void setCompaniaSeleccionada(Compania companiaSeleccionada) {
+    public void setCompaniaSeleccionada(Cias companiaSeleccionada) {
         this.companiaSeleccionada = companiaSeleccionada;
     }
 

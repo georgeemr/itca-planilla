@@ -80,7 +80,7 @@ public class ContratacionBackendBean extends AbstractJSFPage implements Serializ
     public List<Candidato> getListaCandidatos() {
         listaCandidatos = new ArrayList<Candidato>();
         if (getSessionBeanREC().getConcursoSeleccionado() != null) {
-            listaCandidatos.addAll(getSessionBeanREC().getConcursoSeleccionado().getCandidatoList());
+           listaCandidatos.addAll(getSessionBeanREC().getConcursoSeleccionado().getCandidatoList() ); 
         }
         return listaCandidatos;
     }

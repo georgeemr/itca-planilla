@@ -6,10 +6,10 @@ package com.infosgroup.planilla.controlador.modulos.planilla;
 
 import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudPermiso;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
-import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
-import com.infosgroup.planilla.modelo.entidades.TipoPlanilla;
+import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
@@ -39,14 +39,14 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private PlanillaSessionBean planillaSessionBean;
     private DataTable tablaSolicitudes;
     private List<AccionPersonal> listaSolicitudes;
-    private Long tipo;
+    private Short tipo;
     private List<TipoAccion> listaTipo;
     private List<TipoAccion> listaTipoNoAfecta;
-    private List<Empleado> listaJefes;
-    private List<Empleado> listaEmp;
-    private List<TipoPlanilla> listaTipos;
+    private List<Empleados> listaJefes;
+    private List<Empleados> listaEmp;
+    private List<TiposPlanilla> listaTipos;
     private List<Planilla> listaPlanillas;
-    private Long empresa;
+    private Short empresa;
     private Long tipoAccion;
     private DataTable tablaEmpleado;
     private String observacion;
@@ -84,16 +84,18 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public void init() {
         listaEmp = planillaSessionBean.listaEmpleados();
         listaPlanillas = planillaSessionBean.listarPlanilla();
-        if (isInRole("rrhh")) {
-            listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
-        } else if (isInRole("jefes")) {
-            listaSolicitudes = planillaSessionBean.findSolicitudesByJefe(getSessionBeanEMP().getEmpleadoSesion());
-        } else if (isInRole("empleados")) {
-            listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
-        } else {
-            listaSolicitudes = new ArrayList<AccionPersonal>();
-        }
-        empresa = getSessionBeanADM().getCompania().getIdCompania();
+//        if (isInRole("rrhh")) {
+//            listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
+//        } else if (isInRole("jefes")) {
+//            listaSolicitudes = planillaSessionBean.findSolicitudesByJefe(getSessionBeanEMP().getEmpleadoSesion());
+//        } else if (isInRole("empleados")) {
+//            listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+//        } else {
+//            listaSolicitudes = new ArrayList<AccionPersonal>();
+//        }
+        listaSolicitudes = planillaSessionBean.getAccionesByRol(getSessionBeanEMP().getEmpleadoSesion());
+
+        empresa = getSessionBeanADM().getCompania().getCodCia();
         solicitudPermiso = new SolicitudPermiso(this);
         fecha = new Date();
     }
@@ -117,11 +119,11 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.accionSeleccionada = accionSeleccionada;
     }
 
-    public Long getTipo() {
+    public Short getTipo() {
         return tipo;
     }
 
-    public void setTipo(Long tipo) {
+    public void setTipo(Short tipo) {
         this.tipo = tipo;
     }
 
@@ -133,29 +135,29 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.fecha = fecha;
     }
 
-    public List<Empleado> getListaEmp() {
+    public List<Empleados> getListaEmp() {
         return listaEmp;
     }
 
-    public void setListaEmp(List<Empleado> listaEmp) {
+    public void setListaEmp(List<Empleados> listaEmp) {
         this.listaEmp = listaEmp;
     }
 
-    public List<Empleado> getListaJefes() {
+    public List<Empleados> getListaJefes() {
         listaJefes = planillaSessionBean.listarJefes();
         return listaJefes;
     }
 
-    public void setListaJefes(List<Empleado> listaJefes) {
+    public void setListaJefes(List<Empleados> listaJefes) {
         this.listaJefes = listaJefes;
     }
 
-    public List<TipoPlanilla> getListaTipos() {
+    public List<TiposPlanilla> getListaTipos() {
         listaTipos = planillaSessionBean.listarTipos();
         return listaTipos;
     }
 
-    public void setListaTipos(List<TipoPlanilla> listaTipos) {
+    public void setListaTipos(List<TiposPlanilla> listaTipos) {
         this.listaTipos = listaTipos;
     }
 
@@ -192,11 +194,11 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.observacion = observacion;
     }
 
-    public long getEmpresa() {
+    public Short getEmpresa() {
         return empresa;
     }
 
-    public void setCia(long empresa) {
+    public void setCia(Short empresa) {
         this.empresa = empresa;
     }
 
@@ -226,7 +228,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public String consulta$action() {
-        listaSolicitudes = planillaSessionBean.listarAccionporTipo(empresa, /*tipoPlanilla*/ tipo);
+        listaSolicitudes = planillaSessionBean.getAccionesByRol(getSessionBeanEMP().getEmpleadoSesion());
         return null;
     }
 
@@ -241,8 +243,8 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public String getNombreJefe() {
         nombreJefe = "Ninguno";
         if (getSessionBeanEMP().getEmpleadoSesion() != null) {
-            if (getSessionBeanEMP().getEmpleadoSesion().getEmpleado() != null) {
-                nombreJefe = getSessionBeanEMP().getEmpleadoSesion().getEmpleado().getNombreCompleto();
+            if (getSessionBeanEMP().getEmpleadoSesion().getJefe()!= null) {
+                nombreJefe = getSessionBeanEMP().getEmpleadoSesion().getJefe().getNombreCompleto();
             }
         }
         return nombreJefe;

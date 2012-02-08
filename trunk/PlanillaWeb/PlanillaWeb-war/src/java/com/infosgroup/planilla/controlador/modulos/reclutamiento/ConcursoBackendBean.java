@@ -35,9 +35,9 @@ public class ConcursoBackendBean extends AbstractJSFPage implements Serializable
     private String nombreConcurso;
     private Date fechaFinal;
     private Long numeroPlazas;
-    private Long puesto;
+    private Short puesto;
     private String estadoConcurso;
-    private List<Puesto> listaPuestos;
+    private List<Puestos> listaPuestos;
     private List<EstadoConcurso> listaEstadoConcurso;
     private List<Concurso> listaConcursos;
     private DataTable tableConcursos;
@@ -79,20 +79,20 @@ public class ConcursoBackendBean extends AbstractJSFPage implements Serializable
         this.numeroPlazas = numeroPlazas;
     }
 
-    public Long getPuesto() {
+    public Short getPuesto() {
         return puesto;
     }
 
-    public void setPuesto(Long puesto) {
+    public void setPuesto(Short puesto) {
         this.puesto = puesto;
     }
 
-    public List<Puesto> getListaPuestos() {
-        listaPuestos = reclutamientoFacade.getPuestosByEmpresa( getSessionBeanADM().getCompania().getIdCompania() );
+    public List<Puestos> getListaPuestos() {
+        listaPuestos = reclutamientoFacade.getPuestosByEmpresa( getSessionBeanADM().getCompania() );
         return listaPuestos;
     }
 
-    public void setListaPuestos(List<Puesto> listaPuestos) {
+    public void setListaPuestos(List<Puestos> listaPuestos) {
         this.listaPuestos = listaPuestos;
     }
 
@@ -105,7 +105,7 @@ public class ConcursoBackendBean extends AbstractJSFPage implements Serializable
     }
 
     public List<EstadoConcurso> getListaEstadoConcurso() {
-        listaEstadoConcurso = reclutamientoFacade.getEstadoConcursosByEmpresa(1L);
+        listaEstadoConcurso = reclutamientoFacade.getEstadoConcursosByEmpresa( getSessionBeanADM().getCompania());
         return listaEstadoConcurso;
     }
 
@@ -114,7 +114,7 @@ public class ConcursoBackendBean extends AbstractJSFPage implements Serializable
     }
 
     public List<Concurso> getListaConcursos() {
-        listaConcursos = reclutamientoFacade.getConcursoByEmpresa(getSessionBeanADM().getCompania().getIdCompania());
+        listaConcursos = reclutamientoFacade.getConcursoByEmpresa(getSessionBeanADM().getCompania());
         return listaConcursos;
     }
 
@@ -131,7 +131,7 @@ public class ConcursoBackendBean extends AbstractJSFPage implements Serializable
     }
 
     public SelectItem[] getItemEstado() {
-        List<EstadoConcurso> k = reclutamientoFacade.getEstadoConcursosByEmpresa(getSessionBeanADM().getCompania().getIdCompania());
+        List<EstadoConcurso> k = reclutamientoFacade.getEstadoConcursosByEmpresa(getSessionBeanADM().getCompania());
         itemEstado = new SelectItem[k.size()];
         for (int f = 0; f < k.size(); f++) {
             SelectItem s = new SelectItem(k.get(f).getNombre(), k.get(f).getNombre());
@@ -147,7 +147,7 @@ public class ConcursoBackendBean extends AbstractJSFPage implements Serializable
     public String guardar$crud$action() {
         isError = Boolean.FALSE;
         validaCampos$action();
-        Long c = getSessionBeanADM().getCompania().getIdCompania();
+        Short c = getSessionBeanADM().getCompania().getCodCia();
         if (isError) {
             return null;
         }
@@ -157,13 +157,13 @@ public class ConcursoBackendBean extends AbstractJSFPage implements Serializable
         if (getSessionBeanADM().getEstadoAccion() == null || getSessionBeanADM().getEstadoAccion().equals(0)) {
             ConcursoPK pk = new ConcursoPK();
             pk.setCodCia(c);
-            pk.setCodConcurso(reclutamientoFacade.getMaxConcurso(1L));
+            pk.setCodConcurso(reclutamientoFacade.getMaxConcurso(getSessionBeanADM().getCompania()));
             concurso.setConcursoPK(pk);
             concurso.setNombre(nombreConcurso);
             concurso.setFechaInicial(fechaInicial);
             concurso.setFechaFinal(fechaFinal);
             concurso.setNumeroPlazas(numeroPlazas);
-            concurso.setPuesto(reclutamientoFacade.findPuestoById(new PuestoPK(c, puesto)));
+            concurso.setPuestos(reclutamientoFacade.findPuestoById(new PuestosPK(c, puesto)));
             concurso.setEstadoConcurso(reclutamientoFacade.findEstadoConcursoById(new EstadoConcursoPK(c, estadoConcurso)));
             try {
                 reclutamientoFacade.guardarConcurso(concurso);
@@ -184,7 +184,7 @@ public class ConcursoBackendBean extends AbstractJSFPage implements Serializable
             concurso.setFechaInicial(fechaInicial);
             concurso.setFechaFinal(fechaFinal);
             concurso.setNumeroPlazas(numeroPlazas);
-            concurso.setPuesto(reclutamientoFacade.findPuestoById(new PuestoPK(c, puesto)));
+            concurso.setPuestos(reclutamientoFacade.findPuestoById(new PuestosPK(c, puesto)));
             concurso.setEstadoConcurso(reclutamientoFacade.findEstadoConcursoById(new EstadoConcursoPK(c, estadoConcurso)));
             try {
                 reclutamientoFacade.editarConcurso(concurso);
@@ -225,7 +225,7 @@ public class ConcursoBackendBean extends AbstractJSFPage implements Serializable
         setFechaInicial(c.getFechaInicial());
         setFechaFinal(c.getFechaFinal());
         setNumeroPlazas(c.getNumeroPlazas());
-        setPuesto(c.getPuesto().getPuestoPK().getCodPuesto());
+        setPuesto(c.getPuestos().getPuestosPK().getCodPuesto());
         setEstadoConcurso(c.getEstadoConcurso().getEstadoConcursoPK().getCodigo());
         getSessionBeanADM().setEstadoAccion( 1 );
         return null;

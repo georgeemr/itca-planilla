@@ -4,9 +4,9 @@
  */
 package com.infosgroup.planilla.controlador.modulos.administracion;
 
-import com.infosgroup.planilla.modelo.entidades.Sucursal;
-import com.infosgroup.planilla.modelo.entidades.SucursalPK;
-import com.infosgroup.planilla.modelo.facades.SucursalFacade;
+import com.infosgroup.planilla.modelo.entidades.Agencias;
+import com.infosgroup.planilla.modelo.entidades.AgenciasPK;
+import com.infosgroup.planilla.modelo.facades.AgenciasFacade;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
@@ -22,16 +22,16 @@ import org.primefaces.event.SelectEvent;
  */
 @ManagedBean(name = "administracion$sucursalBackendBean")
 @ViewScoped
-public class SucursalBackendBean extends AbstractJSFPage implements Serializable {
+public class AgenciasBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
-    private SucursalFacade sucursalFacade;
-    private List<Sucursal> listaSucursales;
-    private Long sucursal;
+    private AgenciasFacade sucursalFacade;
+    private List<Agencias> listaSucursales;
+    private Short sucursal;
     private String nombre;
-    private Sucursal sucursalSeleccionada;
+    private Agencias sucursalSeleccionada;
 
-    public SucursalBackendBean() {
+    public AgenciasBackendBean() {
     }
 
     public String getNombre() {
@@ -42,35 +42,36 @@ public class SucursalBackendBean extends AbstractJSFPage implements Serializable
         this.nombre = nombre;
     }
 
-    public Long getSucursal() {
+    public Short getSucursal() {
         return sucursal;
     }
 
-    public void setSucursal(Long sucursal) {
+    public void setSucursal(Short sucursal) {
         this.sucursal = sucursal;
     }
 
-    public List<Sucursal> getListaSucursales() {
-        return sucursalFacade.findByCompania(getSessionBeanADM().getCompania());
+    public List<Agencias> getListaSucursales() {
+        listaSucursales = sucursalFacade.findByCompania(getSessionBeanADM().getCompania());
+        return listaSucursales;
     }
 
-    public void setListaSucursales(List<Sucursal> listaSucursales) {
+    public void setListaSucursales(List<Agencias> listaSucursales) {
         this.listaSucursales = listaSucursales;
     }
 
-    public Sucursal getSucursalSeleccionada() {
+    public Agencias getSucursalSeleccionada() {
         return sucursalSeleccionada;
     }
 
-    public void setSucursalSeleccionada(Sucursal sucursalSeleccionada) {
+    public void setSucursalSeleccionada(Agencias sucursalSeleccionada) {
         this.sucursalSeleccionada = sucursalSeleccionada;
     }
 
     /* Acciones */
     public String action_guardar() {
 
-        Sucursal nuevaSucursal = new Sucursal();
-        SucursalPK pk = new SucursalPK();
+        Agencias nuevaSucursal = new Agencias();
+        AgenciasPK pk = new AgenciasPK();
 
         if (sucursal == null) {
             addMessage("Crear Sucursal", "El Código de Sucursal es un campo obligatorio.", TipoMensaje.ERROR);
@@ -82,10 +83,10 @@ public class SucursalBackendBean extends AbstractJSFPage implements Serializable
             return null;
         }
 
-        pk.setIdCompania(getSessionBeanADM().getCompania().getIdCompania());
-        pk.setIdSucursal(sucursal);
-        nuevaSucursal.setSucursalPK(pk);
-        nuevaSucursal.setNomSucursal(nombre);
+        pk.setCodCia(getSessionBeanADM().getCompania().getCodCia());
+        pk.setCodAgencia(sucursal);
+        nuevaSucursal.setAgenciasPK(pk);
+        nuevaSucursal.setNomAgencia(nombre);
 
         try {
             sucursalFacade.edit(nuevaSucursal);
@@ -116,21 +117,21 @@ public class SucursalBackendBean extends AbstractJSFPage implements Serializable
     }
 
     public void onRowSelect(SelectEvent event) {
-        Sucursal s = (Sucursal) event.getObject();
+        Agencias s = (Agencias) event.getObject();
         setSucursalSeleccionada(s);
-        setSucursal(getSucursalSeleccionada().getSucursalPK().getIdSucursal());
-        setNombre(getSucursalSeleccionada().getNomSucursal());
+        setSucursal(getSucursalSeleccionada().getAgenciasPK().getCodAgencia());
+        setNombre(getSucursalSeleccionada().getNomAgencia());
     }
 
     public String onRowSelect() {
-        setSucursal(getSucursalSeleccionada().getSucursalPK().getIdSucursal());
-        setNombre(getSucursalSeleccionada().getNomSucursal());
+        setSucursal(getSucursalSeleccionada().getAgenciasPK().getCodAgencia());
+        setNombre(getSucursalSeleccionada().getNomAgencia());
         return null;
     }
 
     public String action_editar() {
-        setSucursal(getSucursalSeleccionada().getSucursalPK().getIdSucursal());
-        setNombre(getSucursalSeleccionada().getNomSucursal());
+        setSucursal(getSucursalSeleccionada().getAgenciasPK().getCodAgencia());
+        setNombre(getSucursalSeleccionada().getNomAgencia());
         return null;
     }
 

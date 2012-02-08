@@ -48,7 +48,7 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
 
     @PostConstruct
     public void initComponents(){
-        listaCandidatos = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania().getIdCompania());
+        listaCandidatos = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
     }
     
     public List<Candidato> getListaCandidatos() {
@@ -139,7 +139,7 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
         
         Candidato candidato = new Candidato();
         CandidatoPK pkCandidato = new CandidatoPK();
-        Long c = getSessionBeanADM().getCompania().getIdCompania();
+        Short c = getSessionBeanADM().getCompania().getCodCia();
         Date hoy = new Date();
         Integer anioHoy = hoy.getYear();
         Integer nac = fechaNacimiento.getYear();

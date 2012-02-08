@@ -11,19 +11,13 @@ import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.Date;
-//import javax.ejb.EJB;
-//import javax.faces.bean.ManagedBean;
-//import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author root
  */
-//@ManagedBean(name = "accionesPersonal$solicitarVacaciones")
-//@ViewScoped
 public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.Serializable {
 
-//    @EJB
     private PlanillaSessionBean planillaSessionBean;
     private Date fechaInicial;
     private Date fechaFinal;
@@ -154,7 +148,7 @@ public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.
         AccionPersonal accionPersonal = new AccionPersonal();
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(planillaSeleccionada));
         accionPersonal.setTipoAccion(getTipoAccion());
-        accionPersonal.setEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+        accionPersonal.setEmpleados(getSessionBeanEMP().getEmpleadoSesion());
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
         accionPersonal.setStatus("G");

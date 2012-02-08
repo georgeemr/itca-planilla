@@ -8,6 +8,8 @@ import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -111,7 +113,7 @@ public class EditarSolicitud extends AbstractJSFPage implements java.io.Serializ
         ap.setFechaFinal(event.getDate());
         if (ap.getFechaInicial() != null && ap.getFechaFinal() != null) {
             if (validaAccionPersonal(ap.getFechaInicial(), ap.getFechaFinal())) {
-                ap.setDias((ap.getFechaFinal().getTime() - ap.getFechaInicial().getTime()) / MILISEGUNDOS_POR_DIA);
+                ap.setDias(new BigDecimal((ap.getFechaFinal().getTime() - ap.getFechaInicial().getTime()) / MILISEGUNDOS_POR_DIA));
                 getSessionBeanPLA().setAccionSeleccionada(ap);
             }
         }
@@ -147,7 +149,7 @@ public class EditarSolicitud extends AbstractJSFPage implements java.io.Serializ
         } else {
             mensaje.append("\n\nProcesado por: ").append(getSessionBeanEMP().getEmpleadoSesion().getNombreCompleto()).append(" ( Recursos Humanos ) ");
         }
-        mensaje.append("\n\nAtte. \n\nDepartamento de Recursos Humanos ").append(getSessionBeanADM().getCompania().getNomCompania());
+        mensaje.append("\n\nAtte. \n\nDepartamento de Recursos Humanos ").append(getSessionBeanADM().getCompania().getNomComercial());
         return mensaje.toString();
     }
 }

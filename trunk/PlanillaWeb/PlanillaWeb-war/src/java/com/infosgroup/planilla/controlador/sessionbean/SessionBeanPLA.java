@@ -5,7 +5,7 @@
 package com.infosgroup.planilla.controlador.sessionbean;
 
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
-import com.infosgroup.planilla.modelo.entidades.DetPlanilla;
+//import com.infosgroup.planilla.modelo.entidades.DetPlanilla;
 import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -21,20 +21,20 @@ public class SessionBeanPLA {
     public SessionBeanPLA() {
     }
     
-    private DetPlanilla detalleSeleccionado;
+//    private DetPlanilla detalleSeleccionado;
     private ResumenAsistencia resumenSeleccionado;
     private AccionPersonal accionSeleccionada;
     private Boolean aprobados;
     private Boolean tbEmp = false;
     private Boolean tbJefes;
 
-    public DetPlanilla getDetalleSeleccionado() {
-        return detalleSeleccionado;
-    }
-
-    public void setDetalleSeleccionado(DetPlanilla detalleSeleccionado) {
-        this.detalleSeleccionado = detalleSeleccionado;
-    }
+//    public DetPlanilla getDetalleSeleccionado() {
+//        return detalleSeleccionado;
+//    }
+//
+//    public void setDetalleSeleccionado(DetPlanilla detalleSeleccionado) {
+//        this.detalleSeleccionado = detalleSeleccionado;
+//    }
 
     public ResumenAsistencia getResumenSeleccionado() {
         return resumenSeleccionado;
