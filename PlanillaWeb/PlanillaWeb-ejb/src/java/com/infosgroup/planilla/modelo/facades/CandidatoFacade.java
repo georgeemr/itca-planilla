@@ -6,6 +6,7 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.CandidatoPK;
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
 import com.infosgroup.planilla.modelo.estructuras.ModelConsultaCriterio;
 import java.text.ParseException;
@@ -44,9 +45,9 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         super(Candidato.class);
     }
 
-    public List<Candidato> findByCanditadoByEmpresa(Long empresa) {
+    public List<Candidato> findByCanditadoByEmpresa(Cias empresa) {
         List<Candidato> listaCandidatos = new ArrayList<Candidato>();
-        listaCandidatos.addAll(getEntityManager().createQuery("SELECT c FROM Candidato c WHERE c.candidatoPK.codCia = :codCia", Candidato.class).setParameter("codCia", empresa).getResultList());
+        listaCandidatos.addAll(getEntityManager().createQuery("SELECT c FROM Candidato c WHERE c.candidatoPK.codCia = :codCia", Candidato.class).setParameter("codCia", empresa.getCodCia()).getResultList());
         return listaCandidatos;
     }
 
@@ -77,14 +78,14 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
     public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String usuario) {
         List<Candidato> listaCandidatos = new ArrayList<Candidato>();
         for (Candidato candidato : findCandidatosAPreseleccionar(c)) {
-            if (getCandidatosByCriterios(c.getConcursoPK().getCodCia(), c.getPuesto().getPuestoPK().getCodPuesto(), candidato.getCandidatoPK().getCodCandidato(), usuario) == 1) {
+            if (getCandidatosByCriterios(c.getConcursoPK().getCodCia(), c.getPuestos().getPuestosPK().getCodPuesto(), candidato.getCandidatoPK().getCodCandidato(), usuario) == 1) {
                 listaCandidatos.add(candidato);
             }
         }
         return listaCandidatos;
     }
 
-    private Integer getCandidatosByCriterios(Long empresa, Long puesto, Long candidato, String usuario) {
+    private Integer getCandidatosByCriterios(Long empresa, short puesto, Long candidato, String usuario) {
         String nativeQuery = "select distinct t.cod_cia, t.puesto, t.tipo_criterio, t.correlativo, t.valor, t.valor_inicial_rango, t.valor_final_rango, "
                 + " u.operador,u.clase, "
                 + " v.campo, v.entidad, v.entidadpk "

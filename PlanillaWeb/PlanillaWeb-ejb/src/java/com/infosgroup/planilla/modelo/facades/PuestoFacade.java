@@ -4,8 +4,9 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
-import com.infosgroup.planilla.modelo.entidades.Puesto;
-import com.infosgroup.planilla.modelo.entidades.PuestoPK;
+import com.infosgroup.planilla.modelo.entidades.Cias;
+import com.infosgroup.planilla.modelo.entidades.Puestos;
+import com.infosgroup.planilla.modelo.entidades.PuestosPK;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.LocalBean;
@@ -19,7 +20,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 @LocalBean
-public class PuestoFacade extends AbstractFacade<Puesto, PuestoPK> {
+public class PuestoFacade extends AbstractFacade<Puestos, PuestosPK> {
 
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
@@ -29,13 +30,13 @@ public class PuestoFacade extends AbstractFacade<Puesto, PuestoPK> {
         return em;
     }
 
-    public List<Puesto> findPuestoByEmpresa(Long empresa) {
-        List<Puesto> puestos = new ArrayList<Puesto>();
-        puestos.addAll(getEntityManager().createNamedQuery("Puesto.findByCodCia", Puesto.class).setParameter("codCia", empresa).getResultList());
-        return puestos;
+    public List<Puestos> findPuestoByEmpresa(Cias cias) {
+        List<Puestos> puestos = new ArrayList<Puestos>();
+        puestos = getEntityManager().createQuery("SELECT p FROM Puestos p WHERE p.puestosPK.codCia = :codCia", Puestos.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        return puestos != null ? puestos : new ArrayList<Puestos>();
     }
 
     public PuestoFacade() {
-        super(Puesto.class);
+        super(Puestos.class);
     }
 }

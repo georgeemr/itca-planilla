@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.EstadoContrato;
 import com.infosgroup.planilla.modelo.entidades.EstadoContratoPK;
 import java.util.ArrayList;
@@ -33,9 +34,9 @@ public class EstadoContratoFacade extends AbstractFacade<EstadoContrato, EstadoC
     }
 
     @PermitAll
-    public List<EstadoContrato> findEstadoContratoByEmpresa(Long empresa) {
+    public List<EstadoContrato> findEstadoContratoByEmpresa(Cias empresa) {
         List<EstadoContrato> l = new ArrayList<EstadoContrato>();
-        l.addAll(em.createQuery("SELECT e FROM EstadoContrato e WHERE e.estadoContratoPK.codCia = :codCia", EstadoContrato.class).setParameter("codCia", empresa).getResultList());
+        l.addAll(em.createQuery("SELECT e FROM EstadoContrato e WHERE e.estadoContratoPK.codCia = :codCia", EstadoContrato.class).setParameter("codCia", empresa.getCodCia()).getResultList());
         return l;
     }
 }

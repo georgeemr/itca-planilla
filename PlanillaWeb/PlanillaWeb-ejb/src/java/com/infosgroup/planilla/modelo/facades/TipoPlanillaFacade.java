@@ -4,9 +4,9 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
-import com.infosgroup.planilla.modelo.entidades.Compania;
-import com.infosgroup.planilla.modelo.entidades.TipoPlanilla;
-import com.infosgroup.planilla.modelo.entidades.TipoPlanillaPK;
+import com.infosgroup.planilla.modelo.entidades.Cias;
+import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
+import com.infosgroup.planilla.modelo.entidades.TiposPlanillaPK;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -20,7 +20,7 @@ import javax.persistence.Query;
  * @author root
  */
 @Stateless
-public class TipoPlanillaFacade extends AbstractFacade<TipoPlanilla, TipoPlanillaPK> {
+public class TipoPlanillaFacade extends AbstractFacade<TiposPlanilla, TiposPlanillaPK> {
 
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
@@ -31,14 +31,19 @@ public class TipoPlanillaFacade extends AbstractFacade<TipoPlanilla, TipoPlanill
     }
 
     public TipoPlanillaFacade() {
-        super(TipoPlanilla.class);
+        super(TiposPlanilla.class);
     }
 
     @PermitAll
-    public List<TipoPlanilla> findByCompania(Compania compania) {
-        List<TipoPlanilla> lista = null;
-        Query q =em.createNamedQuery("TipoPlanilla.findByIdCompania", TipoPlanilla.class).setParameter("idCompania", compania.getIdCompania());
+    public List<TiposPlanilla> findByCompania(Cias compania) {
+        List<TiposPlanilla> lista = null;
+        Query q = em.createQuery("SELECT t FROM TiposPlanilla t WHERE t.tiposPlanillaPK.codCia = :codCia", TiposPlanilla.class).setParameter("codCia", compania.getCodCia());
         lista = q.getResultList();
-        return lista != null ? lista : new ArrayList<TipoPlanilla>(0);
+        return lista != null ? lista : new ArrayList<TiposPlanilla>(0);
+    }
+
+    public short max(Cias cias) {
+        Short max = (Short) getEntityManager().createQuery("SELECT max(t.tiposPlanillaPK.codTipopla) FROM TiposPlanilla t WHERE t.tiposPlanillaPK.codCia = :codCia").setParameter("codCia", cias.getCodCia()).getSingleResult();
+        return (max == null) ? 1 : ++max;
     }
 }

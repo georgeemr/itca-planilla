@@ -50,11 +50,11 @@ public class EvaluacionCandidatoFacade extends AbstractFacade<EvaluacionCandidat
 
     @PermitAll
     public void registraPruebasPorCandidato(CandidatoConcurso c) {
-        for (PruebaXPuesto pxp : c.getConcurso1().getPuesto().getPruebaXPuestoList()) {
+        for (PruebaXPuesto pxp : c.getConcurso1().getPuestos().getPruebaXPuestoList()) {
             EvaluacionCandidato avc = new EvaluacionCandidato();
             EvaluacionCandidatoPK pk = new EvaluacionCandidatoPK(
                     c.getCandidato1().getCandidatoPK().getCodCia(),
-                    c.getConcurso1().getPuesto().getPuestoPK().getCodPuesto(),
+                    c.getConcurso1().getPuestos().getPuestosPK().getCodPuesto(),
                     pxp.getPruebaXPuestoPK().getCodigo(),
                     c.getCandidato1().getCandidatoPK().getCodCandidato(),
                     c.getConcurso1().getConcursoPK().getCodConcurso());
