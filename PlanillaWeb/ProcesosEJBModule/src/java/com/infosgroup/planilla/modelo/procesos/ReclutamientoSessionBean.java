@@ -4,30 +4,30 @@
  */
 package com.infosgroup.planilla.modelo.procesos;
 
+import com.infosgroup.planilla.modelo.entidades.Agencias;
+import com.infosgroup.planilla.modelo.entidades.AgenciasPK;
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.CandidatoConcurso;
-import com.infosgroup.planilla.modelo.entidades.Compania;
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
 import com.infosgroup.planilla.modelo.entidades.Contrato;
 import com.infosgroup.planilla.modelo.entidades.ContratoPK;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
-import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcurso;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcursoPK;
 import com.infosgroup.planilla.modelo.entidades.EstadoContrato;
 import com.infosgroup.planilla.modelo.entidades.EstadoContratoPK;
 import com.infosgroup.planilla.modelo.entidades.EvaluacionCandidato;
-import com.infosgroup.planilla.modelo.entidades.Puesto;
-import com.infosgroup.planilla.modelo.entidades.PuestoPK;
-import com.infosgroup.planilla.modelo.entidades.Sucursal;
-import com.infosgroup.planilla.modelo.entidades.SucursalPK;
+import com.infosgroup.planilla.modelo.entidades.Puestos;
+import com.infosgroup.planilla.modelo.entidades.PuestosPK;
 import com.infosgroup.planilla.modelo.entidades.TipoContrato;
 import com.infosgroup.planilla.modelo.entidades.TipoContratoPK;
 import com.infosgroup.planilla.modelo.entidades.TipoDocumento;
-import com.infosgroup.planilla.modelo.entidades.TipoPlanilla;
-import com.infosgroup.planilla.modelo.entidades.TipoPlanillaPK;
 import com.infosgroup.planilla.modelo.entidades.TipoPuesto;
 import com.infosgroup.planilla.modelo.entidades.TipoPuestoPK;
+import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
+import com.infosgroup.planilla.modelo.entidades.TiposPlanillaPK;
 import com.infosgroup.planilla.modelo.facades.CandidatoConcursoFacade;
 import com.infosgroup.planilla.modelo.facades.CandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.ConcursoFacade;
@@ -39,7 +39,7 @@ import com.infosgroup.planilla.modelo.facades.EstadoConcursoFacade;
 import com.infosgroup.planilla.modelo.facades.EstadoContratoFacade;
 import com.infosgroup.planilla.modelo.facades.EvaluacionCandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
-import com.infosgroup.planilla.modelo.facades.SucursalFacade;
+import com.infosgroup.planilla.modelo.facades.AgenciasFacade;
 import com.infosgroup.planilla.modelo.facades.TipoContratoFacade;
 import com.infosgroup.planilla.modelo.facades.TipoDocumentoFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPlanillaFacade;
@@ -50,7 +50,6 @@ import javax.ejb.LocalBean;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.security.PermitAll;
-import javax.persistence.EntityExistsException;
 
 /**
  *
@@ -63,7 +62,7 @@ public class ReclutamientoSessionBean {
     @EJB
     private TipoPlanillaFacade tipoPlanillaFacade;
     @EJB
-    private SucursalFacade sucursalFacade;
+    private AgenciasFacade agenciasFacade;
     @EJB
     private EvaluacionCandidatoFacade evaluacionCandidatoFacade;
     @EJB
@@ -92,7 +91,7 @@ public class ReclutamientoSessionBean {
     private CriteriosXPuestoFacade criteriosXPuestoFacade;
     @EJB
     private TipoDocumentoFacade tipoDocumentoFacade;
-    
+
     public List<Concurso> getListaConcursos(Date fechaInicial, Date fechaFinal) {
         return concursoFacade.getConcursosByDate(fechaInicial, fechaFinal);
     }
@@ -101,15 +100,15 @@ public class ReclutamientoSessionBean {
         return concursoFacade.getConcursosActivos(empresa);
     }
 
-    public List<Concurso> getConcursoByEmpresa(Long empresa) {
+    public List<Concurso> getConcursoByEmpresa(Cias empresa) {
         return concursoFacade.findConcursoByEmpresa(empresa);
     }
 
-    public List<EstadoConcurso> getEstadoConcursosByEmpresa(Long empresa) {
+    public List<EstadoConcurso> getEstadoConcursosByEmpresa(Cias empresa) {
         return estadoConcursoFacade.findEstadoConcursoByEmpresa(empresa);
     }
 
-    public List<Puesto> getPuestosByEmpresa(Long empresa) {
+    public List<Puestos> getPuestosByEmpresa(Cias empresa) {
         return puestoFacade.findPuestoByEmpresa(empresa);
     }
 
@@ -117,12 +116,12 @@ public class ReclutamientoSessionBean {
         return tipoPuestoFacade.findTipoPuestoByEmpresa(empresa);
     }
 
-    public Integer getMaxConcurso(Long empresa) {
-        return concursoFacade.getMax(empresa).intValue();
+    public Integer getMaxConcurso(Cias empresa) {
+        return concursoFacade.max(empresa).intValue();
     }
 
     @PermitAll
-    public List<Candidato> getCandidatosByEmpresa(Long empresa) {
+    public List<Candidato> getCandidatosByEmpresa(Cias empresa) {
         return candidatoFacade.findByCanditadoByEmpresa(empresa);
     }
 
@@ -143,7 +142,7 @@ public class ReclutamientoSessionBean {
         return candidatoFacade.findCandidatosAPreseleccionar(s);
     }
 
-    public Puesto findPuestoById(PuestoPK pkPuesto) {
+    public Puestos findPuestoById(PuestosPK pkPuesto) {
         return puestoFacade.find(pkPuesto);
     }
 
@@ -174,7 +173,7 @@ public class ReclutamientoSessionBean {
     public void editarEvaluacionCandidato(EvaluacionCandidato ec) {
         evaluacionCandidatoFacade.edit(ec);
     }
-    
+
     public Long getMaxCandidato(Long empresa) {
         return candidatoFacade.getMax(empresa).longValue();
     }
@@ -191,7 +190,7 @@ public class ReclutamientoSessionBean {
         return candidatoFacade.getCandidatoConCriteriosPuesto(c, empleado);
     }
 
-    public void eliminarCriteriosSeleccionados(Long empresa, String usuario) {
+    public void eliminarCriteriosSeleccionados(Cias empresa, String usuario) {
         criterioSeleccionadoFacade.eliminarCriteriosSeleccionados(empresa, usuario);
     }
 
@@ -219,11 +218,11 @@ public class ReclutamientoSessionBean {
     }
 
     @PermitAll
-    public List<TipoContrato> getTipoContratoByEmpresa(Long empresa) {
+    public List<TipoContrato> getTipoContratoByEmpresa(Cias empresa) {
         return tipoContratoFacade.getTipoContratoByEmpresa(empresa);
     }
 
-    public void guardarEmpleado(Empleado e) {
+    public void guardarEmpleado(Empleados e) {
         empleadoFacade.create(e);
     }
 
@@ -231,7 +230,7 @@ public class ReclutamientoSessionBean {
         contratoFacade.create(c);
     }
 
-    public Empleado toEmpleado(Candidato c) {
+    public Empleados toEmpleado(Candidato c) {
         return empleadoFacade.toEmpleado(c);
     }
 
@@ -244,16 +243,16 @@ public class ReclutamientoSessionBean {
     }
 
     @PermitAll
-    public List<EstadoContrato> findEstadoContratoByEmpresa(Long empresa) {
+    public List<EstadoContrato> findEstadoContratoByEmpresa(Cias empresa) {
         return estadoContratoFacade.findEstadoContratoByEmpresa(empresa);
     }
 
     public void contratarCandidato(CandidatoConcurso c, Contrato contrato, String usuario) {
-        Empleado e = toEmpleado(c.getCandidato1());
+        Empleados e = toEmpleado(c.getCandidato1());
         e.setUsuario(usuario);
         guardarEmpleado(e);
         contrato.setCandidato1(c.getCandidato1());
-        contrato.setEmpleado(e);
+        contrato.setEmpleados(e);
         contrato.setContratoPK(new ContratoPK(c.getCandidatoConcursoPK().getCodCia(), contratoFacade.getMax(c.getCandidato1()), c.getCandidato1().getCandidatoPK().getCodCandidato()));
         guardarContrato(contrato);
         c.setEstado("C");
@@ -265,39 +264,38 @@ public class ReclutamientoSessionBean {
     }
 
     @PermitAll
-    public List<CriteriosXPuesto> criteriosDisponibles(Compania empresa) {
+    public List<CriteriosXPuesto> criteriosDisponibles(Cias empresa) {
         return criteriosXPuestoFacade.getListaCriteriosByEmpresa(empresa);
     }
 
-    public List<Empleado> findByUsuario(String usuario) {
+    public List<Empleados> findByUsuario(String usuario) {
         return empleadoFacade.findEmpleadosByUsuario(usuario);
     }
 
     @PermitAll
-    public List<Sucursal> findSucursalByEmpresa(Compania empresa) {
-        return sucursalFacade.findByCompania(empresa);
+    public List<Agencias> findAgenciasByEmpresa(Cias empresa) {
+        return agenciasFacade.findByCompania(empresa);
     }
 
     @PermitAll
-    public List<TipoPlanilla> findTipoPlanillaByEmpresa(Compania empresa) {
+    public List<TiposPlanilla> findTipoPlanillaByEmpresa(Cias empresa) {
         return tipoPlanillaFacade.findByCompania(empresa);
     }
 
-    public Sucursal findSucursalById(SucursalPK id) {
-        return sucursalFacade.find(id);
+    public Agencias findAgenciasById(AgenciasPK id) {
+        return agenciasFacade.find(id);
     }
 
-    public TipoPlanilla findTipoPlanillaById(TipoPlanillaPK id) {
+    public TiposPlanilla findTipoPlanillaById(TiposPlanillaPK id) {
         return tipoPlanillaFacade.find(id);
     }
-    
+
     @PermitAll
-    public List<TipoDocumento> findAllTipoDocumento(){
+    public List<TipoDocumento> findAllTipoDocumento() {
         return tipoDocumentoFacade.findAll();
     }
-    
-    public void guardarCandidato(Candidato c) throws javax.persistence.EntityExistsException{
+
+    public void guardarCandidato(Candidato c) throws javax.persistence.EntityExistsException {
         candidatoFacade.create(c);
     }
-    
 }

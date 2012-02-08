@@ -7,15 +7,15 @@ package com.infosgroup.planilla.modelo.procesos;
 import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.DetEvaluacion;
 import com.infosgroup.planilla.modelo.entidades.DetEvaluacionPK;
-import com.infosgroup.planilla.modelo.entidades.Empleado;
-import com.infosgroup.planilla.modelo.entidades.EmpleadoPK;
+import com.infosgroup.planilla.modelo.entidades.Empleados;
+import com.infosgroup.planilla.modelo.entidades.EmpleadosPK;
 import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.Factor;
 import com.infosgroup.planilla.modelo.entidades.Gerencia;
 import com.infosgroup.planilla.modelo.entidades.GerenciaPK;
 import com.infosgroup.planilla.modelo.entidades.Plantilla;
 import com.infosgroup.planilla.modelo.entidades.Pregunta;
-import com.infosgroup.planilla.modelo.entidades.Puesto;
+import com.infosgroup.planilla.modelo.entidades.Puestos;
 import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import com.infosgroup.planilla.modelo.entidades.Respuesta;
 import com.infosgroup.planilla.modelo.entidades.RespuestaPK;
@@ -77,7 +77,7 @@ public class EmpleadosSessionBean {
     }
 
     @PermitAll
-    public List<Campania> listarCampaniasPorEmpleado(Empleado empleado) {
+    public List<Campania> listarCampaniasPorEmpleado(Empleados empleado) {
         return campaniasFacade.findByEmpleadoEvaluador(empleado);
     }
 
@@ -138,23 +138,23 @@ public class EmpleadosSessionBean {
         return puestoEmpleadoFacade.findAll();
     }
 
-    public List<Empleado> listarEmpleadosEvaluados(Campania c) {
+    public List<Empleados> listarEmpleadosEvaluados(Campania c) {
         return empleadosFacade.findEmpleadosEvaluados(c);
     }
 
-    public List<Empleado> listarEmpleadosNoEvaluados(Campania c) {
+    public List<Empleados> listarEmpleadosNoEvaluados(Campania c) {
         return empleadosFacade.findEmpleadosNoEvaluados(c);
     }
 
-    public Empleado buscarEmpleadoPorUsuario(String usuario) {
+    public Empleados buscarEmpleadoPorUsuario(String usuario) {
         return empleadosFacade.findByUsuario(usuario);
     }
 
-    public Empleado buscarEmpleadoPorPK(EmpleadoPK empleadoPK) {
+    public Empleados buscarEmpleadoPorPK(EmpleadosPK empleadoPK) {
         return empleadosFacade.find(empleadoPK);
     }
 
-    public List<Puesto> listarPuestos() {
+    public List<Puestos> listarPuestos() {
         return puestoFacade.findAll();
     }
 
@@ -180,7 +180,7 @@ public class EmpleadosSessionBean {
     }
 
     @PermitAll
-    public Integer asignarEvaluaciones(List<Evaluacion> listaEvaluaciones, Empleado evaluador) {
+    public Integer asignarEvaluaciones(List<Evaluacion> listaEvaluaciones, Empleados evaluador) {
         Integer excepciones = 0;
         List<Evaluacion> evaluacionesActuales = evaluador.getEvaluacionList();
         for (Evaluacion evaluacion : listaEvaluaciones) {
@@ -219,7 +219,7 @@ public class EmpleadosSessionBean {
         return gerenciaFacade.find(gerenciaPK);
     }
 
-    public List<Empleado> listarEmpleados() {
+    public List<Empleados> listarEmpleados() {
         return empleadosFacade.findAll();
     }
 
@@ -236,7 +236,7 @@ public class EmpleadosSessionBean {
     }
 
     @PermitAll
-    public List<Campania> findAllByCia(Long empresa) {
+    public List<Campania> findAllByCia(Short empresa) {
         return campaniasFacade.findAllByCia(empresa);
     }
 }

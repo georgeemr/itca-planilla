@@ -10,8 +10,6 @@ import com.infosgroup.planilla.modelo.estructuras.FormatoReporte;
 import com.infosgroup.planilla.modelo.estructuras.reportes.DetalleReporteEvaluacion;
 import com.infosgroup.planilla.modelo.estructuras.reportes.ReporteEvaluacion;
 import com.infosgroup.planilla.modelo.facades.EscalaEvaluacionFacade;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -130,27 +128,26 @@ public class ReportesStatelessBean {
         List<ReporteEvaluacion> l = new ArrayList<ReporteEvaluacion>(0);
         List<DetEvaluacion> lde = evaluacion.getDetEvaluacionList();
         Evaluacion e = evaluacion;
-        for (DetEvaluacion de : /*evaluacion.getDetEvaluacionList()*/ lde) {
-            ReporteEvaluacion reporte = new ReporteEvaluacion();
-            reporte.setIdEmpresa(evaluacion.getPlantilla1().getTipoEvaluacion().getCompania().getIdCompania().intValue());
-            reporte.setNombreEmpresa(evaluacion.getPlantilla1().getTipoEvaluacion().getCompania().getNomCompania());
-            reporte.setNombreTipoEvaluacion(evaluacion.getPlantilla1().getTipoEvaluacion().getNomTipoEvaluacion());
-            reporte.setIdEmpleado(evaluacion.getEmpleado1().getEmpleadoPK().getCodEmp().intValue());
-            reporte.setNombreEmpleado(evaluacion.getEmpleado1().getNombreCompleto());
-            reporte.setFechaInicioCampania(evaluacion.getCampania().getFechaInicial());
-            reporte.setFechaFinCampania(evaluacion.getCampania().getFechaFinal());
-            reporte.setIdPuesto(evaluacion.getEmpleado1().getUltimoPuesto().getPuestoPK().getCodPuesto().intValue());
-            reporte.setNombrePuesto(evaluacion.getEmpleado1().getUltimoPuesto().getNombre());
-            reporte.setIdDepartamento(evaluacion.getEmpleado1().getDepartamento().getDepartamentoPK().getIdDepartamento().intValue());
-            reporte.setNombreDepartamento(evaluacion.getEmpleado1().getDepartamento().getNomDepartamento());
-            reporte.setCalificacionFinal(getNotaFinal(evaluacion));
-            reporte.setIdFactor(de.getPregunta().getFactor().getFactorPK().getCodFactor().intValue());
-            reporte.setPregunta(de.getPregunta().getDescripcion());
-            reporte.setIdPregunta(de.getPregunta().getPreguntaPK().getCodPregunta());
-            reporte.setRespuesta(de.getRespuesta().getNivel());
-            //reporte.setDetalleEvaluacion(getDetalleReporteEvaluacion(e.getDetEvaluacionList()));
-            l.add(reporte);
-        }
+//        for (DetEvaluacion de : /*evaluacion.getDetEvaluacionList()*/ lde) {
+//            ReporteEvaluacion reporte = new ReporteEvaluacion();
+//            reporte.setIdEmpresa(evaluacion.getPlantilla1().getTipoEvaluacion().getCompania().getIdCompania().intValue());
+//            reporte.setNombreEmpresa(evaluacion.getPlantilla1().getTipoEvaluacion().getCompania().getNomCompania());
+//            reporte.setNombreTipoEvaluacion(evaluacion.getPlantilla1().getTipoEvaluacion().getNomTipoEvaluacion());
+//            reporte.setIdEmpleado(evaluacion.getEmpleado1().getEmpleadoPK().getCodEmp().intValue());
+//            reporte.setNombreEmpleado(evaluacion.getEmpleado1().getNombreCompleto());
+//            reporte.setFechaInicioCampania(evaluacion.getCampania().getFechaInicial());
+//            reporte.setFechaFinCampania(evaluacion.getCampania().getFechaFinal());
+//            reporte.setIdPuesto(evaluacion.getEmpleado1().getUltimoPuesto().getPuestoPK().getCodPuesto().intValue());
+//            reporte.setNombrePuesto(evaluacion.getEmpleado1().getUltimoPuesto().getNombre());
+//            reporte.setIdDepartamento(evaluacion.getEmpleado1().getDepartamento().getDepartamentoPK().getIdDepartamento().intValue());
+//            reporte.setNombreDepartamento(evaluacion.getEmpleado1().getDepartamento().getNomDepartamento());
+//            reporte.setCalificacionFinal(getNotaFinal(evaluacion));
+//            reporte.setIdFactor(de.getPregunta().getFactor().getFactorPK().getCodFactor().intValue());
+//            reporte.setPregunta(de.getPregunta().getDescripcion());
+//            reporte.setIdPregunta(de.getPregunta().getPreguntaPK().getCodPregunta());
+//            reporte.setRespuesta(de.getRespuesta().getNivel());
+//            l.add(reporte);
+//        }
 
         return l;
     }
@@ -158,14 +155,14 @@ public class ReportesStatelessBean {
     @PermitAll
     public List<DetalleReporteEvaluacion> getDetalleReporteEvaluacion(List<DetEvaluacion> detalle) {
         List<DetalleReporteEvaluacion> det = new ArrayList<DetalleReporteEvaluacion>();
-        for (DetEvaluacion e : eliminarRepetidos(detalle)) {
-            Integer puntajeObtenido = getPuntajeObtenido(detalle, e);
-            det.add(new DetalleReporteEvaluacion(e.getRespuesta().getNivel(),
-                    puntajeObtenido,
-                    e.getRespuesta().getValor().intValue(),
-                    e.getPregunta().getFactor().getPonderacion().intValue(),
-                    puntajeObtenido * e.getRespuesta().getValor().intValue() * e.getPregunta().getFactor().getPonderacion().intValue() / 100));
-        }
+//        for (DetEvaluacion e : eliminarRepetidos(detalle)) {
+//            Integer puntajeObtenido = getPuntajeObtenido(detalle, e);
+//            det.add(new DetalleReporteEvaluacion(e.getRespuesta().getNivel(),
+//                    puntajeObtenido,
+//                    e.getRespuesta().getValor().intValue(),
+//                    e.getPregunta().getFactor().getPonderacion().intValue(),
+//                    puntajeObtenido * e.getRespuesta().getValor().intValue() * e.getPregunta().getFactor().getPonderacion().intValue() / 100));
+//        }
         return det != null ? det : new ArrayList<DetalleReporteEvaluacion>();
     }
 
