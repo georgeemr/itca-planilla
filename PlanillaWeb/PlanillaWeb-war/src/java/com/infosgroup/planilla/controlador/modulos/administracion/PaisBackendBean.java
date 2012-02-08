@@ -82,7 +82,7 @@ public class PaisBackendBean extends AbstractJSFPage implements Serializable {
             if (estado == EstadoAccion.CREANDO) {
                 Pais p = new Pais();
 
-                p.setIdPais(paisFacade.max() + 1);
+                p.setCodPais(paisFacade.max());
                 p.setNomPais(nomPais);
                 p.setDetPais(detPais);
 
@@ -95,7 +95,7 @@ public class PaisBackendBean extends AbstractJSFPage implements Serializable {
                     mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se ha seleccionado la compañia");
                     return null;
                 }
-                Pais p = paisFacade.find(paisSeleccionado.getIdPais());
+                Pais p = paisFacade.find(paisSeleccionado.getCodPais());
                 if (p == null) {
                     mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se encontró la compañia");
                     return null;
@@ -141,7 +141,7 @@ public class PaisBackendBean extends AbstractJSFPage implements Serializable {
             mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se ha seleccionado la compañia");
             return null;
         }
-        Pais p = paisFacade.find(paisSeleccionado.getIdPais());
+        Pais p = paisFacade.find(paisSeleccionado.getCodPais());
         if (p == null) {
             mostrarMensaje(FacesMessage.SEVERITY_WARN, "Seleccione la compañia");
             return null;

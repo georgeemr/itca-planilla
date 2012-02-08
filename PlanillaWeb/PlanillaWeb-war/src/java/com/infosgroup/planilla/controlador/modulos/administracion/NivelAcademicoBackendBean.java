@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.controlador.modulos.administracion;
 
 import com.infosgroup.planilla.modelo.entidades.NivelAcademico;
+import com.infosgroup.planilla.modelo.entidades.NivelAcademicoPK;
 import com.infosgroup.planilla.modelo.facades.NivelAcademicoFacade;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
@@ -88,9 +89,9 @@ public class NivelAcademicoBackendBean extends AbstractJSFPage implements Serial
         try {
             if (estado == EstadoAccion.CREANDO) {
                 NivelAcademico n = new NivelAcademico();
-                n.setIdNivelAcademico(nivelAcademicoFacade.max() + 1L);
+
+                n.setNivelAcademicoPK(new NivelAcademicoPK(getSessionBeanADM().getCompania().getCodCia(), nivelAcademicoFacade.max(getSessionBeanADM().getCompania())));
                 n.setNomNivelAcademico(nomNivelAcademico);
-                n.setDetNivelAcademico(detNivelAcademico);
                 nivelAcademicoFacade.create(n);
                 nivelAcademicoSeleccionado = null;
                 limpiarCampos();
@@ -100,13 +101,12 @@ public class NivelAcademicoBackendBean extends AbstractJSFPage implements Serial
                     mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se ha seleccionado el nivel academico");
                     return null;
                 }
-                NivelAcademico n = nivelAcademicoFacade.find(nivelAcademicoSeleccionado.getIdNivelAcademico());
+                NivelAcademico n = nivelAcademicoFacade.find(nivelAcademicoSeleccionado.getNivelAcademicoPK());
                 if (n == null) {
                     mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se encontró el nivel academico");
                     return null;
                 }
                 n.setNomNivelAcademico(nomNivelAcademico);
-                n.setDetNivelAcademico(detNivelAcademico);
                 nivelAcademicoFacade.edit(n);
                 mostrarMensaje(FacesMessage.SEVERITY_INFO, "Datos del nivel academico modificados");
                 nivelAcademicoSeleccionado = null;
@@ -132,7 +132,6 @@ public class NivelAcademicoBackendBean extends AbstractJSFPage implements Serial
         }
         estado = EstadoAccion.MODIFICANDO;
         nomNivelAcademico = nivelAcademicoSeleccionado.getNomNivelAcademico();
-        detNivelAcademico = nivelAcademicoSeleccionado.getDetNivelAcademico();
         return null;
     }
 
@@ -141,7 +140,7 @@ public class NivelAcademicoBackendBean extends AbstractJSFPage implements Serial
             mostrarMensaje(FacesMessage.SEVERITY_WARN, "No se ha seleccionado el nivel academico");
             return null;
         }
-        NivelAcademico n = nivelAcademicoFacade.find(nivelAcademicoSeleccionado.getIdNivelAcademico());
+        NivelAcademico n = nivelAcademicoFacade.find(nivelAcademicoSeleccionado.getNivelAcademicoPK());
         if (n == null) {
             mostrarMensaje(FacesMessage.SEVERITY_WARN, "Seleccione el nivel nivel academico");
             return null;

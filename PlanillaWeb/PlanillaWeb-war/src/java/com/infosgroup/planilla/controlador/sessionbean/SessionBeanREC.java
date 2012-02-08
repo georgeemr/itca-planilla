@@ -9,7 +9,6 @@ import com.infosgroup.planilla.modelo.entidades.Concurso;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import java.io.Serializable;
-import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;

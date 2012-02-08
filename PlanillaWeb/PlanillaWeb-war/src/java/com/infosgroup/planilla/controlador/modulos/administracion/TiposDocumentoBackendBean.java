@@ -6,22 +6,23 @@ package com.infosgroup.planilla.controlador.modulos.administracion;
 
 import com.infosgroup.planilla.modelo.entidades.TipoDocumento;
 import com.infosgroup.planilla.modelo.facades.TipoDocumentoFacade;
+import com.infosgroup.planilla.view.AbstractJSFPage;
+import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.util.List;
 import javax.faces.application.FacesMessage;
-    import javax.faces.context.FacesContext;
+import javax.faces.context.FacesContext;
 
 /**
  *
  * @author ralarcon
  */
-
 @ManagedBean(name = "administracion$tiposDocumento")
 @ViewScoped
-public class TiposDocumentoBackendBean implements Serializable {
+public class TiposDocumentoBackendBean extends AbstractJSFPage implements Serializable {
 
     /** Creates a new instance of TiposDocumentoBackendBean */
     public TiposDocumentoBackendBean() {
@@ -58,7 +59,6 @@ public class TiposDocumentoBackendBean implements Serializable {
         this.listaTiposDocumento = listaTiposDocumento;
     }
     // ===================================================================================================
-   
     private TipoDocumento tipoDocumentoSeleccionado;
 
     public TipoDocumento getTipoDocumentoSeleccionado() {
@@ -71,15 +71,13 @@ public class TiposDocumentoBackendBean implements Serializable {
 
 // =============================================================================================
     public String guardar_action() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ha guardado el Tipo de Documento", ""));
         TipoDocumento t = new TipoDocumento();
-        t.setIdTipoDocumento(idTipoDocumento);
+        t.setCodTipoDocumento(idTipoDocumento);
         t.setNomTipoDocumento(nombreTipoDocumento);
         tipoDocumentoFacade.create(t);
         idTipoDocumento = null;
         nombreTipoDocumento = null;
-        t.setIdTipoDocumento(null);
-        t.setNomTipoDocumento(null);
+        addMessage("Tipo de Documento", "Datos guardados con éxito", TipoMensaje.INFORMACION);
         return null;
     }
 
@@ -88,9 +86,14 @@ public class TiposDocumentoBackendBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ha eliminado el registro", ""));
             return null;
         }
-        TipoDocumento t = tipoDocumentoFacade.find(tipoDocumentoSeleccionado.getIdTipoDocumento());
+        TipoDocumento t = tipoDocumentoFacade.find(tipoDocumentoSeleccionado.getCodTipoDocumento());
         tipoDocumentoFacade.remove(t);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ha eliminado el registro", ""));
         return null;
+    }
+
+    @Override
+    protected void limpiarCampos() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

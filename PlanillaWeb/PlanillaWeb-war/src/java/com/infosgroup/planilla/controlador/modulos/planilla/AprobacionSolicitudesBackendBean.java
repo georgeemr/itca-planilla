@@ -5,7 +5,7 @@
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
-import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
@@ -23,7 +23,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean(name = "planilla$aprobacionSolicitudes")
 @ViewScoped
-public class aprobacionSolicitudesBackendBean extends AbstractJSFPage implements Serializable {
+public class AprobacionSolicitudesBackendBean extends AbstractJSFPage implements Serializable {
 
     @Override
     protected void limpiarCampos() {
@@ -31,7 +31,7 @@ public class aprobacionSolicitudesBackendBean extends AbstractJSFPage implements
     }
     @EJB
     private PlanillaSessionBean planillaSessionBean;
-    private List<Empleado> listaJefes;
+    private List<Empleados> listaJefes;
     private List<AccionPersonal> listaSolicitudes;
     private long emp = 0;
 
@@ -56,21 +56,19 @@ public class aprobacionSolicitudesBackendBean extends AbstractJSFPage implements
         this.emp = emp;
     }
 
-    public List<Empleado> getListaJefes() {
+    public List<Empleados> getListaJefes() {
         listaJefes = planillaSessionBean.listarJefes();
         return listaJefes;
     }
 
-    public void setListaJefes(List<Empleado> listaJefes) {
+    public void setListaJefes(List<Empleados> listaJefes) {
         this.listaJefes = listaJefes;
     }
 
     public List<AccionPersonal> getListaSolicitudes() {
-        if (emp != 0) {
-            listaSolicitudes = planillaSessionBean.listaPorAprobar(emp);
-        } /*else {
-        listaSolicitudes = new ArrayList<AccionPersonal>(0);
-        }*/
+//        if (emp != 0) {
+//            listaSolicitudes = planillaSessionBean.listaPorAprobar(emp);
+//        } 
         return listaSolicitudes;
     }
 
@@ -93,7 +91,7 @@ public class aprobacionSolicitudesBackendBean extends AbstractJSFPage implements
     }
 
     public String mostrar$action() {
-        listaSolicitudes = planillaSessionBean.listaPorAprobar(emp);
+//        listaSolicitudes = planillaSessionBean.listaPorAprobar(emp);
         sessionBeanPLA.setAprobados(planillaSessionBean.getRrhh());
         return null;
     }

@@ -4,8 +4,8 @@
  */
 package com.infosgroup.planilla.controlador.modulos.administracion;
 
-import com.infosgroup.planilla.modelo.entidades.Puesto;
-import com.infosgroup.planilla.modelo.entidades.PuestoPK;
+import com.infosgroup.planilla.modelo.entidades.Puestos;
+import com.infosgroup.planilla.modelo.entidades.PuestosPK;
 import com.infosgroup.planilla.modelo.entidades.TipoPuesto;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPuestoFacade;
@@ -30,29 +30,28 @@ public class PuestoBackingBean extends AbstractJSFPage implements Serializable {
     @EJB
     private TipoPuestoFacade tipoPuestoFacade;
     private List<TipoPuesto> listaTipoPuesto;
-    private List<Puesto> listaPuesto;
-    private Puesto puestoSeleccionado;
-    private Long codigoPuesto;
+    private List<Puestos> listaPuesto;
+    private Puestos puestoSeleccionado;
+    private Short codigoPuesto;
     private Integer codigoTipoPuesto;
     private String nombrePuesto;
 
-    /** Creates a new instance of PuestoBackingBean */
     public PuestoBackingBean() {
     }
 
-    public Long getCodigoPuesto() {
+    public Short getCodigoPuesto() {
         return codigoPuesto;
     }
 
-    public void setCodigoPuesto(Long codigoPuesto) {
+    public void setCodigoPuesto(Short codigoPuesto) {
         this.codigoPuesto = codigoPuesto;
     }
 
-    public List<Puesto> getListaPuesto() {
-        return puestoFacade.findAll();
+    public List<Puestos> getListaPuesto() {
+        return puestoFacade.findPuestoByEmpresa(getSessionBeanADM().getCompania());
     }
 
-    public void setListaPuesto(List<Puesto> listaPuesto) {
+    public void setListaPuesto(List<Puestos> listaPuesto) {
         this.listaPuesto = listaPuesto;
     }
 
@@ -80,17 +79,17 @@ public class PuestoBackingBean extends AbstractJSFPage implements Serializable {
         this.codigoTipoPuesto = codigoTipoPuesto;
     }
 
-    public Puesto getPuestoSeleccionado() {
+    public Puestos getPuestoSeleccionado() {
         return puestoSeleccionado;
     }
 
-    public void setPuestoSeleccionado(Puesto puestoSeleccionado) {
+    public void setPuestoSeleccionado(Puestos puestoSeleccionado) {
         this.puestoSeleccionado = puestoSeleccionado;
     }
 
     public String onRowSelect() {
-        setCodigoPuesto(getPuestoSeleccionado().getPuestoPK().getCodPuesto());
-        setNombrePuesto(getPuestoSeleccionado().getNombre());
+        setCodigoPuesto(getPuestoSeleccionado().getPuestosPK().getCodPuesto());
+        setNombrePuesto(getPuestoSeleccionado().getNomPuesto());
 
         return null;
     }
@@ -98,8 +97,8 @@ public class PuestoBackingBean extends AbstractJSFPage implements Serializable {
     /* Acciones */
     public String action_guardar() {
 
-        Puesto nuevoPuesto = new Puesto();
-        PuestoPK pk = new PuestoPK();
+        Puestos nuevoPuesto = new Puestos();
+        PuestosPK pk = new PuestosPK();
 
         if (codigoPuesto == null) {
             addMessage("Crear Puesto", "El Código de Puesto es un campo obligatorio.", TipoMensaje.ERROR);
@@ -124,8 +123,8 @@ public class PuestoBackingBean extends AbstractJSFPage implements Serializable {
         return null;
         }
          */
-        nuevoPuesto.setPuestoPK(pk);
-        nuevoPuesto.setNombre(nombrePuesto);
+        nuevoPuesto.setPuestosPK(pk);
+        nuevoPuesto.setNomPuesto(nombrePuesto);
 
         try {
             puestoFacade.edit(nuevoPuesto);

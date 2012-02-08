@@ -4,7 +4,7 @@
  */
 package com.infosgroup.planilla.controlador.sessionbean;
 
-import com.infosgroup.planilla.modelo.entidades.Empleado;
+import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.Factor;
 import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
@@ -31,13 +31,13 @@ public class SessionBeanEMP implements java.io.Serializable {
     private EmpleadoFacade empleadoFacade;
     @EJB
     private EmpleadosSessionBean empleadosBean;
-    private Empleado empleadoSesion;
+    private Empleados empleadoSesion;
 
-    public Empleado getEmpleadoSesion() {
+    public Empleados getEmpleadoSesion() {
         return empleadoSesion;
     }
 
-    public void setEmpleadoSesion(Empleado empleadoSesion) {
+    public void setEmpleadoSesion(Empleados empleadoSesion) {
         this.empleadoSesion = empleadoSesion;
     }
 

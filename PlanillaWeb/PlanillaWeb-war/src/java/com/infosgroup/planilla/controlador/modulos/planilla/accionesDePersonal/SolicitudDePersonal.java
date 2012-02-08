@@ -49,16 +49,10 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
     public AccionPersonalPK getAccionPersonalPK(Planilla planilla) {
         AccionPersonalPK nuevaPK = new AccionPersonalPK();
         try {
-            nuevaPK.setCodCia(planilla.getPlanillaPK().getIdCompania());
-            nuevaPK.setAnio(planilla.getPlanillaPK().getAnio());
-            nuevaPK.setMes(planilla.getPlanillaPK().getMes());
-            nuevaPK.setNumPlanilla(planilla.getPlanillaPK().getNumPlanilla());
-            nuevaPK.setIdSucursal(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getSucursal().getSucursalPK().getIdSucursal());
+            nuevaPK.setCodCia(planilla.getPlanillaPK().getCodCia());
             nuevaPK.setCodTipoaccion(encabezadoSolicitud.getAccionSeleccionada().getTipoAccionPK().getCodTipoaccion());
-            nuevaPK.setIdEmpleado(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadoPK().getCodEmp());
-            nuevaPK.setIdPuesto(encabezadoSolicitud.getSessionBeanEMP().getPuestoEmpleadoSession().getPuesto().getPuestoPK().getCodPuesto());
-            nuevaPK.setIdTipoPuesto(encabezadoSolicitud.getSessionBeanEMP().getPuestoEmpleadoSession().getPuestoEmpleadoPK().getIdTipoPuesto());
-            nuevaPK.setCorrelativo(accionPersonalFacade().max(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadoPK().getCodEmp()));
+            nuevaPK.setCodEmp(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp());
+            nuevaPK.setCorrelativo(accionPersonalFacade().max(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,7 +92,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
     }
 
     public static boolean enviarCorreo(AccionPersonal accionPersonal, String mensaje) {
-        if (accionPersonal.getEmpleado().getCorreo() == null) {
+        if (accionPersonal.getEmpleados().getCorreo() == null) {
             return false;
         }
         byte[] bytesImagen = new byte[(int) getImage("infosgroup.png").length()];
@@ -111,7 +105,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         DetalleAdjuntoCorreo detalleAdjunto = new DetalleAdjuntoCorreo("infosgroup.png", "image/png", bytesImagen);
         List<DetalleAdjuntoCorreo> adjuntos = new ArrayList<DetalleAdjuntoCorreo>();
         adjuntos.add(detalleAdjunto);
-        mailStatelessBean().enviarCorreoElectronicoAdjuntos("Acciones de Personal - " + accionPersonal.getTipoAccion().getNomTipoaccion(), mensaje, accionPersonal.getEmpleado().getCorreo(), adjuntos);
+        mailStatelessBean().enviarCorreoElectronicoAdjuntos("Acciones de Personal - " + accionPersonal.getTipoAccion().getNomTipoaccion(), mensaje, accionPersonal.getEmpleados().getCorreo(), adjuntos);
         return Boolean.TRUE;
     }
 
