@@ -4,8 +4,6 @@
  */
 package com.infosgroup.planilla.modelo.procesos;
 
-import com.infosgroup.planilla.modelo.entidades.Agencias;
-import com.infosgroup.planilla.modelo.entidades.AgenciasPK;
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.CandidatoConcurso;
 import com.infosgroup.planilla.modelo.entidades.Cias;
@@ -16,18 +14,15 @@ import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcurso;
 import com.infosgroup.planilla.modelo.entidades.EstadoConcursoPK;
-import com.infosgroup.planilla.modelo.entidades.EstadoContrato;
-import com.infosgroup.planilla.modelo.entidades.EstadoContratoPK;
 import com.infosgroup.planilla.modelo.entidades.EvaluacionCandidato;
 import com.infosgroup.planilla.modelo.entidades.Puestos;
 import com.infosgroup.planilla.modelo.entidades.PuestosPK;
-import com.infosgroup.planilla.modelo.entidades.TipoContrato;
-import com.infosgroup.planilla.modelo.entidades.TipoContratoPK;
 import com.infosgroup.planilla.modelo.entidades.TipoDocumento;
 import com.infosgroup.planilla.modelo.entidades.TipoPuesto;
 import com.infosgroup.planilla.modelo.entidades.TipoPuestoPK;
 import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
 import com.infosgroup.planilla.modelo.entidades.TiposPlanillaPK;
+import com.infosgroup.planilla.modelo.facades.Agencias;
 import com.infosgroup.planilla.modelo.facades.CandidatoConcursoFacade;
 import com.infosgroup.planilla.modelo.facades.CandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.ConcursoFacade;
@@ -36,11 +31,10 @@ import com.infosgroup.planilla.modelo.facades.CriterioSeleccionadoFacade;
 import com.infosgroup.planilla.modelo.facades.CriteriosXPuestoFacade;
 import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
 import com.infosgroup.planilla.modelo.facades.EstadoConcursoFacade;
-import com.infosgroup.planilla.modelo.facades.EstadoContratoFacade;
 import com.infosgroup.planilla.modelo.facades.EvaluacionCandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.AgenciasFacade;
-import com.infosgroup.planilla.modelo.facades.TipoContratoFacade;
+import com.infosgroup.planilla.modelo.facades.AgenciasPK;
 import com.infosgroup.planilla.modelo.facades.TipoDocumentoFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPlanillaFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPuestoFacade;
@@ -80,23 +74,19 @@ public class ReclutamientoSessionBean {
     @EJB
     private ConcursoFacade concursoFacade;
     @EJB
-    private TipoContratoFacade tipoContratoFacade;
-    @EJB
     private EmpleadoFacade empleadoFacade;
     @EJB
     private ContratoFacade contratoFacade;
-    @EJB
-    private EstadoContratoFacade estadoContratoFacade;
     @EJB
     private CriteriosXPuestoFacade criteriosXPuestoFacade;
     @EJB
     private TipoDocumentoFacade tipoDocumentoFacade;
 
-    public List<Concurso> getListaConcursos(Date fechaInicial, Date fechaFinal) {
-        return concursoFacade.getConcursosByDate(fechaInicial, fechaFinal);
+    public List<Concurso> getListaConcursos(Cias cias, Date fechaInicial, Date fechaFinal) {
+        return concursoFacade.getConcursosByDate(cias, fechaInicial, fechaFinal);
     }
 
-    public List<Concurso> getConcursosEvaluados(Long empresa) {
+    public List<Concurso> getConcursosEvaluados(Cias empresa) {
         return concursoFacade.getConcursosActivos(empresa);
     }
 
@@ -174,8 +164,8 @@ public class ReclutamientoSessionBean {
         evaluacionCandidatoFacade.edit(ec);
     }
 
-    public Long getMaxCandidato(Long empresa) {
-        return candidatoFacade.getMax(empresa).longValue();
+    public Long getMaxCandidato(Cias empresa) {
+        return candidatoFacade.max(empresa).longValue();
     }
 
     public void editarCandidato(Candidato c) {
@@ -217,11 +207,6 @@ public class ReclutamientoSessionBean {
         evaluacionCandidatoFacade.actualizarNotaCandidato(lc);
     }
 
-    @PermitAll
-    public List<TipoContrato> getTipoContratoByEmpresa(Cias empresa) {
-        return tipoContratoFacade.getTipoContratoByEmpresa(empresa);
-    }
-
     public void guardarEmpleado(Empleados e) {
         empleadoFacade.create(e);
     }
@@ -238,29 +223,16 @@ public class ReclutamientoSessionBean {
         return empleadoFacade.generaUsuario(c);
     }
 
-    public EstadoContrato findEstadoContratoById(EstadoContratoPK pk) {
-        return estadoContratoFacade.find(pk);
-    }
-
-    @PermitAll
-    public List<EstadoContrato> findEstadoContratoByEmpresa(Cias empresa) {
-        return estadoContratoFacade.findEstadoContratoByEmpresa(empresa);
-    }
-
     public void contratarCandidato(CandidatoConcurso c, Contrato contrato, String usuario) {
         Empleados e = toEmpleado(c.getCandidato1());
         e.setUsuario(usuario);
         guardarEmpleado(e);
-        contrato.setCandidato1(c.getCandidato1());
+        contrato.setCandidato(c.getCandidato1());
         contrato.setEmpleados(e);
-        contrato.setContratoPK(new ContratoPK(c.getCandidatoConcursoPK().getCodCia(), contratoFacade.getMax(c.getCandidato1()), c.getCandidato1().getCandidatoPK().getCodCandidato()));
+        contrato.setContratoPK(new ContratoPK(c.getCandidatoConcursoPK().getCodCia(), contratoFacade.max(c.getCandidato1()), c.getCandidato1().getCandidatoPK().getCodCandidato()));
         guardarContrato(contrato);
         c.setEstado("C");
         editarCandidatoConcurso(c);
-    }
-
-    public TipoContrato findTipoContratoById(TipoContratoPK pk) {
-        return tipoContratoFacade.find(pk);
     }
 
     @PermitAll

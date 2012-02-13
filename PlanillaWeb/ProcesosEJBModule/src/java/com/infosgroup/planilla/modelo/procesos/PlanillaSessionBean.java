@@ -5,27 +5,22 @@
 package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
-import com.infosgroup.planilla.modelo.entidades.AccionPersonalPK;
-import com.infosgroup.planilla.modelo.entidades.Agencias;
 import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.FestivosXDepto;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
-import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.entidades.TipoAccionPK;
 import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
 import com.infosgroup.planilla.modelo.entidades.TiposPlanillaPK;
-import com.infosgroup.planilla.modelo.estructuras.DetallePlanilla;
 import com.infosgroup.planilla.modelo.facades.AccionPersonalFacade;
+import com.infosgroup.planilla.modelo.facades.Agencias;
 import com.infosgroup.planilla.modelo.facades.CiasFacade;
-import com.infosgroup.planilla.modelo.facades.DetPlanillaFacade;
 import com.infosgroup.planilla.modelo.facades.FestivosXDeptoFacade;
 import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
 import com.infosgroup.planilla.modelo.facades.PlanillaFacade;
-import com.infosgroup.planilla.modelo.facades.PuestoEmpleadoFacade;
 import com.infosgroup.planilla.modelo.facades.ResumenAsistenciaFacade;
 import com.infosgroup.planilla.modelo.facades.AgenciasFacade;
 import com.infosgroup.planilla.modelo.facades.TipoAccionFacade;
@@ -64,8 +59,11 @@ public class PlanillaSessionBean {
     private AgenciasFacade agenciasFacade;
     @EJB
     private AccionPersonalFacade accionPersonalFacade;
-    @EJB
-    private PuestoEmpleadoFacade puestoEmpleadoFacade;
+    /**
+     * Comentado pq esta entidad ya no existe 13022012
+     */
+//    @EJB
+//    private PuestoEmpleadoFacade puestoEmpleadoFacade;
     @EJB
     private EmpleadoFacade empleadoFacade;
     @EJB
@@ -140,13 +138,14 @@ public class PlanillaSessionBean {
 
     public List<AccionPersonal> listaPorAprobar(Empleados empleado) {
         List<AccionPersonal> listaSolicitud = new ArrayList<AccionPersonal>(0);
-        PuestoEmpleado pueEmp = puestoEmpleadoFacade.findByEmpleado(empleado.getEmpleadosPK().getCodEmp(), empleado.getEmpleadosPK().getCodCia());
-        if (pueEmp.getPuestos().getPuestosPK().getCodPuesto() == 9) {
-            setRrhh(false);
-        } else {
-            listaSolicitud = accionPersonalFacade.findAprobacionJefe(empleado.getEmpleadosPK().getCodEmp(), empleado.getEmpleadosPK().getCodCia());
-            setRrhh(true);
-        }
+        //13022012
+//        PuestoEmpleado pueEmp = puestoEmpleadoFacade.findByEmpleado(empleado.getEmpleadosPK().getCodEmp(), empleado.getEmpleadosPK().getCodCia());
+//        if (pueEmp.getPuestos().getPuestosPK().getCodPuesto() == 9) {
+//            setRrhh(false);
+//        } else {
+//            listaSolicitud = accionPersonalFacade.findAprobacionJefe(empleado.getEmpleadosPK().getCodEmp(), empleado.getEmpleadosPK().getCodCia());
+//            setRrhh(true);
+//        }
         return listaSolicitud;
     }
 
@@ -159,7 +158,7 @@ public class PlanillaSessionBean {
             accionPersonalFacade.edit(accion);
             mailBean.enviarCorreoElectronico(
                     "Sobre Solicitud de Personal",
-                    "Se ha aprobado una solicitud a nombre de: " + accion.getEmpleados().getNombreCompleto(), accion.getEmpleados().getCorreo() + ":" + accion.getJefe().getCorreo());
+                    "Se ha aprobado una solicitud a nombre de: " + accion.getEmpleados().getNombreCompleto(), accion.getEmpleados().getCorreo() + ":" + accion.getEmpleados().getJefe().getCorreo());
         }
         return null;
     }
@@ -394,7 +393,7 @@ public class PlanillaSessionBean {
         accionPersonalFacade.edit(a);
     }
 
-    @RolesAllowed({"rrhh", "jefes", "empleados"})
+    @PermitAll
     public List<AccionPersonal> getAccionesByRol(Empleados empleado) {
         if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("rrhh")) {
             return findSolicitudesByRRHH(empleado);
