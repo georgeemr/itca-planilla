@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "MENU")
+@Table(name = "MENU", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Menu.findAll", query = "SELECT m FROM Menu m"),
@@ -60,7 +60,7 @@ public class Menu implements Serializable {
         @JoinColumn(name = "COD_MODULO", referencedColumnName = "COD_MODULO", nullable = false),
         @JoinColumn(name = "COD_MENU", referencedColumnName = "COD_MENU", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "ID_ROL", referencedColumnName = "COD_ROL", nullable = false)})
+        @JoinColumn(name = "COD_ROL", referencedColumnName = "COD_ROL", nullable = false)})
     @ManyToMany
     private List<Rol> rolList;
     @JoinColumns({
@@ -92,7 +92,7 @@ public class Menu implements Serializable {
         this.ruta = ruta;
     }
 
-    public Menu(long codCia, long codModulo, long codMenu) {
+    public Menu(short codCia, long codModulo, long codMenu) {
         this.menuPK = new MenuPK(codCia, codModulo, codMenu);
     }
 
@@ -192,7 +192,7 @@ public class Menu implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Menu[ menuPK=" + menuPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Menu[ menuPK=" + menuPK + " ]";
     }
     
 }

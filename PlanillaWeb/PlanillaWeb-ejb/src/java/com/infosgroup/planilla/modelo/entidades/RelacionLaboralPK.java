@@ -88,7 +88,7 @@ public class RelacionLaboralPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.RelacionLaboralPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", correlativo=" + correlativo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.RelacionLaboralPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", correlativo=" + correlativo + " ]";
     }
     
 }

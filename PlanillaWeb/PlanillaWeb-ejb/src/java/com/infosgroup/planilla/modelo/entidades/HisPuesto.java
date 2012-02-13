@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "HIS_PUESTO")
+@Table(name = "HIS_PUESTO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "HisPuesto.findAll", query = "SELECT h FROM HisPuesto h"),
@@ -145,7 +145,7 @@ public class HisPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.HisPuesto[ hisPuestoPK=" + hisPuestoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.HisPuesto[ hisPuestoPK=" + hisPuestoPK + " ]";
     }
     
 }

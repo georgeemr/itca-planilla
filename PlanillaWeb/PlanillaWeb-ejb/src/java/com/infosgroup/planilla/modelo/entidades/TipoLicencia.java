@@ -5,20 +5,25 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "TIPO_LICENCIA")
+@Table(name = "TIPO_LICENCIA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoLicencia.findAll", query = "SELECT t FROM TipoLicencia t"),
@@ -31,6 +36,10 @@ public class TipoLicencia implements Serializable {
     protected TipoLicenciaPK tipoLicenciaPK;
     @Column(name = "DESC_TIPO", length = 60)
     private String descTipo;
+    @ManyToMany(mappedBy = "tipoLicenciaList")
+    private List<Candidato> candidatoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoLicencia")
+    private List<Candidato> candidatoList1;
 
     public TipoLicencia() {
     }
@@ -59,6 +68,24 @@ public class TipoLicencia implements Serializable {
         this.descTipo = descTipo;
     }
 
+    @XmlTransient
+    public List<Candidato> getCandidatoList() {
+        return candidatoList;
+    }
+
+    public void setCandidatoList(List<Candidato> candidatoList) {
+        this.candidatoList = candidatoList;
+    }
+
+    @XmlTransient
+    public List<Candidato> getCandidatoList1() {
+        return candidatoList1;
+    }
+
+    public void setCandidatoList1(List<Candidato> candidatoList1) {
+        this.candidatoList1 = candidatoList1;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -81,7 +108,7 @@ public class TipoLicencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoLicencia[ tipoLicenciaPK=" + tipoLicenciaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoLicencia[ tipoLicenciaPK=" + tipoLicenciaPK + " ]";
     }
     
 }

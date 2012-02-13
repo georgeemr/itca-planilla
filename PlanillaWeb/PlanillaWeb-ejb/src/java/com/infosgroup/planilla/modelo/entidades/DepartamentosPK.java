@@ -72,7 +72,7 @@ public class DepartamentosPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.DepartamentosPK[ codCia=" + codCia + ", codDepto=" + codDepto + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.DepartamentosPK[ codCia=" + codCia + ", codDepto=" + codDepto + " ]";
     }
     
 }

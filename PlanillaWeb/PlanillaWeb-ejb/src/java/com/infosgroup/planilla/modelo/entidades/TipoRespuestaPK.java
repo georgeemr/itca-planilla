@@ -17,32 +17,32 @@ import javax.persistence.Embeddable;
 public class TipoRespuestaPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "COD_TIPO_RESPUESTA", nullable = false)
-    private long codTipoRespuesta;
+    private short codTipoRespuesta;
 
     public TipoRespuestaPK() {
     }
 
-    public TipoRespuestaPK(long codCia, long codTipoRespuesta) {
+    public TipoRespuestaPK(short codCia, short codTipoRespuesta) {
         this.codCia = codCia;
         this.codTipoRespuesta = codTipoRespuesta;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
-    public long getCodTipoRespuesta() {
+    public short getCodTipoRespuesta() {
         return codTipoRespuesta;
     }
 
-    public void setCodTipoRespuesta(long codTipoRespuesta) {
+    public void setCodTipoRespuesta(short codTipoRespuesta) {
         this.codTipoRespuesta = codTipoRespuesta;
     }
 
@@ -72,7 +72,7 @@ public class TipoRespuestaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoRespuestaPK[ codCia=" + codCia + ", codTipoRespuesta=" + codTipoRespuesta + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoRespuestaPK[ codCia=" + codCia + ", codTipoRespuesta=" + codTipoRespuesta + " ]";
     }
     
 }

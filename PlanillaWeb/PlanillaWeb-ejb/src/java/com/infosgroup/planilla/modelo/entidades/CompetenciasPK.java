@@ -73,7 +73,7 @@ public class CompetenciasPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CompetenciasPK[ codCia=" + codCia + ", codCompetencia=" + codCompetencia + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.CompetenciasPK[ codCia=" + codCia + ", codCompetencia=" + codCompetencia + " ]";
     }
     
 }

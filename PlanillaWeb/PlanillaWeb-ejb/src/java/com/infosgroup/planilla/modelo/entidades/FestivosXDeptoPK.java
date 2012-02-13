@@ -136,7 +136,7 @@ public class FestivosXDeptoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.FestivosXDeptoPK[ codCia=" + codCia + ", codPais=" + codPais + ", codDepto=" + codDepto + ", anio=" + anio + ", dia=" + dia + ", mes=" + mes + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.FestivosXDeptoPK[ codCia=" + codCia + ", codPais=" + codPais + ", codDepto=" + codDepto + ", anio=" + anio + ", dia=" + dia + ", mes=" + mes + " ]";
     }
     
 }

@@ -72,7 +72,7 @@ public class FrecuenciaFuncionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.FrecuenciaFuncionPK[ codCia=" + codCia + ", codFrecuencia=" + codFrecuencia + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.FrecuenciaFuncionPK[ codCia=" + codCia + ", codFrecuencia=" + codFrecuencia + " ]";
     }
     
 }

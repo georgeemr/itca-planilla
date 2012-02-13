@@ -72,7 +72,7 @@ public class FuncionPuestoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.FuncionPuestoPK[ codCia=" + codCia + ", codFuncion=" + codFuncion + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.FuncionPuestoPK[ codCia=" + codCia + ", codFuncion=" + codFuncion + " ]";
     }
     
 }

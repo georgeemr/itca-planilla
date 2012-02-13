@@ -17,7 +17,7 @@ import javax.persistence.Embeddable;
 public class EstadoConcursoPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "CODIGO", nullable = false, length = 200)
     private String codigo;
@@ -25,16 +25,16 @@ public class EstadoConcursoPK implements Serializable {
     public EstadoConcursoPK() {
     }
 
-    public EstadoConcursoPK(long codCia, String codigo) {
+    public EstadoConcursoPK(short codCia, String codigo) {
         this.codCia = codCia;
         this.codigo = codigo;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
@@ -72,7 +72,7 @@ public class EstadoConcursoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.EstadoConcursoPK[ codCia=" + codCia + ", codigo=" + codigo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.EstadoConcursoPK[ codCia=" + codCia + ", codigo=" + codigo + " ]";
     }
     
 }

@@ -11,8 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -25,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "TIPO_EVALUACION")
+@Table(name = "TIPO_EVALUACION", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoEvaluacion.findAll", query = "SELECT t FROM TipoEvaluacion t"),
@@ -37,15 +35,10 @@ public class TipoEvaluacion implements Serializable {
     @EmbeddedId
     protected TipoEvaluacionPK tipoEvaluacionPK;
     @Basic(optional = false)
-    @Column(name = "NOM_TIPO_EVALUACION", nullable = false, length = 200)
+    @Column(name = "NOM_TIPO_EVALUACION", nullable = false, length = 100)
     private String nomTipoEvaluacion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion1")
-    private List<EscalaEvaluacion> escalaEvaluacionList;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion")
-    private List<Plantilla> plantillaList;
+    private List<EscalaEvaluacion> escalaEvaluacionList;
 
     public TipoEvaluacion() {
     }
@@ -59,7 +52,7 @@ public class TipoEvaluacion implements Serializable {
         this.nomTipoEvaluacion = nomTipoEvaluacion;
     }
 
-    public TipoEvaluacion(long codCia, long codTipoEvaluacion) {
+    public TipoEvaluacion(short codCia, short codTipoEvaluacion) {
         this.tipoEvaluacionPK = new TipoEvaluacionPK(codCia, codTipoEvaluacion);
     }
 
@@ -88,23 +81,6 @@ public class TipoEvaluacion implements Serializable {
         this.escalaEvaluacionList = escalaEvaluacionList;
     }
 
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
-    }
-
-    @XmlTransient
-    public List<Plantilla> getPlantillaList() {
-        return plantillaList;
-    }
-
-    public void setPlantillaList(List<Plantilla> plantillaList) {
-        this.plantillaList = plantillaList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -127,7 +103,7 @@ public class TipoEvaluacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoEvaluacion[ tipoEvaluacionPK=" + tipoEvaluacionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoEvaluacion[ tipoEvaluacionPK=" + tipoEvaluacionPK + " ]";
     }
     
 }

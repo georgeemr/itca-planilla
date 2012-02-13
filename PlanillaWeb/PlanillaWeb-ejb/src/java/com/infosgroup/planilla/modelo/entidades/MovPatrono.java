@@ -11,9 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -26,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "MOV_PATRONO")
+@Table(name = "MOV_PATRONO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MovPatrono.findAll", query = "SELECT m FROM MovPatrono m"),
@@ -35,6 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "MovPatrono.findByMes", query = "SELECT m FROM MovPatrono m WHERE m.movPatronoPK.mes = :mes"),
     @NamedQuery(name = "MovPatrono.findByNumPlanilla", query = "SELECT m FROM MovPatrono m WHERE m.movPatronoPK.numPlanilla = :numPlanilla"),
     @NamedQuery(name = "MovPatrono.findByNoMovto", query = "SELECT m FROM MovPatrono m WHERE m.movPatronoPK.noMovto = :noMovto"),
+    @NamedQuery(name = "MovPatrono.findByCodEmp", query = "SELECT m FROM MovPatrono m WHERE m.codEmp = :codEmp"),
+    @NamedQuery(name = "MovPatrono.findByCodDp", query = "SELECT m FROM MovPatrono m WHERE m.codDp = :codDp"),
     @NamedQuery(name = "MovPatrono.findByVpr", query = "SELECT m FROM MovPatrono m WHERE m.vpr = :vpr"),
     @NamedQuery(name = "MovPatrono.findByFactor", query = "SELECT m FROM MovPatrono m WHERE m.factor = :factor"),
     @NamedQuery(name = "MovPatrono.findByValor", query = "SELECT m FROM MovPatrono m WHERE m.valor = :valor"),
@@ -51,6 +50,12 @@ public class MovPatrono implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected MovPatronoPK movPatronoPK;
+    @Basic(optional = false)
+    @Column(name = "COD_EMP", nullable = false)
+    private int codEmp;
+    @Basic(optional = false)
+    @Column(name = "COD_DP", nullable = false)
+    private short codDp;
     @Basic(optional = false)
     @Column(name = "VPR", nullable = false, length = 1)
     private String vpr;
@@ -81,16 +86,6 @@ public class MovPatrono implements Serializable {
     private Integer codPresta;
     @Column(name = "COD_TIPOPLA")
     private Short codTipopla;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false)})
-    @ManyToOne(optional = false)
-    private Empleados empleados;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_DP", referencedColumnName = "COD_DP", nullable = false)})
-    @ManyToOne(optional = false)
-    private DeducPresta deducPresta;
 
     public MovPatrono() {
     }
@@ -99,8 +94,10 @@ public class MovPatrono implements Serializable {
         this.movPatronoPK = movPatronoPK;
     }
 
-    public MovPatrono(MovPatronoPK movPatronoPK, String vpr, BigDecimal factor, BigDecimal valor, BigDecimal baseCalculo) {
+    public MovPatrono(MovPatronoPK movPatronoPK, int codEmp, short codDp, String vpr, BigDecimal factor, BigDecimal valor, BigDecimal baseCalculo) {
         this.movPatronoPK = movPatronoPK;
+        this.codEmp = codEmp;
+        this.codDp = codDp;
         this.vpr = vpr;
         this.factor = factor;
         this.valor = valor;
@@ -117,6 +114,22 @@ public class MovPatrono implements Serializable {
 
     public void setMovPatronoPK(MovPatronoPK movPatronoPK) {
         this.movPatronoPK = movPatronoPK;
+    }
+
+    public int getCodEmp() {
+        return codEmp;
+    }
+
+    public void setCodEmp(int codEmp) {
+        this.codEmp = codEmp;
+    }
+
+    public short getCodDp() {
+        return codDp;
+    }
+
+    public void setCodDp(short codDp) {
+        this.codDp = codDp;
     }
 
     public String getVpr() {
@@ -215,22 +228,6 @@ public class MovPatrono implements Serializable {
         this.codTipopla = codTipopla;
     }
 
-    public Empleados getEmpleados() {
-        return empleados;
-    }
-
-    public void setEmpleados(Empleados empleados) {
-        this.empleados = empleados;
-    }
-
-    public DeducPresta getDeducPresta() {
-        return deducPresta;
-    }
-
-    public void setDeducPresta(DeducPresta deducPresta) {
-        this.deducPresta = deducPresta;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -253,7 +250,7 @@ public class MovPatrono implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.MovPatrono[ movPatronoPK=" + movPatronoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.MovPatrono[ movPatronoPK=" + movPatronoPK + " ]";
     }
     
 }

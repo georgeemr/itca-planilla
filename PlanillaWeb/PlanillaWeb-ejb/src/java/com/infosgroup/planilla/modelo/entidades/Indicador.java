@@ -8,8 +8,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -20,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "INDICADOR")
+@Table(name = "INDICADOR", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Indicador.findAll", query = "SELECT i FROM Indicador i"),
@@ -43,9 +41,6 @@ public class Indicador implements Serializable {
     private String valorIndicador;
     @Column(name = "ORDEN")
     private Long orden;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
 
     public Indicador() {
     }
@@ -54,7 +49,7 @@ public class Indicador implements Serializable {
         this.indicadorPK = indicadorPK;
     }
 
-    public Indicador(long codCia, long modulo, long indicador) {
+    public Indicador(short codCia, long modulo, long indicador) {
         this.indicadorPK = new IndicadorPK(codCia, modulo, indicador);
     }
 
@@ -98,14 +93,6 @@ public class Indicador implements Serializable {
         this.orden = orden;
     }
 
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -128,7 +115,7 @@ public class Indicador implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Indicador[ indicadorPK=" + indicadorPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Indicador[ indicadorPK=" + indicadorPK + " ]";
     }
     
 }

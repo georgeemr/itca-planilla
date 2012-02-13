@@ -12,13 +12,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -28,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "RESUMEN_ASISTENCIA")
+@Table(name = "RESUMEN_ASISTENCIA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ResumenAsistencia.findAll", query = "SELECT r FROM ResumenAsistencia r"),
@@ -54,18 +50,17 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ResumenAsistencia.findByOtros", query = "SELECT r FROM ResumenAsistencia r WHERE r.otros = :otros"),
     @NamedQuery(name = "ResumenAsistencia.findByEstado", query = "SELECT r FROM ResumenAsistencia r WHERE r.estado = :estado"),
     @NamedQuery(name = "ResumenAsistencia.findByHorasAusencia", query = "SELECT r FROM ResumenAsistencia r WHERE r.horasAusencia = :horasAusencia"),
-    @NamedQuery(name = "ResumenAsistencia.findByDNocturnidad", query = "SELECT r FROM ResumenAsistencia r WHERE r.dNocturnidad = :dNocturnidad"),
-    @NamedQuery(name = "ResumenAsistencia.findByAguinaldo", query = "SELECT r FROM ResumenAsistencia r WHERE r.aguinaldo = :aguinaldo")})
+    @NamedQuery(name = "ResumenAsistencia.findByDNocturnidad", query = "SELECT r FROM ResumenAsistencia r WHERE r.dNocturnidad = :dNocturnidad")})
 public class ResumenAsistencia implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ResumenAsistenciaPK resumenAsistenciaPK;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @Column(name = "D_LABORADOS", nullable = false, precision = 8, scale = 3)
-    private BigDecimal dLaborados;
+    @Column(name = "D_LABORADOS", nullable = false)
+    private short dLaborados;
     @Column(name = "DN_LABORADOS")
     private Short dnLaborados;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "H_XSENCILLAS", precision = 6, scale = 2)
     private BigDecimal hXsencillas;
     @Column(name = "H_XDOBLES", precision = 6, scale = 2)
@@ -94,21 +89,10 @@ public class ResumenAsistencia implements Serializable {
     private String estado;
     @Column(name = "HORAS_AUSENCIA", precision = 6, scale = 2)
     private BigDecimal horasAusencia;
-    @Column(name = "D_NOCTURNIDAD", precision = 6, scale = 2)
-    private BigDecimal dNocturnidad;
-    @Column(name = "AGUINALDO", length = 1)
-    private String aguinaldo;
+    @Column(name = "D_NOCTURNIDAD")
+    private Short dNocturnidad;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "resumenAsistencia")
-    private List<MovDp> movDpList;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private TiposPlanilla tiposPlanilla;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "resumenAsistencia")
-    private SubsidioIsss subsidioIsss;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "resumenAsistencia")
-    private Planilla planilla;
+    private List<Planilla> planillaList;
 
     public ResumenAsistencia() {
     }
@@ -117,7 +101,7 @@ public class ResumenAsistencia implements Serializable {
         this.resumenAsistenciaPK = resumenAsistenciaPK;
     }
 
-    public ResumenAsistencia(ResumenAsistenciaPK resumenAsistenciaPK, BigDecimal dLaborados) {
+    public ResumenAsistencia(ResumenAsistenciaPK resumenAsistenciaPK, short dLaborados) {
         this.resumenAsistenciaPK = resumenAsistenciaPK;
         this.dLaborados = dLaborados;
     }
@@ -134,11 +118,11 @@ public class ResumenAsistencia implements Serializable {
         this.resumenAsistenciaPK = resumenAsistenciaPK;
     }
 
-    public BigDecimal getDLaborados() {
+    public short getDLaborados() {
         return dLaborados;
     }
 
-    public void setDLaborados(BigDecimal dLaborados) {
+    public void setDLaborados(short dLaborados) {
         this.dLaborados = dLaborados;
     }
 
@@ -262,53 +246,21 @@ public class ResumenAsistencia implements Serializable {
         this.horasAusencia = horasAusencia;
     }
 
-    public BigDecimal getDNocturnidad() {
+    public Short getDNocturnidad() {
         return dNocturnidad;
     }
 
-    public void setDNocturnidad(BigDecimal dNocturnidad) {
+    public void setDNocturnidad(Short dNocturnidad) {
         this.dNocturnidad = dNocturnidad;
     }
 
-    public String getAguinaldo() {
-        return aguinaldo;
-    }
-
-    public void setAguinaldo(String aguinaldo) {
-        this.aguinaldo = aguinaldo;
-    }
-
     @XmlTransient
-    public List<MovDp> getMovDpList() {
-        return movDpList;
+    public List<Planilla> getPlanillaList() {
+        return planillaList;
     }
 
-    public void setMovDpList(List<MovDp> movDpList) {
-        this.movDpList = movDpList;
-    }
-
-    public TiposPlanilla getTiposPlanilla() {
-        return tiposPlanilla;
-    }
-
-    public void setTiposPlanilla(TiposPlanilla tiposPlanilla) {
-        this.tiposPlanilla = tiposPlanilla;
-    }
-
-    public SubsidioIsss getSubsidioIsss() {
-        return subsidioIsss;
-    }
-
-    public void setSubsidioIsss(SubsidioIsss subsidioIsss) {
-        this.subsidioIsss = subsidioIsss;
-    }
-
-    public Planilla getPlanilla() {
-        return planilla;
-    }
-
-    public void setPlanilla(Planilla planilla) {
-        this.planilla = planilla;
+    public void setPlanillaList(List<Planilla> planillaList) {
+        this.planillaList = planillaList;
     }
 
     @Override
@@ -333,7 +285,7 @@ public class ResumenAsistencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.ResumenAsistencia[ resumenAsistenciaPK=" + resumenAsistenciaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.ResumenAsistencia[ resumenAsistenciaPK=" + resumenAsistenciaPK + " ]";
     }
     
 }

@@ -5,6 +5,8 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -13,15 +15,17 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "SECCIONES")
+@Table(name = "SECCIONES", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Secciones.findAll", query = "SELECT s FROM Secciones s"),
@@ -38,6 +42,8 @@ public class Secciones implements Serializable {
     private String nomSeccion;
     @Column(name = "PROYECTO", length = 20)
     private String proyecto;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "secciones")
+    private List<Posicion> posicionList;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_DEPTO", referencedColumnName = "COD_DEPTO", nullable = false, insertable = false, updatable = false)})
@@ -79,6 +85,15 @@ public class Secciones implements Serializable {
         this.proyecto = proyecto;
     }
 
+    @XmlTransient
+    public List<Posicion> getPosicionList() {
+        return posicionList;
+    }
+
+    public void setPosicionList(List<Posicion> posicionList) {
+        this.posicionList = posicionList;
+    }
+
     public Departamentos getDepartamentos() {
         return departamentos;
     }
@@ -109,7 +124,7 @@ public class Secciones implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Secciones[ seccionesPK=" + seccionesPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Secciones[ seccionesPK=" + seccionesPK + " ]";
     }
     
 }

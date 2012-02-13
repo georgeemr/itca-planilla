@@ -17,7 +17,7 @@ import javax.persistence.Embeddable;
 public class CriteriosXCandidatoPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "CANDIDATO", nullable = false)
     private long candidato;
@@ -34,7 +34,7 @@ public class CriteriosXCandidatoPK implements Serializable {
     public CriteriosXCandidatoPK() {
     }
 
-    public CriteriosXCandidatoPK(long codCia, long candidato, long criterio, long tipoCriterio, long correlativo) {
+    public CriteriosXCandidatoPK(short codCia, long candidato, long criterio, long tipoCriterio, long correlativo) {
         this.codCia = codCia;
         this.candidato = candidato;
         this.criterio = criterio;
@@ -42,11 +42,11 @@ public class CriteriosXCandidatoPK implements Serializable {
         this.correlativo = correlativo;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
@@ -120,7 +120,7 @@ public class CriteriosXCandidatoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CriteriosXCandidatoPK[ codCia=" + codCia + ", candidato=" + candidato + ", criterio=" + criterio + ", tipoCriterio=" + tipoCriterio + ", correlativo=" + correlativo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.CriteriosXCandidatoPK[ codCia=" + codCia + ", candidato=" + candidato + ", criterio=" + criterio + ", tipoCriterio=" + tipoCriterio + ", correlativo=" + correlativo + " ]";
     }
     
 }

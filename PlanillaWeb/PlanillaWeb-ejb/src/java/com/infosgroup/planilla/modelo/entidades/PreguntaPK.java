@@ -17,36 +17,36 @@ import javax.persistence.Embeddable;
 public class PreguntaPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "COD_FACTOR", nullable = false)
-    private long codFactor;
+    private short codFactor;
     @Basic(optional = false)
-    @Column(name = "COD_PREGUNTA", nullable = false, length = 200)
+    @Column(name = "COD_PREGUNTA", nullable = false, length = 1)
     private String codPregunta;
 
     public PreguntaPK() {
     }
 
-    public PreguntaPK(long codCia, long codFactor, String codPregunta) {
+    public PreguntaPK(short codCia, short codFactor, String codPregunta) {
         this.codCia = codCia;
         this.codFactor = codFactor;
         this.codPregunta = codPregunta;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
-    public long getCodFactor() {
+    public short getCodFactor() {
         return codFactor;
     }
 
-    public void setCodFactor(long codFactor) {
+    public void setCodFactor(short codFactor) {
         this.codFactor = codFactor;
     }
 
@@ -88,7 +88,7 @@ public class PreguntaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PreguntaPK[ codCia=" + codCia + ", codFactor=" + codFactor + ", codPregunta=" + codPregunta + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.PreguntaPK[ codCia=" + codCia + ", codFactor=" + codFactor + ", codPregunta=" + codPregunta + " ]";
     }
     
 }

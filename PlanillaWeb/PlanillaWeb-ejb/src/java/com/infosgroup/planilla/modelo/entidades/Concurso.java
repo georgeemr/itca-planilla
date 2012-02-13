@@ -13,7 +13,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -29,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "CONCURSO")
+@Table(name = "CONCURSO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Concurso.findAll", query = "SELECT c FROM Concurso c"),
@@ -68,9 +67,7 @@ public class Concurso implements Serializable {
     private EstadoConcurso estadoConcurso;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concurso1")
     private List<CandidatoConcurso> candidatoConcursoList;
-    @ManyToMany(mappedBy = "concursoList")
-    private List<Candidato> candidatoList;
-    
+
     public Concurso() {
     }
 
@@ -78,7 +75,7 @@ public class Concurso implements Serializable {
         this.concursoPK = concursoPK;
     }
 
-    public Concurso(long codCia, long codConcurso) {
+    public Concurso(short codCia, long codConcurso) {
         this.concursoPK = new ConcursoPK(codCia, codConcurso);
     }
 
@@ -155,14 +152,6 @@ public class Concurso implements Serializable {
         this.candidatoConcursoList = candidatoConcursoList;
     }
 
-    public List<Candidato> getCandidatoList() {
-        return candidatoList;
-    }
-
-    public void setCandidatoList(List<Candidato> candidatoList) {
-        this.candidatoList = candidatoList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -185,7 +174,7 @@ public class Concurso implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Concurso[ concursoPK=" + concursoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Concurso[ concursoPK=" + concursoPK + " ]";
     }
     
 }

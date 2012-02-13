@@ -72,7 +72,7 @@ public class HisPuestoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.HisPuestoPK[ codCia=" + codCia + ", codHistPuesto=" + codHistPuesto + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.HisPuestoPK[ codCia=" + codCia + ", codHistPuesto=" + codHistPuesto + " ]";
     }
     
 }

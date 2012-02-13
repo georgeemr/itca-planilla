@@ -72,7 +72,7 @@ public class GerenciaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.GerenciaPK[ codCia=" + codCia + ", codGerencia=" + codGerencia + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.GerenciaPK[ codCia=" + codCia + ", codGerencia=" + codGerencia + " ]";
     }
     
 }

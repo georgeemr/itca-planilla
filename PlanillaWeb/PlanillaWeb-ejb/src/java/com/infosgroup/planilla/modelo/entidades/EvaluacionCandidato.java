@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "EVALUACION_CANDIDATO")
+@Table(name = "EVALUACION_CANDIDATO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "EvaluacionCandidato.findAll", query = "SELECT e FROM EvaluacionCandidato e"),
@@ -78,7 +78,7 @@ public class EvaluacionCandidato implements Serializable {
         this.fecha = fecha;
     }
 
-    public EvaluacionCandidato(long codCia, long puesto, long prueba, long candidato, long concurso) {
+    public EvaluacionCandidato(short codCia, long puesto, long prueba, long candidato, long concurso) {
         this.evaluacionCandidatoPK = new EvaluacionCandidatoPK(codCia, puesto, prueba, candidato, concurso);
     }
 
@@ -152,7 +152,7 @@ public class EvaluacionCandidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.EvaluacionCandidato[ evaluacionCandidatoPK=" + evaluacionCandidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.EvaluacionCandidato[ evaluacionCandidatoPK=" + evaluacionCandidatoPK + " ]";
     }
     
 }

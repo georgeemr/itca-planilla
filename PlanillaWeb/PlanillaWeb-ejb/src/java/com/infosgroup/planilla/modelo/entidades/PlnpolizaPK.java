@@ -108,7 +108,7 @@ public class PlnpolizaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PlnpolizaPK[ codCia=" + codCia + ", tipoDocto=" + tipoDocto + ", numPoliza=" + numPoliza + ", fecha=" + fecha + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.PlnpolizaPK[ codCia=" + codCia + ", tipoDocto=" + tipoDocto + ", numPoliza=" + numPoliza + ", fecha=" + fecha + " ]";
     }
     
 }

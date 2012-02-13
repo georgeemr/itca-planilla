@@ -9,9 +9,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,7 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "ROL")
+@Table(name = "ROL", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Rol.findAll", query = "SELECT r FROM Rol r"),
@@ -38,9 +36,6 @@ public class Rol implements Serializable {
     private String nomRol;
     @ManyToMany(mappedBy = "rolList")
     private List<Menu> menuList;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
 
     public Rol() {
     }
@@ -78,14 +73,6 @@ public class Rol implements Serializable {
         this.menuList = menuList;
     }
 
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -108,7 +95,7 @@ public class Rol implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Rol[ rolPK=" + rolPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Rol[ rolPK=" + rolPK + " ]";
     }
     
 }

@@ -7,13 +7,12 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -23,65 +22,68 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "PARENTESCO")
+@Table(name = "PARENTESCO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Parentesco.findAll", query = "SELECT p FROM Parentesco p"),
-    @NamedQuery(name = "Parentesco.findByCodigo", query = "SELECT p FROM Parentesco p WHERE p.codigo = :codigo"),
-    @NamedQuery(name = "Parentesco.findByNombreParentesco", query = "SELECT p FROM Parentesco p WHERE p.nombreParentesco = :nombreParentesco")})
+    @NamedQuery(name = "Parentesco.findByCodCia", query = "SELECT p FROM Parentesco p WHERE p.parentescoPK.codCia = :codCia"),
+    @NamedQuery(name = "Parentesco.findByCodParentesco", query = "SELECT p FROM Parentesco p WHERE p.parentescoPK.codParentesco = :codParentesco"),
+    @NamedQuery(name = "Parentesco.findByNomParentesco", query = "SELECT p FROM Parentesco p WHERE p.nomParentesco = :nomParentesco")})
 public class Parentesco implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
+    @EmbeddedId
+    protected ParentescoPK parentescoPK;
     @Basic(optional = false)
-    @Column(name = "CODIGO", nullable = false)
-    private Long codigo;
-    @Basic(optional = false)
-    @Column(name = "NOMBRE_PARENTESCO", nullable = false, length = 200)
-    private String nombreParentesco;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parentesco")
-    private List<BeneficiarioPorCandidato> beneficiarioPorCandidatoList;
+    @Column(name = "NOM_PARENTESCO", nullable = false, length = 200)
+    private String nomParentesco;
+    @ManyToMany(mappedBy = "parentescoList")
+    private List<Candidato> candidatoList;
 
     public Parentesco() {
     }
 
-    public Parentesco(Long codigo) {
-        this.codigo = codigo;
+    public Parentesco(ParentescoPK parentescoPK) {
+        this.parentescoPK = parentescoPK;
     }
 
-    public Parentesco(Long codigo, String nombreParentesco) {
-        this.codigo = codigo;
-        this.nombreParentesco = nombreParentesco;
+    public Parentesco(ParentescoPK parentescoPK, String nomParentesco) {
+        this.parentescoPK = parentescoPK;
+        this.nomParentesco = nomParentesco;
     }
 
-    public Long getCodigo() {
-        return codigo;
+    public Parentesco(short codCia, short codParentesco) {
+        this.parentescoPK = new ParentescoPK(codCia, codParentesco);
     }
 
-    public void setCodigo(Long codigo) {
-        this.codigo = codigo;
+    public ParentescoPK getParentescoPK() {
+        return parentescoPK;
     }
 
-    public String getNombreParentesco() {
-        return nombreParentesco;
+    public void setParentescoPK(ParentescoPK parentescoPK) {
+        this.parentescoPK = parentescoPK;
     }
 
-    public void setNombreParentesco(String nombreParentesco) {
-        this.nombreParentesco = nombreParentesco;
+    public String getNomParentesco() {
+        return nomParentesco;
+    }
+
+    public void setNomParentesco(String nomParentesco) {
+        this.nomParentesco = nomParentesco;
     }
 
     @XmlTransient
-    public List<BeneficiarioPorCandidato> getBeneficiarioPorCandidatoList() {
-        return beneficiarioPorCandidatoList;
+    public List<Candidato> getCandidatoList() {
+        return candidatoList;
     }
 
-    public void setBeneficiarioPorCandidatoList(List<BeneficiarioPorCandidato> beneficiarioPorCandidatoList) {
-        this.beneficiarioPorCandidatoList = beneficiarioPorCandidatoList;
+    public void setCandidatoList(List<Candidato> candidatoList) {
+        this.candidatoList = candidatoList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (codigo != null ? codigo.hashCode() : 0);
+        hash += (parentescoPK != null ? parentescoPK.hashCode() : 0);
         return hash;
     }
 
@@ -92,7 +94,7 @@ public class Parentesco implements Serializable {
             return false;
         }
         Parentesco other = (Parentesco) object;
-        if ((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo))) {
+        if ((this.parentescoPK == null && other.parentescoPK != null) || (this.parentescoPK != null && !this.parentescoPK.equals(other.parentescoPK))) {
             return false;
         }
         return true;
@@ -100,7 +102,7 @@ public class Parentesco implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Parentesco[ codigo=" + codigo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Parentesco[ parentescoPK=" + parentescoPK + " ]";
     }
     
 }

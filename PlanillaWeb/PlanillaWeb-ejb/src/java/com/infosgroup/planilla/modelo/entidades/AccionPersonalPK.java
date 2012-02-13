@@ -8,7 +8,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,9 +15,7 @@ import javax.validation.constraints.NotNull;
  */
 @Embeddable
 public class AccionPersonalPK implements Serializable {
-
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
@@ -107,7 +104,7 @@ public class AccionPersonalPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.AccionPersonalPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", codTipoaccion=" + codTipoaccion + ", correlativo=" + correlativo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.AccionPersonalPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", codTipoaccion=" + codTipoaccion + ", correlativo=" + correlativo + " ]";
     }
     
 }

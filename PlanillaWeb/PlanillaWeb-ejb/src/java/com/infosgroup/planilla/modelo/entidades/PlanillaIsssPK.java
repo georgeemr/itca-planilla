@@ -104,7 +104,7 @@ public class PlanillaIsssPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PlanillaIsssPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", codEmp=" + codEmp + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.PlanillaIsssPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", codEmp=" + codEmp + " ]";
     }
     
 }

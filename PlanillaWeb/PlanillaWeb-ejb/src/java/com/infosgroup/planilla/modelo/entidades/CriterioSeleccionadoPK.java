@@ -17,7 +17,7 @@ import javax.persistence.Embeddable;
 public class CriterioSeleccionadoPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "CORRELATIVO", nullable = false)
     private long correlativo;
@@ -28,17 +28,17 @@ public class CriterioSeleccionadoPK implements Serializable {
     public CriterioSeleccionadoPK() {
     }
 
-    public CriterioSeleccionadoPK(long codCia, long correlativo, String usuario) {
+    public CriterioSeleccionadoPK(short codCia, long correlativo, String usuario) {
         this.codCia = codCia;
         this.correlativo = correlativo;
         this.usuario = usuario;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
@@ -88,7 +88,7 @@ public class CriterioSeleccionadoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CriterioSeleccionadoPK[ codCia=" + codCia + ", correlativo=" + correlativo + ", usuario=" + usuario + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.CriterioSeleccionadoPK[ codCia=" + codCia + ", correlativo=" + correlativo + ", usuario=" + usuario + " ]";
     }
     
 }

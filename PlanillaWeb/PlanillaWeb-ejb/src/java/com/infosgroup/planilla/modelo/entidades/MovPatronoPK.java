@@ -120,7 +120,7 @@ public class MovPatronoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.MovPatronoPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", noMovto=" + noMovto + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.MovPatronoPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", noMovto=" + noMovto + " ]";
     }
     
 }

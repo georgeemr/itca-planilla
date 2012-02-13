@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "COMPETENCIAS")
+@Table(name = "COMPETENCIAS", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Competencias.findAll", query = "SELECT c FROM Competencias c"),
@@ -114,7 +114,7 @@ public class Competencias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Competencias[ competenciasPK=" + competenciasPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Competencias[ competenciasPK=" + competenciasPK + " ]";
     }
     
 }

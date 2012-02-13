@@ -17,53 +17,53 @@ import javax.persistence.Embeddable;
 public class EscalaEvaluacionPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
-    @Basic(optional = false)
-    @Column(name = "TIPO_EVALUACION", nullable = false)
-    private long tipoEvaluacion;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "ESCALA", nullable = false)
-    private long escala;
+    private short escala;
+    @Basic(optional = false)
+    @Column(name = "COD_TIPO_EVALUACION", nullable = false)
+    private short codTipoEvaluacion;
 
     public EscalaEvaluacionPK() {
     }
 
-    public EscalaEvaluacionPK(long codCia, long tipoEvaluacion, long escala) {
+    public EscalaEvaluacionPK(short codCia, short escala, short codTipoEvaluacion) {
         this.codCia = codCia;
-        this.tipoEvaluacion = tipoEvaluacion;
         this.escala = escala;
+        this.codTipoEvaluacion = codTipoEvaluacion;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
-    public long getTipoEvaluacion() {
-        return tipoEvaluacion;
-    }
-
-    public void setTipoEvaluacion(long tipoEvaluacion) {
-        this.tipoEvaluacion = tipoEvaluacion;
-    }
-
-    public long getEscala() {
+    public short getEscala() {
         return escala;
     }
 
-    public void setEscala(long escala) {
+    public void setEscala(short escala) {
         this.escala = escala;
+    }
+
+    public short getCodTipoEvaluacion() {
+        return codTipoEvaluacion;
+    }
+
+    public void setCodTipoEvaluacion(short codTipoEvaluacion) {
+        this.codTipoEvaluacion = codTipoEvaluacion;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) tipoEvaluacion;
         hash += (int) escala;
+        hash += (int) codTipoEvaluacion;
         return hash;
     }
 
@@ -77,10 +77,10 @@ public class EscalaEvaluacionPK implements Serializable {
         if (this.codCia != other.codCia) {
             return false;
         }
-        if (this.tipoEvaluacion != other.tipoEvaluacion) {
+        if (this.escala != other.escala) {
             return false;
         }
-        if (this.escala != other.escala) {
+        if (this.codTipoEvaluacion != other.codTipoEvaluacion) {
             return false;
         }
         return true;
@@ -88,7 +88,7 @@ public class EscalaEvaluacionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.EscalaEvaluacionPK[ codCia=" + codCia + ", tipoEvaluacion=" + tipoEvaluacion + ", escala=" + escala + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.EscalaEvaluacionPK[ codCia=" + codCia + ", escala=" + escala + ", codTipoEvaluacion=" + codTipoEvaluacion + " ]";
     }
     
 }

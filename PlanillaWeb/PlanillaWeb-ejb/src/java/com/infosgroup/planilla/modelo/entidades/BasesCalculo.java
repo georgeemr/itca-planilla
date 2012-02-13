@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "BASES_CALCULO")
+@Table(name = "BASES_CALCULO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BasesCalculo.findAll", query = "SELECT b FROM BasesCalculo b"),
@@ -116,7 +116,7 @@ public class BasesCalculo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.BasesCalculo[ codBase=" + codBase + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.BasesCalculo[ codBase=" + codBase + " ]";
     }
     
 }

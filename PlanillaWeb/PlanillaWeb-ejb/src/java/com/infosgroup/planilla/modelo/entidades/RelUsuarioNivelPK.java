@@ -72,7 +72,7 @@ public class RelUsuarioNivelPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.RelUsuarioNivelPK[ codCia=" + codCia + ", usuario=" + usuario + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.RelUsuarioNivelPK[ codCia=" + codCia + ", usuario=" + usuario + " ]";
     }
     
 }

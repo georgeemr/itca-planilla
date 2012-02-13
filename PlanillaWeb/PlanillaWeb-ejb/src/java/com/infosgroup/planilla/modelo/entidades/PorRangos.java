@@ -26,14 +26,16 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "POR_RANGOS")
+@Table(name = "POR_RANGOS", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PorRangos.findAll", query = "SELECT p FROM PorRangos p"),
     @NamedQuery(name = "PorRangos.findByCodCia", query = "SELECT p FROM PorRangos p WHERE p.porRangosPK.codCia = :codCia"),
     @NamedQuery(name = "PorRangos.findByCodRango", query = "SELECT p FROM PorRangos p WHERE p.porRangosPK.codRango = :codRango"),
     @NamedQuery(name = "PorRangos.findByPeriodo", query = "SELECT p FROM PorRangos p WHERE p.periodo = :periodo"),
-    @NamedQuery(name = "PorRangos.findByDescipcion", query = "SELECT p FROM PorRangos p WHERE p.descipcion = :descipcion")})
+    @NamedQuery(name = "PorRangos.findByDescipcion", query = "SELECT p FROM PorRangos p WHERE p.descipcion = :descipcion"),
+    @NamedQuery(name = "PorRangos.findBySindicato", query = "SELECT p FROM PorRangos p WHERE p.sindicato = :sindicato"),
+    @NamedQuery(name = "PorRangos.findByDocente", query = "SELECT p FROM PorRangos p WHERE p.docente = :docente")})
 public class PorRangos implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -43,6 +45,10 @@ public class PorRangos implements Serializable {
     private short periodo;
     @Column(name = "DESCIPCION", length = 60)
     private String descipcion;
+    @Column(name = "SINDICATO", length = 1)
+    private String sindicato;
+    @Column(name = "DOCENTE", length = 1)
+    private String docente;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_PD", referencedColumnName = "COD_DP", nullable = false)})
@@ -91,6 +97,22 @@ public class PorRangos implements Serializable {
         this.descipcion = descipcion;
     }
 
+    public String getSindicato() {
+        return sindicato;
+    }
+
+    public void setSindicato(String sindicato) {
+        this.sindicato = sindicato;
+    }
+
+    public String getDocente() {
+        return docente;
+    }
+
+    public void setDocente(String docente) {
+        this.docente = docente;
+    }
+
     public DeducPresta getDeducPresta() {
         return deducPresta;
     }
@@ -130,7 +152,7 @@ public class PorRangos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PorRangos[ porRangosPK=" + porRangosPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.PorRangos[ porRangosPK=" + porRangosPK + " ]";
     }
     
 }

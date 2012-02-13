@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "ESTADO_CIVIL")
+@Table(name = "ESTADO_CIVIL", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "EstadoCivil.findAll", query = "SELECT e FROM EstadoCivil e"),
@@ -79,7 +79,7 @@ public class EstadoCivil implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.EstadoCivil[ codEstadoCivil=" + codEstadoCivil + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.EstadoCivil[ codEstadoCivil=" + codEstadoCivil + " ]";
     }
     
 }

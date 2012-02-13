@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "DEDUC_PRESTA")
+@Table(name = "DEDUC_PRESTA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DeducPresta.findAll", query = "SELECT d FROM DeducPresta d"),
@@ -55,12 +55,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "DeducPresta.findByDIsr", query = "SELECT d FROM DeducPresta d WHERE d.dIsr = :dIsr"),
     @NamedQuery(name = "DeducPresta.findByDIsss", query = "SELECT d FROM DeducPresta d WHERE d.dIsss = :dIsss"),
     @NamedQuery(name = "DeducPresta.findBySeContabiliza", query = "SELECT d FROM DeducPresta d WHERE d.seContabiliza = :seContabiliza"),
-    @NamedQuery(name = "DeducPresta.findByConstancia", query = "SELECT d FROM DeducPresta d WHERE d.constancia = :constancia"),
-    @NamedQuery(name = "DeducPresta.findByCta6", query = "SELECT d FROM DeducPresta d WHERE d.cta6 = :cta6"),
-    @NamedQuery(name = "DeducPresta.findByCta7", query = "SELECT d FROM DeducPresta d WHERE d.cta7 = :cta7"),
-    @NamedQuery(name = "DeducPresta.findByCta8", query = "SELECT d FROM DeducPresta d WHERE d.cta8 = :cta8"),
-    @NamedQuery(name = "DeducPresta.findBySubPrioridadPresta", query = "SELECT d FROM DeducPresta d WHERE d.subPrioridadPresta = :subPrioridadPresta"),
-    @NamedQuery(name = "DeducPresta.findByPrioridadPresta", query = "SELECT d FROM DeducPresta d WHERE d.prioridadPresta = :prioridadPresta")})
+    @NamedQuery(name = "DeducPresta.findByConstancia", query = "SELECT d FROM DeducPresta d WHERE d.constancia = :constancia")})
 public class DeducPresta implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -84,20 +79,20 @@ public class DeducPresta implements Serializable {
     @Column(name = "SUMA_RESTA", length = 1)
     private String sumaResta;
     @Basic(optional = false)
-    @Column(name = "CTA_1", nullable = false, length = 2)
-    private String cta1;
+    @Column(name = "CTA_1", nullable = false)
+    private short cta1;
     @Basic(optional = false)
-    @Column(name = "CTA_2", nullable = false, length = 3)
-    private String cta2;
+    @Column(name = "CTA_2", nullable = false)
+    private short cta2;
     @Basic(optional = false)
-    @Column(name = "CTA_3", nullable = false, length = 4)
-    private String cta3;
+    @Column(name = "CTA_3", nullable = false)
+    private short cta3;
     @Basic(optional = false)
-    @Column(name = "CTA_4", nullable = false, length = 4)
-    private String cta4;
+    @Column(name = "CTA_4", nullable = false)
+    private short cta4;
     @Basic(optional = false)
-    @Column(name = "CTA_5", nullable = false, length = 5)
-    private String cta5;
+    @Column(name = "CTA_5", nullable = false)
+    private int cta5;
     @Column(name = "DES_CORTA", length = 10)
     private String desCorta;
     @Column(name = "AFP", length = 1)
@@ -116,51 +111,22 @@ public class DeducPresta implements Serializable {
     private Short seContabiliza;
     @Column(name = "CONSTANCIA", length = 1)
     private String constancia;
-    @Basic(optional = false)
-    @Column(name = "CTA_6", nullable = false, length = 5)
-    private String cta6;
-    @Basic(optional = false)
-    @Column(name = "CTA_7", nullable = false, length = 5)
-    private String cta7;
-    @Basic(optional = false)
-    @Column(name = "CTA_8", nullable = false, length = 5)
-    private String cta8;
-    @Column(name = "SUB_PRIORIDAD_PRESTA", length = 2)
-    private String subPrioridadPresta;
-    @Column(name = "PRIORIDAD_PRESTA", length = 1)
-    private String prioridadPresta;
     @JoinTable(name = "REL_DEDUC_PATRONO", joinColumns = {
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "COD_DP_PATRONO", referencedColumnName = "COD_DP", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "COD_DP_EMPLEADO", referencedColumnName = "COD_DP", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "COD_DP_EMPLEADO", referencedColumnName = "COD_DP", nullable = false)})
+        @JoinColumn(name = "COD_DP_PATRONO", referencedColumnName = "COD_DP", nullable = false)})
     @ManyToMany
     private List<DeducPresta> deducPrestaList;
     @ManyToMany(mappedBy = "deducPrestaList")
     private List<DeducPresta> deducPrestaList1;
-    @JoinTable(name = "DEDUCPRESTA_X_PUESTO", joinColumns = {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "COD_DP", referencedColumnName = "COD_DP", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "COD_PUESTO", referencedColumnName = "COD_PUESTO", nullable = false)})
-    @ManyToMany
-    private List<Puestos> puestosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deducPresta")
     private List<PorRangos> porRangosList;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
     @JoinColumn(name = "COD_BASE", referencedColumnName = "COD_BASE", nullable = false)
     @ManyToOne(optional = false)
     private BasesCalculo codBase;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deducPresta")
-    private List<Instituciones> institucionesList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deducPresta")
-    private List<Prestamos> prestamosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deducPresta1")
-    private List<Prestamos> prestamosList1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deducPresta")
-    private List<MovPatrono> movPatronoList;
+    private List<CtasXDepto> ctasXDeptoList;
 
     public DeducPresta() {
     }
@@ -169,7 +135,7 @@ public class DeducPresta implements Serializable {
         this.deducPrestaPK = deducPrestaPK;
     }
 
-    public DeducPresta(DeducPrestaPK deducPrestaPK, String vpr, String cta1, String cta2, String cta3, String cta4, String cta5, String cta6, String cta7, String cta8) {
+    public DeducPresta(DeducPrestaPK deducPrestaPK, String vpr, short cta1, short cta2, short cta3, short cta4, int cta5) {
         this.deducPrestaPK = deducPrestaPK;
         this.vpr = vpr;
         this.cta1 = cta1;
@@ -177,9 +143,6 @@ public class DeducPresta implements Serializable {
         this.cta3 = cta3;
         this.cta4 = cta4;
         this.cta5 = cta5;
-        this.cta6 = cta6;
-        this.cta7 = cta7;
-        this.cta8 = cta8;
     }
 
     public DeducPresta(int codDp, short codCia) {
@@ -258,43 +221,43 @@ public class DeducPresta implements Serializable {
         this.sumaResta = sumaResta;
     }
 
-    public String getCta1() {
+    public short getCta1() {
         return cta1;
     }
 
-    public void setCta1(String cta1) {
+    public void setCta1(short cta1) {
         this.cta1 = cta1;
     }
 
-    public String getCta2() {
+    public short getCta2() {
         return cta2;
     }
 
-    public void setCta2(String cta2) {
+    public void setCta2(short cta2) {
         this.cta2 = cta2;
     }
 
-    public String getCta3() {
+    public short getCta3() {
         return cta3;
     }
 
-    public void setCta3(String cta3) {
+    public void setCta3(short cta3) {
         this.cta3 = cta3;
     }
 
-    public String getCta4() {
+    public short getCta4() {
         return cta4;
     }
 
-    public void setCta4(String cta4) {
+    public void setCta4(short cta4) {
         this.cta4 = cta4;
     }
 
-    public String getCta5() {
+    public int getCta5() {
         return cta5;
     }
 
-    public void setCta5(String cta5) {
+    public void setCta5(int cta5) {
         this.cta5 = cta5;
     }
 
@@ -370,46 +333,6 @@ public class DeducPresta implements Serializable {
         this.constancia = constancia;
     }
 
-    public String getCta6() {
-        return cta6;
-    }
-
-    public void setCta6(String cta6) {
-        this.cta6 = cta6;
-    }
-
-    public String getCta7() {
-        return cta7;
-    }
-
-    public void setCta7(String cta7) {
-        this.cta7 = cta7;
-    }
-
-    public String getCta8() {
-        return cta8;
-    }
-
-    public void setCta8(String cta8) {
-        this.cta8 = cta8;
-    }
-
-    public String getSubPrioridadPresta() {
-        return subPrioridadPresta;
-    }
-
-    public void setSubPrioridadPresta(String subPrioridadPresta) {
-        this.subPrioridadPresta = subPrioridadPresta;
-    }
-
-    public String getPrioridadPresta() {
-        return prioridadPresta;
-    }
-
-    public void setPrioridadPresta(String prioridadPresta) {
-        this.prioridadPresta = prioridadPresta;
-    }
-
     @XmlTransient
     public List<DeducPresta> getDeducPrestaList() {
         return deducPrestaList;
@@ -429,29 +352,12 @@ public class DeducPresta implements Serializable {
     }
 
     @XmlTransient
-    public List<Puestos> getPuestosList() {
-        return puestosList;
-    }
-
-    public void setPuestosList(List<Puestos> puestosList) {
-        this.puestosList = puestosList;
-    }
-
-    @XmlTransient
     public List<PorRangos> getPorRangosList() {
         return porRangosList;
     }
 
     public void setPorRangosList(List<PorRangos> porRangosList) {
         this.porRangosList = porRangosList;
-    }
-
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
     }
 
     public BasesCalculo getCodBase() {
@@ -463,39 +369,12 @@ public class DeducPresta implements Serializable {
     }
 
     @XmlTransient
-    public List<Instituciones> getInstitucionesList() {
-        return institucionesList;
+    public List<CtasXDepto> getCtasXDeptoList() {
+        return ctasXDeptoList;
     }
 
-    public void setInstitucionesList(List<Instituciones> institucionesList) {
-        this.institucionesList = institucionesList;
-    }
-
-    @XmlTransient
-    public List<Prestamos> getPrestamosList() {
-        return prestamosList;
-    }
-
-    public void setPrestamosList(List<Prestamos> prestamosList) {
-        this.prestamosList = prestamosList;
-    }
-
-    @XmlTransient
-    public List<Prestamos> getPrestamosList1() {
-        return prestamosList1;
-    }
-
-    public void setPrestamosList1(List<Prestamos> prestamosList1) {
-        this.prestamosList1 = prestamosList1;
-    }
-
-    @XmlTransient
-    public List<MovPatrono> getMovPatronoList() {
-        return movPatronoList;
-    }
-
-    public void setMovPatronoList(List<MovPatrono> movPatronoList) {
-        this.movPatronoList = movPatronoList;
+    public void setCtasXDeptoList(List<CtasXDepto> ctasXDeptoList) {
+        this.ctasXDeptoList = ctasXDeptoList;
     }
 
     @Override
@@ -520,7 +399,7 @@ public class DeducPresta implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.DeducPresta[ deducPrestaPK=" + deducPrestaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.DeducPresta[ deducPrestaPK=" + deducPrestaPK + " ]";
     }
     
 }

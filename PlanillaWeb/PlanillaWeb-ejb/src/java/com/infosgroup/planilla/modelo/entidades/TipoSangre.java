@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "TIPO_SANGRE")
+@Table(name = "TIPO_SANGRE", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoSangre.findAll", query = "SELECT t FROM TipoSangre t"),
@@ -38,7 +38,7 @@ public class TipoSangre implements Serializable {
     @Column(name = "NOM_TIPO_SANGRE", nullable = false, length = 100)
     private String nomTipoSangre;
     @OneToMany(mappedBy = "tipoSangre")
-    private List<Empleados> empleadosList;
+    private List<Candidato> candidatoList;
 
     public TipoSangre() {
     }
@@ -69,12 +69,12 @@ public class TipoSangre implements Serializable {
     }
 
     @XmlTransient
-    public List<Empleados> getEmpleadosList() {
-        return empleadosList;
+    public List<Candidato> getCandidatoList() {
+        return candidatoList;
     }
 
-    public void setEmpleadosList(List<Empleados> empleadosList) {
-        this.empleadosList = empleadosList;
+    public void setCandidatoList(List<Candidato> candidatoList) {
+        this.candidatoList = candidatoList;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class TipoSangre implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoSangre[ tipoSangre=" + tipoSangre + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoSangre[ tipoSangre=" + tipoSangre + " ]";
     }
     
 }

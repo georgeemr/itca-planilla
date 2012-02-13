@@ -88,7 +88,7 @@ public class RelUsuarioTipoplaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.RelUsuarioTipoplaPK[ codCia=" + codCia + ", usuario=" + usuario + ", codTipopla=" + codTipopla + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.RelUsuarioTipoplaPK[ codCia=" + codCia + ", usuario=" + usuario + ", codTipopla=" + codTipopla + " ]";
     }
     
 }

@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "CRITERIOS_X_PUESTO")
+@Table(name = "CRITERIOS_X_PUESTO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CriteriosXPuesto.findAll", query = "SELECT c FROM CriteriosXPuesto c"),
@@ -50,8 +50,8 @@ public class CriteriosXPuesto implements Serializable {
     private Puestos puestos;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "TIPO_CRITERIO", referencedColumnName = "TIPO", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "CRITERIO", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "CRITERIO", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "TIPO_CRITERIO", referencedColumnName = "TIPO", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Criterio criterio1;
 
@@ -62,7 +62,7 @@ public class CriteriosXPuesto implements Serializable {
         this.criteriosXPuestoPK = criteriosXPuestoPK;
     }
 
-    public CriteriosXPuesto(long codCia, long puesto, long tipoCriterio, long criterio, long correlativo) {
+    public CriteriosXPuesto(short codCia, long puesto, long tipoCriterio, long criterio, long correlativo) {
         this.criteriosXPuestoPK = new CriteriosXPuestoPK(codCia, puesto, tipoCriterio, criterio, correlativo);
     }
 
@@ -136,7 +136,7 @@ public class CriteriosXPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto[ criteriosXPuestoPK=" + criteriosXPuestoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.CriteriosXPuesto[ criteriosXPuestoPK=" + criteriosXPuestoPK + " ]";
     }
     
 }

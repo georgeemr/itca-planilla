@@ -9,9 +9,6 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -22,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "PLANILLA_ISSS")
+@Table(name = "PLANILLA_ISSS", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PlanillaIsss.findAll", query = "SELECT p FROM PlanillaIsss p"),
@@ -48,7 +45,7 @@ public class PlanillaIsss implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PlanillaIsssPK planillaIsssPK;
-    @Column(name = "NO_PATRONAL", length = 15)
+    @Column(name = "NO_PATRONAL", length = 9)
     private String noPatronal;
     @Column(name = "NO_AFILACION", length = 9)
     private String noAfilacion;
@@ -65,7 +62,7 @@ public class PlanillaIsss implements Serializable {
     private Short diasRemunerados;
     @Column(name = "HORAS_JORNADA", length = 2)
     private String horasJornada;
-    @Column(name = "COD_OBSERVA", length = 6)
+    @Column(name = "COD_OBSERVA", length = 2)
     private String codObserva;
     @Column(name = "COD_TIPOPLA")
     private Short codTipopla;
@@ -77,14 +74,6 @@ public class PlanillaIsss implements Serializable {
     private Short codMuni;
     @Column(name = "COD_PAIS")
     private Short codPais;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private ParamPlan paramPlan;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Empleados empleados;
 
     public PlanillaIsss() {
     }
@@ -217,22 +206,6 @@ public class PlanillaIsss implements Serializable {
         this.codPais = codPais;
     }
 
-    public ParamPlan getParamPlan() {
-        return paramPlan;
-    }
-
-    public void setParamPlan(ParamPlan paramPlan) {
-        this.paramPlan = paramPlan;
-    }
-
-    public Empleados getEmpleados() {
-        return empleados;
-    }
-
-    public void setEmpleados(Empleados empleados) {
-        this.empleados = empleados;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -255,7 +228,7 @@ public class PlanillaIsss implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PlanillaIsss[ planillaIsssPK=" + planillaIsssPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.PlanillaIsss[ planillaIsssPK=" + planillaIsssPK + " ]";
     }
     
 }

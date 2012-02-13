@@ -11,8 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -25,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "NIVEL_ACADEMICO")
+@Table(name = "NIVEL_ACADEMICO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "NivelAcademico.findAll", query = "SELECT n FROM NivelAcademico n"),
@@ -40,12 +38,9 @@ public class NivelAcademico implements Serializable {
     @Column(name = "NOM_NIVEL_ACADEMICO", nullable = false, length = 200)
     private String nomNivelAcademico;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nivelAcademico")
-    private List<Empleados> empleadosList;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
+    private List<SubNivelAcademico> subNivelAcademicoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nivelAcademico")
-    private List<EmpleadoNivelAcademico> empleadoNivelAcademicoList;
+    private List<Candidato> candidatoList;
 
     public NivelAcademico() {
     }
@@ -80,29 +75,21 @@ public class NivelAcademico implements Serializable {
     }
 
     @XmlTransient
-    public List<Empleados> getEmpleadosList() {
-        return empleadosList;
+    public List<SubNivelAcademico> getSubNivelAcademicoList() {
+        return subNivelAcademicoList;
     }
 
-    public void setEmpleadosList(List<Empleados> empleadosList) {
-        this.empleadosList = empleadosList;
-    }
-
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
+    public void setSubNivelAcademicoList(List<SubNivelAcademico> subNivelAcademicoList) {
+        this.subNivelAcademicoList = subNivelAcademicoList;
     }
 
     @XmlTransient
-    public List<EmpleadoNivelAcademico> getEmpleadoNivelAcademicoList() {
-        return empleadoNivelAcademicoList;
+    public List<Candidato> getCandidatoList() {
+        return candidatoList;
     }
 
-    public void setEmpleadoNivelAcademicoList(List<EmpleadoNivelAcademico> empleadoNivelAcademicoList) {
-        this.empleadoNivelAcademicoList = empleadoNivelAcademicoList;
+    public void setCandidatoList(List<Candidato> candidatoList) {
+        this.candidatoList = candidatoList;
     }
 
     @Override
@@ -127,7 +114,7 @@ public class NivelAcademico implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.NivelAcademico[ nivelAcademicoPK=" + nivelAcademicoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.NivelAcademico[ nivelAcademicoPK=" + nivelAcademicoPK + " ]";
     }
     
 }

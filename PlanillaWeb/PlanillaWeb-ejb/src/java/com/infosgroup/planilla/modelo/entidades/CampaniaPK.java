@@ -17,44 +17,44 @@ import javax.persistence.Embeddable;
 public class CampaniaPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "COD_CAMPANIA", nullable = false)
-    private long codCampania;
+    private short codCampania;
     @Basic(optional = false)
     @Column(name = "PERIODO", nullable = false)
-    private long periodo;
+    private int periodo;
 
     public CampaniaPK() {
     }
 
-    public CampaniaPK(long codCia, long codCampania, long periodo) {
+    public CampaniaPK(short codCia, short codCampania, int periodo) {
         this.codCia = codCia;
         this.codCampania = codCampania;
         this.periodo = periodo;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
-    public long getCodCampania() {
+    public short getCodCampania() {
         return codCampania;
     }
 
-    public void setCodCampania(long codCampania) {
+    public void setCodCampania(short codCampania) {
         this.codCampania = codCampania;
     }
 
-    public long getPeriodo() {
+    public int getPeriodo() {
         return periodo;
     }
 
-    public void setPeriodo(long periodo) {
+    public void setPeriodo(int periodo) {
         this.periodo = periodo;
     }
 
@@ -88,7 +88,7 @@ public class CampaniaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CampaniaPK[ codCia=" + codCia + ", codCampania=" + codCampania + ", periodo=" + periodo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.CampaniaPK[ codCia=" + codCia + ", codCampania=" + codCampania + ", periodo=" + periodo + " ]";
     }
     
 }

@@ -10,8 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -22,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "FIRMAS_PLANILLA")
+@Table(name = "FIRMAS_PLANILLA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "FirmasPlanilla.findAll", query = "SELECT f FROM FirmasPlanilla f"),
@@ -42,9 +40,6 @@ public class FirmasPlanilla implements Serializable {
     @Basic(optional = false)
     @Column(name = "PUESTO", nullable = false, length = 100)
     private String puesto;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private ParamPlan paramPlan;
 
     public FirmasPlanilla() {
     }
@@ -87,14 +82,6 @@ public class FirmasPlanilla implements Serializable {
         this.puesto = puesto;
     }
 
-    public ParamPlan getParamPlan() {
-        return paramPlan;
-    }
-
-    public void setParamPlan(ParamPlan paramPlan) {
-        this.paramPlan = paramPlan;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -117,7 +104,7 @@ public class FirmasPlanilla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.FirmasPlanilla[ firmasPlanillaPK=" + firmasPlanillaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.FirmasPlanilla[ firmasPlanillaPK=" + firmasPlanillaPK + " ]";
     }
     
 }

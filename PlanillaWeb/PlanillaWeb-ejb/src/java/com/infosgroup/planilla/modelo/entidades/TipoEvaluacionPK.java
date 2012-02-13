@@ -17,32 +17,32 @@ import javax.persistence.Embeddable;
 public class TipoEvaluacionPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "COD_TIPO_EVALUACION", nullable = false)
-    private long codTipoEvaluacion;
+    private short codTipoEvaluacion;
 
     public TipoEvaluacionPK() {
     }
 
-    public TipoEvaluacionPK(long codCia, long codTipoEvaluacion) {
+    public TipoEvaluacionPK(short codCia, short codTipoEvaluacion) {
         this.codCia = codCia;
         this.codTipoEvaluacion = codTipoEvaluacion;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
-    public long getCodTipoEvaluacion() {
+    public short getCodTipoEvaluacion() {
         return codTipoEvaluacion;
     }
 
-    public void setCodTipoEvaluacion(long codTipoEvaluacion) {
+    public void setCodTipoEvaluacion(short codTipoEvaluacion) {
         this.codTipoEvaluacion = codTipoEvaluacion;
     }
 
@@ -72,7 +72,7 @@ public class TipoEvaluacionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoEvaluacionPK[ codCia=" + codCia + ", codTipoEvaluacion=" + codTipoEvaluacion + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoEvaluacionPK[ codCia=" + codCia + ", codTipoEvaluacion=" + codTipoEvaluacion + " ]";
     }
     
 }

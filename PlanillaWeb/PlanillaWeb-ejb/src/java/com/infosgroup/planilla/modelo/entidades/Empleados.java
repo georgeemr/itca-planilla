@@ -15,8 +15,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -25,7 +23,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.validation.constraints.Size;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,7 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "EMPLEADOS")
+@Table(name = "EMPLEADOS", catalog = "", schema = "PLANILLA", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"USUARIO"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e"),
@@ -112,86 +111,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findByMarcaTarjeta", query = "SELECT e FROM Empleados e WHERE e.marcaTarjeta = :marcaTarjeta"),
     @NamedQuery(name = "Empleados.findByConcurso", query = "SELECT e FROM Empleados e WHERE e.concurso = :concurso"),
     @NamedQuery(name = "Empleados.findBySindicato", query = "SELECT e FROM Empleados e WHERE e.sindicato = :sindicato"),
-    @NamedQuery(name = "Empleados.findByControlEntrada", query = "SELECT e FROM Empleados e WHERE e.controlEntrada = :controlEntrada"),
-    @NamedQuery(name = "Empleados.findByCelEmp", query = "SELECT e FROM Empleados e WHERE e.celEmp = :celEmp"),
-    @NamedQuery(name = "Empleados.findByTelContacto", query = "SELECT e FROM Empleados e WHERE e.telContacto = :telContacto"),
-    @NamedQuery(name = "Empleados.findByCelContacto", query = "SELECT e FROM Empleados e WHERE e.celContacto = :celContacto"),
-    @NamedQuery(name = "Empleados.findByCodProfesion", query = "SELECT e FROM Empleados e WHERE e.codProfesion = :codProfesion"),
-    @NamedQuery(name = "Empleados.findByCodPaisNacionalidad", query = "SELECT e FROM Empleados e WHERE e.codPaisNacionalidad = :codPaisNacionalidad"),
-    @NamedQuery(name = "Empleados.findByCodPaisNacimiento", query = "SELECT e FROM Empleados e WHERE e.codPaisNacimiento = :codPaisNacimiento"),
-    @NamedQuery(name = "Empleados.findByCodDepartamentoNacim", query = "SELECT e FROM Empleados e WHERE e.codDepartamentoNacim = :codDepartamentoNacim"),
-    @NamedQuery(name = "Empleados.findByCodMunicipioNacim", query = "SELECT e FROM Empleados e WHERE e.codMunicipioNacim = :codMunicipioNacim"),
-    @NamedQuery(name = "Empleados.findByCodDepartamentoDomic", query = "SELECT e FROM Empleados e WHERE e.codDepartamentoDomic = :codDepartamentoDomic"),
-    @NamedQuery(name = "Empleados.findByCodMunicipioDomic", query = "SELECT e FROM Empleados e WHERE e.codMunicipioDomic = :codMunicipioDomic"),
-    @NamedQuery(name = "Empleados.findByFecSolicitud", query = "SELECT e FROM Empleados e WHERE e.fecSolicitud = :fecSolicitud"),
-    @NamedQuery(name = "Empleados.findByCodPaisDomic", query = "SELECT e FROM Empleados e WHERE e.codPaisDomic = :codPaisDomic"),
-    @NamedQuery(name = "Empleados.findByNombreConyuge", query = "SELECT e FROM Empleados e WHERE e.nombreConyuge = :nombreConyuge"),
-    @NamedQuery(name = "Empleados.findByTrabajoConyuge", query = "SELECT e FROM Empleados e WHERE e.trabajoConyuge = :trabajoConyuge"),
-    @NamedQuery(name = "Empleados.findByTelefonoConyuge", query = "SELECT e FROM Empleados e WHERE e.telefonoConyuge = :telefonoConyuge"),
-    @NamedQuery(name = "Empleados.findByEstadoEstudios", query = "SELECT e FROM Empleados e WHERE e.estadoEstudios = :estadoEstudios"),
-    @NamedQuery(name = "Empleados.findByHorarioNocturno", query = "SELECT e FROM Empleados e WHERE e.horarioNocturno = :horarioNocturno")})
+    @NamedQuery(name = "Empleados.findByCodContratacion", query = "SELECT e FROM Empleados e WHERE e.codContratacion = :codContratacion"),
+    @NamedQuery(name = "Empleados.findByDocente", query = "SELECT e FROM Empleados e WHERE e.docente = :docente")})
 public class Empleados implements Serializable {
-    @Column(name =     "FECHA_NAC")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaNac;
-    @Column(name =     "FEC_INGRESO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecIngreso;
-    @Column(name =     "FEC_SALIDA")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecSalida;
-    @Column(name =     "LIQUIDACION")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date liquidacion;
-    @Column(name =     "FECHA")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha;
-    @Column(name =     "FECHA_DUI")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaDui;
-    @Column(name =     "FEC_ULT_CONTRATO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecUltContrato;
-    @Column(name =     "FECHA_ACTUALIZACION")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaActualizacion;
-    @Column(name =     "FECHAVAC")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechavac;
-    @Column(name =     "FECHAVAC2")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechavac2;
-    @Column(name =     "FEC_SOLICITUD")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecSolicitud;
-    @JoinTable(name = "CANDIDATO_X_CARGO", joinColumns = {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "COD_CANDIDATO", referencedColumnName = "COD_EMP", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "COD_PUESTO", referencedColumnName = "COD_PUESTO", nullable = false)})
-    @ManyToMany
-    private List<Puestos> puestosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<Empleados> empleadosList;
-    @Size(max = 200)
-    @Column(name = "CORREO", length = 200)
-    private String correo;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", insertable = false, updatable = false),
-        @JoinColumn(name = "COD_CANDIDATO", referencedColumnName = "COD_CANDIDATO")})
-    @ManyToOne(optional = false)
-    private Candidato candidato;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_SUCURSAL", referencedColumnName = "COD_AGENCIA")})
-    @ManyToOne(optional = false)
-    private Agencias agencias;
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected EmpleadosPK empleadosPK;
     @Column(name = "APELLIDOS", length = 60)
     private String apellidos;
-    @Column(name = "NOMBRES", length = 100)
+    @Column(name = "NOMBRES", length = 30)
     private String nombres;
     @Column(name = "AP_CASADA", length = 20)
     private String apCasada;
@@ -199,16 +128,27 @@ public class Empleados implements Serializable {
     private String direccion;
     @Column(name = "TELEFONOS", length = 30)
     private String telefonos;
-    @Column(name = "NUM_IGSS", length = 20)
+    @Column(name = "FECHA_NAC")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNac;
+    @Column(name = "NUM_IGSS", length = 16)
     private String numIgss;
     @Column(name = "NUM_IRTRA", length = 12)
     private String numIrtra;
     @Column(name = "NUM_NIT", length = 20)
     private String numNit;
+    @Column(name = "FEC_INGRESO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecIngreso;
+    @Column(name = "FEC_SALIDA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecSalida;
     @Column(name = "MOT_SALIDA", length = 250)
     private String motSalida;
     @Column(name = "OBSERVACION", length = 250)
     private String observacion;
+    @Column(name = "CORREO", length = 150)
+    private String correo;
     @Column(name = "STATUS", length = 1)
     private String status;
     @Column(name = "TIPO_CONTRA", length = 1)
@@ -260,6 +200,9 @@ public class Empleados implements Serializable {
     private String domicilio;
     @Column(name = "DEPARTAMENTO", length = 100)
     private String departamento;
+    @Column(name = "LIQUIDACION")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date liquidacion;
     @Column(name = "NOMBRE_RENTA", length = 100)
     private String nombreRenta;
     @Column(name = "HORARIO", length = 1)
@@ -276,11 +219,20 @@ public class Empleados implements Serializable {
     private String lugarnacimiento;
     @Column(name = "NUM_DUI", length = 30)
     private String numDui;
+    @Column(name = "FECHA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecha;
     @Column(name = "COD_ESTUDIO", length = 5)
     private String codEstudio;
     @Column(name = "LUGAR_DUI", length = 60)
     private String lugarDui;
-    @Column(name = "COD_BANCO", length = 4)
+    @Column(name = "FECHA_DUI")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaDui;
+    @Column(name = "FEC_ULT_CONTRATO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecUltContrato;
+    @Column(name = "COD_BANCO", length = 3)
     private String codBanco;
     @Column(name = "COD_SUCURSAL", length = 2)
     private String codSucursal;
@@ -288,10 +240,13 @@ public class Empleados implements Serializable {
     private String licencia;
     @Column(name = "ACTUALIZADO_POR", length = 20)
     private String actualizadoPor;
-    @Column(name = "USUARIO", length = 20, nullable = false)
+    @Column(name = "USUARIO", length = 20)
     private String usuario;
     @Column(name = "NUM_TARJETA", length = 8)
     private String numTarjeta;
+    @Column(name = "FECHA_ACTUALIZACION")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaActualizacion;
     @Column(name = "COD_PAIS")
     private Short codPais;
     @Column(name = "COD_DEPAR")
@@ -302,6 +257,12 @@ public class Empleados implements Serializable {
     private String otras;
     @Column(name = "COD_AREA")
     private BigInteger codArea;
+    @Column(name = "FECHAVAC")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechavac;
+    @Column(name = "FECHAVAC2")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechavac2;
     @Column(name = "ANIO")
     private Short anio;
     @Column(name = "ESTRUCTURA", length = 20)
@@ -314,69 +275,27 @@ public class Empleados implements Serializable {
     private String concurso;
     @Column(name = "SINDICATO", length = 1)
     private String sindicato;
-    @Column(name = "CONTROL_ENTRADA", length = 1)
-    private String controlEntrada;
-    @Column(name = "CEL_EMP", length = 30)
-    private String celEmp;
-    @Column(name = "TEL_CONTACTO", length = 30)
-    private String telContacto;
-    @Column(name = "CEL_CONTACTO", length = 30)
-    private String celContacto;
-    @Column(name = "COD_PROFESION")
-    private Short codProfesion;
-    @Column(name = "COD_PAIS_NACIONALIDAD")
-    private Short codPaisNacionalidad;
-    @Column(name = "COD_PAIS_NACIMIENTO")
-    private Short codPaisNacimiento;
-    @Column(name = "COD_DEPARTAMENTO_NACIM")
-    private Short codDepartamentoNacim;
-    @Column(name = "COD_MUNICIPIO_NACIM")
-    private Short codMunicipioNacim;
-    @Column(name = "COD_DEPARTAMENTO_DOMIC")
-    private Short codDepartamentoDomic;
-    @Column(name = "COD_MUNICIPIO_DOMIC")
-    private Short codMunicipioDomic;
-    @Column(name = "COD_PAIS_DOMIC")
-    private Short codPaisDomic;
-    @Column(name = "NOMBRE_CONYUGE", length = 60)
-    private String nombreConyuge;
-    @Column(name = "TRABAJO_CONYUGE", length = 30)
-    private String trabajoConyuge;
-    @Column(name = "TELEFONO_CONYUGE", length = 50)
-    private String telefonoConyuge;
-    @Column(name = "ESTADO_ESTUDIOS", length = 3)
-    private String estadoEstudios;
-    @Column(name = "HORARIO_NOCTURNO", length = 2)
-    private String horarioNocturno;
-    @JoinTable(name = "EVALUADOR_EVALUACIONES", joinColumns = {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "EVALUADOR", referencedColumnName = "COD_EMP", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "PERIODO", referencedColumnName = "PERIODO", nullable = false),
-        @JoinColumn(name = "CAMPANIA", referencedColumnName = "COD_CAMPANIA", nullable = false),
-        @JoinColumn(name = "TIPO_EVALUACION", referencedColumnName = "TIPO_EVALUACION", nullable = false),
-        @JoinColumn(name = "PLANTILLA", referencedColumnName = "PLANTILLA", nullable = false),
-        @JoinColumn(name = "EMPLEADO", referencedColumnName = "EMPLEADO", nullable = false)})
-    @ManyToMany
-    private List<Evaluacion> evaluacionList;
+    @Column(name = "COD_CONTRATACION")
+    private Short codContratacion;
+    @Column(name = "DOCENTE", length = 1)
+    private String docente;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA")})
     @ManyToOne(optional = false)
     private TiposPlanilla tiposPlanilla;
-    @JoinColumn(name = "TIPO_SANGRE", referencedColumnName = "TIPO_SANGRE")
-    @ManyToOne
-    private TipoSangre tipoSangre;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_PUESTO", referencedColumnName = "COD_PUESTO")})
     @ManyToOne(optional = false)
     private Puestos puestos;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jefe")
+    private List<Empleados> empleadosList;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_NIVEL_ACADEMICO", referencedColumnName = "COD_NIVEL_ACADEMICO")})
+        @JoinColumn(name = "JEFE", referencedColumnName = "COD_EMP")})
     @ManyToOne(optional = false)
-    private NivelAcademico nivelAcademico;
+    private Empleados jefe;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_DEPTO", referencedColumnName = "COD_DEPTO")})
@@ -387,40 +306,9 @@ public class Empleados implements Serializable {
         @JoinColumn(name = "COD_TIPORENUNCIA", referencedColumnName = "COD_TIPORENUNCIA")})
     @ManyToOne(optional = false)
     private CausasRenuncia causasRenuncia;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<Contrato> contratoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<DetEmpleado> detEmpleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<RelacionLaboral> relacionLaboralList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<PuestoEmpleado> puestoEmpleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<PlanillaIsss> planillaIsssList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<FuncionariosSsf> funcionariosSsfList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<HijosXEmpleado> hijosXEmpleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<AccionPersonal> accionPersonalList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<Evaluacion> evaluacionList1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<RhControlVacaciones> rhControlVacacionesList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<Prestamos> prestamosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<MovPatrono> movPatronoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<Planilla> planillaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private List<RetencionesTerceros> retencionesTercerosList;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "JEFE", referencedColumnName = "COD_EMP")})
-    @ManyToOne(optional = false)
-    private Empleados jefe;
-    
+    @Transient
+    private String nombreCompleto;
+
     public Empleados() {
     }
 
@@ -744,6 +632,14 @@ public class Empleados implements Serializable {
         this.departamento = departamento;
     }
 
+    public Date getLiquidacion() {
+        return liquidacion;
+    }
+
+    public void setLiquidacion(Date liquidacion) {
+        this.liquidacion = liquidacion;
+    }
+
     public String getNombreRenta() {
         return nombreRenta;
     }
@@ -806,6 +702,14 @@ public class Empleados implements Serializable {
 
     public void setNumDui(String numDui) {
         this.numDui = numDui;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public String getCodEstudio() {
@@ -936,6 +840,22 @@ public class Empleados implements Serializable {
         this.codArea = codArea;
     }
 
+    public Date getFechavac() {
+        return fechavac;
+    }
+
+    public void setFechavac(Date fechavac) {
+        this.fechavac = fechavac;
+    }
+
+    public Date getFechavac2() {
+        return fechavac2;
+    }
+
+    public void setFechavac2(Date fechavac2) {
+        this.fechavac2 = fechavac2;
+    }
+
     public Short getAnio() {
         return anio;
     }
@@ -984,157 +904,28 @@ public class Empleados implements Serializable {
         this.sindicato = sindicato;
     }
 
-    public String getControlEntrada() {
-        return controlEntrada;
+    public Short getCodContratacion() {
+        return codContratacion;
     }
 
-    public void setControlEntrada(String controlEntrada) {
-        this.controlEntrada = controlEntrada;
+    public void setCodContratacion(Short codContratacion) {
+        this.codContratacion = codContratacion;
     }
 
-    public String getCelEmp() {
-        return celEmp;
+    public String getDocente() {
+        return docente;
     }
 
-    public void setCelEmp(String celEmp) {
-        this.celEmp = celEmp;
+    public void setDocente(String docente) {
+        this.docente = docente;
     }
 
-    public String getTelContacto() {
-        return telContacto;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setTelContacto(String telContacto) {
-        this.telContacto = telContacto;
-    }
-
-    public String getCelContacto() {
-        return celContacto;
-    }
-
-    public void setCelContacto(String celContacto) {
-        this.celContacto = celContacto;
-    }
-
-    public Short getCodProfesion() {
-        return codProfesion;
-    }
-
-    public void setCodProfesion(Short codProfesion) {
-        this.codProfesion = codProfesion;
-    }
-
-    public Short getCodPaisNacionalidad() {
-        return codPaisNacionalidad;
-    }
-
-    public void setCodPaisNacionalidad(Short codPaisNacionalidad) {
-        this.codPaisNacionalidad = codPaisNacionalidad;
-    }
-
-    public Short getCodPaisNacimiento() {
-        return codPaisNacimiento;
-    }
-
-    public void setCodPaisNacimiento(Short codPaisNacimiento) {
-        this.codPaisNacimiento = codPaisNacimiento;
-    }
-
-    public Short getCodDepartamentoNacim() {
-        return codDepartamentoNacim;
-    }
-
-    public void setCodDepartamentoNacim(Short codDepartamentoNacim) {
-        this.codDepartamentoNacim = codDepartamentoNacim;
-    }
-
-    public Short getCodMunicipioNacim() {
-        return codMunicipioNacim;
-    }
-
-    public void setCodMunicipioNacim(Short codMunicipioNacim) {
-        this.codMunicipioNacim = codMunicipioNacim;
-    }
-
-    public Short getCodDepartamentoDomic() {
-        return codDepartamentoDomic;
-    }
-
-    public void setCodDepartamentoDomic(Short codDepartamentoDomic) {
-        this.codDepartamentoDomic = codDepartamentoDomic;
-    }
-
-    public Short getCodMunicipioDomic() {
-        return codMunicipioDomic;
-    }
-
-    public void setCodMunicipioDomic(Short codMunicipioDomic) {
-        this.codMunicipioDomic = codMunicipioDomic;
-    }
-
-    public Date getFecSolicitud() {
-        return fecSolicitud;
-    }
-
-    public void setFecSolicitud(Date fecSolicitud) {
-        this.fecSolicitud = fecSolicitud;
-    }
-
-    public Short getCodPaisDomic() {
-        return codPaisDomic;
-    }
-
-    public void setCodPaisDomic(Short codPaisDomic) {
-        this.codPaisDomic = codPaisDomic;
-    }
-
-    public String getNombreConyuge() {
-        return nombreConyuge;
-    }
-
-    public void setNombreConyuge(String nombreConyuge) {
-        this.nombreConyuge = nombreConyuge;
-    }
-
-    public String getTrabajoConyuge() {
-        return trabajoConyuge;
-    }
-
-    public void setTrabajoConyuge(String trabajoConyuge) {
-        this.trabajoConyuge = trabajoConyuge;
-    }
-
-    public String getTelefonoConyuge() {
-        return telefonoConyuge;
-    }
-
-    public void setTelefonoConyuge(String telefonoConyuge) {
-        this.telefonoConyuge = telefonoConyuge;
-    }
-
-    public String getEstadoEstudios() {
-        return estadoEstudios;
-    }
-
-    public void setEstadoEstudios(String estadoEstudios) {
-        this.estadoEstudios = estadoEstudios;
-    }
-
-    public String getHorarioNocturno() {
-        return horarioNocturno;
-    }
-
-    public void setHorarioNocturno(String horarioNocturno) {
-        this.horarioNocturno = horarioNocturno;
-    }
-
-    @XmlTransient
-    public List<Evaluacion> getEvaluacionList() {
-        return evaluacionList;
-    }
-
-    public void setEvaluacionList(List<Evaluacion> evaluacionList) {
-        this.evaluacionList = evaluacionList;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     public TiposPlanilla getTiposPlanilla() {
@@ -1145,14 +936,6 @@ public class Empleados implements Serializable {
         this.tiposPlanilla = tiposPlanilla;
     }
 
-    public TipoSangre getTipoSangre() {
-        return tipoSangre;
-    }
-
-    public void setTipoSangre(TipoSangre tipoSangre) {
-        this.tipoSangre = tipoSangre;
-    }
-
     public Puestos getPuestos() {
         return puestos;
     }
@@ -1161,12 +944,21 @@ public class Empleados implements Serializable {
         this.puestos = puestos;
     }
 
-    public NivelAcademico getNivelAcademico() {
-        return nivelAcademico;
+    @XmlTransient
+    public List<Empleados> getEmpleadosList() {
+        return empleadosList;
     }
 
-    public void setNivelAcademico(NivelAcademico nivelAcademico) {
-        this.nivelAcademico = nivelAcademico;
+    public void setEmpleadosList(List<Empleados> empleadosList) {
+        this.empleadosList = empleadosList;
+    }
+
+    public Empleados getJefe() {
+        return jefe;
+    }
+
+    public void setJefe(Empleados empleados) {
+        this.jefe = empleados;
     }
 
     public Departamentos getDepartamentos() {
@@ -1183,132 +975,6 @@ public class Empleados implements Serializable {
 
     public void setCausasRenuncia(CausasRenuncia causasRenuncia) {
         this.causasRenuncia = causasRenuncia;
-    }
-
-    @XmlTransient
-    public List<Contrato> getContratoList() {
-        return contratoList;
-    }
-
-    public void setContratoList(List<Contrato> contratoList) {
-        this.contratoList = contratoList;
-    }
-
-    @XmlTransient
-    public List<DetEmpleado> getDetEmpleadoList() {
-        return detEmpleadoList;
-    }
-
-    public void setDetEmpleadoList(List<DetEmpleado> detEmpleadoList) {
-        this.detEmpleadoList = detEmpleadoList;
-    }
-
-    @XmlTransient
-    public List<RelacionLaboral> getRelacionLaboralList() {
-        return relacionLaboralList;
-    }
-
-    public void setRelacionLaboralList(List<RelacionLaboral> relacionLaboralList) {
-        this.relacionLaboralList = relacionLaboralList;
-    }
-
-    @XmlTransient
-    public List<PuestoEmpleado> getPuestoEmpleadoList() {
-        return puestoEmpleadoList;
-    }
-
-    public void setPuestoEmpleadoList(List<PuestoEmpleado> puestoEmpleadoList) {
-        this.puestoEmpleadoList = puestoEmpleadoList;
-    }
-
-    @XmlTransient
-    public List<PlanillaIsss> getPlanillaIsssList() {
-        return planillaIsssList;
-    }
-
-    public void setPlanillaIsssList(List<PlanillaIsss> planillaIsssList) {
-        this.planillaIsssList = planillaIsssList;
-    }
-
-    @XmlTransient
-    public List<FuncionariosSsf> getFuncionariosSsfList() {
-        return funcionariosSsfList;
-    }
-
-    public void setFuncionariosSsfList(List<FuncionariosSsf> funcionariosSsfList) {
-        this.funcionariosSsfList = funcionariosSsfList;
-    }
-
-    @XmlTransient
-    public List<HijosXEmpleado> getHijosXEmpleadoList() {
-        return hijosXEmpleadoList;
-    }
-
-    public void setHijosXEmpleadoList(List<HijosXEmpleado> hijosXEmpleadoList) {
-        this.hijosXEmpleadoList = hijosXEmpleadoList;
-    }
-
-    @XmlTransient
-    public List<AccionPersonal> getAccionPersonalList() {
-        return accionPersonalList;
-    }
-
-    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList) {
-        this.accionPersonalList = accionPersonalList;
-    }
-
-    @XmlTransient
-    public List<Evaluacion> getEvaluacionList1() {
-        return evaluacionList1;
-    }
-
-    public void setEvaluacionList1(List<Evaluacion> evaluacionList1) {
-        this.evaluacionList1 = evaluacionList1;
-    }
-
-    @XmlTransient
-    public List<RhControlVacaciones> getRhControlVacacionesList() {
-        return rhControlVacacionesList;
-    }
-
-    public void setRhControlVacacionesList(List<RhControlVacaciones> rhControlVacacionesList) {
-        this.rhControlVacacionesList = rhControlVacacionesList;
-    }
-
-    @XmlTransient
-    public List<Prestamos> getPrestamosList() {
-        return prestamosList;
-    }
-
-    public void setPrestamosList(List<Prestamos> prestamosList) {
-        this.prestamosList = prestamosList;
-    }
-
-    @XmlTransient
-    public List<MovPatrono> getMovPatronoList() {
-        return movPatronoList;
-    }
-
-    public void setMovPatronoList(List<MovPatrono> movPatronoList) {
-        this.movPatronoList = movPatronoList;
-    }
-
-    @XmlTransient
-    public List<Planilla> getPlanillaList() {
-        return planillaList;
-    }
-
-    public void setPlanillaList(List<Planilla> planillaList) {
-        this.planillaList = planillaList;
-    }
-
-    @XmlTransient
-    public List<RetencionesTerceros> getRetencionesTercerosList() {
-        return retencionesTercerosList;
-    }
-
-    public void setRetencionesTercerosList(List<RetencionesTerceros> retencionesTercerosList) {
-        this.retencionesTercerosList = retencionesTercerosList;
     }
 
     @Override
@@ -1333,11 +999,8 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Empleados[ empleadosPK=" + empleadosPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Empleados[ empleadosPK=" + empleadosPK + " ]";
     }
-    
-    @Transient
-    private String nombreCompleto;
 
     public String getNombreCompleto() {
         nombreCompleto = getNombres() + ((getApellidos() != null) ? " " + getApellidos() : "");
@@ -1346,79 +1009,5 @@ public class Empleados implements Serializable {
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
-    }
-    public Agencias getAgencias() {
-        return agencias;
-    }
-    public void setAgencias(Agencias agencias) {
-        this.agencias = agencias;
-    }
-    public Candidato getCandidato() {
-        return candidato;
-    }
-    public void setCandidato(Candidato candidato) {
-        this.candidato = candidato;
-    }
-    public String getCorreo() {
-        return correo;
-    }
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-    public Empleados getJefe() {
-        return jefe;
-    }
-    public void setJefe(Empleados jefe) {
-        this.jefe = jefe;
-    }
-
-    @XmlTransient
-    public List<Puestos> getPuestosList() {
-        return puestosList;
-    }
-
-    public void setPuestosList(List<Puestos> puestosList) {
-        this.puestosList = puestosList;
-    }
-
-    @XmlTransient
-    public List<Empleados> getEmpleadosList() {
-        return empleadosList;
-    }
-
-    public void setEmpleadosList(List<Empleados> empleadosList) {
-        this.empleadosList = empleadosList;
-    }
-
-    public Date getLiquidacion() {
-        return liquidacion;
-    }
-
-    public void setLiquidacion(Date liquidacion) {
-        this.liquidacion = liquidacion;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
-    public Date getFechavac() {
-        return fechavac;
-    }
-
-    public void setFechavac(Date fechavac) {
-        this.fechavac = fechavac;
-    }
-
-    public Date getFechavac2() {
-        return fechavac2;
-    }
-
-    public void setFechavac2(Date fechavac2) {
-        this.fechavac2 = fechavac2;
     }
 }

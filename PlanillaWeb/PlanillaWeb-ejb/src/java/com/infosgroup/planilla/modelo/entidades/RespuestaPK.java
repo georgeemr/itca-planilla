@@ -17,56 +17,44 @@ import javax.persistence.Embeddable;
 public class RespuestaPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "COD_TIPO_RESPUESTA", nullable = false)
-    private long codTipoRespuesta;
-    @Basic(optional = false)
-    @Column(name = "GRUPO_RESPUESTA", nullable = false)
-    private long grupoRespuesta;
+    private short codTipoRespuesta;
     @Basic(optional = false)
     @Column(name = "COD_RESPUESTA", nullable = false)
-    private long codRespuesta;
+    private short codRespuesta;
 
     public RespuestaPK() {
     }
 
-    public RespuestaPK(long codCia, long codTipoRespuesta, long grupoRespuesta, long codRespuesta) {
+    public RespuestaPK(short codCia, short codTipoRespuesta, short codRespuesta) {
         this.codCia = codCia;
         this.codTipoRespuesta = codTipoRespuesta;
-        this.grupoRespuesta = grupoRespuesta;
         this.codRespuesta = codRespuesta;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
-    public long getCodTipoRespuesta() {
+    public short getCodTipoRespuesta() {
         return codTipoRespuesta;
     }
 
-    public void setCodTipoRespuesta(long codTipoRespuesta) {
+    public void setCodTipoRespuesta(short codTipoRespuesta) {
         this.codTipoRespuesta = codTipoRespuesta;
     }
 
-    public long getGrupoRespuesta() {
-        return grupoRespuesta;
-    }
-
-    public void setGrupoRespuesta(long grupoRespuesta) {
-        this.grupoRespuesta = grupoRespuesta;
-    }
-
-    public long getCodRespuesta() {
+    public short getCodRespuesta() {
         return codRespuesta;
     }
 
-    public void setCodRespuesta(long codRespuesta) {
+    public void setCodRespuesta(short codRespuesta) {
         this.codRespuesta = codRespuesta;
     }
 
@@ -75,7 +63,6 @@ public class RespuestaPK implements Serializable {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codTipoRespuesta;
-        hash += (int) grupoRespuesta;
         hash += (int) codRespuesta;
         return hash;
     }
@@ -93,9 +80,6 @@ public class RespuestaPK implements Serializable {
         if (this.codTipoRespuesta != other.codTipoRespuesta) {
             return false;
         }
-        if (this.grupoRespuesta != other.grupoRespuesta) {
-            return false;
-        }
         if (this.codRespuesta != other.codRespuesta) {
             return false;
         }
@@ -104,7 +88,7 @@ public class RespuestaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.RespuestaPK[ codCia=" + codCia + ", codTipoRespuesta=" + codTipoRespuesta + ", grupoRespuesta=" + grupoRespuesta + ", codRespuesta=" + codRespuesta + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.RespuestaPK[ codCia=" + codCia + ", codTipoRespuesta=" + codTipoRespuesta + ", codRespuesta=" + codRespuesta + " ]";
     }
     
 }

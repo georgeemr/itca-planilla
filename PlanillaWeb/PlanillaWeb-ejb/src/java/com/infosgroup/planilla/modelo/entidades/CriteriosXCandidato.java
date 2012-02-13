@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "CRITERIOS_X_CANDIDATO")
+@Table(name = "CRITERIOS_X_CANDIDATO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CriteriosXCandidato.findAll", query = "SELECT c FROM CriteriosXCandidato c"),
@@ -53,8 +53,8 @@ public class CriteriosXCandidato implements Serializable {
     private String entidadpk;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "TIPO_CRITERIO", referencedColumnName = "TIPO", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "CRITERIO", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "CRITERIO", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "TIPO_CRITERIO", referencedColumnName = "TIPO", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Criterio criterio1;
     @JoinColumns({
@@ -78,7 +78,7 @@ public class CriteriosXCandidato implements Serializable {
         this.entidadpk = entidadpk;
     }
 
-    public CriteriosXCandidato(long codCia, long candidato, long criterio, long tipoCriterio, long correlativo) {
+    public CriteriosXCandidato(short codCia, long candidato, long criterio, long tipoCriterio, long correlativo) {
         this.criteriosXCandidatoPK = new CriteriosXCandidatoPK(codCia, candidato, criterio, tipoCriterio, correlativo);
     }
 
@@ -160,7 +160,7 @@ public class CriteriosXCandidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CriteriosXCandidato[ criteriosXCandidatoPK=" + criteriosXCandidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.CriteriosXCandidato[ criteriosXCandidatoPK=" + criteriosXCandidatoPK + " ]";
     }
     
 }

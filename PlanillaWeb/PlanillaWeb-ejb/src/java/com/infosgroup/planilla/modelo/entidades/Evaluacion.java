@@ -14,7 +14,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -30,48 +29,38 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "EVALUACION")
+@Table(name = "EVALUACION", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Evaluacion.findAll", query = "SELECT e FROM Evaluacion e"),
     @NamedQuery(name = "Evaluacion.findByCodCia", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.codCia = :codCia"),
-    @NamedQuery(name = "Evaluacion.findByPeriodo", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.periodo = :periodo"),
     @NamedQuery(name = "Evaluacion.findByCodCampania", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.codCampania = :codCampania"),
-    @NamedQuery(name = "Evaluacion.findByTipoEvaluacion", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.tipoEvaluacion = :tipoEvaluacion"),
-    @NamedQuery(name = "Evaluacion.findByPlantilla", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.plantilla = :plantilla"),
-    @NamedQuery(name = "Evaluacion.findByEmpleado", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.empleado = :empleado"),
-    @NamedQuery(name = "Evaluacion.findByFecha", query = "SELECT e FROM Evaluacion e WHERE e.fecha = :fecha"),
-    @NamedQuery(name = "Evaluacion.findByFinalizada", query = "SELECT e FROM Evaluacion e WHERE e.finalizada = :finalizada")})
+    @NamedQuery(name = "Evaluacion.findByCodEvaluacion", query = "SELECT e FROM Evaluacion e WHERE e.evaluacionPK.codEvaluacion = :codEvaluacion"),
+    @NamedQuery(name = "Evaluacion.findByCodEmp", query = "SELECT e FROM Evaluacion e WHERE e.codEmp = :codEmp"),
+    @NamedQuery(name = "Evaluacion.findByFecha", query = "SELECT e FROM Evaluacion e WHERE e.fecha = :fecha")})
 public class Evaluacion implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected EvaluacionPK evaluacionPK;
     @Basic(optional = false)
     @Column(name = "FECHA", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_TIPO_EVALUACION", referencedColumnName = "COD_TIPO_EVALUACION", nullable = false)})
+    @ManyToOne(optional = false)
+    private TipoEvaluacion tipoEvaluacion;
+    private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    protected EvaluacionPK evaluacionPK;
     @Basic(optional = false)
-    @Column(name = "FINALIZADA", nullable = false)
-    private long finalizada;
-    @ManyToMany(mappedBy = "evaluacionList")
-    private List<Empleados> empleadosList;
+    @Column(name = "COD_EMP", nullable = false)
+    private short codEmp;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "TIPO_EVALUACION", referencedColumnName = "COD_TIPO_EVALUACION", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "PLANTILLA", referencedColumnName = "COD_PLANTILLA", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "COD_TIPO_EVALUACION", referencedColumnName = "COD_TIPO_EVALUACION", nullable = false),
+        @JoinColumn(name = "PERIODO", referencedColumnName = "PERIODO", nullable = false),
+        @JoinColumn(name = "COD_PLANTILLA", referencedColumnName = "COD_PLANTILLA", nullable = false)})
     @ManyToOne(optional = false)
-    private Plantilla plantilla1;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "EMPLEADO", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Empleados empleados;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_CAMPANIA", referencedColumnName = "COD_CAMPANIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "PERIODO", referencedColumnName = "PERIODO", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Campania campania;
+    private Plantilla plantilla;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "evaluacion")
     private List<DetEvaluacion> detEvaluacionList;
 
@@ -82,14 +71,14 @@ public class Evaluacion implements Serializable {
         this.evaluacionPK = evaluacionPK;
     }
 
-    public Evaluacion(EvaluacionPK evaluacionPK, Date fecha, long finalizada) {
+    public Evaluacion(EvaluacionPK evaluacionPK, short codEmp, Date fecha) {
         this.evaluacionPK = evaluacionPK;
+        this.codEmp = codEmp;
         this.fecha = fecha;
-        this.finalizada = finalizada;
     }
 
-    public Evaluacion(long codCia, long periodo, long codCampania, long tipoEvaluacion, long plantilla, long empleado) {
-        this.evaluacionPK = new EvaluacionPK(codCia, periodo, codCampania, tipoEvaluacion, plantilla, empleado);
+    public Evaluacion(short codCia, short codCampania, short codEvaluacion) {
+        this.evaluacionPK = new EvaluacionPK(codCia, codCampania, codEvaluacion);
     }
 
     public EvaluacionPK getEvaluacionPK() {
@@ -100,53 +89,20 @@ public class Evaluacion implements Serializable {
         this.evaluacionPK = evaluacionPK;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public short getCodEmp() {
+        return codEmp;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setCodEmp(short codEmp) {
+        this.codEmp = codEmp;
     }
 
-    public long getFinalizada() {
-        return finalizada;
+    public Plantilla getPlantilla() {
+        return plantilla;
     }
 
-    public void setFinalizada(long finalizada) {
-        this.finalizada = finalizada;
-    }
-
-    @XmlTransient
-    public List<Empleados> getEmpleadosList() {
-        return empleadosList;
-    }
-
-    public void setEmpleadosList(List<Empleados> empleadosList) {
-        this.empleadosList = empleadosList;
-    }
-
-    public Plantilla getPlantilla1() {
-        return plantilla1;
-    }
-
-    public void setPlantilla1(Plantilla plantilla1) {
-        this.plantilla1 = plantilla1;
-    }
-
-    public Empleados getEmpleados() {
-        return empleados;
-    }
-
-    public void setEmpleados(Empleados empleados) {
-        this.empleados = empleados;
-    }
-
-    public Campania getCampania() {
-        return campania;
-    }
-
-    public void setCampania(Campania campania) {
-        this.campania = campania;
+    public void setPlantilla(Plantilla plantilla) {
+        this.plantilla = plantilla;
     }
 
     @XmlTransient
@@ -180,7 +136,23 @@ public class Evaluacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Evaluacion[ evaluacionPK=" + evaluacionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Evaluacion[ evaluacionPK=" + evaluacionPK + " ]";
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public TipoEvaluacion getTipoEvaluacion() {
+        return tipoEvaluacion;
+    }
+
+    public void setTipoEvaluacion(TipoEvaluacion tipoEvaluacion) {
+        this.tipoEvaluacion = tipoEvaluacion;
     }
     
 }

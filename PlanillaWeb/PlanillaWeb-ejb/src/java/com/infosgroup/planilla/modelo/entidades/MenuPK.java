@@ -17,7 +17,7 @@ import javax.persistence.Embeddable;
 public class MenuPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "COD_MODULO", nullable = false)
     private long codModulo;
@@ -28,17 +28,17 @@ public class MenuPK implements Serializable {
     public MenuPK() {
     }
 
-    public MenuPK(long codCia, long codModulo, long codMenu) {
+    public MenuPK(short codCia, long codModulo, long codMenu) {
         this.codCia = codCia;
         this.codModulo = codModulo;
         this.codMenu = codMenu;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
@@ -88,7 +88,7 @@ public class MenuPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.MenuPK[ codCia=" + codCia + ", codModulo=" + codModulo + ", codMenu=" + codMenu + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.MenuPK[ codCia=" + codCia + ", codModulo=" + codModulo + ", codMenu=" + codMenu + " ]";
     }
     
 }

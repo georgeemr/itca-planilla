@@ -88,7 +88,7 @@ public class HijosXEmpleadoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.HijosXEmpleadoPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", correlativo=" + correlativo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.HijosXEmpleadoPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", correlativo=" + correlativo + " ]";
     }
     
 }

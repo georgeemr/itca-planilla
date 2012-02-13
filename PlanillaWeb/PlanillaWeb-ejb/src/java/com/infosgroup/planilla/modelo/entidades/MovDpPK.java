@@ -19,9 +19,6 @@ public class MovDpPK implements Serializable {
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
-    @Column(name = "COD_TIPOPLA", nullable = false)
-    private short codTipopla;
-    @Basic(optional = false)
     @Column(name = "ANIO", nullable = false)
     private short anio;
     @Basic(optional = false)
@@ -37,9 +34,8 @@ public class MovDpPK implements Serializable {
     public MovDpPK() {
     }
 
-    public MovDpPK(short codCia, short codTipopla, short anio, short mes, short numPlanilla, int noMovto) {
+    public MovDpPK(short codCia, short anio, short mes, short numPlanilla, int noMovto) {
         this.codCia = codCia;
-        this.codTipopla = codTipopla;
         this.anio = anio;
         this.mes = mes;
         this.numPlanilla = numPlanilla;
@@ -52,14 +48,6 @@ public class MovDpPK implements Serializable {
 
     public void setCodCia(short codCia) {
         this.codCia = codCia;
-    }
-
-    public short getCodTipopla() {
-        return codTipopla;
-    }
-
-    public void setCodTipopla(short codTipopla) {
-        this.codTipopla = codTipopla;
     }
 
     public short getAnio() {
@@ -98,7 +86,6 @@ public class MovDpPK implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) codTipopla;
         hash += (int) anio;
         hash += (int) mes;
         hash += (int) numPlanilla;
@@ -114,9 +101,6 @@ public class MovDpPK implements Serializable {
         }
         MovDpPK other = (MovDpPK) object;
         if (this.codCia != other.codCia) {
-            return false;
-        }
-        if (this.codTipopla != other.codTipopla) {
             return false;
         }
         if (this.anio != other.anio) {
@@ -136,7 +120,7 @@ public class MovDpPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.MovDpPK[ codCia=" + codCia + ", codTipopla=" + codTipopla + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", noMovto=" + noMovto + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.MovDpPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", noMovto=" + noMovto + " ]";
     }
     
 }

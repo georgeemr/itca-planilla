@@ -8,8 +8,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -20,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "REL_USUARIO_NIVEL")
+@Table(name = "REL_USUARIO_NIVEL", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RelUsuarioNivel.findAll", query = "SELECT r FROM RelUsuarioNivel r"),
@@ -39,9 +37,6 @@ public class RelUsuarioNivel implements Serializable {
     private String nivel2;
     @Column(name = "NIVEL_3", length = 1)
     private String nivel3;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private ParamPlan paramPlan;
 
     public RelUsuarioNivel() {
     }
@@ -86,14 +81,6 @@ public class RelUsuarioNivel implements Serializable {
         this.nivel3 = nivel3;
     }
 
-    public ParamPlan getParamPlan() {
-        return paramPlan;
-    }
-
-    public void setParamPlan(ParamPlan paramPlan) {
-        this.paramPlan = paramPlan;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -116,7 +103,7 @@ public class RelUsuarioNivel implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.RelUsuarioNivel[ relUsuarioNivelPK=" + relUsuarioNivelPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.RelUsuarioNivel[ relUsuarioNivelPK=" + relUsuarioNivelPK + " ]";
     }
     
 }

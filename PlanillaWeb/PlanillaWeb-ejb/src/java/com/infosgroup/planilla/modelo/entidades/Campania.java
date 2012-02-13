@@ -13,8 +13,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -22,8 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,18 +29,19 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "CAMPANIA")
+@Table(name = "CAMPANIA", catalog = "", schema = "PLANILLA", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"COD_CIA", "COD_CAMPANIA"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Campania.findAll", query = "SELECT c FROM Campania c"),
     @NamedQuery(name = "Campania.findByCodCia", query = "SELECT c FROM Campania c WHERE c.campaniaPK.codCia = :codCia"),
     @NamedQuery(name = "Campania.findByCodCampania", query = "SELECT c FROM Campania c WHERE c.campaniaPK.codCampania = :codCampania"),
-    @NamedQuery(name = "Campania.findByNombre", query = "SELECT c FROM Campania c WHERE c.nombre = :nombre"),
+    @NamedQuery(name = "Campania.findByNomCampania", query = "SELECT c FROM Campania c WHERE c.nomCampania = :nomCampania"),
     @NamedQuery(name = "Campania.findByFechaInicial", query = "SELECT c FROM Campania c WHERE c.fechaInicial = :fechaInicial"),
     @NamedQuery(name = "Campania.findByFechaFinal", query = "SELECT c FROM Campania c WHERE c.fechaFinal = :fechaFinal"),
     @NamedQuery(name = "Campania.findByEstado", query = "SELECT c FROM Campania c WHERE c.estado = :estado"),
     @NamedQuery(name = "Campania.findByPeriodo", query = "SELECT c FROM Campania c WHERE c.campaniaPK.periodo = :periodo"),
-    @NamedQuery(name = "Campania.findByArea", query = "SELECT c FROM Campania c WHERE c.area = :area"),
+    @NamedQuery(name = "Campania.findByCodArea", query = "SELECT c FROM Campania c WHERE c.codArea = :codArea"),
     @NamedQuery(name = "Campania.findByNota", query = "SELECT c FROM Campania c WHERE c.nota = :nota")})
 public class Campania implements Serializable {
 
@@ -51,35 +49,30 @@ public class Campania implements Serializable {
     @EmbeddedId
     protected CampaniaPK campaniaPK;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
-    @Column(name = "NOMBRE", nullable = false, length = 200)
-    private String nombre;
+    @Column(name = "NOM_CAMPANIA", nullable = false, length = 60)
+    private String nomCampania;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHA_INICIAL", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicial;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHA_FINAL", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFinal;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "ESTADO", nullable = false, length = 100)
+    @Column(name = "ESTADO", nullable = false, length = 1)
     private String estado;
-    @Column(name = "AREA")
-    private Long area;
+    @Column(name = "COD_AREA")
+    private Long codArea;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "NOTA", precision = 11, scale = 3)
+    @Column(name = "NOTA", precision = 10, scale = 2)
     private BigDecimal nota;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "campania")
-    private List<Evaluacion> evaluacionList;
+    private List<PrograCampania> prograCampaniaList;
+    @Transient
+    private String descripcionEstado;
+    @Transient
+    private Integer empleadosEvaluados;
 
     public Campania() {
     }
@@ -88,15 +81,15 @@ public class Campania implements Serializable {
         this.campaniaPK = campaniaPK;
     }
 
-    public Campania(CampaniaPK campaniaPK, String nombre, Date fechaInicial, Date fechaFinal, String estado) {
+    public Campania(CampaniaPK campaniaPK, String nomCampania, Date fechaInicial, Date fechaFinal, String estado) {
         this.campaniaPK = campaniaPK;
-        this.nombre = nombre;
+        this.nomCampania = nomCampania;
         this.fechaInicial = fechaInicial;
         this.fechaFinal = fechaFinal;
         this.estado = estado;
     }
 
-    public Campania(long codCia, long codCampania, long periodo) {
+    public Campania(short codCia, short codCampania, int periodo) {
         this.campaniaPK = new CampaniaPK(codCia, codCampania, periodo);
     }
 
@@ -108,12 +101,12 @@ public class Campania implements Serializable {
         this.campaniaPK = campaniaPK;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNomCampania() {
+        return nomCampania;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNomCampania(String nomCampania) {
+        this.nomCampania = nomCampania;
     }
 
     public Date getFechaInicial() {
@@ -140,12 +133,12 @@ public class Campania implements Serializable {
         this.estado = estado;
     }
 
-    public Long getArea() {
-        return area;
+    public Long getCodArea() {
+        return codArea;
     }
 
-    public void setArea(Long area) {
-        this.area = area;
+    public void setCodArea(Long codArea) {
+        this.codArea = codArea;
     }
 
     public BigDecimal getNota() {
@@ -156,21 +149,13 @@ public class Campania implements Serializable {
         this.nota = nota;
     }
 
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
-    }
-
     @XmlTransient
-    public List<Evaluacion> getEvaluacionList() {
-        return evaluacionList;
+    public List<PrograCampania> getPrograCampaniaList() {
+        return prograCampaniaList;
     }
 
-    public void setEvaluacionList(List<Evaluacion> evaluacionList) {
-        this.evaluacionList = evaluacionList;
+    public void setPrograCampaniaList(List<PrograCampania> prograCampaniaList) {
+        this.prograCampaniaList = prograCampaniaList;
     }
 
     @Override
@@ -195,12 +180,8 @@ public class Campania implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Campania[ campaniaPK=" + campaniaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Campania[ campaniaPK=" + campaniaPK + " ]";
     }
-    @Transient
-    private String descripcionEstado;
-    @Transient
-    private Integer empleadosEvaluados;
 
     public String getDescripcionEstado() {
         if (estado.equals("0")) {

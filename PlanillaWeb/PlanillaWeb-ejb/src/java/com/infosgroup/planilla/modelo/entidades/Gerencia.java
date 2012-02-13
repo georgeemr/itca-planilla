@@ -11,8 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -25,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "GERENCIA")
+@Table(name = "GERENCIA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Gerencia.findAll", query = "SELECT g FROM Gerencia g"),
@@ -39,11 +37,8 @@ public class Gerencia implements Serializable {
     @Basic(optional = false)
     @Column(name = "NOM_GERENCIA", nullable = false, length = 100)
     private String nomGerencia;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gerencia")
-    private List<Departamentos> departamentosList;
+    private List<Posicion> posicionList;
 
     public Gerencia() {
     }
@@ -77,21 +72,13 @@ public class Gerencia implements Serializable {
         this.nomGerencia = nomGerencia;
     }
 
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
-    }
-
     @XmlTransient
-    public List<Departamentos> getDepartamentosList() {
-        return departamentosList;
+    public List<Posicion> getPosicionList() {
+        return posicionList;
     }
 
-    public void setDepartamentosList(List<Departamentos> departamentosList) {
-        this.departamentosList = departamentosList;
+    public void setPosicionList(List<Posicion> posicionList) {
+        this.posicionList = posicionList;
     }
 
     @Override
@@ -116,7 +103,7 @@ public class Gerencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Gerencia[ gerenciaPK=" + gerenciaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Gerencia[ gerenciaPK=" + gerenciaPK + " ]";
     }
     
 }

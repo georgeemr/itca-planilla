@@ -11,9 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -26,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "INSTITUCIONES")
+@Table(name = "INSTITUCIONES", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Instituciones.findAll", query = "SELECT i FROM Instituciones i"),
@@ -37,7 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Instituciones.findByDirInsti", query = "SELECT i FROM Instituciones i WHERE i.dirInsti = :dirInsti"),
     @NamedQuery(name = "Instituciones.findByTelInsti1", query = "SELECT i FROM Instituciones i WHERE i.telInsti1 = :telInsti1"),
     @NamedQuery(name = "Instituciones.findByTelInsti2", query = "SELECT i FROM Instituciones i WHERE i.telInsti2 = :telInsti2"),
-    @NamedQuery(name = "Instituciones.findByPorInnsti", query = "SELECT i FROM Instituciones i WHERE i.porInnsti = :porInnsti")})
+    @NamedQuery(name = "Instituciones.findByPorInnsti", query = "SELECT i FROM Instituciones i WHERE i.porInnsti = :porInnsti"),
+    @NamedQuery(name = "Instituciones.findByCodDp", query = "SELECT i FROM Instituciones i WHERE i.codDp = :codDp")})
 public class Instituciones implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -55,18 +53,10 @@ public class Instituciones implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "POR_INNSTI", precision = 8, scale = 4)
     private BigDecimal porInnsti;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_DP", referencedColumnName = "COD_DP")})
-    @ManyToOne(optional = false)
-    private DeducPresta deducPresta;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
+    @Column(name = "COD_DP")
+    private Integer codDp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "instituciones")
     private List<DetInstitucion> detInstitucionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "instituciones")
-    private List<InstitucionDepto> institucionDeptoList;
 
     public Instituciones() {
     }
@@ -135,20 +125,12 @@ public class Instituciones implements Serializable {
         this.porInnsti = porInnsti;
     }
 
-    public DeducPresta getDeducPresta() {
-        return deducPresta;
+    public Integer getCodDp() {
+        return codDp;
     }
 
-    public void setDeducPresta(DeducPresta deducPresta) {
-        this.deducPresta = deducPresta;
-    }
-
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
+    public void setCodDp(Integer codDp) {
+        this.codDp = codDp;
     }
 
     @XmlTransient
@@ -158,15 +140,6 @@ public class Instituciones implements Serializable {
 
     public void setDetInstitucionList(List<DetInstitucion> detInstitucionList) {
         this.detInstitucionList = detInstitucionList;
-    }
-
-    @XmlTransient
-    public List<InstitucionDepto> getInstitucionDeptoList() {
-        return institucionDeptoList;
-    }
-
-    public void setInstitucionDeptoList(List<InstitucionDepto> institucionDeptoList) {
-        this.institucionDeptoList = institucionDeptoList;
     }
 
     @Override
@@ -191,7 +164,7 @@ public class Instituciones implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Instituciones[ institucionesPK=" + institucionesPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Instituciones[ institucionesPK=" + institucionesPK + " ]";
     }
     
 }

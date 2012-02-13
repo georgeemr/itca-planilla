@@ -17,80 +17,56 @@ import javax.persistence.Embeddable;
 public class DetEvaluacionPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
-    @Basic(optional = false)
-    @Column(name = "PERIODO", nullable = false)
-    private long periodo;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "COD_CAMPANIA", nullable = false)
-    private long codCampania;
+    private short codCampania;
     @Basic(optional = false)
-    @Column(name = "TIPO_EVALUACION", nullable = false)
-    private long tipoEvaluacion;
-    @Basic(optional = false)
-    @Column(name = "EMPLEADO", nullable = false)
-    private long empleado;
+    @Column(name = "COD_EVALUACION", nullable = false)
+    private short codEvaluacion;
     @Basic(optional = false)
     @Column(name = "COD_DET_EVALUACION", nullable = false)
-    private long codDetEvaluacion;
+    private short codDetEvaluacion;
 
     public DetEvaluacionPK() {
     }
 
-    public DetEvaluacionPK(long codCia, long periodo, long codCampania, long tipoEvaluacion, long empleado, long codDetEvaluacion) {
+    public DetEvaluacionPK(short codCia, short codCampania, short codEvaluacion, short codDetEvaluacion) {
         this.codCia = codCia;
-        this.periodo = periodo;
         this.codCampania = codCampania;
-        this.tipoEvaluacion = tipoEvaluacion;
-        this.empleado = empleado;
+        this.codEvaluacion = codEvaluacion;
         this.codDetEvaluacion = codDetEvaluacion;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
-    public long getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(long periodo) {
-        this.periodo = periodo;
-    }
-
-    public long getCodCampania() {
+    public short getCodCampania() {
         return codCampania;
     }
 
-    public void setCodCampania(long codCampania) {
+    public void setCodCampania(short codCampania) {
         this.codCampania = codCampania;
     }
 
-    public long getTipoEvaluacion() {
-        return tipoEvaluacion;
+    public short getCodEvaluacion() {
+        return codEvaluacion;
     }
 
-    public void setTipoEvaluacion(long tipoEvaluacion) {
-        this.tipoEvaluacion = tipoEvaluacion;
+    public void setCodEvaluacion(short codEvaluacion) {
+        this.codEvaluacion = codEvaluacion;
     }
 
-    public long getEmpleado() {
-        return empleado;
-    }
-
-    public void setEmpleado(long empleado) {
-        this.empleado = empleado;
-    }
-
-    public long getCodDetEvaluacion() {
+    public short getCodDetEvaluacion() {
         return codDetEvaluacion;
     }
 
-    public void setCodDetEvaluacion(long codDetEvaluacion) {
+    public void setCodDetEvaluacion(short codDetEvaluacion) {
         this.codDetEvaluacion = codDetEvaluacion;
     }
 
@@ -98,10 +74,8 @@ public class DetEvaluacionPK implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) periodo;
         hash += (int) codCampania;
-        hash += (int) tipoEvaluacion;
-        hash += (int) empleado;
+        hash += (int) codEvaluacion;
         hash += (int) codDetEvaluacion;
         return hash;
     }
@@ -116,16 +90,10 @@ public class DetEvaluacionPK implements Serializable {
         if (this.codCia != other.codCia) {
             return false;
         }
-        if (this.periodo != other.periodo) {
-            return false;
-        }
         if (this.codCampania != other.codCampania) {
             return false;
         }
-        if (this.tipoEvaluacion != other.tipoEvaluacion) {
-            return false;
-        }
-        if (this.empleado != other.empleado) {
+        if (this.codEvaluacion != other.codEvaluacion) {
             return false;
         }
         if (this.codDetEvaluacion != other.codDetEvaluacion) {
@@ -136,7 +104,7 @@ public class DetEvaluacionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.DetEvaluacionPK[ codCia=" + codCia + ", periodo=" + periodo + ", codCampania=" + codCampania + ", tipoEvaluacion=" + tipoEvaluacion + ", empleado=" + empleado + ", codDetEvaluacion=" + codDetEvaluacion + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.DetEvaluacionPK[ codCia=" + codCia + ", codCampania=" + codCampania + ", codEvaluacion=" + codEvaluacion + ", codDetEvaluacion=" + codDetEvaluacion + " ]";
     }
     
 }

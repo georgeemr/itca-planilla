@@ -6,6 +6,7 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "HIJOS_X_EMPLEADO")
+@Table(name = "HIJOS_X_EMPLEADO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "HijosXEmpleado.findAll", query = "SELECT h FROM HijosXEmpleado h"),
@@ -38,11 +39,14 @@ public class HijosXEmpleado implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected HijosXEmpleadoPK hijosXEmpleadoPK;
-    @Column(name = "NOMBRE", length = 100)
+    @Basic(optional = false)
+    @Column(name = "NOMBRE", nullable = false, length = 100)
     private String nombre;
-    @Column(name = "SEXO", length = 1)
+    @Basic(optional = false)
+    @Column(name = "SEXO", nullable = false, length = 1)
     private String sexo;
-    @Column(name = "FECHA_NACIMIENTO")
+    @Basic(optional = false)
+    @Column(name = "FECHA_NACIMIENTO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaNacimiento;
     @JoinColumns({
@@ -56,6 +60,13 @@ public class HijosXEmpleado implements Serializable {
 
     public HijosXEmpleado(HijosXEmpleadoPK hijosXEmpleadoPK) {
         this.hijosXEmpleadoPK = hijosXEmpleadoPK;
+    }
+
+    public HijosXEmpleado(HijosXEmpleadoPK hijosXEmpleadoPK, String nombre, String sexo, Date fechaNacimiento) {
+        this.hijosXEmpleadoPK = hijosXEmpleadoPK;
+        this.nombre = nombre;
+        this.sexo = sexo;
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public HijosXEmpleado(short codCia, int codEmp, short correlativo) {
@@ -124,7 +135,7 @@ public class HijosXEmpleado implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.HijosXEmpleado[ hijosXEmpleadoPK=" + hijosXEmpleadoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.HijosXEmpleado[ hijosXEmpleadoPK=" + hijosXEmpleadoPK + " ]";
     }
     
 }

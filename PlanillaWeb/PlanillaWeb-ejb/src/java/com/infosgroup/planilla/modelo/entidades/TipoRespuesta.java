@@ -9,8 +9,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -21,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "TIPO_RESPUESTA")
+@Table(name = "TIPO_RESPUESTA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoRespuesta.findAll", query = "SELECT t FROM TipoRespuesta t"),
@@ -33,11 +31,8 @@ public class TipoRespuesta implements Serializable {
     @EmbeddedId
     protected TipoRespuestaPK tipoRespuestaPK;
     @Basic(optional = false)
-    @Column(name = "NOM_TIPO_RESPUESTA", nullable = false, length = 200)
+    @Column(name = "NOM_TIPO_RESPUESTA", nullable = false, length = 300)
     private String nomTipoRespuesta;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
 
     public TipoRespuesta() {
     }
@@ -51,7 +46,7 @@ public class TipoRespuesta implements Serializable {
         this.nomTipoRespuesta = nomTipoRespuesta;
     }
 
-    public TipoRespuesta(long codCia, long codTipoRespuesta) {
+    public TipoRespuesta(short codCia, short codTipoRespuesta) {
         this.tipoRespuestaPK = new TipoRespuestaPK(codCia, codTipoRespuesta);
     }
 
@@ -69,14 +64,6 @@ public class TipoRespuesta implements Serializable {
 
     public void setNomTipoRespuesta(String nomTipoRespuesta) {
         this.nomTipoRespuesta = nomTipoRespuesta;
-    }
-
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
     }
 
     @Override
@@ -101,7 +88,7 @@ public class TipoRespuesta implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoRespuesta[ tipoRespuestaPK=" + tipoRespuestaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoRespuesta[ tipoRespuestaPK=" + tipoRespuestaPK + " ]";
     }
     
 }
