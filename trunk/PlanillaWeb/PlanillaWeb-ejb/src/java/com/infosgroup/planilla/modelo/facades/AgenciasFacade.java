@@ -4,6 +4,8 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+import com.infosgroup.planilla.modelo.entidades.Agencias;
+import com.infosgroup.planilla.modelo.entidades.AgenciasPK;
 import com.infosgroup.planilla.modelo.entidades.Cias;
 import java.util.ArrayList;
 import java.util.List;
