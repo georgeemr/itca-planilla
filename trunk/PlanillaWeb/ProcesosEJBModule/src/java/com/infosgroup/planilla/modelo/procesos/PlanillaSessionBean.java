@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
+import com.infosgroup.planilla.modelo.entidades.Agencias;
 import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.FestivosXDepto;
@@ -16,7 +17,6 @@ import com.infosgroup.planilla.modelo.entidades.TipoAccionPK;
 import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
 import com.infosgroup.planilla.modelo.entidades.TiposPlanillaPK;
 import com.infosgroup.planilla.modelo.facades.AccionPersonalFacade;
-import com.infosgroup.planilla.modelo.facades.Agencias;
 import com.infosgroup.planilla.modelo.facades.CiasFacade;
 import com.infosgroup.planilla.modelo.facades.FestivosXDeptoFacade;
 import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
