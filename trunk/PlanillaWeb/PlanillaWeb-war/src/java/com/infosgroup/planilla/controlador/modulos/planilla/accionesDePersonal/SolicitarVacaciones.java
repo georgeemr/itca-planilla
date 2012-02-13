@@ -131,11 +131,11 @@ public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.
             addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
-
-        if (getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList() == null || getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList().isEmpty()) {
-            addMessage("Acciones de Personal", "Usted no tiene ningún puesto asignado.", TipoMensaje.ERROR);
-            error = Boolean.FALSE;
-        }
+// 13022012
+//        if (getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList() == null || getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList().isEmpty()) {
+//            addMessage("Acciones de Personal", "Usted no tiene ningún puesto asignado.", TipoMensaje.ERROR);
+//            error = Boolean.FALSE;
+//        }
 
         return error;
     }
@@ -144,7 +144,7 @@ public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.
         if (!validarSolicitud()) {
             return null;
         }
-        planillaSeleccionada = planillaSessionBean.findPlanillaById(new PlanillaPK(planilla));
+        planillaSeleccionada = planillaSessionBean.findPlanillaById(new PlanillaPK(planilla, getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp()));
         AccionPersonal accionPersonal = new AccionPersonal();
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(planillaSeleccionada));
         accionPersonal.setTipoAccion(getTipoAccion());
@@ -155,7 +155,8 @@ public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.
         accionPersonal.setDevengadas(devengadas);
         accionPersonal.setFechaFinal(fechaFinal);
         accionPersonal.setFechaInicial(fechaInicial);
-        accionPersonal.setPlanilla(planillaSeleccionada);
+// 13022012
+//        accionPersonal.setPlanilla(planillaSeleccionada);
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
         getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean.listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo()));

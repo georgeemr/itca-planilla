@@ -9,7 +9,6 @@ import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.EvaluacionPK;
 import com.infosgroup.planilla.modelo.entidades.Plantilla;
 import com.infosgroup.planilla.modelo.entidades.Puestos;
-import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
@@ -33,6 +32,10 @@ import org.primefaces.event.FlowEvent;
 @ViewScoped
 public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements Serializable {
 
+    /* *
+     * Todo lo comentado cambio porque el empleado ya no tendra la lista de puestos
+     * historica, sino un solo puesto. 13022012
+     */
     @EJB
     private EmpleadosSessionBean empleadosBean;
 
@@ -40,21 +43,21 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
     protected void limpiarCampos() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    private List<PuestoEmpleado> listaPuestosEmpleados;
-
-    public List<PuestoEmpleado> getListaPuestosEmpleados() {
-        return listaPuestosEmpleados;
-    }
-
-    public void setListaPuestosEmpleados(List<PuestoEmpleado> listaPuestosEmpleados) {
-        this.listaPuestosEmpleados = listaPuestosEmpleados;
-    }
+//    private List<PuestoEmpleado> listaPuestosEmpleados;
+//
+//    public List<PuestoEmpleado> getListaPuestosEmpleados() {
+//        return listaPuestosEmpleados;
+//    }
+//
+//    public void setListaPuestosEmpleados(List<PuestoEmpleado> listaPuestosEmpleados) {
+//        this.listaPuestosEmpleados = listaPuestosEmpleados;
+//    }
 
 // =========================================================================================================
     @PostConstruct
     public void init() {
         listaCampanias = empleadosBean.listarCampanias();
-        listaPuestosEmpleados = empleadosBean.listarPuestosEmpleados();
+//        listaPuestosEmpleados = empleadosBean.listarPuestosEmpleados();
     }
     private List<SelectItem> puestosOptions;
 
@@ -112,7 +115,7 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
     private List<Plantilla> listaPlantillas;
 
     public List<Plantilla> getListaPlantillas() {
-        listaPlantillas = empleadosBean.listarPlantillasPorTipoEvaluacion(tipoEvaluacionSeleccionada);
+//    13022012      listaPlantillas = empleadosBean.listarPlantillasPorTipoEvaluacion(tipoEvaluacionSeleccionada);
         return listaPlantillas;
     }
 
@@ -145,14 +148,14 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
             addMessage("PlanillaWeb", "Seleccione la plantilla", TipoMensaje.ADVERTENCIA);
             HayError = Boolean.TRUE;
         }
-        if ((sessionBeanEMP.getPuestosEmpleadosEvaluadores() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluadores().length == 0)) {
-            addMessage("PlanillaWeb", "Seleccione al menos un empleado como evaluador", TipoMensaje.ADVERTENCIA);
-            HayError = Boolean.TRUE;
-        }
-        if ((sessionBeanEMP.getPuestosEmpleadosEvaluados() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluados().length == 0)) {
-            addMessage("PlanillaWeb", "Seleccione al menos un empleado a evaluar", TipoMensaje.ADVERTENCIA);
-            HayError = Boolean.TRUE;
-        }
+//    13022012      if ((sessionBeanEMP.getPuestosEmpleadosEvaluadores() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluadores().length == 0)) {
+//            addMessage("PlanillaWeb", "Seleccione al menos un empleado como evaluador", TipoMensaje.ADVERTENCIA);
+//            HayError = Boolean.TRUE;
+//        }
+//        if ((sessionBeanEMP.getPuestosEmpleadosEvaluados() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluados().length == 0)) {
+//            addMessage("PlanillaWeb", "Seleccione al menos un empleado a evaluar", TipoMensaje.ADVERTENCIA);
+//            HayError = Boolean.TRUE;
+//        }
 
         if (HayError) {
             return null;
@@ -162,35 +165,35 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
 
         if (empleadosBean.tieneEvaluaciones(campaniaSeleccionada)) {
             addMessage("PlanillaWeb", "La campa&ntilde;a seleccionada ya tiene definidos tipo de evaluaci&oacute;n y plantilla", TipoMensaje.ADVERTENCIA);
-            evaluaciones = campaniaSeleccionada.getEvaluacionList();
+//            evaluaciones = campaniaSeleccionada.getEvaluacionList();
         } else {
             evaluaciones = new ArrayList<Evaluacion>(0);
-            for (PuestoEmpleado puestoEmpleado : sessionBeanEMP.getPuestosEmpleadosEvaluados()) {
-                EvaluacionPK evaluacionPK = new EvaluacionPK();
-                evaluacionPK.setCodCia(campaniaSeleccionada.getCampaniaPK().getCodCia());
-                evaluacionPK.setPeriodo(campaniaSeleccionada.getCampaniaPK().getPeriodo());
-                evaluacionPK.setCodCampania(campaniaSeleccionada.getCampaniaPK().getCodCampania());
-                evaluacionPK.setTipoEvaluacion(plantillaSeleccionada.getPlantillaPK().getCodTipoEvaluacion());
-                evaluacionPK.setPlantilla(plantillaSeleccionada.getPlantillaPK().getCodPlantilla());
-                evaluacionPK.setEmpleado(puestoEmpleado.getEmpleados().getEmpleadosPK().getCodEmp());
-
-                Evaluacion evaluacion = new Evaluacion();
-                evaluacion.setEvaluacionPK(evaluacionPK);
-                evaluacion.setCampania(campaniaSeleccionada);
-                evaluacion.setPlantilla1(plantillaSeleccionada);
-                evaluacion.setEmpleados(puestoEmpleado.getEmpleados());
-                evaluacion.setFecha(Calendar.getInstance().getTime());
-                evaluacion.setFinalizada(0L);
-                evaluaciones.add(evaluacion);
-            }
+//            for (PuestoEmpleado puestoEmpleado : sessionBeanEMP.getPuestosEmpleadosEvaluados()) {
+//                EvaluacionPK evaluacionPK = new EvaluacionPK();
+//                evaluacionPK.setCodCia(campaniaSeleccionada.getCampaniaPK().getCodCia());
+//                evaluacionPK.setPeriodo(campaniaSeleccionada.getCampaniaPK().getPeriodo());
+//                evaluacionPK.setCodCampania(campaniaSeleccionada.getCampaniaPK().getCodCampania());
+//                evaluacionPK.setTipoEvaluacion(plantillaSeleccionada.getPlantillaPK().getCodTipoEvaluacion());
+//                evaluacionPK.setPlantilla(plantillaSeleccionada.getPlantillaPK().getCodPlantilla());
+//                evaluacionPK.setEmpleado(puestoEmpleado.getEmpleados().getEmpleadosPK().getCodEmp());
+//
+//                Evaluacion evaluacion = new Evaluacion();
+//                evaluacion.setEvaluacionPK(evaluacionPK);
+//                evaluacion.setCampania(campaniaSeleccionada);
+//                evaluacion.setPlantilla1(plantillaSeleccionada);
+//                evaluacion.setEmpleados(puestoEmpleado.getEmpleados());
+//                evaluacion.setFecha(Calendar.getInstance().getTime());
+//                evaluacion.setFinalizada(0L);
+//                evaluaciones.add(evaluacion);
+//            }
             excepciones = empleadosBean.crearEvaluaciones(evaluaciones);
             mensaje = (excepciones == 0) ? "Todas las evaluaciones han sido creadas exitosamente" : "Ya se han definido " + excepciones + " de " + evaluaciones.size() + " evaluaciones para la campa&ntilde;a, plantilla y empleados seleccionados";
             addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
 
             excepciones = 0;
-            for (PuestoEmpleado puestoEmpleadoEvaluador : sessionBeanEMP.getPuestosEmpleadosEvaluadores()) {
-                excepciones += empleadosBean.asignarEvaluaciones(evaluaciones, puestoEmpleadoEvaluador.getEmpleados());
-            }
+//            for (PuestoEmpleado puestoEmpleadoEvaluador : sessionBeanEMP.getPuestosEmpleadosEvaluadores()) {
+//                excepciones += empleadosBean.asignarEvaluaciones(evaluaciones, puestoEmpleadoEvaluador.getEmpleados());
+//            }
             mensaje = (excepciones == 0) ? "Todas las asignaciones de evaluaciones han sido creadas y/o modificadas exitosamente" : "Ya se habian definido " + excepciones + " de " + evaluaciones.size() + " asignaciones a evaluadores para la campa&ntilde;a y plantilla seleccionados";
             addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
         }
@@ -207,25 +210,25 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
                 HayError = (tipoEvaluacionSeleccionada == null);
                 HayError = (plantillaSeleccionada == null);
                 break;
-            case 1:
-                HayError = ((puestosEmpleadosEvaluadores == null) || (puestosEmpleadosEvaluadores.length == 0));
-                if (!HayError) {
-                    sessionBeanEMP.setPuestosEmpleadosEvaluadores(puestosEmpleadosEvaluadores);
-                }
-                break;
+//            case 1:
+//                HayError = ((puestosEmpleadosEvaluadores == null) || (puestosEmpleadosEvaluadores.length == 0));
+//                if (!HayError) {
+//                    sessionBeanEMP.setPuestosEmpleadosEvaluadores(puestosEmpleadosEvaluadores);
+//                }
+//                break;
             case 2:
-                HayError = ((sessionBeanEMP.getPuestosEmpleadosEvaluados() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluados().length == 0));
+//       13022012           HayError = ((sessionBeanEMP.getPuestosEmpleadosEvaluados() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluados().length == 0));
                 break;
         }
         return HayError ? flowEvt.getOldStep() : flowEvt.getNewStep();
     }
-    private PuestoEmpleado[] puestosEmpleadosEvaluadores;
-
-    public PuestoEmpleado[] getPuestosEmpleadosEvaluadores() {
-        return puestosEmpleadosEvaluadores;
-    }
-
-    public void setPuestosEmpleadosEvaluadores(PuestoEmpleado[] puestosEmpleadosEvaluadores) {
-        this.puestosEmpleadosEvaluadores = puestosEmpleadosEvaluadores;
-    }
+//    private PuestoEmpleado[] puestosEmpleadosEvaluadores;
+//
+//    public PuestoEmpleado[] getPuestosEmpleadosEvaluadores() {
+//        return puestosEmpleadosEvaluadores;
+//    }
+//
+//    public void setPuestosEmpleadosEvaluadores(PuestoEmpleado[] puestosEmpleadosEvaluadores) {
+//        this.puestosEmpleadosEvaluadores = puestosEmpleadosEvaluadores;
+//    }
 }

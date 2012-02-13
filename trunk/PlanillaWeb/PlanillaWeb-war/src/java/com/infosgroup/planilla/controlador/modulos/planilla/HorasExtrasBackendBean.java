@@ -6,7 +6,7 @@ package com.infosgroup.planilla.controlador.modulos.planilla;
 
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
-import com.infosgroup.planilla.modelo.entidades.Agencias;
+import com.infosgroup.planilla.modelo.facades.Agencias;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
@@ -88,9 +88,9 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
     public void rowEditListener(RowEditEvent event) {
         boolean hayError = false;
         ResumenAsistencia resumen = (ResumenAsistencia) event.getObject();
-        if (resumen.getPlanilla().getStatus().equals("G")) {
-            hayError = true;
-        }
+//        if (resumen.getPlanilla().getStatus().equals("G")) {
+//            hayError = true;
+//        }
         if (hayError) {
             planillaSessionBean.editar$action(resumen);
         } else {

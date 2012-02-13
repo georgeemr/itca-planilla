@@ -106,7 +106,7 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         if (!validarSolicitud()) {
             return null;
         }
-        planillaSeleccionada = planillaSessionBean().findPlanillaById(new PlanillaPK(planilla));
+        planillaSeleccionada = planillaSessionBean().findPlanillaById(new PlanillaPK(planilla, getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp()));
         AccionPersonal accionPersonal = new AccionPersonal();
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(planillaSeleccionada));
         accionPersonal.setTipoAccion(getTipoAccion());
@@ -116,8 +116,10 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         accionPersonal.setStatus("G");
         accionPersonal.setFechaFinal(fechaFinal);
         accionPersonal.setFechaInicial(fechaInicial);
-        accionPersonal.setPlanilla(planillaSeleccionada);
-        accionPersonal.setDias( new BigDecimal(dias.shortValue()));
+        // 13022012
+        //accionPersonal.setPlanilla(planillaSeleccionada);
+        
+        accionPersonal.setDias( dias.shortValue());
         accionPersonal.setCantidad(descuento != null ? new BigDecimal(descuento) : BigDecimal.ZERO);
         accionPersonal.setHoras(horas != null ? horas.shortValue() : null);
         accionPersonal.setPuestos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestos());
@@ -185,11 +187,11 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
             addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
-
-        if (getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList() == null || getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList().isEmpty()) {
-            addMessage("Acciones de Personal", "Usted no tiene ningún puesto asignado.", TipoMensaje.ERROR);
-            error = Boolean.FALSE;
-        }
+// 13022012
+//        if (getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList() == null || getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList().isEmpty()) {
+//            addMessage("Acciones de Personal", "Usted no tiene ningún puesto asignado.", TipoMensaje.ERROR);
+//            error = Boolean.FALSE;
+//        }
         return error;
     }
 

@@ -70,7 +70,7 @@ public class ContratacionBackendBean extends AbstractJSFPage implements Serializ
     }
 
     public List<Concurso> getListaConcurso() {
-        return reclutamientoSessionBean.getConcursosEvaluados(1L);
+        return reclutamientoSessionBean.getConcursosEvaluados( getSessionBeanADM().getCompania() );
     }
 
     public void setListaConcurso(List<Concurso> listaConcursos) {
@@ -80,7 +80,7 @@ public class ContratacionBackendBean extends AbstractJSFPage implements Serializ
     public List<Candidato> getListaCandidatos() {
         listaCandidatos = new ArrayList<Candidato>();
         if (getSessionBeanREC().getConcursoSeleccionado() != null) {
-           listaCandidatos.addAll(getSessionBeanREC().getConcursoSeleccionado().getCandidatoList() ); 
+//           listaCandidatos.addAll(getSessionBeanREC().getConcursoSeleccionado().getCandidatoList() ); 
         }
         return listaCandidatos;
     }
