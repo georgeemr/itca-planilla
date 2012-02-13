@@ -89,12 +89,12 @@
                 </p:inputText>
 
                 <h:outputLabel value="Puesto: " />
-                <h:selectOneMenu id="lstPuesto" value="#{reclutamiento$concursos.puesto}" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
-                    <f:selectItems value="#{reclutamiento$concursos.listaPuestos}" var="puesto" itemValue="#{puesto.puestoPK.codPuesto}"  itemLabel="#{puesto.nombre}"/>
+                <h:selectOneMenu id="lstPuesto" value="#{reclutamiento$concursos.puesto}"  style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
+                    <f:selectItems value="#{reclutamiento$concursos.listaPuestos}" var="puesto" itemValue="#{puesto.puestosPK.codPuesto}"  itemLabel="#{puesto.nomPuesto}"/>
                 </h:selectOneMenu>
-
+                
                 <h:outputLabel value="Estado: " />
-                <h:selectOneMenu id="lstEstado" value="#{reclutamiento$concursos.estadoConcurso}" required="true" requiredMessage="El Estado del Concurso es un campo obligatorio"  >
+                <h:selectOneMenu id="lstEstado" value="#{reclutamiento$concursos.estadoConcurso}" style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Estado del Concurso es un campo obligatorio"  >
                     <f:selectItems value="#{reclutamiento$concursos.listaEstadoConcurso}" var="estado" itemValue="#{estado.estadoConcursoPK.codigo}"  itemLabel="#{estado.nombre}"/>
                 </h:selectOneMenu>
 
@@ -117,7 +117,7 @@
             <p:dataTable id="tablaConcursos"
                          var="concurso" rows="5"  paginator="true" 
                          value="#{reclutamiento$concursos.listaConcursos}"
-                         emptyMessage="No se han encontrado concursos."
+                         emptyMessage="No se han encontrado Concursos."
                          binding="#{reclutamiento$concursos.tableConcursos}"
                          paginatorAlwaysVisible="true" selectionMode="single" 
                          selection="#{SessionBeanREC.concursoSeleccionado}"
@@ -167,13 +167,13 @@
                     <h:outputLabel value="#{concurso.numeroPlazas}" />
                 </p:column> 
 
-                <p:column sortBy="#{concurso.puesto.nombre}"
-                          filterBy="#{concurso.puesto.nombre}"
+                <p:column sortBy="#{concurso.puestos.nomPuesto}"
+                          filterBy="#{concurso.puestos.nomPuesto}"
                           filterMatchMode="contains">
                     <f:facet name="header">
                         Puesto
                     </f:facet>
-                    <h:outputLabel value="#{concurso.puesto.nombre}" />
+                    <h:outputLabel value="#{concurso.puestos.nomPuesto}" />
                 </p:column> 
 
                 <p:column filterBy="#{concurso.estadoConcurso.nombre}"
@@ -224,7 +224,7 @@
 
                 <h:outputLabel value="Puesto: " />
                 <h:selectOneMenu id="lstPuestoMod" value="#{reclutamiento$concursos.puesto}" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
-                    <f:selectItems value="#{reclutamiento$concursos.listaPuestos}" var="puesto" itemValue="#{puesto.puestoPK.codPuesto}"  itemLabel="#{puesto.nombre}"/>
+                    <f:selectItems value="#{reclutamiento$concursos.listaPuestos}" var="puesto" itemValue="#{puesto.puestosPK.codPuesto}"  itemLabel="#{puesto.nomPuesto}"/>
                 </h:selectOneMenu>
 
                 <h:outputLabel value="Estado: " />
