@@ -4,9 +4,9 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
+import com.infosgroup.planilla.modelo.entidades.Agencias;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
-import com.infosgroup.planilla.modelo.facades.Agencias;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
