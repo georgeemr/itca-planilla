@@ -28,12 +28,16 @@ import org.primefaces.event.FlowEvent;
 @ManagedBean(name = "empleados$evaluacionEmpleado")
 @ViewScoped
 public class EvaluacionEmpleadoBackendBean extends AbstractJSFPage implements Serializable {
+    /* *
+     * Todo lo comentado cambio porque el empleado ya no tendra la lista de puestos
+     * historica, sino un solo puesto. 13022012
+     */
 
     @EJB
     private EmpleadosSessionBean empleadosBean;
     private List<Pregunta> listaPreguntas;
     private DataTable[] wizardTable = new DataTable[15];
-    
+
     public EvaluacionEmpleadoBackendBean() {
     }
 
@@ -46,7 +50,7 @@ public class EvaluacionEmpleadoBackendBean extends AbstractJSFPage implements Se
     }
 
     public List<Pregunta> getListaPreguntas() {
-        listaPreguntas = empleadosBean.listarPreguntasPorFactor(getSessionBeanEMP().getFactorActual());
+//   13022012       listaPreguntas = empleadosBean.listarPreguntasPorFactor(getSessionBeanEMP().getFactorActual());
         return listaPreguntas;
     }
 
@@ -66,18 +70,18 @@ public class EvaluacionEmpleadoBackendBean extends AbstractJSFPage implements Se
             for (int fila = 0; fila < filas; fila++) {
                 tabla.setRowIndex(fila);
                 Pregunta p = (Pregunta) tabla.getRowData();
-                String respuesta = p.getRespuestaSeleccionada();
-                String[] desco = respuesta.split(":");
-                RespuestaPK respuestaPK = new RespuestaPK();
-                respuestaPK.setCodCia(Integer.parseInt(desco[0]));
-                respuestaPK.setCodTipoRespuesta(Integer.parseInt(desco[1]));
-                respuestaPK.setGrupoRespuesta(Integer.parseInt(desco[2]));
-                respuestaPK.setCodRespuesta(Integer.parseInt(desco[3]));
+//                String respuesta = p.getRespuestaSeleccionada();
+//                String[] desco = respuesta.split(":");
+//                RespuestaPK respuestaPK = new RespuestaPK();
+//                respuestaPK.setCodCia(Integer.parseInt(desco[0]));
+//                respuestaPK.setCodTipoRespuesta(Integer.parseInt(desco[1]));
+//                respuestaPK.setGrupoRespuesta(Integer.parseInt(desco[2]));
+//                respuestaPK.setCodRespuesta(Integer.parseInt(desco[3]));
 
                 PreguntaRespuesta pr = new PreguntaRespuesta();
                 pr.setPregunta(p);
-                Respuesta r = empleadosBean.findRespuestaById(respuestaPK);
-                pr.setRespuesta(r);
+//                Respuesta r = empleadosBean.findRespuestaById(respuestaPK);
+//                pr.setRespuesta(r);
                 l.add(pr);
             }
             sessionBeanEMP.getDetalleEvaluacionTemporal().get(actual).setRespuestas(l);

@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.controlador.modulos.administracion;
 
 import com.infosgroup.planilla.modelo.entidades.TipoDocumento;
+import com.infosgroup.planilla.modelo.entidades.TipoDocumentoPK;
 import com.infosgroup.planilla.modelo.facades.TipoDocumentoFacade;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
@@ -29,14 +30,14 @@ public class TiposDocumentoBackendBean extends AbstractJSFPage implements Serial
     }
     @EJB
     private TipoDocumentoFacade tipoDocumentoFacade;
-    private Long idTipoDocumento;
+    private Short idTipoDocumento;
     private String nombreTipoDocumento;
 
-    public Long getIdTipoDocumento() {
+    public Short getIdTipoDocumento() {
         return idTipoDocumento;
     }
 
-    public void setIdTipoDocumento(Long idTipoDocumento) {
+    public void setIdTipoDocumento(Short idTipoDocumento) {
         this.idTipoDocumento = idTipoDocumento;
     }
 
@@ -72,7 +73,7 @@ public class TiposDocumentoBackendBean extends AbstractJSFPage implements Serial
 // =============================================================================================
     public String guardar_action() {
         TipoDocumento t = new TipoDocumento();
-        t.setCodTipoDocumento(idTipoDocumento);
+        t.setTipoDocumentoPK(new TipoDocumentoPK(getSessionBeanADM().getCompania().getCodCia(), idTipoDocumento));
         t.setNomTipoDocumento(nombreTipoDocumento);
         tipoDocumentoFacade.create(t);
         idTipoDocumento = null;
@@ -86,7 +87,7 @@ public class TiposDocumentoBackendBean extends AbstractJSFPage implements Serial
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ha eliminado el registro", ""));
             return null;
         }
-        TipoDocumento t = tipoDocumentoFacade.find(tipoDocumentoSeleccionado.getCodTipoDocumento());
+        TipoDocumento t = tipoDocumentoFacade.find(tipoDocumentoSeleccionado.getTipoDocumentoPK());
         tipoDocumentoFacade.remove(t);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ha eliminado el registro", ""));
         return null;

@@ -7,13 +7,11 @@ package com.infosgroup.planilla.controlador.sessionbean;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.Factor;
-import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
 import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -62,7 +60,7 @@ public class SessionBeanEMP implements java.io.Serializable {
 
     public List<Factor> getListaFactores() {
         if (evaluacionSeleccionada != null) {
-            listaFactores = empleadosBean.listarFactoresPorPlantilla(evaluacionSeleccionada.getPlantilla1());
+            listaFactores = empleadosBean.listarFactoresPorPlantilla(evaluacionSeleccionada.getPlantilla());
         }
         return listaFactores;
     }
@@ -88,35 +86,36 @@ public class SessionBeanEMP implements java.io.Serializable {
     public void setDetalleEvaluacionTemporal(List<DetalleEvaluacion> detalleEvaluacionTemporal) {
         this.detalleEvaluacionTemporal = detalleEvaluacionTemporal;
     }
-    private PuestoEmpleado[] puestosEmpleadosEvaluadores;
-
-    public PuestoEmpleado[] getPuestosEmpleadosEvaluadores() {
-        return puestosEmpleadosEvaluadores;
-    }
-
-    public void setPuestosEmpleadosEvaluadores(PuestoEmpleado[] puestosEmpleadosEvaluadores) {
-        this.puestosEmpleadosEvaluadores = puestosEmpleadosEvaluadores;
-    }
-    private PuestoEmpleado[] puestosEmpleadosEvaluados;
-
-    public PuestoEmpleado[] getPuestosEmpleadosEvaluados() {
-        return puestosEmpleadosEvaluados;
-    }
-
-    public void setPuestosEmpleadosEvaluados(PuestoEmpleado[] puestosEmpleadosEvaluados) {
-        this.puestosEmpleadosEvaluados = puestosEmpleadosEvaluados;
-    }
-    private PuestoEmpleado puestoEmpleadoSession;
-
-    @PermitAll
-    public PuestoEmpleado getPuestoEmpleadoSession() {
-        if (empleadoSesion != null) {
-            puestoEmpleadoSession = empleadoFacade.getUltimoPuesto(empleadoSesion);
-        }
-        return puestoEmpleadoSession;
-    }
-
-    public void setPuestoEmpleadoSession(PuestoEmpleado puestoEmpleadoSession) {
-        this.puestoEmpleadoSession = puestoEmpleadoSession;
-    }
+// 13022012    
+//    private PuestoEmpleado[] puestosEmpleadosEvaluadores;
+//
+//    public PuestoEmpleado[] getPuestosEmpleadosEvaluadores() {
+//        return puestosEmpleadosEvaluadores;
+//    }
+// 13022012      
+//    public void setPuestosEmpleadosEvaluadores(PuestoEmpleado[] puestosEmpleadosEvaluadores) {
+//        this.puestosEmpleadosEvaluadores = puestosEmpleadosEvaluadores;
+//    }
+//    private PuestoEmpleado[] puestosEmpleadosEvaluados;
+//
+//    public PuestoEmpleado[] getPuestosEmpleadosEvaluados() {
+//        return puestosEmpleadosEvaluados;
+//    }
+//
+//    public void setPuestosEmpleadosEvaluados(PuestoEmpleado[] puestosEmpleadosEvaluados) {
+//        this.puestosEmpleadosEvaluados = puestosEmpleadosEvaluados;
+//    }
+//    private PuestoEmpleado puestoEmpleadoSession;
+//
+//    @PermitAll
+//    public PuestoEmpleado getPuestoEmpleadoSession() {
+//        if (empleadoSesion != null) {
+//            puestoEmpleadoSession = empleadoFacade.getUltimoPuesto(empleadoSesion);
+//        }
+//        return puestoEmpleadoSession;
+//    }
+//
+//    public void setPuestoEmpleadoSession(PuestoEmpleado puestoEmpleadoSession) {
+//        this.puestoEmpleadoSession = puestoEmpleadoSession;
+//    }
 }

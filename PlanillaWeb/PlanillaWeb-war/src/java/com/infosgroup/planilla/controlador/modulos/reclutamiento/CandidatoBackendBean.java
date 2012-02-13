@@ -6,8 +6,15 @@ package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.CandidatoPK;
+import com.infosgroup.planilla.modelo.entidades.Deptos;
+import com.infosgroup.planilla.modelo.entidades.Municipios;
+import com.infosgroup.planilla.modelo.entidades.NivelAcademico;
+import com.infosgroup.planilla.modelo.entidades.Paises;
+import com.infosgroup.planilla.modelo.entidades.Profesion;
 import com.infosgroup.planilla.modelo.entidades.TipoDocumento;
+import com.infosgroup.planilla.modelo.entidades.TipoSangre;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
+import com.infosgroup.planilla.modelo.procesos.SessionBeanParametros;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
@@ -31,6 +38,8 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
 
     @EJB
     private ReclutamientoSessionBean reclutamientoFacade;
+    @EJB
+    private SessionBeanParametros sessionBeanParametros;
     private String nombre;
     private String apellido;
     private String apellidoDeCasada;
@@ -41,16 +50,76 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
     private List<SelectItem> selectSexo;
     private List<TipoDocumento> listaTipoDocumentos;
     private List<Candidato> listaCandidatos;
+    private List<Paises> listaPaises;
+    private List<Deptos> listaDepartamentos;
+    private List<Municipios> listaMunicipios;
+    private List<TipoSangre> listaTipoSangre;
+    private List<NivelAcademico> listaNivelAcademico;
+    private List<Profesion> listaProfesiones;
     private Boolean isError;
 
     public CandidatoBackendBean() {
     }
 
     @PostConstruct
-    public void initComponents(){
+    public void initComponents() {
         listaCandidatos = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
     }
-    
+
+    public List<Paises> getListaPaises() {
+        listaPaises = sessionBeanParametros.getListaPaises();
+        return listaPaises != null ? listaPaises : new ArrayList<Paises>();
+    }
+
+    public void setListaPaises(List<Paises> listaPaises) {
+        this.listaPaises = listaPaises;
+    }
+
+    public List<Deptos> getListaDepartamentos() {
+        listaDepartamentos = sessionBeanParametros.getListaDepartamentos();
+        return listaDepartamentos;
+    }
+
+    public void setListaDepartamentos(List<Deptos> listaDepartamentos) {
+        this.listaDepartamentos = listaDepartamentos;
+    }
+
+    public List<Municipios> getListaMunicipios() {
+        listaMunicipios = sessionBeanParametros.getListaMunicipios();
+        return listaMunicipios;
+    }
+
+    public void setListaMunicipios(List<Municipios> listaMunicipios) {
+        this.listaMunicipios = listaMunicipios;
+    }
+
+    public List<NivelAcademico> getListaNivelAcademico() {
+        listaNivelAcademico = sessionBeanParametros.getListaNivelAcademicos();
+        return listaNivelAcademico;
+    }
+
+    public void setListaNivelAcademico(List<NivelAcademico> listaNivelAcademico) {
+        this.listaNivelAcademico = listaNivelAcademico;
+    }
+
+    public List<TipoSangre> getListaTipoSangre() {
+        listaTipoSangre = sessionBeanParametros.getListaTipoSangre();
+        return listaTipoSangre != null ? listaTipoSangre : new ArrayList<TipoSangre>();
+    }
+
+    public void setListaTipoSangre(List<TipoSangre> listaTipoSangre) {
+        this.listaTipoSangre = listaTipoSangre;
+    }
+
+    public List<Profesion> getListaProfesiones() {
+        listaProfesiones = sessionBeanParametros.getListaProfesiones();
+        return listaProfesiones;
+    }
+
+    public void setListaProfesiones(List<Profesion> listaProfesiones) {
+        this.listaProfesiones = listaProfesiones;
+    }
+
     public List<Candidato> getListaCandidatos() {
         return listaCandidatos;
     }
@@ -110,8 +179,8 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
 
     public List<SelectItem> getSelectSexo() {
         selectSexo = new ArrayList<SelectItem>();
-        selectSexo.add(new SelectItem("M", "Masculino"));
-        selectSexo.add(new SelectItem("F", "Femenino"));
+        selectSexo.add(new SelectItem("1", "Masculino"));
+        selectSexo.add(new SelectItem("2", "Femenino"));
         return selectSexo;
     }
 
@@ -136,7 +205,7 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
     }
 
     public String guardarDatos$action() {
-        
+
         Candidato candidato = new Candidato();
         CandidatoPK pkCandidato = new CandidatoPK();
         Short c = getSessionBeanADM().getCompania().getCodCia();
@@ -145,20 +214,19 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
         Integer nac = fechaNacimiento.getYear();
         Integer edad = anioHoy - nac;
         try {
-            
+
             pkCandidato.setCodCia(c);
-            pkCandidato.setCodCandidato(reclutamientoFacade.getMaxCandidato(1L));
+            pkCandidato.setCodCandidato(reclutamientoFacade.getMaxCandidato(getSessionBeanADM().getCompania()).intValue());
             candidato.setCandidatoPK(pkCandidato);
             candidato.setNombre(nombre);
-            candidato.setFechaNacimiento(fechaNacimiento);
+            candidato.setFechaExpDui(fechaNacimiento);
             candidato.setApellido(apellido);
             candidato.setApCasada(apellidoDeCasada);
-            candidato.setSexo(sexo);
+            candidato.setSexo(new Short(sexo));
             candidato.setObservacion(observaciones);
             candidato.setEstado("A");
-            candidato.setEdad(edad.longValue());
             reclutamientoFacade.guardarCandidato(candidato);
-            
+
             addMessage("Registro de Candidatos", "Datos guardados satisfactoriamente.", TipoMensaje.INFORMACION);
         } catch (javax.persistence.EntityExistsException e) {
             addMessage("Registro de Candidatos", "El candidato ingresado ya existe.", TipoMensaje.ERROR_FATAL);
@@ -175,12 +243,12 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
     public void consultar$vh$action() {
         setEstadoAccion(2);
     }
-    
+
     public String editar$crud$action() {
-        getSessionBeanADM().setEstadoAccion( 1 );
+        getSessionBeanADM().setEstadoAccion(1);
         return null;
     }
-    
+
     public void setEstadoAccion(Integer estadoAccion) {
         getSessionBeanADM().setEstadoAccion(estadoAccion);
         limpiarCampos();
