@@ -52,29 +52,90 @@
 
                 <p:spacer height="20" />
 
-                <p:fieldset legend="Datos personales">
+                <h:panelGrid columns="6">
+                    <h:outputLabel value="Nombre: "/>
+                    <p:inputText id="txNombre" value="#{reclutamiento$candidato.nombre}" />
+                    <h:outputLabel value="Apellido: "/>
+                    <p:inputText id="txApellido" value="#{reclutamiento$candidato.apellido}" />
+                    <h:outputLabel value="Apellido de Casada: "/>
+                    <p:inputText id="txApellidoCasada" value="#{reclutamiento$candidato.apellidoDeCasada}" />
+                    <h:outputLabel value="Fecha de Nacimiento: "/>
+                    <p:calendar id="calFechaNacimiento" pattern="dd/MM/yyyy"  value="#{reclutamiento$candidato.fechaNacimiento}" showOn="button"  />
+                    <h:outputLabel value="Sexo: "/>
+                    <h:selectOneMenu id="lstSexo" value="#{reclutamiento$candidato.sexo}" style="height: 25px;padding-top: 3px;" >
+                        <f:selectItems var="sexo" value="#{reclutamiento$candidato.selectSexo}" itemValue="#{sexo.value}" itemLabel="#{sexo.label}" />
+                    </h:selectOneMenu>
 
-                    <h:panelGrid columns="6">
-                        <h:outputLabel value="Nombre: "/>
-                        <p:inputText id="txNombre" value="#{reclutamiento$candidato.nombre}" />
-                        <h:outputLabel value="Apellido: "/>
-                        <p:inputText id="txApellido" value="#{reclutamiento$candidato.apellido}" />
-                        <h:outputLabel value="Apellido de Casada: "/>
-                        <p:inputText id="txApellidoCasada" value="#{reclutamiento$candidato.apellidoDeCasada}" />
-                        <h:outputLabel value="Fecha de Nacimiento: "/>
-                        <p:calendar id="calFechaNacimiento" pattern="dd/MM/yyyy"  value="#{reclutamiento$candidato.fechaNacimiento}" showOn="button"  />
-                        <h:outputLabel value="Sexo: "/>
-                        <h:selectOneMenu id="lstSexo" value="#{reclutamiento$candidato.sexo}" >
-                            <f:selectItems var="sexo" value="#{reclutamiento$candidato.selectSexo}" itemValue="#{sexo.value}" itemLabel="#{sexo.label}" />
-                        </h:selectOneMenu>
-                        <h:outputLabel value="Observaciones:"/>
-                        <p:inputTextarea id="txObservaciones" />
-                    </h:panelGrid>
-                    <p:spacer height="10" />
-                    <h:panelGrid columns="1">
-                        <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{reclutamiento$candidato.guardarDatos$action()}" update="mensajes" />          
-                    </h:panelGrid>
-                </p:fieldset>
+                    <h:outputLabel value="Grupo Sanguineo: "/>
+                    <h:selectOneMenu id="lstGrupoSanguineo" style="height: 25px;padding-top: 3px;" >
+                        <f:selectItems var="tipoSangre" value="#{reclutamiento$candidato.listaTipoSangre}" itemValue="#{tipoSangre.tipoSangre}" itemLabel="#{tipoSangre.nomTipoSangre}" />
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Tel&eacute;fono: "/>
+                    <p:inputText id="txtTelefono"  />
+
+                    <h:outputLabel value="Salario Aspirado: "/>
+                    <p:inputText id="txtSalarioAspirado"  />
+
+                    <h:outputLabel value="Pais Domicilio: "/>
+                    <h:selectOneMenu id="lstPaisDomicilio" style="height: 25px;padding-top: 3px;" >
+                        <f:selectItems var="pais" value="#{reclutamiento$candidato.listaPaises}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Departamento Domicilio: "/>
+                    <h:selectOneMenu id="lstDeptoDomicilio" style="height: 25px;padding-top: 3px;" >
+                        <f:selectItems var="departamento" value="#{reclutamiento$candidato.listaDepartamentos}" itemValue="#{departamento.deptosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Municipio Domicilio: "/>
+                    <h:selectOneMenu id="lstMunDomicilio" style="height: 25px;padding-top: 3px;" >
+                        <f:selectItems var="municipio" value="#{reclutamiento$candidato.listaMunicipios}" itemValue="#{municipio.municipiosPK.codMuni}" itemLabel="#{municipio.nomMuni}" />
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Pais Nacionalidad: "/>
+                    <h:selectOneMenu id="lstPaisNacionalidad" style="height: 25px;padding-top: 3px;" >
+                        <f:selectItems var="pais" value="#{reclutamiento$candidato.listaPaises}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Pais Nacimiento: "/>
+                    <h:selectOneMenu id="lstPaisNac" style="height: 25px;padding-top: 3px;" >
+                        <f:selectItems var="pais" value="#{reclutamiento$candidato.listaPaises}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Departamento Nacimiento: "/>
+                    <h:selectOneMenu id="lstDeptoNac" style="height: 25px;padding-top: 3px;" >
+                        <f:selectItems var="departamento" value="#{reclutamiento$candidato.listaDepartamentos}" itemValue="#{departamento.deptosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Municipio Nacimiento: "/>
+                    <h:selectOneMenu id="lstMunNac" style="height: 25px;padding-top: 3px;" >
+                        <f:selectItems var="municipio" value="#{reclutamiento$candidato.listaMunicipios}" itemValue="#{municipio.municipiosPK.codMuni}" itemLabel="#{municipio.nomMuni}" />
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Direccion: "/>
+                    <p:inputText />
+
+
+                    <h:outputLabel value="Nivel Academico: "/>
+                    <h:selectOneMenu id="lstNivelAcademico" style="height: 25px;padding-top: 3px;" >
+                        <f:selectItems var="nivelAcademico" value="#{reclutamiento$candidato.listaNivelAcademico}" itemValue="#{nivelAcademico.nivelAcademicoPK.codNivelAcademico}" itemLabel="#{nivelAcademico.nomNivelAcademico}" />
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Profesi&oacute;n: "/>
+                    <h:selectOneMenu id="lstProfesion" style="height: 25px;padding-top: 3px;" >
+                        <f:selectItems var="profesion" value="#{reclutamiento$candidato.listaProfesiones}" itemValue="#{profesion.profesionPK.codProfesion}" itemLabel="#{profesion.nomProfesion}" />
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Observaciones:"/>
+                    <p:inputTextarea id="txObservaciones" />
+
+                </h:panelGrid>
+
+                <p:spacer height="10" />
+
+                <h:panelGrid columns="1">
+                    <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{reclutamiento$candidato.guardarDatos$action()}" update="mensajes" />          
+                </h:panelGrid>
 
             </p:tab>
 
@@ -83,8 +144,8 @@
                 <p:fieldset legend="Documentos de Identidad" >
                     <h:panelGrid columns="5">
                         <h:outputLabel value="Tipo de Documento: " />
-                        <h:selectOneMenu id="lstTipoDocumentos" value="#{reclutamiento$candidato.tipoDocumentoSeleccionado}" >
-                            <f:selectItems var="tipoDocumento" itemLabel="#{tipoDocumento.nomTipoDocumento}" itemValue="#{tipoDocumento.idTipoDocumento}" value="#{reclutamiento$candidato.listaTipoDocumentos}" />
+                        <h:selectOneMenu id="lstTipoDocumentos" style="height: 25px;padding-top: 3px;" value="#{reclutamiento$candidato.tipoDocumentoSeleccionado}" >
+                            <f:selectItems var="tipoDocumento" itemLabel="#{tipoDocumento.nomTipoDocumento}" itemValue="#{tipoDocumento.codTipoDocumento}" value="#{reclutamiento$candidato.listaTipoDocumentos}" />
                         </h:selectOneMenu>
                         <h:outputLabel value="N&uacute;mero: " />
                         <p:inputText />
@@ -147,7 +208,7 @@
                 </p:column>
 
                 <p:column headerText="Fecha de Nacimiento">
-                    <h:outputLabel value="#{candidato.fechaNacimiento}">
+                    <h:outputLabel value="#{candidato.fechaNac}">
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </h:outputLabel>
                 </p:column>
@@ -162,10 +223,6 @@
 
                 <p:column headerText="Estado">
                     <h:outputLabel value="#{candidato.estado}"/>
-                </p:column>
-
-                <p:column headerText="Edad">
-                    <h:outputLabel value="#{candidato.edad}"/>
                 </p:column>
 
                 <p:column headerText="Editar" >
