@@ -179,20 +179,20 @@ public class ReportesStatelessBean {
     @PermitAll
     public Integer getPuntajeObtenido(List<DetEvaluacion> detalle, DetEvaluacion e) {
         int d = 0;
-        for (DetEvaluacion deta : detalle) {
-            if (deta.getRespuesta().getNivel().equals(e.getRespuesta().getNivel())) {
-                d++;
-            }
-        }
+//   13022012       for (DetEvaluacion deta : detalle) {
+//            if (deta.getRespuesta().getNivel().equals(e.getRespuesta().getNivel())) {
+//                d++;
+//            }
+//        }
         return d;
     }
 
     @PermitAll
     public Integer totalEvaluacion(List<DetEvaluacion> detalle) {
         Integer nota = 0;
-        for (DetEvaluacion e : detalle) {
-            nota += e.getRespuesta().getValor().intValue();
-        }
+//    13022012      for (DetEvaluacion e : detalle) {
+//            nota += e.getRespuesta().getValor().intValue();
+//        }
         return nota != null ? nota : 0;
     }
 

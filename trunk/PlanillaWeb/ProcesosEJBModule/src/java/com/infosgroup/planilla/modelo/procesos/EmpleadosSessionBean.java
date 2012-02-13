@@ -16,7 +16,6 @@ import com.infosgroup.planilla.modelo.entidades.GerenciaPK;
 import com.infosgroup.planilla.modelo.entidades.Plantilla;
 import com.infosgroup.planilla.modelo.entidades.Pregunta;
 import com.infosgroup.planilla.modelo.entidades.Puestos;
-import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import com.infosgroup.planilla.modelo.entidades.Respuesta;
 import com.infosgroup.planilla.modelo.entidades.RespuestaPK;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
@@ -29,7 +28,6 @@ import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
 import com.infosgroup.planilla.modelo.facades.EvaluacionFacade;
 import com.infosgroup.planilla.modelo.facades.FactorFacade;
 import com.infosgroup.planilla.modelo.facades.GerenciaFacade;
-import com.infosgroup.planilla.modelo.facades.PuestoEmpleadoFacade;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.RespuestaFacade;
 import com.infosgroup.planilla.modelo.facades.TipoEvaluacionFacade;
@@ -55,8 +53,8 @@ public class EmpleadosSessionBean {
     private CampaniaFacade campaniasFacade;
     @EJB
     private EmpleadoFacade empleadosFacade;
-    @EJB
-    private PuestoEmpleadoFacade puestoEmpleadoFacade;
+//  13022012  @EJB
+//    private PuestoEmpleadoFacade puestoEmpleadoFacade;
     @EJB
     private FactorFacade factorFacade;
     @EJB
@@ -80,19 +78,20 @@ public class EmpleadosSessionBean {
     public List<Campania> listarCampaniasPorEmpleado(Empleados empleado) {
         return campaniasFacade.findByEmpleadoEvaluador(empleado);
     }
-
-    public List<Plantilla> listarPlantillasPorTipoEvaluacion(TipoEvaluacion tipoEvaluacion) {
-        return (tipoEvaluacion != null) ? tipoEvaluacion.getPlantillaList() : null;
-    }
+// 13022012  
+//    public List<Plantilla> listarPlantillasPorTipoEvaluacion(TipoEvaluacion tipoEvaluacion) {
+//        return (tipoEvaluacion != null) ? tipoEvaluacion.getPlantillaList() : null;
+//    }
 
     public List<Factor> listarFactoresPorPlantilla(Plantilla plantilla) {
         return factorFacade.findByPlantilla(plantilla);
     }
-
-    @PermitAll
-    public List<Pregunta> listarPreguntasPorFactor(Factor factor) {
-        return (factor != null) ? factor.getPreguntaList() : null;
-    }
+    
+// 13022012  
+//    @PermitAll
+//    public List<Pregunta> listarPreguntasPorFactor(Factor factor) {
+//        return (factor != null) ? factor.getPreguntaList() : null;
+//    }
 
     public Respuesta findRespuestaById(RespuestaPK pk) {
         return respuestaFacade.find(pk);
@@ -111,22 +110,22 @@ public class EmpleadosSessionBean {
                 for (PreguntaRespuesta pr : preguntasRespuestasList) {
                     DetEvaluacionPK detEvaluacionPK = new DetEvaluacionPK();
                     detEvaluacionPK.setCodCia(ev.getEvaluacionPK().getCodCia());
-                    detEvaluacionPK.setPeriodo(ev.getEvaluacionPK().getPeriodo());
+// 13022012                     detEvaluacionPK.setPeriodo(ev.getEvaluacionPK().getPeriodo());
                     detEvaluacionPK.setCodCampania(ev.getEvaluacionPK().getCodCampania());
-                    detEvaluacionPK.setEmpleado(ev.getEvaluacionPK().getEmpleado());
-                    detEvaluacionPK.setTipoEvaluacion(ev.getEvaluacionPK().getTipoEvaluacion());
-                    detEvaluacionPK.setCodDetEvaluacion(i++);
+//   13022012                   detEvaluacionPK.setEmpleado(ev.getEvaluacionPK().getEmpleado());
+//   13022012                   detEvaluacionPK.setTipoEvaluacion(ev.getEvaluacionPK().getTipoEvaluacion());
+//   13022012                   detEvaluacionPK.setCodDetEvaluacion(i++);
 
                     DetEvaluacion detEvaluacion = new DetEvaluacion();
                     detEvaluacion.setEvaluacion(ev);
                     detEvaluacion.setDetEvaluacionPK(detEvaluacionPK);
-                    detEvaluacion.setPregunta(pr.getPregunta());
-                    detEvaluacion.setRespuesta(pr.getRespuesta());
+//   13022012                   detEvaluacion.setPregunta(pr.getPregunta());
+//   13022012                   detEvaluacion.setRespuesta(pr.getRespuesta());
 
                     detalleEvaluacionFacade.create(detEvaluacion);
                 }
             }
-            ev.setFinalizada(1L);
+//   13022012           ev.setFinalizada(1L);
             evaluacionFacade.edit(ev);
         } catch (Exception excpt) {
             result = false;
@@ -134,9 +133,9 @@ public class EmpleadosSessionBean {
         return result;
     }
 
-    public List<PuestoEmpleado> listarPuestosEmpleados() {
-        return puestoEmpleadoFacade.findAll();
-    }
+//  13022012    public List<PuestoEmpleado> listarPuestosEmpleados() {
+//        return puestoEmpleadoFacade.findAll();
+//    }
 
     public List<Empleados> listarEmpleadosEvaluados(Campania c) {
         return empleadosFacade.findEmpleadosEvaluados(c);
@@ -182,18 +181,18 @@ public class EmpleadosSessionBean {
     @PermitAll
     public Integer asignarEvaluaciones(List<Evaluacion> listaEvaluaciones, Empleados evaluador) {
         Integer excepciones = 0;
-        List<Evaluacion> evaluacionesActuales = evaluador.getEvaluacionList();
-        for (Evaluacion evaluacion : listaEvaluaciones) {
-            if (!evaluacionesActuales.contains(evaluacion)) {
-                evaluacionesActuales.add(evaluacion);
-            }
-        }
-        try {
-            evaluador.setEvaluacionList(evaluacionesActuales);
-            empleadosFacade.edit(evaluador);
-        } catch (Exception excpt) {
-            excepciones += listaEvaluaciones.size();
-        }
+//    13022012      List<Evaluacion> evaluacionesActuales = evaluador.getEvaluacionList();
+//        for (Evaluacion evaluacion : listaEvaluaciones) {
+//            if (!evaluacionesActuales.contains(evaluacion)) {
+//                evaluacionesActuales.add(evaluacion);
+//            }
+//        }
+//        try {
+//            evaluador.setEvaluacionList(evaluacionesActuales);
+//            empleadosFacade.edit(evaluador);
+//        } catch (Exception excpt) {
+//            excepciones += listaEvaluaciones.size();
+//        }
         return excepciones;
     }
 
