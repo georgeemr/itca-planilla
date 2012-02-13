@@ -4,9 +4,9 @@
  */
 package com.infosgroup.planilla.controlador.modulos.administracion;
 
-import com.infosgroup.planilla.modelo.facades.Agencias;
+import com.infosgroup.planilla.modelo.entidades.Agencias;
+import com.infosgroup.planilla.modelo.entidades.AgenciasPK;
 import com.infosgroup.planilla.modelo.facades.AgenciasFacade;
-import com.infosgroup.planilla.modelo.facades.AgenciasPK;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
