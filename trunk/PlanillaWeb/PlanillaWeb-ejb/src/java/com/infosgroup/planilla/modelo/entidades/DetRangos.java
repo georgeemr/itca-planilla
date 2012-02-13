@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "DET_RANGOS")
+@Table(name = "DET_RANGOS", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DetRangos.findAll", query = "SELECT d FROM DetRangos d"),
@@ -159,7 +159,7 @@ public class DetRangos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.DetRangos[ detRangosPK=" + detRangosPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.DetRangos[ detRangosPK=" + detRangosPK + " ]";
     }
     
 }

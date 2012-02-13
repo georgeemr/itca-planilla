@@ -10,11 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -27,41 +22,24 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "PLANTILLA")
+@Table(name = "PLANTILLA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Plantilla.findAll", query = "SELECT p FROM Plantilla p"),
     @NamedQuery(name = "Plantilla.findByCodCia", query = "SELECT p FROM Plantilla p WHERE p.plantillaPK.codCia = :codCia"),
     @NamedQuery(name = "Plantilla.findByCodTipoEvaluacion", query = "SELECT p FROM Plantilla p WHERE p.plantillaPK.codTipoEvaluacion = :codTipoEvaluacion"),
+    @NamedQuery(name = "Plantilla.findByPeriodo", query = "SELECT p FROM Plantilla p WHERE p.plantillaPK.periodo = :periodo"),
     @NamedQuery(name = "Plantilla.findByCodPlantilla", query = "SELECT p FROM Plantilla p WHERE p.plantillaPK.codPlantilla = :codPlantilla"),
-    @NamedQuery(name = "Plantilla.findByNombre", query = "SELECT p FROM Plantilla p WHERE p.nombre = :nombre"),
-    @NamedQuery(name = "Plantilla.findByIncluyeObjetivos", query = "SELECT p FROM Plantilla p WHERE p.incluyeObjetivos = :incluyeObjetivos"),
-    @NamedQuery(name = "Plantilla.findByIncluyeCompetencias", query = "SELECT p FROM Plantilla p WHERE p.incluyeCompetencias = :incluyeCompetencias")})
+    @NamedQuery(name = "Plantilla.findByNomPlantilla", query = "SELECT p FROM Plantilla p WHERE p.nomPlantilla = :nomPlantilla")})
 public class Plantilla implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PlantillaPK plantillaPK;
-    @Column(name = "NOMBRE", length = 200)
-    private String nombre;
-    @Column(name = "INCLUYE_OBJETIVOS", length = 200)
-    private String incluyeObjetivos;
-    @Column(name = "INCLUYE_COMPETENCIAS", length = 200)
-    private String incluyeCompetencias;
-    @JoinTable(name = "DET_PLANTILLA", joinColumns = {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "COD_TIPO_EVALUACION", referencedColumnName = "COD_TIPO_EVALUACION", nullable = false),
-        @JoinColumn(name = "COD_PLANTILLA", referencedColumnName = "COD_PLANTILLA", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "FACTOR", referencedColumnName = "COD_FACTOR", nullable = false),
-        @JoinColumn(name = "PREGUNTA", referencedColumnName = "COD_PREGUNTA", nullable = false)})
-    @ManyToMany
-    private List<Pregunta> preguntaList;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_TIPO_EVALUACION", referencedColumnName = "COD_TIPO_EVALUACION", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private TipoEvaluacion tipoEvaluacion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plantilla1")
+    @Column(name = "NOM_PLANTILLA", length = 60)
+    private String nomPlantilla;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plantilla")
+    private List<DetPlantilla> detPlantillaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plantilla")
     private List<Evaluacion> evaluacionList;
 
     public Plantilla() {
@@ -71,8 +49,8 @@ public class Plantilla implements Serializable {
         this.plantillaPK = plantillaPK;
     }
 
-    public Plantilla(long codCia, long codTipoEvaluacion, long codPlantilla) {
-        this.plantillaPK = new PlantillaPK(codCia, codTipoEvaluacion, codPlantilla);
+    public Plantilla(short codCia, short codTipoEvaluacion, int periodo, short codPlantilla) {
+        this.plantillaPK = new PlantillaPK(codCia, codTipoEvaluacion, periodo, codPlantilla);
     }
 
     public PlantillaPK getPlantillaPK() {
@@ -83,45 +61,21 @@ public class Plantilla implements Serializable {
         this.plantillaPK = plantillaPK;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNomPlantilla() {
+        return nomPlantilla;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getIncluyeObjetivos() {
-        return incluyeObjetivos;
-    }
-
-    public void setIncluyeObjetivos(String incluyeObjetivos) {
-        this.incluyeObjetivos = incluyeObjetivos;
-    }
-
-    public String getIncluyeCompetencias() {
-        return incluyeCompetencias;
-    }
-
-    public void setIncluyeCompetencias(String incluyeCompetencias) {
-        this.incluyeCompetencias = incluyeCompetencias;
+    public void setNomPlantilla(String nomPlantilla) {
+        this.nomPlantilla = nomPlantilla;
     }
 
     @XmlTransient
-    public List<Pregunta> getPreguntaList() {
-        return preguntaList;
+    public List<DetPlantilla> getDetPlantillaList() {
+        return detPlantillaList;
     }
 
-    public void setPreguntaList(List<Pregunta> preguntaList) {
-        this.preguntaList = preguntaList;
-    }
-
-    public TipoEvaluacion getTipoEvaluacion() {
-        return tipoEvaluacion;
-    }
-
-    public void setTipoEvaluacion(TipoEvaluacion tipoEvaluacion) {
-        this.tipoEvaluacion = tipoEvaluacion;
+    public void setDetPlantillaList(List<DetPlantilla> detPlantillaList) {
+        this.detPlantillaList = detPlantillaList;
     }
 
     @XmlTransient
@@ -155,7 +109,7 @@ public class Plantilla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Plantilla[ plantillaPK=" + plantillaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Plantilla[ plantillaPK=" + plantillaPK + " ]";
     }
     
 }

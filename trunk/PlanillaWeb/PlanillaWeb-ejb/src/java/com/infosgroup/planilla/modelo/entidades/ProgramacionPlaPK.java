@@ -104,7 +104,7 @@ public class ProgramacionPlaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.ProgramacionPlaPK[ codCia=" + codCia + ", periodo=" + periodo + ", secuencia=" + secuencia + ", codTipopla=" + codTipopla + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.ProgramacionPlaPK[ codCia=" + codCia + ", periodo=" + periodo + ", secuencia=" + secuencia + ", codTipopla=" + codTipopla + " ]";
     }
     
 }

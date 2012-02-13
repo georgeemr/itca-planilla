@@ -17,7 +17,7 @@ import javax.persistence.Embeddable;
 public class TipoCriterioPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "CODIGO", nullable = false)
     private long codigo;
@@ -25,16 +25,16 @@ public class TipoCriterioPK implements Serializable {
     public TipoCriterioPK() {
     }
 
-    public TipoCriterioPK(long codCia, long codigo) {
+    public TipoCriterioPK(short codCia, long codigo) {
         this.codCia = codCia;
         this.codigo = codigo;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
@@ -72,7 +72,7 @@ public class TipoCriterioPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoCriterioPK[ codCia=" + codCia + ", codigo=" + codigo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoCriterioPK[ codCia=" + codCia + ", codigo=" + codigo + " ]";
     }
     
 }

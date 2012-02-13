@@ -17,7 +17,7 @@ import javax.persistence.Embeddable;
 public class CriteriosXPuestoPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "PUESTO", nullable = false)
     private long puesto;
@@ -34,7 +34,7 @@ public class CriteriosXPuestoPK implements Serializable {
     public CriteriosXPuestoPK() {
     }
 
-    public CriteriosXPuestoPK(long codCia, long puesto, long tipoCriterio, long criterio, long correlativo) {
+    public CriteriosXPuestoPK(short codCia, long puesto, long tipoCriterio, long criterio, long correlativo) {
         this.codCia = codCia;
         this.puesto = puesto;
         this.tipoCriterio = tipoCriterio;
@@ -42,11 +42,11 @@ public class CriteriosXPuestoPK implements Serializable {
         this.correlativo = correlativo;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
@@ -120,7 +120,7 @@ public class CriteriosXPuestoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK[ codCia=" + codCia + ", puesto=" + puesto + ", tipoCriterio=" + tipoCriterio + ", criterio=" + criterio + ", correlativo=" + correlativo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.CriteriosXPuestoPK[ codCia=" + codCia + ", puesto=" + puesto + ", tipoCriterio=" + tipoCriterio + ", criterio=" + criterio + ", correlativo=" + correlativo + " ]";
     }
     
 }

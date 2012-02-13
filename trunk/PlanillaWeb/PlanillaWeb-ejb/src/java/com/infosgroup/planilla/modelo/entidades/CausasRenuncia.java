@@ -10,8 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -24,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "CAUSAS_RENUNCIA")
+@Table(name = "CAUSAS_RENUNCIA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CausasRenuncia.findAll", query = "SELECT c FROM CausasRenuncia c"),
@@ -45,9 +43,6 @@ public class CausasRenuncia implements Serializable {
     private String status;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "causasRenuncia")
     private List<Empleados> empleadosList;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
 
     public CausasRenuncia() {
     }
@@ -101,14 +96,6 @@ public class CausasRenuncia implements Serializable {
         this.empleadosList = empleadosList;
     }
 
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -131,7 +118,7 @@ public class CausasRenuncia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CausasRenuncia[ causasRenunciaPK=" + causasRenunciaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.CausasRenuncia[ causasRenunciaPK=" + causasRenunciaPK + " ]";
     }
     
 }

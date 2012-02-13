@@ -72,7 +72,7 @@ public class CausasRenunciaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CausasRenunciaPK[ codCia=" + codCia + ", codTiporenuncia=" + codTiporenuncia + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.CausasRenunciaPK[ codCia=" + codCia + ", codTiporenuncia=" + codTiporenuncia + " ]";
     }
     
 }

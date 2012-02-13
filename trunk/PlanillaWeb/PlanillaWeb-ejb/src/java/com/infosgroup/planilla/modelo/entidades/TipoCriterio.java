@@ -5,24 +5,26 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "TIPO_CRITERIO", uniqueConstraints = {
+@Table(name = "TIPO_CRITERIO", catalog = "", schema = "PLANILLA", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"NOMBRE"})})
 @XmlRootElement
 @NamedQueries({
@@ -40,9 +42,8 @@ public class TipoCriterio implements Serializable {
     private String nombre;
     @Column(name = "DESCRIPCION", length = 200)
     private String descripcion;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoCriterio")
+    private List<Criterio> criterioList;
 
     public TipoCriterio() {
     }
@@ -56,7 +57,7 @@ public class TipoCriterio implements Serializable {
         this.nombre = nombre;
     }
 
-    public TipoCriterio(long codCia, long codigo) {
+    public TipoCriterio(short codCia, long codigo) {
         this.tipoCriterioPK = new TipoCriterioPK(codCia, codigo);
     }
 
@@ -84,12 +85,13 @@ public class TipoCriterio implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Cias getCias() {
-        return cias;
+    @XmlTransient
+    public List<Criterio> getCriterioList() {
+        return criterioList;
     }
 
-    public void setCias(Cias cias) {
-        this.cias = cias;
+    public void setCriterioList(List<Criterio> criterioList) {
+        this.criterioList = criterioList;
     }
 
     @Override
@@ -114,7 +116,7 @@ public class TipoCriterio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoCriterio[ tipoCriterioPK=" + tipoCriterioPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoCriterio[ tipoCriterioPK=" + tipoCriterioPK + " ]";
     }
     
 }

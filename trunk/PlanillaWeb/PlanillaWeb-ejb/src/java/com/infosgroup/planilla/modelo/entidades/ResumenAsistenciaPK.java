@@ -136,7 +136,7 @@ public class ResumenAsistenciaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.ResumenAsistenciaPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", codEmp=" + codEmp + ", codTipopla=" + codTipopla + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.ResumenAsistenciaPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", codEmp=" + codEmp + ", codTipopla=" + codTipopla + " ]";
     }
     
 }

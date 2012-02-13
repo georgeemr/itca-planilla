@@ -88,7 +88,7 @@ public class PrestamosPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PrestamosPK[ codCia=" + codCia + ", codPresta=" + codPresta + ", codEmp=" + codEmp + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.PrestamosPK[ codCia=" + codCia + ", codPresta=" + codPresta + ", codEmp=" + codEmp + " ]";
     }
     
 }

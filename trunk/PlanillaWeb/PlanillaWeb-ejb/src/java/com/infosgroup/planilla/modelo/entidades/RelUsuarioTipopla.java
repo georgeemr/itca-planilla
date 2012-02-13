@@ -7,9 +7,6 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -20,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "REL_USUARIO_TIPOPLA")
+@Table(name = "REL_USUARIO_TIPOPLA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RelUsuarioTipopla.findAll", query = "SELECT r FROM RelUsuarioTipopla r"),
@@ -31,11 +28,6 @@ public class RelUsuarioTipopla implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected RelUsuarioTipoplaPK relUsuarioTipoplaPK;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private TiposPlanilla tiposPlanilla;
 
     public RelUsuarioTipopla() {
     }
@@ -54,14 +46,6 @@ public class RelUsuarioTipopla implements Serializable {
 
     public void setRelUsuarioTipoplaPK(RelUsuarioTipoplaPK relUsuarioTipoplaPK) {
         this.relUsuarioTipoplaPK = relUsuarioTipoplaPK;
-    }
-
-    public TiposPlanilla getTiposPlanilla() {
-        return tiposPlanilla;
-    }
-
-    public void setTiposPlanilla(TiposPlanilla tiposPlanilla) {
-        this.tiposPlanilla = tiposPlanilla;
     }
 
     @Override
@@ -86,7 +70,7 @@ public class RelUsuarioTipopla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.RelUsuarioTipopla[ relUsuarioTipoplaPK=" + relUsuarioTipoplaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.RelUsuarioTipopla[ relUsuarioTipoplaPK=" + relUsuarioTipoplaPK + " ]";
     }
     
 }

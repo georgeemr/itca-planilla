@@ -12,14 +12,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -28,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "PLNPOLIZA")
+@Table(name = "PLNPOLIZA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Plnpoliza.findAll", query = "SELECT p FROM Plnpoliza p"),
@@ -43,10 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Plnpoliza.findByAnio", query = "SELECT p FROM Plnpoliza p WHERE p.anio = :anio"),
     @NamedQuery(name = "Plnpoliza.findByMes", query = "SELECT p FROM Plnpoliza p WHERE p.mes = :mes"),
     @NamedQuery(name = "Plnpoliza.findByNumPlanilla", query = "SELECT p FROM Plnpoliza p WHERE p.numPlanilla = :numPlanilla"),
-    @NamedQuery(name = "Plnpoliza.findByCodTipopla", query = "SELECT p FROM Plnpoliza p WHERE p.codTipopla = :codTipopla"),
-    @NamedQuery(name = "Plnpoliza.findByPeriodoConta", query = "SELECT p FROM Plnpoliza p WHERE p.periodoConta = :periodoConta"),
-    @NamedQuery(name = "Plnpoliza.findByNumPolizaConta", query = "SELECT p FROM Plnpoliza p WHERE p.numPolizaConta = :numPolizaConta"),
-    @NamedQuery(name = "Plnpoliza.findByTipoDoctoConta", query = "SELECT p FROM Plnpoliza p WHERE p.tipoDoctoConta = :tipoDoctoConta")})
+    @NamedQuery(name = "Plnpoliza.findByCodTipopla", query = "SELECT p FROM Plnpoliza p WHERE p.codTipopla = :codTipopla")})
 public class Plnpoliza implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -68,16 +61,6 @@ public class Plnpoliza implements Serializable {
     private Short numPlanilla;
     @Column(name = "COD_TIPOPLA")
     private Short codTipopla;
-    @Column(name = "PERIODO_CONTA")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date periodoConta;
-    @Column(name = "NUM_POLIZA_CONTA")
-    private Long numPolizaConta;
-    @Column(name = "TIPO_DOCTO_CONTA", length = 2)
-    private String tipoDoctoConta;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private ParamPlan paramPlan;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "plnpoliza")
     private List<DetPlnpoliza> detPlnpolizaList;
 
@@ -164,38 +147,6 @@ public class Plnpoliza implements Serializable {
         this.codTipopla = codTipopla;
     }
 
-    public Date getPeriodoConta() {
-        return periodoConta;
-    }
-
-    public void setPeriodoConta(Date periodoConta) {
-        this.periodoConta = periodoConta;
-    }
-
-    public Long getNumPolizaConta() {
-        return numPolizaConta;
-    }
-
-    public void setNumPolizaConta(Long numPolizaConta) {
-        this.numPolizaConta = numPolizaConta;
-    }
-
-    public String getTipoDoctoConta() {
-        return tipoDoctoConta;
-    }
-
-    public void setTipoDoctoConta(String tipoDoctoConta) {
-        this.tipoDoctoConta = tipoDoctoConta;
-    }
-
-    public ParamPlan getParamPlan() {
-        return paramPlan;
-    }
-
-    public void setParamPlan(ParamPlan paramPlan) {
-        this.paramPlan = paramPlan;
-    }
-
     @XmlTransient
     public List<DetPlnpoliza> getDetPlnpolizaList() {
         return detPlnpolizaList;
@@ -227,7 +178,7 @@ public class Plnpoliza implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Plnpoliza[ plnpolizaPK=" + plnpolizaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Plnpoliza[ plnpolizaPK=" + plnpolizaPK + " ]";
     }
     
 }

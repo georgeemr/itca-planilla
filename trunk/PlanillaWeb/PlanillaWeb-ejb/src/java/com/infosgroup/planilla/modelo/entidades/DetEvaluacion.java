@@ -5,6 +5,8 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -20,40 +22,38 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "DET_EVALUACION")
+@Table(name = "DET_EVALUACION", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DetEvaluacion.findAll", query = "SELECT d FROM DetEvaluacion d"),
     @NamedQuery(name = "DetEvaluacion.findByCodCia", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.codCia = :codCia"),
-    @NamedQuery(name = "DetEvaluacion.findByPeriodo", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.periodo = :periodo"),
     @NamedQuery(name = "DetEvaluacion.findByCodCampania", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.codCampania = :codCampania"),
-    @NamedQuery(name = "DetEvaluacion.findByTipoEvaluacion", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.tipoEvaluacion = :tipoEvaluacion"),
-    @NamedQuery(name = "DetEvaluacion.findByEmpleado", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.empleado = :empleado"),
-    @NamedQuery(name = "DetEvaluacion.findByCodDetEvaluacion", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.codDetEvaluacion = :codDetEvaluacion")})
+    @NamedQuery(name = "DetEvaluacion.findByCodEvaluacion", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.codEvaluacion = :codEvaluacion"),
+    @NamedQuery(name = "DetEvaluacion.findByCodDetEvaluacion", query = "SELECT d FROM DetEvaluacion d WHERE d.detEvaluacionPK.codDetEvaluacion = :codDetEvaluacion"),
+    @NamedQuery(name = "DetEvaluacion.findByCodFactor", query = "SELECT d FROM DetEvaluacion d WHERE d.codFactor = :codFactor"),
+    @NamedQuery(name = "DetEvaluacion.findByCodPregunta", query = "SELECT d FROM DetEvaluacion d WHERE d.codPregunta = :codPregunta"),
+    @NamedQuery(name = "DetEvaluacion.findByCodRespuesta", query = "SELECT d FROM DetEvaluacion d WHERE d.codRespuesta = :codRespuesta"),
+    @NamedQuery(name = "DetEvaluacion.findByTexto", query = "SELECT d FROM DetEvaluacion d WHERE d.texto = :texto")})
 public class DetEvaluacion implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected DetEvaluacionPK detEvaluacionPK;
+    @Basic(optional = false)
+    @Column(name = "COD_FACTOR", nullable = false)
+    private short codFactor;
+    @Basic(optional = false)
+    @Column(name = "COD_PREGUNTA", nullable = false, length = 1)
+    private String codPregunta;
+    @Basic(optional = false)
+    @Column(name = "COD_RESPUESTA", nullable = false)
+    private short codRespuesta;
+    @Basic(optional = false)
+    @Column(name = "TEXTO", nullable = false, length = 300)
+    private String texto;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_TIPO_RESPUESTA", referencedColumnName = "COD_TIPO_RESPUESTA", nullable = false),
-        @JoinColumn(name = "GRUPO_RESPUESTA", referencedColumnName = "GRUPO_RESPUESTA", nullable = false),
-        @JoinColumn(name = "COD_RESPUESTA", referencedColumnName = "COD_RESPUESTA", nullable = false)})
-    @ManyToOne(optional = false)
-    private Respuesta respuesta;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_FACTOR", referencedColumnName = "COD_FACTOR", nullable = false),
-        @JoinColumn(name = "COD_PREGUNTA", referencedColumnName = "COD_PREGUNTA", nullable = false)})
-    @ManyToOne(optional = false)
-    private Pregunta pregunta;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "PERIODO", referencedColumnName = "PERIODO", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_CAMPANIA", referencedColumnName = "COD_CAMPANIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "TIPO_EVALUACION", referencedColumnName = "TIPO_EVALUACION", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "PLANTILLA", referencedColumnName = "PLANTILLA", nullable = false),
-        @JoinColumn(name = "EMPLEADO", referencedColumnName = "EMPLEADO", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "COD_EVALUACION", referencedColumnName = "COD_EVALUACION", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Evaluacion evaluacion;
 
@@ -64,8 +64,16 @@ public class DetEvaluacion implements Serializable {
         this.detEvaluacionPK = detEvaluacionPK;
     }
 
-    public DetEvaluacion(long codCia, long periodo, long codCampania, long tipoEvaluacion, long empleado, long codDetEvaluacion) {
-        this.detEvaluacionPK = new DetEvaluacionPK(codCia, periodo, codCampania, tipoEvaluacion, empleado, codDetEvaluacion);
+    public DetEvaluacion(DetEvaluacionPK detEvaluacionPK, short codFactor, String codPregunta, short codRespuesta, String texto) {
+        this.detEvaluacionPK = detEvaluacionPK;
+        this.codFactor = codFactor;
+        this.codPregunta = codPregunta;
+        this.codRespuesta = codRespuesta;
+        this.texto = texto;
+    }
+
+    public DetEvaluacion(short codCia, short codCampania, short codEvaluacion, short codDetEvaluacion) {
+        this.detEvaluacionPK = new DetEvaluacionPK(codCia, codCampania, codEvaluacion, codDetEvaluacion);
     }
 
     public DetEvaluacionPK getDetEvaluacionPK() {
@@ -76,20 +84,36 @@ public class DetEvaluacion implements Serializable {
         this.detEvaluacionPK = detEvaluacionPK;
     }
 
-    public Respuesta getRespuesta() {
-        return respuesta;
+    public short getCodFactor() {
+        return codFactor;
     }
 
-    public void setRespuesta(Respuesta respuesta) {
-        this.respuesta = respuesta;
+    public void setCodFactor(short codFactor) {
+        this.codFactor = codFactor;
     }
 
-    public Pregunta getPregunta() {
-        return pregunta;
+    public String getCodPregunta() {
+        return codPregunta;
     }
 
-    public void setPregunta(Pregunta pregunta) {
-        this.pregunta = pregunta;
+    public void setCodPregunta(String codPregunta) {
+        this.codPregunta = codPregunta;
+    }
+
+    public short getCodRespuesta() {
+        return codRespuesta;
+    }
+
+    public void setCodRespuesta(short codRespuesta) {
+        this.codRespuesta = codRespuesta;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 
     public Evaluacion getEvaluacion() {
@@ -122,7 +146,7 @@ public class DetEvaluacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.DetEvaluacion[ detEvaluacionPK=" + detEvaluacionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.DetEvaluacion[ detEvaluacionPK=" + detEvaluacionPK + " ]";
     }
     
 }

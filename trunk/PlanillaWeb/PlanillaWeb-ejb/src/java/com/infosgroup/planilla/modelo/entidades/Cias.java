@@ -6,10 +6,10 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "CIAS")
+@Table(schema="CONTA", name = "CIAS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cias.findAll", query = "SELECT c FROM Cias c"),
@@ -73,25 +72,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cias.findByCodAuto", query = "SELECT c FROM Cias c WHERE c.codAuto = :codAuto"),
     @NamedQuery(name = "Cias.findByIvaDl", query = "SELECT c FROM Cias c WHERE c.ivaDl = :ivaDl"),
     @NamedQuery(name = "Cias.findByTasaPercep", query = "SELECT c FROM Cias c WHERE c.tasaPercep = :tasaPercep"),
-    @NamedQuery(name = "Cias.findByCodigoSsf", query = "SELECT c FROM Cias c WHERE c.codigoSsf = :codigoSsf"),
-    @NamedQuery(name = "Cias.findByInumeames", query = "SELECT c FROM Cias c WHERE c.inumeames = :inumeames"),
-    @NamedQuery(name = "Cias.findByCta6resulAct", query = "SELECT c FROM Cias c WHERE c.cta6resulAct = :cta6resulAct"),
-    @NamedQuery(name = "Cias.findByCta7resulAct", query = "SELECT c FROM Cias c WHERE c.cta7resulAct = :cta7resulAct"),
-    @NamedQuery(name = "Cias.findByCta8resulAct", query = "SELECT c FROM Cias c WHERE c.cta8resulAct = :cta8resulAct"),
-    @NamedQuery(name = "Cias.findByCta6resulAnt", query = "SELECT c FROM Cias c WHERE c.cta6resulAnt = :cta6resulAnt"),
-    @NamedQuery(name = "Cias.findByCta7resulAnt", query = "SELECT c FROM Cias c WHERE c.cta7resulAnt = :cta7resulAnt"),
-    @NamedQuery(name = "Cias.findByCta8resulAnt", query = "SELECT c FROM Cias c WHERE c.cta8resulAnt = :cta8resulAnt"),
-    @NamedQuery(name = "Cias.findByCta6perGan", query = "SELECT c FROM Cias c WHERE c.cta6perGan = :cta6perGan"),
-    @NamedQuery(name = "Cias.findByCta7perGan", query = "SELECT c FROM Cias c WHERE c.cta7perGan = :cta7perGan"),
-    @NamedQuery(name = "Cias.findByCta8perGan", query = "SELECT c FROM Cias c WHERE c.cta8perGan = :cta8perGan"),
-    @NamedQuery(name = "Cias.findByNumeames", query = "SELECT c FROM Cias c WHERE c.numeames = :numeames")})
+    @NamedQuery(name = "Cias.findByCambiarClave", query = "SELECT c FROM Cias c WHERE c.cambiarClave = :cambiarClave")})
 public class Cias implements Serializable {
-    @Column(name =     "FECH_ULT")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechUlt;
-    @Column(name =     "FEC_ULT_CIE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecUltCie;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -113,36 +95,42 @@ public class Cias implements Serializable {
     private Short mesCierre;
     @Column(name = "MES_PROCESO")
     private Short mesProceso;
-    @Column(name = "CTA_1RESUL_ACT", length = 2)
-    private String cta1resulAct;
-    @Column(name = "CTA_2RESUL_ACT", length = 3)
-    private String cta2resulAct;
-    @Column(name = "CTA_3RESUL_ACT", length = 4)
-    private String cta3resulAct;
-    @Column(name = "CTA_4RESUL_ACT", length = 4)
-    private String cta4resulAct;
-    @Column(name = "CTA_5RESUL_ACT", length = 5)
-    private String cta5resulAct;
-    @Column(name = "CTA_1RESUL_ANT", length = 2)
-    private String cta1resulAnt;
-    @Column(name = "CTA_2RESUL_ANT", length = 3)
-    private String cta2resulAnt;
-    @Column(name = "CTA_3RESUL_ANT", length = 4)
-    private String cta3resulAnt;
-    @Column(name = "CTA_4RESUL_ANT", length = 4)
-    private String cta4resulAnt;
-    @Column(name = "CTA_5RESUL_ANT", length = 5)
-    private String cta5resulAnt;
-    @Column(name = "CTA_1PER_GAN", length = 2)
-    private String cta1perGan;
-    @Column(name = "CTA_2PER_GAN", length = 3)
-    private String cta2perGan;
-    @Column(name = "CTA_3PER_GAN", length = 4)
-    private String cta3perGan;
-    @Column(name = "CTA_4PER_GAN", length = 4)
-    private String cta4perGan;
-    @Column(name = "CTA_5PER_GAN", length = 5)
-    private String cta5perGan;
+    @Column(name = "CTA_1RESUL_ACT")
+    private Short cta1resulAct;
+    @Column(name = "CTA_2RESUL_ACT")
+    private Short cta2resulAct;
+    @Column(name = "CTA_3RESUL_ACT")
+    private Short cta3resulAct;
+    @Column(name = "CTA_4RESUL_ACT")
+    private Short cta4resulAct;
+    @Column(name = "CTA_5RESUL_ACT")
+    private Integer cta5resulAct;
+    @Column(name = "CTA_1RESUL_ANT")
+    private Short cta1resulAnt;
+    @Column(name = "CTA_2RESUL_ANT")
+    private Short cta2resulAnt;
+    @Column(name = "CTA_3RESUL_ANT")
+    private Short cta3resulAnt;
+    @Column(name = "CTA_4RESUL_ANT")
+    private Short cta4resulAnt;
+    @Column(name = "CTA_5RESUL_ANT")
+    private Integer cta5resulAnt;
+    @Column(name = "CTA_1PER_GAN")
+    private Short cta1perGan;
+    @Column(name = "CTA_2PER_GAN")
+    private Short cta2perGan;
+    @Column(name = "CTA_3PER_GAN")
+    private Short cta3perGan;
+    @Column(name = "CTA_4PER_GAN")
+    private Short cta4perGan;
+    @Column(name = "CTA_5PER_GAN")
+    private Integer cta5perGan;
+    @Column(name = "FECH_ULT")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechUlt;
+    @Column(name = "FEC_ULT_CIE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecUltCie;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "TASA_IVA", precision = 5, scale = 3)
     private BigDecimal tasaIva;
@@ -170,89 +158,13 @@ public class Cias implements Serializable {
     private String ivaDl;
     @Column(name = "TASA_PERCEP", precision = 5, scale = 3)
     private BigDecimal tasaPercep;
-    @Column(name = "CODIGO_SSF", length = 4)
-    private String codigoSsf;
-    @Column(name = "INUMEAMES")
-    private Integer inumeames;
-    @Column(name = "CTA_6RESUL_ACT", length = 5)
-    private String cta6resulAct;
-    @Column(name = "CTA_7RESUL_ACT", length = 5)
-    private String cta7resulAct;
-    @Column(name = "CTA_8RESUL_ACT", length = 5)
-    private String cta8resulAct;
-    @Column(name = "CTA_6RESUL_ANT", length = 5)
-    private String cta6resulAnt;
-    @Column(name = "CTA_7RESUL_ANT", length = 5)
-    private String cta7resulAnt;
-    @Column(name = "CTA_8RESUL_ANT", length = 5)
-    private String cta8resulAnt;
-    @Column(name = "CTA_6PER_GAN", length = 5)
-    private String cta6perGan;
-    @Column(name = "CTA_7PER_GAN", length = 5)
-    private String cta7perGan;
-    @Column(name = "CTA_8PER_GAN", length = 5)
-    private String cta8perGan;
-    @Column(name = "NUMEAMES")
-    private Long numeames;
+    @Column(name = "CAMBIAR_CLAVE")
+    private BigInteger cambiarClave;
     @OneToMany(mappedBy = "codCiaMatriz")
     private List<Cias> ciasList;
     @JoinColumn(name = "COD_CIA_MATRIZ", referencedColumnName = "COD_CIA")
     @ManyToOne
     private Cias codCiaMatriz;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<TipoTransaccion> tipoTransaccionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<TipoRespuesta> tipoRespuestaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<Rol> rolList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<TiposPlanilla> tiposPlanillaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<Gerencia> gerenciaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<EstadoConcurso> estadoConcursoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<Dmgcuentas> dmgcuentasList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<TipoCriterio> tipoCriterioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<Bancos> bancosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<EstadoContrato> estadoContratoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<NivelAcademico> nivelAcademicoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<DeducPresta> deducPrestaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<TipoCuenta> tipoCuentaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<Campania> campaniaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<CausasRenuncia> causasRenunciaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<Indicador> indicadorList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<TipoPuesto> tipoPuestoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<TipoEvaluacion> tipoEvaluacionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<Candidato> candidatoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<Instituciones> institucionesList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<Factor> factorList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<TipoAccion> tipoAccionList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "cias")
-    private ParamPlan paramPlan;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<TipoContrato> tipoContratoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<Modulo> moduloList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<RhOutsorcing> rhOutsorcingList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cias")
-    private List<FrecuenciaFuncion> frecuenciaFuncionList;
 
     public Cias() {
     }
@@ -333,123 +245,123 @@ public class Cias implements Serializable {
         this.mesProceso = mesProceso;
     }
 
-    public String getCta1resulAct() {
+    public Short getCta1resulAct() {
         return cta1resulAct;
     }
 
-    public void setCta1resulAct(String cta1resulAct) {
+    public void setCta1resulAct(Short cta1resulAct) {
         this.cta1resulAct = cta1resulAct;
     }
 
-    public String getCta2resulAct() {
+    public Short getCta2resulAct() {
         return cta2resulAct;
     }
 
-    public void setCta2resulAct(String cta2resulAct) {
+    public void setCta2resulAct(Short cta2resulAct) {
         this.cta2resulAct = cta2resulAct;
     }
 
-    public String getCta3resulAct() {
+    public Short getCta3resulAct() {
         return cta3resulAct;
     }
 
-    public void setCta3resulAct(String cta3resulAct) {
+    public void setCta3resulAct(Short cta3resulAct) {
         this.cta3resulAct = cta3resulAct;
     }
 
-    public String getCta4resulAct() {
+    public Short getCta4resulAct() {
         return cta4resulAct;
     }
 
-    public void setCta4resulAct(String cta4resulAct) {
+    public void setCta4resulAct(Short cta4resulAct) {
         this.cta4resulAct = cta4resulAct;
     }
 
-    public String getCta5resulAct() {
+    public Integer getCta5resulAct() {
         return cta5resulAct;
     }
 
-    public void setCta5resulAct(String cta5resulAct) {
+    public void setCta5resulAct(Integer cta5resulAct) {
         this.cta5resulAct = cta5resulAct;
     }
 
-    public String getCta1resulAnt() {
+    public Short getCta1resulAnt() {
         return cta1resulAnt;
     }
 
-    public void setCta1resulAnt(String cta1resulAnt) {
+    public void setCta1resulAnt(Short cta1resulAnt) {
         this.cta1resulAnt = cta1resulAnt;
     }
 
-    public String getCta2resulAnt() {
+    public Short getCta2resulAnt() {
         return cta2resulAnt;
     }
 
-    public void setCta2resulAnt(String cta2resulAnt) {
+    public void setCta2resulAnt(Short cta2resulAnt) {
         this.cta2resulAnt = cta2resulAnt;
     }
 
-    public String getCta3resulAnt() {
+    public Short getCta3resulAnt() {
         return cta3resulAnt;
     }
 
-    public void setCta3resulAnt(String cta3resulAnt) {
+    public void setCta3resulAnt(Short cta3resulAnt) {
         this.cta3resulAnt = cta3resulAnt;
     }
 
-    public String getCta4resulAnt() {
+    public Short getCta4resulAnt() {
         return cta4resulAnt;
     }
 
-    public void setCta4resulAnt(String cta4resulAnt) {
+    public void setCta4resulAnt(Short cta4resulAnt) {
         this.cta4resulAnt = cta4resulAnt;
     }
 
-    public String getCta5resulAnt() {
+    public Integer getCta5resulAnt() {
         return cta5resulAnt;
     }
 
-    public void setCta5resulAnt(String cta5resulAnt) {
+    public void setCta5resulAnt(Integer cta5resulAnt) {
         this.cta5resulAnt = cta5resulAnt;
     }
 
-    public String getCta1perGan() {
+    public Short getCta1perGan() {
         return cta1perGan;
     }
 
-    public void setCta1perGan(String cta1perGan) {
+    public void setCta1perGan(Short cta1perGan) {
         this.cta1perGan = cta1perGan;
     }
 
-    public String getCta2perGan() {
+    public Short getCta2perGan() {
         return cta2perGan;
     }
 
-    public void setCta2perGan(String cta2perGan) {
+    public void setCta2perGan(Short cta2perGan) {
         this.cta2perGan = cta2perGan;
     }
 
-    public String getCta3perGan() {
+    public Short getCta3perGan() {
         return cta3perGan;
     }
 
-    public void setCta3perGan(String cta3perGan) {
+    public void setCta3perGan(Short cta3perGan) {
         this.cta3perGan = cta3perGan;
     }
 
-    public String getCta4perGan() {
+    public Short getCta4perGan() {
         return cta4perGan;
     }
 
-    public void setCta4perGan(String cta4perGan) {
+    public void setCta4perGan(Short cta4perGan) {
         this.cta4perGan = cta4perGan;
     }
 
-    public String getCta5perGan() {
+    public Integer getCta5perGan() {
         return cta5perGan;
     }
 
-    public void setCta5perGan(String cta5perGan) {
+    public void setCta5perGan(Integer cta5perGan) {
         this.cta5perGan = cta5perGan;
     }
 
@@ -573,100 +485,12 @@ public class Cias implements Serializable {
         this.tasaPercep = tasaPercep;
     }
 
-    public String getCodigoSsf() {
-        return codigoSsf;
+    public BigInteger getCambiarClave() {
+        return cambiarClave;
     }
 
-    public void setCodigoSsf(String codigoSsf) {
-        this.codigoSsf = codigoSsf;
-    }
-
-    public Integer getInumeames() {
-        return inumeames;
-    }
-
-    public void setInumeames(Integer inumeames) {
-        this.inumeames = inumeames;
-    }
-
-    public String getCta6resulAct() {
-        return cta6resulAct;
-    }
-
-    public void setCta6resulAct(String cta6resulAct) {
-        this.cta6resulAct = cta6resulAct;
-    }
-
-    public String getCta7resulAct() {
-        return cta7resulAct;
-    }
-
-    public void setCta7resulAct(String cta7resulAct) {
-        this.cta7resulAct = cta7resulAct;
-    }
-
-    public String getCta8resulAct() {
-        return cta8resulAct;
-    }
-
-    public void setCta8resulAct(String cta8resulAct) {
-        this.cta8resulAct = cta8resulAct;
-    }
-
-    public String getCta6resulAnt() {
-        return cta6resulAnt;
-    }
-
-    public void setCta6resulAnt(String cta6resulAnt) {
-        this.cta6resulAnt = cta6resulAnt;
-    }
-
-    public String getCta7resulAnt() {
-        return cta7resulAnt;
-    }
-
-    public void setCta7resulAnt(String cta7resulAnt) {
-        this.cta7resulAnt = cta7resulAnt;
-    }
-
-    public String getCta8resulAnt() {
-        return cta8resulAnt;
-    }
-
-    public void setCta8resulAnt(String cta8resulAnt) {
-        this.cta8resulAnt = cta8resulAnt;
-    }
-
-    public String getCta6perGan() {
-        return cta6perGan;
-    }
-
-    public void setCta6perGan(String cta6perGan) {
-        this.cta6perGan = cta6perGan;
-    }
-
-    public String getCta7perGan() {
-        return cta7perGan;
-    }
-
-    public void setCta7perGan(String cta7perGan) {
-        this.cta7perGan = cta7perGan;
-    }
-
-    public String getCta8perGan() {
-        return cta8perGan;
-    }
-
-    public void setCta8perGan(String cta8perGan) {
-        this.cta8perGan = cta8perGan;
-    }
-
-    public Long getNumeames() {
-        return numeames;
-    }
-
-    public void setNumeames(Long numeames) {
-        this.numeames = numeames;
+    public void setCambiarClave(BigInteger cambiarClave) {
+        this.cambiarClave = cambiarClave;
     }
 
     @XmlTransient
@@ -684,248 +508,6 @@ public class Cias implements Serializable {
 
     public void setCodCiaMatriz(Cias codCiaMatriz) {
         this.codCiaMatriz = codCiaMatriz;
-    }
-
-    @XmlTransient
-    public List<TipoTransaccion> getTipoTransaccionList() {
-        return tipoTransaccionList;
-    }
-
-    public void setTipoTransaccionList(List<TipoTransaccion> tipoTransaccionList) {
-        this.tipoTransaccionList = tipoTransaccionList;
-    }
-
-    @XmlTransient
-    public List<TipoRespuesta> getTipoRespuestaList() {
-        return tipoRespuestaList;
-    }
-
-    public void setTipoRespuestaList(List<TipoRespuesta> tipoRespuestaList) {
-        this.tipoRespuestaList = tipoRespuestaList;
-    }
-
-    @XmlTransient
-    public List<Rol> getRolList() {
-        return rolList;
-    }
-
-    public void setRolList(List<Rol> rolList) {
-        this.rolList = rolList;
-    }
-
-    @XmlTransient
-    public List<TiposPlanilla> getTiposPlanillaList() {
-        return tiposPlanillaList;
-    }
-
-    public void setTiposPlanillaList(List<TiposPlanilla> tiposPlanillaList) {
-        this.tiposPlanillaList = tiposPlanillaList;
-    }
-
-    @XmlTransient
-    public List<Gerencia> getGerenciaList() {
-        return gerenciaList;
-    }
-
-    public void setGerenciaList(List<Gerencia> gerenciaList) {
-        this.gerenciaList = gerenciaList;
-    }
-
-    @XmlTransient
-    public List<EstadoConcurso> getEstadoConcursoList() {
-        return estadoConcursoList;
-    }
-
-    public void setEstadoConcursoList(List<EstadoConcurso> estadoConcursoList) {
-        this.estadoConcursoList = estadoConcursoList;
-    }
-
-    @XmlTransient
-    public List<Dmgcuentas> getDmgcuentasList() {
-        return dmgcuentasList;
-    }
-
-    public void setDmgcuentasList(List<Dmgcuentas> dmgcuentasList) {
-        this.dmgcuentasList = dmgcuentasList;
-    }
-
-    @XmlTransient
-    public List<TipoCriterio> getTipoCriterioList() {
-        return tipoCriterioList;
-    }
-
-    public void setTipoCriterioList(List<TipoCriterio> tipoCriterioList) {
-        this.tipoCriterioList = tipoCriterioList;
-    }
-
-    @XmlTransient
-    public List<Bancos> getBancosList() {
-        return bancosList;
-    }
-
-    public void setBancosList(List<Bancos> bancosList) {
-        this.bancosList = bancosList;
-    }
-
-    @XmlTransient
-    public List<EstadoContrato> getEstadoContratoList() {
-        return estadoContratoList;
-    }
-
-    public void setEstadoContratoList(List<EstadoContrato> estadoContratoList) {
-        this.estadoContratoList = estadoContratoList;
-    }
-
-    @XmlTransient
-    public List<NivelAcademico> getNivelAcademicoList() {
-        return nivelAcademicoList;
-    }
-
-    public void setNivelAcademicoList(List<NivelAcademico> nivelAcademicoList) {
-        this.nivelAcademicoList = nivelAcademicoList;
-    }
-
-    @XmlTransient
-    public List<DeducPresta> getDeducPrestaList() {
-        return deducPrestaList;
-    }
-
-    public void setDeducPrestaList(List<DeducPresta> deducPrestaList) {
-        this.deducPrestaList = deducPrestaList;
-    }
-
-    @XmlTransient
-    public List<TipoCuenta> getTipoCuentaList() {
-        return tipoCuentaList;
-    }
-
-    public void setTipoCuentaList(List<TipoCuenta> tipoCuentaList) {
-        this.tipoCuentaList = tipoCuentaList;
-    }
-
-    @XmlTransient
-    public List<Campania> getCampaniaList() {
-        return campaniaList;
-    }
-
-    public void setCampaniaList(List<Campania> campaniaList) {
-        this.campaniaList = campaniaList;
-    }
-
-    @XmlTransient
-    public List<CausasRenuncia> getCausasRenunciaList() {
-        return causasRenunciaList;
-    }
-
-    public void setCausasRenunciaList(List<CausasRenuncia> causasRenunciaList) {
-        this.causasRenunciaList = causasRenunciaList;
-    }
-
-    @XmlTransient
-    public List<Indicador> getIndicadorList() {
-        return indicadorList;
-    }
-
-    public void setIndicadorList(List<Indicador> indicadorList) {
-        this.indicadorList = indicadorList;
-    }
-
-    @XmlTransient
-    public List<TipoPuesto> getTipoPuestoList() {
-        return tipoPuestoList;
-    }
-
-    public void setTipoPuestoList(List<TipoPuesto> tipoPuestoList) {
-        this.tipoPuestoList = tipoPuestoList;
-    }
-
-    @XmlTransient
-    public List<TipoEvaluacion> getTipoEvaluacionList() {
-        return tipoEvaluacionList;
-    }
-
-    public void setTipoEvaluacionList(List<TipoEvaluacion> tipoEvaluacionList) {
-        this.tipoEvaluacionList = tipoEvaluacionList;
-    }
-
-    @XmlTransient
-    public List<Candidato> getCandidatoList() {
-        return candidatoList;
-    }
-
-    public void setCandidatoList(List<Candidato> candidatoList) {
-        this.candidatoList = candidatoList;
-    }
-
-    @XmlTransient
-    public List<Instituciones> getInstitucionesList() {
-        return institucionesList;
-    }
-
-    public void setInstitucionesList(List<Instituciones> institucionesList) {
-        this.institucionesList = institucionesList;
-    }
-
-    @XmlTransient
-    public List<Factor> getFactorList() {
-        return factorList;
-    }
-
-    public void setFactorList(List<Factor> factorList) {
-        this.factorList = factorList;
-    }
-
-    @XmlTransient
-    public List<TipoAccion> getTipoAccionList() {
-        return tipoAccionList;
-    }
-
-    public void setTipoAccionList(List<TipoAccion> tipoAccionList) {
-        this.tipoAccionList = tipoAccionList;
-    }
-
-    public ParamPlan getParamPlan() {
-        return paramPlan;
-    }
-
-    public void setParamPlan(ParamPlan paramPlan) {
-        this.paramPlan = paramPlan;
-    }
-
-    @XmlTransient
-    public List<TipoContrato> getTipoContratoList() {
-        return tipoContratoList;
-    }
-
-    public void setTipoContratoList(List<TipoContrato> tipoContratoList) {
-        this.tipoContratoList = tipoContratoList;
-    }
-
-    @XmlTransient
-    public List<Modulo> getModuloList() {
-        return moduloList;
-    }
-
-    public void setModuloList(List<Modulo> moduloList) {
-        this.moduloList = moduloList;
-    }
-
-    @XmlTransient
-    public List<RhOutsorcing> getRhOutsorcingList() {
-        return rhOutsorcingList;
-    }
-
-    public void setRhOutsorcingList(List<RhOutsorcing> rhOutsorcingList) {
-        this.rhOutsorcingList = rhOutsorcingList;
-    }
-
-    @XmlTransient
-    public List<FrecuenciaFuncion> getFrecuenciaFuncionList() {
-        return frecuenciaFuncionList;
-    }
-
-    public void setFrecuenciaFuncionList(List<FrecuenciaFuncion> frecuenciaFuncionList) {
-        this.frecuenciaFuncionList = frecuenciaFuncionList;
     }
 
     @Override
@@ -950,7 +532,7 @@ public class Cias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Cias[ codCia=" + codCia + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.conta.Cias[ codCia=" + codCia + " ]";
     }
-
+    
 }

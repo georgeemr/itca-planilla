@@ -5,24 +5,21 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "RANGO_EDAD")
+@Table(name = "RANGO_EDAD", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RangoEdad.findAll", query = "SELECT r FROM RangoEdad r"),
@@ -36,8 +33,6 @@ public class RangoEdad implements Serializable {
     private Long codRangoEdad;
     @Column(name = "DESC_RANGO", length = 50)
     private String descRango;
-    @OneToMany(mappedBy = "codRangoEdad")
-    private List<Puestos> puestosList;
 
     public RangoEdad() {
     }
@@ -62,15 +57,6 @@ public class RangoEdad implements Serializable {
         this.descRango = descRango;
     }
 
-    @XmlTransient
-    public List<Puestos> getPuestosList() {
-        return puestosList;
-    }
-
-    public void setPuestosList(List<Puestos> puestosList) {
-        this.puestosList = puestosList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -93,7 +79,7 @@ public class RangoEdad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.RangoEdad[ codRangoEdad=" + codRangoEdad + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.RangoEdad[ codRangoEdad=" + codRangoEdad + " ]";
     }
     
 }

@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "CRITERIO_SELECCIONADO")
+@Table(name = "CRITERIO_SELECCIONADO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CriterioSeleccionado.findAll", query = "SELECT c FROM CriterioSeleccionado c"),
@@ -52,7 +52,7 @@ public class CriterioSeleccionado implements Serializable {
         this.tipo = tipo;
     }
 
-    public CriterioSeleccionado(long codCia, long correlativo, String usuario) {
+    public CriterioSeleccionado(short codCia, long correlativo, String usuario) {
         this.criterioSeleccionadoPK = new CriterioSeleccionadoPK(codCia, correlativo, usuario);
     }
 
@@ -102,7 +102,7 @@ public class CriterioSeleccionado implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CriterioSeleccionado[ criterioSeleccionadoPK=" + criterioSeleccionadoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.CriterioSeleccionado[ criterioSeleccionadoPK=" + criterioSeleccionadoPK + " ]";
     }
     
 }

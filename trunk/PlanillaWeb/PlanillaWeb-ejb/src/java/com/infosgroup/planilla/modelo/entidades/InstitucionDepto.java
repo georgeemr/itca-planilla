@@ -5,11 +5,9 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -20,39 +18,32 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "INSTITUCION_DEPTO")
+@Table(name = "INSTITUCION_DEPTO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "InstitucionDepto.findAll", query = "SELECT i FROM InstitucionDepto i"),
     @NamedQuery(name = "InstitucionDepto.findByCodCia", query = "SELECT i FROM InstitucionDepto i WHERE i.institucionDeptoPK.codCia = :codCia"),
     @NamedQuery(name = "InstitucionDepto.findByCodInsti", query = "SELECT i FROM InstitucionDepto i WHERE i.institucionDeptoPK.codInsti = :codInsti"),
-    @NamedQuery(name = "InstitucionDepto.findByCodDepto", query = "SELECT i FROM InstitucionDepto i WHERE i.institucionDeptoPK.codDepto = :codDepto")})
+    @NamedQuery(name = "InstitucionDepto.findByCodDepto", query = "SELECT i FROM InstitucionDepto i WHERE i.institucionDeptoPK.codDepto = :codDepto"),
+    @NamedQuery(name = "InstitucionDepto.findByCta1", query = "SELECT i FROM InstitucionDepto i WHERE i.cta1 = :cta1"),
+    @NamedQuery(name = "InstitucionDepto.findByCta2", query = "SELECT i FROM InstitucionDepto i WHERE i.cta2 = :cta2"),
+    @NamedQuery(name = "InstitucionDepto.findByCta3", query = "SELECT i FROM InstitucionDepto i WHERE i.cta3 = :cta3"),
+    @NamedQuery(name = "InstitucionDepto.findByCta4", query = "SELECT i FROM InstitucionDepto i WHERE i.cta4 = :cta4"),
+    @NamedQuery(name = "InstitucionDepto.findByCta5", query = "SELECT i FROM InstitucionDepto i WHERE i.cta5 = :cta5")})
 public class InstitucionDepto implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected InstitucionDeptoPK institucionDeptoPK;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_INSTI", referencedColumnName = "COD_INSTI", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Instituciones instituciones;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "CTA_1", referencedColumnName = "CTA_1"),
-        @JoinColumn(name = "CTA_2", referencedColumnName = "CTA_2"),
-        @JoinColumn(name = "CTA_3", referencedColumnName = "CTA_3"),
-        @JoinColumn(name = "CTA_4", referencedColumnName = "CTA_4"),
-        @JoinColumn(name = "CTA_5", referencedColumnName = "CTA_5"),
-        @JoinColumn(name = "CTA_6", referencedColumnName = "CTA_6"),
-        @JoinColumn(name = "CTA_7", referencedColumnName = "CTA_7"),
-        @JoinColumn(name = "CTA_8", referencedColumnName = "CTA_8")})
-    @ManyToOne(optional = false)
-    private Dmgcuentas dmgcuentas;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_DEPTO", referencedColumnName = "COD_DEPTO", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Departamentos departamentos;
+    @Column(name = "CTA_1")
+    private Short cta1;
+    @Column(name = "CTA_2")
+    private Short cta2;
+    @Column(name = "CTA_3")
+    private Short cta3;
+    @Column(name = "CTA_4")
+    private Short cta4;
+    @Column(name = "CTA_5")
+    private Integer cta5;
 
     public InstitucionDepto() {
     }
@@ -73,28 +64,44 @@ public class InstitucionDepto implements Serializable {
         this.institucionDeptoPK = institucionDeptoPK;
     }
 
-    public Instituciones getInstituciones() {
-        return instituciones;
+    public Short getCta1() {
+        return cta1;
     }
 
-    public void setInstituciones(Instituciones instituciones) {
-        this.instituciones = instituciones;
+    public void setCta1(Short cta1) {
+        this.cta1 = cta1;
     }
 
-    public Dmgcuentas getDmgcuentas() {
-        return dmgcuentas;
+    public Short getCta2() {
+        return cta2;
     }
 
-    public void setDmgcuentas(Dmgcuentas dmgcuentas) {
-        this.dmgcuentas = dmgcuentas;
+    public void setCta2(Short cta2) {
+        this.cta2 = cta2;
     }
 
-    public Departamentos getDepartamentos() {
-        return departamentos;
+    public Short getCta3() {
+        return cta3;
     }
 
-    public void setDepartamentos(Departamentos departamentos) {
-        this.departamentos = departamentos;
+    public void setCta3(Short cta3) {
+        this.cta3 = cta3;
+    }
+
+    public Short getCta4() {
+        return cta4;
+    }
+
+    public void setCta4(Short cta4) {
+        this.cta4 = cta4;
+    }
+
+    public Integer getCta5() {
+        return cta5;
+    }
+
+    public void setCta5(Integer cta5) {
+        this.cta5 = cta5;
     }
 
     @Override
@@ -119,7 +126,7 @@ public class InstitucionDepto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.InstitucionDepto[ institucionDeptoPK=" + institucionDeptoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.InstitucionDepto[ institucionDeptoPK=" + institucionDeptoPK + " ]";
     }
     
 }

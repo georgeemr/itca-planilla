@@ -31,29 +31,24 @@ public class PlanillaPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_EMP", nullable = false)
     private int codEmp;
-    @Basic(optional = false)
-    @Column(name = "COD_TIPOPLA", nullable = false)
-    private short codTipopla;
 
     public PlanillaPK() {
     }
 
-    public PlanillaPK(short codCia, short anio, short mes, short numPlanilla, int codEmp, short codTipopla) {
+    public PlanillaPK(short codCia, short anio, short mes, short numPlanilla, int codEmp) {
         this.codCia = codCia;
         this.anio = anio;
         this.mes = mes;
         this.numPlanilla = numPlanilla;
         this.codEmp = codEmp;
-        this.codTipopla = codTipopla;
     }
 
-    public PlanillaPK(String p) {
+    public PlanillaPK(String p, int empleado) {
         this.codCia = new Short(p.split(":")[0]);
         this.anio = new Short(p.split(":")[1]);
         this.mes = new Short(p.split(":")[2]);
         this.numPlanilla = new Short(p.split(":")[3]);
         this.codEmp = new Integer(p.split(":")[4]);
-        this.codTipopla = new Short(p.split(":")[5]);
     }
 
     public short getCodCia() {
@@ -96,14 +91,6 @@ public class PlanillaPK implements Serializable {
         this.codEmp = codEmp;
     }
 
-    public short getCodTipopla() {
-        return codTipopla;
-    }
-
-    public void setCodTipopla(short codTipopla) {
-        this.codTipopla = codTipopla;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -112,7 +99,6 @@ public class PlanillaPK implements Serializable {
         hash += (int) mes;
         hash += (int) numPlanilla;
         hash += (int) codEmp;
-        hash += (int) codTipopla;
         return hash;
     }
 
@@ -138,14 +124,11 @@ public class PlanillaPK implements Serializable {
         if (this.codEmp != other.codEmp) {
             return false;
         }
-        if (this.codTipopla != other.codTipopla) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PlanillaPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", codEmp=" + codEmp + ", codTipopla=" + codTipopla + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.PlanillaPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", codEmp=" + codEmp + " ]";
     }
 }

@@ -72,7 +72,7 @@ public class TiposPlanillaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TiposPlanillaPK[ codCia=" + codCia + ", codTipopla=" + codTipopla + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TiposPlanillaPK[ codCia=" + codCia + ", codTipopla=" + codTipopla + " ]";
     }
     
 }

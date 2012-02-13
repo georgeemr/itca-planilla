@@ -5,32 +5,26 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "RESPUESTA")
+@Table(name = "RESPUESTA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Respuesta.findAll", query = "SELECT r FROM Respuesta r"),
     @NamedQuery(name = "Respuesta.findByCodCia", query = "SELECT r FROM Respuesta r WHERE r.respuestaPK.codCia = :codCia"),
     @NamedQuery(name = "Respuesta.findByCodTipoRespuesta", query = "SELECT r FROM Respuesta r WHERE r.respuestaPK.codTipoRespuesta = :codTipoRespuesta"),
-    @NamedQuery(name = "Respuesta.findByGrupoRespuesta", query = "SELECT r FROM Respuesta r WHERE r.respuestaPK.grupoRespuesta = :grupoRespuesta"),
     @NamedQuery(name = "Respuesta.findByCodRespuesta", query = "SELECT r FROM Respuesta r WHERE r.respuestaPK.codRespuesta = :codRespuesta"),
     @NamedQuery(name = "Respuesta.findByTexto", query = "SELECT r FROM Respuesta r WHERE r.texto = :texto"),
     @NamedQuery(name = "Respuesta.findByNivel", query = "SELECT r FROM Respuesta r WHERE r.nivel = :nivel"),
@@ -40,16 +34,12 @@ public class Respuesta implements Serializable {
     @EmbeddedId
     protected RespuestaPK respuestaPK;
     @Basic(optional = false)
-    @Column(name = "TEXTO", nullable = false, length = 200)
+    @Column(name = "TEXTO", nullable = false, length = 300)
     private String texto;
-    @Column(name = "NIVEL", length = 200)
+    @Column(name = "NIVEL", length = 20)
     private String nivel;
     @Column(name = "VALOR")
-    private Long valor;
-    @ManyToMany(mappedBy = "respuestaList")
-    private List<Pregunta> preguntaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "respuesta")
-    private List<DetEvaluacion> detEvaluacionList;
+    private Short valor;
 
     public Respuesta() {
     }
@@ -63,8 +53,8 @@ public class Respuesta implements Serializable {
         this.texto = texto;
     }
 
-    public Respuesta(long codCia, long codTipoRespuesta, long grupoRespuesta, long codRespuesta) {
-        this.respuestaPK = new RespuestaPK(codCia, codTipoRespuesta, grupoRespuesta, codRespuesta);
+    public Respuesta(short codCia, short codTipoRespuesta, short codRespuesta) {
+        this.respuestaPK = new RespuestaPK(codCia, codTipoRespuesta, codRespuesta);
     }
 
     public RespuestaPK getRespuestaPK() {
@@ -91,30 +81,12 @@ public class Respuesta implements Serializable {
         this.nivel = nivel;
     }
 
-    public Long getValor() {
+    public Short getValor() {
         return valor;
     }
 
-    public void setValor(Long valor) {
+    public void setValor(Short valor) {
         this.valor = valor;
-    }
-
-    @XmlTransient
-    public List<Pregunta> getPreguntaList() {
-        return preguntaList;
-    }
-
-    public void setPreguntaList(List<Pregunta> preguntaList) {
-        this.preguntaList = preguntaList;
-    }
-
-    @XmlTransient
-    public List<DetEvaluacion> getDetEvaluacionList() {
-        return detEvaluacionList;
-    }
-
-    public void setDetEvaluacionList(List<DetEvaluacion> detEvaluacionList) {
-        this.detEvaluacionList = detEvaluacionList;
     }
 
     @Override
@@ -139,7 +111,7 @@ public class Respuesta implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Respuesta[ respuestaPK=" + respuestaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Respuesta[ respuestaPK=" + respuestaPK + " ]";
     }
     
 }

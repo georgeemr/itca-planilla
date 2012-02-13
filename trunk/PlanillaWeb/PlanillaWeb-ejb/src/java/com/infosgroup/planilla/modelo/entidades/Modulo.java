@@ -11,8 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -25,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "MODULO")
+@Table(name = "MODULO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Modulo.findAll", query = "SELECT m FROM Modulo m"),
@@ -39,9 +37,6 @@ public class Modulo implements Serializable {
     @Basic(optional = false)
     @Column(name = "NOM_MODULO", nullable = false, length = 200)
     private String nomModulo;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modulo")
     private List<Menu> menuList;
 
@@ -57,7 +52,7 @@ public class Modulo implements Serializable {
         this.nomModulo = nomModulo;
     }
 
-    public Modulo(long codCia, long codModulo) {
+    public Modulo(short codCia, long codModulo) {
         this.moduloPK = new ModuloPK(codCia, codModulo);
     }
 
@@ -75,14 +70,6 @@ public class Modulo implements Serializable {
 
     public void setNomModulo(String nomModulo) {
         this.nomModulo = nomModulo;
-    }
-
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
     }
 
     @XmlTransient
@@ -116,7 +103,7 @@ public class Modulo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Modulo[ moduloPK=" + moduloPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Modulo[ moduloPK=" + moduloPK + " ]";
     }
     
 }

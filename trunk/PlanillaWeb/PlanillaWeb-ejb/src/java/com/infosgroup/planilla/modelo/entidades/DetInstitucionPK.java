@@ -104,7 +104,7 @@ public class DetInstitucionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.DetInstitucionPK[ codCia=" + codCia + ", codInsti=" + codInsti + ", codPais=" + codPais + ", codDepartamento=" + codDepartamento + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.DetInstitucionPK[ codCia=" + codCia + ", codInsti=" + codInsti + ", codPais=" + codPais + ", codDepartamento=" + codDepartamento + " ]";
     }
     
 }

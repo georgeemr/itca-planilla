@@ -5,20 +5,24 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "TIPO_HORARIO")
+@Table(name = "TIPO_HORARIO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoHorario.findAll", query = "SELECT t FROM TipoHorario t"),
@@ -61,6 +65,8 @@ public class TipoHorario implements Serializable {
     private Short minutosFFin;
     @Column(name = "HORAS")
     private Short horas;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoHorario")
+    private List<HorarioEmp> horarioEmpList;
 
     public TipoHorario() {
     }
@@ -169,6 +175,15 @@ public class TipoHorario implements Serializable {
         this.horas = horas;
     }
 
+    @XmlTransient
+    public List<HorarioEmp> getHorarioEmpList() {
+        return horarioEmpList;
+    }
+
+    public void setHorarioEmpList(List<HorarioEmp> horarioEmpList) {
+        this.horarioEmpList = horarioEmpList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -191,7 +206,7 @@ public class TipoHorario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoHorario[ tipoHorarioPK=" + tipoHorarioPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoHorario[ tipoHorarioPK=" + tipoHorarioPK + " ]";
     }
     
 }

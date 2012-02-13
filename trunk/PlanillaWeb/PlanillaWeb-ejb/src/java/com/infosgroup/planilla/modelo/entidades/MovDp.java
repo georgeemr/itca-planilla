@@ -11,9 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -26,16 +23,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "MOV_DP")
+@Table(name = "MOV_DP", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MovDp.findAll", query = "SELECT m FROM MovDp m"),
     @NamedQuery(name = "MovDp.findByCodCia", query = "SELECT m FROM MovDp m WHERE m.movDpPK.codCia = :codCia"),
-    @NamedQuery(name = "MovDp.findByCodTipopla", query = "SELECT m FROM MovDp m WHERE m.movDpPK.codTipopla = :codTipopla"),
     @NamedQuery(name = "MovDp.findByAnio", query = "SELECT m FROM MovDp m WHERE m.movDpPK.anio = :anio"),
     @NamedQuery(name = "MovDp.findByMes", query = "SELECT m FROM MovDp m WHERE m.movDpPK.mes = :mes"),
     @NamedQuery(name = "MovDp.findByNumPlanilla", query = "SELECT m FROM MovDp m WHERE m.movDpPK.numPlanilla = :numPlanilla"),
     @NamedQuery(name = "MovDp.findByNoMovto", query = "SELECT m FROM MovDp m WHERE m.movDpPK.noMovto = :noMovto"),
+    @NamedQuery(name = "MovDp.findByCodEmp", query = "SELECT m FROM MovDp m WHERE m.codEmp = :codEmp"),
     @NamedQuery(name = "MovDp.findByCodDp", query = "SELECT m FROM MovDp m WHERE m.codDp = :codDp"),
     @NamedQuery(name = "MovDp.findByVpr", query = "SELECT m FROM MovDp m WHERE m.vpr = :vpr"),
     @NamedQuery(name = "MovDp.findByFactor", query = "SELECT m FROM MovDp m WHERE m.factor = :factor"),
@@ -49,12 +46,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "MovDp.findByCodDepto", query = "SELECT m FROM MovDp m WHERE m.codDepto = :codDepto"),
     @NamedQuery(name = "MovDp.findByGenerado", query = "SELECT m FROM MovDp m WHERE m.generado = :generado"),
     @NamedQuery(name = "MovDp.findByCodPresta", query = "SELECT m FROM MovDp m WHERE m.codPresta = :codPresta"),
-    @NamedQuery(name = "MovDp.findByConstancia", query = "SELECT m FROM MovDp m WHERE m.constancia = :constancia"),
-    @NamedQuery(name = "MovDp.findByCantidad", query = "SELECT m FROM MovDp m WHERE m.cantidad = :cantidad")})
+    @NamedQuery(name = "MovDp.findByCodTipopla", query = "SELECT m FROM MovDp m WHERE m.codTipopla = :codTipopla"),
+    @NamedQuery(name = "MovDp.findByConstancia", query = "SELECT m FROM MovDp m WHERE m.constancia = :constancia")})
 public class MovDp implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected MovDpPK movDpPK;
+    @Basic(optional = false)
+    @Column(name = "COD_EMP", nullable = false)
+    private int codEmp;
     @Basic(optional = false)
     @Column(name = "COD_DP", nullable = false)
     private int codDp;
@@ -91,19 +91,10 @@ public class MovDp implements Serializable {
     private String generado;
     @Column(name = "COD_PRESTA")
     private Short codPresta;
+    @Column(name = "COD_TIPOPLA")
+    private Short codTipopla;
     @Column(name = "CONSTANCIA", length = 1)
     private String constancia;
-    @Column(name = "CANTIDAD")
-    private Short cantidad;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "ANIO", referencedColumnName = "ANIO", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "MES", referencedColumnName = "MES", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "NUM_PLANILLA", referencedColumnName = "NUM_PLANILLA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false)})
-    @ManyToOne(optional = false)
-    private ResumenAsistencia resumenAsistencia;
 
     public MovDp() {
     }
@@ -112,8 +103,9 @@ public class MovDp implements Serializable {
         this.movDpPK = movDpPK;
     }
 
-    public MovDp(MovDpPK movDpPK, int codDp, String vpr, BigDecimal factor, BigDecimal valor, BigDecimal baseCalculo, Date fechaMovto, String sumaResta, String status) {
+    public MovDp(MovDpPK movDpPK, int codEmp, int codDp, String vpr, BigDecimal factor, BigDecimal valor, BigDecimal baseCalculo, Date fechaMovto, String sumaResta, String status) {
         this.movDpPK = movDpPK;
+        this.codEmp = codEmp;
         this.codDp = codDp;
         this.vpr = vpr;
         this.factor = factor;
@@ -124,8 +116,8 @@ public class MovDp implements Serializable {
         this.status = status;
     }
 
-    public MovDp(short codCia, short codTipopla, short anio, short mes, short numPlanilla, int noMovto) {
-        this.movDpPK = new MovDpPK(codCia, codTipopla, anio, mes, numPlanilla, noMovto);
+    public MovDp(short codCia, short anio, short mes, short numPlanilla, int noMovto) {
+        this.movDpPK = new MovDpPK(codCia, anio, mes, numPlanilla, noMovto);
     }
 
     public MovDpPK getMovDpPK() {
@@ -134,6 +126,14 @@ public class MovDp implements Serializable {
 
     public void setMovDpPK(MovDpPK movDpPK) {
         this.movDpPK = movDpPK;
+    }
+
+    public int getCodEmp() {
+        return codEmp;
+    }
+
+    public void setCodEmp(int codEmp) {
+        this.codEmp = codEmp;
     }
 
     public int getCodDp() {
@@ -240,28 +240,20 @@ public class MovDp implements Serializable {
         this.codPresta = codPresta;
     }
 
+    public Short getCodTipopla() {
+        return codTipopla;
+    }
+
+    public void setCodTipopla(Short codTipopla) {
+        this.codTipopla = codTipopla;
+    }
+
     public String getConstancia() {
         return constancia;
     }
 
     public void setConstancia(String constancia) {
         this.constancia = constancia;
-    }
-
-    public Short getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Short cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public ResumenAsistencia getResumenAsistencia() {
-        return resumenAsistencia;
-    }
-
-    public void setResumenAsistencia(ResumenAsistencia resumenAsistencia) {
-        this.resumenAsistencia = resumenAsistencia;
     }
 
     @Override
@@ -286,7 +278,7 @@ public class MovDp implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.MovDp[ movDpPK=" + movDpPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.MovDp[ movDpPK=" + movDpPK + " ]";
     }
     
 }

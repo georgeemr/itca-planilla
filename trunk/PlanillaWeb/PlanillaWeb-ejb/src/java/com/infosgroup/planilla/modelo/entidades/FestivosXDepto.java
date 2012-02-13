@@ -7,8 +7,6 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -19,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "FESTIVOS_X_DEPTO")
+@Table(name = "FESTIVOS_X_DEPTO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "FestivosXDepto.findAll", query = "SELECT f FROM FestivosXDepto f"),
@@ -33,9 +31,6 @@ public class FestivosXDepto implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected FestivosXDeptoPK festivosXDeptoPK;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private ParamPlan paramPlan;
 
     public FestivosXDepto() {
     }
@@ -54,14 +49,6 @@ public class FestivosXDepto implements Serializable {
 
     public void setFestivosXDeptoPK(FestivosXDeptoPK festivosXDeptoPK) {
         this.festivosXDeptoPK = festivosXDeptoPK;
-    }
-
-    public ParamPlan getParamPlan() {
-        return paramPlan;
-    }
-
-    public void setParamPlan(ParamPlan paramPlan) {
-        this.paramPlan = paramPlan;
     }
 
     @Override
@@ -86,7 +73,7 @@ public class FestivosXDepto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.FestivosXDepto[ festivosXDeptoPK=" + festivosXDeptoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.FestivosXDepto[ festivosXDeptoPK=" + festivosXDeptoPK + " ]";
     }
     
 }

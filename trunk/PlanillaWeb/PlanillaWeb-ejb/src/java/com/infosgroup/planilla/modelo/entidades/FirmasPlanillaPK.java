@@ -109,7 +109,7 @@ public class FirmasPlanillaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.FirmasPlanillaPK[ codCia=" + codCia + ", codFirma=" + codFirma + ", fechaDesde=" + fechaDesde + ", fechaHasta=" + fechaHasta + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.FirmasPlanillaPK[ codCia=" + codCia + ", codFirma=" + codFirma + ", fechaDesde=" + fechaDesde + ", fechaHasta=" + fechaHasta + " ]";
     }
     
 }

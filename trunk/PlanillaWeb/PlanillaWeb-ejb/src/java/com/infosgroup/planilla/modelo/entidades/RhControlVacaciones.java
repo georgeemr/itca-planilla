@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "RH_CONTROL_VACACIONES")
+@Table(name = "RH_CONTROL_VACACIONES", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RhControlVacaciones.findAll", query = "SELECT r FROM RhControlVacaciones r"),
@@ -38,8 +38,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "RhControlVacaciones.findByDiasXPagar", query = "SELECT r FROM RhControlVacaciones r WHERE r.diasXPagar = :diasXPagar"),
     @NamedQuery(name = "RhControlVacaciones.findByDiasDevengados", query = "SELECT r FROM RhControlVacaciones r WHERE r.diasDevengados = :diasDevengados"),
     @NamedQuery(name = "RhControlVacaciones.findByDiasXDevengar", query = "SELECT r FROM RhControlVacaciones r WHERE r.diasXDevengar = :diasXDevengar"),
-    @NamedQuery(name = "RhControlVacaciones.findByEstado", query = "SELECT r FROM RhControlVacaciones r WHERE r.estado = :estado"),
-    @NamedQuery(name = "RhControlVacaciones.findBySaldo", query = "SELECT r FROM RhControlVacaciones r WHERE r.saldo = :saldo")})
+    @NamedQuery(name = "RhControlVacaciones.findBySaldo", query = "SELECT r FROM RhControlVacaciones r WHERE r.saldo = :saldo"),
+    @NamedQuery(name = "RhControlVacaciones.findByEstado", query = "SELECT r FROM RhControlVacaciones r WHERE r.estado = :estado")})
 public class RhControlVacaciones implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -59,10 +59,10 @@ public class RhControlVacaciones implements Serializable {
     private BigDecimal diasDevengados;
     @Column(name = "DIAS_X_DEVENGAR", precision = 5, scale = 2)
     private BigDecimal diasXDevengar;
-    @Column(name = "ESTADO", length = 1)
-    private String estado;
     @Column(name = "SALDO", precision = 5, scale = 2)
     private BigDecimal saldo;
+    @Column(name = "ESTADO", length = 1)
+    private String estado;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
@@ -136,20 +136,20 @@ public class RhControlVacaciones implements Serializable {
         this.diasXDevengar = diasXDevengar;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     public BigDecimal getSaldo() {
         return saldo;
     }
 
     public void setSaldo(BigDecimal saldo) {
         this.saldo = saldo;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Empleados getEmpleados() {
@@ -182,7 +182,7 @@ public class RhControlVacaciones implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.RhControlVacaciones[ rhControlVacacionesPK=" + rhControlVacacionesPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.RhControlVacaciones[ rhControlVacacionesPK=" + rhControlVacacionesPK + " ]";
     }
     
 }

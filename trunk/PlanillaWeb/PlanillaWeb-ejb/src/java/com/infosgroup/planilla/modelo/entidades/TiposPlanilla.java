@@ -11,8 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -25,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "TIPOS_PLANILLA")
+@Table(name = "TIPOS_PLANILLA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TiposPlanilla.findAll", query = "SELECT t FROM TiposPlanilla t"),
@@ -46,22 +44,9 @@ public class TiposPlanilla implements Serializable {
     @Column(name = "DIAS_LAB")
     private Long diasLab;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposPlanilla")
-    private List<Empleados> empleadosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposPlanilla")
-    private List<Contrato> contratoList;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposPlanilla")
-    private List<RelUsuarioTipopla> relUsuarioTipoplaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposPlanilla")
-    private List<ResumenAsistencia> resumenAsistenciaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposPlanilla")
     private List<Departamentos> departamentosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposPlanilla")
-    private List<Prestamos> prestamosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposPlanilla")
-    private List<ProgramacionPla> programacionPlaList;
+    private List<Empleados> empleadosList;
 
     public TiposPlanilla() {
     }
@@ -112,50 +97,6 @@ public class TiposPlanilla implements Serializable {
     }
 
     @XmlTransient
-    public List<Empleados> getEmpleadosList() {
-        return empleadosList;
-    }
-
-    public void setEmpleadosList(List<Empleados> empleadosList) {
-        this.empleadosList = empleadosList;
-    }
-
-    @XmlTransient
-    public List<Contrato> getContratoList() {
-        return contratoList;
-    }
-
-    public void setContratoList(List<Contrato> contratoList) {
-        this.contratoList = contratoList;
-    }
-
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
-    }
-
-    @XmlTransient
-    public List<RelUsuarioTipopla> getRelUsuarioTipoplaList() {
-        return relUsuarioTipoplaList;
-    }
-
-    public void setRelUsuarioTipoplaList(List<RelUsuarioTipopla> relUsuarioTipoplaList) {
-        this.relUsuarioTipoplaList = relUsuarioTipoplaList;
-    }
-
-    @XmlTransient
-    public List<ResumenAsistencia> getResumenAsistenciaList() {
-        return resumenAsistenciaList;
-    }
-
-    public void setResumenAsistenciaList(List<ResumenAsistencia> resumenAsistenciaList) {
-        this.resumenAsistenciaList = resumenAsistenciaList;
-    }
-
-    @XmlTransient
     public List<Departamentos> getDepartamentosList() {
         return departamentosList;
     }
@@ -165,21 +106,12 @@ public class TiposPlanilla implements Serializable {
     }
 
     @XmlTransient
-    public List<Prestamos> getPrestamosList() {
-        return prestamosList;
+    public List<Empleados> getEmpleadosList() {
+        return empleadosList;
     }
 
-    public void setPrestamosList(List<Prestamos> prestamosList) {
-        this.prestamosList = prestamosList;
-    }
-
-    @XmlTransient
-    public List<ProgramacionPla> getProgramacionPlaList() {
-        return programacionPlaList;
-    }
-
-    public void setProgramacionPlaList(List<ProgramacionPla> programacionPlaList) {
-        this.programacionPlaList = programacionPlaList;
+    public void setEmpleadosList(List<Empleados> empleadosList) {
+        this.empleadosList = empleadosList;
     }
 
     @Override
@@ -204,7 +136,7 @@ public class TiposPlanilla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TiposPlanilla[ tiposPlanillaPK=" + tiposPlanillaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TiposPlanilla[ tiposPlanillaPK=" + tiposPlanillaPK + " ]";
     }
     
 }

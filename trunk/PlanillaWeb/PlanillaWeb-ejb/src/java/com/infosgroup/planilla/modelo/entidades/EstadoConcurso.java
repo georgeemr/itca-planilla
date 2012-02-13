@@ -11,8 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -26,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "ESTADO_CONCURSO", uniqueConstraints = {
+@Table(name = "ESTADO_CONCURSO", catalog = "", schema = "PLANILLA", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"NOMBRE"})})
 @XmlRootElement
 @NamedQueries({
@@ -41,9 +39,6 @@ public class EstadoConcurso implements Serializable {
     @Basic(optional = false)
     @Column(name = "NOMBRE", nullable = false, length = 200)
     private String nombre;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadoConcurso")
     private List<Concurso> concursoList;
 
@@ -59,7 +54,7 @@ public class EstadoConcurso implements Serializable {
         this.nombre = nombre;
     }
 
-    public EstadoConcurso(long codCia, String codigo) {
+    public EstadoConcurso(short codCia, String codigo) {
         this.estadoConcursoPK = new EstadoConcursoPK(codCia, codigo);
     }
 
@@ -77,14 +72,6 @@ public class EstadoConcurso implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
     }
 
     @XmlTransient
@@ -118,7 +105,7 @@ public class EstadoConcurso implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.EstadoConcurso[ estadoConcursoPK=" + estadoConcursoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.EstadoConcurso[ estadoConcursoPK=" + estadoConcursoPK + " ]";
     }
     
 }

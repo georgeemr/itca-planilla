@@ -72,7 +72,7 @@ public class DeducPrestaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.DeducPrestaPK[ codDp=" + codDp + ", codCia=" + codCia + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.DeducPrestaPK[ codDp=" + codDp + ", codCia=" + codCia + " ]";
     }
     
 }

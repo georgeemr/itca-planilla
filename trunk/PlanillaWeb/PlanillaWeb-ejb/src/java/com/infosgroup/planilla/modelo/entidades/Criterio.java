@@ -11,6 +11,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -24,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "CRITERIO", uniqueConstraints = {
+@Table(name = "CRITERIO", catalog = "", schema = "PLANILLA", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"NOMBRE"})})
 @XmlRootElement
 @NamedQueries({
@@ -48,6 +51,11 @@ public class Criterio implements Serializable {
     @Basic(optional = false)
     @Column(name = "CLASE", nullable = false, length = 200)
     private String clase;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "TIPO", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private TipoCriterio tipoCriterio;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
     private List<CriteriosXPuesto> criteriosXPuestoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
@@ -67,7 +75,7 @@ public class Criterio implements Serializable {
         this.clase = clase;
     }
 
-    public Criterio(long codCia, long codigo, long tipo) {
+    public Criterio(short codCia, long codigo, long tipo) {
         this.criterioPK = new CriterioPK(codCia, codigo, tipo);
     }
 
@@ -101,6 +109,14 @@ public class Criterio implements Serializable {
 
     public void setClase(String clase) {
         this.clase = clase;
+    }
+
+    public TipoCriterio getTipoCriterio() {
+        return tipoCriterio;
+    }
+
+    public void setTipoCriterio(TipoCriterio tipoCriterio) {
+        this.tipoCriterio = tipoCriterio;
     }
 
     @XmlTransient
@@ -143,7 +159,7 @@ public class Criterio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Criterio[ criterioPK=" + criterioPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Criterio[ criterioPK=" + criterioPK + " ]";
     }
     
 }

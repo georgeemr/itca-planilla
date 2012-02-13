@@ -17,92 +17,53 @@ import javax.persistence.Embeddable;
 public class EvaluacionPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
-    @Basic(optional = false)
-    @Column(name = "PERIODO", nullable = false)
-    private long periodo;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "COD_CAMPANIA", nullable = false)
-    private long codCampania;
+    private short codCampania;
     @Basic(optional = false)
-    @Column(name = "TIPO_EVALUACION", nullable = false)
-    private long tipoEvaluacion;
-    @Basic(optional = false)
-    @Column(name = "PLANTILLA", nullable = false)
-    private long plantilla;
-    @Basic(optional = false)
-    @Column(name = "EMPLEADO", nullable = false)
-    private long empleado;
+    @Column(name = "COD_EVALUACION", nullable = false)
+    private short codEvaluacion;
 
     public EvaluacionPK() {
     }
 
-    public EvaluacionPK(long codCia, long periodo, long codCampania, long tipoEvaluacion, long plantilla, long empleado) {
+    public EvaluacionPK(short codCia, short codCampania, short codEvaluacion) {
         this.codCia = codCia;
-        this.periodo = periodo;
         this.codCampania = codCampania;
-        this.tipoEvaluacion = tipoEvaluacion;
-        this.plantilla = plantilla;
-        this.empleado = empleado;
+        this.codEvaluacion = codEvaluacion;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
-    public long getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(long periodo) {
-        this.periodo = periodo;
-    }
-
-    public long getCodCampania() {
+    public short getCodCampania() {
         return codCampania;
     }
 
-    public void setCodCampania(long codCampania) {
+    public void setCodCampania(short codCampania) {
         this.codCampania = codCampania;
     }
 
-    public long getTipoEvaluacion() {
-        return tipoEvaluacion;
+    public short getCodEvaluacion() {
+        return codEvaluacion;
     }
 
-    public void setTipoEvaluacion(long tipoEvaluacion) {
-        this.tipoEvaluacion = tipoEvaluacion;
-    }
-
-    public long getPlantilla() {
-        return plantilla;
-    }
-
-    public void setPlantilla(long plantilla) {
-        this.plantilla = plantilla;
-    }
-
-    public long getEmpleado() {
-        return empleado;
-    }
-
-    public void setEmpleado(long empleado) {
-        this.empleado = empleado;
+    public void setCodEvaluacion(short codEvaluacion) {
+        this.codEvaluacion = codEvaluacion;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) periodo;
         hash += (int) codCampania;
-        hash += (int) tipoEvaluacion;
-        hash += (int) plantilla;
-        hash += (int) empleado;
+        hash += (int) codEvaluacion;
         return hash;
     }
 
@@ -116,19 +77,10 @@ public class EvaluacionPK implements Serializable {
         if (this.codCia != other.codCia) {
             return false;
         }
-        if (this.periodo != other.periodo) {
-            return false;
-        }
         if (this.codCampania != other.codCampania) {
             return false;
         }
-        if (this.tipoEvaluacion != other.tipoEvaluacion) {
-            return false;
-        }
-        if (this.plantilla != other.plantilla) {
-            return false;
-        }
-        if (this.empleado != other.empleado) {
+        if (this.codEvaluacion != other.codEvaluacion) {
             return false;
         }
         return true;
@@ -136,7 +88,7 @@ public class EvaluacionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.EvaluacionPK[ codCia=" + codCia + ", periodo=" + periodo + ", codCampania=" + codCampania + ", tipoEvaluacion=" + tipoEvaluacion + ", plantilla=" + plantilla + ", empleado=" + empleado + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.EvaluacionPK[ codCia=" + codCia + ", codCampania=" + codCampania + ", codEvaluacion=" + codEvaluacion + " ]";
     }
     
 }

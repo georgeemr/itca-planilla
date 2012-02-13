@@ -7,9 +7,7 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -18,19 +16,17 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "PRESTAMOS")
+@Table(name = "PRESTAMOS", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Prestamos.findAll", query = "SELECT p FROM Prestamos p"),
@@ -41,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Prestamos.findByCodPresta", query = "SELECT p FROM Prestamos p WHERE p.prestamosPK.codPresta = :codPresta"),
     @NamedQuery(name = "Prestamos.findByCodEmp", query = "SELECT p FROM Prestamos p WHERE p.prestamosPK.codEmp = :codEmp"),
     @NamedQuery(name = "Prestamos.findByCodPres", query = "SELECT p FROM Prestamos p WHERE p.codPres = :codPres"),
+    @NamedQuery(name = "Prestamos.findByCodDeduc", query = "SELECT p FROM Prestamos p WHERE p.codDeduc = :codDeduc"),
     @NamedQuery(name = "Prestamos.findByDescripcion", query = "SELECT p FROM Prestamos p WHERE p.descripcion = :descripcion"),
     @NamedQuery(name = "Prestamos.findByValorPresta", query = "SELECT p FROM Prestamos p WHERE p.valorPresta = :valorPresta"),
     @NamedQuery(name = "Prestamos.findByNumPagos", query = "SELECT p FROM Prestamos p WHERE p.numPagos = :numPagos"),
@@ -61,10 +58,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Prestamos.findByModificadoPor", query = "SELECT p FROM Prestamos p WHERE p.modificadoPor = :modificadoPor"),
     @NamedQuery(name = "Prestamos.findByNoCuenta", query = "SELECT p FROM Prestamos p WHERE p.noCuenta = :noCuenta"),
     @NamedQuery(name = "Prestamos.findByCodCliente", query = "SELECT p FROM Prestamos p WHERE p.codCliente = :codCliente"),
-    @NamedQuery(name = "Prestamos.findByFechaCancela", query = "SELECT p FROM Prestamos p WHERE p.fechaCancela = :fechaCancela"),
-    @NamedQuery(name = "Prestamos.findByTipoDocto", query = "SELECT p FROM Prestamos p WHERE p.tipoDocto = :tipoDocto"),
-    @NamedQuery(name = "Prestamos.findByNumPoliza", query = "SELECT p FROM Prestamos p WHERE p.numPoliza = :numPoliza"),
-    @NamedQuery(name = "Prestamos.findByFechaPol", query = "SELECT p FROM Prestamos p WHERE p.fechaPol = :fechaPol")})
+    @NamedQuery(name = "Prestamos.findByFechaCancela", query = "SELECT p FROM Prestamos p WHERE p.fechaCancela = :fechaCancela")})
 public class Prestamos implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -78,23 +72,26 @@ public class Prestamos implements Serializable {
     private String refOPago;
     @Column(name = "COD_PRES")
     private Short codPres;
+    @Basic(optional = false)
+    @Column(name = "COD_DEDUC", nullable = false)
+    private int codDeduc;
     @Column(name = "DESCRIPCION", length = 60)
     private String descripcion;
     @Basic(optional = false)
-    @Column(name = "VALOR_PRESTA", nullable = false, precision = 8, scale = 2)
+    @Column(name = "VALOR_PRESTA", nullable = false, precision = 16, scale = 2)
     private BigDecimal valorPresta;
     @Basic(optional = false)
     @Column(name = "NUM_PAGOS", nullable = false)
     private short numPagos;
     @Column(name = "PAGOS_HECHOS")
     private Short pagosHechos;
-    @Column(name = "P_PAGO", precision = 8, scale = 2)
+    @Column(name = "P_PAGO", precision = 16, scale = 2)
     private BigDecimal pPago;
-    @Column(name = "CUOTA", precision = 8, scale = 2)
+    @Column(name = "CUOTA", precision = 16, scale = 2)
     private BigDecimal cuota;
-    @Column(name = "U_PAGO", precision = 8, scale = 2)
+    @Column(name = "U_PAGO", precision = 16, scale = 2)
     private BigDecimal uPago;
-    @Column(name = "SALDO_ACTUAL", precision = 8, scale = 2)
+    @Column(name = "SALDO_ACTUAL", precision = 16, scale = 2)
     private BigDecimal saldoActual;
     @Column(name = "OBSERVACION", length = 200)
     private String observacion;
@@ -124,15 +121,6 @@ public class Prestamos implements Serializable {
     @Column(name = "FECHA_CANCELA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCancela;
-    @Column(name = "TIPO_DOCTO", length = 2)
-    private String tipoDocto;
-    @Column(name = "NUM_POLIZA")
-    private Integer numPoliza;
-    @Column(name = "FECHA_POL")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaPol;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "prestamos")
-    private List<DetPrestamos> detPrestamosList;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA")})
@@ -143,16 +131,6 @@ public class Prestamos implements Serializable {
         @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Empleados empleados;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_DEDUC", referencedColumnName = "COD_DP", nullable = false)})
-    @ManyToOne(optional = false)
-    private DeducPresta deducPresta;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_PRESTA", referencedColumnName = "COD_DP", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private DeducPresta deducPresta1;
 
     public Prestamos() {
     }
@@ -161,8 +139,9 @@ public class Prestamos implements Serializable {
         this.prestamosPK = prestamosPK;
     }
 
-    public Prestamos(PrestamosPK prestamosPK, BigDecimal valorPresta, short numPagos) {
+    public Prestamos(PrestamosPK prestamosPK, int codDeduc, BigDecimal valorPresta, short numPagos) {
         this.prestamosPK = prestamosPK;
+        this.codDeduc = codDeduc;
         this.valorPresta = valorPresta;
         this.numPagos = numPagos;
     }
@@ -209,6 +188,14 @@ public class Prestamos implements Serializable {
 
     public void setCodPres(Short codPres) {
         this.codPres = codPres;
+    }
+
+    public int getCodDeduc() {
+        return codDeduc;
+    }
+
+    public void setCodDeduc(int codDeduc) {
+        this.codDeduc = codDeduc;
     }
 
     public String getDescripcion() {
@@ -379,39 +366,6 @@ public class Prestamos implements Serializable {
         this.fechaCancela = fechaCancela;
     }
 
-    public String getTipoDocto() {
-        return tipoDocto;
-    }
-
-    public void setTipoDocto(String tipoDocto) {
-        this.tipoDocto = tipoDocto;
-    }
-
-    public Integer getNumPoliza() {
-        return numPoliza;
-    }
-
-    public void setNumPoliza(Integer numPoliza) {
-        this.numPoliza = numPoliza;
-    }
-
-    public Date getFechaPol() {
-        return fechaPol;
-    }
-
-    public void setFechaPol(Date fechaPol) {
-        this.fechaPol = fechaPol;
-    }
-
-    @XmlTransient
-    public List<DetPrestamos> getDetPrestamosList() {
-        return detPrestamosList;
-    }
-
-    public void setDetPrestamosList(List<DetPrestamos> detPrestamosList) {
-        this.detPrestamosList = detPrestamosList;
-    }
-
     public TiposPlanilla getTiposPlanilla() {
         return tiposPlanilla;
     }
@@ -426,22 +380,6 @@ public class Prestamos implements Serializable {
 
     public void setEmpleados(Empleados empleados) {
         this.empleados = empleados;
-    }
-
-    public DeducPresta getDeducPresta() {
-        return deducPresta;
-    }
-
-    public void setDeducPresta(DeducPresta deducPresta) {
-        this.deducPresta = deducPresta;
-    }
-
-    public DeducPresta getDeducPresta1() {
-        return deducPresta1;
-    }
-
-    public void setDeducPresta1(DeducPresta deducPresta1) {
-        this.deducPresta1 = deducPresta1;
     }
 
     @Override
@@ -466,7 +404,7 @@ public class Prestamos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Prestamos[ prestamosPK=" + prestamosPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Prestamos[ prestamosPK=" + prestamosPK + " ]";
     }
     
 }

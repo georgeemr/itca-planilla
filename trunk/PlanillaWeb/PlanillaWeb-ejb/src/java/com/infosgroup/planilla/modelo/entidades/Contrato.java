@@ -19,7 +19,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -27,83 +26,75 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "CONTRATO")
+@Table(name = "CONTRATO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Contrato.findAll", query = "SELECT c FROM Contrato c"),
     @NamedQuery(name = "Contrato.findByCodCia", query = "SELECT c FROM Contrato c WHERE c.contratoPK.codCia = :codCia"),
-    @NamedQuery(name = "Contrato.findByCodigo", query = "SELECT c FROM Contrato c WHERE c.contratoPK.codigo = :codigo"),
-    @NamedQuery(name = "Contrato.findByTipo", query = "SELECT c FROM Contrato c WHERE c.tipo = :tipo"),
-    @NamedQuery(name = "Contrato.findByCandidato", query = "SELECT c FROM Contrato c WHERE c.contratoPK.candidato = :candidato"),
+    @NamedQuery(name = "Contrato.findByCodContrato", query = "SELECT c FROM Contrato c WHERE c.contratoPK.codContrato = :codContrato"),
+    @NamedQuery(name = "Contrato.findByCodCandidato", query = "SELECT c FROM Contrato c WHERE c.contratoPK.codCandidato = :codCandidato"),
     @NamedQuery(name = "Contrato.findByFechaAcuerdo", query = "SELECT c FROM Contrato c WHERE c.fechaAcuerdo = :fechaAcuerdo"),
     @NamedQuery(name = "Contrato.findByObservacion", query = "SELECT c FROM Contrato c WHERE c.observacion = :observacion"),
-    @NamedQuery(name = "Contrato.findByActa", query = "SELECT c FROM Contrato c WHERE c.acta = :acta"),
+    @NamedQuery(name = "Contrato.findByTipo", query = "SELECT c FROM Contrato c WHERE c.tipo = :tipo"),
+    @NamedQuery(name = "Contrato.findByNumActa", query = "SELECT c FROM Contrato c WHERE c.numActa = :numActa"),
+    @NamedQuery(name = "Contrato.findByCodSucursal", query = "SELECT c FROM Contrato c WHERE c.codSucursal = :codSucursal"),
     @NamedQuery(name = "Contrato.findBySalario", query = "SELECT c FROM Contrato c WHERE c.salario = :salario"),
     @NamedQuery(name = "Contrato.findByFechaInicio", query = "SELECT c FROM Contrato c WHERE c.fechaInicio = :fechaInicio"),
     @NamedQuery(name = "Contrato.findByEstado", query = "SELECT c FROM Contrato c WHERE c.estado = :estado"),
-    @NamedQuery(name = "Contrato.findByFechaFinal", query = "SELECT c FROM Contrato c WHERE c.fechaFinal = :fechaFinal")})
+    @NamedQuery(name = "Contrato.findByFechaFinal", query = "SELECT c FROM Contrato c WHERE c.fechaFinal = :fechaFinal"),
+    @NamedQuery(name = "Contrato.findByCodAgencia", query = "SELECT c FROM Contrato c WHERE c.codAgencia = :codAgencia")})
 public class Contrato implements Serializable {
-    @Basic(optional =     false)
-    @NotNull
-    @Column(name = "FECHA_ACUERDO", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaAcuerdo;
-    @Basic(optional =     false)
-    @NotNull
-    @Column(name = "FECHA_INICIO", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaInicio;
-    @Column(name =     "FECHA_FINAL")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaFinal;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "ESTADO", referencedColumnName = "CODIGO", nullable = false)})
-    @ManyToOne(optional = false)
-    private EstadoContrato estadoContrato;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "TIPO", referencedColumnName = "CODIGO")})
-    @ManyToOne(optional = false)
-    private TipoContrato tipoContrato;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ContratoPK contratoPK;
-    @Column(name = "TIPO")
-    private Long tipo;
+    @Basic(optional = false)
+    @Column(name = "FECHA_ACUERDO", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaAcuerdo;
     @Column(name = "OBSERVACION", length = 500)
     private String observacion;
-    @Column(name = "ACTA", length = 25)
-    private String acta;
+    @Basic(optional = false)
+    @Column(name = "TIPO", nullable = false, length = 2)
+    private String tipo;
+    @Column(name = "NUM_ACTA", length = 25)
+    private String numActa;
+    @Column(name = "COD_SUCURSAL")
+    private Short codSucursal;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @Column(name = "SALARIO", nullable = false, precision = 16, scale = 2)
     private BigDecimal salario;
+    @Basic(optional = false)
+    @Column(name = "FECHA_INICIO", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInicio;
+    @Column(name = "ESTADO", length = 1)
+    private String estado;
+    @Column(name = "FECHA_FINAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFinal;
+    @Column(name = "COD_AGENCIA")
+    private Short codAgencia;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "TIPO_PLANILLA", referencedColumnName = "COD_TIPOPLA")})
+        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA")})
     @ManyToOne(optional = false)
     private TiposPlanilla tiposPlanilla;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "PUESTO", referencedColumnName = "COD_PUESTO", nullable = false)})
+        @JoinColumn(name = "COD_PUESTO", referencedColumnName = "COD_PUESTO", nullable = false)})
     @ManyToOne(optional = false)
     private Puestos puestos;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "EMPLEADO", referencedColumnName = "COD_EMP", nullable = false)})
+        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false)})
     @ManyToOne(optional = false)
     private Empleados empleados;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "COD_CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Candidato candidato1;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "SUCURSAL", referencedColumnName = "COD_AGENCIA")})
-    @ManyToOne(optional = false)
-    private Agencias agencias;
+    private Candidato candidato;
 
     public Contrato() {
     }
@@ -112,16 +103,16 @@ public class Contrato implements Serializable {
         this.contratoPK = contratoPK;
     }
 
-    public Contrato(ContratoPK contratoPK, Date fechaAcuerdo, BigDecimal salario, Date fechaInicio, EstadoContrato estado) {
+    public Contrato(ContratoPK contratoPK, Date fechaAcuerdo, String tipo, BigDecimal salario, Date fechaInicio) {
         this.contratoPK = contratoPK;
         this.fechaAcuerdo = fechaAcuerdo;
+        this.tipo = tipo;
         this.salario = salario;
         this.fechaInicio = fechaInicio;
-        this.estadoContrato = estadoContrato;
     }
 
-    public Contrato(long codCia, long codigo, long candidato) {
-        this.contratoPK = new ContratoPK(codCia, codigo, candidato);
+    public Contrato(short codCia, int codContrato, int codCandidato) {
+        this.contratoPK = new ContratoPK(codCia, codContrato, codCandidato);
     }
 
     public ContratoPK getContratoPK() {
@@ -130,14 +121,6 @@ public class Contrato implements Serializable {
 
     public void setContratoPK(ContratoPK contratoPK) {
         this.contratoPK = contratoPK;
-    }
-
-    public Long getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Long tipo) {
-        this.tipo = tipo;
     }
 
     public Date getFechaAcuerdo() {
@@ -156,12 +139,28 @@ public class Contrato implements Serializable {
         this.observacion = observacion;
     }
 
-    public String getActa() {
-        return acta;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setActa(String acta) {
-        this.acta = acta;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getNumActa() {
+        return numActa;
+    }
+
+    public void setNumActa(String numActa) {
+        this.numActa = numActa;
+    }
+
+    public Short getCodSucursal() {
+        return codSucursal;
+    }
+
+    public void setCodSucursal(Short codSucursal) {
+        this.codSucursal = codSucursal;
     }
 
     public BigDecimal getSalario() {
@@ -180,12 +179,28 @@ public class Contrato implements Serializable {
         this.fechaInicio = fechaInicio;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public Date getFechaFinal() {
         return fechaFinal;
     }
 
     public void setFechaFinal(Date fechaFinal) {
         this.fechaFinal = fechaFinal;
+    }
+
+    public Short getCodAgencia() {
+        return codAgencia;
+    }
+
+    public void setCodAgencia(Short codAgencia) {
+        this.codAgencia = codAgencia;
     }
 
     public TiposPlanilla getTiposPlanilla() {
@@ -212,20 +227,12 @@ public class Contrato implements Serializable {
         this.empleados = empleados;
     }
 
-    public Candidato getCandidato1() {
-        return candidato1;
+    public Candidato getCandidato() {
+        return candidato;
     }
 
-    public void setCandidato1(Candidato candidato1) {
-        this.candidato1 = candidato1;
-    }
-
-    public Agencias getAgencias() {
-        return agencias;
-    }
-
-    public void setAgencias(Agencias agencias) {
-        this.agencias = agencias;
+    public void setCandidato(Candidato candidato) {
+        this.candidato = candidato;
     }
 
     @Override
@@ -250,23 +257,7 @@ public class Contrato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Contrato[ contratoPK=" + contratoPK + " ]";
-    }
-
-    public TipoContrato getTipoContrato() {
-        return tipoContrato;
-    }
-
-    public void setTipoContrato(TipoContrato tipoContrato) {
-        this.tipoContrato = tipoContrato;
-    }
-
-    public EstadoContrato getEstadoContrato() {
-        return estadoContrato;
-    }
-
-    public void setEstadoContrato(EstadoContrato estadoContrato) {
-        this.estadoContrato = estadoContrato;
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Contrato[ contratoPK=" + contratoPK + " ]";
     }
     
 }

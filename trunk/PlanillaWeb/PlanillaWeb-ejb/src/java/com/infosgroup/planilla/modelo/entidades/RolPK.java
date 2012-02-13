@@ -72,7 +72,7 @@ public class RolPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.RolPK[ codCia=" + codCia + ", codRol=" + codRol + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.RolPK[ codCia=" + codCia + ", codRol=" + codRol + " ]";
     }
     
 }

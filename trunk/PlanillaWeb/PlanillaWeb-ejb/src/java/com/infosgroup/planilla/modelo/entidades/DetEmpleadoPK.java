@@ -24,18 +24,14 @@ public class DetEmpleadoPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_DP", nullable = false)
     private int codDp;
-    @Basic(optional = false)
-    @Column(name = "CORRELATIVO", nullable = false)
-    private short correlativo;
 
     public DetEmpleadoPK() {
     }
 
-    public DetEmpleadoPK(short codCia, int codEmp, int codDp, short correlativo) {
+    public DetEmpleadoPK(short codCia, int codEmp, int codDp) {
         this.codCia = codCia;
         this.codEmp = codEmp;
         this.codDp = codDp;
-        this.correlativo = correlativo;
     }
 
     public short getCodCia() {
@@ -62,21 +58,12 @@ public class DetEmpleadoPK implements Serializable {
         this.codDp = codDp;
     }
 
-    public short getCorrelativo() {
-        return correlativo;
-    }
-
-    public void setCorrelativo(short correlativo) {
-        this.correlativo = correlativo;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codEmp;
         hash += (int) codDp;
-        hash += (int) correlativo;
         return hash;
     }
 
@@ -96,15 +83,12 @@ public class DetEmpleadoPK implements Serializable {
         if (this.codDp != other.codDp) {
             return false;
         }
-        if (this.correlativo != other.correlativo) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.DetEmpleadoPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", codDp=" + codDp + ", correlativo=" + correlativo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.DetEmpleadoPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", codDp=" + codDp + " ]";
     }
     
 }

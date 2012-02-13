@@ -16,7 +16,6 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "PLANILLA")
+@Table(name = "PLANILLA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Planilla.findAll", query = "SELECT p FROM Planilla p"),
@@ -51,7 +50,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Planilla.findByStatus", query = "SELECT p FROM Planilla p WHERE p.status = :status"),
     @NamedQuery(name = "Planilla.findByVhrNoche", query = "SELECT p FROM Planilla p WHERE p.vhrNoche = :vhrNoche"),
     @NamedQuery(name = "Planilla.findByChrNoche", query = "SELECT p FROM Planilla p WHERE p.chrNoche = :chrNoche"),
-    @NamedQuery(name = "Planilla.findByCodTipopla", query = "SELECT p FROM Planilla p WHERE p.planillaPK.codTipopla = :codTipopla"),
     @NamedQuery(name = "Planilla.findByChX250", query = "SELECT p FROM Planilla p WHERE p.chX250 = :chX250"),
     @NamedQuery(name = "Planilla.findByVhX250", query = "SELECT p FROM Planilla p WHERE p.vhX250 = :vhX250"),
     @NamedQuery(name = "Planilla.findByChHora", query = "SELECT p FROM Planilla p WHERE p.chHora = :chHora"),
@@ -66,9 +64,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Planilla.findByCodSucursal", query = "SELECT p FROM Planilla p WHERE p.codSucursal = :codSucursal"),
     @NamedQuery(name = "Planilla.findByChequeDep", query = "SELECT p FROM Planilla p WHERE p.chequeDep = :chequeDep"),
     @NamedQuery(name = "Planilla.findByAntipag", query = "SELECT p FROM Planilla p WHERE p.antipag = :antipag"),
-    @NamedQuery(name = "Planilla.findByCodSeccion", query = "SELECT p FROM Planilla p WHERE p.codSeccion = :codSeccion"),
-    @NamedQuery(name = "Planilla.findByChHdNocturnidad", query = "SELECT p FROM Planilla p WHERE p.chHdNocturnidad = :chHdNocturnidad"),
-    @NamedQuery(name = "Planilla.findByDNocturnidad", query = "SELECT p FROM Planilla p WHERE p.dNocturnidad = :dNocturnidad")})
+    @NamedQuery(name = "Planilla.findByCodSeccion", query = "SELECT p FROM Planilla p WHERE p.codSeccion = :codSeccion")})
 public class Planilla implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -148,24 +144,15 @@ public class Planilla implements Serializable {
     private BigDecimal antipag;
     @Column(name = "COD_SECCION")
     private Short codSeccion;
-    @Column(name = "CH_HD_NOCTURNIDAD", precision = 6, scale = 2)
-    private BigDecimal chHdNocturnidad;
-    @Column(name = "D_NOCTURNIDAD", precision = 6, scale = 2)
-    private BigDecimal dNocturnidad;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "ANIO", referencedColumnName = "ANIO", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "MES", referencedColumnName = "MES", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA"),
         @JoinColumn(name = "NUM_PLANILLA", referencedColumnName = "NUM_PLANILLA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
-    @OneToOne(optional = false)
-    private ResumenAsistencia resumenAsistencia;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Empleados empleados;
+    private ResumenAsistencia resumenAsistencia;
 
     public Planilla() {
     }
@@ -191,8 +178,8 @@ public class Planilla implements Serializable {
         this.status = status;
     }
 
-    public Planilla(short codCia, short anio, short mes, short numPlanilla, int codEmp, short codTipopla) {
-        this.planillaPK = new PlanillaPK(codCia, anio, mes, numPlanilla, codEmp, codTipopla);
+    public Planilla(short codCia, short anio, short mes, short numPlanilla, int codEmp) {
+        this.planillaPK = new PlanillaPK(codCia, anio, mes, numPlanilla, codEmp);
     }
 
     public PlanillaPK getPlanillaPK() {
@@ -443,36 +430,12 @@ public class Planilla implements Serializable {
         this.codSeccion = codSeccion;
     }
 
-    public BigDecimal getChHdNocturnidad() {
-        return chHdNocturnidad;
-    }
-
-    public void setChHdNocturnidad(BigDecimal chHdNocturnidad) {
-        this.chHdNocturnidad = chHdNocturnidad;
-    }
-
-    public BigDecimal getDNocturnidad() {
-        return dNocturnidad;
-    }
-
-    public void setDNocturnidad(BigDecimal dNocturnidad) {
-        this.dNocturnidad = dNocturnidad;
-    }
-
     public ResumenAsistencia getResumenAsistencia() {
         return resumenAsistencia;
     }
 
     public void setResumenAsistencia(ResumenAsistencia resumenAsistencia) {
         this.resumenAsistencia = resumenAsistencia;
-    }
-
-    public Empleados getEmpleados() {
-        return empleados;
-    }
-
-    public void setEmpleados(Empleados empleados) {
-        this.empleados = empleados;
     }
 
     @Override
@@ -497,7 +460,7 @@ public class Planilla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Planilla[ planillaPK=" + planillaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Planilla[ planillaPK=" + planillaPK + " ]";
     }
     
 }

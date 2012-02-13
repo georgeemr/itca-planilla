@@ -5,9 +5,7 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -16,18 +14,16 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "PRUEBA_X_PUESTO", uniqueConstraints = {
+@Table(name = "PRUEBA_X_PUESTO", catalog = "", schema = "PLANILLA", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"NOMBRE"})})
 @XmlRootElement
 @NamedQueries({
@@ -52,8 +48,6 @@ public class PruebaXPuesto implements Serializable {
         @JoinColumn(name = "PUESTO", referencedColumnName = "COD_PUESTO", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Puestos puestos;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pruebaXPuesto")
-    private List<EvaluacionCandidato> evaluacionCandidatoList;
 
     public PruebaXPuesto() {
     }
@@ -68,7 +62,7 @@ public class PruebaXPuesto implements Serializable {
         this.estado = estado;
     }
 
-    public PruebaXPuesto(long codCia, long puesto, long codigo) {
+    public PruebaXPuesto(short codCia, long puesto, long codigo) {
         this.pruebaXPuestoPK = new PruebaXPuestoPK(codCia, puesto, codigo);
     }
 
@@ -104,15 +98,6 @@ public class PruebaXPuesto implements Serializable {
         this.puestos = puestos;
     }
 
-    @XmlTransient
-    public List<EvaluacionCandidato> getEvaluacionCandidatoList() {
-        return evaluacionCandidatoList;
-    }
-
-    public void setEvaluacionCandidatoList(List<EvaluacionCandidato> evaluacionCandidatoList) {
-        this.evaluacionCandidatoList = evaluacionCandidatoList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -135,7 +120,7 @@ public class PruebaXPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PruebaXPuesto[ pruebaXPuestoPK=" + pruebaXPuestoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.PruebaXPuesto[ pruebaXPuestoPK=" + pruebaXPuestoPK + " ]";
     }
     
 }

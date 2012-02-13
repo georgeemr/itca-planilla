@@ -17,32 +17,32 @@ import javax.persistence.Embeddable;
 public class FactorPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "COD_FACTOR", nullable = false)
-    private long codFactor;
+    private short codFactor;
 
     public FactorPK() {
     }
 
-    public FactorPK(long codCia, long codFactor) {
+    public FactorPK(short codCia, short codFactor) {
         this.codCia = codCia;
         this.codFactor = codFactor;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
-    public long getCodFactor() {
+    public short getCodFactor() {
         return codFactor;
     }
 
-    public void setCodFactor(long codFactor) {
+    public void setCodFactor(short codFactor) {
         this.codFactor = codFactor;
     }
 
@@ -72,7 +72,7 @@ public class FactorPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.FactorPK[ codCia=" + codCia + ", codFactor=" + codFactor + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.FactorPK[ codCia=" + codCia + ", codFactor=" + codFactor + " ]";
     }
     
 }

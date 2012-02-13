@@ -5,33 +5,21 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "PREGUNTA")
+@Table(name = "PREGUNTA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Pregunta.findAll", query = "SELECT p FROM Pregunta p"),
@@ -40,34 +28,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Pregunta.findByCodPregunta", query = "SELECT p FROM Pregunta p WHERE p.preguntaPK.codPregunta = :codPregunta"),
     @NamedQuery(name = "Pregunta.findByDescripcion", query = "SELECT p FROM Pregunta p WHERE p.descripcion = :descripcion")})
 public class Pregunta implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PreguntaPK preguntaPK;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
-    @Column(name = "DESCRIPCION", nullable = false, length = 200)
+    @Column(name = "DESCRIPCION", nullable = false, length = 300)
     private String descripcion;
-    @ManyToMany(mappedBy = "preguntaList")
-    private List<Plantilla> plantillaList;
-    @JoinTable(name = "PREGUNTA_RESPUESTA", joinColumns = {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "COD_FACTOR", referencedColumnName = "COD_FACTOR", nullable = false),
-        @JoinColumn(name = "COD_PREGUNTA", referencedColumnName = "COD_PREGUNTA", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "COD_TIPO_RESPUESTA", referencedColumnName = "COD_TIPO_RESPUESTA", nullable = false),
-        @JoinColumn(name = "GRUPO_RESPUESTA", referencedColumnName = "GRUPO_RESPUESTA", nullable = false),
-        @JoinColumn(name = "COD_RESPUESTA", referencedColumnName = "COD_RESPUESTA", nullable = false)})
-    @ManyToMany
-    private List<Respuesta> respuestaList;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_FACTOR", referencedColumnName = "COD_FACTOR", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Factor factor;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pregunta")
-    private List<DetEvaluacion> detEvaluacionList;
 
     public Pregunta() {
     }
@@ -81,7 +47,7 @@ public class Pregunta implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Pregunta(long codCia, long codFactor, String codPregunta) {
+    public Pregunta(short codCia, short codFactor, String codPregunta) {
         this.preguntaPK = new PreguntaPK(codCia, codFactor, codPregunta);
     }
 
@@ -99,41 +65,6 @@ public class Pregunta implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    @XmlTransient
-    public List<Plantilla> getPlantillaList() {
-        return plantillaList;
-    }
-
-    public void setPlantillaList(List<Plantilla> plantillaList) {
-        this.plantillaList = plantillaList;
-    }
-
-    @XmlTransient
-    public List<Respuesta> getRespuestaList() {
-        return respuestaList;
-    }
-
-    public void setRespuestaList(List<Respuesta> respuestaList) {
-        this.respuestaList = respuestaList;
-    }
-
-    public Factor getFactor() {
-        return factor;
-    }
-
-    public void setFactor(Factor factor) {
-        this.factor = factor;
-    }
-
-    @XmlTransient
-    public List<DetEvaluacion> getDetEvaluacionList() {
-        return detEvaluacionList;
-    }
-
-    public void setDetEvaluacionList(List<DetEvaluacion> detEvaluacionList) {
-        this.detEvaluacionList = detEvaluacionList;
     }
 
     @Override
@@ -158,16 +89,7 @@ public class Pregunta implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Pregunta[ preguntaPK=" + preguntaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Pregunta[ preguntaPK=" + preguntaPK + " ]";
     }
-    @Transient
-    private String respuestaSeleccionada;
-
-    public String getRespuestaSeleccionada() {
-        return respuestaSeleccionada;
-    }
-
-    public void setRespuestaSeleccionada(String respuestaSeleccionada) {
-        this.respuestaSeleccionada = respuestaSeleccionada;
-    }
+    
 }

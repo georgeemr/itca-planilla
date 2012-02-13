@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "DET_PLNPOLIZA")
+@Table(name = "DET_PLNPOLIZA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DetPlnpoliza.findAll", query = "SELECT d FROM DetPlnpoliza d"),
@@ -45,29 +45,26 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "DetPlnpoliza.findByCodTipopla", query = "SELECT d FROM DetPlnpoliza d WHERE d.codTipopla = :codTipopla"),
     @NamedQuery(name = "DetPlnpoliza.findByCodDepto", query = "SELECT d FROM DetPlnpoliza d WHERE d.codDepto = :codDepto"),
     @NamedQuery(name = "DetPlnpoliza.findByConcepto", query = "SELECT d FROM DetPlnpoliza d WHERE d.concepto = :concepto"),
-    @NamedQuery(name = "DetPlnpoliza.findByProyecto", query = "SELECT d FROM DetPlnpoliza d WHERE d.proyecto = :proyecto"),
-    @NamedQuery(name = "DetPlnpoliza.findByCta6", query = "SELECT d FROM DetPlnpoliza d WHERE d.cta6 = :cta6"),
-    @NamedQuery(name = "DetPlnpoliza.findByCta7", query = "SELECT d FROM DetPlnpoliza d WHERE d.cta7 = :cta7"),
-    @NamedQuery(name = "DetPlnpoliza.findByCta8", query = "SELECT d FROM DetPlnpoliza d WHERE d.cta8 = :cta8")})
+    @NamedQuery(name = "DetPlnpoliza.findByProyecto", query = "SELECT d FROM DetPlnpoliza d WHERE d.proyecto = :proyecto")})
 public class DetPlnpoliza implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected DetPlnpolizaPK detPlnpolizaPK;
     @Basic(optional = false)
-    @Column(name = "CTA_1", nullable = false, length = 2)
-    private String cta1;
+    @Column(name = "CTA_1", nullable = false)
+    private short cta1;
     @Basic(optional = false)
-    @Column(name = "CTA_2", nullable = false, length = 3)
-    private String cta2;
+    @Column(name = "CTA_2", nullable = false)
+    private short cta2;
     @Basic(optional = false)
-    @Column(name = "CTA_3", nullable = false, length = 4)
-    private String cta3;
+    @Column(name = "CTA_3", nullable = false)
+    private short cta3;
     @Basic(optional = false)
-    @Column(name = "CTA_4", nullable = false, length = 4)
-    private String cta4;
+    @Column(name = "CTA_4", nullable = false)
+    private short cta4;
     @Basic(optional = false)
-    @Column(name = "CTA_5", nullable = false, length = 5)
-    private String cta5;
+    @Column(name = "CTA_5", nullable = false)
+    private int cta5;
     @Column(name = "TIPO_ACTIV", length = 2)
     private String tipoActiv;
     @Column(name = "SUB_ACTIV")
@@ -85,15 +82,6 @@ public class DetPlnpoliza implements Serializable {
     private String concepto;
     @Column(name = "PROYECTO", length = 20)
     private String proyecto;
-    @Basic(optional = false)
-    @Column(name = "CTA_6", nullable = false, length = 5)
-    private String cta6;
-    @Basic(optional = false)
-    @Column(name = "CTA_7", nullable = false, length = 5)
-    private String cta7;
-    @Basic(optional = false)
-    @Column(name = "CTA_8", nullable = false, length = 5)
-    private String cta8;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "TIPO_DOCTO", referencedColumnName = "TIPO_DOCTO", nullable = false, insertable = false, updatable = false),
@@ -109,16 +97,13 @@ public class DetPlnpoliza implements Serializable {
         this.detPlnpolizaPK = detPlnpolizaPK;
     }
 
-    public DetPlnpoliza(DetPlnpolizaPK detPlnpolizaPK, String cta1, String cta2, String cta3, String cta4, String cta5, String cta6, String cta7, String cta8) {
+    public DetPlnpoliza(DetPlnpolizaPK detPlnpolizaPK, short cta1, short cta2, short cta3, short cta4, int cta5) {
         this.detPlnpolizaPK = detPlnpolizaPK;
         this.cta1 = cta1;
         this.cta2 = cta2;
         this.cta3 = cta3;
         this.cta4 = cta4;
         this.cta5 = cta5;
-        this.cta6 = cta6;
-        this.cta7 = cta7;
-        this.cta8 = cta8;
     }
 
     public DetPlnpoliza(short codCia, String tipoDocto, int numPoliza, short correlat, Date fecha) {
@@ -133,43 +118,43 @@ public class DetPlnpoliza implements Serializable {
         this.detPlnpolizaPK = detPlnpolizaPK;
     }
 
-    public String getCta1() {
+    public short getCta1() {
         return cta1;
     }
 
-    public void setCta1(String cta1) {
+    public void setCta1(short cta1) {
         this.cta1 = cta1;
     }
 
-    public String getCta2() {
+    public short getCta2() {
         return cta2;
     }
 
-    public void setCta2(String cta2) {
+    public void setCta2(short cta2) {
         this.cta2 = cta2;
     }
 
-    public String getCta3() {
+    public short getCta3() {
         return cta3;
     }
 
-    public void setCta3(String cta3) {
+    public void setCta3(short cta3) {
         this.cta3 = cta3;
     }
 
-    public String getCta4() {
+    public short getCta4() {
         return cta4;
     }
 
-    public void setCta4(String cta4) {
+    public void setCta4(short cta4) {
         this.cta4 = cta4;
     }
 
-    public String getCta5() {
+    public int getCta5() {
         return cta5;
     }
 
-    public void setCta5(String cta5) {
+    public void setCta5(int cta5) {
         this.cta5 = cta5;
     }
 
@@ -237,30 +222,6 @@ public class DetPlnpoliza implements Serializable {
         this.proyecto = proyecto;
     }
 
-    public String getCta6() {
-        return cta6;
-    }
-
-    public void setCta6(String cta6) {
-        this.cta6 = cta6;
-    }
-
-    public String getCta7() {
-        return cta7;
-    }
-
-    public void setCta7(String cta7) {
-        this.cta7 = cta7;
-    }
-
-    public String getCta8() {
-        return cta8;
-    }
-
-    public void setCta8(String cta8) {
-        this.cta8 = cta8;
-    }
-
     public Plnpoliza getPlnpoliza() {
         return plnpoliza;
     }
@@ -291,7 +252,7 @@ public class DetPlnpoliza implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.DetPlnpoliza[ detPlnpolizaPK=" + detPlnpolizaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.DetPlnpoliza[ detPlnpolizaPK=" + detPlnpolizaPK + " ]";
     }
     
 }

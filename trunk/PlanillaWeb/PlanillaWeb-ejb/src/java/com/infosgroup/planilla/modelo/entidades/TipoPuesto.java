@@ -5,27 +5,21 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "TIPO_PUESTO")
+@Table(name = "TIPO_PUESTO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoPuesto.findAll", query = "SELECT t FROM TipoPuesto t"),
@@ -39,15 +33,6 @@ public class TipoPuesto implements Serializable {
     @Basic(optional = false)
     @Column(name = "NOM_TIPO", nullable = false, length = 200)
     private String nomTipo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto")
-    private List<FuncionPuesto> funcionPuestoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto")
-    private List<PuestoEmpleado> puestoEmpleadoList;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPuesto")
-    private List<Puestos> puestosList;
 
     public TipoPuesto() {
     }
@@ -81,41 +66,6 @@ public class TipoPuesto implements Serializable {
         this.nomTipo = nomTipo;
     }
 
-    @XmlTransient
-    public List<FuncionPuesto> getFuncionPuestoList() {
-        return funcionPuestoList;
-    }
-
-    public void setFuncionPuestoList(List<FuncionPuesto> funcionPuestoList) {
-        this.funcionPuestoList = funcionPuestoList;
-    }
-
-    @XmlTransient
-    public List<PuestoEmpleado> getPuestoEmpleadoList() {
-        return puestoEmpleadoList;
-    }
-
-    public void setPuestoEmpleadoList(List<PuestoEmpleado> puestoEmpleadoList) {
-        this.puestoEmpleadoList = puestoEmpleadoList;
-    }
-
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
-    }
-
-    @XmlTransient
-    public List<Puestos> getPuestosList() {
-        return puestosList;
-    }
-
-    public void setPuestosList(List<Puestos> puestosList) {
-        this.puestosList = puestosList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -138,7 +88,7 @@ public class TipoPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoPuesto[ tipoPuestoPK=" + tipoPuestoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoPuesto[ tipoPuestoPK=" + tipoPuestoPK + " ]";
     }
     
 }

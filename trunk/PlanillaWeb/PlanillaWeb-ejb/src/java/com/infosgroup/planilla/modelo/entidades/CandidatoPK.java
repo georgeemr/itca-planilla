@@ -8,7 +8,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -17,19 +16,16 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class CandidatoPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
-
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_CANDIDATO", nullable = false)
-    private long codCandidato;
+    private int codCandidato;
 
     public CandidatoPK() {
     }
 
-    public CandidatoPK(short codCia, long codCandidato) {
+    public CandidatoPK(short codCia, int codCandidato) {
         this.codCia = codCia;
         this.codCandidato = codCandidato;
     }
@@ -42,11 +38,11 @@ public class CandidatoPK implements Serializable {
         this.codCia = codCia;
     }
 
-    public long getCodCandidato() {
+    public int getCodCandidato() {
         return codCandidato;
     }
 
-    public void setCodCandidato(long codCandidato) {
+    public void setCodCandidato(int codCandidato) {
         this.codCandidato = codCandidato;
     }
 
@@ -76,7 +72,7 @@ public class CandidatoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CandidatoPK[ codCia=" + codCia + ", codCandidato=" + codCandidato + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.CandidatoPK[ codCia=" + codCia + ", codCandidato=" + codCandidato + " ]";
     }
     
 }

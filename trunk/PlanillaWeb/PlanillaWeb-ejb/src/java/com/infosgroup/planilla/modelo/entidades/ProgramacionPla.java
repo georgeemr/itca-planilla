@@ -10,9 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -25,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "PROGRAMACION_PLA")
+@Table(name = "PROGRAMACION_PLA", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ProgramacionPla.findAll", query = "SELECT p FROM ProgramacionPla p"),
@@ -42,9 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ProgramacionPla.findByFechaFinal", query = "SELECT p FROM ProgramacionPla p WHERE p.fechaFinal = :fechaFinal"),
     @NamedQuery(name = "ProgramacionPla.findByFechaInicial", query = "SELECT p FROM ProgramacionPla p WHERE p.fechaInicial = :fechaInicial"),
     @NamedQuery(name = "ProgramacionPla.findByObservacion", query = "SELECT p FROM ProgramacionPla p WHERE p.observacion = :observacion"),
-    @NamedQuery(name = "ProgramacionPla.findByFecha", query = "SELECT p FROM ProgramacionPla p WHERE p.fecha = :fecha"),
-    @NamedQuery(name = "ProgramacionPla.findBySalarios", query = "SELECT p FROM ProgramacionPla p WHERE p.salarios = :salarios"),
-    @NamedQuery(name = "ProgramacionPla.findByComentario", query = "SELECT p FROM ProgramacionPla p WHERE p.comentario = :comentario")})
+    @NamedQuery(name = "ProgramacionPla.findByFecha", query = "SELECT p FROM ProgramacionPla p WHERE p.fecha = :fecha")})
 public class ProgramacionPla implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -75,18 +70,6 @@ public class ProgramacionPla implements Serializable {
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-    @Column(name = "SALARIOS")
-    private Short salarios;
-    @Column(name = "COMENTARIO", length = 100)
-    private String comentario;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private TiposPlanilla tiposPlanilla;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private ParamPlan paramPlan;
 
     public ProgramacionPla() {
     }
@@ -193,38 +176,6 @@ public class ProgramacionPla implements Serializable {
         this.fecha = fecha;
     }
 
-    public Short getSalarios() {
-        return salarios;
-    }
-
-    public void setSalarios(Short salarios) {
-        this.salarios = salarios;
-    }
-
-    public String getComentario() {
-        return comentario;
-    }
-
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
-
-    public TiposPlanilla getTiposPlanilla() {
-        return tiposPlanilla;
-    }
-
-    public void setTiposPlanilla(TiposPlanilla tiposPlanilla) {
-        this.tiposPlanilla = tiposPlanilla;
-    }
-
-    public ParamPlan getParamPlan() {
-        return paramPlan;
-    }
-
-    public void setParamPlan(ParamPlan paramPlan) {
-        this.paramPlan = paramPlan;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -247,7 +198,7 @@ public class ProgramacionPla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.ProgramacionPla[ programacionPlaPK=" + programacionPlaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.ProgramacionPla[ programacionPlaPK=" + programacionPlaPK + " ]";
     }
     
 }

@@ -88,7 +88,7 @@ public class DetRangosPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.DetRangosPK[ codCia=" + codCia + ", codRango=" + codRango + ", secuencia=" + secuencia + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.DetRangosPK[ codCia=" + codCia + ", codRango=" + codRango + ", secuencia=" + secuencia + " ]";
     }
     
 }

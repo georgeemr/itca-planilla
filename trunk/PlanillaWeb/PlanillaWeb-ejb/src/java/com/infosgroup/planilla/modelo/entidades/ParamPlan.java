@@ -6,27 +6,21 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "PARAM_PLAN")
+@Table(name = "PARAM_PLAN", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ParamPlan.findAll", query = "SELECT p FROM ParamPlan p"),
@@ -43,25 +37,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ParamPlan.findByCta3", query = "SELECT p FROM ParamPlan p WHERE p.cta3 = :cta3"),
     @NamedQuery(name = "ParamPlan.findByCta4", query = "SELECT p FROM ParamPlan p WHERE p.cta4 = :cta4"),
     @NamedQuery(name = "ParamPlan.findByCta5", query = "SELECT p FROM ParamPlan p WHERE p.cta5 = :cta5"),
-    @NamedQuery(name = "ParamPlan.findByCta6", query = "SELECT p FROM ParamPlan p WHERE p.cta6 = :cta6"),
-    @NamedQuery(name = "ParamPlan.findByCta7", query = "SELECT p FROM ParamPlan p WHERE p.cta7 = :cta7"),
-    @NamedQuery(name = "ParamPlan.findByCta8", query = "SELECT p FROM ParamPlan p WHERE p.cta8 = :cta8"),
     @NamedQuery(name = "ParamPlan.findByCta1Ad", query = "SELECT p FROM ParamPlan p WHERE p.cta1Ad = :cta1Ad"),
     @NamedQuery(name = "ParamPlan.findByCta2Ad", query = "SELECT p FROM ParamPlan p WHERE p.cta2Ad = :cta2Ad"),
     @NamedQuery(name = "ParamPlan.findByCta3Ad", query = "SELECT p FROM ParamPlan p WHERE p.cta3Ad = :cta3Ad"),
     @NamedQuery(name = "ParamPlan.findByCta4Ad", query = "SELECT p FROM ParamPlan p WHERE p.cta4Ad = :cta4Ad"),
     @NamedQuery(name = "ParamPlan.findByCta5Ad", query = "SELECT p FROM ParamPlan p WHERE p.cta5Ad = :cta5Ad"),
-    @NamedQuery(name = "ParamPlan.findByCta6Ad", query = "SELECT p FROM ParamPlan p WHERE p.cta6Ad = :cta6Ad"),
-    @NamedQuery(name = "ParamPlan.findByCta7Ad", query = "SELECT p FROM ParamPlan p WHERE p.cta7Ad = :cta7Ad"),
-    @NamedQuery(name = "ParamPlan.findByCta8Ad", query = "SELECT p FROM ParamPlan p WHERE p.cta8Ad = :cta8Ad"),
     @NamedQuery(name = "ParamPlan.findByCta1Ve", query = "SELECT p FROM ParamPlan p WHERE p.cta1Ve = :cta1Ve"),
     @NamedQuery(name = "ParamPlan.findByCta2Ve", query = "SELECT p FROM ParamPlan p WHERE p.cta2Ve = :cta2Ve"),
     @NamedQuery(name = "ParamPlan.findByCta3Ve", query = "SELECT p FROM ParamPlan p WHERE p.cta3Ve = :cta3Ve"),
     @NamedQuery(name = "ParamPlan.findByCta4Ve", query = "SELECT p FROM ParamPlan p WHERE p.cta4Ve = :cta4Ve"),
     @NamedQuery(name = "ParamPlan.findByCta5Ve", query = "SELECT p FROM ParamPlan p WHERE p.cta5Ve = :cta5Ve"),
-    @NamedQuery(name = "ParamPlan.findByCta6Ve", query = "SELECT p FROM ParamPlan p WHERE p.cta6Ve = :cta6Ve"),
-    @NamedQuery(name = "ParamPlan.findByCta7Ve", query = "SELECT p FROM ParamPlan p WHERE p.cta7Ve = :cta7Ve"),
-    @NamedQuery(name = "ParamPlan.findByCta8Ve", query = "SELECT p FROM ParamPlan p WHERE p.cta8Ve = :cta8Ve"),
     @NamedQuery(name = "ParamPlan.findByIncapacidad", query = "SELECT p FROM ParamPlan p WHERE p.incapacidad = :incapacidad"),
     @NamedQuery(name = "ParamPlan.findBySalarioMin", query = "SELECT p FROM ParamPlan p WHERE p.salarioMin = :salarioMin"),
     @NamedQuery(name = "ParamPlan.findByFacHx250", query = "SELECT p FROM ParamPlan p WHERE p.facHx250 = :facHx250"),
@@ -83,13 +68,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ParamPlan.findByFirma2", query = "SELECT p FROM ParamPlan p WHERE p.firma2 = :firma2"),
     @NamedQuery(name = "ParamPlan.findByPuesto2", query = "SELECT p FROM ParamPlan p WHERE p.puesto2 = :puesto2"),
     @NamedQuery(name = "ParamPlan.findByFirma3", query = "SELECT p FROM ParamPlan p WHERE p.firma3 = :firma3"),
-    @NamedQuery(name = "ParamPlan.findByPuesto3", query = "SELECT p FROM ParamPlan p WHERE p.puesto3 = :puesto3"),
-    @NamedQuery(name = "ParamPlan.findByCta6Op", query = "SELECT p FROM ParamPlan p WHERE p.cta6Op = :cta6Op"),
-    @NamedQuery(name = "ParamPlan.findByCta7Op", query = "SELECT p FROM ParamPlan p WHERE p.cta7Op = :cta7Op"),
-    @NamedQuery(name = "ParamPlan.findByCta8Op", query = "SELECT p FROM ParamPlan p WHERE p.cta8Op = :cta8Op"),
-    @NamedQuery(name = "ParamPlan.findByHorasNocturno", query = "SELECT p FROM ParamPlan p WHERE p.horasNocturno = :horasNocturno"),
-    @NamedQuery(name = "ParamPlan.findByNocturnidad", query = "SELECT p FROM ParamPlan p WHERE p.nocturnidad = :nocturnidad"),
-    @NamedQuery(name = "ParamPlan.findByCodDeducIsss", query = "SELECT p FROM ParamPlan p WHERE p.codDeducIsss = :codDeducIsss")})
+    @NamedQuery(name = "ParamPlan.findByPuesto3", query = "SELECT p FROM ParamPlan p WHERE p.puesto3 = :puesto3")})
 public class ParamPlan implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -118,54 +97,36 @@ public class ParamPlan implements Serializable {
     @Basic(optional = false)
     @Column(name = "FACTU_ING", nullable = false, length = 1)
     private String factuIng;
-    @Column(name = "CTA_1", length = 2)
-    private String cta1;
-    @Column(name = "CTA_2", length = 3)
-    private String cta2;
-    @Column(name = "CTA_3", length = 4)
-    private String cta3;
-    @Column(name = "CTA_4", length = 4)
-    private String cta4;
-    @Column(name = "CTA_5", length = 5)
-    private String cta5;
-    @Column(name = "CTA_6", length = 5)
-    private String cta6;
-    @Column(name = "CTA_7", length = 5)
-    private String cta7;
-    @Column(name = "CTA_8", length = 5)
-    private String cta8;
-    @Column(name = "CTA_1_AD", length = 2)
-    private String cta1Ad;
-    @Column(name = "CTA_2_AD", length = 3)
-    private String cta2Ad;
-    @Column(name = "CTA_3_AD", length = 4)
-    private String cta3Ad;
-    @Column(name = "CTA_4_AD", length = 4)
-    private String cta4Ad;
-    @Column(name = "CTA_5_AD", length = 5)
-    private String cta5Ad;
-    @Column(name = "CTA_6_AD", length = 5)
-    private String cta6Ad;
-    @Column(name = "CTA_7_AD", length = 5)
-    private String cta7Ad;
-    @Column(name = "CTA_8_AD", length = 5)
-    private String cta8Ad;
-    @Column(name = "CTA_1_VE", length = 2)
-    private String cta1Ve;
-    @Column(name = "CTA_2_VE", length = 3)
-    private String cta2Ve;
-    @Column(name = "CTA_3_VE", length = 4)
-    private String cta3Ve;
-    @Column(name = "CTA_4_VE", length = 4)
-    private String cta4Ve;
-    @Column(name = "CTA_5_VE", length = 5)
-    private String cta5Ve;
-    @Column(name = "CTA_6_VE", length = 5)
-    private String cta6Ve;
-    @Column(name = "CTA_7_VE", length = 5)
-    private String cta7Ve;
-    @Column(name = "CTA_8_VE", length = 5)
-    private String cta8Ve;
+    @Column(name = "CTA_1")
+    private Short cta1;
+    @Column(name = "CTA_2")
+    private Short cta2;
+    @Column(name = "CTA_3")
+    private Short cta3;
+    @Column(name = "CTA_4")
+    private Short cta4;
+    @Column(name = "CTA_5")
+    private Integer cta5;
+    @Column(name = "CTA_1_AD")
+    private Short cta1Ad;
+    @Column(name = "CTA_2_AD")
+    private Short cta2Ad;
+    @Column(name = "CTA_3_AD")
+    private Short cta3Ad;
+    @Column(name = "CTA_4_AD")
+    private Short cta4Ad;
+    @Column(name = "CTA_5_AD")
+    private Integer cta5Ad;
+    @Column(name = "CTA_1_VE")
+    private Short cta1Ve;
+    @Column(name = "CTA_2_VE")
+    private Short cta2Ve;
+    @Column(name = "CTA_3_VE")
+    private Short cta3Ve;
+    @Column(name = "CTA_4_VE")
+    private Short cta4Ve;
+    @Column(name = "CTA_5_VE")
+    private Integer cta5Ve;
     @Column(name = "INCAPACIDAD")
     private Integer incapacidad;
     @Column(name = "SALARIO_MIN", precision = 16, scale = 2)
@@ -174,16 +135,16 @@ public class ParamPlan implements Serializable {
     private BigDecimal facHx250;
     @Column(name = "F_VACACIONES", precision = 9, scale = 4)
     private BigDecimal fVacaciones;
-    @Column(name = "CTA_1_OP", length = 2)
-    private String cta1Op;
-    @Column(name = "CTA_2_OP", length = 3)
-    private String cta2Op;
-    @Column(name = "CTA_3_OP", length = 4)
-    private String cta3Op;
-    @Column(name = "CTA_4_OP", length = 4)
-    private String cta4Op;
-    @Column(name = "CTA_5_OP", length = 5)
-    private String cta5Op;
+    @Column(name = "CTA_1_OP")
+    private Short cta1Op;
+    @Column(name = "CTA_2_OP")
+    private Short cta2Op;
+    @Column(name = "CTA_3_OP")
+    private Short cta3Op;
+    @Column(name = "CTA_4_OP")
+    private Short cta4Op;
+    @Column(name = "CTA_5_OP")
+    private Integer cta5Op;
     @Column(name = "DIAS_HISTORIA")
     private Integer diasHistoria;
     @Column(name = "MINIMO_MERCADERIA", precision = 16, scale = 2)
@@ -210,35 +171,6 @@ public class ParamPlan implements Serializable {
     private String firma3;
     @Column(name = "PUESTO3", length = 100)
     private String puesto3;
-    @Column(name = "CTA_6_OP", length = 5)
-    private String cta6Op;
-    @Column(name = "CTA_7_OP", length = 5)
-    private String cta7Op;
-    @Column(name = "CTA_8_OP", length = 5)
-    private String cta8Op;
-    @Column(name = "HORAS_NOCTURNO")
-    private Short horasNocturno;
-    @Column(name = "NOCTURNIDAD", precision = 5, scale = 2)
-    private BigDecimal nocturnidad;
-    @Column(name = "COD_DEDUC_ISSS")
-    private Short codDeducIsss;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paramPlan")
-    private List<Agencias> agenciasList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paramPlan")
-    private List<FestivosXDepto> festivosXDeptoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paramPlan")
-    private List<PlanillaIsss> planillaIsssList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paramPlan")
-    private List<FirmasPlanilla> firmasPlanillaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paramPlan")
-    private List<Plnpoliza> plnpolizaList;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Cias cias;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paramPlan")
-    private List<ProgramacionPla> programacionPlaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paramPlan")
-    private List<RelUsuarioNivel> relUsuarioNivelList;
 
     public ParamPlan() {
     }
@@ -322,196 +254,124 @@ public class ParamPlan implements Serializable {
         this.factuIng = factuIng;
     }
 
-    public String getCta1() {
+    public Short getCta1() {
         return cta1;
     }
 
-    public void setCta1(String cta1) {
+    public void setCta1(Short cta1) {
         this.cta1 = cta1;
     }
 
-    public String getCta2() {
+    public Short getCta2() {
         return cta2;
     }
 
-    public void setCta2(String cta2) {
+    public void setCta2(Short cta2) {
         this.cta2 = cta2;
     }
 
-    public String getCta3() {
+    public Short getCta3() {
         return cta3;
     }
 
-    public void setCta3(String cta3) {
+    public void setCta3(Short cta3) {
         this.cta3 = cta3;
     }
 
-    public String getCta4() {
+    public Short getCta4() {
         return cta4;
     }
 
-    public void setCta4(String cta4) {
+    public void setCta4(Short cta4) {
         this.cta4 = cta4;
     }
 
-    public String getCta5() {
+    public Integer getCta5() {
         return cta5;
     }
 
-    public void setCta5(String cta5) {
+    public void setCta5(Integer cta5) {
         this.cta5 = cta5;
     }
 
-    public String getCta6() {
-        return cta6;
-    }
-
-    public void setCta6(String cta6) {
-        this.cta6 = cta6;
-    }
-
-    public String getCta7() {
-        return cta7;
-    }
-
-    public void setCta7(String cta7) {
-        this.cta7 = cta7;
-    }
-
-    public String getCta8() {
-        return cta8;
-    }
-
-    public void setCta8(String cta8) {
-        this.cta8 = cta8;
-    }
-
-    public String getCta1Ad() {
+    public Short getCta1Ad() {
         return cta1Ad;
     }
 
-    public void setCta1Ad(String cta1Ad) {
+    public void setCta1Ad(Short cta1Ad) {
         this.cta1Ad = cta1Ad;
     }
 
-    public String getCta2Ad() {
+    public Short getCta2Ad() {
         return cta2Ad;
     }
 
-    public void setCta2Ad(String cta2Ad) {
+    public void setCta2Ad(Short cta2Ad) {
         this.cta2Ad = cta2Ad;
     }
 
-    public String getCta3Ad() {
+    public Short getCta3Ad() {
         return cta3Ad;
     }
 
-    public void setCta3Ad(String cta3Ad) {
+    public void setCta3Ad(Short cta3Ad) {
         this.cta3Ad = cta3Ad;
     }
 
-    public String getCta4Ad() {
+    public Short getCta4Ad() {
         return cta4Ad;
     }
 
-    public void setCta4Ad(String cta4Ad) {
+    public void setCta4Ad(Short cta4Ad) {
         this.cta4Ad = cta4Ad;
     }
 
-    public String getCta5Ad() {
+    public Integer getCta5Ad() {
         return cta5Ad;
     }
 
-    public void setCta5Ad(String cta5Ad) {
+    public void setCta5Ad(Integer cta5Ad) {
         this.cta5Ad = cta5Ad;
     }
 
-    public String getCta6Ad() {
-        return cta6Ad;
-    }
-
-    public void setCta6Ad(String cta6Ad) {
-        this.cta6Ad = cta6Ad;
-    }
-
-    public String getCta7Ad() {
-        return cta7Ad;
-    }
-
-    public void setCta7Ad(String cta7Ad) {
-        this.cta7Ad = cta7Ad;
-    }
-
-    public String getCta8Ad() {
-        return cta8Ad;
-    }
-
-    public void setCta8Ad(String cta8Ad) {
-        this.cta8Ad = cta8Ad;
-    }
-
-    public String getCta1Ve() {
+    public Short getCta1Ve() {
         return cta1Ve;
     }
 
-    public void setCta1Ve(String cta1Ve) {
+    public void setCta1Ve(Short cta1Ve) {
         this.cta1Ve = cta1Ve;
     }
 
-    public String getCta2Ve() {
+    public Short getCta2Ve() {
         return cta2Ve;
     }
 
-    public void setCta2Ve(String cta2Ve) {
+    public void setCta2Ve(Short cta2Ve) {
         this.cta2Ve = cta2Ve;
     }
 
-    public String getCta3Ve() {
+    public Short getCta3Ve() {
         return cta3Ve;
     }
 
-    public void setCta3Ve(String cta3Ve) {
+    public void setCta3Ve(Short cta3Ve) {
         this.cta3Ve = cta3Ve;
     }
 
-    public String getCta4Ve() {
+    public Short getCta4Ve() {
         return cta4Ve;
     }
 
-    public void setCta4Ve(String cta4Ve) {
+    public void setCta4Ve(Short cta4Ve) {
         this.cta4Ve = cta4Ve;
     }
 
-    public String getCta5Ve() {
+    public Integer getCta5Ve() {
         return cta5Ve;
     }
 
-    public void setCta5Ve(String cta5Ve) {
+    public void setCta5Ve(Integer cta5Ve) {
         this.cta5Ve = cta5Ve;
-    }
-
-    public String getCta6Ve() {
-        return cta6Ve;
-    }
-
-    public void setCta6Ve(String cta6Ve) {
-        this.cta6Ve = cta6Ve;
-    }
-
-    public String getCta7Ve() {
-        return cta7Ve;
-    }
-
-    public void setCta7Ve(String cta7Ve) {
-        this.cta7Ve = cta7Ve;
-    }
-
-    public String getCta8Ve() {
-        return cta8Ve;
-    }
-
-    public void setCta8Ve(String cta8Ve) {
-        this.cta8Ve = cta8Ve;
     }
 
     public Integer getIncapacidad() {
@@ -546,43 +406,43 @@ public class ParamPlan implements Serializable {
         this.fVacaciones = fVacaciones;
     }
 
-    public String getCta1Op() {
+    public Short getCta1Op() {
         return cta1Op;
     }
 
-    public void setCta1Op(String cta1Op) {
+    public void setCta1Op(Short cta1Op) {
         this.cta1Op = cta1Op;
     }
 
-    public String getCta2Op() {
+    public Short getCta2Op() {
         return cta2Op;
     }
 
-    public void setCta2Op(String cta2Op) {
+    public void setCta2Op(Short cta2Op) {
         this.cta2Op = cta2Op;
     }
 
-    public String getCta3Op() {
+    public Short getCta3Op() {
         return cta3Op;
     }
 
-    public void setCta3Op(String cta3Op) {
+    public void setCta3Op(Short cta3Op) {
         this.cta3Op = cta3Op;
     }
 
-    public String getCta4Op() {
+    public Short getCta4Op() {
         return cta4Op;
     }
 
-    public void setCta4Op(String cta4Op) {
+    public void setCta4Op(Short cta4Op) {
         this.cta4Op = cta4Op;
     }
 
-    public String getCta5Op() {
+    public Integer getCta5Op() {
         return cta5Op;
     }
 
-    public void setCta5Op(String cta5Op) {
+    public void setCta5Op(Integer cta5Op) {
         this.cta5Op = cta5Op;
     }
 
@@ -690,125 +550,6 @@ public class ParamPlan implements Serializable {
         this.puesto3 = puesto3;
     }
 
-    public String getCta6Op() {
-        return cta6Op;
-    }
-
-    public void setCta6Op(String cta6Op) {
-        this.cta6Op = cta6Op;
-    }
-
-    public String getCta7Op() {
-        return cta7Op;
-    }
-
-    public void setCta7Op(String cta7Op) {
-        this.cta7Op = cta7Op;
-    }
-
-    public String getCta8Op() {
-        return cta8Op;
-    }
-
-    public void setCta8Op(String cta8Op) {
-        this.cta8Op = cta8Op;
-    }
-
-    public Short getHorasNocturno() {
-        return horasNocturno;
-    }
-
-    public void setHorasNocturno(Short horasNocturno) {
-        this.horasNocturno = horasNocturno;
-    }
-
-    public BigDecimal getNocturnidad() {
-        return nocturnidad;
-    }
-
-    public void setNocturnidad(BigDecimal nocturnidad) {
-        this.nocturnidad = nocturnidad;
-    }
-
-    public Short getCodDeducIsss() {
-        return codDeducIsss;
-    }
-
-    public void setCodDeducIsss(Short codDeducIsss) {
-        this.codDeducIsss = codDeducIsss;
-    }
-
-    @XmlTransient
-    public List<Agencias> getAgenciasList() {
-        return agenciasList;
-    }
-
-    public void setAgenciasList(List<Agencias> agenciasList) {
-        this.agenciasList = agenciasList;
-    }
-
-    @XmlTransient
-    public List<FestivosXDepto> getFestivosXDeptoList() {
-        return festivosXDeptoList;
-    }
-
-    public void setFestivosXDeptoList(List<FestivosXDepto> festivosXDeptoList) {
-        this.festivosXDeptoList = festivosXDeptoList;
-    }
-
-    @XmlTransient
-    public List<PlanillaIsss> getPlanillaIsssList() {
-        return planillaIsssList;
-    }
-
-    public void setPlanillaIsssList(List<PlanillaIsss> planillaIsssList) {
-        this.planillaIsssList = planillaIsssList;
-    }
-
-    @XmlTransient
-    public List<FirmasPlanilla> getFirmasPlanillaList() {
-        return firmasPlanillaList;
-    }
-
-    public void setFirmasPlanillaList(List<FirmasPlanilla> firmasPlanillaList) {
-        this.firmasPlanillaList = firmasPlanillaList;
-    }
-
-    @XmlTransient
-    public List<Plnpoliza> getPlnpolizaList() {
-        return plnpolizaList;
-    }
-
-    public void setPlnpolizaList(List<Plnpoliza> plnpolizaList) {
-        this.plnpolizaList = plnpolizaList;
-    }
-
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
-    }
-
-    @XmlTransient
-    public List<ProgramacionPla> getProgramacionPlaList() {
-        return programacionPlaList;
-    }
-
-    public void setProgramacionPlaList(List<ProgramacionPla> programacionPlaList) {
-        this.programacionPlaList = programacionPlaList;
-    }
-
-    @XmlTransient
-    public List<RelUsuarioNivel> getRelUsuarioNivelList() {
-        return relUsuarioNivelList;
-    }
-
-    public void setRelUsuarioNivelList(List<RelUsuarioNivel> relUsuarioNivelList) {
-        this.relUsuarioNivelList = relUsuarioNivelList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -831,7 +572,7 @@ public class ParamPlan implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.ParamPlan[ codCia=" + codCia + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.ParamPlan[ codCia=" + codCia + " ]";
     }
     
 }

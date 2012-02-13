@@ -17,53 +17,53 @@ import javax.persistence.Embeddable;
 public class ContratoPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
-    @Column(name = "CODIGO", nullable = false)
-    private long codigo;
+    @Column(name = "COD_CONTRATO", nullable = false)
+    private int codContrato;
     @Basic(optional = false)
-    @Column(name = "CANDIDATO", nullable = false)
-    private long candidato;
+    @Column(name = "COD_CANDIDATO", nullable = false)
+    private int codCandidato;
 
     public ContratoPK() {
     }
 
-    public ContratoPK(long codCia, long codigo, long candidato) {
+    public ContratoPK(short codCia, int codContrato, int codCandidato) {
         this.codCia = codCia;
-        this.codigo = codigo;
-        this.candidato = candidato;
+        this.codContrato = codContrato;
+        this.codCandidato = codCandidato;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
-    public long getCodigo() {
-        return codigo;
+    public int getCodContrato() {
+        return codContrato;
     }
 
-    public void setCodigo(long codigo) {
-        this.codigo = codigo;
+    public void setCodContrato(int codContrato) {
+        this.codContrato = codContrato;
     }
 
-    public long getCandidato() {
-        return candidato;
+    public int getCodCandidato() {
+        return codCandidato;
     }
 
-    public void setCandidato(long candidato) {
-        this.candidato = candidato;
+    public void setCodCandidato(int codCandidato) {
+        this.codCandidato = codCandidato;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) codigo;
-        hash += (int) candidato;
+        hash += (int) codContrato;
+        hash += (int) codCandidato;
         return hash;
     }
 
@@ -77,10 +77,10 @@ public class ContratoPK implements Serializable {
         if (this.codCia != other.codCia) {
             return false;
         }
-        if (this.codigo != other.codigo) {
+        if (this.codContrato != other.codContrato) {
             return false;
         }
-        if (this.candidato != other.candidato) {
+        if (this.codCandidato != other.codCandidato) {
             return false;
         }
         return true;
@@ -88,7 +88,7 @@ public class ContratoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.ContratoPK[ codCia=" + codCia + ", codigo=" + codigo + ", candidato=" + candidato + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.ContratoPK[ codCia=" + codCia + ", codContrato=" + codContrato + ", codCandidato=" + codCandidato + " ]";
     }
     
 }

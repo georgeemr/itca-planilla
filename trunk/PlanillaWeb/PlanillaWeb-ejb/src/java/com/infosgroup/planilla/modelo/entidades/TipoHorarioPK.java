@@ -72,7 +72,7 @@ public class TipoHorarioPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoHorarioPK[ codCia=" + codCia + ", tipoHorario=" + tipoHorario + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoHorarioPK[ codCia=" + codCia + ", tipoHorario=" + tipoHorario + " ]";
     }
     
 }

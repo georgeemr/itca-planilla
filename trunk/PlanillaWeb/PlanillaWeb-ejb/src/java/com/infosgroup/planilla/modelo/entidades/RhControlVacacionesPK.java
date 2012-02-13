@@ -88,7 +88,7 @@ public class RhControlVacacionesPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.RhControlVacacionesPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", anio=" + anio + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.RhControlVacacionesPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", anio=" + anio + " ]";
     }
     
 }

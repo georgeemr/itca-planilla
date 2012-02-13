@@ -20,7 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -29,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "CANDIDATO_CONCURSO")
+@Table(name = "CANDIDATO_CONCURSO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CandidatoConcurso.findAll", query = "SELECT c FROM CandidatoConcurso c"),
@@ -39,18 +38,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "CandidatoConcurso.findByConcurso", query = "SELECT c FROM CandidatoConcurso c WHERE c.candidatoConcursoPK.concurso = :concurso"),
     @NamedQuery(name = "CandidatoConcurso.findByNotaEvaluacion", query = "SELECT c FROM CandidatoConcurso c WHERE c.notaEvaluacion = :notaEvaluacion"),
     @NamedQuery(name = "CandidatoConcurso.findByObservacion", query = "SELECT c FROM CandidatoConcurso c WHERE c.observacion = :observacion")})
-public class CandidatoConcurso implements Serializable, Comparable<CandidatoConcurso> {
+public class CandidatoConcurso implements Serializable , Comparable<CandidatoConcurso>{
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CandidatoConcursoPK candidatoConcursoPK;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ESTADO", nullable = false, length = 100)
     private String estado;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @NotNull
     @Column(name = "NOTA_EVALUACION", nullable = false, precision = 5, scale = 2)
     private BigDecimal notaEvaluacion;
     @Basic(optional = false)
@@ -70,7 +67,7 @@ public class CandidatoConcurso implements Serializable, Comparable<CandidatoConc
     private List<EvaluacionCandidato> evaluacionCandidatoList;
     @Transient
     private Integer orden = 10;
-
+    
     public CandidatoConcurso() {
     }
 
@@ -85,7 +82,7 @@ public class CandidatoConcurso implements Serializable, Comparable<CandidatoConc
         this.observacion = observacion;
     }
 
-    public CandidatoConcurso(long codCia, long candidato, long concurso) {
+    public CandidatoConcurso(short codCia, long candidato, long concurso) {
         this.candidatoConcursoPK = new CandidatoConcursoPK(codCia, candidato, concurso);
     }
 
@@ -146,14 +143,6 @@ public class CandidatoConcurso implements Serializable, Comparable<CandidatoConc
         this.evaluacionCandidatoList = evaluacionCandidatoList;
     }
 
-    public Integer getOrden() {
-        return orden;
-    }
-
-    public void setOrden(Integer orden) {
-        this.orden = orden;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -176,11 +165,20 @@ public class CandidatoConcurso implements Serializable, Comparable<CandidatoConc
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.CandidatoConcurso[ candidatoConcursoPK=" + candidatoConcursoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.CandidatoConcurso[ candidatoConcursoPK=" + candidatoConcursoPK + " ]";
     }
 
     @Override
     public int compareTo(CandidatoConcurso t) {
         return (this.notaEvaluacion.compareTo(t.notaEvaluacion) * -1);
     }
+
+    public Integer getOrden() {
+        return orden;
+    }
+
+    public void setOrden(Integer orden) {
+        this.orden = orden;
+    }
+
 }

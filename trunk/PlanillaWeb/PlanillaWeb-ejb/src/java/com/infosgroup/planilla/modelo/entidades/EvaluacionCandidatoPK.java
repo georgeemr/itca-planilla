@@ -17,7 +17,7 @@ import javax.persistence.Embeddable;
 public class EvaluacionCandidatoPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "PUESTO", nullable = false)
     private long puesto;
@@ -34,7 +34,7 @@ public class EvaluacionCandidatoPK implements Serializable {
     public EvaluacionCandidatoPK() {
     }
 
-    public EvaluacionCandidatoPK(long codCia, long puesto, long prueba, long candidato, long concurso) {
+    public EvaluacionCandidatoPK(short codCia, long puesto, long prueba, long candidato, long concurso) {
         this.codCia = codCia;
         this.puesto = puesto;
         this.prueba = prueba;
@@ -42,11 +42,11 @@ public class EvaluacionCandidatoPK implements Serializable {
         this.concurso = concurso;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
@@ -120,7 +120,7 @@ public class EvaluacionCandidatoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.EvaluacionCandidatoPK[ codCia=" + codCia + ", puesto=" + puesto + ", prueba=" + prueba + ", candidato=" + candidato + ", concurso=" + concurso + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.EvaluacionCandidatoPK[ codCia=" + codCia + ", puesto=" + puesto + ", prueba=" + prueba + ", candidato=" + candidato + ", concurso=" + concurso + " ]";
     }
     
 }

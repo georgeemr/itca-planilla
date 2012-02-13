@@ -17,7 +17,7 @@ import javax.persistence.Embeddable;
 public class ModuloPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "COD_MODULO", nullable = false)
     private long codModulo;
@@ -25,16 +25,16 @@ public class ModuloPK implements Serializable {
     public ModuloPK() {
     }
 
-    public ModuloPK(long codCia, long codModulo) {
+    public ModuloPK(short codCia, long codModulo) {
         this.codCia = codCia;
         this.codModulo = codModulo;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
@@ -72,7 +72,7 @@ public class ModuloPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.ModuloPK[ codCia=" + codCia + ", codModulo=" + codModulo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.ModuloPK[ codCia=" + codCia + ", codModulo=" + codModulo + " ]";
     }
     
 }

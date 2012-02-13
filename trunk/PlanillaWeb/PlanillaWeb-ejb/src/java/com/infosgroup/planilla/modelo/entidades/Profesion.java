@@ -5,21 +5,25 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "PROFESION")
+@Table(name = "PROFESION", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Profesion.findAll", query = "SELECT p FROM Profesion p"),
@@ -33,6 +37,8 @@ public class Profesion implements Serializable {
     @Basic(optional = false)
     @Column(name = "NOM_PROFESION", nullable = false, length = 200)
     private String nomProfesion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "profesion")
+    private List<Candidato> candidatoList;
 
     public Profesion() {
     }
@@ -66,6 +72,15 @@ public class Profesion implements Serializable {
         this.nomProfesion = nomProfesion;
     }
 
+    @XmlTransient
+    public List<Candidato> getCandidatoList() {
+        return candidatoList;
+    }
+
+    public void setCandidatoList(List<Candidato> candidatoList) {
+        this.candidatoList = candidatoList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -88,7 +103,7 @@ public class Profesion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Profesion[ profesionPK=" + profesionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Profesion[ profesionPK=" + profesionPK + " ]";
     }
     
 }

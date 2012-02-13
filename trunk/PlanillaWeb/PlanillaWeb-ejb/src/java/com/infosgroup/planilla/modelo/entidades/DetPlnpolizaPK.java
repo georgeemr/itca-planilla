@@ -124,7 +124,7 @@ public class DetPlnpolizaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.DetPlnpolizaPK[ codCia=" + codCia + ", tipoDocto=" + tipoDocto + ", numPoliza=" + numPoliza + ", correlat=" + correlat + ", fecha=" + fecha + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.DetPlnpolizaPK[ codCia=" + codCia + ", tipoDocto=" + tipoDocto + ", numPoliza=" + numPoliza + ", correlat=" + correlat + ", fecha=" + fecha + " ]";
     }
     
 }

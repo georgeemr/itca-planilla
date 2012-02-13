@@ -11,8 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -25,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "FRECUENCIA_FUNCION")
+@Table(name = "FRECUENCIA_FUNCION", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "FrecuenciaFuncion.findAll", query = "SELECT f FROM FrecuenciaFuncion f"),
@@ -41,9 +39,6 @@ public class FrecuenciaFuncion implements Serializable {
     private String nomFrecuencia;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "frecuenciaFuncion")
     private List<FuncionPuesto> funcionPuestoList;
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Cias cias;
 
     public FrecuenciaFuncion() {
     }
@@ -86,14 +81,6 @@ public class FrecuenciaFuncion implements Serializable {
         this.funcionPuestoList = funcionPuestoList;
     }
 
-    public Cias getCias() {
-        return cias;
-    }
-
-    public void setCias(Cias cias) {
-        this.cias = cias;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -116,7 +103,7 @@ public class FrecuenciaFuncion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.FrecuenciaFuncion[ frecuenciaFuncionPK=" + frecuenciaFuncionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.FrecuenciaFuncion[ frecuenciaFuncionPK=" + frecuenciaFuncionPK + " ]";
     }
     
 }

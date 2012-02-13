@@ -72,7 +72,7 @@ public class NivelAcademicoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.NivelAcademicoPK[ codCia=" + codCia + ", codNivelAcademico=" + codNivelAcademico + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.NivelAcademicoPK[ codCia=" + codCia + ", codNivelAcademico=" + codNivelAcademico + " ]";
     }
     
 }

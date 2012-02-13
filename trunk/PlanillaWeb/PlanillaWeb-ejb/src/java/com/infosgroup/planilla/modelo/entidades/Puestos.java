@@ -11,10 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -27,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "PUESTOS")
+@Table(name = "PUESTOS", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Puestos.findAll", query = "SELECT p FROM Puestos p"),
@@ -43,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Puestos.findBySalMinimo", query = "SELECT p FROM Puestos p WHERE p.salMinimo = :salMinimo"),
     @NamedQuery(name = "Puestos.findByEnObra", query = "SELECT p FROM Puestos p WHERE p.enObra = :enObra"),
     @NamedQuery(name = "Puestos.findByCodAlterno", query = "SELECT p FROM Puestos p WHERE p.codAlterno = :codAlterno"),
+    @NamedQuery(name = "Puestos.findByCodTipoPuesto", query = "SELECT p FROM Puestos p WHERE p.codTipoPuesto = :codTipoPuesto"),
     @NamedQuery(name = "Puestos.findByDescPuesto", query = "SELECT p FROM Puestos p WHERE p.descPuesto = :descPuesto"),
     @NamedQuery(name = "Puestos.findByStatus", query = "SELECT p FROM Puestos p WHERE p.status = :status"),
     @NamedQuery(name = "Puestos.findByInfConf", query = "SELECT p FROM Puestos p WHERE p.infConf = :infConf"),
@@ -53,15 +51,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Puestos.findByObjetivo", query = "SELECT p FROM Puestos p WHERE p.objetivo = :objetivo"),
     @NamedQuery(name = "Puestos.findByImpactoFinan", query = "SELECT p FROM Puestos p WHERE p.impactoFinan = :impactoFinan"),
     @NamedQuery(name = "Puestos.findByGenero", query = "SELECT p FROM Puestos p WHERE p.genero = :genero"),
+    @NamedQuery(name = "Puestos.findByCodRangoEdad", query = "SELECT p FROM Puestos p WHERE p.codRangoEdad = :codRangoEdad"),
+    @NamedQuery(name = "Puestos.findByCodRangoAnios", query = "SELECT p FROM Puestos p WHERE p.codRangoAnios = :codRangoAnios"),
     @NamedQuery(name = "Puestos.findByCodNivelAcademico", query = "SELECT p FROM Puestos p WHERE p.codNivelAcademico = :codNivelAcademico"),
     @NamedQuery(name = "Puestos.findByCodCondicion", query = "SELECT p FROM Puestos p WHERE p.codCondicion = :codCondicion"),
-    @NamedQuery(name = "Puestos.findByJefatura", query = "SELECT p FROM Puestos p WHERE p.jefatura = :jefatura"),
-    @NamedQuery(name = "Puestos.findByOrdenSitioWeb", query = "SELECT p FROM Puestos p WHERE p.ordenSitioWeb = :ordenSitioWeb")})
+    @NamedQuery(name = "Puestos.findByJefatura", query = "SELECT p FROM Puestos p WHERE p.jefatura = :jefatura")})
 public class Puestos implements Serializable {
-        @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestosNuevo")
-    private List<AccionPersonal> accionPersonalList;
-        @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-    private List<AccionPersonal> accionPersonalList1;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PuestosPK puestosPK;
@@ -86,6 +81,8 @@ public class Puestos implements Serializable {
     private String enObra;
     @Column(name = "COD_ALTERNO", length = 8)
     private String codAlterno;
+    @Column(name = "COD_TIPO_PUESTO")
+    private Short codTipoPuesto;
     @Column(name = "DESC_PUESTO", length = 400)
     private String descPuesto;
     @Column(name = "STATUS")
@@ -106,50 +103,21 @@ public class Puestos implements Serializable {
     private BigDecimal impactoFinan;
     @Column(name = "GENERO", length = 1)
     private String genero;
+    @Column(name = "COD_RANGO_EDAD")
+    private Long codRangoEdad;
+    @Column(name = "COD_RANGO_ANIOS")
+    private Long codRangoAnios;
     @Column(name = "COD_NIVEL_ACADEMICO")
     private Short codNivelAcademico;
     @Column(name = "COD_CONDICION")
     private Short codCondicion;
     @Column(name = "JEFATURA", length = 2)
     private String jefatura;
-    @Column(name = "ORDEN_SITIO_WEB")
-    private Short ordenSitioWeb;
-    @ManyToMany(mappedBy = "puestosList")
-    private List<Competencias> competenciasList;
-    @ManyToMany(mappedBy = "puestosList")
-    private List<DeducPresta> deducPrestaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-    private List<Empleados> empleadosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-    private List<Contrato> contratoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
     private List<PruebaXPuesto> pruebaXPuestoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-    private List<FuncionXPuesto> funcionXPuestoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-    private List<PuestoEmpleado> puestoEmpleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-    private List<Concurso> concursoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-    private List<HisPuesto> hisPuestoList;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_TIPO_PUESTO", referencedColumnName = "COD_TIPO_PUESTO")})
-    @ManyToOne(optional = false)
-    private TipoPuesto tipoPuesto;
-    @JoinColumn(name = "COD_RANGO_EDAD", referencedColumnName = "COD_RANGO_EDAD")
-    @ManyToOne
-    private RangoEdad codRangoEdad;
-    @JoinColumn(name = "COD_RANGO_ANIOS", referencedColumnName = "COD_RANGO_ANIOS")
-    @ManyToOne
-    private RangoAniosExp codRangoAnios;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-    private List<ContactosXPuesto> contactosXPuestoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-    private List<RhOutsorcing> rhOutsorcingList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1", fetch = FetchType.EAGER)
     private List<CriteriosXPuesto> criteriosXPuestoList;
-
+    
     public Puestos() {
     }
 
@@ -249,6 +217,14 @@ public class Puestos implements Serializable {
         this.codAlterno = codAlterno;
     }
 
+    public Short getCodTipoPuesto() {
+        return codTipoPuesto;
+    }
+
+    public void setCodTipoPuesto(Short codTipoPuesto) {
+        this.codTipoPuesto = codTipoPuesto;
+    }
+
     public String getDescPuesto() {
         return descPuesto;
     }
@@ -329,6 +305,22 @@ public class Puestos implements Serializable {
         this.genero = genero;
     }
 
+    public Long getCodRangoEdad() {
+        return codRangoEdad;
+    }
+
+    public void setCodRangoEdad(Long codRangoEdad) {
+        this.codRangoEdad = codRangoEdad;
+    }
+
+    public Long getCodRangoAnios() {
+        return codRangoAnios;
+    }
+
+    public void setCodRangoAnios(Long codRangoAnios) {
+        this.codRangoAnios = codRangoAnios;
+    }
+
     public Short getCodNivelAcademico() {
         return codNivelAcademico;
     }
@@ -353,50 +345,6 @@ public class Puestos implements Serializable {
         this.jefatura = jefatura;
     }
 
-    public Short getOrdenSitioWeb() {
-        return ordenSitioWeb;
-    }
-
-    public void setOrdenSitioWeb(Short ordenSitioWeb) {
-        this.ordenSitioWeb = ordenSitioWeb;
-    }
-
-    @XmlTransient
-    public List<Competencias> getCompetenciasList() {
-        return competenciasList;
-    }
-
-    public void setCompetenciasList(List<Competencias> competenciasList) {
-        this.competenciasList = competenciasList;
-    }
-
-    @XmlTransient
-    public List<DeducPresta> getDeducPrestaList() {
-        return deducPrestaList;
-    }
-
-    public void setDeducPrestaList(List<DeducPresta> deducPrestaList) {
-        this.deducPrestaList = deducPrestaList;
-    }
-
-    @XmlTransient
-    public List<Empleados> getEmpleadosList() {
-        return empleadosList;
-    }
-
-    public void setEmpleadosList(List<Empleados> empleadosList) {
-        this.empleadosList = empleadosList;
-    }
-
-    @XmlTransient
-    public List<Contrato> getContratoList() {
-        return contratoList;
-    }
-
-    public void setContratoList(List<Contrato> contratoList) {
-        this.contratoList = contratoList;
-    }
-
     @XmlTransient
     public List<PruebaXPuesto> getPruebaXPuestoList() {
         return pruebaXPuestoList;
@@ -406,85 +354,6 @@ public class Puestos implements Serializable {
         this.pruebaXPuestoList = pruebaXPuestoList;
     }
 
-    @XmlTransient
-    public List<FuncionXPuesto> getFuncionXPuestoList() {
-        return funcionXPuestoList;
-    }
-
-    public void setFuncionXPuestoList(List<FuncionXPuesto> funcionXPuestoList) {
-        this.funcionXPuestoList = funcionXPuestoList;
-    }
-
-    @XmlTransient
-    public List<PuestoEmpleado> getPuestoEmpleadoList() {
-        return puestoEmpleadoList;
-    }
-
-    public void setPuestoEmpleadoList(List<PuestoEmpleado> puestoEmpleadoList) {
-        this.puestoEmpleadoList = puestoEmpleadoList;
-    }
-
-    @XmlTransient
-    public List<Concurso> getConcursoList() {
-        return concursoList;
-    }
-
-    public void setConcursoList(List<Concurso> concursoList) {
-        this.concursoList = concursoList;
-    }
-
-    @XmlTransient
-    public List<HisPuesto> getHisPuestoList() {
-        return hisPuestoList;
-    }
-
-    public void setHisPuestoList(List<HisPuesto> hisPuestoList) {
-        this.hisPuestoList = hisPuestoList;
-    }
-
-    public TipoPuesto getTipoPuesto() {
-        return tipoPuesto;
-    }
-
-    public void setTipoPuesto(TipoPuesto tipoPuesto) {
-        this.tipoPuesto = tipoPuesto;
-    }
-
-    public RangoEdad getCodRangoEdad() {
-        return codRangoEdad;
-    }
-
-    public void setCodRangoEdad(RangoEdad codRangoEdad) {
-        this.codRangoEdad = codRangoEdad;
-    }
-
-    public RangoAniosExp getCodRangoAnios() {
-        return codRangoAnios;
-    }
-
-    public void setCodRangoAnios(RangoAniosExp codRangoAnios) {
-        this.codRangoAnios = codRangoAnios;
-    }
-
-    @XmlTransient
-    public List<ContactosXPuesto> getContactosXPuestoList() {
-        return contactosXPuestoList;
-    }
-
-    public void setContactosXPuestoList(List<ContactosXPuesto> contactosXPuestoList) {
-        this.contactosXPuestoList = contactosXPuestoList;
-    }
-
-    @XmlTransient
-    public List<RhOutsorcing> getRhOutsorcingList() {
-        return rhOutsorcingList;
-    }
-
-    public void setRhOutsorcingList(List<RhOutsorcing> rhOutsorcingList) {
-        this.rhOutsorcingList = rhOutsorcingList;
-    }
-
-    @XmlTransient
     public List<CriteriosXPuesto> getCriteriosXPuestoList() {
         return criteriosXPuestoList;
     }
@@ -492,7 +361,7 @@ public class Puestos implements Serializable {
     public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
         this.criteriosXPuestoList = criteriosXPuestoList;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -515,25 +384,7 @@ public class Puestos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Puestos[ puestosPK=" + puestosPK + " ]";
-    }
-
-    @XmlTransient
-    public List<AccionPersonal> getAccionPersonalList() {
-        return accionPersonalList;
-    }
-
-    public void setAccionPersonalList(List<AccionPersonal> accionPersonalList) {
-        this.accionPersonalList = accionPersonalList;
-    }
-
-    @XmlTransient
-    public List<AccionPersonal> getAccionPersonalList1() {
-        return accionPersonalList1;
-    }
-
-    public void setAccionPersonalList1(List<AccionPersonal> accionPersonalList1) {
-        this.accionPersonalList1 = accionPersonalList1;
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Puestos[ puestosPK=" + puestosPK + " ]";
     }
     
 }

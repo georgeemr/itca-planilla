@@ -5,31 +5,36 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author root
  */
 @Entity
-@Table(name = "FUNCION_PUESTO")
+@Table(name = "FUNCION_PUESTO", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "FuncionPuesto.findAll", query = "SELECT f FROM FuncionPuesto f"),
     @NamedQuery(name = "FuncionPuesto.findByCodCia", query = "SELECT f FROM FuncionPuesto f WHERE f.funcionPuestoPK.codCia = :codCia"),
     @NamedQuery(name = "FuncionPuesto.findByCodFuncion", query = "SELECT f FROM FuncionPuesto f WHERE f.funcionPuestoPK.codFuncion = :codFuncion"),
     @NamedQuery(name = "FuncionPuesto.findByNomFuncion", query = "SELECT f FROM FuncionPuesto f WHERE f.nomFuncion = :nomFuncion"),
-    @NamedQuery(name = "FuncionPuesto.findByDescFuncion", query = "SELECT f FROM FuncionPuesto f WHERE f.descFuncion = :descFuncion")})
+    @NamedQuery(name = "FuncionPuesto.findByDescFuncion", query = "SELECT f FROM FuncionPuesto f WHERE f.descFuncion = :descFuncion"),
+    @NamedQuery(name = "FuncionPuesto.findByCodTipoPuesto", query = "SELECT f FROM FuncionPuesto f WHERE f.codTipoPuesto = :codTipoPuesto")})
 public class FuncionPuesto implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -39,11 +44,15 @@ public class FuncionPuesto implements Serializable {
     private String nomFuncion;
     @Column(name = "DESC_FUNCION", length = 250)
     private String descFuncion;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_TIPO_PUESTO", referencedColumnName = "COD_TIPO_PUESTO")})
-    @ManyToOne(optional = false)
-    private TipoPuesto tipoPuesto;
+    @Column(name = "COD_TIPO_PUESTO")
+    private Short codTipoPuesto;
+    @JoinTable(name = "FUNCION_X_PUESTO", joinColumns = {
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
+        @JoinColumn(name = "COD_FUNCION", referencedColumnName = "COD_FUNCION", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
+        @JoinColumn(name = "COD_PUESTO", referencedColumnName = "COD_PUESTO", nullable = false)})
+    @ManyToMany
+    private List<Puestos> puestosList;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_FRECUENCIA", referencedColumnName = "COD_FRECUENCIA")})
@@ -90,12 +99,21 @@ public class FuncionPuesto implements Serializable {
         this.descFuncion = descFuncion;
     }
 
-    public TipoPuesto getTipoPuesto() {
-        return tipoPuesto;
+    public Short getCodTipoPuesto() {
+        return codTipoPuesto;
     }
 
-    public void setTipoPuesto(TipoPuesto tipoPuesto) {
-        this.tipoPuesto = tipoPuesto;
+    public void setCodTipoPuesto(Short codTipoPuesto) {
+        this.codTipoPuesto = codTipoPuesto;
+    }
+
+    @XmlTransient
+    public List<Puestos> getPuestosList() {
+        return puestosList;
+    }
+
+    public void setPuestosList(List<Puestos> puestosList) {
+        this.puestosList = puestosList;
     }
 
     public FrecuenciaFuncion getFrecuenciaFuncion() {
@@ -128,7 +146,7 @@ public class FuncionPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.FuncionPuesto[ funcionPuestoPK=" + funcionPuestoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.FuncionPuesto[ funcionPuestoPK=" + funcionPuestoPK + " ]";
     }
     
 }

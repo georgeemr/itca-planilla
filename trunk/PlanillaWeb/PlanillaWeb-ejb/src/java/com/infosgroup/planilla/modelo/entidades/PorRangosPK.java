@@ -72,7 +72,7 @@ public class PorRangosPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PorRangosPK[ codCia=" + codCia + ", codRango=" + codRango + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.PorRangosPK[ codCia=" + codCia + ", codRango=" + codRango + " ]";
     }
     
 }

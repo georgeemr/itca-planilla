@@ -88,7 +88,7 @@ public class SeccionesPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.SeccionesPK[ codCia=" + codCia + ", codDepto=" + codDepto + ", codSeccion=" + codSeccion + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.SeccionesPK[ codCia=" + codCia + ", codDepto=" + codDepto + ", codSeccion=" + codSeccion + " ]";
     }
     
 }

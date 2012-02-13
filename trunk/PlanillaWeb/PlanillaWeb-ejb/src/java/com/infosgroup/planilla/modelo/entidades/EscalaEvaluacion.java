@@ -22,16 +22,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "ESCALA_EVALUACION")
+@Table(name = "ESCALA_EVALUACION", catalog = "", schema = "PLANILLA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "EscalaEvaluacion.findAll", query = "SELECT e FROM EscalaEvaluacion e"),
     @NamedQuery(name = "EscalaEvaluacion.findByCodCia", query = "SELECT e FROM EscalaEvaluacion e WHERE e.escalaEvaluacionPK.codCia = :codCia"),
-    @NamedQuery(name = "EscalaEvaluacion.findByTipoEvaluacion", query = "SELECT e FROM EscalaEvaluacion e WHERE e.escalaEvaluacionPK.tipoEvaluacion = :tipoEvaluacion"),
     @NamedQuery(name = "EscalaEvaluacion.findByEscala", query = "SELECT e FROM EscalaEvaluacion e WHERE e.escalaEvaluacionPK.escala = :escala"),
     @NamedQuery(name = "EscalaEvaluacion.findByRangoInicial", query = "SELECT e FROM EscalaEvaluacion e WHERE e.rangoInicial = :rangoInicial"),
     @NamedQuery(name = "EscalaEvaluacion.findByRangoFinal", query = "SELECT e FROM EscalaEvaluacion e WHERE e.rangoFinal = :rangoFinal"),
-    @NamedQuery(name = "EscalaEvaluacion.findByCalificacion", query = "SELECT e FROM EscalaEvaluacion e WHERE e.calificacion = :calificacion")})
+    @NamedQuery(name = "EscalaEvaluacion.findByCalificacion", query = "SELECT e FROM EscalaEvaluacion e WHERE e.calificacion = :calificacion"),
+    @NamedQuery(name = "EscalaEvaluacion.findByCodTipoEvaluacion", query = "SELECT e FROM EscalaEvaluacion e WHERE e.escalaEvaluacionPK.codTipoEvaluacion = :codTipoEvaluacion")})
 public class EscalaEvaluacion implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -43,13 +43,13 @@ public class EscalaEvaluacion implements Serializable {
     @Column(name = "RANGO_FINAL", nullable = false)
     private short rangoFinal;
     @Basic(optional = false)
-    @Column(name = "CALIFICACION", nullable = false, length = 25)
+    @Column(name = "CALIFICACION", nullable = false, length = 20)
     private String calificacion;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "TIPO_EVALUACION", referencedColumnName = "COD_TIPO_EVALUACION", nullable = false, insertable = false, updatable = false)})
+        @JoinColumn(name = "COD_TIPO_EVALUACION", referencedColumnName = "COD_TIPO_EVALUACION", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private TipoEvaluacion tipoEvaluacion1;
+    private TipoEvaluacion tipoEvaluacion;
 
     public EscalaEvaluacion() {
     }
@@ -65,8 +65,8 @@ public class EscalaEvaluacion implements Serializable {
         this.calificacion = calificacion;
     }
 
-    public EscalaEvaluacion(long codCia, long tipoEvaluacion, long escala) {
-        this.escalaEvaluacionPK = new EscalaEvaluacionPK(codCia, tipoEvaluacion, escala);
+    public EscalaEvaluacion(short codCia, short escala, short codTipoEvaluacion) {
+        this.escalaEvaluacionPK = new EscalaEvaluacionPK(codCia, escala, codTipoEvaluacion);
     }
 
     public EscalaEvaluacionPK getEscalaEvaluacionPK() {
@@ -101,12 +101,12 @@ public class EscalaEvaluacion implements Serializable {
         this.calificacion = calificacion;
     }
 
-    public TipoEvaluacion getTipoEvaluacion1() {
-        return tipoEvaluacion1;
+    public TipoEvaluacion getTipoEvaluacion() {
+        return tipoEvaluacion;
     }
 
-    public void setTipoEvaluacion1(TipoEvaluacion tipoEvaluacion1) {
-        this.tipoEvaluacion1 = tipoEvaluacion1;
+    public void setTipoEvaluacion(TipoEvaluacion tipoEvaluacion) {
+        this.tipoEvaluacion = tipoEvaluacion;
     }
 
     @Override
@@ -131,7 +131,7 @@ public class EscalaEvaluacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.EscalaEvaluacion[ escalaEvaluacionPK=" + escalaEvaluacionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.EscalaEvaluacion[ escalaEvaluacionPK=" + escalaEvaluacionPK + " ]";
     }
     
 }

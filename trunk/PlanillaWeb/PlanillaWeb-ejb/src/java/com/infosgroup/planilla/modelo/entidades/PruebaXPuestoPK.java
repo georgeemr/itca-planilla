@@ -17,7 +17,7 @@ import javax.persistence.Embeddable;
 public class PruebaXPuestoPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private long codCia;
+    private short codCia;
     @Basic(optional = false)
     @Column(name = "PUESTO", nullable = false)
     private long puesto;
@@ -28,17 +28,17 @@ public class PruebaXPuestoPK implements Serializable {
     public PruebaXPuestoPK() {
     }
 
-    public PruebaXPuestoPK(long codCia, long puesto, long codigo) {
+    public PruebaXPuestoPK(short codCia, long puesto, long codigo) {
         this.codCia = codCia;
         this.puesto = puesto;
         this.codigo = codigo;
     }
 
-    public long getCodCia() {
+    public short getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(long codCia) {
+    public void setCodCia(short codCia) {
         this.codCia = codCia;
     }
 
@@ -88,7 +88,7 @@ public class PruebaXPuestoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PruebaXPuestoPK[ codCia=" + codCia + ", puesto=" + puesto + ", codigo=" + codigo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.PruebaXPuestoPK[ codCia=" + codCia + ", puesto=" + puesto + ", codigo=" + codigo + " ]";
     }
     
 }
