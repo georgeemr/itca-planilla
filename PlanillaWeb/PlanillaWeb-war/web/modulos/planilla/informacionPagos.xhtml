@@ -33,15 +33,15 @@
     <ui:define name="contenido">
         <p:fieldset id="fieldset2" legend="Planilla">            
             <p:dataTable value="#{planilla$informacionPagos.listaPlanillas}" var="planilla" selectionMode="single" selection="#{planilla$informacionPagos.planillaSeleccionada}" rows="3" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">
-                <p:column headerText="Planilla" filterBy="#{planilla.descripcionPlanilla}" filterMatchMode="contains" sortBy="#{planilla.descripcionPlanilla}">
+                <p:column headerText="Planilla" filterBy="#{planilla.planillaPK.anio}-#{planilla.planillaPK.mes}-#{planilla.planillaPK.numPlanilla}" filterMatchMode="contains" >
                     <p:graphicImage url="/resources/iconos/view-calendar-journal.png" height="16" width="16"/>
                     <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.descripcionPlanilla}"/>
+                    <h:outputText value="Planilla #{planilla.planillaPK.anio}-#{planilla.planillaPK.mes}-#{planilla.planillaPK.numPlanilla}"/>
                 </p:column>
-                <p:column headerText="Tipo de planilla" sortBy="#{planilla.tipoPlanilla.nomTipoPlanilla}" filterBy="#{planilla.tipoPlanilla.nomTipoPlanilla}" filterMatchMode="contains">
+                <p:column headerText="Tipo de planilla" sortBy="#{planilla.tiposPlanilla.nomTipopla}" filterBy="#{planilla.tiposPlanilla.nomTipopla}" filterMatchMode="contains">
                     <p:graphicImage url="/resources/iconos/documentinfo.png" height="16" width="16"/>
                     <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.tipoPlanilla.nomTipoPlanilla}"/>
+                    <h:outputText value="#{planilla.tiposPlanilla.nomTipopla}"/>
                 </p:column>
             </p:dataTable>
             <p:spacer height="10"/>
@@ -49,17 +49,17 @@
                 <p:column>
                     <p:rowToggler/>
                 </p:column>
-                <p:column headerText="Cod. Empleado" sortBy="#{total.puestoEmpleado.empleado.empleadoPK.codEmp}">
-                    <h:outputLabel value="#{total.puestoEmpleado.empleado.empleadoPK.codEmp}"/>
+                <p:column headerText="C&oacute;digo" sortBy="#{total.puestoEmpleado.empleados.empleadosPK.codEmp}">
+                    <h:outputLabel value="#{total.puestoEmpleado.empleados.empleadosPK.codEmp}"/>
                 </p:column>
-                <p:column headerText="Apellidos" filterBy="#{total.puestoEmpleado.empleado.apellidos}" filterMatchMode="contains" sortBy="#{total.puestoEmpleado.empleado.apellidos}">
-                    <h:outputLabel value="#{total.puestoEmpleado.empleado.apellidos}"/>
+                <p:column headerText="Apellidos" filterBy="#{total.puestoEmpleado.empleados.apellidos}" filterMatchMode="contains" sortBy="#{total.puestoEmpleado.empleado.apellidos}">
+                    <h:outputLabel value="#{total.puestoEmpleado.empleados.apellidos}"/>
                 </p:column>
-                <p:column headerText="Nombres" filterBy="#{total.puestoEmpleado.empleado.nombres}" filterMatchMode="contains" sortBy="#{total.puestoEmpleado.empleado.nombres}">
-                    <h:outputLabel value="#{total.puestoEmpleado.empleado.nombres}"/>
+                <p:column headerText="Nombres" filterBy="#{total.puestoEmpleado.empleados.nombres}" filterMatchMode="contains" sortBy="#{total.puestoEmpleado.empleado.nombres}">
+                    <h:outputLabel value="#{total.puestoEmpleado.empleados.nombres}"/>
                 </p:column>
-                <p:column headerText="Sueldo Base" sortBy="#{total.puestoEmpleado.puesto.salarioMinimo}" style="text-align: right;">
-                    <h:outputText value="#{total.puestoEmpleado.puesto.salarioMinimo}">
+                <p:column headerText="Sueldo Base" sortBy="#{total.puestoEmpleado.puestos.salMinimo}" style="text-align: right;">
+                    <h:outputText value="#{total.puestoEmpleado.puestos.salMinimo}">
                         <f:convertNumber type="currency" currencySymbol="$" pattern="$#.00"/>
                     </h:outputText>
                 </p:column>
