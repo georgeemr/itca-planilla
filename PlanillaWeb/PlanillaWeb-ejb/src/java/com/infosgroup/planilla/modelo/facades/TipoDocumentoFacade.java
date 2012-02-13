@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.TipoDocumento;
+import com.infosgroup.planilla.modelo.entidades.TipoDocumentoPK;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author root
  */
 @Stateless
-public class TipoDocumentoFacade extends AbstractFacade<TipoDocumento, Long> {
+public class TipoDocumentoFacade extends AbstractFacade<TipoDocumento, TipoDocumentoPK> {
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 

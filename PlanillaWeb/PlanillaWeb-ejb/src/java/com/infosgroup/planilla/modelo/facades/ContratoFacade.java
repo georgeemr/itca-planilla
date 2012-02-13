@@ -17,6 +17,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class ContratoFacade extends AbstractFacade<Contrato, ContratoPK> {
+
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
@@ -28,9 +29,9 @@ public class ContratoFacade extends AbstractFacade<Contrato, ContratoPK> {
     public ContratoFacade() {
         super(Contrato.class);
     }
-    
-    public Long getMax( Candidato c ){
-        Long max = (Long) em.createQuery("SELECT max(c.contratoPK.codigo) FROM Contrato c WHERE c.candidato1 = :candidato").setParameter("candidato", c).getSingleResult();
-        return max != null ? ( ++max ): 1L;
+
+    public Integer max(Candidato c) {
+        Integer max = (Integer) em.createQuery("SELECT max(c.contratoPK.codigo) FROM Contrato c WHERE c.candidato1 = :candidato").setParameter("candidato", c).getSingleResult();
+        return max != null ? (++max) : 1;
     }
 }

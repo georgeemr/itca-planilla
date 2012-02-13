@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+
 import com.infosgroup.planilla.modelo.entidades.CandidatoConcurso;
 import com.infosgroup.planilla.modelo.entidades.CandidatoConcursoPK;
 import com.infosgroup.planilla.modelo.entidades.Concurso;

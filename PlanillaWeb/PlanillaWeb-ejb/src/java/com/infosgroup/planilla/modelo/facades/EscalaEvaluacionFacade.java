@@ -37,7 +37,7 @@ public class EscalaEvaluacionFacade extends AbstractFacade<EscalaEvaluacion, Esc
     public String getEscalaByEvaluacion( Evaluacion ev, Integer valor ){
         List<EscalaEvaluacion> e = new ArrayList<EscalaEvaluacion>();
         e = em.createNativeQuery("select * from escala_evaluacion where cod_cia = ? and tipo_evaluacion = ? and " + valor +" between rango_inicial and rango_final ", EscalaEvaluacion.class)
-                .setParameter(1, ev.getEvaluacionPK().getCodCia()).setParameter(2, ev.getEvaluacionPK().getTipoEvaluacion()).getResultList();
+                .setParameter(1, ev.getEvaluacionPK().getCodCia()).setParameter(2, ev.getTipoEvaluacion().getTipoEvaluacionPK().getCodTipoEvaluacion()).getResultList();
         if (e!= null && e.size() > 0){
             return e.get(0).getCalificacion();
         }

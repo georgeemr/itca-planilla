@@ -35,25 +35,25 @@ public class ConcursoFacade extends AbstractFacade<Concurso, ConcursoPK> {
         super(Concurso.class);
     }
 
-    public List<Concurso> getConcursosByDate(Date fechaInicial, Date fechaFinal) {
+    public List<Concurso> getConcursosByDate(Cias cias, Date fechaInicial, Date fechaFinal) {
         List<Concurso> lstConcurso = new ArrayList<Concurso>();
         CriteriaQuery<Concurso> cq = em.getCriteriaBuilder().createQuery(Concurso.class);
         Root<Concurso> rootConcurso = cq.from(Concurso.class);
         if (fechaInicial != null && fechaFinal != null) {
-            cq.where(em.getCriteriaBuilder().equal(rootConcurso.get(Concurso_.estadoConcurso), em.find(EstadoConcurso.class, new EstadoConcursoPK(1, "A"))),
+            cq.where(em.getCriteriaBuilder().equal(rootConcurso.get(Concurso_.estadoConcurso), em.find(EstadoConcurso.class, new EstadoConcursoPK(cias.getCodCia(), "A"))),
                     em.getCriteriaBuilder().and(em.getCriteriaBuilder().between(rootConcurso.get(Concurso_.fechaInicial), fechaInicial, fechaFinal)));
         } else {
-            cq.where(em.getCriteriaBuilder().equal(rootConcurso.get(Concurso_.estadoConcurso), em.find(EstadoConcurso.class, new EstadoConcursoPK(1, "A"))));
+            cq.where(em.getCriteriaBuilder().equal(rootConcurso.get(Concurso_.estadoConcurso), em.find(EstadoConcurso.class, new EstadoConcursoPK(cias.getCodCia(), "A"))));
         }
         lstConcurso.addAll(getEntityManager().createQuery(cq).getResultList());
         return lstConcurso;
     }
 
-    public List<Concurso> getConcursosActivos(Long empresa) {
+    public List<Concurso> getConcursosActivos(Cias empresa) {
         List<Concurso> lstConcurso = new ArrayList<Concurso>();
         CriteriaQuery<Concurso> cq = em.getCriteriaBuilder().createQuery(Concurso.class);
         Root<Concurso> rootConcurso = cq.from(Concurso.class);
-        cq.where(em.getCriteriaBuilder().equal(rootConcurso.get(Concurso_.estadoConcurso), em.find(EstadoConcurso.class, new EstadoConcursoPK(empresa, "A"))));
+        cq.where(em.getCriteriaBuilder().equal(rootConcurso.get(Concurso_.estadoConcurso), em.find(EstadoConcurso.class, new EstadoConcursoPK(empresa.getCodCia(), "A"))));
         lstConcurso.addAll(getEntityManager().createQuery(cq).getResultList());
         return lstConcurso;
     }

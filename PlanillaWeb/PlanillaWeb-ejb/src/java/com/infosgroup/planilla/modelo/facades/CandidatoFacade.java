@@ -85,7 +85,7 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         return listaCandidatos;
     }
 
-    private Integer getCandidatosByCriterios(Long empresa, short puesto, Long candidato, String usuario) {
+    private Integer getCandidatosByCriterios(Short empresa, Short puesto, Integer candidato, String usuario) {
         String nativeQuery = "select distinct t.cod_cia, t.puesto, t.tipo_criterio, t.correlativo, t.valor, t.valor_inicial_rango, t.valor_final_rango, "
                 + " u.operador,u.clase, "
                 + " v.campo, v.entidad, v.entidadpk "
@@ -188,8 +188,8 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         return 1;
     }
     
-    public Long getMax(Long empresa) {
-        Long max = (Long) em.createQuery("SELECT max(c.candidatoPK.codCandidato) FROM Candidato c WHERE c.candidatoPK.codCia = :codCia").setParameter("codCia", empresa).getSingleResult();
+    public Long max(Cias empresa) {
+        Long max = (Long) em.createQuery("SELECT max(c.candidatoPK.codCandidato) FROM Candidato c WHERE c.candidatoPK.codCia = :codCia").setParameter("codCia", empresa.getCodCia()).getSingleResult();
         return max != null ? ( ++max ): 1L;
     }
 }

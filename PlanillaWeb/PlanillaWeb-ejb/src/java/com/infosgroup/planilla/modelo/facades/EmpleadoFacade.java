@@ -8,7 +8,6 @@ import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.EmpleadosPK;
-import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -59,7 +58,7 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
 
     public Empleados findByUsuario(String usuario) {
         Empleados e = null;
-        TypedQuery tq = em.createNamedQuery("Empleado.findByUsuario", Empleados.class);
+        TypedQuery tq = em.createQuery("SELECT e FROM Empleados e WHERE e.usuario = :usuario", Empleados.class);
         tq.setParameter("usuario", usuario);
         e = (Empleados) tq.getSingleResult();
         return e;
@@ -76,22 +75,21 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
         return listaJefes;
     }
 
-    public Long getMax(short empresa) {
+    public Long max(short empresa) {
         Long max = (Long) em.createQuery("SELECT max(e.empleadoPK.codEmp) FROM Empleado e WHERE e.empleadoPK.codCia = :codCia").setParameter("codCia", empresa).getSingleResult();
         return max != null ? (++max) : 1L;
     }
 
     public Empleados toEmpleado(Candidato c) {
         Empleados e = new Empleados();
-        EmpleadosPK pk =  new EmpleadosPK(c.getCias().getCodCia(), getMax( c.getCias().getCodCia() ).shortValue());
+        EmpleadosPK pk = new EmpleadosPK(c.getCandidatoPK().getCodCia(), max(c.getCandidatoPK().getCodCia()).intValue());
         e.setEmpleadosPK(pk);
         if (c != null) {
             e.setNombres(c.getNombre());
             e.setApellidos(c.getApellido());
             e.setApCasada(c.getApCasada());
-            e.setFechaNac(c.getFechaNacimiento());
+            e.setFechaNac(c.getFechaNac());
             e.setObservacion(c.getObservacion());
-            e.setCandidato(c);
         }
         return e;
     }
@@ -119,16 +117,4 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
         lista = q.getResultList();
         return lista != null ? lista : new ArrayList<Empleados>();
     }
-
-    @PermitAll
-    public PuestoEmpleado getUltimoPuesto(Empleados empleado) {
-        PuestoEmpleado puestoEmpleado =  new PuestoEmpleado();
-        Query q = em.createNativeQuery("select * from PLANILLA.PUESTO_EMPLEADO where id_compania = ? and id_sucursal = ? and id_empleado = ? and rownum = 1 order by fecha_asignacion desc", PuestoEmpleado.class);
-        q.setParameter(1, empleado.getEmpleadosPK().getCodCia());
-        q.setParameter(2, empleado.getAgencias().getAgenciasPK().getCodAgencia());
-        q.setParameter(3, empleado.getEmpleadosPK().getCodEmp());
-        puestoEmpleado = (PuestoEmpleado)q.getSingleResult();        
-        return puestoEmpleado;
-    }
-
 }
