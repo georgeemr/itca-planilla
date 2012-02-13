@@ -6,7 +6,7 @@ package com.infosgroup.planilla.modelo.estructuras;
 
 //import com.infosgroup.planilla.modelo.entidades.DetPlanilla;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
-import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
+//import com.infosgroup.planilla.modelo.entidades.PuestoEmpleado;
 import java.io.Serializable;
 import java.math.BigDecimal;
 //import java.util.List;
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
  */
 public class DetallePlanilla implements Serializable {
 
-    private PuestoEmpleado puestoEmpleado;
+//    private PuestoEmpleado puestoEmpleado;
     private Planilla planilla;
     private BigDecimal prestaciones;
     private BigDecimal deducciones;
@@ -69,14 +69,13 @@ public class DetallePlanilla implements Serializable {
         this.prestaciones = prestaciones;
     }
 
-    public PuestoEmpleado getPuestoEmpleado() {
-        return puestoEmpleado;
-    }
-
-    public void setPuestoEmpleado(PuestoEmpleado puestoEmpleado) {
-        this.puestoEmpleado = puestoEmpleado;
-    }
-
+//    public PuestoEmpleado getPuestoEmpleado() {
+//        return puestoEmpleado;
+//    }
+//
+//    public void setPuestoEmpleado(PuestoEmpleado puestoEmpleado) {
+//        this.puestoEmpleado = puestoEmpleado;
+//    }
     public BigDecimal getTotal() {
         return total;
     }
