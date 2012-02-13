@@ -75,7 +75,7 @@ public class CampaniaFacade extends AbstractFacade<Campania, CampaniaPK> {
     }
 
     @PermitAll
-    public List<Campania> findAllByCia (Short empresa) {
+    public List<Campania> findAllByCia(Short empresa) {
         List<Campania> l = new ArrayList<Campania>();
         l = em.createQuery("SELECT c FROM Campania c WHERE c.campaniaPK.codCia = :codCia", Campania.class).setParameter("codCia", empresa).getResultList();
         return l != null ? l : new ArrayList<Campania>();

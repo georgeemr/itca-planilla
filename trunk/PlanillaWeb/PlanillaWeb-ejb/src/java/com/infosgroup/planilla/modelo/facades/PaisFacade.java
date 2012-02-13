@@ -4,33 +4,27 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
-import com.infosgroup.planilla.modelo.entidades.Pais;
+import com.infosgroup.planilla.modelo.entidades.Paises;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
  * @author root
  */
 @Stateless
-public class PaisFacade extends AbstractFacade<Pais, Long> {
-    @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
+public class PaisFacade extends AbstractFacade<Paises, Short> {
+
+    @PersistenceContext(unitName = "Parametros-ejbPU")
     private EntityManager em;
+
+    public PaisFacade() {
+        super(Paises.class);
+    }
 
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-
-    public PaisFacade() {
-        super(Pais.class);
-    }
-    
-    public Long max() {
-        Long max = (Long) getEntityManager().createQuery("SELECT max(p.codPais) FROM Pais p").getSingleResult();
-        return (max == null) ? 1L : ++max;
-    }
-    
 }

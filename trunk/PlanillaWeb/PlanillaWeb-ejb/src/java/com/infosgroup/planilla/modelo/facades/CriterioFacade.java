@@ -35,7 +35,7 @@ public class CriterioFacade extends AbstractFacade<Criterio, CriterioPK> {
         List<Criterio> listaCriterios = new ArrayList<Criterio>();
         for (String z : s) {
             try {
-                listaCriterios.add(find(new CriterioPK(new Integer(z.split(":")[0]), new Integer(z.split(":")[1]), new Integer(z.split(":")[2]))));
+                listaCriterios.add(find(new CriterioPK(new Short(z.split(":")[0]), new Integer(z.split(":")[1]), new Integer(z.split(":")[2]))));
             } catch (Exception e) {
                 e.printStackTrace();
             }

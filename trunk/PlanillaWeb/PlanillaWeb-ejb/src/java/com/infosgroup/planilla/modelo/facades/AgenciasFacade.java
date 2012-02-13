@@ -5,8 +5,6 @@
 package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.Cias;
-import com.infosgroup.planilla.modelo.entidades.Agencias;
-import com.infosgroup.planilla.modelo.entidades.AgenciasPK;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
