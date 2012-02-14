@@ -243,8 +243,8 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public String getNombreJefe() {
         nombreJefe = "Ninguno";
         if (getSessionBeanEMP().getEmpleadoSesion() != null) {
-            if (getSessionBeanEMP().getEmpleadoSesion().getJefe()!= null) {
-                nombreJefe = getSessionBeanEMP().getEmpleadoSesion().getJefe().getNombreCompleto();
+            if (getSessionBeanEMP().getEmpleadoSesion().getEmpleados()/*getJefe()*/!= null) {
+                nombreJefe = getSessionBeanEMP().getEmpleadoSesion().getEmpleados()/*getJefe()*/.getNombreCompleto();
             }
         }
         return nombreJefe;
