@@ -49,10 +49,10 @@
         <p:fieldset id="fieldset1">
             <h:panelGrid columns="2">
                 <h:outputLabel value="Acci&oacute;n de Personal"/>
-                <h:selectOneMenu id="lstAcc" style="width: 250px" value="#{planilla$accionesPersonal.tipo}">
+                <h:selectOneMenu id="lstAcc" style="height: 25px;padding-top: 3px;" value="#{planilla$accionesPersonal.tipo}">
                     <f:ajax event="change" listener="#{planilla$accionesPersonal.seleccionarAccion}" execute="lstAcc" render="@form" />
-                    <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc"
-                                   itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
+                    <f:selectItem  itemValue="-1" itemLabel="[SELECCIONE UN TIPO DE ACCI&Oacute;N]" />
+                    <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc" itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
                 </h:selectOneMenu>
             </h:panelGrid>
         </p:fieldset>
@@ -74,11 +74,11 @@
             </f:facet>
 
             <p:column headerText="C&oacute;digo">
-                <h:outputText value="#{sol.empleado.empleadoPK.codEmp}"/>
+                <h:outputText value="#{sol.empleados.empleadosPK.codEmp}"/>
             </p:column>
 
-            <p:column headerText="Nombre" filterBy="#{sol.empleado.nombreCompleto}" >
-                <h:outputText value="#{sol.empleado.nombreCompleto}"/>
+            <p:column headerText="Nombre" filterBy="#{sol.empleados.nombreCompleto}" >
+                <h:outputText value="#{sol.empleados.nombreCompleto}"/>
             </p:column>
 
             <p:column headerText="Nombre Acci&oacute;n" filterBy="#{sol.tipoAccion.nomTipoaccion}" >
@@ -203,8 +203,8 @@
                             </h:panelGrid>    
                         </td>
                         <td>                
-                            <h:selectOneMenu id="lstTipoPlanilla" label="Tipo Planilla" style="width:168px;height:20px;" value="#{planilla$accionesPersonal.solicitudPermiso.tipoPlanilla}" >
-                                <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tipoPlanillaPK.idTipoPlanilla}" itemLabel="#{tipo.nomTipoPlanilla}"/>
+                            <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudPermiso.tipoPlanilla}" >
+                                <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                             </h:selectOneMenu>
                         </td>
                         <td></td>
@@ -215,7 +215,7 @@
                             </h:panelGrid>  
                         </td>
                         <td>
-                            <h:selectOneMenu id="lstPlanilla" label="Planilla" style="width:168px;height:20px;" value="#{planilla$accionesPersonal.solicitudPermiso.planilla}" >
+                            <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudPermiso.planilla}" >
                                 <f:selectItems value="#{planilla$accionesPersonal.listaPlanillas}" var="pla" 
                                                itemValue="#{pla.planillaPK.pkAsString}"
                                                itemLabel="#{pla.planillaPK.anio} ------ #{pla.planillaPK.mes} ------ #{pla.planillaPK.numPlanilla}" />
@@ -223,9 +223,9 @@
                         </td>
                     </tr>
                 </table>
-
+                
             </p:fieldset>
-
+            <p:spacer height="15" />
             <h:panelGrid columns="2">
                 <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud"
                                  action="#{planilla$accionesPersonal.solicitudPermiso.guardarSolicitud$action}"
