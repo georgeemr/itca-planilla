@@ -145,7 +145,7 @@ public class EmpleadosSessionBean {
         return empleadosFacade.findEmpleadosNoEvaluados(c);
     }
 
-    public Empleados buscarEmpleadoPorUsuario(String usuario) {
+    public Empleados buscarEmpleadoPorUsuario(String usuario) throws javax.persistence.NoResultException {
         return empleadosFacade.findByUsuario(usuario);
     }
 
