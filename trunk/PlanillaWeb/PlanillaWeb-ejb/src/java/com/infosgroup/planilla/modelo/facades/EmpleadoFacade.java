@@ -6,6 +6,7 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.Candidato;
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.EmpleadosPK;
 import java.util.ArrayList;
@@ -66,13 +67,10 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
 
     public List<Empleados> findByJefes() {
         List<Empleados> listaJefes = new ArrayList<Empleados>(0);
-
-        Query pue = em.createQuery("select e from Empleado e, PuestoEmpleado p "
-                + "where p.puesto.jefatura = 1 "
+        Query pue = em.createQuery("select e from Empleado e, PuestoEmpleado p where p.puesto.jefatura = 1 "
                 + "and p.empleado.empleadoPK = e.empleadoPK", Empleados.class);
         listaJefes = pue.getResultList();
-
-        return listaJefes;
+        return listaJefes != null ? listaJefes : new ArrayList<Empleados>();
     }
 
     public Long max(short empresa) {
@@ -116,5 +114,11 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
         q.setParameter("usuario", usuario);
         lista = q.getResultList();
         return lista != null ? lista : new ArrayList<Empleados>();
+    }
+
+    public List<Empleados> findEmpleadosByCias(Cias cias) {
+        List<Empleados> l = new ArrayList<Empleados>(0);
+        l = em.createQuery("SELECT e FROM Empleados e WHERE e.empleadosPK.codCia = :codCia", Empleados.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        return l != null ? l : new ArrayList<Empleados>();
     }
 }

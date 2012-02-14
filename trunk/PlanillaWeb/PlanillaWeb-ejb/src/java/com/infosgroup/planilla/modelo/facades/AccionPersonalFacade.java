@@ -140,8 +140,8 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
     @RolesAllowed({"jefes"})
     public List<AccionPersonal> findSolicitudesByJefe(Empleados empleado) {
         List<AccionPersonal> l = new ArrayList<AccionPersonal>();
-        Query q = em.createNativeQuery("select * from accion_personal where cod_cia = ? and id_empleado in ( "
-                + " select cod_emp from empleado where cod_cia = ? and cod_emp = ? union select cod_emp from empleado where cod_cia = ? and jefe = ? ) and aprobado_jefe is null",
+        Query q = em.createNativeQuery("select * from accion_personal where cod_cia = ? and cod_emp in ( "
+                + " select cod_emp from empleados where cod_cia = ? and cod_emp = ? union select cod_emp from empleados where cod_cia = ? and jefe = ? ) and aprobado_jefe is null",
                 AccionPersonal.class);
         q.setParameter(1, empleado.getEmpleadosPK().getCodCia());
         q.setParameter(2, empleado.getEmpleadosPK().getCodCia());
