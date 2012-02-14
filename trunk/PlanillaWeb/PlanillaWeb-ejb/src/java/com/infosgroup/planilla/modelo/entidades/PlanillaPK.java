@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -36,7 +37,9 @@ public class PlanillaPK implements Serializable {
     @NotNull
     @Column(name = "COD_EMP", nullable = false)
     private int codEmp;
-
+    @Transient
+    private String pkAsString;
+    
     public PlanillaPK() {
     }
 
@@ -53,7 +56,7 @@ public class PlanillaPK implements Serializable {
         this.anio = new Short(p.split(":")[1]);
         this.mes = new Short(p.split(":")[2]);
         this.numPlanilla = new Short(p.split(":")[3]);
-        this.codEmp = new Integer(p.split(":")[4]);
+        this.codEmp = empleado;
     }
 
     public short getCodCia() {
@@ -95,7 +98,12 @@ public class PlanillaPK implements Serializable {
     public void setCodEmp(int codEmp) {
         this.codEmp = codEmp;
     }
-
+    
+    public String getPkAsString() {
+        pkAsString = "" + codCia + ":" + anio + ":" + mes + ":" + numPlanilla;
+        return pkAsString;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
