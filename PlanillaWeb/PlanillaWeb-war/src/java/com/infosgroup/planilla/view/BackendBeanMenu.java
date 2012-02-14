@@ -54,28 +54,14 @@ public class BackendBeanMenu implements Serializable {
         for (Menu s : e) {
             /* Ordenar todos los que son padres */
             if (s.getMenu() != null) {
-
-//                Submenu submenu = new Submenu();
-//                submenu.setLabel(s.getTitulo());
-//                for (Menu o : s.getMenuList()) {
-//                    MenuItem item = new MenuItem();
-//                    item.setValue(o.getTitulo());                
-//                    item.setUrl(o.getRuta());
-//                    submenu.getChildren().add(item);
-//                }     
-//                menuModel.addSubmenu(submenu);
-        /* Si es padre iterar cada uno de sus hijos */
+                /* Si es padre iterar cada uno de sus hijos */
                 construyeArbol(s.getMenuList());
-
             } else {
                 /* de lo contrario agregar los items normalmente */
                 Submenu submenu = new Submenu();
-                //submenu.setId((++subMenu).toString());
                 submenu.setLabel(s.getTitulo());
                 for (Menu o : s.getMenuList()) {
                     MenuItem item = new MenuItem();
-                    //item.setValue("&diams;&nbsp;" +o.getTitulo());
-                    //item.setId((++menu).toString());
                     item.setValue(o.getTitulo());
                     item.setUrl(o.getRuta());
                     item.addActionListener(mal);
@@ -94,10 +80,7 @@ public class BackendBeanMenu implements Serializable {
 
         MenuItem homeItem = new MenuItem();
         homeItem.setValue("Home");
-//homeItem.setAjax(false);
         homeItem.setUrl("/faces/modulos/inicio.xhtml");
-
-//List<MenuItem> listaItems = new ArrayList<MenuItem>(0);
         MenuItem i = new MenuItem();
         i.setValue("Prueba");
         i.setActionExpression(methodExpression);
