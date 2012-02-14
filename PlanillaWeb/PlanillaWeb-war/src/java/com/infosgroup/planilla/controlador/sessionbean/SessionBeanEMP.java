@@ -43,8 +43,8 @@ public class SessionBeanEMP implements java.io.Serializable {
     public void postConstruct() {
         try {
             empleadoSesion = (FacesContext.getCurrentInstance().getExternalContext().getRemoteUser() != null) ? empleadosBean.buscarEmpleadoPorUsuario(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser()) : null;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (javax.persistence.NoResultException e) {
+            System.out.println( "Usuario no encontrado en la base de datos. " );
         }
     }
     private Evaluacion evaluacionSeleccionada;
@@ -60,7 +60,7 @@ public class SessionBeanEMP implements java.io.Serializable {
 
     public List<Factor> getListaFactores() {
         if (evaluacionSeleccionada != null) {
-            listaFactores = empleadosBean.listarFactoresPorPlantilla(evaluacionSeleccionada.getPlantilla());
+            listaFactores = empleadosBean.listarFactoresPorPlantilla(evaluacionSeleccionada.getPlantilla1());
         }
         return listaFactores;
     }
