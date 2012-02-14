@@ -223,12 +223,12 @@
                 </p:inputText>
 
                 <h:outputLabel value="Puesto: " />
-                <h:selectOneMenu id="lstPuestoMod" value="#{reclutamiento$concursos.puesto}" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
+                <h:selectOneMenu id="lstPuestoMod" value="#{reclutamiento$concursos.puesto}" style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
                     <f:selectItems value="#{reclutamiento$concursos.listaPuestos}" var="puesto" itemValue="#{puesto.puestosPK.codPuesto}"  itemLabel="#{puesto.nomPuesto}"/>
                 </h:selectOneMenu>
 
                 <h:outputLabel value="Estado: " />
-                <h:selectOneMenu id="lstEstadoMod" value="#{reclutamiento$concursos.estadoConcurso}" required="true" requiredMessage="El Estado del Concurso es un campo obligatorio"  >
+                <h:selectOneMenu id="lstEstadoMod" value="#{reclutamiento$concursos.estadoConcurso}" style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Estado del Concurso es un campo obligatorio"  >
                     <f:selectItems value="#{reclutamiento$concursos.listaEstadoConcurso}" var="estado" itemValue="#{estado.estadoConcursoPK.codigo}"  itemLabel="#{estado.nombre}"/>
                 </h:selectOneMenu>
 
