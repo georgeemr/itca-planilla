@@ -22,7 +22,7 @@ import javax.persistence.PersistenceContext;
 @LocalBean
 public class DeptosFacade extends AbstractFacade<Deptos, DeptosPK> {
 
-    @PersistenceContext(unitName = "Parametros-ejbPU")
+    @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
     @Override

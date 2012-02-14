@@ -56,7 +56,7 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
         return le;
     }
 
-    public Empleados findByUsuario(String usuario) {
+    public Empleados findByUsuario(String usuario) throws javax.persistence.NoResultException {
         Empleados e = null;
         TypedQuery tq = em.createQuery("SELECT e FROM Empleados e WHERE e.usuario = :usuario", Empleados.class);
         tq.setParameter("usuario", usuario);

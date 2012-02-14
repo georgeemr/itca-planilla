@@ -19,6 +19,7 @@ public class ModuloFacade extends AbstractFacade<Modulo, ModuloPK> {
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
