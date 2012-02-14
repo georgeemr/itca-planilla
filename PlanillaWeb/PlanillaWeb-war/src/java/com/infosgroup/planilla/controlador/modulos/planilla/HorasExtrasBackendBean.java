@@ -52,8 +52,8 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
 
     @PostConstruct
     public void init() {
-        listaAgencias = planillaSessionBean.listarAgencias();
-        listaPlanillas = planillaSessionBean.listarPlanilla();
+        listaAgencias = planillaSessionBean.listarAgencias(getSessionBeanADM().getCompania());
+        listaPlanillas = planillaSessionBean.listarPlanilla( getSessionBeanADM().getCompania() );
     }
 
     public List<Agencias> getListaAgencias() {

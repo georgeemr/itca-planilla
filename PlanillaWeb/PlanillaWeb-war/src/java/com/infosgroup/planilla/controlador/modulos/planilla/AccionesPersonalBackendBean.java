@@ -82,17 +82,17 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     @PostConstruct
     public void init() {
-        listaEmp = planillaSessionBean.listaEmpleados();
-        listaPlanillas = planillaSessionBean.listarPlanilla();
-//        if (isInRole("rrhh")) {
-//            listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
-//        } else if (isInRole("jefes")) {
-//            listaSolicitudes = planillaSessionBean.findSolicitudesByJefe(getSessionBeanEMP().getEmpleadoSesion());
-//        } else if (isInRole("empleados")) {
-//            listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
-//        } else {
-//            listaSolicitudes = new ArrayList<AccionPersonal>();
-//        }
+        listaEmp = planillaSessionBean.listaEmpleados( getSessionBeanADM().getCompania() );
+        listaPlanillas = planillaSessionBean.listarPlanilla( getSessionBeanADM().getCompania() );
+        if (isInRole("rrhh")) {
+            listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
+        } else if (isInRole("jefes")) {
+            listaSolicitudes = planillaSessionBean.findSolicitudesByJefe(getSessionBeanEMP().getEmpleadoSesion());
+        } else if (isInRole("empleados")) {
+            listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+        } else {
+            listaSolicitudes = new ArrayList<AccionPersonal>();
+        }
         listaSolicitudes = planillaSessionBean.getAccionesByRol(getSessionBeanEMP().getEmpleadoSesion());
 
         empresa = getSessionBeanADM().getCompania().getCodCia();
@@ -162,7 +162,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public List<Planilla> getListaPlanillas() {
-        listaPlanillas = planillaSessionBean.listarPlanilla();
+        listaPlanillas = planillaSessionBean.listarPlanilla( getSessionBeanADM().getCompania() );
         return listaPlanillas;
     }
 
