@@ -158,7 +158,7 @@ public class PlanillaSessionBean {
             accionPersonalFacade.edit(accion);
             mailBean.enviarCorreoElectronico(
                     "Sobre Solicitud de Personal",
-                    "Se ha aprobado una solicitud a nombre de: " + accion.getEmpleados().getNombreCompleto(), accion.getEmpleados().getCorreo() + ":" + accion.getEmpleados().getJefe().getCorreo());
+                    "Se ha aprobado una solicitud a nombre de: " + accion.getEmpleados().getNombreCompleto(), accion.getEmpleados().getCorreo() + ":" + accion.getEmpleados()./*getJefe()*/getEmpleados().getCorreo());
         }
         return null;
     }
