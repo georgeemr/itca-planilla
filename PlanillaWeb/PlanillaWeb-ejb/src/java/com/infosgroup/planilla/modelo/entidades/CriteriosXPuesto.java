@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -54,7 +55,9 @@ public class CriteriosXPuesto implements Serializable {
         @JoinColumn(name = "TIPO_CRITERIO", referencedColumnName = "TIPO", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Criterio criterio1;
-
+    @Transient
+    private String descripcionRango;
+    
     public CriteriosXPuesto() {
     }
 
@@ -112,6 +115,23 @@ public class CriteriosXPuesto implements Serializable {
 
     public void setCriterio1(Criterio criterio1) {
         this.criterio1 = criterio1;
+    }
+    
+    public String getDescripcionRango() {
+        if (getCriterio1() != null) {
+            if (getCriterio1().getOperador().equals("equal")) {
+                descripcionRango = "( igual a " + getValor() + " )";
+            } else if (getCriterio1().getOperador().equals("between")) {
+                descripcionRango = "( entre " + valorInicialRango + " y " + valorFinalRango + " )";
+            } else {
+                descripcionRango = "";
+            }
+        }
+        return descripcionRango;
+    }
+
+    public void setDescripcionRango(String descripcionRango) {
+        this.descripcionRango = descripcionRango;
     }
 
     @Override
