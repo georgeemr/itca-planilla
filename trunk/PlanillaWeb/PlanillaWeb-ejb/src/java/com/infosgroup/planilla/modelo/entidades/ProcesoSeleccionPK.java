@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,9 +17,11 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ProcesoSeleccionPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_ACTIVIDAD", nullable = false)
     private int codActividad;
 
@@ -72,7 +75,7 @@ public class ProcesoSeleccionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ProcesoSeleccionPK[ codCia=" + codCia + ", codActividad=" + codActividad + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ProcesoSeleccionPK[ codCia=" + codCia + ", codActividad=" + codActividad + " ]";
     }
     
 }

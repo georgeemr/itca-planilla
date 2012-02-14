@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -61,6 +62,7 @@ public class RhControlVacaciones implements Serializable {
     private BigDecimal diasXDevengar;
     @Column(name = "SALDO", precision = 5, scale = 2)
     private BigDecimal saldo;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @JoinColumns({
@@ -182,7 +184,7 @@ public class RhControlVacaciones implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.RhControlVacaciones[ rhControlVacacionesPK=" + rhControlVacacionesPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.RhControlVacaciones[ rhControlVacacionesPK=" + rhControlVacacionesPK + " ]";
     }
     
 }

@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,6 +33,7 @@ public class Rol implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected RolPK rolPK;
+    @Size(max = 100)
     @Column(name = "NOM_ROL", length = 100)
     private String nomRol;
     @ManyToMany(mappedBy = "rolList")
@@ -95,7 +97,7 @@ public class Rol implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Rol[ rolPK=" + rolPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Rol[ rolPK=" + rolPK + " ]";
     }
     
 }

@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,12 +18,16 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class RelDeptosCategoriasPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_DEPTO", nullable = false)
     private short codDepto;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 4)
     @Column(name = "COD_CAT", nullable = false, length = 4)
     private String codCat;
 
@@ -88,7 +94,7 @@ public class RelDeptosCategoriasPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.RelDeptosCategoriasPK[ codCia=" + codCia + ", codDepto=" + codDepto + ", codCat=" + codCat + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.RelDeptosCategoriasPK[ codCia=" + codCia + ", codDepto=" + codDepto + ", codCat=" + codCat + " ]";
     }
     
 }

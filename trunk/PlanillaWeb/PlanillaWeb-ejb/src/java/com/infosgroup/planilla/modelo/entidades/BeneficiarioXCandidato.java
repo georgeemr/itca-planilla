@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -36,6 +38,8 @@ public class BeneficiarioXCandidato implements Serializable {
     @EmbeddedId
     protected BeneficiarioXCandidatoPK beneficiarioXCandidatoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "NOMBRE", nullable = false, length = 100)
     private String nombre;
     @Column(name = "COD_PARENTESCO")
@@ -116,7 +120,7 @@ public class BeneficiarioXCandidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.BeneficiarioXCandidato[ beneficiarioXCandidatoPK=" + beneficiarioXCandidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.BeneficiarioXCandidato[ beneficiarioXCandidatoPK=" + beneficiarioXCandidatoPK + " ]";
     }
     
 }

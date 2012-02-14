@@ -19,19 +19,31 @@ public class EvaluacionPK implements Serializable {
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @Column(name = "PERIODO", nullable = false)
+    private short periodo;
+    @Basic(optional = false)
     @Column(name = "COD_CAMPANIA", nullable = false)
     private short codCampania;
     @Basic(optional = false)
-    @Column(name = "COD_EVALUACION", nullable = false)
-    private short codEvaluacion;
+    @Column(name = "TIPO_EVALUACION", nullable = false)
+    private short tipoEvaluacion;
+    @Basic(optional = false)
+    @Column(name = "PLANTILLA", nullable = false)
+    private long plantilla;
+    @Basic(optional = false)
+    @Column(name = "COD_EMP", nullable = false)
+    private int codEmp;
 
     public EvaluacionPK() {
     }
 
-    public EvaluacionPK(short codCia, short codCampania, short codEvaluacion) {
+    public EvaluacionPK(short codCia, short periodo, short codCampania, short tipoEvaluacion, long plantilla, int codEmp) {
         this.codCia = codCia;
+        this.periodo = periodo;
         this.codCampania = codCampania;
-        this.codEvaluacion = codEvaluacion;
+        this.tipoEvaluacion = tipoEvaluacion;
+        this.plantilla = plantilla;
+        this.codEmp = codEmp;
     }
 
     public short getCodCia() {
@@ -42,6 +54,14 @@ public class EvaluacionPK implements Serializable {
         this.codCia = codCia;
     }
 
+    public short getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(short periodo) {
+        this.periodo = periodo;
+    }
+
     public short getCodCampania() {
         return codCampania;
     }
@@ -50,20 +70,39 @@ public class EvaluacionPK implements Serializable {
         this.codCampania = codCampania;
     }
 
-    public short getCodEvaluacion() {
-        return codEvaluacion;
+    public short getTipoEvaluacion() {
+        return tipoEvaluacion;
     }
 
-    public void setCodEvaluacion(short codEvaluacion) {
-        this.codEvaluacion = codEvaluacion;
+    public void setTipoEvaluacion(short tipoEvaluacion) {
+        this.tipoEvaluacion = tipoEvaluacion;
+    }
+
+    public long getPlantilla() {
+        return plantilla;
+    }
+
+    public void setPlantilla(long plantilla) {
+        this.plantilla = plantilla;
+    }
+
+    public int getCodEmp() {
+        return codEmp;
+    }
+
+    public void setCodEmp(int codEmp) {
+        this.codEmp = codEmp;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
+        hash += (int) periodo;
         hash += (int) codCampania;
-        hash += (int) codEvaluacion;
+        hash += (int) tipoEvaluacion;
+        hash += (int) plantilla;
+        hash += (int) codEmp;
         return hash;
     }
 
@@ -77,10 +116,19 @@ public class EvaluacionPK implements Serializable {
         if (this.codCia != other.codCia) {
             return false;
         }
+        if (this.periodo != other.periodo) {
+            return false;
+        }
         if (this.codCampania != other.codCampania) {
             return false;
         }
-        if (this.codEvaluacion != other.codEvaluacion) {
+        if (this.tipoEvaluacion != other.tipoEvaluacion) {
+            return false;
+        }
+        if (this.plantilla != other.plantilla) {
+            return false;
+        }
+        if (this.codEmp != other.codEmp) {
             return false;
         }
         return true;
@@ -88,7 +136,7 @@ public class EvaluacionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.EvaluacionPK[ codCia=" + codCia + ", codCampania=" + codCampania + ", codEvaluacion=" + codEvaluacion + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.EvaluacionPK[ codCia=" + codCia + ", periodo=" + periodo + ", codCampania=" + codCampania + ", tipoEvaluacion=" + tipoEvaluacion + ", plantilla=" + plantilla + ", codEmp=" + codEmp + " ]";
     }
     
 }

@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -51,16 +53,21 @@ public class DetHoraExtraAsistencia implements Serializable {
     protected DetHoraExtraAsistenciaPK detHoraExtraAsistenciaPK;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "HORA_EXTRA", nullable = false, precision = 6, scale = 2)
     private BigDecimal horaExtra;
+    @Size(max = 1)
     @Column(name = "STATUS", length = 1)
     private String status;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
+    @Size(max = 2)
     @Column(name = "COD_SUCURSAL", length = 2)
     private String codSucursal;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
+    @Size(max = 100)
     @Column(name = "ACTIVIDAD", length = 100)
     private String actividad;
     @Column(name = "HORA_NIVEL1", precision = 6, scale = 2)
@@ -213,7 +220,7 @@ public class DetHoraExtraAsistencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetHoraExtraAsistencia[ detHoraExtraAsistenciaPK=" + detHoraExtraAsistenciaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetHoraExtraAsistencia[ detHoraExtraAsistenciaPK=" + detHoraExtraAsistenciaPK + " ]";
     }
     
 }

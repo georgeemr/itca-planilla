@@ -15,6 +15,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -45,9 +47,12 @@ public class ProgramacionPla implements Serializable {
     @EmbeddedId
     protected ProgramacionPlaPK programacionPlaPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "QUINCENA", nullable = false)
     private short quincena;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "STATUS", nullable = false, length = 1)
     private String status;
     @Column(name = "FECHA_PAGO")
@@ -65,6 +70,7 @@ public class ProgramacionPla implements Serializable {
     @Column(name = "FECHA_INICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicial;
+    @Size(max = 100)
     @Column(name = "OBSERVACION", length = 100)
     private String observacion;
     @Column(name = "FECHA")
@@ -198,7 +204,7 @@ public class ProgramacionPla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ProgramacionPla[ programacionPlaPK=" + programacionPlaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ProgramacionPla[ programacionPlaPK=" + programacionPlaPK + " ]";
     }
     
 }

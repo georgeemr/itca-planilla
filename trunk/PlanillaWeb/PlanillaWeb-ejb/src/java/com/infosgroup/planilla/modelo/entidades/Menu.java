@@ -20,6 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -44,15 +46,21 @@ public class Menu implements Serializable {
     @EmbeddedId
     protected MenuPK menuPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "TITULO", nullable = false, length = 200)
     private String titulo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "NIVEL", nullable = false)
     private long nivel;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "ESTADO", nullable = false)
     private long estado;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 500)
     @Column(name = "RUTA", nullable = false, length = 500)
     private String ruta;
     @JoinTable(name = "MENU_ROL", joinColumns = {
@@ -192,7 +200,7 @@ public class Menu implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Menu[ menuPK=" + menuPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Menu[ menuPK=" + menuPK + " ]";
     }
     
 }

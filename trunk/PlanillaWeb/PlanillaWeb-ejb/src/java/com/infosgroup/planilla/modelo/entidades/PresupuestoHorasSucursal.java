@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -45,6 +46,7 @@ public class PresupuestoHorasSucursal implements Serializable {
     protected PresupuestoHorasSucursalPK presupuestoHorasSucursalPK;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
+    @Size(max = 2)
     @Column(name = "COD_SUCURSAL", length = 2)
     private String codSucursal;
     @Column(name = "FECHA_INICIO")
@@ -53,8 +55,10 @@ public class PresupuestoHorasSucursal implements Serializable {
     @Column(name = "FECHA_FINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFinal;
+    @Size(max = 3)
     @Column(name = "ESTADO", length = 3)
     private String estado;
+    @Size(max = 100)
     @Column(name = "OBSERVACION", length = 100)
     private String observacion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "presupuestoHorasSucursal")
@@ -158,7 +162,7 @@ public class PresupuestoHorasSucursal implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PresupuestoHorasSucursal[ presupuestoHorasSucursalPK=" + presupuestoHorasSucursalPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PresupuestoHorasSucursal[ presupuestoHorasSucursalPK=" + presupuestoHorasSucursalPK + " ]";
     }
     
 }

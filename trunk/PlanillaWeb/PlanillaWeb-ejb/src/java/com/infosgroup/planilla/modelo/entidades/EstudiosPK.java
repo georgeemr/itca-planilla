@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,9 +18,12 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class EstudiosPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 5)
     @Column(name = "COD_ESTUDIO", nullable = false, length = 5)
     private String codEstudio;
 
@@ -72,7 +77,7 @@ public class EstudiosPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.EstudiosPK[ codCia=" + codCia + ", codEstudio=" + codEstudio + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.EstudiosPK[ codCia=" + codCia + ", codEstudio=" + codEstudio + " ]";
     }
     
 }

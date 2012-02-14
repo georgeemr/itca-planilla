@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,21 +17,27 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class FestivosXDeptoPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_PAIS", nullable = false)
     private short codPais;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_DEPTO", nullable = false)
     private short codDepto;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "ANIO", nullable = false)
     private short anio;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "DIA", nullable = false)
     private short dia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "MES", nullable = false)
     private short mes;
 
@@ -136,7 +143,7 @@ public class FestivosXDeptoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.FestivosXDeptoPK[ codCia=" + codCia + ", codPais=" + codPais + ", codDepto=" + codDepto + ", anio=" + anio + ", dia=" + dia + ", mes=" + mes + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.FestivosXDeptoPK[ codCia=" + codCia + ", codPais=" + codPais + ", codDepto=" + codDepto + ", anio=" + anio + ", dia=" + dia + ", mes=" + mes + " ]";
     }
     
 }

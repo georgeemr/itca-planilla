@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -37,6 +38,7 @@ public class DetPresupuestoHorasSucursal implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected DetPresupuestoHorasSucursalPK detPresupuestoHorasSucursalPK;
+    @Size(max = 3)
     @Column(name = "ESTADO", length = 3)
     private String estado;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -115,7 +117,7 @@ public class DetPresupuestoHorasSucursal implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetPresupuestoHorasSucursal[ detPresupuestoHorasSucursalPK=" + detPresupuestoHorasSucursalPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetPresupuestoHorasSucursal[ detPresupuestoHorasSucursalPK=" + detPresupuestoHorasSucursalPK + " ]";
     }
     
 }

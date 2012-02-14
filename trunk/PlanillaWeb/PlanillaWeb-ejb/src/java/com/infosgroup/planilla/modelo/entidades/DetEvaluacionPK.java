@@ -19,22 +19,30 @@ public class DetEvaluacionPK implements Serializable {
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @Column(name = "PERIODO", nullable = false)
+    private short periodo;
+    @Basic(optional = false)
     @Column(name = "COD_CAMPANIA", nullable = false)
     private short codCampania;
     @Basic(optional = false)
-    @Column(name = "COD_EVALUACION", nullable = false)
-    private short codEvaluacion;
+    @Column(name = "TIPO_EVALUACION", nullable = false)
+    private short tipoEvaluacion;
+    @Basic(optional = false)
+    @Column(name = "COD_EMP", nullable = false)
+    private int codEmp;
     @Basic(optional = false)
     @Column(name = "COD_DET_EVALUACION", nullable = false)
-    private short codDetEvaluacion;
+    private long codDetEvaluacion;
 
     public DetEvaluacionPK() {
     }
 
-    public DetEvaluacionPK(short codCia, short codCampania, short codEvaluacion, short codDetEvaluacion) {
+    public DetEvaluacionPK(short codCia, short periodo, short codCampania, short tipoEvaluacion, int codEmp, long codDetEvaluacion) {
         this.codCia = codCia;
+        this.periodo = periodo;
         this.codCampania = codCampania;
-        this.codEvaluacion = codEvaluacion;
+        this.tipoEvaluacion = tipoEvaluacion;
+        this.codEmp = codEmp;
         this.codDetEvaluacion = codDetEvaluacion;
     }
 
@@ -46,6 +54,14 @@ public class DetEvaluacionPK implements Serializable {
         this.codCia = codCia;
     }
 
+    public short getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(short periodo) {
+        this.periodo = periodo;
+    }
+
     public short getCodCampania() {
         return codCampania;
     }
@@ -54,19 +70,27 @@ public class DetEvaluacionPK implements Serializable {
         this.codCampania = codCampania;
     }
 
-    public short getCodEvaluacion() {
-        return codEvaluacion;
+    public short getTipoEvaluacion() {
+        return tipoEvaluacion;
     }
 
-    public void setCodEvaluacion(short codEvaluacion) {
-        this.codEvaluacion = codEvaluacion;
+    public void setTipoEvaluacion(short tipoEvaluacion) {
+        this.tipoEvaluacion = tipoEvaluacion;
     }
 
-    public short getCodDetEvaluacion() {
+    public int getCodEmp() {
+        return codEmp;
+    }
+
+    public void setCodEmp(int codEmp) {
+        this.codEmp = codEmp;
+    }
+
+    public long getCodDetEvaluacion() {
         return codDetEvaluacion;
     }
 
-    public void setCodDetEvaluacion(short codDetEvaluacion) {
+    public void setCodDetEvaluacion(long codDetEvaluacion) {
         this.codDetEvaluacion = codDetEvaluacion;
     }
 
@@ -74,8 +98,10 @@ public class DetEvaluacionPK implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
+        hash += (int) periodo;
         hash += (int) codCampania;
-        hash += (int) codEvaluacion;
+        hash += (int) tipoEvaluacion;
+        hash += (int) codEmp;
         hash += (int) codDetEvaluacion;
         return hash;
     }
@@ -90,10 +116,16 @@ public class DetEvaluacionPK implements Serializable {
         if (this.codCia != other.codCia) {
             return false;
         }
+        if (this.periodo != other.periodo) {
+            return false;
+        }
         if (this.codCampania != other.codCampania) {
             return false;
         }
-        if (this.codEvaluacion != other.codEvaluacion) {
+        if (this.tipoEvaluacion != other.tipoEvaluacion) {
+            return false;
+        }
+        if (this.codEmp != other.codEmp) {
             return false;
         }
         if (this.codDetEvaluacion != other.codDetEvaluacion) {
@@ -104,7 +136,7 @@ public class DetEvaluacionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetEvaluacionPK[ codCia=" + codCia + ", codCampania=" + codCampania + ", codEvaluacion=" + codEvaluacion + ", codDetEvaluacion=" + codDetEvaluacion + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.DetEvaluacionPK[ codCia=" + codCia + ", periodo=" + periodo + ", codCampania=" + codCampania + ", tipoEvaluacion=" + tipoEvaluacion + ", codEmp=" + codEmp + ", codDetEvaluacion=" + codDetEvaluacion + " ]";
     }
     
 }

@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -41,18 +42,23 @@ public class DetRangos implements Serializable {
     protected DetRangosPK detRangosPK;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "DEL", nullable = false, precision = 14, scale = 4)
     private BigDecimal del;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "AL", nullable = false, precision = 14, scale = 4)
     private BigDecimal al;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "VALOR_FIJO", nullable = false, precision = 14, scale = 4)
     private BigDecimal valorFijo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PORCENTAJE", nullable = false, precision = 14, scale = 4)
     private BigDecimal porcentaje;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "EXCESO", nullable = false, precision = 14, scale = 4)
     private BigDecimal exceso;
     @JoinColumns({
@@ -159,7 +165,7 @@ public class DetRangos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetRangos[ detRangosPK=" + detRangosPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetRangos[ detRangosPK=" + detRangosPK + " ]";
     }
     
 }

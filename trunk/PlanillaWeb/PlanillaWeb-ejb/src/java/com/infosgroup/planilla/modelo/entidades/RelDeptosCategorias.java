@@ -304,7 +304,7 @@ public class RelDeptosCategorias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.RelDeptosCategorias[ relDeptosCategoriasPK=" + relDeptosCategoriasPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.RelDeptosCategorias[ relDeptosCategoriasPK=" + relDeptosCategoriasPK + " ]";
     }
     
 }

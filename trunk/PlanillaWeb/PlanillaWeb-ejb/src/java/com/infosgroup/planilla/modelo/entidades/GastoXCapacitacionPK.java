@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,12 +17,15 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class GastoXCapacitacionPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CAPACITACION", nullable = false)
     private int codCapacitacion;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CORRELATIVO", nullable = false)
     private int correlativo;
 
@@ -88,7 +92,7 @@ public class GastoXCapacitacionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.GastoXCapacitacionPK[ codCia=" + codCia + ", codCapacitacion=" + codCapacitacion + ", correlativo=" + correlativo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.GastoXCapacitacionPK[ codCia=" + codCia + ", codCapacitacion=" + codCapacitacion + ", correlativo=" + correlativo + " ]";
     }
     
 }

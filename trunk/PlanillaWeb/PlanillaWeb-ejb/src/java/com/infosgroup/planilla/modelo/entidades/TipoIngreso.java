@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -32,8 +33,10 @@ public class TipoIngreso implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected TipoIngresoPK tipoIngresoPK;
+    @Size(max = 200)
     @Column(name = "NOM_INGRESO", length = 200)
     private String nomIngreso;
+    @Size(max = 1)
     @Column(name = "VPR", length = 1)
     private String vpr;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -105,7 +108,7 @@ public class TipoIngreso implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoIngreso[ tipoIngresoPK=" + tipoIngresoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoIngreso[ tipoIngresoPK=" + tipoIngresoPK + " ]";
     }
     
 }

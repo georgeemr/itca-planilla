@@ -20,6 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -53,6 +55,7 @@ public class DetAsistencia implements Serializable {
     @EmbeddedId
     protected DetAsistenciaPK detAsistenciaPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "D_LABORADOS", nullable = false)
     private short dLaborados;
     @Column(name = "DN_LABORADOS")
@@ -70,12 +73,15 @@ public class DetAsistencia implements Serializable {
     private BigDecimal hXf150;
     @Column(name = "H_XF250", precision = 6, scale = 2)
     private BigDecimal hXf250;
+    @Size(max = 1)
     @Column(name = "STATUS", length = 1)
     private String status;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
+    @Size(max = 2)
     @Column(name = "COD_SUCURSAL", length = 2)
     private String codSucursal;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "detAsistencia")
@@ -245,7 +251,7 @@ public class DetAsistencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetAsistencia[ detAsistenciaPK=" + detAsistenciaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetAsistencia[ detAsistenciaPK=" + detAsistenciaPK + " ]";
     }
     
 }

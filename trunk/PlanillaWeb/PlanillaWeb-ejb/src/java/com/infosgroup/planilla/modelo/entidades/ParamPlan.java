@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -73,28 +75,38 @@ public class ParamPlan implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private Short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "DIAS_LABOR", nullable = false)
     private short diasLabor;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "DIAS_MES", nullable = false)
     private short diasMes;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "HORAS_DIA", nullable = false)
     private short horasDia;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FAC_HXSEN", nullable = false, precision = 8, scale = 4)
     private BigDecimal facHxsen;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FAC_HXDOB", nullable = false, precision = 9, scale = 4)
     private BigDecimal facHxdob;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "COMISIONES", nullable = false, length = 1)
     private String comisiones;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "FACTU_ING", nullable = false, length = 1)
     private String factuIng;
     @Column(name = "CTA_1")
@@ -159,16 +171,22 @@ public class ParamPlan implements Serializable {
     private BigDecimal maxAfp;
     @Column(name = "MAX_ISSS", precision = 12, scale = 2)
     private BigDecimal maxIsss;
+    @Size(max = 100)
     @Column(name = "FIRMA1", length = 100)
     private String firma1;
+    @Size(max = 100)
     @Column(name = "PUESTO1", length = 100)
     private String puesto1;
+    @Size(max = 100)
     @Column(name = "FIRMA2", length = 100)
     private String firma2;
+    @Size(max = 100)
     @Column(name = "PUESTO2", length = 100)
     private String puesto2;
+    @Size(max = 100)
     @Column(name = "FIRMA3", length = 100)
     private String firma3;
+    @Size(max = 100)
     @Column(name = "PUESTO3", length = 100)
     private String puesto3;
 
@@ -572,7 +590,7 @@ public class ParamPlan implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ParamPlan[ codCia=" + codCia + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ParamPlan[ codCia=" + codCia + " ]";
     }
     
 }

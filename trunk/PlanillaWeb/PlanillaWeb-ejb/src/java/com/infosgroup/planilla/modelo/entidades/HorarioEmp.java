@@ -19,6 +19,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -43,6 +45,7 @@ public class HorarioEmp implements Serializable {
     @EmbeddedId
     protected HorarioEmpPK horarioEmpPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
@@ -55,6 +58,7 @@ public class HorarioEmp implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "HORAS", precision = 4, scale = 2)
     private BigDecimal horas;
+    @Size(max = 1)
     @Column(name = "STATUS", length = 1)
     private String status;
     @JoinColumns({
@@ -170,7 +174,7 @@ public class HorarioEmp implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.HorarioEmp[ horarioEmpPK=" + horarioEmpPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.HorarioEmp[ horarioEmpPK=" + horarioEmpPK + " ]";
     }
     
 }

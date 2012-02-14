@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -51,6 +52,7 @@ public class DescuentoPrestamos implements Serializable {
     private Integer codPresta;
     @Column(name = "COD_EMP")
     private Integer codEmp;
+    @Size(max = 100)
     @Column(name = "NOM_EMPLEADO", length = 100)
     private String nomEmpleado;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -58,6 +60,7 @@ public class DescuentoPrestamos implements Serializable {
     private BigDecimal cuotaApagar;
     @Column(name = "NUM_PAGOS")
     private Short numPagos;
+    @Size(max = 1)
     @Column(name = "PAGA", length = 1)
     private String paga;
     @Column(name = "COD_DEDUC")
@@ -230,7 +233,7 @@ public class DescuentoPrestamos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DescuentoPrestamos[ descuentoPrestamosPK=" + descuentoPrestamosPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DescuentoPrestamos[ descuentoPrestamosPK=" + descuentoPrestamosPK + " ]";
     }
     
 }

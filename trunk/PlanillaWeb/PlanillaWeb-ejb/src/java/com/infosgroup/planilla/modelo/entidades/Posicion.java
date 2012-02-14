@@ -18,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -39,6 +41,8 @@ public class Posicion implements Serializable {
     @EmbeddedId
     protected PosicionPK posicionPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "STATUS", nullable = false, length = 1)
     private String status;
     @Column(name = "COD_EMP")
@@ -168,7 +172,7 @@ public class Posicion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Posicion[ posicionPK=" + posicionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Posicion[ posicionPK=" + posicionPK + " ]";
     }
     
 }

@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -45,14 +46,19 @@ public class PlanillaIsss implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PlanillaIsssPK planillaIsssPK;
+    @Size(max = 9)
     @Column(name = "NO_PATRONAL", length = 9)
     private String noPatronal;
+    @Size(max = 9)
     @Column(name = "NO_AFILACION", length = 9)
     private String noAfilacion;
+    @Size(max = 1)
     @Column(name = "TIPO_DOCTO", length = 1)
     private String tipoDocto;
+    @Size(max = 18)
     @Column(name = "ID", length = 18)
     private String id;
+    @Size(max = 150)
     @Column(name = "NOMBRE", length = 150)
     private String nombre;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -60,8 +66,10 @@ public class PlanillaIsss implements Serializable {
     private BigDecimal salDebengado;
     @Column(name = "DIAS_REMUNERADOS")
     private Short diasRemunerados;
+    @Size(max = 2)
     @Column(name = "HORAS_JORNADA", length = 2)
     private String horasJornada;
+    @Size(max = 2)
     @Column(name = "COD_OBSERVA", length = 2)
     private String codObserva;
     @Column(name = "COD_TIPOPLA")
@@ -228,7 +236,7 @@ public class PlanillaIsss implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PlanillaIsss[ planillaIsssPK=" + planillaIsssPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PlanillaIsss[ planillaIsssPK=" + planillaIsssPK + " ]";
     }
     
 }

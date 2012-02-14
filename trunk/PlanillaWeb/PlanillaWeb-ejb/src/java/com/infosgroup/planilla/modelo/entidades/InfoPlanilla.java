@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -50,6 +51,7 @@ public class InfoPlanilla implements Serializable {
     protected InfoPlanillaPK infoPlanillaPK;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
+    @Size(max = 60)
     @Column(name = "NOMBRE", length = 60)
     private String nombre;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -251,7 +253,7 @@ public class InfoPlanilla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.InfoPlanilla[ infoPlanillaPK=" + infoPlanillaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.InfoPlanilla[ infoPlanillaPK=" + infoPlanillaPK + " ]";
     }
     
 }

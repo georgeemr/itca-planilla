@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -45,20 +47,26 @@ public class PlanCarrera implements Serializable {
     @EmbeddedId
     protected PlanCarreraPK planCarreraPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_PUESTO_META", nullable = false)
     private short codPuestoMeta;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_PUESTO_BASE", nullable = false)
     private short codPuestoBase;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_EMP", nullable = false)
     private int codEmp;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_INICIO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
+    @Size(max = 100)
     @Column(name = "OBSERVACION", length = 100)
     private String observacion;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @Column(name = "FECHA_REVISION")
@@ -181,7 +189,7 @@ public class PlanCarrera implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PlanCarrera[ planCarreraPK=" + planCarreraPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PlanCarrera[ planCarreraPK=" + planCarreraPK + " ]";
     }
     
 }

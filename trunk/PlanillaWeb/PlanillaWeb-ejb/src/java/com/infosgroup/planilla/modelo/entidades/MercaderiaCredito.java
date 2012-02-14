@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -44,10 +46,12 @@ public class MercaderiaCredito implements Serializable {
     @EmbeddedId
     protected MercaderiaCreditoPK mercaderiaCreditoPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_INICIAL", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicial;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_FINAL", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFinal;
@@ -55,6 +59,7 @@ public class MercaderiaCredito implements Serializable {
     private Short numPlanilla;
     @Column(name = "COD_TIPOPLA")
     private Short codTipopla;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mercaderiaCredito")
@@ -156,7 +161,7 @@ public class MercaderiaCredito implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.MercaderiaCredito[ mercaderiaCreditoPK=" + mercaderiaCreditoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.MercaderiaCredito[ mercaderiaCreditoPK=" + mercaderiaCreditoPK + " ]";
     }
     
 }

@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -44,6 +45,7 @@ public class DetMercaderiaCredito implements Serializable {
     protected DetMercaderiaCreditoPK detMercaderiaCreditoPK;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "SALDO", nullable = false, precision = 14, scale = 2)
     private BigDecimal saldo;
     @Column(name = "CUOTA_SUGERIDA", precision = 14, scale = 2)
@@ -166,7 +168,7 @@ public class DetMercaderiaCredito implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetMercaderiaCredito[ detMercaderiaCreditoPK=" + detMercaderiaCreditoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetMercaderiaCredito[ detMercaderiaCreditoPK=" + detMercaderiaCreditoPK + " ]";
     }
     
 }

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,15 +17,19 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class PrograCampaniaPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CAMPANIA", nullable = false)
     private short codCampania;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PERIODO", nullable = false)
     private int periodo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CORRELATIVO", nullable = false)
     private long correlativo;
 
@@ -104,7 +109,7 @@ public class PrograCampaniaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PrograCampaniaPK[ codCia=" + codCia + ", codCampania=" + codCampania + ", periodo=" + periodo + ", correlativo=" + correlativo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PrograCampaniaPK[ codCia=" + codCia + ", codCampania=" + codCampania + ", periodo=" + periodo + ", correlativo=" + correlativo + " ]";
     }
     
 }

@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,10 +32,13 @@ public class RelUsuarioNivel implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected RelUsuarioNivelPK relUsuarioNivelPK;
+    @Size(max = 1)
     @Column(name = "NIVEL_1", length = 1)
     private String nivel1;
+    @Size(max = 1)
     @Column(name = "NIVEL_2", length = 1)
     private String nivel2;
+    @Size(max = 1)
     @Column(name = "NIVEL_3", length = 1)
     private String nivel3;
 
@@ -103,7 +107,7 @@ public class RelUsuarioNivel implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.RelUsuarioNivel[ relUsuarioNivelPK=" + relUsuarioNivelPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.RelUsuarioNivel[ relUsuarioNivelPK=" + relUsuarioNivelPK + " ]";
     }
     
 }

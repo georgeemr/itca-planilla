@@ -19,6 +19,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -44,11 +46,14 @@ public class EvaluacionCandidato implements Serializable {
     protected EvaluacionCandidatoPK evaluacionCandidatoPK;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "NOTA", nullable = false, precision = 5, scale = 2)
     private BigDecimal nota;
+    @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
     private String observacion;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
@@ -78,7 +83,7 @@ public class EvaluacionCandidato implements Serializable {
         this.fecha = fecha;
     }
 
-    public EvaluacionCandidato(short codCia, long puesto, long prueba, long candidato, long concurso) {
+    public EvaluacionCandidato(short codCia, short puesto, long prueba, int candidato, long concurso) {
         this.evaluacionCandidatoPK = new EvaluacionCandidatoPK(codCia, puesto, prueba, candidato, concurso);
     }
 
@@ -152,7 +157,7 @@ public class EvaluacionCandidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.EvaluacionCandidato[ evaluacionCandidatoPK=" + evaluacionCandidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.EvaluacionCandidato[ evaluacionCandidatoPK=" + evaluacionCandidatoPK + " ]";
     }
     
 }

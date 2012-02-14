@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,12 +17,15 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class MenuPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_MODULO", nullable = false)
     private long codModulo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_MENU", nullable = false)
     private long codMenu;
 
@@ -88,7 +92,7 @@ public class MenuPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.MenuPK[ codCia=" + codCia + ", codModulo=" + codModulo + ", codMenu=" + codMenu + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.MenuPK[ codCia=" + codCia + ", codModulo=" + codModulo + ", codMenu=" + codMenu + " ]";
     }
     
 }

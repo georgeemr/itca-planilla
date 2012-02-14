@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,18 +18,24 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class PreguntaRespuestaPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_FACTOR", nullable = false)
     private short codFactor;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "COD_PREGUNTA", nullable = false, length = 1)
     private String codPregunta;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_TIPO_RESPUESTA", nullable = false)
     private short codTipoRespuesta;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_RESPUESTA", nullable = false)
     private short codRespuesta;
 
@@ -120,7 +128,7 @@ public class PreguntaRespuestaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PreguntaRespuestaPK[ codCia=" + codCia + ", codFactor=" + codFactor + ", codPregunta=" + codPregunta + ", codTipoRespuesta=" + codTipoRespuesta + ", codRespuesta=" + codRespuesta + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PreguntaRespuestaPK[ codCia=" + codCia + ", codFactor=" + codFactor + ", codPregunta=" + codPregunta + ", codTipoRespuesta=" + codTipoRespuesta + ", codRespuesta=" + codRespuesta + " ]";
     }
     
 }

@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,9 +18,12 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class EstadoConcursoPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "CODIGO", nullable = false, length = 200)
     private String codigo;
 
@@ -72,7 +77,7 @@ public class EstadoConcursoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.EstadoConcursoPK[ codCia=" + codCia + ", codigo=" + codigo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.EstadoConcursoPK[ codCia=" + codCia + ", codigo=" + codigo + " ]";
     }
     
 }

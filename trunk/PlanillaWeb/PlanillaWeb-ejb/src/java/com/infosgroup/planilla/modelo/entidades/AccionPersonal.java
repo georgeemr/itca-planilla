@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -53,9 +54,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AccionPersonal.findByStatus", query = "SELECT a FROM AccionPersonal a WHERE a.status = :status"),
     @NamedQuery(name = "AccionPersonal.findByFechaCanje", query = "SELECT a FROM AccionPersonal a WHERE a.fechaCanje = :fechaCanje"),
     @NamedQuery(name = "AccionPersonal.findByCodTiporetiro", query = "SELECT a FROM AccionPersonal a WHERE a.codTiporetiro = :codTiporetiro"),
-    @NamedQuery(name = "AccionPersonal.findByTipoIngreso", query = "SELECT a FROM AccionPersonal a WHERE a.tipoIngreso = :tipoIngreso")})
+    @NamedQuery(name = "AccionPersonal.findByTipoIngreso", query = "SELECT a FROM AccionPersonal a WHERE a.tipoIngreso = :tipoIngreso"),
+    @NamedQuery(name = "AccionPersonal.findByAprobadoJefe", query = "SELECT a FROM AccionPersonal a WHERE a.aprobadoJefe = :aprobadoJefe"),
+    @NamedQuery(name = "AccionPersonal.findByAprobadoRh", query = "SELECT a FROM AccionPersonal a WHERE a.aprobadoRh = :aprobadoRh")})
 public class AccionPersonal implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected AccionPersonalPK accionPersonalPK;
@@ -71,6 +73,7 @@ public class AccionPersonal implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "CANTIDAD", precision = 12, scale = 2)
     private BigDecimal cantidad;
+    @Size(max = 500)
     @Column(name = "OBSERVACION", length = 500)
     private String observacion;
     @Column(name = "PERIODO")
@@ -82,6 +85,7 @@ public class AccionPersonal implements Serializable {
     @Column(name = "FECHA_FINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFinal;
+    @Size(max = 1)
     @Column(name = "DEVENGADAS", length = 1)
     private String devengadas;
     @Column(name = "COD_TIPOPLA")
@@ -97,6 +101,7 @@ public class AccionPersonal implements Serializable {
     private Date periodoFinal;
     @Column(name = "SUELDO_ANTERIOR", precision = 12, scale = 2)
     private BigDecimal sueldoAnterior;
+    @Size(max = 1)
     @Column(name = "STATUS", length = 1)
     private String status;
     @Column(name = "FECHA_CANJE")
@@ -260,22 +265,6 @@ public class AccionPersonal implements Serializable {
         this.codDeptoNuevo = codDeptoNuevo;
     }
 
-    public Date getAprobadoJefe() {
-        return aprobadoJefe;
-    }
-
-    public void setAprobadoJefe(Date aprobadoJefe) {
-        this.aprobadoJefe = aprobadoJefe;
-    }
-
-    public Date getAprobadoRh() {
-        return aprobadoRh;
-    }
-
-    public void setAprobadoRh(Date aprobadoRh) {
-        this.aprobadoRh = aprobadoRh;
-    }
-
     public Short getDias() {
         return dias;
     }
@@ -338,6 +327,22 @@ public class AccionPersonal implements Serializable {
 
     public void setTipoIngreso(Short tipoIngreso) {
         this.tipoIngreso = tipoIngreso;
+    }
+
+    public Date getAprobadoJefe() {
+        return aprobadoJefe;
+    }
+
+    public void setAprobadoJefe(Date aprobadoJefe) {
+        this.aprobadoJefe = aprobadoJefe;
+    }
+
+    public Date getAprobadoRh() {
+        return aprobadoRh;
+    }
+
+    public void setAprobadoRh(Date aprobadoRh) {
+        this.aprobadoRh = aprobadoRh;
     }
 
     public TipoAccion getTipoAccion() {
@@ -431,6 +436,7 @@ public class AccionPersonal implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.AccionPersonal[ accionPersonalPK=" + accionPersonalPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.AccionPersonal[ accionPersonalPK=" + accionPersonalPK + " ]";
     }
+    
 }

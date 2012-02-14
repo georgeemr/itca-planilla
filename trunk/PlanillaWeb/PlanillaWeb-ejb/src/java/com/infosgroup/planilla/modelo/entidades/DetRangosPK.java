@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,12 +17,15 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class DetRangosPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_RANGO", nullable = false)
     private short codRango;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "SECUENCIA", nullable = false)
     private short secuencia;
 
@@ -88,7 +92,7 @@ public class DetRangosPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetRangosPK[ codCia=" + codCia + ", codRango=" + codRango + ", secuencia=" + secuencia + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetRangosPK[ codCia=" + codCia + ", codRango=" + codRango + ", secuencia=" + secuencia + " ]";
     }
     
 }

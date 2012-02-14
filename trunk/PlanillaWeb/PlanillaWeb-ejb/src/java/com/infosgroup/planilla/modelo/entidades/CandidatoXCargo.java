@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -38,6 +39,7 @@ public class CandidatoXCargo implements Serializable {
     protected CandidatoXCargoPK candidatoXCargoPK;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "SALARIO_ASPIRADO", nullable = false, precision = 16, scale = 2)
     private BigDecimal salarioAspirado;
     @Column(name = "COD_TIPO_PUESTO")
@@ -131,7 +133,7 @@ public class CandidatoXCargo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.CandidatoXCargo[ candidatoXCargoPK=" + candidatoXCargoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.CandidatoXCargo[ candidatoXCargoPK=" + candidatoXCargoPK + " ]";
     }
     
 }

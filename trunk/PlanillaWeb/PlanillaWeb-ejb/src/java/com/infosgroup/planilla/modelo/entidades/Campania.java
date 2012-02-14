@@ -68,7 +68,7 @@ public class Campania implements Serializable {
     @Column(name = "NOTA", precision = 10, scale = 2)
     private BigDecimal nota;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "campania")
-    private List<PrograCampania> prograCampaniaList;
+    private List<Evaluacion> evaluacionList;
     @Transient
     private String descripcionEstado;
     @Transient
@@ -150,12 +150,12 @@ public class Campania implements Serializable {
     }
 
     @XmlTransient
-    public List<PrograCampania> getPrograCampaniaList() {
-        return prograCampaniaList;
+    public List<Evaluacion> getEvaluacionList() {
+        return evaluacionList;
     }
 
-    public void setPrograCampaniaList(List<PrograCampania> prograCampaniaList) {
-        this.prograCampaniaList = prograCampaniaList;
+    public void setEvaluacionList(List<Evaluacion> evaluacionList) {
+        this.evaluacionList = evaluacionList;
     }
 
     @Override

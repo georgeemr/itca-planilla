@@ -5,14 +5,19 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,6 +39,10 @@ public class Pregunta implements Serializable {
     @Basic(optional = false)
     @Column(name = "DESCRIPCION", nullable = false, length = 300)
     private String descripcion;
+    @ManyToMany(mappedBy = "preguntaList")
+    private List<Plantilla> plantillaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pregunta")
+    private List<DetEvaluacion> detEvaluacionList;
 
     public Pregunta() {
     }
@@ -65,6 +74,24 @@ public class Pregunta implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @XmlTransient
+    public List<Plantilla> getPlantillaList() {
+        return plantillaList;
+    }
+
+    public void setPlantillaList(List<Plantilla> plantillaList) {
+        this.plantillaList = plantillaList;
+    }
+
+    @XmlTransient
+    public List<DetEvaluacion> getDetEvaluacionList() {
+        return detEvaluacionList;
+    }
+
+    public void setDetEvaluacionList(List<DetEvaluacion> detEvaluacionList) {
+        this.detEvaluacionList = detEvaluacionList;
     }
 
     @Override

@@ -15,6 +15,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -35,6 +37,8 @@ public class TipoPrueba implements Serializable {
     @EmbeddedId
     protected TipoPruebaPK tipoPruebaPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOM_TIPO_PRUEBA", nullable = false, length = 200)
     private String nomTipoPrueba;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPrueba")
@@ -103,7 +107,7 @@ public class TipoPrueba implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoPrueba[ tipoPruebaPK=" + tipoPruebaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoPrueba[ tipoPruebaPK=" + tipoPruebaPK + " ]";
     }
     
 }

@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,6 +34,7 @@ public class DocumentoPresentado implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected DocumentoPresentadoPK documentoPresentadoPK;
+    @Size(max = 500)
     @Column(name = "OBSERVACION", length = 500)
     private String observacion;
     @JoinColumns({
@@ -111,7 +113,7 @@ public class DocumentoPresentado implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DocumentoPresentado[ documentoPresentadoPK=" + documentoPresentadoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DocumentoPresentado[ documentoPresentadoPK=" + documentoPresentadoPK + " ]";
     }
     
 }

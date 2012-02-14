@@ -70,7 +70,7 @@ public class ComisionObras implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ComisionObras[ comisionObrasPK=" + comisionObrasPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ComisionObras[ comisionObrasPK=" + comisionObrasPK + " ]";
     }
     
 }

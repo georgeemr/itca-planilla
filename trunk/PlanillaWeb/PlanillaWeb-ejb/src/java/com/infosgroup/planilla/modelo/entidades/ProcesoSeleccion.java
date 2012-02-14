@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -32,6 +34,8 @@ public class ProcesoSeleccion implements Serializable {
     @EmbeddedId
     protected ProcesoSeleccionPK procesoSeleccionPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOM_ACTIVIDAD", nullable = false, length = 200)
     private String nomActividad;
     @Column(name = "ORDEN")
@@ -99,7 +103,7 @@ public class ProcesoSeleccion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ProcesoSeleccion[ procesoSeleccionPK=" + procesoSeleccionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ProcesoSeleccion[ procesoSeleccionPK=" + procesoSeleccionPK + " ]";
     }
     
 }

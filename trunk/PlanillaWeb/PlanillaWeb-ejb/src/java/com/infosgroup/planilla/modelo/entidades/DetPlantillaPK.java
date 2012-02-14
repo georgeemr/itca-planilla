@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,18 +17,23 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class DetPlantillaPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_TIPO_EVALUACION", nullable = false)
     private short codTipoEvaluacion;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PERIODO", nullable = false)
     private int periodo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_PLANTILLA", nullable = false)
     private short codPlantilla;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_DET_PLANTILLA", nullable = false)
     private short codDetPlantilla;
 
@@ -120,7 +126,7 @@ public class DetPlantillaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetPlantillaPK[ codCia=" + codCia + ", codTipoEvaluacion=" + codTipoEvaluacion + ", periodo=" + periodo + ", codPlantilla=" + codPlantilla + ", codDetPlantilla=" + codDetPlantilla + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetPlantillaPK[ codCia=" + codCia + ", codTipoEvaluacion=" + codTipoEvaluacion + ", periodo=" + periodo + ", codPlantilla=" + codPlantilla + ", codDetPlantilla=" + codDetPlantilla + " ]";
     }
     
 }

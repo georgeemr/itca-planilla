@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,15 +17,19 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class DetInstitucionPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_INSTI", nullable = false)
     private short codInsti;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_PAIS", nullable = false)
     private short codPais;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_DEPARTAMENTO", nullable = false)
     private short codDepartamento;
 
@@ -104,7 +109,7 @@ public class DetInstitucionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetInstitucionPK[ codCia=" + codCia + ", codInsti=" + codInsti + ", codPais=" + codPais + ", codDepartamento=" + codDepartamento + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetInstitucionPK[ codCia=" + codCia + ", codInsti=" + codInsti + ", codPais=" + codPais + ", codDepartamento=" + codDepartamento + " ]";
     }
     
 }

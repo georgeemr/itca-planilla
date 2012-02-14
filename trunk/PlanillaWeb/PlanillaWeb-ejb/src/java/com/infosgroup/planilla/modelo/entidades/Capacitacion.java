@@ -22,6 +22,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -52,27 +54,36 @@ public class Capacitacion implements Serializable {
     @Column(name = "COD_INSTI")
     private Short codInsti;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOM_CAPACITACION", nullable = false, length = 200)
     private String nomCapacitacion;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_DESDE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDesde;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_HASTA", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHasta;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "DURACION", nullable = false, precision = 5, scale = 2)
     private BigDecimal duracion;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "IMPARTIDA_POR", nullable = false, length = 100)
     private String impartidaPor;
+    @Size(max = 200)
     @Column(name = "RAZON", length = 200)
     private String razon;
     @Column(name = "COSTO_RAZON", precision = 8, scale = 2)
     private BigDecimal costoRazon;
+    @Size(max = 3)
     @Column(name = "STATUS", length = 3)
     private String status;
     @JoinTable(name = "CAPACITACION_X_EMPLEADO", joinColumns = {
@@ -236,7 +247,7 @@ public class Capacitacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Capacitacion[ capacitacionPK=" + capacitacionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Capacitacion[ capacitacionPK=" + capacitacionPK + " ]";
     }
     
 }

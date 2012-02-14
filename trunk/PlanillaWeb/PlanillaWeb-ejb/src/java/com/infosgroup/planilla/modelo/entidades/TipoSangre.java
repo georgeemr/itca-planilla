@@ -14,6 +14,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,9 +34,13 @@ public class TipoSangre implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 5)
     @Column(name = "TIPO_SANGRE", nullable = false, length = 5)
     private String tipoSangre;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "NOM_TIPO_SANGRE", nullable = false, length = 100)
     private String nomTipoSangre;
     @OneToMany(mappedBy = "tipoSangre")
@@ -99,7 +105,7 @@ public class TipoSangre implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoSangre[ tipoSangre=" + tipoSangre + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoSangre[ tipoSangre=" + tipoSangre + " ]";
     }
     
 }

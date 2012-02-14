@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,6 +33,8 @@ public class TipoPuesto implements Serializable {
     @EmbeddedId
     protected TipoPuestoPK tipoPuestoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOM_TIPO", nullable = false, length = 200)
     private String nomTipo;
 
@@ -88,7 +92,7 @@ public class TipoPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoPuesto[ tipoPuestoPK=" + tipoPuestoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoPuesto[ tipoPuestoPK=" + tipoPuestoPK + " ]";
     }
     
 }

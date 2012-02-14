@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -40,6 +41,7 @@ public class TipoPruebaXCandidato implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected TipoPruebaXCandidatoPK tipoPruebaXCandidatoPK;
+    @Size(max = 200)
     @Column(name = "RESULTADO", length = 200)
     private String resultado;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -150,7 +152,7 @@ public class TipoPruebaXCandidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoPruebaXCandidato[ tipoPruebaXCandidatoPK=" + tipoPruebaXCandidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoPruebaXCandidato[ tipoPruebaXCandidatoPK=" + tipoPruebaXCandidatoPK + " ]";
     }
     
 }

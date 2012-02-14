@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -40,15 +42,23 @@ public class CriteriosXCandidato implements Serializable {
     @EmbeddedId
     protected CriteriosXCandidatoPK criteriosXCandidatoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "VALOR", nullable = false, length = 200)
     private String valor;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "CAMPO", nullable = false, length = 200)
     private String campo;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "ENTIDAD", nullable = false, length = 200)
     private String entidad;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "ENTIDADPK", nullable = false, length = 200)
     private String entidadpk;
     @JoinColumns({
@@ -160,7 +170,7 @@ public class CriteriosXCandidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.CriteriosXCandidato[ criteriosXCandidatoPK=" + criteriosXCandidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.CriteriosXCandidato[ criteriosXCandidatoPK=" + criteriosXCandidatoPK + " ]";
     }
     
 }

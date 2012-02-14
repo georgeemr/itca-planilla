@@ -18,6 +18,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -40,12 +42,17 @@ public class HijosXEmpleado implements Serializable {
     @EmbeddedId
     protected HijosXEmpleadoPK hijosXEmpleadoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "NOMBRE", nullable = false, length = 100)
     private String nombre;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "SEXO", nullable = false, length = 1)
     private String sexo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_NACIMIENTO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaNacimiento;
@@ -135,7 +142,7 @@ public class HijosXEmpleado implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.HijosXEmpleado[ hijosXEmpleadoPK=" + hijosXEmpleadoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.HijosXEmpleado[ hijosXEmpleadoPK=" + hijosXEmpleadoPK + " ]";
     }
     
 }

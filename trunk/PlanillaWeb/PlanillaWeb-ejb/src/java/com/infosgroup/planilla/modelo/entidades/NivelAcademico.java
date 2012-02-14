@@ -15,6 +15,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -35,6 +37,8 @@ public class NivelAcademico implements Serializable {
     @EmbeddedId
     protected NivelAcademicoPK nivelAcademicoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOM_NIVEL_ACADEMICO", nullable = false, length = 200)
     private String nomNivelAcademico;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nivelAcademico")
@@ -114,7 +118,7 @@ public class NivelAcademico implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.NivelAcademico[ nivelAcademicoPK=" + nivelAcademicoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.NivelAcademico[ nivelAcademicoPK=" + nivelAcademicoPK + " ]";
     }
     
 }

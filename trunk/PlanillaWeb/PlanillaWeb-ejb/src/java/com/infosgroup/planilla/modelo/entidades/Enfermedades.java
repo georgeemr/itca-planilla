@@ -14,6 +14,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,8 +34,10 @@ public class Enfermedades implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_ENFERMEDAD", nullable = false)
     private Integer codEnfermedad;
+    @Size(max = 100)
     @Column(name = "NOM_ENFERMEDAD", length = 100)
     private String nomEnfermedad;
     @OneToMany(mappedBy = "codEnfermedad")
@@ -93,7 +97,7 @@ public class Enfermedades implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Enfermedades[ codEnfermedad=" + codEnfermedad + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Enfermedades[ codEnfermedad=" + codEnfermedad + " ]";
     }
     
 }

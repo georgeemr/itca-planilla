@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,15 +18,20 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class DetIngresoPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_EMP", nullable = false)
     private int codEmp;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "TIPO_INGRESO", nullable = false)
     private short tipoIngreso;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "ESTADO", nullable = false, length = 1)
     private String estado;
 
@@ -104,7 +111,7 @@ public class DetIngresoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetIngresoPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", tipoIngreso=" + tipoIngreso + ", estado=" + estado + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetIngresoPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", tipoIngreso=" + tipoIngreso + ", estado=" + estado + " ]";
     }
     
 }

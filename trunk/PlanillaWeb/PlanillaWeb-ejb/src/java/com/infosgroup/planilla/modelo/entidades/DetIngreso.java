@@ -134,7 +134,7 @@ public class DetIngreso implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetIngreso[ detIngresoPK=" + detIngresoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetIngreso[ detIngresoPK=" + detIngresoPK + " ]";
     }
     
 }

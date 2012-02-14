@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -39,6 +40,7 @@ public class PresupuestoPuesto implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PresupuestoPuestoPK presupuestoPuestoPK;
+    @Size(max = 100)
     @Column(name = "DESCRIPCION", length = 100)
     private String descripcion;
     @Column(name = "CANTIDAD")
@@ -48,6 +50,7 @@ public class PresupuestoPuesto implements Serializable {
     private BigDecimal valorPresupuestado;
     @Column(name = "VALOR_APROBADO", precision = 16, scale = 3)
     private BigDecimal valorAprobado;
+    @Size(max = 3)
     @Column(name = "ESTADO", length = 3)
     private String estado;
     @JoinColumns({
@@ -146,7 +149,7 @@ public class PresupuestoPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PresupuestoPuesto[ presupuestoPuestoPK=" + presupuestoPuestoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PresupuestoPuesto[ presupuestoPuestoPK=" + presupuestoPuestoPK + " ]";
     }
     
 }

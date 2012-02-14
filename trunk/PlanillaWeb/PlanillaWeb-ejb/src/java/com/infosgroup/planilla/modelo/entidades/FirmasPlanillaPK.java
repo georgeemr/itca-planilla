@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -19,16 +20,20 @@ import javax.persistence.TemporalType;
 @Embeddable
 public class FirmasPlanillaPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_FIRMA", nullable = false)
     private short codFirma;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_DESDE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDesde;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_HASTA", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHasta;
@@ -109,7 +114,7 @@ public class FirmasPlanillaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.FirmasPlanillaPK[ codCia=" + codCia + ", codFirma=" + codFirma + ", fechaDesde=" + fechaDesde + ", fechaHasta=" + fechaHasta + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.FirmasPlanillaPK[ codCia=" + codCia + ", codFirma=" + codFirma + ", fechaDesde=" + fechaDesde + ", fechaHasta=" + fechaHasta + " ]";
     }
     
 }

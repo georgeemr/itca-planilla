@@ -12,6 +12,8 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -20,20 +22,26 @@ import javax.persistence.TemporalType;
 @Embeddable
 public class FacturasPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "NUM_DOCTO", nullable = false)
     private int numDocto;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_DOCTO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDocto;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 5)
     @Column(name = "COD_CLIENTE", nullable = false, length = 5)
     private String codCliente;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "SALDO", nullable = false, precision = 14, scale = 2)
     private BigDecimal saldo;
 
@@ -126,7 +134,7 @@ public class FacturasPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.FacturasPK[ codCia=" + codCia + ", numDocto=" + numDocto + ", fechaDocto=" + fechaDocto + ", codCliente=" + codCliente + ", saldo=" + saldo + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.FacturasPK[ codCia=" + codCia + ", numDocto=" + numDocto + ", fechaDocto=" + fechaDocto + ", codCliente=" + codCliente + ", saldo=" + saldo + " ]";
     }
     
 }

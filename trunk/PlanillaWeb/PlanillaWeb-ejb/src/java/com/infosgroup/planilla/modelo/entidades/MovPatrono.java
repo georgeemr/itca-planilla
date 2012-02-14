@@ -16,6 +16,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -51,35 +53,45 @@ public class MovPatrono implements Serializable {
     @EmbeddedId
     protected MovPatronoPK movPatronoPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_EMP", nullable = false)
     private int codEmp;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_DP", nullable = false)
     private short codDp;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "VPR", nullable = false, length = 1)
     private String vpr;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FACTOR", nullable = false, precision = 8, scale = 4)
     private BigDecimal factor;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "VALOR", nullable = false, precision = 16, scale = 2)
     private BigDecimal valor;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "BASE_CALCULO", nullable = false, precision = 16, scale = 2)
     private BigDecimal baseCalculo;
     @Column(name = "FECHA_MOVTO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaMovto;
+    @Size(max = 1)
     @Column(name = "SUMA_RESTA", length = 1)
     private String sumaResta;
+    @Size(max = 1)
     @Column(name = "STATUS", length = 1)
     private String status;
     @Column(name = "SECUENCIA")
     private Integer secuencia;
     @Column(name = "NUM_CHEQUE")
     private Integer numCheque;
+    @Size(max = 1)
     @Column(name = "GENERADO", length = 1)
     private String generado;
     @Column(name = "COD_PRESTA")
@@ -250,7 +262,7 @@ public class MovPatrono implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.MovPatrono[ movPatronoPK=" + movPatronoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.MovPatrono[ movPatronoPK=" + movPatronoPK + " ]";
     }
     
 }

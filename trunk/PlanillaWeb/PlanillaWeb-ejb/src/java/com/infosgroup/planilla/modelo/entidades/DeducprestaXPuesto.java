@@ -84,7 +84,7 @@ public class DeducprestaXPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DeducprestaXPuesto[ deducprestaXPuestoPK=" + deducprestaXPuestoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DeducprestaXPuesto[ deducprestaXPuestoPK=" + deducprestaXPuestoPK + " ]";
     }
     
 }

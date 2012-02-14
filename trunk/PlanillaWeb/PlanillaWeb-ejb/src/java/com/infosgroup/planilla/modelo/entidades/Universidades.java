@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -29,6 +30,7 @@ public class Universidades implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected UniversidadesPK universidadesPK;
+    @Size(max = 200)
     @Column(name = "NOM_UNIVERSIDAD", length = 200)
     private String nomUniversidad;
 
@@ -81,7 +83,7 @@ public class Universidades implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Universidades[ universidadesPK=" + universidadesPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Universidades[ universidadesPK=" + universidadesPK + " ]";
     }
     
 }

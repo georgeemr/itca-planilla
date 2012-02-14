@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -17,12 +18,15 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class NivelesXCandidatoPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private BigInteger codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CANDIDATO", nullable = false)
     private BigInteger codCandidato;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_NIVEL", nullable = false)
     private BigInteger codNivel;
 
@@ -89,7 +93,7 @@ public class NivelesXCandidatoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.NivelesXCandidatoPK[ codCia=" + codCia + ", codCandidato=" + codCandidato + ", codNivel=" + codNivel + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.NivelesXCandidatoPK[ codCia=" + codCia + ", codCandidato=" + codCandidato + ", codNivel=" + codNivel + " ]";
     }
     
 }

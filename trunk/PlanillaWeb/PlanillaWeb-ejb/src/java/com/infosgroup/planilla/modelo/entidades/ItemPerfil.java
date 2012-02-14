@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -32,8 +34,11 @@ public class ItemPerfil implements Serializable {
     @EmbeddedId
     protected ItemPerfilPK itemPerfilPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 500)
     @Column(name = "DESCRIPCION_ITEM_PERFIL", nullable = false, length = 500)
     private String descripcionItemPerfil;
+    @Size(max = 1)
     @Column(name = "CLASE", length = 1)
     private String clase;
 
@@ -99,7 +104,7 @@ public class ItemPerfil implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ItemPerfil[ itemPerfilPK=" + itemPerfilPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ItemPerfil[ itemPerfilPK=" + itemPerfilPK + " ]";
     }
     
 }

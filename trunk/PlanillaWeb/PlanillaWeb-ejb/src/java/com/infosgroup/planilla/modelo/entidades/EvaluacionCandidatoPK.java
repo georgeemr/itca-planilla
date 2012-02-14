@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,25 +17,30 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class EvaluacionCandidatoPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PUESTO", nullable = false)
-    private long puesto;
+    private short puesto;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PRUEBA", nullable = false)
     private long prueba;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CANDIDATO", nullable = false)
-    private long candidato;
+    private int candidato;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CONCURSO", nullable = false)
     private long concurso;
 
     public EvaluacionCandidatoPK() {
     }
 
-    public EvaluacionCandidatoPK(short codCia, long puesto, long prueba, long candidato, long concurso) {
+    public EvaluacionCandidatoPK(short codCia, short puesto, long prueba, int candidato, long concurso) {
         this.codCia = codCia;
         this.puesto = puesto;
         this.prueba = prueba;
@@ -50,11 +56,11 @@ public class EvaluacionCandidatoPK implements Serializable {
         this.codCia = codCia;
     }
 
-    public long getPuesto() {
+    public short getPuesto() {
         return puesto;
     }
 
-    public void setPuesto(long puesto) {
+    public void setPuesto(short puesto) {
         this.puesto = puesto;
     }
 
@@ -66,11 +72,11 @@ public class EvaluacionCandidatoPK implements Serializable {
         this.prueba = prueba;
     }
 
-    public long getCandidato() {
+    public int getCandidato() {
         return candidato;
     }
 
-    public void setCandidato(long candidato) {
+    public void setCandidato(int candidato) {
         this.candidato = candidato;
     }
 
@@ -120,7 +126,7 @@ public class EvaluacionCandidatoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.EvaluacionCandidatoPK[ codCia=" + codCia + ", puesto=" + puesto + ", prueba=" + prueba + ", candidato=" + candidato + ", concurso=" + concurso + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.EvaluacionCandidatoPK[ codCia=" + codCia + ", puesto=" + puesto + ", prueba=" + prueba + ", candidato=" + candidato + ", concurso=" + concurso + " ]";
     }
     
 }

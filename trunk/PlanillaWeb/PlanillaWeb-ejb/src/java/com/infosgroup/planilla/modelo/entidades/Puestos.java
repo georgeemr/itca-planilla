@@ -11,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -57,6 +56,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Puestos.findByCodCondicion", query = "SELECT p FROM Puestos p WHERE p.codCondicion = :codCondicion"),
     @NamedQuery(name = "Puestos.findByJefatura", query = "SELECT p FROM Puestos p WHERE p.jefatura = :jefatura")})
 public class Puestos implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
+    private List<CriteriosXPuesto> criteriosXPuestoList;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PuestosPK puestosPK;
@@ -115,9 +116,7 @@ public class Puestos implements Serializable {
     private String jefatura;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
     private List<PruebaXPuesto> pruebaXPuestoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puesto1", fetch = FetchType.EAGER)
-    private List<CriteriosXPuesto> criteriosXPuestoList;
-    
+
     public Puestos() {
     }
 
@@ -354,14 +353,6 @@ public class Puestos implements Serializable {
         this.pruebaXPuestoList = pruebaXPuestoList;
     }
 
-    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
-        return criteriosXPuestoList;
-    }
-
-    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
-        this.criteriosXPuestoList = criteriosXPuestoList;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -385,6 +376,15 @@ public class Puestos implements Serializable {
     @Override
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.planilla.Puestos[ puestosPK=" + puestosPK + " ]";
+    }
+
+    @XmlTransient
+    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
+        return criteriosXPuestoList;
+    }
+
+    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
+        this.criteriosXPuestoList = criteriosXPuestoList;
     }
     
 }

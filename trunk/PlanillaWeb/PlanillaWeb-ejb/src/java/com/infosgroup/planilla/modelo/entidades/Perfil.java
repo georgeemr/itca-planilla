@@ -15,6 +15,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -39,12 +41,16 @@ public class Perfil implements Serializable {
     @EmbeddedId
     protected PerfilPK perfilPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOM_PERFIL", nullable = false, length = 200)
     private String nomPerfil;
+    @Size(max = 250)
     @Column(name = "DESCRIPCION_PERFIL", length = 250)
     private String descripcionPerfil;
     @Column(name = "COD_TIPO_PUESTO")
     private Short codTipoPuesto;
+    @Size(max = 1)
     @Column(name = "TIPO", length = 1)
     private String tipo;
     @Column(name = "VALOR")
@@ -147,7 +153,7 @@ public class Perfil implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Perfil[ perfilPK=" + perfilPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Perfil[ perfilPK=" + perfilPK + " ]";
     }
     
 }

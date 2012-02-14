@@ -70,7 +70,7 @@ public class ProfesionXPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ProfesionXPuesto[ profesionXPuestoPK=" + profesionXPuestoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ProfesionXPuesto[ profesionXPuestoPK=" + profesionXPuestoPK + " ]";
     }
     
 }

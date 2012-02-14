@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,15 +17,19 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class DetHojaAsistenciaPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "NO_HOJA", nullable = false)
     private short noHoja;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_EMP", nullable = false)
     private int codEmp;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "NO_SERIE", nullable = false)
     private short noSerie;
 
@@ -104,7 +109,7 @@ public class DetHojaAsistenciaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetHojaAsistenciaPK[ codCia=" + codCia + ", noHoja=" + noHoja + ", codEmp=" + codEmp + ", noSerie=" + noSerie + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetHojaAsistenciaPK[ codCia=" + codCia + ", noHoja=" + noHoja + ", codEmp=" + codEmp + ", noSerie=" + noSerie + " ]";
     }
     
 }

@@ -20,6 +20,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -44,13 +46,18 @@ public class CandidatoConcurso implements Serializable , Comparable<CandidatoCon
     @EmbeddedId
     protected CandidatoConcursoPK candidatoConcursoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "ESTADO", nullable = false, length = 100)
     private String estado;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "NOTA_EVALUACION", nullable = false, precision = 5, scale = 2)
     private BigDecimal notaEvaluacion;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "OBSERVACION", nullable = false, length = 200)
     private String observacion;
     @JoinColumns({
@@ -67,7 +74,7 @@ public class CandidatoConcurso implements Serializable , Comparable<CandidatoCon
     private List<EvaluacionCandidato> evaluacionCandidatoList;
     @Transient
     private Integer orden = 10;
-    
+
     public CandidatoConcurso() {
     }
 
@@ -165,13 +172,13 @@ public class CandidatoConcurso implements Serializable , Comparable<CandidatoCon
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.CandidatoConcurso[ candidatoConcursoPK=" + candidatoConcursoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.CandidatoConcurso[ candidatoConcursoPK=" + candidatoConcursoPK + " ]";
     }
-
+    
     @Override
     public int compareTo(CandidatoConcurso t) {
         return (this.notaEvaluacion.compareTo(t.notaEvaluacion) * -1);
-    }
+}
 
     public Integer getOrden() {
         return orden;

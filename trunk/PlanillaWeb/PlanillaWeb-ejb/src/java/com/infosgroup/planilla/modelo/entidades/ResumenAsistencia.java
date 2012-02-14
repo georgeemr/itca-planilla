@@ -16,6 +16,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -56,6 +58,7 @@ public class ResumenAsistencia implements Serializable {
     @EmbeddedId
     protected ResumenAsistenciaPK resumenAsistenciaPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "D_LABORADOS", nullable = false)
     private short dLaborados;
     @Column(name = "DN_LABORADOS")
@@ -67,6 +70,7 @@ public class ResumenAsistencia implements Serializable {
     private BigDecimal hXdobles;
     @Column(name = "VIATICOS", precision = 8, scale = 2)
     private BigDecimal viaticos;
+    @Size(max = 1)
     @Column(name = "STATUS", length = 1)
     private String status;
     @Column(name = "H_XF250", precision = 6, scale = 2)
@@ -81,10 +85,12 @@ public class ResumenAsistencia implements Serializable {
     private Integer hXf150;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
+    @Size(max = 2)
     @Column(name = "COD_SUCURSAL", length = 2)
     private String codSucursal;
     @Column(name = "OTROS", precision = 12, scale = 2)
     private BigDecimal otros;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @Column(name = "HORAS_AUSENCIA", precision = 6, scale = 2)
@@ -285,7 +291,7 @@ public class ResumenAsistencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ResumenAsistencia[ resumenAsistenciaPK=" + resumenAsistenciaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ResumenAsistencia[ resumenAsistenciaPK=" + resumenAsistenciaPK + " ]";
     }
     
 }

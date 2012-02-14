@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -29,8 +31,10 @@ public class RangoEdad implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_RANGO_EDAD", nullable = false)
     private Long codRangoEdad;
+    @Size(max = 50)
     @Column(name = "DESC_RANGO", length = 50)
     private String descRango;
 
@@ -79,7 +83,7 @@ public class RangoEdad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.RangoEdad[ codRangoEdad=" + codRangoEdad + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.RangoEdad[ codRangoEdad=" + codRangoEdad + " ]";
     }
     
 }

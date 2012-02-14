@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,12 +17,15 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class HorarioEmpPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_EMP", nullable = false)
     private int codEmp;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CORRELAT", nullable = false)
     private int correlat;
 
@@ -88,7 +92,7 @@ public class HorarioEmpPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.HorarioEmpPK[ codEmp=" + codEmp + ", codCia=" + codCia + ", correlat=" + correlat + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.HorarioEmpPK[ codEmp=" + codEmp + ", codCia=" + codCia + ", correlat=" + correlat + " ]";
     }
     
 }

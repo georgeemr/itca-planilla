@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,12 +18,16 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ComisionObrasPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_EMP", nullable = false)
     private int codEmp;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2)
     @Column(name = "TIPO_OBRA", nullable = false, length = 2)
     private String tipoObra;
 
@@ -88,7 +94,7 @@ public class ComisionObrasPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ComisionObrasPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", tipoObra=" + tipoObra + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ComisionObrasPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", tipoObra=" + tipoObra + " ]";
     }
     
 }

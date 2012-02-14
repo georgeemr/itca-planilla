@@ -19,6 +19,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -48,26 +50,34 @@ public class Contrato implements Serializable {
     @EmbeddedId
     protected ContratoPK contratoPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_ACUERDO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAcuerdo;
+    @Size(max = 500)
     @Column(name = "OBSERVACION", length = 500)
     private String observacion;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2)
     @Column(name = "TIPO", nullable = false, length = 2)
     private String tipo;
+    @Size(max = 25)
     @Column(name = "NUM_ACTA", length = 25)
     private String numActa;
     @Column(name = "COD_SUCURSAL")
     private Short codSucursal;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "SALARIO", nullable = false, precision = 16, scale = 2)
     private BigDecimal salario;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_INICIO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @Column(name = "FECHA_FINAL")
@@ -257,7 +267,7 @@ public class Contrato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Contrato[ contratoPK=" + contratoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Contrato[ contratoPK=" + contratoPK + " ]";
     }
     
 }

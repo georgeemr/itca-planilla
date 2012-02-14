@@ -17,6 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -44,8 +45,10 @@ public class DependienteXCandidato implements Serializable {
     @Column(name = "FECHA_NACIMIENTO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaNacimiento;
+    @Size(max = 100)
     @Column(name = "NOMBRE", length = 100)
     private String nombre;
+    @Size(max = 1)
     @Column(name = "SEXO", length = 1)
     private String sexo;
     @JoinColumns({
@@ -135,7 +138,7 @@ public class DependienteXCandidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DependienteXCandidato[ dependienteXCandidatoPK=" + dependienteXCandidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DependienteXCandidato[ dependienteXCandidatoPK=" + dependienteXCandidatoPK + " ]";
     }
     
 }
