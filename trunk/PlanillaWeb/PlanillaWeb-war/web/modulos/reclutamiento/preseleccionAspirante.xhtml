@@ -120,7 +120,7 @@
                     </tr>
                     <tr>
                         <td><h:outputLabel value="Empresa" style="font-weight: bold;" /></td>
-                        <td colspan="3"><h:outputLabel value="#{SessionBeanADM.compania.nomCompania}" /></td>
+                        <td colspan="3"><h:outputLabel value="#{SessionBeanADM.compania.nomComercial}" /></td>
                     </tr>
                     <tr>
                         <td><h:outputLabel value="Candidato" style="font-weight: bold;" /></td>
@@ -186,7 +186,7 @@
                             </h:panelGrid>
                         </td>
                         <td><h:selectOneMenu id="lst_tipoContrato" value="#{reclutamiento$preseleccionAspirante.tipoContratoSeleccionado}" >
-                                <f:selectItems var="tipoContrato" value="#{reclutamiento$preseleccionAspirante.listaTipoContrato}" itemValue="#{tipoContrato.tipoContratoPK.codigo}" itemLabel="#{tipoContrato.nombre}" />
+                                <f:selectItem itemValue="" itemLabel="" />
                             </h:selectOneMenu></td>
                         <td></td>
                         <td>
@@ -196,7 +196,7 @@
                             </h:panelGrid>
                         </td>
                         <td><h:selectOneMenu id="lst_estadoContrato" value="#{reclutamiento$preseleccionAspirante.estadoContrato}" >
-                                <f:selectItems var="estadoContrato" value="#{reclutamiento$preseleccionAspirante.listaEstadoContrato}" itemValue="#{estadoContrato.estadoContratoPK.codigo}" itemLabel="#{estadoContrato.nombre}" />
+                                <f:selectItem itemValue="" itemLabel="" />
                             </h:selectOneMenu></td>
                     </tr>
                     <tr>
@@ -207,7 +207,7 @@
                             </h:panelGrid>
                         </td>
                         <td><h:selectOneMenu id="lst_tipoPlanilla" value="#{reclutamiento$preseleccionAspirante.tipoPlanilla}" >
-                                <f:selectItems var="tipoPlanilla" value="#{reclutamiento$preseleccionAspirante.listaTipoPlanilla}" itemValue="#{tipoPlanilla.tipoPlanillaPK.idTipoPlanilla}" itemLabel="#{tipoPlanilla.nomTipoPlanilla}" />
+                                <f:selectItems var="tipoPlanilla" value="#{reclutamiento$preseleccionAspirante.listaTipoPlanilla}" itemValue="#{tipoPlanilla.tiposPlanillaPK.codTipopla}" itemLabel="#{tipoPlanilla.nomTipopla}" />
                             </h:selectOneMenu></td>
                         <td></td>
                         <td>
@@ -216,8 +216,8 @@
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>                            
                         </td>
-                        <td><h:selectOneMenu id="lst_sucursal" value="#{reclutamiento$preseleccionAspirante.sucursal}" >
-                                <f:selectItems var="sucursal" value="#{reclutamiento$preseleccionAspirante.listaSucursales}" itemValue="#{sucursal.sucursalPK.idSucursal}" itemLabel="#{sucursal.nomSucursal}" />
+                        <td><h:selectOneMenu id="lst_sucursal" value="#{reclutamiento$preseleccionAspirante.agencia}" >
+                                <f:selectItems var="agencia" value="#{reclutamiento$preseleccionAspirante.listaAgencias}" itemValue="#{agencia.agenciasPK.codAgencia}" itemLabel="#{agencia.nomAgencia}" />
                             </h:selectOneMenu></td>
                     </tr>
                     <tr>
@@ -336,13 +336,13 @@
                             <h:outputLabel value="#{concurso.numeroPlazas}" />
                         </p:column> 
 
-                        <p:column sortBy="#{concurso.puesto.nombre}"
-                                  filterBy="#{concurso.puesto.nombre}"
+                        <p:column sortBy="#{concurso.puestos.nomPuesto}"
+                                  filterBy="#{concurso.puestos.nomPuesto}"
                                   filterMatchMode="contains">
                             <f:facet name="header">
                                 Puesto
                             </f:facet>
-                            <h:outputLabel value="#{concurso.puesto.nombre}" />
+                            <h:outputLabel value="#{concurso.puestos.nomPuesto}" />
                         </p:column> 
                     </p:dataTable>
                     <p:spacer height="20" />
@@ -359,7 +359,7 @@
                         <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.nombre}" />
                         <h:outputLabel value=""/>
                         <h:outputLabel value="Puesto al que aplica: " style="font-weight: bold;" />
-                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.puesto.nombre}" />
+                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.puestos.nomPuesto}" />
                         <h:outputLabel value=""/>
                         <h:outputLabel value="Plazas necesarias: " style="font-weight: bold;" />
                         <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.numeroPlazas}" />
