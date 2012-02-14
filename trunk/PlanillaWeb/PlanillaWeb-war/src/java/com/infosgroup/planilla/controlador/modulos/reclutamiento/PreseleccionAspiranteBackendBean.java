@@ -46,8 +46,6 @@ import org.primefaces.event.UnselectEvent;
 public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
-    private SeguridadSessionBean seguridadSessionBean;
-    @EJB
     private ReclutamientoSessionBean reclutamientoSessionBean;
     private Date fechaInicial;
     private Date fechaFinal;

@@ -33,7 +33,7 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
 
     @PostConstruct
     public void init() {
-        listaPlanillas = planillaSessionBean.listarPlanilla();
+        listaPlanillas = planillaSessionBean.listarPlanilla( getSessionBeanADM().getCompania() );
     }
     private List<Planilla> listaPlanillas;
 
