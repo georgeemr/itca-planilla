@@ -21,7 +21,7 @@ import javax.persistence.PersistenceContext;
 @LocalBean
 public class MunicipiosFacade extends AbstractFacade<Municipios, MunicipiosPK> {
 
-    @PersistenceContext(unitName = "Parametros-ejbPU")
+    @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
     @Override

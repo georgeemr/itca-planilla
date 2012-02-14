@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class PaisFacade extends AbstractFacade<Paises, Short> {
 
-    @PersistenceContext(unitName = "Parametros-ejbPU")
+    @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
     public PaisFacade() {
