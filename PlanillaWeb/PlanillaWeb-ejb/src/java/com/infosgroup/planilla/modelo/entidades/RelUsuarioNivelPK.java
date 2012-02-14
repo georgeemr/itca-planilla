@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,9 +18,12 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class RelUsuarioNivelPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
     @Column(name = "USUARIO", nullable = false, length = 20)
     private String usuario;
 
@@ -72,7 +77,7 @@ public class RelUsuarioNivelPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.RelUsuarioNivelPK[ codCia=" + codCia + ", usuario=" + usuario + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.RelUsuarioNivelPK[ codCia=" + codCia + ", usuario=" + usuario + " ]";
     }
     
 }

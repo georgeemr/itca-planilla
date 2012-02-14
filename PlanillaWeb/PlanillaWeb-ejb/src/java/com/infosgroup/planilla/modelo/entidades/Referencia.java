@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -42,20 +44,27 @@ public class Referencia implements Serializable {
     @EmbeddedId
     protected ReferenciaPK referenciaPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "NOM_REFERENCIA", nullable = false, length = 100)
     private String nomReferencia;
+    @Size(max = 50)
     @Column(name = "TIEMPO", length = 50)
     private String tiempo;
+    @Size(max = 10)
     @Column(name = "TELEFONO", length = 10)
     private String telefono;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "SUELDO", precision = 6, scale = 2)
     private BigDecimal sueldo;
+    @Size(max = 100)
     @Column(name = "MOTIVO_RETIRO", length = 100)
     private String motivoRetiro;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "TIPO_REFERENCIA", nullable = false)
     private char tipoReferencia;
+    @Size(max = 100)
     @Column(name = "LUGAR", length = 100)
     private String lugar;
     @JoinColumns({
@@ -175,7 +184,7 @@ public class Referencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Referencia[ referenciaPK=" + referenciaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Referencia[ referenciaPK=" + referenciaPK + " ]";
     }
     
 }

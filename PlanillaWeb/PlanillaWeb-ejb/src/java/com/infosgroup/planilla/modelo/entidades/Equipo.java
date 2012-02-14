@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,6 +36,8 @@ public class Equipo implements Serializable {
     @EmbeddedId
     protected EquipoPK equipoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "NOM_EQUIPO", nullable = false, length = 100)
     private String nomEquipo;
     @ManyToMany(mappedBy = "equipoList")
@@ -102,7 +106,7 @@ public class Equipo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Equipo[ equipoPK=" + equipoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Equipo[ equipoPK=" + equipoPK + " ]";
     }
     
 }

@@ -18,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -41,12 +43,16 @@ public class PorRangos implements Serializable {
     @EmbeddedId
     protected PorRangosPK porRangosPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PERIODO", nullable = false)
     private short periodo;
+    @Size(max = 60)
     @Column(name = "DESCIPCION", length = 60)
     private String descipcion;
+    @Size(max = 1)
     @Column(name = "SINDICATO", length = 1)
     private String sindicato;
+    @Size(max = 1)
     @Column(name = "DOCENTE", length = 1)
     private String docente;
     @JoinColumns({
@@ -152,7 +158,7 @@ public class PorRangos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PorRangos[ porRangosPK=" + porRangosPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PorRangos[ porRangosPK=" + porRangosPK + " ]";
     }
     
 }

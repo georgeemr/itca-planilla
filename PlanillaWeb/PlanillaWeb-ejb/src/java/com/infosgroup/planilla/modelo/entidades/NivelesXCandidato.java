@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -39,6 +40,7 @@ public class NivelesXCandidato implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected NivelesXCandidatoPK nivelesXCandidatoPK;
+    @Size(max = 1)
     @Column(name = "ESTADO_NIVEL", length = 1)
     private String estadoNivel;
     @Column(name = "FEC_ESTADO")
@@ -125,7 +127,7 @@ public class NivelesXCandidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.NivelesXCandidato[ nivelesXCandidatoPK=" + nivelesXCandidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.NivelesXCandidato[ nivelesXCandidatoPK=" + nivelesXCandidatoPK + " ]";
     }
     
 }

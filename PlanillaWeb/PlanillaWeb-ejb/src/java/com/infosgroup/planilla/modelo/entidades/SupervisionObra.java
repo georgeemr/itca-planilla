@@ -15,6 +15,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -40,9 +41,11 @@ public class SupervisionObra implements Serializable {
     @EmbeddedId
     protected SupervisionObraPK supervisionObraPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "DIAS_PROGRA", nullable = false)
     private short diasProgra;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_INICIO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
@@ -120,7 +123,7 @@ public class SupervisionObra implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.SupervisionObra[ supervisionObraPK=" + supervisionObraPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.SupervisionObra[ supervisionObraPK=" + supervisionObraPK + " ]";
     }
     
 }

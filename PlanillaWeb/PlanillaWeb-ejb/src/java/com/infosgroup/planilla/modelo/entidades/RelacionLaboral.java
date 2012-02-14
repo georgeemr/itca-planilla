@@ -151,7 +151,7 @@ public class RelacionLaboral implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.RelacionLaboral[ relacionLaboralPK=" + relacionLaboralPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.RelacionLaboral[ relacionLaboralPK=" + relacionLaboralPK + " ]";
     }
     
 }

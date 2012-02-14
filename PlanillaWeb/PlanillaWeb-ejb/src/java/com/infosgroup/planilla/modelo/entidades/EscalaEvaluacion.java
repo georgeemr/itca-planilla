@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -37,12 +39,16 @@ public class EscalaEvaluacion implements Serializable {
     @EmbeddedId
     protected EscalaEvaluacionPK escalaEvaluacionPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "RANGO_INICIAL", nullable = false)
     private short rangoInicial;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "RANGO_FINAL", nullable = false)
     private short rangoFinal;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
     @Column(name = "CALIFICACION", nullable = false, length = 20)
     private String calificacion;
     @JoinColumns({
@@ -131,7 +137,7 @@ public class EscalaEvaluacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.EscalaEvaluacion[ escalaEvaluacionPK=" + escalaEvaluacionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.EscalaEvaluacion[ escalaEvaluacionPK=" + escalaEvaluacionPK + " ]";
     }
     
 }

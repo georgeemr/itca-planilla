@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,9 +34,11 @@ public class CriterioSeleccionado implements Serializable {
     @EmbeddedId
     protected CriterioSeleccionadoPK criterioSeleccionadoPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CODIGO", nullable = false)
     private long codigo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "TIPO", nullable = false)
     private long tipo;
 
@@ -102,7 +105,7 @@ public class CriterioSeleccionado implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.CriterioSeleccionado[ criterioSeleccionadoPK=" + criterioSeleccionadoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.CriterioSeleccionado[ criterioSeleccionadoPK=" + criterioSeleccionadoPK + " ]";
     }
     
 }

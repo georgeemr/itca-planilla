@@ -17,6 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -41,6 +42,7 @@ public class ProfesionesXCandidato implements Serializable {
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Size(max = 1)
     @Column(name = "INCORPORADO", length = 1)
     private String incorporado;
     @Column(name = "COD_UNIVERSIDAD")
@@ -124,7 +126,7 @@ public class ProfesionesXCandidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ProfesionesXCandidato[ profesionesXCandidatoPK=" + profesionesXCandidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ProfesionesXCandidato[ profesionesXCandidatoPK=" + profesionesXCandidatoPK + " ]";
     }
     
 }

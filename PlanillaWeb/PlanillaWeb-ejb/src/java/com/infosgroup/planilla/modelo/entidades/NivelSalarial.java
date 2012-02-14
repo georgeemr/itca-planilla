@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -34,9 +35,11 @@ public class NivelSalarial implements Serializable {
     protected NivelSalarialPK nivelSalarialPK;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "LIMITE_INFERIOR", nullable = false, precision = 16, scale = 2)
     private BigDecimal limiteInferior;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "LIMITE_SUPERIOR", nullable = false, precision = 16, scale = 2)
     private BigDecimal limiteSuperior;
 
@@ -103,7 +106,7 @@ public class NivelSalarial implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.NivelSalarial[ nivelSalarialPK=" + nivelSalarialPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.NivelSalarial[ nivelSalarialPK=" + nivelSalarialPK + " ]";
     }
     
 }

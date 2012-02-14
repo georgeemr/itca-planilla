@@ -17,6 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -40,6 +41,7 @@ public class EntrevistaXCandidato implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected EntrevistaXCandidatoPK entrevistaXCandidatoPK;
+    @Size(max = 200)
     @Column(name = "DESCRIPCION", length = 200)
     private String descripcion;
     @Column(name = "FECHA")
@@ -47,6 +49,7 @@ public class EntrevistaXCandidato implements Serializable {
     private Date fecha;
     @Column(name = "COD_EMP")
     private Integer codEmp;
+    @Size(max = 200)
     @Column(name = "RESULTADO", length = 200)
     private String resultado;
     @JoinColumns({
@@ -136,7 +139,7 @@ public class EntrevistaXCandidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.EntrevistaXCandidato[ entrevistaXCandidatoPK=" + entrevistaXCandidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.EntrevistaXCandidato[ entrevistaXCandidatoPK=" + entrevistaXCandidatoPK + " ]";
     }
     
 }

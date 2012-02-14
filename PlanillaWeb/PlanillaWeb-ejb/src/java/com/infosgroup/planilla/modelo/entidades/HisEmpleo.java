@@ -18,6 +18,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -39,6 +41,8 @@ public class HisEmpleo implements Serializable {
     @EmbeddedId
     protected HisEmpleoPK hisEmpleoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "NOM_EMPRESA", nullable = false, length = 100)
     private String nomEmpresa;
     @Column(name = "FECH_INGRESO")
@@ -131,7 +135,7 @@ public class HisEmpleo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.HisEmpleo[ hisEmpleoPK=" + hisEmpleoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.HisEmpleo[ hisEmpleoPK=" + hisEmpleoPK + " ]";
     }
     
 }

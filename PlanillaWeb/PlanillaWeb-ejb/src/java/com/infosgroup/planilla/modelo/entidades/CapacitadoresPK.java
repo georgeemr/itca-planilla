@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,9 +17,11 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class CapacitadoresPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CAPACITADOR", nullable = false)
     private long codCapacitador;
 
@@ -72,7 +75,7 @@ public class CapacitadoresPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.CapacitadoresPK[ codCia=" + codCia + ", codCapacitador=" + codCapacitador + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.CapacitadoresPK[ codCia=" + codCia + ", codCapacitador=" + codCapacitador + " ]";
     }
     
 }

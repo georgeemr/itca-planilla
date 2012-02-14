@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,6 +33,8 @@ public class Factor implements Serializable {
     @EmbeddedId
     protected FactorPK factorPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "NOM_FACTOR", nullable = false, length = 100)
     private String nomFactor;
 
@@ -88,7 +92,7 @@ public class Factor implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Factor[ factorPK=" + factorPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Factor[ factorPK=" + factorPK + " ]";
     }
     
 }

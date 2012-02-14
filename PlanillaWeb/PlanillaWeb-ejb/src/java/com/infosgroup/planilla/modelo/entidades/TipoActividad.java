@@ -14,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -33,6 +34,7 @@ public class TipoActividad implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected TipoActividadPK tipoActividadPK;
+    @Size(max = 200)
     @Column(name = "DESCRIPCION", length = 200)
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoActividad")
@@ -96,7 +98,7 @@ public class TipoActividad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoActividad[ tipoActividadPK=" + tipoActividadPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoActividad[ tipoActividadPK=" + tipoActividadPK + " ]";
     }
     
 }

@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -47,30 +49,39 @@ public class HojaAsistencia implements Serializable {
     @EmbeddedId
     protected HojaAsistenciaPK hojaAsistenciaPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_SUPERVI", nullable = false)
     private int codSupervi;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "ANIO", nullable = false)
     private short anio;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2)
     @Column(name = "TIPO_OBRA", nullable = false, length = 2)
     private String tipoObra;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_OBRA", nullable = false)
     private int codObra;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "SUB_PROY", nullable = false)
     private short subProy;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PERIODO_INI", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date periodoIni;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PERIODO_FIN", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date periodoFin;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
+    @Size(max = 2)
     @Column(name = "COD_SUCURSAL", length = 2)
     private String codSucursal;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hojaAsistencia")
@@ -209,7 +220,7 @@ public class HojaAsistencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.HojaAsistencia[ hojaAsistenciaPK=" + hojaAsistenciaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.HojaAsistencia[ hojaAsistenciaPK=" + hojaAsistenciaPK + " ]";
     }
     
 }

@@ -14,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -43,6 +44,7 @@ public class TipoHorario implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected TipoHorarioPK tipoHorarioPK;
+    @Size(max = 100)
     @Column(name = "DES_TIPO_HORARIO", length = 100)
     private String desTipoHorario;
     @Column(name = "HORA_INICIO")
@@ -53,6 +55,7 @@ public class TipoHorario implements Serializable {
     private Short horaFin;
     @Column(name = "MINUTOS_FIN")
     private Short minutosFin;
+    @Size(max = 1)
     @Column(name = "ESTATUS", length = 1)
     private String estatus;
     @Column(name = "HORA_F_INICIO")
@@ -206,7 +209,7 @@ public class TipoHorario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoHorario[ tipoHorarioPK=" + tipoHorarioPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoHorario[ tipoHorarioPK=" + tipoHorarioPK + " ]";
     }
     
 }

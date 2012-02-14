@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -35,9 +37,13 @@ public class FirmasPlanilla implements Serializable {
     @EmbeddedId
     protected FirmasPlanillaPK firmasPlanillaPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "FIRMA", nullable = false, length = 100)
     private String firma;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "PUESTO", nullable = false, length = 100)
     private String puesto;
 
@@ -104,7 +110,7 @@ public class FirmasPlanilla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.FirmasPlanilla[ firmasPlanillaPK=" + firmasPlanillaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.FirmasPlanilla[ firmasPlanillaPK=" + firmasPlanillaPK + " ]";
     }
     
 }

@@ -16,6 +16,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -37,6 +39,8 @@ public class EstadoConcurso implements Serializable {
     @EmbeddedId
     protected EstadoConcursoPK estadoConcursoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOMBRE", nullable = false, length = 200)
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadoConcurso")
@@ -105,7 +109,7 @@ public class EstadoConcurso implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.EstadoConcurso[ estadoConcursoPK=" + estadoConcursoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.EstadoConcurso[ estadoConcursoPK=" + estadoConcursoPK + " ]";
     }
     
 }

@@ -72,7 +72,7 @@ public class PreguntaRespuesta implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PreguntaRespuesta[ preguntaRespuestaPK=" + preguntaRespuestaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PreguntaRespuesta[ preguntaRespuestaPK=" + preguntaRespuestaPK + " ]";
     }
     
 }

@@ -70,7 +70,7 @@ public class RelUsuarioTipopla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.RelUsuarioTipopla[ relUsuarioTipoplaPK=" + relUsuarioTipoplaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.RelUsuarioTipopla[ relUsuarioTipoplaPK=" + relUsuarioTipoplaPK + " ]";
     }
     
 }

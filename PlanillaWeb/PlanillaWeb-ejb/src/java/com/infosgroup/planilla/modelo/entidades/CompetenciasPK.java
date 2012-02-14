@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -17,9 +18,11 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class CompetenciasPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private BigInteger codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_COMPETENCIA", nullable = false)
     private BigInteger codCompetencia;
 
@@ -73,7 +76,7 @@ public class CompetenciasPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.CompetenciasPK[ codCia=" + codCia + ", codCompetencia=" + codCompetencia + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.CompetenciasPK[ codCia=" + codCia + ", codCompetencia=" + codCompetencia + " ]";
     }
     
 }

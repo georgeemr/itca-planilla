@@ -15,6 +15,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -35,12 +37,16 @@ public class BasesCalculo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_BASE", nullable = false)
     private Short codBase;
+    @Size(max = 60)
     @Column(name = "DES_BASE", length = 60)
     private String desBase;
+    @Size(max = 30)
     @Column(name = "TABLA", length = 30)
     private String tabla;
+    @Size(max = 30)
     @Column(name = "CAMPO", length = 30)
     private String campo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codBase")
@@ -116,7 +122,7 @@ public class BasesCalculo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.BasesCalculo[ codBase=" + codBase + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.BasesCalculo[ codBase=" + codBase + " ]";
     }
     
 }

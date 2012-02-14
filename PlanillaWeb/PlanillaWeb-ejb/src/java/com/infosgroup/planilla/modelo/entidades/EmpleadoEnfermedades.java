@@ -17,6 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -45,17 +46,22 @@ public class EmpleadoEnfermedades implements Serializable {
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Size(max = 200)
     @Column(name = "OBSERVACIONES", length = 200)
     private String observaciones;
+    @Size(max = 300)
     @Column(name = "SINTOMAS", length = 300)
     private String sintomas;
+    @Size(max = 50)
     @Column(name = "DESDE_CUANDO_PADECE", length = 50)
     private String desdeCuandoPadece;
     @Column(name = "FEC_PROX_VISIT")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecProxVisit;
+    @Size(max = 1)
     @Column(name = "INCAPACIDAD", length = 1)
     private String incapacidad;
+    @Size(max = 100)
     @Column(name = "TIEMPO_INCAPACIDAD", length = 100)
     private String tiempoIncapacidad;
     @JoinColumn(name = "COD_ENFERMEDAD", referencedColumnName = "COD_ENFERMEDAD")
@@ -180,7 +186,7 @@ public class EmpleadoEnfermedades implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.EmpleadoEnfermedades[ empleadoEnfermedadesPK=" + empleadoEnfermedadesPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.EmpleadoEnfermedades[ empleadoEnfermedadesPK=" + empleadoEnfermedadesPK + " ]";
     }
     
 }

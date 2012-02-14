@@ -19,6 +19,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -68,19 +70,24 @@ public class Prestamos implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "O_PAGO", precision = 10, scale = 2)
     private BigDecimal oPago;
+    @Size(max = 60)
     @Column(name = "REF_O_PAGO", length = 60)
     private String refOPago;
     @Column(name = "COD_PRES")
     private Short codPres;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_DEDUC", nullable = false)
     private int codDeduc;
+    @Size(max = 60)
     @Column(name = "DESCRIPCION", length = 60)
     private String descripcion;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "VALOR_PRESTA", nullable = false, precision = 16, scale = 2)
     private BigDecimal valorPresta;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "NUM_PAGOS", nullable = false)
     private short numPagos;
     @Column(name = "PAGOS_HECHOS")
@@ -93,6 +100,7 @@ public class Prestamos implements Serializable {
     private BigDecimal uPago;
     @Column(name = "SALDO_ACTUAL", precision = 16, scale = 2)
     private BigDecimal saldoActual;
+    @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
     private String observacion;
     @Column(name = "ULTIMO_MES")
@@ -101,6 +109,7 @@ public class Prestamos implements Serializable {
     private Short ultimoAnio;
     @Column(name = "SECUENCIA")
     private Integer secuencia;
+    @Size(max = 25)
     @Column(name = "NUM_PRESTAMOREF", length = 25)
     private String numPrestamoref;
     @Column(name = "DESC_QUINC")
@@ -110,8 +119,10 @@ public class Prestamos implements Serializable {
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Size(max = 20)
     @Column(name = "USUARIO", length = 20)
     private String usuario;
+    @Size(max = 20)
     @Column(name = "MODIFICADO_POR", length = 20)
     private String modificadoPor;
     @Column(name = "NO_CUENTA")
@@ -404,7 +415,7 @@ public class Prestamos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Prestamos[ prestamosPK=" + prestamosPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Prestamos[ prestamosPK=" + prestamosPK + " ]";
     }
     
 }

@@ -14,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,8 +35,10 @@ public class Capacitadores implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CapacitadoresPK capacitadoresPK;
+    @Size(max = 1)
     @Column(name = "TIPO", length = 1)
     private String tipo;
+    @Size(max = 200)
     @Column(name = "NOMBRE", length = 200)
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitadores")
@@ -107,7 +110,7 @@ public class Capacitadores implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Capacitadores[ capacitadoresPK=" + capacitadoresPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Capacitadores[ capacitadoresPK=" + capacitadoresPK + " ]";
     }
     
 }

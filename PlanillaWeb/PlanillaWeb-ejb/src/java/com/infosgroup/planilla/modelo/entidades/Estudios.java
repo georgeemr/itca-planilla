@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -29,6 +30,7 @@ public class Estudios implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected EstudiosPK estudiosPK;
+    @Size(max = 60)
     @Column(name = "DESCRIPCION", length = 60)
     private String descripcion;
 
@@ -81,7 +83,7 @@ public class Estudios implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Estudios[ estudiosPK=" + estudiosPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Estudios[ estudiosPK=" + estudiosPK + " ]";
     }
     
 }

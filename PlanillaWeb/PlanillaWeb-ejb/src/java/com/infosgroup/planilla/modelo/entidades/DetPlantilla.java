@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -38,15 +40,17 @@ public class DetPlantilla implements Serializable {
     @EmbeddedId
     protected DetPlantillaPK detPlantillaPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_FACTOR", nullable = false)
     private short codFactor;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "COD_PREGUNTA", nullable = false, length = 1)
     private String codPregunta;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_TIPO_EVALUACION", referencedColumnName = "COD_TIPO_EVALUACION", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "PERIODO", referencedColumnName = "PERIODO", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_PLANTILLA", referencedColumnName = "COD_PLANTILLA", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Plantilla plantilla;
@@ -122,7 +126,7 @@ public class DetPlantilla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetPlantilla[ detPlantillaPK=" + detPlantillaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetPlantilla[ detPlantillaPK=" + detPlantillaPK + " ]";
     }
     
 }

@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -37,12 +38,15 @@ public class ComisionMes implements Serializable {
     protected ComisionMesPK comisionMesPK;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COM_PRODUCTO", nullable = false, precision = 16, scale = 2)
     private BigDecimal comProducto;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COM_OBRA", nullable = false, precision = 16, scale = 2)
     private BigDecimal comObra;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "TOT_COMISION", nullable = false, precision = 16, scale = 2)
     private BigDecimal totComision;
 
@@ -118,7 +122,7 @@ public class ComisionMes implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ComisionMes[ comisionMesPK=" + comisionMesPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ComisionMes[ comisionMesPK=" + comisionMesPK + " ]";
     }
     
 }

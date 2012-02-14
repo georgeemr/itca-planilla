@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -34,6 +35,7 @@ public class DetInstitucion implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected DetInstitucionPK detInstitucionPK;
+    @Size(max = 15)
     @Column(name = "NUMERO_PATRONAL", length = 15)
     private String numeroPatronal;
     @JoinColumns({
@@ -99,7 +101,7 @@ public class DetInstitucion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetInstitucion[ detInstitucionPK=" + detInstitucionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetInstitucion[ detInstitucionPK=" + detInstitucionPK + " ]";
     }
     
 }

@@ -16,6 +16,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -56,22 +58,27 @@ public class ResumenViaticos implements Serializable {
     private Date fFinal;
     @Column(name = "COD_VIATICO")
     private Short codViatico;
+    @Size(max = 1)
     @Column(name = "PERIODO", length = 1)
     private String periodo;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "D_VIATICOS", nullable = false, precision = 6, scale = 2)
     private BigDecimal dViaticos;
     @Column(name = "D_HOSPEDAJE", precision = 6, scale = 2)
     private BigDecimal dHospedaje;
     @Column(name = "COD_TARIFA")
     private Short codTarifa;
+    @Size(max = 1)
     @Column(name = "STATUS", length = 1)
     private String status;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
+    @Size(max = 2)
     @Column(name = "COD_SUCURSAL", length = 2)
     private String codSucursal;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
 
@@ -209,7 +216,7 @@ public class ResumenViaticos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ResumenViaticos[ resumenViaticosPK=" + resumenViaticosPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ResumenViaticos[ resumenViaticosPK=" + resumenViaticosPK + " ]";
     }
     
 }

@@ -17,56 +17,44 @@ import javax.persistence.Embeddable;
 public class PlantillaPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
-    private short codCia;
+    private long codCia;
     @Basic(optional = false)
     @Column(name = "COD_TIPO_EVALUACION", nullable = false)
-    private short codTipoEvaluacion;
-    @Basic(optional = false)
-    @Column(name = "PERIODO", nullable = false)
-    private int periodo;
+    private long codTipoEvaluacion;
     @Basic(optional = false)
     @Column(name = "COD_PLANTILLA", nullable = false)
-    private short codPlantilla;
+    private long codPlantilla;
 
     public PlantillaPK() {
     }
 
-    public PlantillaPK(short codCia, short codTipoEvaluacion, int periodo, short codPlantilla) {
+    public PlantillaPK(long codCia, long codTipoEvaluacion, long codPlantilla) {
         this.codCia = codCia;
         this.codTipoEvaluacion = codTipoEvaluacion;
-        this.periodo = periodo;
         this.codPlantilla = codPlantilla;
     }
 
-    public short getCodCia() {
+    public long getCodCia() {
         return codCia;
     }
 
-    public void setCodCia(short codCia) {
+    public void setCodCia(long codCia) {
         this.codCia = codCia;
     }
 
-    public short getCodTipoEvaluacion() {
+    public long getCodTipoEvaluacion() {
         return codTipoEvaluacion;
     }
 
-    public void setCodTipoEvaluacion(short codTipoEvaluacion) {
+    public void setCodTipoEvaluacion(long codTipoEvaluacion) {
         this.codTipoEvaluacion = codTipoEvaluacion;
     }
 
-    public int getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(int periodo) {
-        this.periodo = periodo;
-    }
-
-    public short getCodPlantilla() {
+    public long getCodPlantilla() {
         return codPlantilla;
     }
 
-    public void setCodPlantilla(short codPlantilla) {
+    public void setCodPlantilla(long codPlantilla) {
         this.codPlantilla = codPlantilla;
     }
 
@@ -75,7 +63,6 @@ public class PlantillaPK implements Serializable {
         int hash = 0;
         hash += (int) codCia;
         hash += (int) codTipoEvaluacion;
-        hash += (int) periodo;
         hash += (int) codPlantilla;
         return hash;
     }
@@ -93,9 +80,6 @@ public class PlantillaPK implements Serializable {
         if (this.codTipoEvaluacion != other.codTipoEvaluacion) {
             return false;
         }
-        if (this.periodo != other.periodo) {
-            return false;
-        }
         if (this.codPlantilla != other.codPlantilla) {
             return false;
         }
@@ -104,7 +88,7 @@ public class PlantillaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PlantillaPK[ codCia=" + codCia + ", codTipoEvaluacion=" + codTipoEvaluacion + ", periodo=" + periodo + ", codPlantilla=" + codPlantilla + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.PlantillaPK[ codCia=" + codCia + ", codTipoEvaluacion=" + codTipoEvaluacion + ", codPlantilla=" + codPlantilla + " ]";
     }
     
 }

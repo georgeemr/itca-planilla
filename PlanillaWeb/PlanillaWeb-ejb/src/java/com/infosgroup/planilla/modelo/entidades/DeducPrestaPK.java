@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,9 +17,11 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class DeducPrestaPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_DP", nullable = false)
     private int codDp;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
 
@@ -72,7 +75,7 @@ public class DeducPrestaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DeducPrestaPK[ codDp=" + codDp + ", codCia=" + codCia + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DeducPrestaPK[ codDp=" + codDp + ", codCia=" + codCia + " ]";
     }
     
 }

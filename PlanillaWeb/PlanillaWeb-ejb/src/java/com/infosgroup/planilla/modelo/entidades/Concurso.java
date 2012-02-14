@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -43,6 +44,7 @@ public class Concurso implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ConcursoPK concursoPK;
+    @Size(max = 200)
     @Column(name = "NOMBRE", length = 200)
     private String nombre;
     @Column(name = "FECHA_INICIAL")
@@ -53,6 +55,7 @@ public class Concurso implements Serializable {
     private Date fechaFinal;
     @Column(name = "NUMERO_PLAZAS")
     private Long numeroPlazas;
+    @Size(max = 200)
     @Column(name = "COMENTARIO_FINAL", length = 200)
     private String comentarioFinal;
     @JoinColumns({
@@ -174,7 +177,7 @@ public class Concurso implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Concurso[ concursoPK=" + concursoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Concurso[ concursoPK=" + concursoPK + " ]";
     }
     
 }

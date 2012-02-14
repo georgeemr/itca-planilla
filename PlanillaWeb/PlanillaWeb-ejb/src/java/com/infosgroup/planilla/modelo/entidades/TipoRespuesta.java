@@ -5,14 +5,18 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +37,8 @@ public class TipoRespuesta implements Serializable {
     @Basic(optional = false)
     @Column(name = "NOM_TIPO_RESPUESTA", nullable = false, length = 300)
     private String nomTipoRespuesta;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoRespuesta")
+    private List<Respuesta> respuestaList;
 
     public TipoRespuesta() {
     }
@@ -64,6 +70,15 @@ public class TipoRespuesta implements Serializable {
 
     public void setNomTipoRespuesta(String nomTipoRespuesta) {
         this.nomTipoRespuesta = nomTipoRespuesta;
+    }
+
+    @XmlTransient
+    public List<Respuesta> getRespuestaList() {
+        return respuestaList;
+    }
+
+    public void setRespuestaList(List<Respuesta> respuestaList) {
+        this.respuestaList = respuestaList;
     }
 
     @Override

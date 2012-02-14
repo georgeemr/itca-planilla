@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,6 +31,7 @@ public class MetaCapacitacionAnio implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected MetaCapacitacionAnioPK metaCapacitacionAnioPK;
+    @Size(max = 200)
     @Column(name = "OBSERVACIONES", length = 200)
     private String observaciones;
     @Column(name = "CANT_HORAS")
@@ -92,7 +94,7 @@ public class MetaCapacitacionAnio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.MetaCapacitacionAnio[ metaCapacitacionAnioPK=" + metaCapacitacionAnioPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.MetaCapacitacionAnio[ metaCapacitacionAnioPK=" + metaCapacitacionAnioPK + " ]";
     }
     
 }

@@ -14,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -36,8 +37,10 @@ public class ProgramaEntrenamiento implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ProgramaEntrenamientoPK programaEntrenamientoPK;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
+    @Size(max = 100)
     @Column(name = "OBSERVACION", length = 100)
     private String observacion;
     @Column(name = "COD_EMP")
@@ -119,7 +122,7 @@ public class ProgramaEntrenamiento implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ProgramaEntrenamiento[ programaEntrenamientoPK=" + programaEntrenamientoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ProgramaEntrenamiento[ programaEntrenamientoPK=" + programaEntrenamientoPK + " ]";
     }
     
 }

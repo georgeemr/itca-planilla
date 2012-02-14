@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -34,6 +35,7 @@ public class PerfilXPuesto implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PerfilXPuestoPK perfilXPuestoPK;
+    @Size(max = 1)
     @Column(name = "TIPO", length = 1)
     private String tipo;
     @Column(name = "COD_TIPO_PUESTO")
@@ -109,7 +111,7 @@ public class PerfilXPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PerfilXPuesto[ perfilXPuestoPK=" + perfilXPuestoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PerfilXPuesto[ perfilXPuestoPK=" + perfilXPuestoPK + " ]";
     }
     
 }

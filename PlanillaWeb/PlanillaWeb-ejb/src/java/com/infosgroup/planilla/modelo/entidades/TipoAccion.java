@@ -15,6 +15,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -40,20 +42,28 @@ public class TipoAccion implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected TipoAccionPK tipoAccionPK;
+    @Size(max = 100)
     @Column(name = "NOM_TIPOACCION", length = 100)
     private String nomTipoaccion;
+    @Size(max = 1)
     @Column(name = "AFECTA_SAL", length = 1)
     private String afectaSal;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @Column(name = "COD_ROL")
     private Long codRol;
+    @Size(max = 200)
     @Column(name = "URL_PLANTILLA", length = 200)
     private String urlPlantilla;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "FIRMA_JEFE", nullable = false, length = 1)
     private String firmaJefe;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "FIRMA_RH", nullable = false, length = 1)
     private String firmaRh;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoAccion")
@@ -171,7 +181,7 @@ public class TipoAccion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoAccion[ tipoAccionPK=" + tipoAccionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoAccion[ tipoAccionPK=" + tipoAccionPK + " ]";
     }
     
 }

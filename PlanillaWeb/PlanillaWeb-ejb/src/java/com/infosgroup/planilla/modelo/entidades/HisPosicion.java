@@ -18,6 +18,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -46,18 +48,25 @@ public class HisPosicion implements Serializable {
     @Column(name = "COD_EMP")
     private Integer codEmp;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 500)
     @Column(name = "RAZON", nullable = false, length = 500)
     private String razon;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "STATUS", nullable = false, length = 1)
     private String status;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Size(max = 30)
     @Column(name = "NUM_ACTA", length = 30)
     private String numActa;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_ACTA", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaActa;
@@ -182,7 +191,7 @@ public class HisPosicion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.HisPosicion[ hisPosicionPK=" + hisPosicionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.HisPosicion[ hisPosicionPK=" + hisPosicionPK + " ]";
     }
     
 }

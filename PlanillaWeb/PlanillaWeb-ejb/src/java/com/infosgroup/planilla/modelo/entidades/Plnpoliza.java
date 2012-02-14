@@ -16,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -44,13 +45,16 @@ public class Plnpoliza implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PlnpolizaPK plnpolizaPK;
+    @Size(max = 10)
     @Column(name = "NUM_REFERENCIA", length = 10)
     private String numReferencia;
+    @Size(max = 120)
     @Column(name = "CONCEPTO", length = 120)
     private String concepto;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "TOTAL_POLIZA", precision = 13, scale = 2)
     private BigDecimal totalPoliza;
+    @Size(max = 1)
     @Column(name = "STATUS", length = 1)
     private String status;
     @Column(name = "ANIO")
@@ -178,7 +182,7 @@ public class Plnpoliza implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Plnpoliza[ plnpolizaPK=" + plnpolizaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Plnpoliza[ plnpolizaPK=" + plnpolizaPK + " ]";
     }
     
 }

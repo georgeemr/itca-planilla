@@ -37,8 +37,10 @@ public class TipoEvaluacion implements Serializable {
     @Basic(optional = false)
     @Column(name = "NOM_TIPO_EVALUACION", nullable = false, length = 100)
     private String nomTipoEvaluacion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion1")
+    private List<Evaluacion> evaluacionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEvaluacion")
-    private List<EscalaEvaluacion> escalaEvaluacionList;
+    private List<Plantilla> plantillaList;
 
     public TipoEvaluacion() {
     }
@@ -73,12 +75,21 @@ public class TipoEvaluacion implements Serializable {
     }
 
     @XmlTransient
-    public List<EscalaEvaluacion> getEscalaEvaluacionList() {
-        return escalaEvaluacionList;
+    public List<Evaluacion> getEvaluacionList() {
+        return evaluacionList;
     }
 
-    public void setEscalaEvaluacionList(List<EscalaEvaluacion> escalaEvaluacionList) {
-        this.escalaEvaluacionList = escalaEvaluacionList;
+    public void setEvaluacionList(List<Evaluacion> evaluacionList) {
+        this.evaluacionList = evaluacionList;
+    }
+
+    @XmlTransient
+    public List<Plantilla> getPlantillaList() {
+        return plantillaList;
+    }
+
+    public void setPlantillaList(List<Plantilla> plantillaList) {
+        this.plantillaList = plantillaList;
     }
 
     @Override

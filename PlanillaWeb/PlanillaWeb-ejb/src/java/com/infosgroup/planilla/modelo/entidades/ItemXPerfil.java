@@ -100,7 +100,7 @@ public class ItemXPerfil implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ItemXPerfil[ itemXPerfilPK=" + itemXPerfilPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ItemXPerfil[ itemXPerfilPK=" + itemXPerfilPK + " ]";
     }
     
 }

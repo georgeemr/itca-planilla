@@ -11,6 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -19,18 +21,24 @@ import javax.persistence.TemporalType;
 @Embeddable
 public class DetPlnpolizaPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2)
     @Column(name = "TIPO_DOCTO", nullable = false, length = 2)
     private String tipoDocto;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "NUM_POLIZA", nullable = false)
     private int numPoliza;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CORRELAT", nullable = false)
     private short correlat;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
@@ -124,7 +132,7 @@ public class DetPlnpolizaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetPlnpolizaPK[ codCia=" + codCia + ", tipoDocto=" + tipoDocto + ", numPoliza=" + numPoliza + ", correlat=" + correlat + ", fecha=" + fecha + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetPlnpolizaPK[ codCia=" + codCia + ", tipoDocto=" + tipoDocto + ", numPoliza=" + numPoliza + ", correlat=" + correlat + ", fecha=" + fecha + " ]";
     }
     
 }

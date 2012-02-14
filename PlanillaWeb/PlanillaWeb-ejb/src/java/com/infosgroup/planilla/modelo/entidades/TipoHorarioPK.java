@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,9 +18,12 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class TipoHorarioPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "TIPO_HORARIO", nullable = false, length = 1)
     private String tipoHorario;
 
@@ -72,7 +77,7 @@ public class TipoHorarioPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoHorarioPK[ codCia=" + codCia + ", tipoHorario=" + tipoHorario + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoHorarioPK[ codCia=" + codCia + ", tipoHorario=" + tipoHorario + " ]";
     }
     
 }

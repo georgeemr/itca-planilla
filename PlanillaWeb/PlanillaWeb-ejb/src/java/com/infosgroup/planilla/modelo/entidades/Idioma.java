@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,6 +33,8 @@ public class Idioma implements Serializable {
     @EmbeddedId
     protected IdiomaPK idiomaPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOM_IDIOMA", nullable = false, length = 200)
     private String nomIdioma;
 
@@ -88,7 +92,7 @@ public class Idioma implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Idioma[ idiomaPK=" + idiomaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Idioma[ idiomaPK=" + idiomaPK + " ]";
     }
     
 }

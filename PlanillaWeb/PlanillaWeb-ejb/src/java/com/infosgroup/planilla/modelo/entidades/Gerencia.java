@@ -15,6 +15,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -35,6 +37,8 @@ public class Gerencia implements Serializable {
     @EmbeddedId
     protected GerenciaPK gerenciaPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "NOM_GERENCIA", nullable = false, length = 100)
     private String nomGerencia;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gerencia")
@@ -103,7 +107,7 @@ public class Gerencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Gerencia[ gerenciaPK=" + gerenciaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Gerencia[ gerenciaPK=" + gerenciaPK + " ]";
     }
     
 }

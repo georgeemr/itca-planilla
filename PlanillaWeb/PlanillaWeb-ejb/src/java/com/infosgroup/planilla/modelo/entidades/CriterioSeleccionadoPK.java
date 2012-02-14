@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,12 +18,16 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class CriterioSeleccionadoPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CORRELATIVO", nullable = false)
     private long correlativo;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "USUARIO", nullable = false, length = 200)
     private String usuario;
 
@@ -88,7 +94,7 @@ public class CriterioSeleccionadoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.CriterioSeleccionadoPK[ codCia=" + codCia + ", correlativo=" + correlativo + ", usuario=" + usuario + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.CriterioSeleccionadoPK[ codCia=" + codCia + ", correlativo=" + correlativo + ", usuario=" + usuario + " ]";
     }
     
 }

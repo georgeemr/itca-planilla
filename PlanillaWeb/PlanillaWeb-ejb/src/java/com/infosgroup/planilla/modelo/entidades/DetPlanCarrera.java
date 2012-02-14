@@ -18,6 +18,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -43,16 +45,21 @@ public class DetPlanCarrera implements Serializable {
     @EmbeddedId
     protected DetPlanCarreraPK detPlanCarreraPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "TIEMPO", nullable = false)
     private short tiempo;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "ACTIVIDAD", nullable = false, length = 200)
     private String actividad;
+    @Size(max = 200)
     @Column(name = "RESULTADO", length = 200)
     private String resultado;
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
     private String observacion;
     @JoinColumns({
@@ -157,7 +164,7 @@ public class DetPlanCarrera implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetPlanCarrera[ detPlanCarreraPK=" + detPlanCarreraPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetPlanCarrera[ detPlanCarreraPK=" + detPlanCarreraPK + " ]";
     }
     
 }

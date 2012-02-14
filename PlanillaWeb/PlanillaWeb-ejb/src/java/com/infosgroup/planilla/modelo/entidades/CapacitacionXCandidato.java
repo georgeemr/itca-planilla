@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -42,19 +44,25 @@ public class CapacitacionXCandidato implements Serializable {
     @EmbeddedId
     protected CapacitacionXCandidatoPK capacitacionXCandidatoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "DESCRIPCION", nullable = false, length = 100)
     private String descripcion;
+    @Size(max = 30)
     @Column(name = "FECHA", length = 30)
     private String fecha;
     @Column(name = "COD_INSTI")
     private Short codInsti;
+    @Size(max = 2)
     @Column(name = "TIPO", length = 2)
     private String tipo;
+    @Size(max = 1)
     @Column(name = "NACIONAL", length = 1)
     private String nacional;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "HORAS_RECIBIDAS", precision = 5, scale = 2)
     private BigDecimal horasRecibidas;
+    @Size(max = 100)
     @Column(name = "NOM_INSTITUCION", length = 100)
     private String nomInstitucion;
     @JoinColumns({
@@ -186,7 +194,7 @@ public class CapacitacionXCandidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.CapacitacionXCandidato[ capacitacionXCandidatoPK=" + capacitacionXCandidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.CapacitacionXCandidato[ capacitacionXCandidatoPK=" + capacitacionXCandidatoPK + " ]";
     }
     
 }

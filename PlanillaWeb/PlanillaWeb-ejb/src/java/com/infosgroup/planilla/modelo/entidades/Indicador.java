@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,10 +34,13 @@ public class Indicador implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected IndicadorPK indicadorPK;
+    @Size(max = 200)
     @Column(name = "NOMBRE_MODULO", length = 200)
     private String nombreModulo;
+    @Size(max = 200)
     @Column(name = "NOMBRE_INDICADOR", length = 200)
     private String nombreIndicador;
+    @Size(max = 200)
     @Column(name = "VALOR_INDICADOR", length = 200)
     private String valorIndicador;
     @Column(name = "ORDEN")
@@ -115,7 +119,7 @@ public class Indicador implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Indicador[ indicadorPK=" + indicadorPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Indicador[ indicadorPK=" + indicadorPK + " ]";
     }
     
 }

@@ -19,6 +19,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -71,42 +73,56 @@ public class Planilla implements Serializable {
     protected PlanillaPK planillaPK;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PRESTACIONES", nullable = false, precision = 16, scale = 2)
     private BigDecimal prestaciones;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "DEDUCCIONES", nullable = false, precision = 16, scale = 2)
     private BigDecimal deducciones;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COMISIONES", nullable = false, precision = 16, scale = 2)
     private BigDecimal comisiones;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "SUELDO_BASE", nullable = false, precision = 16, scale = 2)
     private BigDecimal sueldoBase;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "BONIFICACION", nullable = false, precision = 16, scale = 2)
     private BigDecimal bonificacion;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "D_LABORADOS", nullable = false, precision = 16, scale = 2)
     private BigDecimal dLaborados;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CH_XSENCILLA", nullable = false, precision = 6, scale = 2)
     private BigDecimal chXsencilla;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CH_XDOBLE", nullable = false, precision = 6, scale = 2)
     private BigDecimal chXdoble;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "VH_XSENCILLA", nullable = false, precision = 16, scale = 2)
     private BigDecimal vhXsencilla;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "VH_XDOBLE", nullable = false, precision = 16, scale = 2)
     private BigDecimal vhXdoble;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "TOT_DEBENGA", nullable = false, precision = 16, scale = 2)
     private BigDecimal totDebenga;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "LIQ_RECIBIR", nullable = false, precision = 16, scale = 2)
     private BigDecimal liqRecibir;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "STATUS", nullable = false, length = 1)
     private String status;
     @Column(name = "VHR_NOCHE", precision = 16, scale = 2)
@@ -131,13 +147,16 @@ public class Planilla implements Serializable {
     private Integer codAfp;
     @Column(name = "FACTOR_DP", precision = 8, scale = 4)
     private BigDecimal factorDp;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Size(max = 2)
     @Column(name = "COD_SUCURSAL", length = 2)
     private String codSucursal;
+    @Size(max = 1)
     @Column(name = "CHEQUE_DEP", length = 1)
     private String chequeDep;
     @Column(name = "ANTIPAG", precision = 16, scale = 2)
@@ -460,7 +479,7 @@ public class Planilla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Planilla[ planillaPK=" + planillaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Planilla[ planillaPK=" + planillaPK + " ]";
     }
     
 }

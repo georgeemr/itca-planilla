@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -35,10 +36,13 @@ public class IdiomaXCandidato implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected IdiomaXCandidatoPK idiomaXCandidatoPK;
+    @Size(max = 1)
     @Column(name = "LEE", length = 1)
     private String lee;
+    @Size(max = 1)
     @Column(name = "ESCRIBE", length = 1)
     private String escribe;
+    @Size(max = 1)
     @Column(name = "NIVEL", length = 1)
     private String nivel;
     @JoinColumns({
@@ -120,7 +124,7 @@ public class IdiomaXCandidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.IdiomaXCandidato[ idiomaXCandidatoPK=" + idiomaXCandidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.IdiomaXCandidato[ idiomaXCandidatoPK=" + idiomaXCandidatoPK + " ]";
     }
     
 }

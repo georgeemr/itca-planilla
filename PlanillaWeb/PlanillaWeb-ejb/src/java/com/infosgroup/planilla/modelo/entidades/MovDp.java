@@ -16,6 +16,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -53,32 +55,44 @@ public class MovDp implements Serializable {
     @EmbeddedId
     protected MovDpPK movDpPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_EMP", nullable = false)
     private int codEmp;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_DP", nullable = false)
     private int codDp;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "VPR", nullable = false, length = 1)
     private String vpr;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FACTOR", nullable = false, precision = 8, scale = 4)
     private BigDecimal factor;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "VALOR", nullable = false, precision = 16, scale = 2)
     private BigDecimal valor;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "BASE_CALCULO", nullable = false, precision = 16, scale = 2)
     private BigDecimal baseCalculo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_MOVTO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaMovto;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "SUMA_RESTA", nullable = false, length = 1)
     private String sumaResta;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "STATUS", nullable = false, length = 1)
     private String status;
     @Column(name = "SECUENCIA")
@@ -87,12 +101,14 @@ public class MovDp implements Serializable {
     private Integer numCheque;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
+    @Size(max = 1)
     @Column(name = "GENERADO", length = 1)
     private String generado;
     @Column(name = "COD_PRESTA")
     private Short codPresta;
     @Column(name = "COD_TIPOPLA")
     private Short codTipopla;
+    @Size(max = 1)
     @Column(name = "CONSTANCIA", length = 1)
     private String constancia;
 
@@ -278,7 +294,7 @@ public class MovDp implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.MovDp[ movDpPK=" + movDpPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.MovDp[ movDpPK=" + movDpPK + " ]";
     }
     
 }

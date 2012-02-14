@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -41,6 +42,7 @@ public class HoraExtraResumen implements Serializable {
     protected HoraExtraResumenPK horaExtraResumenPK;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
+    @Size(max = 2)
     @Column(name = "COD_SUCURSAL", length = 2)
     private String codSucursal;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -52,6 +54,7 @@ public class HoraExtraResumen implements Serializable {
     private BigDecimal hXf150;
     @Column(name = "H_XF250", precision = 6, scale = 2)
     private BigDecimal hXf250;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
 
@@ -152,7 +155,7 @@ public class HoraExtraResumen implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.HoraExtraResumen[ horaExtraResumenPK=" + horaExtraResumenPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.HoraExtraResumen[ horaExtraResumenPK=" + horaExtraResumenPK + " ]";
     }
     
 }

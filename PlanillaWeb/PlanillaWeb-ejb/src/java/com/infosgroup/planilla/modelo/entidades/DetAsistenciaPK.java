@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -19,16 +20,20 @@ import javax.persistence.TemporalType;
 @Embeddable
 public class DetAsistenciaPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_EMP", nullable = false)
     private int codEmp;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_INICIAL", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicial;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_FINAL", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFinal;
@@ -109,7 +114,7 @@ public class DetAsistenciaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetAsistenciaPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", fechaInicial=" + fechaInicial + ", fechaFinal=" + fechaFinal + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetAsistenciaPK[ codCia=" + codCia + ", codEmp=" + codEmp + ", fechaInicial=" + fechaInicial + ", fechaFinal=" + fechaFinal + " ]";
     }
     
 }

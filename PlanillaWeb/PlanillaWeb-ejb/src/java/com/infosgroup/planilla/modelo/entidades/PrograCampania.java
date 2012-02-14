@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -38,6 +39,7 @@ public class PrograCampania implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PrograCampaniaPK prograCampaniaPK;
+    @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
     private String observacion;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -45,6 +47,7 @@ public class PrograCampania implements Serializable {
     private BigDecimal costo;
     @Column(name = "CAPACITADOS")
     private Long capacitados;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @JoinColumns({
@@ -161,7 +164,7 @@ public class PrograCampania implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PrograCampania[ prograCampaniaPK=" + prograCampaniaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PrograCampania[ prograCampaniaPK=" + prograCampaniaPK + " ]";
     }
     
 }

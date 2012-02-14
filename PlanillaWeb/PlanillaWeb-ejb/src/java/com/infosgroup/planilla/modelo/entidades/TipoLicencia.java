@@ -15,6 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,6 +35,7 @@ public class TipoLicencia implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected TipoLicenciaPK tipoLicenciaPK;
+    @Size(max = 60)
     @Column(name = "DESC_TIPO", length = 60)
     private String descTipo;
     @ManyToMany(mappedBy = "tipoLicenciaList")
@@ -108,7 +110,7 @@ public class TipoLicencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoLicencia[ tipoLicenciaPK=" + tipoLicenciaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoLicencia[ tipoLicenciaPK=" + tipoLicenciaPK + " ]";
     }
     
 }

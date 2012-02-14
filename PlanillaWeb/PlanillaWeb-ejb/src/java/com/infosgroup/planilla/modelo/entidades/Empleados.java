@@ -112,7 +112,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findByConcurso", query = "SELECT e FROM Empleados e WHERE e.concurso = :concurso"),
     @NamedQuery(name = "Empleados.findBySindicato", query = "SELECT e FROM Empleados e WHERE e.sindicato = :sindicato"),
     @NamedQuery(name = "Empleados.findByCodContratacion", query = "SELECT e FROM Empleados e WHERE e.codContratacion = :codContratacion"),
-    @NamedQuery(name = "Empleados.findByDocente", query = "SELECT e FROM Empleados e WHERE e.docente = :docente")})
+    @NamedQuery(name = "Empleados.findByDocente", query = "SELECT e FROM Empleados e WHERE e.docente = :docente"),
+    @NamedQuery(name = "Empleados.findByCorreo", query = "SELECT e FROM Empleados e WHERE e.correo = :correo")})
 public class Empleados implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -147,8 +148,6 @@ public class Empleados implements Serializable {
     private String motSalida;
     @Column(name = "OBSERVACION", length = 250)
     private String observacion;
-    @Column(name = "CORREO", length = 150)
-    private String correo;
     @Column(name = "STATUS", length = 1)
     private String status;
     @Column(name = "TIPO_CONTRA", length = 1)
@@ -279,6 +278,10 @@ public class Empleados implements Serializable {
     private Short codContratacion;
     @Column(name = "DOCENTE", length = 1)
     private String docente;
+    @Column(name = "CORREO", length = 150)
+    private String correo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
+    private List<Evaluacion> evaluacionList;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA")})
@@ -289,13 +292,13 @@ public class Empleados implements Serializable {
         @JoinColumn(name = "COD_PUESTO", referencedColumnName = "COD_PUESTO")})
     @ManyToOne(optional = false)
     private Puestos puestos;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jefe")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
     private List<Empleados> empleadosList;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "JEFE", referencedColumnName = "COD_EMP")})
     @ManyToOne(optional = false)
-    private Empleados jefe;
+    private Empleados empleados;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_DEPTO", referencedColumnName = "COD_DEPTO")})
@@ -928,6 +931,15 @@ public class Empleados implements Serializable {
         this.correo = correo;
     }
 
+    @XmlTransient
+    public List<Evaluacion> getEvaluacionList() {
+        return evaluacionList;
+    }
+
+    public void setEvaluacionList(List<Evaluacion> evaluacionList) {
+        this.evaluacionList = evaluacionList;
+    }
+
     public TiposPlanilla getTiposPlanilla() {
         return tiposPlanilla;
     }
@@ -953,12 +965,12 @@ public class Empleados implements Serializable {
         this.empleadosList = empleadosList;
     }
 
-    public Empleados getJefe() {
-        return jefe;
+    public Empleados getEmpleados() {
+        return empleados;
     }
 
-    public void setJefe(Empleados empleados) {
-        this.jefe = empleados;
+    public void setEmpleados(Empleados empleados) {
+        this.empleados = empleados;
     }
 
     public Departamentos getDepartamentos() {

@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -37,6 +38,7 @@ public class DetProcesoDegradacion implements Serializable {
     @EmbeddedId
     protected DetProcesoDegradacionPK detProcesoDegradacionPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CANTIDAD", nullable = false)
     private short cantidad;
     @JoinColumns({
@@ -108,7 +110,7 @@ public class DetProcesoDegradacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetProcesoDegradacion[ detProcesoDegradacionPK=" + detProcesoDegradacionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetProcesoDegradacion[ detProcesoDegradacionPK=" + detProcesoDegradacionPK + " ]";
     }
     
 }

@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -51,20 +53,26 @@ public class DetPlnpoliza implements Serializable {
     @EmbeddedId
     protected DetPlnpolizaPK detPlnpolizaPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CTA_1", nullable = false)
     private short cta1;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CTA_2", nullable = false)
     private short cta2;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CTA_3", nullable = false)
     private short cta3;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CTA_4", nullable = false)
     private short cta4;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CTA_5", nullable = false)
     private int cta5;
+    @Size(max = 2)
     @Column(name = "TIPO_ACTIV", length = 2)
     private String tipoActiv;
     @Column(name = "SUB_ACTIV")
@@ -78,8 +86,10 @@ public class DetPlnpoliza implements Serializable {
     private Short codTipopla;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
+    @Size(max = 100)
     @Column(name = "CONCEPTO", length = 100)
     private String concepto;
+    @Size(max = 20)
     @Column(name = "PROYECTO", length = 20)
     private String proyecto;
     @JoinColumns({
@@ -252,7 +262,7 @@ public class DetPlnpoliza implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetPlnpoliza[ detPlnpolizaPK=" + detPlnpolizaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetPlnpoliza[ detPlnpolizaPK=" + detPlnpolizaPK + " ]";
     }
     
 }

@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -38,8 +39,10 @@ public class PresupuestoDepto implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PresupuestoDeptoPK presupuestoDeptoPK;
+    @Size(max = 100)
     @Column(name = "OBSERVACION", length = 100)
     private String observacion;
+    @Size(max = 3)
     @Column(name = "ESTADO", length = 3)
     private String estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "presupuestoDepto")
@@ -124,7 +127,7 @@ public class PresupuestoDepto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PresupuestoDepto[ presupuestoDeptoPK=" + presupuestoDeptoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PresupuestoDepto[ presupuestoDeptoPK=" + presupuestoDeptoPK + " ]";
     }
     
 }

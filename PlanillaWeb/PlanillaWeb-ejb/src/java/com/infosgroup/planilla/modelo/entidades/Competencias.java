@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -36,8 +37,10 @@ public class Competencias implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CompetenciasPK competenciasPK;
+    @Size(max = 200)
     @Column(name = "NOM_COMPETENCIA", length = 200)
     private String nomCompetencia;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @JoinTable(name = "COMPETENCIAS_X_PUESTO", joinColumns = {
@@ -114,7 +117,7 @@ public class Competencias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Competencias[ competenciasPK=" + competenciasPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Competencias[ competenciasPK=" + competenciasPK + " ]";
     }
     
 }

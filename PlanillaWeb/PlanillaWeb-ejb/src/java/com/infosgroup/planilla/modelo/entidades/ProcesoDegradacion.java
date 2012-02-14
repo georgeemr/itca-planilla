@@ -15,6 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -39,8 +40,10 @@ public class ProcesoDegradacion implements Serializable {
     protected ProcesoDegradacionPK procesoDegradacionPK;
     @Column(name = "CANTIDAD")
     private Short cantidad;
+    @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
     private String observacion;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "procesoDegradacion")
@@ -120,7 +123,7 @@ public class ProcesoDegradacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ProcesoDegradacion[ procesoDegradacionPK=" + procesoDegradacionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ProcesoDegradacion[ procesoDegradacionPK=" + procesoDegradacionPK + " ]";
     }
     
 }

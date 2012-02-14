@@ -15,6 +15,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -35,6 +37,8 @@ public class FrecuenciaFuncion implements Serializable {
     @EmbeddedId
     protected FrecuenciaFuncionPK frecuenciaFuncionPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOM_FRECUENCIA", nullable = false, length = 200)
     private String nomFrecuencia;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "frecuenciaFuncion")
@@ -103,7 +107,7 @@ public class FrecuenciaFuncion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.FrecuenciaFuncion[ frecuenciaFuncionPK=" + frecuenciaFuncionPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.FrecuenciaFuncion[ frecuenciaFuncionPK=" + frecuenciaFuncionPK + " ]";
     }
     
 }

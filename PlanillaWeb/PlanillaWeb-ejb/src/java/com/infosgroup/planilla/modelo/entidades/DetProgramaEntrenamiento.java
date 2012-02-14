@@ -17,6 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -39,11 +40,13 @@ public class DetProgramaEntrenamiento implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected DetProgramaEntrenamientoPK detProgramaEntrenamientoPK;
+    @Size(max = 200)
     @Column(name = "AREA_NECESIDAD", length = 200)
     private String areaNecesidad;
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @JoinColumns({
@@ -126,7 +129,7 @@ public class DetProgramaEntrenamiento implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetProgramaEntrenamiento[ detProgramaEntrenamientoPK=" + detProgramaEntrenamientoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetProgramaEntrenamiento[ detProgramaEntrenamientoPK=" + detProgramaEntrenamientoPK + " ]";
     }
     
 }

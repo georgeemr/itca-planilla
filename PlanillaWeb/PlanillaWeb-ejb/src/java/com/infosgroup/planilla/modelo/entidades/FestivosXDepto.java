@@ -73,7 +73,7 @@ public class FestivosXDepto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.FestivosXDepto[ festivosXDeptoPK=" + festivosXDeptoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.FestivosXDepto[ festivosXDeptoPK=" + festivosXDeptoPK + " ]";
     }
     
 }

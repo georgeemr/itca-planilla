@@ -154,7 +154,7 @@ public class ColateralesEmp implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ColateralesEmp[ colateralesEmpPK=" + colateralesEmpPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ColateralesEmp[ colateralesEmpPK=" + colateralesEmpPK + " ]";
     }
     
 }

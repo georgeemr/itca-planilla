@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,12 +17,15 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class IndicadorPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "MODULO", nullable = false)
     private long modulo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "INDICADOR", nullable = false)
     private long indicador;
 
@@ -88,7 +92,7 @@ public class IndicadorPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.IndicadorPK[ codCia=" + codCia + ", modulo=" + modulo + ", indicador=" + indicador + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.IndicadorPK[ codCia=" + codCia + ", modulo=" + modulo + ", indicador=" + indicador + " ]";
     }
     
 }

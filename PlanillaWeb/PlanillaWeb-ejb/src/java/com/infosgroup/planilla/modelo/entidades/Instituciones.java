@@ -15,6 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -40,14 +41,19 @@ public class Instituciones implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected InstitucionesPK institucionesPK;
+    @Size(max = 60)
     @Column(name = "DES_INSTI", length = 60)
     private String desInsti;
+    @Size(max = 15)
     @Column(name = "NOM_CORTO_INSTI", length = 15)
     private String nomCortoInsti;
+    @Size(max = 120)
     @Column(name = "DIR_INSTI", length = 120)
     private String dirInsti;
+    @Size(max = 15)
     @Column(name = "TEL_INSTI1", length = 15)
     private String telInsti1;
+    @Size(max = 15)
     @Column(name = "TEL_INSTI2", length = 15)
     private String telInsti2;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -164,7 +170,7 @@ public class Instituciones implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Instituciones[ institucionesPK=" + institucionesPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Instituciones[ institucionesPK=" + institucionesPK + " ]";
     }
     
 }

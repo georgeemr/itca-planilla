@@ -24,6 +24,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -108,23 +110,33 @@ public class Candidato implements Serializable {
     @Column(name = "COD_DEPARTAMENTO_NACIM")
     private Short codDepartamentoNacim;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
     @Column(name = "APELLIDO", nullable = false, length = 30)
     private String apellido;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FEC_SOLICITUD", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecSolicitud;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
     @Column(name = "NOMBRE", nullable = false, length = 30)
     private String nombre;
+    @Size(max = 20)
     @Column(name = "AP_CASADA", length = 20)
     private String apCasada;
+    @Size(max = 20)
     @Column(name = "NUM_DUI", length = 20)
     private String numDui;
+    @Size(max = 20)
     @Column(name = "NUM_NIT", length = 20)
     private String numNit;
+    @Size(max = 200)
     @Column(name = "DIRECCION", length = 200)
     private String direccion;
+    @Size(max = 50)
     @Column(name = "TELEFONO", length = 50)
     private String telefono;
     @Column(name = "FECHA_NAC")
@@ -135,39 +147,53 @@ public class Candidato implements Serializable {
     private BigDecimal salarioAspirado;
     @Column(name = "COD_PAIS_DOMIC")
     private Short codPaisDomic;
+    @Size(max = 3)
     @Column(name = "ESTADO_ESTUDIOS", length = 3)
     private String estadoEstudios;
+    @Size(max = 20)
     @Column(name = "NUM_LICENCIA", length = 20)
     private String numLicencia;
     @Column(name = "SEXO")
     private Short sexo;
+    @Size(max = 200)
     @Column(name = "OBSERVACION", length = 200)
     private String observacion;
+    @Size(max = 60)
     @Column(name = "NOMBRE_CONYUGE", length = 60)
     private String nombreConyuge;
+    @Size(max = 30)
     @Column(name = "TRABAJO_CONYUGE", length = 30)
     private String trabajoConyuge;
+    @Size(max = 50)
     @Column(name = "TELEFONO_CONYUGE", length = 50)
     private String telefonoConyuge;
+    @Size(max = 1)
     @Column(name = "ESTADO_CIVIL", length = 1)
     private String estadoCivil;
+    @Size(max = 60)
     @Column(name = "RECOMENDADO_POR", length = 60)
     private String recomendadoPor;
+    @Size(max = 30)
     @Column(name = "NUM_PASAPORTE", length = 30)
     private String numPasaporte;
+    @Size(max = 50)
     @Column(name = "EXPEDICION_DUI", length = 50)
     private String expedicionDui;
+    @Size(max = 3)
     @Column(name = "COD_BANCO", length = 3)
     private String codBanco;
     @Column(name = "COD_TIPORENUNCIA")
     private Short codTiporenuncia;
+    @Size(max = 100)
     @Column(name = "OTRAS", length = 100)
     private String otras;
+    @Size(max = 50)
     @Column(name = "MUNI_EXP_DUI", length = 50)
     private String muniExpDui;
     @Column(name = "FECHA_EXP_DUI")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaExpDui;
+    @Size(max = 1)
     @Column(name = "STATUS", length = 1)
     private String status;
     @Column(name = "FEC_SALIDA")
@@ -176,8 +202,10 @@ public class Candidato implements Serializable {
     @Column(name = "FEC_INGRESO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecIngreso;
+    @Size(max = 100)
     @Column(name = "NOM_ISSS", length = 100)
     private String nomIsss;
+    @Size(max = 100)
     @Column(name = "NOM_NIT", length = 100)
     private String nomNit;
     @Column(name = "COD_SUCURSAL")
@@ -185,16 +213,22 @@ public class Candidato implements Serializable {
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Size(max = 20)
     @Column(name = "USUARIO", length = 20)
     private String usuario;
+    @Size(max = 12)
     @Column(name = "NUM_ISSS", length = 12)
     private String numIsss;
+    @Size(max = 20)
     @Column(name = "ID_CONYUGE", length = 20)
     private String idConyuge;
+    @Size(max = 20)
     @Column(name = "IDENTIDAD_CONYUGE", length = 20)
     private String identidadConyuge;
+    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
+    @Size(max = 2)
     @Column(name = "CAMBIO_SEDE", length = 2)
     private String cambioSede;
     @Column(name = "COD_TIPO_CONT")
@@ -205,10 +239,14 @@ public class Candidato implements Serializable {
     private Short codDepto;
     @Column(name = "COD_CONTRATACION")
     private Short codContratacion;
+    @Size(max = 50)
     @Column(name = "CELULAR", length = 50)
     private String celular;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 50)
     @Column(name = "EMAIL", length = 50)
     private String email;
+    @Size(max = 200)
     @Column(name = "OTROS_DOCUMENTOS", length = 200)
     private String otrosDocumentos;
     @JoinTable(name = "PASATIEMPO_X_CANDIDATO", joinColumns = {
@@ -1004,7 +1042,7 @@ public class Candidato implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Candidato[ candidatoPK=" + candidatoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Candidato[ candidatoPK=" + candidatoPK + " ]";
     }
     
 }

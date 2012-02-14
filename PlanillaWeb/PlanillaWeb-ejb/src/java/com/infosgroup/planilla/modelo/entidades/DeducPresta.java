@@ -20,6 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -60,9 +62,12 @@ public class DeducPresta implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected DeducPrestaPK deducPrestaPK;
+    @Size(max = 150)
     @Column(name = "DES_DP", length = 150)
     private String desDp;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
     @Column(name = "VPR", nullable = false, length = 1)
     private String vpr;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -70,45 +75,61 @@ public class DeducPresta implements Serializable {
     private BigDecimal factor;
     @Column(name = "VAL_REF", precision = 16, scale = 2)
     private BigDecimal valRef;
+    @Size(max = 1)
     @Column(name = "FRECUENCIA", length = 1)
     private String frecuencia;
     @Column(name = "POSICION")
     private Short posicion;
+    @Size(max = 1)
     @Column(name = "APLICAR", length = 1)
     private String aplicar;
+    @Size(max = 1)
     @Column(name = "SUMA_RESTA", length = 1)
     private String sumaResta;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CTA_1", nullable = false)
     private short cta1;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CTA_2", nullable = false)
     private short cta2;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CTA_3", nullable = false)
     private short cta3;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CTA_4", nullable = false)
     private short cta4;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CTA_5", nullable = false)
     private int cta5;
+    @Size(max = 10)
     @Column(name = "DES_CORTA", length = 10)
     private String desCorta;
+    @Size(max = 1)
     @Column(name = "AFP", length = 1)
     private String afp;
+    @Size(max = 1)
     @Column(name = "PROGRAMADO", length = 1)
     private String programado;
+    @Size(max = 1)
     @Column(name = "TIPO", length = 1)
     private String tipo;
+    @Size(max = 1)
     @Column(name = "D_AFP", length = 1)
     private String dAfp;
+    @Size(max = 1)
     @Column(name = "D_ISR", length = 1)
     private String dIsr;
+    @Size(max = 1)
     @Column(name = "D_ISSS", length = 1)
     private String dIsss;
     @Column(name = "SE_CONTABILIZA")
     private Short seContabiliza;
+    @Size(max = 1)
     @Column(name = "CONSTANCIA", length = 1)
     private String constancia;
     @JoinTable(name = "REL_DEDUC_PATRONO", joinColumns = {
@@ -399,7 +420,7 @@ public class DeducPresta implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DeducPresta[ deducPrestaPK=" + deducPrestaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DeducPresta[ deducPrestaPK=" + deducPrestaPK + " ]";
     }
     
 }

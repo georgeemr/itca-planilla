@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,15 +17,19 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class DetPlanCarreraPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PERIODO", nullable = false)
     private short periodo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CORRELATIVO", nullable = false)
     private short correlativo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "DET_PLAN", nullable = false)
     private short detPlan;
 
@@ -104,7 +109,7 @@ public class DetPlanCarreraPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetPlanCarreraPK[ codCia=" + codCia + ", periodo=" + periodo + ", correlativo=" + correlativo + ", detPlan=" + detPlan + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetPlanCarreraPK[ codCia=" + codCia + ", periodo=" + periodo + ", correlativo=" + correlativo + ", detPlan=" + detPlan + " ]";
     }
     
 }

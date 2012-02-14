@@ -18,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -40,8 +42,11 @@ public class FuncionPuesto implements Serializable {
     @EmbeddedId
     protected FuncionPuestoPK funcionPuestoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOM_FUNCION", nullable = false, length = 200)
     private String nomFuncion;
+    @Size(max = 250)
     @Column(name = "DESC_FUNCION", length = 250)
     private String descFuncion;
     @Column(name = "COD_TIPO_PUESTO")
@@ -146,7 +151,7 @@ public class FuncionPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.FuncionPuesto[ funcionPuestoPK=" + funcionPuestoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.FuncionPuesto[ funcionPuestoPK=" + funcionPuestoPK + " ]";
     }
     
 }

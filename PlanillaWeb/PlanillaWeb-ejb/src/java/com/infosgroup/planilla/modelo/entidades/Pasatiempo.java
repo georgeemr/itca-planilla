@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,6 +36,8 @@ public class Pasatiempo implements Serializable {
     @EmbeddedId
     protected PasatiempoPK pasatiempoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOM_PASATIEMPO", nullable = false, length = 200)
     private String nomPasatiempo;
     @ManyToMany(mappedBy = "pasatiempoList")
@@ -102,7 +106,7 @@ public class Pasatiempo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Pasatiempo[ pasatiempoPK=" + pasatiempoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Pasatiempo[ pasatiempoPK=" + pasatiempoPK + " ]";
     }
     
 }

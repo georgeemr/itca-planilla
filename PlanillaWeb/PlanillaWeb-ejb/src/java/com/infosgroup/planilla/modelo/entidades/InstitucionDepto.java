@@ -126,7 +126,7 @@ public class InstitucionDepto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.InstitucionDepto[ institucionDeptoPK=" + institucionDeptoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.InstitucionDepto[ institucionDeptoPK=" + institucionDeptoPK + " ]";
     }
     
 }

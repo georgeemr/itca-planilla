@@ -15,6 +15,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -35,6 +36,7 @@ public class ComisionProducto implements Serializable {
     @EmbeddedId
     protected ComisionProductoPK comisionProductoPK;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "INICIO_GANA", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date inicioGana;
@@ -93,7 +95,7 @@ public class ComisionProducto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ComisionProducto[ comisionProductoPK=" + comisionProductoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ComisionProducto[ comisionProductoPK=" + comisionProductoPK + " ]";
     }
     
 }

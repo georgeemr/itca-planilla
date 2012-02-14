@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,6 +34,7 @@ public class SubNivelAcademico implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected SubNivelAcademicoPK subNivelAcademicoPK;
+    @Size(max = 200)
     @Column(name = "NOM_SUM_NIVEL", length = 200)
     private String nomSumNivel;
     @JoinColumns({
@@ -98,7 +100,7 @@ public class SubNivelAcademico implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.SubNivelAcademico[ subNivelAcademicoPK=" + subNivelAcademicoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.SubNivelAcademico[ subNivelAcademicoPK=" + subNivelAcademicoPK + " ]";
     }
     
 }

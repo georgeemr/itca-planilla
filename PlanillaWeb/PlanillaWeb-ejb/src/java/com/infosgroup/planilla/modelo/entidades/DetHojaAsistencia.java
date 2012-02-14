@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -68,6 +69,7 @@ public class DetHojaAsistencia implements Serializable {
     private Short hDobles;
     @Column(name = "VIATICOS")
     private Integer viaticos;
+    @Size(max = 250)
     @Column(name = "OBSERVACION", length = 250)
     private String observacion;
     @Column(name = "COD_RENGLON")
@@ -232,7 +234,7 @@ public class DetHojaAsistencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetHojaAsistencia[ detHojaAsistenciaPK=" + detHojaAsistenciaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetHojaAsistencia[ detHojaAsistenciaPK=" + detHojaAsistenciaPK + " ]";
     }
     
 }

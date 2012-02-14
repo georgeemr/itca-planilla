@@ -155,7 +155,7 @@ public class CtasXDepto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.CtasXDepto[ ctasXDeptoPK=" + ctasXDeptoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.CtasXDepto[ ctasXDeptoPK=" + ctasXDeptoPK + " ]";
     }
     
 }

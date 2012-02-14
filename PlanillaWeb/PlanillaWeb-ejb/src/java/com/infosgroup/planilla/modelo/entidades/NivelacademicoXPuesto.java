@@ -82,7 +82,7 @@ public class NivelacademicoXPuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.NivelacademicoXPuesto[ nivelacademicoXPuestoPK=" + nivelacademicoXPuestoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.NivelacademicoXPuesto[ nivelacademicoXPuestoPK=" + nivelacademicoXPuestoPK + " ]";
     }
     
 }

@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -37,6 +38,7 @@ public class Facturas implements Serializable {
     protected FacturasPK facturasPK;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
+    @NotNull
     @Column(name = "SUB_TOTAL", nullable = false, precision = 14, scale = 2)
     private BigDecimal subTotal;
 
@@ -94,7 +96,7 @@ public class Facturas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Facturas[ facturasPK=" + facturasPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Facturas[ facturasPK=" + facturasPK + " ]";
     }
     
 }

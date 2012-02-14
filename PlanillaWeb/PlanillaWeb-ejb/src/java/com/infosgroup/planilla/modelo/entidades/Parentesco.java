@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,6 +36,8 @@ public class Parentesco implements Serializable {
     @EmbeddedId
     protected ParentescoPK parentescoPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOM_PARENTESCO", nullable = false, length = 200)
     private String nomParentesco;
     @ManyToMany(mappedBy = "parentescoList")
@@ -102,7 +106,7 @@ public class Parentesco implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Parentesco[ parentescoPK=" + parentescoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Parentesco[ parentescoPK=" + parentescoPK + " ]";
     }
     
 }

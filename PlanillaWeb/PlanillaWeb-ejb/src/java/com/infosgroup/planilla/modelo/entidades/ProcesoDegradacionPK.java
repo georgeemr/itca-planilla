@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -19,13 +20,16 @@ import javax.persistence.TemporalType;
 @Embeddable
 public class ProcesoDegradacionPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_PUESTO", nullable = false)
     private short codPuesto;
 
@@ -92,7 +96,7 @@ public class ProcesoDegradacionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.ProcesoDegradacionPK[ codCia=" + codCia + ", fecha=" + fecha + ", codPuesto=" + codPuesto + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.ProcesoDegradacionPK[ codCia=" + codCia + ", fecha=" + fecha + ", codPuesto=" + codPuesto + " ]";
     }
     
 }

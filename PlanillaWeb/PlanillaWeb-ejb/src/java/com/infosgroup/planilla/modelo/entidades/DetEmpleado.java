@@ -93,7 +93,7 @@ public class DetEmpleado implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.DetEmpleado[ detEmpleadoPK=" + detEmpleadoPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.DetEmpleado[ detEmpleadoPK=" + detEmpleadoPK + " ]";
     }
     
 }

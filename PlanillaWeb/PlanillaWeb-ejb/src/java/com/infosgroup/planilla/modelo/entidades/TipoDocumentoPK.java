@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,9 +17,11 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class TipoDocumentoPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_TIPO_DOCUMENTO", nullable = false)
     private short codTipoDocumento;
 
@@ -72,7 +75,7 @@ public class TipoDocumentoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.TipoDocumentoPK[ codCia=" + codCia + ", codTipoDocumento=" + codTipoDocumento + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.TipoDocumentoPK[ codCia=" + codCia + ", codTipoDocumento=" + codTipoDocumento + " ]";
     }
     
 }

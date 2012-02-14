@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,21 +18,28 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class SupervisionObraPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "ANIO", nullable = false)
     private short anio;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2)
     @Column(name = "TIPO_OBRA", nullable = false, length = 2)
     private String tipoObra;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_OBRA", nullable = false)
     private int codObra;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "SUB_PROY", nullable = false)
     private short subProy;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "COD_SUPERVI", nullable = false)
     private int codSupervi;
 
@@ -136,7 +145,7 @@ public class SupervisionObraPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.SupervisionObraPK[ codCia=" + codCia + ", anio=" + anio + ", tipoObra=" + tipoObra + ", codObra=" + codObra + ", subProy=" + subProy + ", codSupervi=" + codSupervi + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.SupervisionObraPK[ codCia=" + codCia + ", anio=" + anio + ", tipoObra=" + tipoObra + ", codObra=" + codObra + ", subProy=" + subProy + ", codSupervi=" + codSupervi + " ]";
     }
     
 }

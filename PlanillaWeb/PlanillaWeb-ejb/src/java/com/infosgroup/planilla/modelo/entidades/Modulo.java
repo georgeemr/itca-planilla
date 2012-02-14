@@ -15,6 +15,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -35,6 +37,8 @@ public class Modulo implements Serializable {
     @EmbeddedId
     protected ModuloPK moduloPK;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "NOM_MODULO", nullable = false, length = 200)
     private String nomModulo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modulo")
@@ -103,7 +107,7 @@ public class Modulo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.Modulo[ moduloPK=" + moduloPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.Modulo[ moduloPK=" + moduloPK + " ]";
     }
     
 }
