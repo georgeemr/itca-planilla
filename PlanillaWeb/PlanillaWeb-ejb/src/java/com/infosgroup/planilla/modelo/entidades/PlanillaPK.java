@@ -100,7 +100,7 @@ public class PlanillaPK implements Serializable {
     }
     
     public String getPkAsString() {
-        pkAsString = "" + codCia + ":" + anio + ":" + mes + ":" + numPlanilla;
+        pkAsString = "" + codCia + ":" + anio + ":" + mes + ":" + numPlanilla +":"+codEmp;
         return pkAsString;
     }
     
