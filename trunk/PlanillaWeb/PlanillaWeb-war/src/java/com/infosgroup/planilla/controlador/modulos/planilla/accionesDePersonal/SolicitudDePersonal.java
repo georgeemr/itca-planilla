@@ -7,7 +7,7 @@ package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonalPK;
-import com.infosgroup.planilla.modelo.entidades.Planilla;
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.estructuras.DetalleAdjuntoCorreo;
 import com.infosgroup.planilla.modelo.facades.AccionPersonalFacade;
@@ -46,13 +46,13 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
 
     abstract boolean validarSolicitud();
 
-    public AccionPersonalPK getAccionPersonalPK(Planilla planilla) {
+    public AccionPersonalPK getAccionPersonalPK(Cias cias) {
         AccionPersonalPK nuevaPK = new AccionPersonalPK();
         try {
-            nuevaPK.setCodCia(planilla.getPlanillaPK().getCodCia());
+            nuevaPK.setCodCia(cias.getCodCia());
             nuevaPK.setCodTipoaccion(encabezadoSolicitud.getAccionSeleccionada().getTipoAccionPK().getCodTipoaccion());
             nuevaPK.setCodEmp(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp());
-            nuevaPK.setCorrelativo(accionPersonalFacade().max(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp()));
+            nuevaPK.setCorrelativo(accionPersonalFacade().max(cias.getCodCia(), encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp()));
         } catch (Exception e) {
             e.printStackTrace();
         }
