@@ -19,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -68,6 +69,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Planilla.findByAntipag", query = "SELECT p FROM Planilla p WHERE p.antipag = :antipag"),
     @NamedQuery(name = "Planilla.findByCodSeccion", query = "SELECT p FROM Planilla p WHERE p.codSeccion = :codSeccion")})
 public class Planilla implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PlanillaPK planillaPK;
@@ -172,6 +174,8 @@ public class Planilla implements Serializable {
         @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private ResumenAsistencia resumenAsistencia;
+    @Transient
+    private String pkAsString;
 
     public Planilla() {
     }
@@ -457,6 +461,11 @@ public class Planilla implements Serializable {
         this.resumenAsistencia = resumenAsistencia;
     }
 
+    public String getPkAsString() {
+        pkAsString = "" + this.planillaPK.getCodCia() + ":" + this.planillaPK.getAnio() + ":" + this.planillaPK.getMes() + ":" + this.planillaPK.getNumPlanilla() + ":" + this.planillaPK.getCodEmp() + ":";
+        return pkAsString;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -481,5 +490,4 @@ public class Planilla implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.Planilla[ planillaPK=" + planillaPK + " ]";
     }
-    
 }
