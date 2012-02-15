@@ -97,8 +97,8 @@ public class ResumenAsistencia implements Serializable {
     private BigDecimal horasAusencia;
     @Column(name = "D_NOCTURNIDAD")
     private Short dNocturnidad;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "resumenAsistencia")
-    private List<Planilla> planillaList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "resumenAsistencia")
+//    private List<Planilla> planillaList;
 
     public ResumenAsistencia() {
     }
@@ -259,15 +259,15 @@ public class ResumenAsistencia implements Serializable {
     public void setDNocturnidad(Short dNocturnidad) {
         this.dNocturnidad = dNocturnidad;
     }
-
-    @XmlTransient
-    public List<Planilla> getPlanillaList() {
-        return planillaList;
-    }
-
-    public void setPlanillaList(List<Planilla> planillaList) {
-        this.planillaList = planillaList;
-    }
+//
+//    @XmlTransient
+//    public List<Planilla> getPlanillaList() {
+//        return planillaList;
+//    }
+//
+//    public void setPlanillaList(List<Planilla> planillaList) {
+//        this.planillaList = planillaList;
+//    }
 
     @Override
     public int hashCode() {
