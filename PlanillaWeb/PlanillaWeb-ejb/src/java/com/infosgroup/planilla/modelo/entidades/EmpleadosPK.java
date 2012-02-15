@@ -38,7 +38,7 @@ public class EmpleadosPK implements Serializable {
         this.codCia = codCia;
     }
 
-    public int getCodEmp() {
+    public Integer getCodEmp() {
         return codEmp;
     }
 
