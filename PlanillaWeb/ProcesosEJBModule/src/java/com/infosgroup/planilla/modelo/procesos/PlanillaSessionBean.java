@@ -398,6 +398,11 @@ public class PlanillaSessionBean {
         accionPersonalFacade.edit(a);
     }
 
+    @RolesAllowed({"rrhh", "jefes", "empleados"})
+    public void editarSolicitud(AccionPersonal a) {
+        accionPersonalFacade.edit(a);
+    }
+
     @PermitAll
     public List<AccionPersonal> getAccionesByRol(Empleados empleado) {
         if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("rrhh")) {
