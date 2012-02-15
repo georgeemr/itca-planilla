@@ -30,7 +30,6 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
     private java.util.Date fechaFinal;
     private Short tipoPlanilla;
     private String planilla;
-    private String planillaSeleccionada;
     private Short dias = 0;
     private Short horas = 0;
     private Double descuento = 0.0;
@@ -99,14 +98,6 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         this.planilla = planilla;
     }
 
-    public String getPlanillaSeleccionada() {
-        return planillaSeleccionada;
-    }
-
-    public void setPlanillaSeleccionada(String planillaSeleccionada) {
-        this.planillaSeleccionada = planillaSeleccionada;
-    }
-
     public Short getTipoPlanilla() {
         return tipoPlanilla;
     }
@@ -130,9 +121,9 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         accionPersonal.setFechaFinal(fechaFinal);
         accionPersonal.setFechaInicial(fechaInicial);
         accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
-        accionPersonal.setAnio(new Short(planillaSeleccionada.split(":")[1].toString()));
-        accionPersonal.setMes(new Short(planillaSeleccionada.split(":")[2].toString()));
-        accionPersonal.setNumPlanilla(new Short(planillaSeleccionada.split(":")[3].toString()));
+        accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));
+        accionPersonal.setMes(new Short(planilla.split(":")[2].toString()));
+        accionPersonal.setNumPlanilla(new Short(planilla.split(":")[3].toString()));
         accionPersonal.setCodTipopla(tipoPlanilla);
         accionPersonal.setDias(dias.shortValue());
         accionPersonal.setCantidad(descuento != null ? new BigDecimal(descuento) : BigDecimal.ZERO);
@@ -155,10 +146,10 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         fechaFinal = null;
         tipoPlanilla = null;
         planilla = null;
-        planillaSeleccionada = null;
         dias = 0;
         horas = 0;
         descuento = 0.0;
+        getEncabezadoSolicitud().setObservacion(null);
     }
 
     @Override
