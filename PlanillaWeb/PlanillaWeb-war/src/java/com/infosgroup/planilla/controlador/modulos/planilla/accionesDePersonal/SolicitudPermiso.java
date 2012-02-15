@@ -7,10 +7,11 @@ package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
-import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
+import java.util.List;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,15 +28,27 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
 
     private java.util.Date fechaInicial;
     private java.util.Date fechaFinal;
-    private Long tipoPlanilla;
+    private Short tipoPlanilla;
     private String planilla;
-    private Planilla planillaSeleccionada;
+    private String planillaSeleccionada;
     private Short dias = 0;
     private Short horas = 0;
     private Double descuento = 0.0;
+    private List<Planilla> listaPlanillas;
 
     public SolicitudPermiso(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
+    }
+
+    public List<Planilla> getListaPlanillas() {
+        if (tipoPlanilla != null && tipoPlanilla != -1) {
+            listaPlanillas = planillaSessionBean().listarPlanillaByTipoPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), tipoPlanilla);
+        }
+        return listaPlanillas != null ? listaPlanillas:new ArrayList<Planilla>();
+    }
+
+    public void setListaPlanillas(List<Planilla> listaPlanillas) {
+        this.listaPlanillas = listaPlanillas;
     }
 
     public double getDescuento() {
@@ -86,19 +99,19 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         this.planilla = planilla;
     }
 
-    public Planilla getPlanillaSeleccionada() {
+    public String getPlanillaSeleccionada() {
         return planillaSeleccionada;
     }
 
-    public void setPlanillaSeleccionada(Planilla planillaSeleccionada) {
+    public void setPlanillaSeleccionada(String planillaSeleccionada) {
         this.planillaSeleccionada = planillaSeleccionada;
     }
 
-    public Long getTipoPlanilla() {
+    public Short getTipoPlanilla() {
         return tipoPlanilla;
     }
 
-    public void setTipoPlanilla(Long tipoPlanilla) {
+    public void setTipoPlanilla(Short tipoPlanilla) {
         this.tipoPlanilla = tipoPlanilla;
     }
 
@@ -106,9 +119,9 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         if (!validarSolicitud()) {
             return null;
         }
-        planillaSeleccionada = planillaSessionBean().findPlanillaById(new PlanillaPK(planilla, getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp()));
+
         AccionPersonal accionPersonal = new AccionPersonal();
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(planillaSeleccionada));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania()));
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
         accionPersonal.setFecha(new Date());
@@ -116,10 +129,12 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         accionPersonal.setStatus("G");
         accionPersonal.setFechaFinal(fechaFinal);
         accionPersonal.setFechaInicial(fechaInicial);
-        // 13022012
-        //accionPersonal.setPlanilla(planillaSeleccionada);
-        
-        accionPersonal.setDias( dias.shortValue());
+        accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
+        accionPersonal.setAnio(new Short(planillaSeleccionada.split(":")[1].toString()));
+        accionPersonal.setMes(new Short(planillaSeleccionada.split(":")[2].toString()));
+        accionPersonal.setNumPlanilla(new Short(planillaSeleccionada.split(":")[3].toString()));
+        accionPersonal.setCodTipopla(tipoPlanilla);
+        accionPersonal.setDias(dias.shortValue());
         accionPersonal.setCantidad(descuento != null ? new BigDecimal(descuento) : BigDecimal.ZERO);
         accionPersonal.setHoras(horas != null ? horas.shortValue() : null);
         accionPersonal.setPuestos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestos());
@@ -178,20 +193,20 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
             }
         }
 
-        if (tipoPlanilla == null) {
+        if (tipoPlanilla == null || tipoPlanilla == -1) {
+            addMessage("Acciones de Personal", "Debe seleccionar el tipo planilla.", TipoMensaje.ERROR);
+            error = Boolean.FALSE;
+        }
+
+        if ((tipoPlanilla != null && tipoPlanilla != -1) && (planilla == null || planilla.equals("-1"))) {
             addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
 
-        if (planilla == null) {
-            addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
+        if (getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestos() == null) {
+            addMessage("Acciones de Personal", "Usted no tiene ningún puesto asignado.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
-// 13022012
-//        if (getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList() == null || getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestoEmpleadoList().isEmpty()) {
-//            addMessage("Acciones de Personal", "Usted no tiene ningún puesto asignado.", TipoMensaje.ERROR);
-//            error = Boolean.FALSE;
-//        }
         return error;
     }
 

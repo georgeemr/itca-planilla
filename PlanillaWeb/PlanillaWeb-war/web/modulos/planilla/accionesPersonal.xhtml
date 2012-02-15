@@ -203,7 +203,9 @@
                             </h:panelGrid>    
                         </td>
                         <td>                
-                            <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudPermiso.tipoPlanilla}" >
+                            <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudPermiso.tipoPlanilla}" >                       
+                                <f:ajax render="lstPlanilla" event="change" execute="lstTipoPlanilla" />
+                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
                                 <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                             </h:selectOneMenu>
                         </td>
@@ -216,8 +218,9 @@
                         </td>
                         <td>
                             <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudPermiso.planilla}" >
-                                <f:selectItems value="#{planilla$accionesPersonal.listaPlanillas}" var="pla" 
-                                               itemValue="#{pla.planillaPK.pkAsString}"
+                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
+                                <f:selectItems value="#{planilla$accionesPersonal.solicitudPermiso.listaPlanillas}" var="pla" 
+                                               itemValue="#{pla.pkAsString}"
                                                itemLabel="#{pla.planillaPK.anio} ------ #{pla.planillaPK.mes} ------ #{pla.planillaPK.numPlanilla}" />
                             </h:selectOneMenu>
                         </td>

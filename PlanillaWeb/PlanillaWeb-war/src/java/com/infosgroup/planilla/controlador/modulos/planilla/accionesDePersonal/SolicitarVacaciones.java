@@ -146,7 +146,7 @@ public class SolicitarVacaciones extends SolicitudDePersonal implements java.io.
         }
         planillaSeleccionada = planillaSessionBean.findPlanillaById(new PlanillaPK(planilla, getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp()));
         AccionPersonal accionPersonal = new AccionPersonal();
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(planillaSeleccionada));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania()));
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getSessionBeanEMP().getEmpleadoSesion());
         accionPersonal.setFecha(new Date());

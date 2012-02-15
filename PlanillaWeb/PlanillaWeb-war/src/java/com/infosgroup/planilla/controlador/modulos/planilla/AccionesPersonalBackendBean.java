@@ -12,7 +12,6 @@ import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
-import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,8 +23,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.event.DateSelectEvent;
-import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -45,7 +42,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private List<Empleados> listaJefes;
     private List<Empleados> listaEmp;
     private List<TiposPlanilla> listaTipos;
-    private List<Planilla> listaPlanillas;
+//    private List<Planilla> listaPlanillas;
     private Short empresa;
     private Long tipoAccion;
     private DataTable tablaEmpleado;
@@ -83,7 +80,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     @PostConstruct
     public void init() {
         listaEmp = planillaSessionBean.listaEmpleados( getSessionBeanADM().getCompania() );
-        listaPlanillas = planillaSessionBean.listarPlanilla( getSessionBeanADM().getCompania() );
+//        listaPlanillas = planillaSessionBean.listarPlanilla( getSessionBeanADM().getCompania() );
         if (isInRole("rrhh")) {
             listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
         } else if (isInRole("jefes")) {
@@ -153,7 +150,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public List<TiposPlanilla> getListaTipos() {
-        listaTipos = planillaSessionBean.listarTipos();
+        listaTipos = planillaSessionBean.listarTipos( getSessionBeanADM().getCompania() );
         return listaTipos;
     }
 
@@ -161,14 +158,14 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.listaTipos = listaTipos;
     }
 
-    public List<Planilla> getListaPlanillas() {
-        listaPlanillas = planillaSessionBean.listarPlanilla( getSessionBeanADM().getCompania() );
-        return listaPlanillas;
-    }
-
-    public void setListaPlanillas(List<Planilla> listaPlanillas) {
-        this.listaPlanillas = listaPlanillas;
-    }
+//    public List<Planilla> getListaPlanillas() {
+//        listaPlanillas = planillaSessionBean.listarPlanilla( getSessionBeanADM().getCompania() );
+//        return listaPlanillas;
+//    }
+//
+//    public void setListaPlanillas(List<Planilla> listaPlanillas) {
+//        this.listaPlanillas = listaPlanillas;
+//    }
 
     public DataTable getTablaEmpleado() {
         return tablaEmpleado;
