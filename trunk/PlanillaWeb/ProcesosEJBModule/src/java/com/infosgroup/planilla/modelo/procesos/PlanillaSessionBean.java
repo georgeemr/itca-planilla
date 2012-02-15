@@ -105,12 +105,16 @@ public class PlanillaSessionBean {
         return companiaFacade.findAll();
     }
 
-    public List<TiposPlanilla> listarTipos() {
-        return tipoPlanillaFacade.findAll();
+    public List<TiposPlanilla> listarTipos(Cias cia) {
+        return tipoPlanillaFacade.findByCompania(cia);
     }
 
-    public List<Planilla> listarPlanilla( Cias cia ) {
+    public List<Planilla> listarPlanilla(Cias cia) {
         return planillaFacade.findPlanillaByCias(cia);
+    }
+
+    public List<Planilla> listarPlanillaByTipoPlanilla(Cias cia, Short tipoPlanilla) {
+        return planillaFacade.findPlanillaByTipoPlanilla(cia, tipoPlanilla);
     }
 
     public List<Agencias> listarAgencias(Cias cia) {
@@ -125,7 +129,7 @@ public class PlanillaSessionBean {
         return empleadoFacade.findByJefes();
     }
 
-    public List<Empleados> listaEmpleados( Cias cia ) {
+    public List<Empleados> listaEmpleados(Cias cia) {
         return empleadoFacade.findEmpleadosByCias(cia);
     }
 
@@ -340,7 +344,7 @@ public class PlanillaSessionBean {
     public List<TipoAccion> listarTiposAcciones() {
         return tipoAccionFacade.findAll();
     }
-    
+
     @PermitAll
     public List<TipoAccion> listarTipoAccionAfecta() {
         return tipoAccionFacade.findByAfecta("S");
