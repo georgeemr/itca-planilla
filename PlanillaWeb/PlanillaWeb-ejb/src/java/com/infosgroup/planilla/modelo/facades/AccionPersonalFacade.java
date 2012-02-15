@@ -37,8 +37,8 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
         super(AccionPersonal.class);
     }
 
-    public Integer max(Integer empleado) {
-        Integer max = (Integer) getEntityManager().createQuery("select max(p.accionPersonalPK.correlativo) from AccionPersonal p where p.accionPersonalPK.codEmp = :codEmp").setParameter("codEmp", empleado).getSingleResult();
+    public Integer max(Short codCia, Integer empleado) {
+        Integer max = (Integer) getEntityManager().createQuery("select max(p.accionPersonalPK.correlativo) from AccionPersonal p where p.accionPersonalPK.codCia = :codCia AND p.accionPersonalPK.codEmp = :codEmp").setParameter("codCia", codCia).setParameter("codEmp", empleado).getSingleResult();
         return (max == null) ? 1 : ++max;
     }
 
@@ -121,7 +121,7 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
     @RolesAllowed({"empleados"})
     public List<AccionPersonal> findSolicitudesByEmpleado(Empleados empleado) {
         List<AccionPersonal> l = new ArrayList<AccionPersonal>();
-        TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.accionPersonalPK.idEmpleado = :idEmpleado", AccionPersonal.class);
+        TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.accionPersonalPK.codEmp = :idEmpleado", AccionPersonal.class);
         tq.setParameter("codCia", empleado.getEmpleadosPK().getCodCia());
         tq.setParameter("idEmpleado", empleado.getEmpleadosPK().getCodEmp());
         l = tq.getResultList();

@@ -11,17 +11,12 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -53,6 +48,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Planilla.findByStatus", query = "SELECT p FROM Planilla p WHERE p.status = :status"),
     @NamedQuery(name = "Planilla.findByVhrNoche", query = "SELECT p FROM Planilla p WHERE p.vhrNoche = :vhrNoche"),
     @NamedQuery(name = "Planilla.findByChrNoche", query = "SELECT p FROM Planilla p WHERE p.chrNoche = :chrNoche"),
+    @NamedQuery(name = "Planilla.findByCodTipopla", query = "SELECT p FROM Planilla p WHERE p.codTipopla = :codTipopla"),
     @NamedQuery(name = "Planilla.findByChX250", query = "SELECT p FROM Planilla p WHERE p.chX250 = :chX250"),
     @NamedQuery(name = "Planilla.findByVhX250", query = "SELECT p FROM Planilla p WHERE p.vhX250 = :vhX250"),
     @NamedQuery(name = "Planilla.findByChHora", query = "SELECT p FROM Planilla p WHERE p.chHora = :chHora"),
@@ -69,68 +65,55 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Planilla.findByAntipag", query = "SELECT p FROM Planilla p WHERE p.antipag = :antipag"),
     @NamedQuery(name = "Planilla.findByCodSeccion", query = "SELECT p FROM Planilla p WHERE p.codSeccion = :codSeccion")})
 public class Planilla implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PlanillaPK planillaPK;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @NotNull
     @Column(name = "PRESTACIONES", nullable = false, precision = 16, scale = 2)
     private BigDecimal prestaciones;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "DEDUCCIONES", nullable = false, precision = 16, scale = 2)
     private BigDecimal deducciones;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COMISIONES", nullable = false, precision = 16, scale = 2)
     private BigDecimal comisiones;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "SUELDO_BASE", nullable = false, precision = 16, scale = 2)
     private BigDecimal sueldoBase;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "BONIFICACION", nullable = false, precision = 16, scale = 2)
     private BigDecimal bonificacion;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "D_LABORADOS", nullable = false, precision = 16, scale = 2)
     private BigDecimal dLaborados;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "CH_XSENCILLA", nullable = false, precision = 6, scale = 2)
     private BigDecimal chXsencilla;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "CH_XDOBLE", nullable = false, precision = 6, scale = 2)
     private BigDecimal chXdoble;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "VH_XSENCILLA", nullable = false, precision = 16, scale = 2)
     private BigDecimal vhXsencilla;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "VH_XDOBLE", nullable = false, precision = 16, scale = 2)
     private BigDecimal vhXdoble;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "TOT_DEBENGA", nullable = false, precision = 16, scale = 2)
     private BigDecimal totDebenga;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "LIQ_RECIBIR", nullable = false, precision = 16, scale = 2)
     private BigDecimal liqRecibir;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 1)
     @Column(name = "STATUS", nullable = false, length = 1)
     private String status;
     @Column(name = "VHR_NOCHE", precision = 16, scale = 2)
     private BigDecimal vhrNoche;
     @Column(name = "CHR_NOCHE", precision = 8, scale = 2)
     private BigDecimal chrNoche;
+    @Column(name = "COD_TIPOPLA")
+    private Short codTipopla;
     @Column(name = "CH_X250", precision = 6, scale = 2)
     private BigDecimal chX250;
     @Column(name = "VH_X250", precision = 16, scale = 2)
@@ -149,34 +132,22 @@ public class Planilla implements Serializable {
     private Integer codAfp;
     @Column(name = "FACTOR_DP", precision = 8, scale = 4)
     private BigDecimal factorDp;
-    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-    @Size(max = 2)
     @Column(name = "COD_SUCURSAL", length = 2)
     private String codSucursal;
-    @Size(max = 1)
     @Column(name = "CHEQUE_DEP", length = 1)
     private String chequeDep;
     @Column(name = "ANTIPAG", precision = 16, scale = 2)
     private BigDecimal antipag;
     @Column(name = "COD_SECCION")
     private Short codSeccion;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "ANIO", referencedColumnName = "ANIO", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "MES", referencedColumnName = "MES", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA"),
-        @JoinColumn(name = "NUM_PLANILLA", referencedColumnName = "NUM_PLANILLA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private ResumenAsistencia resumenAsistencia;
     @Transient
     private String pkAsString;
-
+    
     public Planilla() {
     }
 
@@ -333,6 +304,14 @@ public class Planilla implements Serializable {
         this.chrNoche = chrNoche;
     }
 
+    public Short getCodTipopla() {
+        return codTipopla;
+    }
+
+    public void setCodTipopla(Short codTipopla) {
+        this.codTipopla = codTipopla;
+    }
+
     public BigDecimal getChX250() {
         return chX250;
     }
@@ -453,16 +432,8 @@ public class Planilla implements Serializable {
         this.codSeccion = codSeccion;
     }
 
-    public ResumenAsistencia getResumenAsistencia() {
-        return resumenAsistencia;
-    }
-
-    public void setResumenAsistencia(ResumenAsistencia resumenAsistencia) {
-        this.resumenAsistencia = resumenAsistencia;
-    }
-
     public String getPkAsString() {
-        pkAsString = "" + this.planillaPK.getCodCia() + ":" + this.planillaPK.getAnio() + ":" + this.planillaPK.getMes() + ":" + this.planillaPK.getNumPlanilla() + ":" + this.planillaPK.getCodEmp() + ":";
+        pkAsString = "" + this.planillaPK.getCodCia() + ":" + this.planillaPK.getAnio() + ":" + this.planillaPK.getMes() + ":" + this.planillaPK.getNumPlanilla() + ":" + this.planillaPK.getCodEmp() + ":" + this.getCodTipopla();
         return pkAsString;
     }
 
@@ -488,6 +459,7 @@ public class Planilla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Planilla[ planillaPK=" + planillaPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Planilla[ planillaPK=" + planillaPK + " ]";
     }
+    
 }
