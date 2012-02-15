@@ -64,7 +64,7 @@ public class SessionBeanREC implements Serializable {
 
     public List<Candidato> getListaCandidatos() {
         if (criteriosSeleccionados == null || criteriosSeleccionados.length <= 0) {
-            listaCandidatos = reclutamientoSessionBean.findCandidatosAPreseleccionar(concursoSeleccionado);
+            listaCandidatos = new java.util.ArrayList<Candidato>()/*reclutamientoSessionBean.findCandidatosAPreseleccionar(concursoSeleccionado)*/;
         } else {
             listaCandidatos = reclutamientoSessionBean.getCandidatoConCriteriosPuesto(concursoSeleccionado, getSessionBeanEMP().getEmpleadoSesion().getUsuario());
         }
