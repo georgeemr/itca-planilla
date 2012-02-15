@@ -23,6 +23,10 @@
                     <p:graphicImage value="/resources/iconos/document-edit.png"/>
                     <h:outputText value="Editar Solicitud" styleClass="espacioTexto"/>
                 </p:commandLink>
+                <p:commandLink id="aprobarSolicitud" styleClass="opcionMenu textoNormal" ajax="true" action="acciones/aprobarSolicitud?faces-redirect=true" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" rendered="#{SessionBeanPLA.accionSeleccionada ne null}">
+                    <p:graphicImage value="/resources/iconos/dialog-ok-apply.png"/>
+                    <h:outputText value="Aprobar Solicitud" styleClass="espacioTexto"/>
+                </p:commandLink>
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{planilla$accionesPersonal.consulta$action}" 
                                update="principalForm:mensajes, tableSolicitud" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/search.png"/>
@@ -135,7 +139,7 @@
                     </tr>
                     <tr>
                         <td><h:outputLabel value="Observacion"/></td>
-                        <td colspan="3"><p:inputTextarea style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                        <td colspan="3"><p:inputTextarea id="txtobservacionesSP" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -230,7 +234,7 @@
             </p:fieldset>
             <p:spacer height="15" />
             <h:panelGrid columns="2">
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud"
+                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldPermisos,principalForm:txtobservacionesSP"
                                  action="#{planilla$accionesPersonal.solicitudPermiso.guardarSolicitud$action}"
                                  ajax="true" image="ui-icon-circle-check" />
 

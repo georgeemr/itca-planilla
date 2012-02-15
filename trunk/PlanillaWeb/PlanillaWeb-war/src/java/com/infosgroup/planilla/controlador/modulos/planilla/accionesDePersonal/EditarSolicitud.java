@@ -24,64 +24,21 @@ public class EditarSolicitud extends AbstractJSFPage implements java.io.Serializ
     @EJB
     private PlanillaSessionBean planillaSessionBean;
     public final long MILISEGUNDOS_POR_DIA = 24 * 60 * 60 * 1000;
-
-    enum APRUEBA { JEFE, RECURSOS_HUMANOS };
+    private boolean usuarioAutorizado = Boolean.FALSE;
 
     public EditarSolicitud() {
     }
 
-    public String aprobarSolicitudJefe() {
-        AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
-        if (!validaDatos(a)) {
-            return null;
+    public boolean isUsuarioAutorizado() {
+        usuarioAutorizado = Boolean.FALSE;
+        if (getSessionBeanPLA().getAccionSeleccionada().getEmpleados() != null) {
+            usuarioAutorizado = getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp().equals(getSessionBeanPLA().getAccionSeleccionada().getEmpleados().getEmpleadosPK().getCodEmp());
         }
-        try {
-            planillaSessionBean.jefeEditaSolicitud(a, "A");
-            addMessage("Editar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
-            SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.JEFE, a));
-        } catch (Exception e) {
-            addMessage("Editar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
-        }
-        return null;
+        return usuarioAutorizado;
     }
 
-    public String aprobarSolicitudRH() {
-        AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
-        if (!validaDatos(a)) {
-            return null;
-        }
-        try {
-            planillaSessionBean.rrhhEditaSolicitud(a, "A");
-            addMessage("Editar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
-            SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.RECURSOS_HUMANOS, a));
-        } catch (Exception e) {
-            addMessage("Editar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
-        }
-        return null;
-    }
-
-    public String rechazarSolicitudRH() {
-        AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
-        try {
-            planillaSessionBean.rrhhEditaSolicitud(a, "R");
-            addMessage("Editar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
-            SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.RECURSOS_HUMANOS, a));
-        } catch (Exception e) {
-            addMessage("Editar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
-        }
-        return null;
-    }
-
-    public String rechazarSolicitudJefe() {
-        AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
-        try {
-            planillaSessionBean.jefeEditaSolicitud(a, "R");
-            addMessage("Editar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
-            SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.RECURSOS_HUMANOS, a));
-        } catch (Exception e) {
-            addMessage("Editar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
-        }
-        return null;
+    public void setUsuarioAutorizado(boolean usuarioAutorizado) {
+        this.usuarioAutorizado = usuarioAutorizado;
     }
 
     public boolean validaDatos(AccionPersonal a) {
@@ -136,18 +93,18 @@ public class EditarSolicitud extends AbstractJSFPage implements java.io.Serializ
         return error;
     }
 
-    public String getManifiestoSolicitudPermiso(APRUEBA eaprueba, AccionPersonal a) {
-        StringBuilder mensaje = new StringBuilder();
-        mensaje.append("Solicitud Procesada.\n\n");
-        mensaje.append("\n\nFecha: ").append(a.getFecha());
-        mensaje.append("Detalle:\n\n\n\n");
-        mensaje.append("\n\nResultado: Solicitud ").append(a.getAccEstado());
-        if (eaprueba.equals(APRUEBA.JEFE)) {
-            mensaje.append("\n\nProcesado por: ").append(getSessionBeanEMP().getEmpleadoSesion().getNombreCompleto()).append(" ( Jefe Inmediato ) ");
-        } else {
-            mensaje.append("\n\nProcesado por: ").append(getSessionBeanEMP().getEmpleadoSesion().getNombreCompleto()).append(" ( Recursos Humanos ) ");
+    public String actualizarSolicitud() {
+        AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
+        if (!validaDatos(a)) {
+            return null;
         }
-        mensaje.append("\n\nAtte. \n\nDepartamento de Recursos Humanos ").append(getSessionBeanADM().getCompania().getNomComercial());
-        return mensaje.toString();
+        try {
+            planillaSessionBean.editarSolicitud(a);
+            addMessage("Acciones de Personal", "Datos Guardados satisfactoriamente.", TipoMensaje.INFORMACION);
+        } catch (Exception e) {
+            addMessage("Acciones de Personal", "Ocurrio un error al intentar guardar los datos.", TipoMensaje.ERROR);
+        }
+
+        return null;
     }
 }
