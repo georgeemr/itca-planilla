@@ -53,7 +53,7 @@
                     <p:graphicImage value="/resources/iconos/window-close.png"/>
                     <h:outputLabel value="Usuario no autorizado para aprobar solicitudes." styleClass="opcionMenu textoNormal" style="font-weight: bold; color: #DF0000;" />
                 </h:panelGroup>
-
+                
                 <h:outputLabel value="Aprobaci&oacute;n Jefe" rendered="#{request.isUserInRole('jefes')}" />
 
                 <h:panelGroup rendered="#{request.isUserInRole('jefes')}"  >
