@@ -6,7 +6,6 @@ package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
 import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
-import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
 import java.util.List;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;

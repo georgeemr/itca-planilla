@@ -31,7 +31,7 @@ public class EditarSolicitud extends AbstractJSFPage implements java.io.Serializ
 
     public boolean isUsuarioAutorizado() {
         usuarioAutorizado = Boolean.FALSE;
-        if (getSessionBeanPLA().getAccionSeleccionada().getEmpleados() != null) {
+        if (getSessionBeanPLA().getAccionSeleccionada()!=null && getSessionBeanPLA().getAccionSeleccionada().getEmpleados() != null) {
             usuarioAutorizado = getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp().equals(getSessionBeanPLA().getAccionSeleccionada().getEmpleados().getEmpleadosPK().getCodEmp());
         }
         return usuarioAutorizado;

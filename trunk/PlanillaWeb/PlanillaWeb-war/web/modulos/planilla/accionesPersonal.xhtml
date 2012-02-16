@@ -23,7 +23,8 @@
                     <p:graphicImage value="/resources/iconos/document-edit.png"/>
                     <h:outputText value="Editar Solicitud" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink id="aprobarSolicitud" styleClass="opcionMenu textoNormal" ajax="true" action="acciones/aprobarSolicitud?faces-redirect=true" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" rendered="#{SessionBeanPLA.accionSeleccionada ne null}">
+                <p:commandLink id="aprobarSolicitud" rendered="#{(SessionBeanPLA.accionSeleccionada ne null) and ( request.isUserInRole('jefes') or request.isUserInRole('rrhh'))}" styleClass="opcionMenu textoNormal" ajax="true" 
+                               action="acciones/aprobarSolicitud?faces-redirect=true" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" >
                     <p:graphicImage value="/resources/iconos/dialog-ok-apply.png"/>
                     <h:outputText value="Aprobar Solicitud" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -70,7 +71,7 @@
                      selectionMode="single"
                      update="tabAcciones,editarSolicitud"
                      binding="#{planilla$accionesPersonal.tablaSolicitudes}"
-                     rowStyleClass="#{sol.status eq 'G' ? 'solicitudGenerada' : sol.status eq 'J' ? 'solicitudPreAprobada' : sol.status eq 'B' ? 'solicitudAprobada' : sol.status eq 'R' ? 'solicitudRechazada' : null }"
+                     rowStyleClass="#{sol.status eq 'G' ? 'solicitudGenerada' : sol.status eq 'J' ? 'solicitudPreAprobada' : sol.status eq 'A' ? 'solicitudAprobada' : sol.status eq 'R' ? 'solicitudRechazada' : null }"
                      paginatorAlwaysVisible="true"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
             <f:facet name="header">

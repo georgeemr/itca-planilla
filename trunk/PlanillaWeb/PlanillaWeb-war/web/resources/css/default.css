@@ -89,7 +89,7 @@ body {
 }
 
 .solicitudGenerada{
-    background-color: #9999FF;
+    background: -moz-linear-gradient(right, #0051FF, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#0051FF),  to(#fff));
 }
 
 .solicitudPreAprobada{
@@ -97,11 +97,16 @@ body {
 }
 
 .solicitudAprobada{
-    background-color: #00CC66;
+    background: -moz-linear-gradient(right, #16FF25, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#16FF25),  to(#fff));
 }
 
 .solicitudRechazada{
-    background-color: #ff6666
+    /*background-color: #ff6666*/
+    background: -moz-linear-gradient(right, #FF6F56, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#FF6F56),  to(#fff));
+}
+
+.toolbarUsuario{
+    border:none; background: -moz-linear-gradient(right, #CDCDCD, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#65b6cf),  to(#2c2c2c));
 }
 
 .requerido{

@@ -68,7 +68,7 @@
                 </div>    
                 <div style="float:left; width: 70%;"  >
                     <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" 
-                               style="border:none; background: -moz-linear-gradient(right, #CDCDCD, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#65b6cf),  to(#2c2c2c));" >
+                               styleClass="toolbarUsuario" >
                         <p:toolbarGroup align="right"  >
                             <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{reclutamiento$concursos.guardar$crud$action()}"
                                              update="mensajes, Nombre, calFecIni, calFecFin, numPlazas, lstPuesto, lstEstado" />  
@@ -118,7 +118,7 @@
         </p:fieldset>
 
         <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 2)}" 
-                   style="border:none; background: -moz-linear-gradient(right, #CDCDCD, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#65b6cf),  to(#2c2c2c));" >
+                   styleClass="toolbarUsuario" >
             <p:toolbarGroup align="right" >
                 <p:commandButton value="Eliminar" image="ui-icon ui-icon-circle-minus" ajax="true" onclick="confirmation.show()"/>
             </p:toolbarGroup>
@@ -218,7 +218,7 @@
                 </div>    
                 <div style="float:left; width: 70%;"  >
                     <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 1)}"
-                               style="border:none; background: -moz-linear-gradient(right, #CDCDCD, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#65b6cf),  to(#2c2c2c));" >
+                               styleClass="toolbarUsuario" >
                         <p:toolbarGroup align="right"  >
                             <p:commandButton id="cmdModificar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="# {reclutamiento$concursos.guardar$crud$action()}"
                                              update="mensajes, NombreMod, calFecIniMod, calFecFinMod, numPlazasMod, lstPuestoMod, lstEstadoMod" />  
