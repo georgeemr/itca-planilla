@@ -131,9 +131,18 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
     @RolesAllowed({"rrhh"})
     public List<AccionPersonal> findSolicitudesByRRHH(Empleados empleado) {
         List<AccionPersonal> l = new ArrayList<AccionPersonal>();
-        TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.status = 'G'", AccionPersonal.class);
-        tq.setParameter("codCia", empleado.getEmpleadosPK().getCodCia());
-        l = tq.getResultList();
+        //TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.status = 'G'", AccionPersonal.class);
+        StringBuilder query = new StringBuilder();
+        query.append("select * from accion_personal where ( cod_cia , cod_tipoaccion ) in ");
+        query.append("( select cod_cia, cod_tipoaccion from planilla.tipo_accion a where a.cod_cia = ? and firma_jefe = 'S' and firma_rh = 'S' ) ");
+        query.append("and f_aprueba_jefe is not null and aprobado_jefe = 'A' and status = 'A' ");
+        query.append("union ");
+        query.append("select * from accion_personal where ( cod_cia , cod_tipoaccion ) in ");
+        query.append("( select cod_cia, cod_tipoaccion from planilla.tipo_accion a where a.cod_cia = ? and firma_jefe = 'N' and firma_rh = 'S' ) and status = 'G'");
+        Query q = em.createNativeQuery(query.toString(), AccionPersonal.class);
+        q.setParameter(1, empleado.getEmpleadosPK().getCodCia());
+        q.setParameter(2, empleado.getEmpleadosPK().getCodCia());
+        l = q.getResultList();
         return l != null ? l : new ArrayList<AccionPersonal>();
     }
 
