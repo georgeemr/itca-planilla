@@ -1,24 +1,18 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
-                xmlns:h="http://java.sun.com/jsf/html"
-                template="./../../plantillas/defaultTemplate.xhtml"
-                xmlns:f="http://java.sun.com/jsf/core">
+                template="./../../plantillas/defaultTemplate.xhtml">
 
-    <ui:define name="dialogos">
-        <p:confirmDialog message="&#191; Esta seguro que desea eliminar el Concurso seleccionado ?"  
-                         showEffect="bounce" hideEffect="explode"  modal="true"
-                         header="Eliminar Concurso" severity="alert" widgetVar="confirmation">  
-            <p:commandButton value="Si, estoy seguro" update="mensajes, tablaConcursos" oncomplete="confirmation.hide()"  
-                             actionListener="#{reclutamiento$concursos.eliminar$crud$action}" />  
-            <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+    <ui:define name="titulo">Cat&aacute;logo de Puestos</ui:define>
 
-        </p:confirmDialog>        
-    </ui:define>
+    <ui:define name="dialogos"></ui:define>
 
     <ui:define name="acciones">
         <p:tab title="Acciones">
+
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true"
                                action="#{reclutamiento$concursos.nuevo$vh$action()}" update="panelContenido">
@@ -42,7 +36,7 @@
 
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" value="Cancelar" ajax="true" action="#{reclutamiento$concursos.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                <p:commandLink styleClass="opcionMenu textoNormal" value="Cancelar" ajax="true" action="#{reclutamiento$preseleccionAspirante.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
                     <p:graphicImage styleClass="ui-icon ui-icon-circle-close" />
                 </p:commandLink>
             </h:panelGrid>
@@ -50,12 +44,10 @@
 
     </ui:define>
 
-    <ui:define name="titulo">
-        Concursos
-    </ui:define>
+    <ui:define name="titulo">Cat&aacute;logo de Puestos</ui:define>
 
-    <ui:define name="contenido">       
-
+    <ui:define name="contenido">
+        <p:spacer height="10px"/>
         <p:panel id="panelInformacion" style="border:none;" >
             <div>
                 <div style="float:left;width: 30%;" >
@@ -78,47 +70,78 @@
                 <div style="clear:both;" ></div>
             </div>
         </p:panel>
-
         <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" />
 
-        <p:fieldset legend="Datos del Concurso" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" >
-            <p:spacer height="20" />
-            <h:panelGrid columns="2">
+        <p:fieldset legend="Datos del Puesto" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" >
+            <p:spacer height="15" />
+            <h:panelGrid columns="6">
                 <h:outputLabel value="Nombre: " />
-                <p:inputText id="Nombre" value="#{reclutamiento$concursos.nombreConcurso}" maxlength="100" required="true" 
-                             requiredMessage="El Nombre del Concurso es un campo obligatorio" />
+                <p:inputText id="Nombre" value="#{puestosBackendBean.nombre}" maxlength="100" required="true" 
+                             requiredMessage="El Nombre del Puesto es un campo obligatorio" /><h:panelGroup /><h:panelGroup /><h:panelGroup /><h:panelGroup />
 
-                <h:outputLabel value="Fecha Inicial: " />
-                <p:calendar id="calFecIni" value="#{reclutamiento$concursos.fechaInicial}" showOn="button" required="true" 
-                            requiredMessage="La Fecha Inicial del concurso es un campo obligatorio" pattern="dd/MM/yyyy" />
+                <h:outputLabel value="Opciones de Puesto" />
+                <h:panelGrid columns="5" >
+                    <h:selectBooleanCheckbox label="Horas Extras" value="#{puestosBackendBean.horasExtras}" >
+                        <h:outputLabel value="Horas Extras" />
+                    </h:selectBooleanCheckbox>
+                    <p:spacer width="20" />
+                    <h:selectBooleanCheckbox label="Horas Dobles" value="#{puestosBackendBean.horasDobles}">
+                        <h:outputLabel value="Horas Dobles" />
+                    </h:selectBooleanCheckbox>
+                    <p:spacer width="20" />
+                    <h:selectBooleanCheckbox label="Viaticos" value="#{puestosBackendBean.viaticos}">
+                        <h:outputLabel value="Viaticos" />
+                    </h:selectBooleanCheckbox>
+                </h:panelGrid>
+                <h:panelGroup /><h:panelGroup /><h:panelGroup /><h:panelGroup />
 
-                <h:outputLabel value="Fecha Final: " />
-                <p:calendar id="calFecFin" value="#{reclutamiento$concursos.fechaFinal}"  showOn="button" required="true"
-                            requiredMessage="La Fecha Final del concurso es un campo obligatorio" pattern="dd/MM/yyyy"/>
+                <h:outputLabel value="Comisi&oacute;n" />
+                <p:inputText id="txComision"  value="#{puestosBackendBean.comision}" />
 
-                <h:outputLabel value="N&#250;mero de plazas: " />
-                <p:inputText id="numPlazas" value="#{reclutamiento$concursos.numeroPlazas}" maxlength="3" required="true"
-                             requiredMessage="El n&#250;mero de Plazas es un campo obligatorio" 
-                             converterMessage="Ingrese un número entero de plazas." >
-                    <f:convertNumber integerOnly="true"  />
-                </p:inputText>
+                <h:outputLabel value="Salario M&aacute;ximo" />
+                <p:inputText id="txSalarioMax"  value="#{puestosBackendBean.salarioMaximo}" />
 
-                <h:outputLabel value="Puesto: " />
-                <h:selectOneMenu id="lstPuesto" value="#{reclutamiento$concursos.puesto}"  style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
-                    <f:selectItems value="#{reclutamiento$concursos.listaPuestos}" var="puesto" itemValue="#{puesto.puestosPK.codPuesto}"  itemLabel="#{puesto.nomPuesto}"/>
+                <h:outputLabel value="Salario Minimo" />
+                <p:inputText id="txSalarioMin"   value="#{puestosBackendBean.salarioMinimo}"/>
+
+                <h:outputLabel value="Tipo Puesto" />
+                <h:selectOneMenu style="height: 25px;padding-top: 3px;" >
+                    <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL TIPO DE PUESTO]" />
+                    <f:selectItems value="#{puestosBackendBean.listaTipoPuesto}" var="tipoPuesto" itemValue="#{tipoPuesto.tipoPuestoPK.codTipoPuesto}" itemLabel="#{tipoPuesto.nomTipo}" />
                 </h:selectOneMenu>
 
-                <h:outputLabel value="Estado: " />
-                <h:selectOneMenu id="lstEstado" value="#{reclutamiento$concursos.estadoConcurso}" style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Estado del Concurso es un campo obligatorio"  >
-                    <f:selectItems value="#{reclutamiento$concursos.listaEstadoConcurso}" var="estado" itemValue="#{estado.estadoConcursoPK.codigo}"  itemLabel="#{estado.nombre}"/>
+                <h:outputLabel value="Estado " />
+                <h:selectOneMenu id="lstEstadoPuesto" style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Estado del Puesto es un campo obligatorio"  >
+                    <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL ESTADO]" />
+                    <f:selectItem itemValue="A" itemLabel="ACTIVO" />
+                    <f:selectItem itemValue="I" itemLabel="INACTIVO" />
                 </h:selectOneMenu>
+
+                <h:outputLabel value="Departamento " />
+                <h:selectOneMenu id="lstDepartamentos" style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Departamento del Puesto es un campo obligatorio"  >
+                    <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL DEPARTAMENTO]" />
+                    <f:selectItems value="#{puestosBackendBean.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                </h:selectOneMenu>
+
+                <h:outputLabel value="&Aacute;rea " />
+                <h:selectOneMenu id="lstAreas" style="height: 25px;padding-top: 3px;" value="#{reclutamiento$concursos.estadoConcurso}" required="true" requiredMessage="El Area del Puesto es un campo obligatorio"  >
+                    <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL AREA]" />
+                </h:selectOneMenu><h:panelGroup /><h:panelGroup /><h:panelGroup /><h:panelGroup />
+
+                <h:outputLabel value="Descripci&oacute;n del Puesto " />
+                <p:inputTextarea id="txDescPuesto" required="true" >
+
+                </p:inputTextarea>
+                <h:outputLabel value="Objetivo " />
+                <p:inputTextarea id="txObjPuesto" required="true" >
+
+                </p:inputTextarea>
 
             </h:panelGrid>
             <p:spacer height="20" />
         </p:fieldset>
 
-        <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 2)}" 
-                   style="border:none; background: -moz-linear-gradient(right, #CDCDCD, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#65b6cf),  to(#2c2c2c));" >
+        <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 2)}" style="border:none; background: -moz-linear-gradient(right, #CDCDCD, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#65b6cf),  to(#2c2c2c));" >
             <p:toolbarGroup align="right" >
                 <p:commandButton value="Eliminar" image="ui-icon ui-icon-circle-minus" ajax="true" onclick="confirmation.show()"/>
             </p:toolbarGroup>
@@ -205,11 +228,10 @@
 
         </p:fieldset>
 
-
         <p:panel id="panelInformacionEdit" style="border:none;" >
             <div>
                 <div style="float:left;width: 30%;" >
-                    <h:panelGrid columns="4" rendered="#{(SessionBeanADM.estadoAccion eq 1)}" >
+                    <h:panelGrid columns="4" rendered="#{(SessionBeanADM.estadoAccion eq 1)}"  >
                         <p:graphicImage value="../../resources/imagenes/64/info.png" />
                         <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
                         <h:outputLabel value="*" styleClass="requerido"/>                                
@@ -217,10 +239,9 @@
                     </h:panelGrid>
                 </div>    
                 <div style="float:left; width: 70%;"  >
-                    <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 1)}"
-                               style="border:none; background: -moz-linear-gradient(right, #CDCDCD, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#65b6cf),  to(#2c2c2c));" >
-                        <p:toolbarGroup align="right"  >
-                            <p:commandButton id="cmdModificar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="# {reclutamiento$concursos.guardar$crud$action()}"
+                    <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 1)}"  >
+                        <p:toolbarGroup align="right" >
+                            <p:commandButton id="cmdModificar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{reclutamiento$concursos.guardar$crud$action()}"
                                              update="mensajes, NombreMod, calFecIniMod, calFecFinMod, numPlazasMod, lstPuestoMod, lstEstadoMod" />  
                         </p:toolbarGroup>
                     </p:toolbar>
@@ -228,6 +249,7 @@
                 <div style="clear:both;" ></div>
             </div>
         </p:panel>
+
 
         <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq 1)}" />
 
@@ -267,4 +289,5 @@
             <p:spacer height="20" />
         </p:fieldset>
     </ui:define>
+
 </ui:composition>

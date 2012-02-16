@@ -35,6 +35,8 @@ import com.infosgroup.planilla.modelo.facades.EvaluacionCandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.AgenciasFacade;
 import com.infosgroup.planilla.modelo.entidades.AgenciasPK;
+import com.infosgroup.planilla.modelo.entidades.Departamentos;
+import com.infosgroup.planilla.modelo.facades.DepartamentoFacade;
 import com.infosgroup.planilla.modelo.facades.TipoDocumentoFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPlanillaFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPuestoFacade;
@@ -81,9 +83,11 @@ public class ReclutamientoSessionBean {
     private CriteriosXPuestoFacade criteriosXPuestoFacade;
     @EJB
     private TipoDocumentoFacade tipoDocumentoFacade;
+    @EJB
+    private DepartamentoFacade depatamentosFacade;
 
-    public List<Concurso> getListaConcursos(Cias cias, Date fechaInicial, Date fechaFinal) {
-        return concursoFacade.getConcursosByDate(cias, fechaInicial, fechaFinal);
+    public List<Concurso> getListaConcursos(Cias empresa, Date fechaInicial, Date fechaFinal) {
+        return concursoFacade.getConcursosByDate(empresa, fechaInicial, fechaFinal);
     }
 
     public List<Concurso> getConcursosEvaluados(Cias empresa) {
@@ -102,7 +106,7 @@ public class ReclutamientoSessionBean {
         return puestoFacade.findPuestoByEmpresa(empresa);
     }
 
-    public List<TipoPuesto> getTipoPuestosByEmpresa(Long empresa) {
+    public List<TipoPuesto> getTipoPuestosByEmpresa(Cias empresa) {
         return tipoPuestoFacade.findTipoPuestoByEmpresa(empresa);
     }
 
@@ -260,6 +264,10 @@ public class ReclutamientoSessionBean {
 
     public TiposPlanilla findTipoPlanillaById(TiposPlanillaPK id) {
         return tipoPlanillaFacade.find(id);
+    }
+    
+    public List<Departamentos> findDepartamentosByCias( Cias cias ){
+        return depatamentosFacade.findDepartamentosByCias(cias);
     }
 
     @PermitAll
