@@ -7,6 +7,7 @@ package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
+import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
 import java.util.List;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.TipoMensaje;
@@ -33,20 +34,20 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
     private Short dias = 0;
     private Short horas = 0;
     private Double descuento = 0.0;
-    private List<Planilla> listaPlanillas;
+    private List<ProgramacionPla> listaPlanillas;
 
     public SolicitudPermiso(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
     }
 
-    public List<Planilla> getListaPlanillas() {
+    public List<ProgramacionPla> getListaPlanillas() {
         if (tipoPlanilla != null && tipoPlanilla != -1) {
-            listaPlanillas = planillaSessionBean().listarPlanillaByTipoPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), tipoPlanilla);
+            listaPlanillas = planillaSessionBean().getProgramacionPlaByTipo(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla);
         }
-        return listaPlanillas != null ? listaPlanillas:new ArrayList<Planilla>();
+        return listaPlanillas != null ? listaPlanillas:new ArrayList<ProgramacionPla>();
     }
 
-    public void setListaPlanillas(List<Planilla> listaPlanillas) {
+    public void setListaPlanillas(List<ProgramacionPla> listaPlanillas) {
         this.listaPlanillas = listaPlanillas;
     }
 

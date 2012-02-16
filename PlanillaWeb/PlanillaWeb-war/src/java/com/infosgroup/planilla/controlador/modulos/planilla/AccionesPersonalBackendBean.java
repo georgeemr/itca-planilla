@@ -80,7 +80,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     @PostConstruct
     public void init() {
         listaEmp = planillaSessionBean.listaEmpleados( getSessionBeanADM().getCompania() );
-//        listaPlanillas = planillaSessionBean.listarPlanilla( getSessionBeanADM().getCompania() );
         if (isInRole("rrhh")) {
             listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
         } else if (isInRole("jefes")) {
@@ -157,15 +156,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public void setListaTipos(List<TiposPlanilla> listaTipos) {
         this.listaTipos = listaTipos;
     }
-
-//    public List<Planilla> getListaPlanillas() {
-//        listaPlanillas = planillaSessionBean.listarPlanilla( getSessionBeanADM().getCompania() );
-//        return listaPlanillas;
-//    }
-//
-//    public void setListaPlanillas(List<Planilla> listaPlanillas) {
-//        this.listaPlanillas = listaPlanillas;
-//    }
 
     public DataTable getTablaEmpleado() {
         return tablaEmpleado;

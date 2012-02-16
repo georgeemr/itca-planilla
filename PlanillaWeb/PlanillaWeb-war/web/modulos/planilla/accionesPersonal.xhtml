@@ -92,13 +92,23 @@
             <p:column headerText="Estado">
                 <h:outputText value="#{sol.accEstado}"/>
             </p:column>
-            
+
+            <p:column headerText="Aprobado Jefe">
+                <p:graphicImage value="/resources/iconos/dialog-ok-apply.png" rendered="#{sol.aprobadoJefe eq 'A'}" />
+                <p:graphicImage value="/resources/iconos/edit-delete.png" rendered="#{sol.aprobadoJefe eq 'R'}" />
+            </p:column>
+
+            <p:column headerText="Aprobado RH">
+                <p:graphicImage value="/resources/iconos/dialog-ok-apply.png" rendered="#{sol.aprobadoRh eq 'A'}" />
+                <p:graphicImage value="/resources/iconos/edit-delete.png" rendered="#{sol.aprobadoRh eq 'R'}" />
+            </p:column>
+
             <p:column headerText="Fecha Solicitud" sortBy="#{sol.fecha}">
                 <h:outputText value="#{sol.fecha}" >
                     <f:convertDateTime pattern="dd/MM/yyyy" />
                 </h:outputText>
             </p:column>
-            
+
             <p:column headerText="Observaci&oacute;n">
                 <h:outputText value="#{sol.observacion}"/>
             </p:column>
@@ -122,7 +132,10 @@
                 <table border="0" width="100%" >
                     <tr>
                         <td><h:outputLabel value="Fecha de Solicitud"/></td>
-                        <td><p:calendar showOn="button" pattern="dd/MM/yyyy" disabled="true" value="#{planilla$accionesPersonal.fecha}" /></td>
+                        <td><h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                        </td>
                         <td></td>
                         <td>                            
                             <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
@@ -130,7 +143,7 @@
                             </h:panelGrid>
                         </td>
                         <td>
-                            <p:inputText value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" readonly="true" id="txtEmp" immediate="true" />
+                            <h:outputLabel value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" id="txtEmp" />
                         </td>
                     </tr>
                     <tr>
@@ -225,12 +238,12 @@
                                 <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
                                 <f:selectItems value="#{planilla$accionesPersonal.solicitudPermiso.listaPlanillas}" var="pla" 
                                                itemValue="#{pla.pkAsString}"
-                                               itemLabel="#{pla.planillaPK.anio} ------ #{pla.planillaPK.mes} ------ #{pla.planillaPK.numPlanilla}" />
+                                               itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
                             </h:selectOneMenu>
                         </td>
                     </tr>
                 </table>
-                
+
             </p:fieldset>
             <p:spacer height="15" />
             <h:panelGrid columns="2">

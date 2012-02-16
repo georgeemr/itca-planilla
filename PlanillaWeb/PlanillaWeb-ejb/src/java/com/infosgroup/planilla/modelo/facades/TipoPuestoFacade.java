@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.TipoPuesto;
 import com.infosgroup.planilla.modelo.entidades.TipoPuestoPK;
 import java.util.ArrayList;
@@ -27,10 +28,10 @@ public class TipoPuestoFacade extends AbstractFacade<TipoPuesto, TipoPuestoPK> {
         return em;
     }
 
-    public List<TipoPuesto> findTipoPuestoByEmpresa(Long empresa) {
+    public List<TipoPuesto> findTipoPuestoByEmpresa(Cias cias) {
         List<TipoPuesto> lstConcurso = new ArrayList<TipoPuesto>();
-        lstConcurso.addAll(getEntityManager().createNamedQuery("TipoPuesto.findByCodCia", TipoPuesto.class).setParameter("codCia", empresa).getResultList());
-        return lstConcurso;
+        lstConcurso = getEntityManager().createQuery("SELECT t FROM TipoPuesto t WHERE t.tipoPuestoPK.codCia = :codCia", TipoPuesto.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        return lstConcurso != null ? lstConcurso : new ArrayList<TipoPuesto>();
     }
 
     public TipoPuestoFacade() {

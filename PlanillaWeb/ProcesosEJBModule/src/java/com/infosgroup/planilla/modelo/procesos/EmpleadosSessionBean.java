@@ -14,7 +14,6 @@ import com.infosgroup.planilla.modelo.entidades.Factor;
 import com.infosgroup.planilla.modelo.entidades.Gerencia;
 import com.infosgroup.planilla.modelo.entidades.GerenciaPK;
 import com.infosgroup.planilla.modelo.entidades.Plantilla;
-import com.infosgroup.planilla.modelo.entidades.Pregunta;
 import com.infosgroup.planilla.modelo.entidades.Puestos;
 import com.infosgroup.planilla.modelo.entidades.Respuesta;
 import com.infosgroup.planilla.modelo.entidades.RespuestaPK;
@@ -53,8 +52,6 @@ public class EmpleadosSessionBean {
     private CampaniaFacade campaniasFacade;
     @EJB
     private EmpleadoFacade empleadosFacade;
-//  13022012  @EJB
-//    private PuestoEmpleadoFacade puestoEmpleadoFacade;
     @EJB
     private FactorFacade factorFacade;
     @EJB

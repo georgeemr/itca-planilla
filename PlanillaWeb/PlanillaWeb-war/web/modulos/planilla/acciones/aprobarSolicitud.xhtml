@@ -30,10 +30,12 @@
             <p:spacer height="15" />
             <h:panelGrid columns="5" >
                 <h:outputLabel value="Nombre" /> 
-                <p:inputText value="#{SessionBeanPLA.accionSeleccionada.empleados.nombreCompleto}" readonly="true" />
+                <h:outputLabel value="#{SessionBeanPLA.accionSeleccionada.empleados.nombreCompleto}" />
                 <h:panelGroup > <p:spacer width="30" /> </h:panelGroup>
                 <h:outputLabel value="Fecha de Solicitud" /> 
-                <p:calendar value="#{SessionBeanPLA.accionSeleccionada.fecha}" pattern="dd/MM/yyyy" disabled="true" />
+                <h:outputLabel value="#{SessionBeanPLA.accionSeleccionada.fecha}">
+                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputLabel>
                 <h:outputLabel value="Observaci&oacute;n" /> 
                 <p:inputText value="#{SessionBeanPLA.accionSeleccionada.observacion}" />
                 <h:panelGroup /><h:panelGroup /><h:panelGroup />
@@ -43,7 +45,7 @@
                 <p:calendar value="#{SessionBeanPLA.accionSeleccionada.fechaFinal}" pattern="dd/MM/yyyy" showOn="button" onSelectUpdate="txtEditDias,principalForm:mensajes" selectListener="#{aprobarSolicitud.handleFechaFinal}" />
                 <h:outputLabel value="Dias" /><p:inputText id="txtEditDias" value="#{SessionBeanPLA.accionSeleccionada.dias}" disabled="true" /><h:panelGroup />
                 <h:outputLabel value="Horas" /><p:inputText value="#{SessionBeanPLA.accionSeleccionada.horas}"  />
-                <h:outputLabel value="Estado" /><h:outputLabel value="#{SessionBeanPLA.accionSeleccionada.accEstado}" /><h:panelGroup />
+                <h:outputLabel value="Estado" /><h:outputLabel id="lblEstado" value="#{SessionBeanPLA.accionSeleccionada.accEstado}" /><h:panelGroup />
                 <h:outputLabel value="Valor descuento" /><p:inputText value="#{SessionBeanPLA.accionSeleccionada.cantidad}"  />
 
                 <h:outputLabel value="" rendered="#{!request.isUserInRole('jefes') and !request.isUserInRole('rrhh')}" />
@@ -55,16 +57,16 @@
                 <h:outputLabel value="Aprobaci&oacute;n Jefe" rendered="#{request.isUserInRole('jefes')}" />
 
                 <h:panelGroup rendered="#{request.isUserInRole('jefes')}"  >
-                    <p:commandButton value="Aprobar" image="ui-icon-circle-check" action="#{aprobarSolicitud.aprobarSolicitudJefe}" update="principalForm:mensajes" />
+                    <p:commandButton value="Aprobar" image="ui-icon-circle-check" action="#{aprobarSolicitud.aprobarSolicitudJefe}" update="principalForm:mensajes,lblEstado" />
                     <p:spacer width="15" />
-                    <p:commandButton value="Rechazar"  image="ui-icon-closethick" action="#{aprobarSolicitud.rechazarSolicitudJefe}" update="principalForm:mensajes" />
+                    <p:commandButton value="Rechazar"  image="ui-icon-closethick" action="#{aprobarSolicitud.rechazarSolicitudJefe}" update="principalForm:mensajes,lblEstado" />
                 </h:panelGroup >
 
                 <h:outputLabel value="Aprobaci&oacute;n Recursos Humanos" rendered="#{request.isUserInRole('rrhh')}" />
                 <h:panelGroup rendered="#{request.isUserInRole('rrhh')}" >
-                    <p:commandButton value="Aprobar" image="ui-icon-circle-check" action="#{aprobarSolicitud.aprobarSolicitudRH}" update="principalForm:mensajes" />
+                    <p:commandButton value="Aprobar" image="ui-icon-circle-check" action="#{aprobarSolicitud.aprobarSolicitudRH}" update="principalForm:mensajes,lblEstado" />
                     <p:spacer width="15" />
-                    <p:commandButton value="Rechazar"  image="ui-icon-closethick" action="#{aprobarSolicitud.rechazarSolicitudRH}" update="principalForm:mensajes" />
+                    <p:commandButton value="Rechazar"  image="ui-icon-closethick" action="#{aprobarSolicitud.rechazarSolicitudRH}" update="principalForm:mensajes,lblEstado" />
                 </h:panelGroup>
             </h:panelGrid>
             <p:spacer height="15" />

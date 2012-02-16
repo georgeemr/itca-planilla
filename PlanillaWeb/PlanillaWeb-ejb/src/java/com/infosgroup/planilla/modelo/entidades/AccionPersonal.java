@@ -58,6 +58,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AccionPersonal.findByAprobadoJefe", query = "SELECT a FROM AccionPersonal a WHERE a.aprobadoJefe = :aprobadoJefe"),
     @NamedQuery(name = "AccionPersonal.findByAprobadoRh", query = "SELECT a FROM AccionPersonal a WHERE a.aprobadoRh = :aprobadoRh")})
 public class AccionPersonal implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected AccionPersonalPK accionPersonalPK;
@@ -111,12 +112,12 @@ public class AccionPersonal implements Serializable {
     private Short codTiporetiro;
     @Column(name = "TIPO_INGRESO")
     private Short tipoIngreso;
-    @Column(name = "APROBADO_JEFE")
+    @Column(name = "F_APRUEBA_JEFE")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date aprobadoJefe;
-    @Column(name = "APROBADO_RH")
+    private Date fApruebaJefe;
+    @Column(name = "F_APRUEBA_RH")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date aprobadoRh;
+    private Date fApruebaRh;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_TIPOACCION", referencedColumnName = "COD_TIPOACCION", nullable = false, insertable = false, updatable = false)})
@@ -147,10 +148,32 @@ public class AccionPersonal implements Serializable {
         @JoinColumn(name = "COD_DEPTO", referencedColumnName = "COD_DEPTO")})
     @ManyToOne(optional = false)
     private Departamentos departamentos;
+    @Size(max = 1)
+    @Column(name = "APROBADO_JEFE", length = 1)
+    private String aprobadoJefe;
+    @Size(max = 1)
+    @Column(name = "APROBADO_RH", length = 1)
+    private String aprobadoRh;    
     @Transient
     private String accEstado;
 
     public AccionPersonal() {
+    }
+
+    public String getAprobadoJefe() {
+        return aprobadoJefe;
+    }
+
+    public void setAprobadoJefe(String aprobadoJefe) {
+        this.aprobadoJefe = aprobadoJefe;
+    }
+
+    public String getAprobadoRh() {
+        return aprobadoRh;
+    }
+
+    public void setAprobadoRh(String aprobadoRh) {
+        this.aprobadoRh = aprobadoRh;
     }
 
     public AccionPersonal(AccionPersonalPK accionPersonalPK) {
@@ -329,20 +352,20 @@ public class AccionPersonal implements Serializable {
         this.tipoIngreso = tipoIngreso;
     }
 
-    public Date getAprobadoJefe() {
-        return aprobadoJefe;
+    public Date getfApruebaJefe() {
+        return fApruebaJefe;
     }
 
-    public void setAprobadoJefe(Date aprobadoJefe) {
-        this.aprobadoJefe = aprobadoJefe;
+    public void setfApruebaJefe(Date fApruebaJefe) {
+        this.fApruebaJefe = fApruebaJefe;
     }
 
-    public Date getAprobadoRh() {
-        return aprobadoRh;
+    public Date getfApruebaRh() {
+        return fApruebaRh;
     }
 
-    public void setAprobadoRh(Date aprobadoRh) {
-        this.aprobadoRh = aprobadoRh;
+    public void setfApruebaRh(Date fApruebaRh) {
+        this.fApruebaRh = fApruebaRh;
     }
 
     public TipoAccion getTipoAccion() {
@@ -438,5 +461,4 @@ public class AccionPersonal implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.AccionPersonal[ accionPersonalPK=" + accionPersonalPK + " ]";
     }
-    
 }

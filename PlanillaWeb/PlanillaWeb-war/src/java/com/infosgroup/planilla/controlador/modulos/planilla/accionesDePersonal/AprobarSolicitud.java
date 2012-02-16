@@ -17,19 +17,18 @@ import org.primefaces.event.DateSelectEvent;
  *
  * @author root
  */
-@ManagedBean(name="aprobarSolicitud")
+@ManagedBean(name = "aprobarSolicitud")
 @ViewScoped
-public class AprobarSolicitud extends AbstractJSFPage implements java.io.Serializable{
-    
+public class AprobarSolicitud extends AbstractJSFPage implements java.io.Serializable {
+
     @EJB
     private PlanillaSessionBean planillaSessionBean;
     public final long MILISEGUNDOS_POR_DIA = 24 * 60 * 60 * 1000;
-
     enum APRUEBA { JEFE, RECURSOS_HUMANOS };
-    
+
     public AprobarSolicitud() {
     }
-    
+
     public String aprobarSolicitudJefe() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
         if (!validaDatos(a)) {
@@ -37,10 +36,11 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
         }
         try {
             planillaSessionBean.jefeEditaSolicitud(a, "A");
-            addMessage("Editar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+            getSessionBeanPLA().getAccionSeleccionada().setStatus("A");
+            addMessage("Aprobar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
             SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.JEFE, a));
         } catch (Exception e) {
-            addMessage("Editar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
+            addMessage("Aprobar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
         }
         return null;
     }
@@ -52,10 +52,11 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
         }
         try {
             planillaSessionBean.rrhhEditaSolicitud(a, "A");
-            addMessage("Editar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+            getSessionBeanPLA().getAccionSeleccionada().setStatus("A");
+            addMessage("Aprobar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
             SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.RECURSOS_HUMANOS, a));
         } catch (Exception e) {
-            addMessage("Editar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
+            addMessage("Aprobar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
         }
         return null;
     }
@@ -64,10 +65,11 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
         try {
             planillaSessionBean.rrhhEditaSolicitud(a, "R");
-            addMessage("Editar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+            getSessionBeanPLA().getAccionSeleccionada().setStatus("R");
+            addMessage("Aprobar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
             SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.RECURSOS_HUMANOS, a));
         } catch (Exception e) {
-            addMessage("Editar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
+            addMessage("Aprobar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
         }
         return null;
     }
@@ -76,10 +78,11 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
         try {
             planillaSessionBean.jefeEditaSolicitud(a, "R");
-            addMessage("Editar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+            getSessionBeanPLA().getAccionSeleccionada().setStatus("R");
+            addMessage("Aprobar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
             SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.RECURSOS_HUMANOS, a));
         } catch (Exception e) {
-            addMessage("Editar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
+            addMessage("Aprobar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
         }
         return null;
     }
@@ -87,7 +90,7 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
     public boolean validaDatos(AccionPersonal a) {
         Boolean error = Boolean.TRUE;
         if (a == null) {
-            addMessage("Editar Solicitud", "No ha seleccionado ninguna solicitud.", TipoMensaje.ERROR);
+            addMessage("Aprobar Solicitud", "No ha seleccionado ninguna solicitud.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
         if (!validaAccionPersonal(a.getFechaInicial(), a.getFechaFinal())) {

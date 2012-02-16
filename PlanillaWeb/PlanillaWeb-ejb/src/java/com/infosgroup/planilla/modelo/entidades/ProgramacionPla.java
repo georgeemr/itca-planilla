@@ -15,6 +15,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,6 +44,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ProgramacionPla.findByObservacion", query = "SELECT p FROM ProgramacionPla p WHERE p.observacion = :observacion"),
     @NamedQuery(name = "ProgramacionPla.findByFecha", query = "SELECT p FROM ProgramacionPla p WHERE p.fecha = :fecha")})
 public class ProgramacionPla implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ProgramacionPlaPK programacionPlaPK;
@@ -76,6 +78,8 @@ public class ProgramacionPla implements Serializable {
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Transient
+    private String pkAsString;
 
     public ProgramacionPla() {
     }
@@ -182,6 +186,15 @@ public class ProgramacionPla implements Serializable {
         this.fecha = fecha;
     }
 
+    public String getPkAsString() {
+        pkAsString = "" + programacionPlaPK.getCodCia() + ":" + anio + ":" + mes + ":" + numPlanilla + ":" + programacionPlaPK.getCodTipopla();
+        return pkAsString;
+    }
+
+    public void setPkAsString(String pkAsString) {
+        this.pkAsString = pkAsString;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -206,5 +219,4 @@ public class ProgramacionPla implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.ProgramacionPla[ programacionPlaPK=" + programacionPlaPK + " ]";
     }
-    
 }

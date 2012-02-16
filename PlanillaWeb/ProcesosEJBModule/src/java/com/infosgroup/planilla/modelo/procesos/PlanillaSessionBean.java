@@ -11,6 +11,7 @@ import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.FestivosXDepto;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
+import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
 import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.entidades.TipoAccionPK;
@@ -23,6 +24,7 @@ import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
 import com.infosgroup.planilla.modelo.facades.PlanillaFacade;
 import com.infosgroup.planilla.modelo.facades.ResumenAsistenciaFacade;
 import com.infosgroup.planilla.modelo.facades.AgenciasFacade;
+import com.infosgroup.planilla.modelo.facades.ProgramacionPlaFacade;
 import com.infosgroup.planilla.modelo.facades.TipoAccionFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPlanillaFacade;
 import java.util.ArrayList;
@@ -59,32 +61,26 @@ public class PlanillaSessionBean {
     private AgenciasFacade agenciasFacade;
     @EJB
     private AccionPersonalFacade accionPersonalFacade;
-    /**
-     * Comentado pq esta entidad ya no existe 13022012
-     */
-//    @EJB
-//    private PuestoEmpleadoFacade puestoEmpleadoFacade;
     @EJB
     private EmpleadoFacade empleadoFacade;
     @EJB
     private MailStatelessBean mailBean;
     @EJB
     private TipoAccionFacade tipoAccionFacade;
-    private Boolean rrhh = false;
-
-    public Boolean getRrhh() {
-        return rrhh;
-    }
-
-    public void setRrhh(Boolean rrhh) {
-        this.rrhh = rrhh;
-    }
+    @EJB
+    private ProgramacionPlaFacade programacionPlaFacade;
     @EJB
     private FestivosXDeptoFacade festivosProvinciafacade;
-
-//    public List<DetallePlanilla> getDetallesPla(Planilla planilla) {
-//        return (planilla != null) ? detPlanillaFacade.findPlaDetalles(planilla.getPlanillaPK()) : new ArrayList<DetallePlanilla>(0);
+//    private Boolean rrhh = false;
+//
+//    public Boolean getRrhh() {
+//        return rrhh;
 //    }
+//
+//    public void setRrhh(Boolean rrhh) {
+//        this.rrhh = rrhh;
+//    }
+
     public List<ResumenAsistencia> getResumen(ResumenAsistencia c) {
         return (c != null) ? resumenFacade.findAll() : new ArrayList<ResumenAsistencia>();
     }
@@ -386,14 +382,16 @@ public class PlanillaSessionBean {
 
     @RolesAllowed({"jefes"})
     public void jefeEditaSolicitud(AccionPersonal a, String estado) {
-        a.setAprobadoJefe(new java.util.Date());
+        a.setAprobadoJefe( estado );
+        a.setfApruebaJefe(new java.util.Date());
         a.setStatus(estado);
         accionPersonalFacade.edit(a);
     }
 
     @RolesAllowed({"rrhh"})
     public void rrhhEditaSolicitud(AccionPersonal a, String estado) {
-        a.setAprobadoRh(new java.util.Date());
+        a.setAprobadoRh( estado );
+        a.setfApruebaRh(new java.util.Date());
         a.setStatus(estado);
         accionPersonalFacade.edit(a);
     }
@@ -414,5 +412,10 @@ public class PlanillaSessionBean {
         } else {
             return new ArrayList<AccionPersonal>();
         }
+    }
+
+    @PermitAll
+    public List<ProgramacionPla> getProgramacionPlaByTipo(Short empresa, Short tipoPlanilla) {
+        return programacionPlaFacade.getProgramacionPlaByTipo(empresa, tipoPlanilla);
     }
 }
