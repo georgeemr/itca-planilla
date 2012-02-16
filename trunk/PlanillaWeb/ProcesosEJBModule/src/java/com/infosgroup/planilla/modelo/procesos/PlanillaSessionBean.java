@@ -71,15 +71,6 @@ public class PlanillaSessionBean {
     private ProgramacionPlaFacade programacionPlaFacade;
     @EJB
     private FestivosXDeptoFacade festivosProvinciafacade;
-//    private Boolean rrhh = false;
-//
-//    public Boolean getRrhh() {
-//        return rrhh;
-//    }
-//
-//    public void setRrhh(Boolean rrhh) {
-//        this.rrhh = rrhh;
-//    }
 
     public List<ResumenAsistencia> getResumen(ResumenAsistencia c) {
         return (c != null) ? resumenFacade.findAll() : new ArrayList<ResumenAsistencia>();
