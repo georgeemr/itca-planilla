@@ -36,7 +36,7 @@ public class LocacionesFacade extends AbstractFacade<Locaciones, LocacionesPK> {
     public List<Locaciones> findLocacionesByCias(Cias cia) {
         List<Locaciones> l = new ArrayList<Locaciones>(0);
         Query acc = em.createQuery("SELECT l FROM Locaciones l WHERE l.locacionesPK.codCia = :codCia", Locaciones.class);
-        acc.setParameter("codCia", cia);
+        acc.setParameter("codCia", cia.getCodCia());
         l = (List<Locaciones>) acc.getResultList();
         return l != null ? l : new ArrayList<Locaciones>();
     }
