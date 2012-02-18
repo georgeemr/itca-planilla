@@ -5,10 +5,15 @@
 package com.infosgroup.planilla.controlador.modulos.catalogos;
 
 import com.infosgroup.planilla.modelo.entidades.AreasStaff;
+import com.infosgroup.planilla.modelo.entidades.AreasStaffPK;
 import com.infosgroup.planilla.modelo.entidades.Departamentos;
+import com.infosgroup.planilla.modelo.entidades.Locaciones;
+import com.infosgroup.planilla.modelo.entidades.Puestos;
 import com.infosgroup.planilla.modelo.entidades.TipoPuesto;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
+import com.infosgroup.planilla.view.TipoMensaje;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -26,13 +31,14 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     /*EJB*/
     @EJB
     private ReclutamientoSessionBean reclutamientoFacade;
-    
     /* Campos */
     private String nombre;
     private Boolean horasExtras;
     private Boolean horasDobles;
     private Boolean viaticos;
-    private Double comision;
+    private Boolean comision;
+    private Boolean informacionConfidencial;
+    private String codigoAlterno;
     private Double salarioMinimo;
     private Double salarioMaximo;
     private Short tipoPuesto;
@@ -41,11 +47,12 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     private Short area;
     private String descripcion;
     private String objetivo;
-
+    private Short locacion;
     /* Listas */
     private java.util.List<TipoPuesto> listaTipoPuesto;
     private java.util.List<Departamentos> listaDepartamentos;
     private java.util.List<AreasStaff> listaAreas;
+    private java.util.List<Locaciones> listaLocaciones;
 
     public PuestosBackendBean() {
     }
@@ -58,11 +65,11 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         this.area = area;
     }
 
-    public Double getComision() {
+    public Boolean getComision() {
         return comision;
     }
 
-    public void setComision(Double comision) {
+    public void setComision(Boolean comision) {
         this.comision = comision;
     }
 
@@ -154,7 +161,24 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         this.viaticos = viaticos;
     }
 
+    public Boolean getInformacionConfidencial() {
+        return informacionConfidencial;
+    }
+
+    public void setInformacionConfidencial(Boolean informacionConfidencial) {
+        this.informacionConfidencial = informacionConfidencial;
+    }
+
+    public String getCodigoAlterno() {
+        return codigoAlterno;
+    }
+
+    public void setCodigoAlterno(String codigoAlterno) {
+        this.codigoAlterno = codigoAlterno;
+    }
+
     public List<AreasStaff> getListaAreas() {
+        listaAreas = reclutamientoFacade.findAreasStaffByCias(getSessionBeanADM().getCompania());
         return listaAreas;
     }
 
@@ -163,7 +187,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     }
 
     public List<Departamentos> getListaDepartamentos() {
-        listaDepartamentos = reclutamientoFacade.findDepartamentosByCias( getSessionBeanADM().getCompania() );
+        listaDepartamentos = reclutamientoFacade.findDepartamentosByCias(getSessionBeanADM().getCompania());
         return listaDepartamentos;
     }
 
@@ -172,7 +196,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     }
 
     public List<TipoPuesto> getListaTipoPuesto() {
-        listaTipoPuesto = reclutamientoFacade.getTipoPuestosByEmpresa( getSessionBeanADM().getCompania() );
+        listaTipoPuesto = reclutamientoFacade.getTipoPuestosByEmpresa(getSessionBeanADM().getCompania());
         return listaTipoPuesto;
     }
 
@@ -180,8 +204,50 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         this.listaTipoPuesto = listaTipoPuesto;
     }
 
+    public Short getLocacion() {
+        return locacion;
+    }
+
+    public void setLocacion(Short locacion) {
+        this.locacion = locacion;
+    }
+
+    public List<Locaciones> getListaLocaciones() {
+        listaLocaciones = reclutamientoFacade. findLocacionesByCias( getSessionBeanADM().getCompania() );
+        return listaLocaciones;
+    }
+
+    public void setListaLocaciones(List<Locaciones> listaLocaciones) {
+        this.listaLocaciones = listaLocaciones;
+    }
+
     /* Acciones */
     public String guardar$crud$action() {
+        Puestos nuevoPuesto = new Puestos();
+        nuevoPuesto.setNomPuesto(nombre);
+        nuevoPuesto.setHorasExt(horasExtras == true ? "S" : "N");
+        nuevoPuesto.setHorasDob(horasDobles == true ? "S" : "N");
+        nuevoPuesto.setViaticos(viaticos == true ? "S" : "N");
+        nuevoPuesto.setComision(comision == true ? "S" : "N");
+        nuevoPuesto.setInfConf(informacionConfidencial == true ? "S" : "N");
+        nuevoPuesto.setSalMinimo(salarioMinimo != null ? new BigDecimal(salarioMinimo) : BigDecimal.ZERO);
+        nuevoPuesto.setSalMaximo(salarioMaximo != null ? new BigDecimal(salarioMaximo) : BigDecimal.ZERO);
+        nuevoPuesto.setCodTipoPuesto(tipoPuesto);
+        nuevoPuesto.setStatus(estado);
+        nuevoPuesto.setCodDepto(departamento);
+        nuevoPuesto.setAreasStaff(new AreasStaff(new AreasStaffPK(getSessionBeanADM().getCompania().getCodCia(), area)));
+        nuevoPuesto.setCodAlterno(codigoAlterno);
+        nuevoPuesto.setDescPuesto(descripcion);
+        nuevoPuesto.setObjetivo(objetivo);
+        try {
+            reclutamientoFacade.guardarPuesto(nuevoPuesto, getSessionBeanADM().getCompania());
+            addMessage("Mantenimiento de Puestos", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
+            limpiarCampos();
+        } catch (Exception e) {
+            addMessage("Mantenimiento de Puestos", "Ocurrio un error al intentar guardar los datos.", TipoMensaje.INFORMACION);
+            e.printStackTrace();
+        }
+
         return null;
     }
 
@@ -198,7 +264,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         setHorasExtras(Boolean.FALSE);
         setHorasDobles(Boolean.FALSE);
         setViaticos(Boolean.FALSE);
-        setComision(0.0);
+        setComision(Boolean.FALSE);
         setSalarioMinimo(0.0);
         setSalarioMaximo(0.0);
         setTipoPuesto(new Short("-1"));

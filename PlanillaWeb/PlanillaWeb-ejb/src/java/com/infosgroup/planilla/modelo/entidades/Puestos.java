@@ -7,10 +7,14 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -33,11 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Puestos.findByHorasExt", query = "SELECT p FROM Puestos p WHERE p.horasExt = :horasExt"),
     @NamedQuery(name = "Puestos.findByHorasDob", query = "SELECT p FROM Puestos p WHERE p.horasDob = :horasDob"),
     @NamedQuery(name = "Puestos.findByViaticos", query = "SELECT p FROM Puestos p WHERE p.viaticos = :viaticos"),
-    @NamedQuery(name = "Puestos.findByAdmonObra", query = "SELECT p FROM Puestos p WHERE p.admonObra = :admonObra"),
     @NamedQuery(name = "Puestos.findByComision", query = "SELECT p FROM Puestos p WHERE p.comision = :comision"),
     @NamedQuery(name = "Puestos.findBySalMaximo", query = "SELECT p FROM Puestos p WHERE p.salMaximo = :salMaximo"),
     @NamedQuery(name = "Puestos.findBySalMinimo", query = "SELECT p FROM Puestos p WHERE p.salMinimo = :salMinimo"),
-    @NamedQuery(name = "Puestos.findByEnObra", query = "SELECT p FROM Puestos p WHERE p.enObra = :enObra"),
     @NamedQuery(name = "Puestos.findByCodAlterno", query = "SELECT p FROM Puestos p WHERE p.codAlterno = :codAlterno"),
     @NamedQuery(name = "Puestos.findByCodTipoPuesto", query = "SELECT p FROM Puestos p WHERE p.codTipoPuesto = :codTipoPuesto"),
     @NamedQuery(name = "Puestos.findByDescPuesto", query = "SELECT p FROM Puestos p WHERE p.descPuesto = :descPuesto"),
@@ -46,7 +48,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Puestos.findByCodLocacion", query = "SELECT p FROM Puestos p WHERE p.codLocacion = :codLocacion"),
     @NamedQuery(name = "Puestos.findByPuestoJefe", query = "SELECT p FROM Puestos p WHERE p.puestoJefe = :puestoJefe"),
     @NamedQuery(name = "Puestos.findByCodDepto", query = "SELECT p FROM Puestos p WHERE p.codDepto = :codDepto"),
-    @NamedQuery(name = "Puestos.findByCodArea", query = "SELECT p FROM Puestos p WHERE p.codArea = :codArea"),
     @NamedQuery(name = "Puestos.findByObjetivo", query = "SELECT p FROM Puestos p WHERE p.objetivo = :objetivo"),
     @NamedQuery(name = "Puestos.findByImpactoFinan", query = "SELECT p FROM Puestos p WHERE p.impactoFinan = :impactoFinan"),
     @NamedQuery(name = "Puestos.findByGenero", query = "SELECT p FROM Puestos p WHERE p.genero = :genero"),
@@ -56,12 +57,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Puestos.findByCodCondicion", query = "SELECT p FROM Puestos p WHERE p.codCondicion = :codCondicion"),
     @NamedQuery(name = "Puestos.findByJefatura", query = "SELECT p FROM Puestos p WHERE p.jefatura = :jefatura")})
 public class Puestos implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
     private List<CriteriosXPuesto> criteriosXPuestoList;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PuestosPK puestosPK;
-    @Column(name = "NOM_PUESTO", length = 60)
+    @Basic(optional = false)
+    @Column(name = "NOM_PUESTO", nullable = false, length = 60)
     private String nomPuesto;
     @Column(name = "HORAS_EXT", length = 1)
     private String horasExt;
@@ -69,8 +72,6 @@ public class Puestos implements Serializable {
     private String horasDob;
     @Column(name = "VIATICOS", length = 1)
     private String viaticos;
-    @Column(name = "ADMON_OBRA", length = 2)
-    private String admonObra;
     @Column(name = "COMISION", length = 1)
     private String comision;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -78,8 +79,6 @@ public class Puestos implements Serializable {
     private BigDecimal salMaximo;
     @Column(name = "SAL_MINIMO", precision = 16, scale = 2)
     private BigDecimal salMinimo;
-    @Column(name = "EN_OBRA", length = 1)
-    private String enObra;
     @Column(name = "COD_ALTERNO", length = 8)
     private String codAlterno;
     @Column(name = "COD_TIPO_PUESTO")
@@ -87,7 +86,7 @@ public class Puestos implements Serializable {
     @Column(name = "DESC_PUESTO", length = 400)
     private String descPuesto;
     @Column(name = "STATUS")
-    private Character status;
+    private String status;
     @Column(name = "INF_CONF", length = 1)
     private String infConf;
     @Column(name = "COD_LOCACION")
@@ -96,8 +95,6 @@ public class Puestos implements Serializable {
     private Short puestoJefe;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
-    @Column(name = "COD_AREA")
-    private Short codArea;
     @Column(name = "OBJETIVO", length = 400)
     private String objetivo;
     @Column(name = "IMPACTO_FINAN", precision = 12, scale = 2)
@@ -114,6 +111,11 @@ public class Puestos implements Serializable {
     private Short codCondicion;
     @Column(name = "JEFATURA", length = 2)
     private String jefatura;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_AREA", referencedColumnName = "COD_AREA")})
+    @ManyToOne(optional = false)
+    private AreasStaff areasStaff;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
     private List<PruebaXPuesto> pruebaXPuestoList;
 
@@ -122,6 +124,11 @@ public class Puestos implements Serializable {
 
     public Puestos(PuestosPK puestosPK) {
         this.puestosPK = puestosPK;
+    }
+
+    public Puestos(PuestosPK puestosPK, String nomPuesto) {
+        this.puestosPK = puestosPK;
+        this.nomPuesto = nomPuesto;
     }
 
     public Puestos(short codCia, short codPuesto) {
@@ -168,14 +175,6 @@ public class Puestos implements Serializable {
         this.viaticos = viaticos;
     }
 
-    public String getAdmonObra() {
-        return admonObra;
-    }
-
-    public void setAdmonObra(String admonObra) {
-        this.admonObra = admonObra;
-    }
-
     public String getComision() {
         return comision;
     }
@@ -198,14 +197,6 @@ public class Puestos implements Serializable {
 
     public void setSalMinimo(BigDecimal salMinimo) {
         this.salMinimo = salMinimo;
-    }
-
-    public String getEnObra() {
-        return enObra;
-    }
-
-    public void setEnObra(String enObra) {
-        this.enObra = enObra;
     }
 
     public String getCodAlterno() {
@@ -232,11 +223,11 @@ public class Puestos implements Serializable {
         this.descPuesto = descPuesto;
     }
 
-    public Character getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Character status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -270,14 +261,6 @@ public class Puestos implements Serializable {
 
     public void setCodDepto(Short codDepto) {
         this.codDepto = codDepto;
-    }
-
-    public Short getCodArea() {
-        return codArea;
-    }
-
-    public void setCodArea(Short codArea) {
-        this.codArea = codArea;
     }
 
     public String getObjetivo() {
@@ -344,13 +327,12 @@ public class Puestos implements Serializable {
         this.jefatura = jefatura;
     }
 
-    @XmlTransient
-    public List<PruebaXPuesto> getPruebaXPuestoList() {
-        return pruebaXPuestoList;
+    public AreasStaff getAreasStaff() {
+        return areasStaff;
     }
 
-    public void setPruebaXPuestoList(List<PruebaXPuesto> pruebaXPuestoList) {
-        this.pruebaXPuestoList = pruebaXPuestoList;
+    public void setAreasStaff(AreasStaff areasStaff) {
+        this.areasStaff = areasStaff;
     }
 
     @Override
@@ -386,5 +368,13 @@ public class Puestos implements Serializable {
     public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
         this.criteriosXPuestoList = criteriosXPuestoList;
     }
-    
+
+    @XmlTransient
+    public List<PruebaXPuesto> getPruebaXPuestoList() {
+        return pruebaXPuestoList;
+    }
+
+    public void setPruebaXPuestoList(List<PruebaXPuesto> pruebaXPuestoList) {
+        this.pruebaXPuestoList = pruebaXPuestoList;
+    }
 }
