@@ -5,12 +5,12 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
-import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -27,36 +27,35 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AreasStaff.findAll", query = "SELECT a FROM AreasStaff a"),
-    @NamedQuery(name = "AreasStaff.findByCodArea", query = "SELECT a FROM AreasStaff a WHERE a.codArea = :codArea"),
+    @NamedQuery(name = "AreasStaff.findByCodArea", query = "SELECT a FROM AreasStaff a WHERE a.areasStaffPK.codArea = :codArea"),
     @NamedQuery(name = "AreasStaff.findByNomArea", query = "SELECT a FROM AreasStaff a WHERE a.nomArea = :nomArea"),
-    @NamedQuery(name = "AreasStaff.findByCodCia", query = "SELECT a FROM AreasStaff a WHERE a.codCia = :codCia")})
+    @NamedQuery(name = "AreasStaff.findByCodCia", query = "SELECT a FROM AreasStaff a WHERE a.areasStaffPK.codCia = :codCia")})
 public class AreasStaff implements Serializable {
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Id
-    @Basic(optional = false)
-    @Column(name = "COD_AREA", nullable = false, precision = 0, scale = -127)
-    private BigDecimal codArea;
+    @EmbeddedId
+    protected AreasStaffPK areasStaffPK;
     @Column(name = "NOM_AREA", length = 50)
     private String nomArea;
-    @Column(name = "COD_CIA")
-    private Short codCia;
-    @OneToMany(mappedBy = "codArea")
-    private List<Departamentos> departamentosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "areasStaff")
+    private List<Puestos> puestosList;
 
     public AreasStaff() {
     }
 
-    public AreasStaff(BigDecimal codArea) {
-        this.codArea = codArea;
+    public AreasStaff(AreasStaffPK areasStaffPK) {
+        this.areasStaffPK = areasStaffPK;
     }
 
-    public BigDecimal getCodArea() {
-        return codArea;
+    public AreasStaff(int codArea, short codCia) {
+        this.areasStaffPK = new AreasStaffPK(codCia, codArea);
     }
 
-    public void setCodArea(BigDecimal codArea) {
-        this.codArea = codArea;
+    public AreasStaffPK getAreasStaffPK() {
+        return areasStaffPK;
+    }
+
+    public void setAreasStaffPK(AreasStaffPK areasStaffPK) {
+        this.areasStaffPK = areasStaffPK;
     }
 
     public String getNomArea() {
@@ -67,27 +66,19 @@ public class AreasStaff implements Serializable {
         this.nomArea = nomArea;
     }
 
-    public Short getCodCia() {
-        return codCia;
-    }
-
-    public void setCodCia(Short codCia) {
-        this.codCia = codCia;
-    }
-
     @XmlTransient
-    public List<Departamentos> getDepartamentosList() {
-        return departamentosList;
+    public List<Puestos> getPuestosList() {
+        return puestosList;
     }
 
-    public void setDepartamentosList(List<Departamentos> departamentosList) {
-        this.departamentosList = departamentosList;
+    public void setPuestosList(List<Puestos> puestosList) {
+        this.puestosList = puestosList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (codArea != null ? codArea.hashCode() : 0);
+        hash += (areasStaffPK != null ? areasStaffPK.hashCode() : 0);
         return hash;
     }
 
@@ -98,7 +89,7 @@ public class AreasStaff implements Serializable {
             return false;
         }
         AreasStaff other = (AreasStaff) object;
-        if ((this.codArea == null && other.codArea != null) || (this.codArea != null && !this.codArea.equals(other.codArea))) {
+        if ((this.areasStaffPK == null && other.areasStaffPK != null) || (this.areasStaffPK != null && !this.areasStaffPK.equals(other.areasStaffPK))) {
             return false;
         }
         return true;
@@ -106,7 +97,7 @@ public class AreasStaff implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.AreasStaff[ codArea=" + codArea + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.AreasStaff[ areasStaffPK=" + areasStaffPK + " ]";
     }
     
 }

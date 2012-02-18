@@ -6,8 +6,6 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -16,10 +14,8 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -285,11 +281,11 @@ public class Departamentos implements Serializable {
         @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA")})
     @ManyToOne(optional = false)
     private TiposPlanilla tiposPlanilla;
-    @JoinColumn(name = "COD_AREA", referencedColumnName = "COD_AREA")
-    @ManyToOne
-    private AreasStaff codArea;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamentos")
-    private List<Empleados> empleadosList;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_AREA", referencedColumnName = "COD_AREA")})
+    @ManyToOne(optional = false)
+    private AreasStaff areasStaff;
 
     public Departamentos() {
     }
@@ -966,21 +962,12 @@ public class Departamentos implements Serializable {
         this.tiposPlanilla = tiposPlanilla;
     }
 
-    public AreasStaff getCodArea() {
-        return codArea;
+    public AreasStaff getAreasStaff() {
+        return areasStaff;
     }
 
-    public void setCodArea(AreasStaff codArea) {
-        this.codArea = codArea;
-    }
-
-    @XmlTransient
-    public List<Empleados> getEmpleadosList() {
-        return empleadosList;
-    }
-
-    public void setEmpleadosList(List<Empleados> empleadosList) {
-        this.empleadosList = empleadosList;
+    public void setAreasStaff(AreasStaff areasStaff) {
+        this.areasStaff = areasStaff;
     }
 
     @Override

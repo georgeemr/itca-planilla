@@ -47,7 +47,7 @@
     <ui:define name="titulo">Cat&aacute;logo de Puestos</ui:define>
 
     <ui:define name="contenido">
-        <p:spacer height="10px"/>
+        <p:spacer height="5px"/>
         <p:panel id="panelInformacion" style="border:none;" >
             <div>
                 <div style="float:left;width: 30%;" >
@@ -62,7 +62,7 @@
                     <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" 
                                styleClass="toolbarUsuario" >
                         <p:toolbarGroup align="right"  >
-                            <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{reclutamiento$concursos.guardar$crud$action()}"
+                            <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{puestosBackendBean.guardar$crud$action()}"
                                              update="mensajes, Nombre, calFecIni, calFecFin, numPlazas, lstPuesto, lstEstado" />  
                         </p:toolbarGroup>
                     </p:toolbar>
@@ -70,74 +70,117 @@
                 <div style="clear:both;" ></div>
             </div>
         </p:panel>
-        <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" />
-
+        <p:spacer height="10" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" />
         <p:fieldset legend="Datos del Puesto" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" >
-            <p:spacer height="15" />
-            <h:panelGrid columns="6">
-                <h:outputLabel value="Nombre: " />
-                <p:inputText id="Nombre" value="#{puestosBackendBean.nombre}" maxlength="100" required="true" 
-                             requiredMessage="El Nombre del Puesto es un campo obligatorio" /><h:panelGroup /><h:panelGroup /><h:panelGroup /><h:panelGroup />
+            <p:spacer height="5" />
 
-                <h:outputLabel value="Opciones de Puesto" />
-                <h:panelGrid columns="5" >
-                    <h:selectBooleanCheckbox label="Horas Extras" value="#{puestosBackendBean.horasExtras}" >
-                        <h:outputLabel value="Horas Extras" />
-                    </h:selectBooleanCheckbox>
-                    <p:spacer width="20" />
-                    <h:selectBooleanCheckbox label="Horas Dobles" value="#{puestosBackendBean.horasDobles}">
-                        <h:outputLabel value="Horas Dobles" />
-                    </h:selectBooleanCheckbox>
-                    <p:spacer width="20" />
-                    <h:selectBooleanCheckbox label="Viaticos" value="#{puestosBackendBean.viaticos}">
-                        <h:outputLabel value="Viaticos" />
-                    </h:selectBooleanCheckbox>
-                </h:panelGrid>
-                <h:panelGroup /><h:panelGroup /><h:panelGroup /><h:panelGroup />
+            <table cellpadding="3px;" >
 
-                <h:outputLabel value="Comisi&oacute;n" />
-                <p:inputText id="txComision"  value="#{puestosBackendBean.comision}" />
+                <tr valign="middle" >
+                    <td><h:outputLabel value="Nombre " /></td>
+                    <td colspan="4" >
+                        <p:inputText id="Nombre" value="#{puestosBackendBean.nombre}" maxlength="100" required="true" 
+                                     requiredMessage="El Nombre del Puesto es un campo obligatorio" style="width: 100%;"/>
+                    </td>
+                </tr>
+                
+                                <tr valign="middle" >
+                    <td><h:outputLabel value="C&oacute;digo Alterno " /></td>
+                    <td colspan="4" >
+                        <p:inputText id="Codigo" value="#{puestosBackendBean.codigoAlterno}" maxlength="100" required="true" 
+                                     style="width: 100%;"/>
+                    </td>
+                </tr>
+                
+                <tr valign="middle" >
+                    <td><h:outputLabel value="Opciones de Puesto" /></td>
+                    <td colspan="5" >
+                        <h:selectBooleanCheckbox label="Horas Extras" value="#{puestosBackendBean.horasExtras}"  >
+                            <h:outputLabel value="Horas Extras" />
+                        </h:selectBooleanCheckbox>
+                        <p:spacer width="15" />
+                        <h:selectBooleanCheckbox label="Horas Dobles" value="#{puestosBackendBean.horasDobles}">
+                            <h:outputLabel value="Horas Dobles" />
+                        </h:selectBooleanCheckbox>
+                        <p:spacer width="15" />
+                        <h:selectBooleanCheckbox label="Viaticos" value="#{puestosBackendBean.viaticos}">
+                            <h:outputLabel value="Viaticos" />
+                        </h:selectBooleanCheckbox>
+                        <p:spacer width="15" />
+                        <h:selectBooleanCheckbox label="Comisi&oacute;n" value="#{puestosBackendBean.comision}">
+                            <h:outputLabel value="Comisi&oacute;n" />
+                        </h:selectBooleanCheckbox>
+                        <h:selectBooleanCheckbox label="Informaci&oacute;n Confidencial" value="#{puestosBackendBean.informacionConfidencial}">
+                            <h:outputLabel value="Informaci&oacute;n Confidencial" />
+                        </h:selectBooleanCheckbox>
+                    </td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="Salario Minimo $" /></td>
+                    <td><p:inputText id="txSalarioMin"   value="#{puestosBackendBean.salarioMinimo}"/></td>
+                    <td></td>
+                    <td><h:outputLabel value="Salario M&aacute;ximo $" /></td>
+                    <td><p:inputText id="txSalarioMax"  value="#{puestosBackendBean.salarioMaximo}" /></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="Tipo Puesto" /></td>
+                    <td colspan="5">
+                        <h:selectOneMenu style="height: 25px;padding-top: 3px;width: 100%;" value="#{puestosBackendBean.tipoPuesto}" >
+                            <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL TIPO DE PUESTO]" />
+                            <f:selectItems value="#{puestosBackendBean.listaTipoPuesto}" var="tipoPuesto" itemValue="#{tipoPuesto.tipoPuestoPK.codTipoPuesto}" itemLabel="#{tipoPuesto.nomTipo}" />
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="Estado " /></td>
+                    <td colspan="5">
+                        <h:selectOneMenu id="lstEstadoPuesto" value="#{puestosBackendBean.estado}" style="height: 25px;padding-top: 3px;width: 100%;" required="true" requiredMessage="El Estado del Puesto es un campo obligatorio"  >
+                            <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL ESTADO]" />
+                            <f:selectItem itemValue="A" itemLabel="ACTIVO" />
+                            <f:selectItem itemValue="I" itemLabel="INACTIVO" />
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="Departamento " /></td>
+                    <td colspan="5">
+                        <h:selectOneMenu id="lstDepartamentos" value="#{puestosBackendBean.departamento}" style="height: 25px;padding-top: 3px;width: 100%;" required="true" requiredMessage="El Departamento del Puesto es un campo obligatorio"  >
+                            <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL DEPARTAMENTO]" />
+                            <f:selectItems value="#{puestosBackendBean.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="&Aacute;rea " /></td>
+                    <td colspan="5">
+                        <h:selectOneMenu id="lstAreas" value="#{puestosBackendBean.area}" style="height: 25px;padding-top: 3px;width: 100%;" required="true" requiredMessage="El Area del Puesto es un campo obligatorio"  >
+                            <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL AREA]" />
+                            <f:selectItems value="#{puestosBackendBean.listaAreas}" var="areas" itemValue="#{areas.areasStaffPK.codArea}" itemLabel="#{areas.nomArea}" />
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td><h:outputLabel value="Locaciones " /></td>
+                    <td colspan="5">
+                        <h:selectOneMenu id="lstLocaciones" value="#{puestosBackendBean.locacion}" style="height: 25px;padding-top: 3px;width: 100%;" required="true"   >
+                            <f:selectItem itemValue="-1" itemLabel="[SELECCIONE LOCALIZACION]" />
+                            <f:selectItems value="#{puestosBackendBean.listaLocaciones}" var="locacion" itemValue="#{locacion.locacionesPK.codLocacion}" itemLabel="#{locacion.desLocacion}" />
+                        </h:selectOneMenu>
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td valign="top" ><h:outputLabel value="Descripci&oacute;n del Puesto " /></td>
+                    <td colspan="5"><p:inputTextarea id="txDescPuesto" value="#{puestosBackendBean.descripcion}" style="width: 100%;" required="true" /></td>
+                </tr>
 
-                <h:outputLabel value="Salario M&aacute;ximo" />
-                <p:inputText id="txSalarioMax"  value="#{puestosBackendBean.salarioMaximo}" />
+                <tr>
+                    <td valign="top" ><h:outputLabel value="Objetivo " /></td>
+                    <td colspan="5"><p:inputTextarea id="txObjPuesto" value="#{puestosBackendBean.objetivo}" style="width: 100%;" required="true" /></td>
+                </tr>
 
-                <h:outputLabel value="Salario Minimo" />
-                <p:inputText id="txSalarioMin"   value="#{puestosBackendBean.salarioMinimo}"/>
-
-                <h:outputLabel value="Tipo Puesto" />
-                <h:selectOneMenu style="height: 25px;padding-top: 3px;" >
-                    <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL TIPO DE PUESTO]" />
-                    <f:selectItems value="#{puestosBackendBean.listaTipoPuesto}" var="tipoPuesto" itemValue="#{tipoPuesto.tipoPuestoPK.codTipoPuesto}" itemLabel="#{tipoPuesto.nomTipo}" />
-                </h:selectOneMenu>
-
-                <h:outputLabel value="Estado " />
-                <h:selectOneMenu id="lstEstadoPuesto" style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Estado del Puesto es un campo obligatorio"  >
-                    <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL ESTADO]" />
-                    <f:selectItem itemValue="A" itemLabel="ACTIVO" />
-                    <f:selectItem itemValue="I" itemLabel="INACTIVO" />
-                </h:selectOneMenu>
-
-                <h:outputLabel value="Departamento " />
-                <h:selectOneMenu id="lstDepartamentos" style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Departamento del Puesto es un campo obligatorio"  >
-                    <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL DEPARTAMENTO]" />
-                    <f:selectItems value="#{puestosBackendBean.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
-                </h:selectOneMenu>
-
-                <h:outputLabel value="&Aacute;rea " />
-                <h:selectOneMenu id="lstAreas" style="height: 25px;padding-top: 3px;" value="#{reclutamiento$concursos.estadoConcurso}" required="true" requiredMessage="El Area del Puesto es un campo obligatorio"  >
-                    <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL AREA]" />
-                </h:selectOneMenu><h:panelGroup /><h:panelGroup /><h:panelGroup /><h:panelGroup />
-
-                <h:outputLabel value="Descripci&oacute;n del Puesto " />
-                <p:inputTextarea id="txDescPuesto" required="true" >
-
-                </p:inputTextarea>
-                <h:outputLabel value="Objetivo " />
-                <p:inputTextarea id="txObjPuesto" required="true" >
-
-                </p:inputTextarea>
-
-            </h:panelGrid>
+            </table>
             <p:spacer height="20" />
         </p:fieldset>
 

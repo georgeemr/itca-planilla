@@ -35,8 +35,12 @@ import com.infosgroup.planilla.modelo.facades.EvaluacionCandidatoFacade;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.AgenciasFacade;
 import com.infosgroup.planilla.modelo.entidades.AgenciasPK;
+import com.infosgroup.planilla.modelo.entidades.AreasStaff;
 import com.infosgroup.planilla.modelo.entidades.Departamentos;
+import com.infosgroup.planilla.modelo.entidades.Locaciones;
+import com.infosgroup.planilla.modelo.facades.AreasStaffFacade;
 import com.infosgroup.planilla.modelo.facades.DepartamentoFacade;
+import com.infosgroup.planilla.modelo.facades.LocacionesFacade;
 import com.infosgroup.planilla.modelo.facades.TipoDocumentoFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPlanillaFacade;
 import com.infosgroup.planilla.modelo.facades.TipoPuestoFacade;
@@ -85,6 +89,10 @@ public class ReclutamientoSessionBean {
     private TipoDocumentoFacade tipoDocumentoFacade;
     @EJB
     private DepartamentoFacade depatamentosFacade;
+    @EJB
+    private AreasStaffFacade areasStaffFacade;
+    @EJB
+    private LocacionesFacade locacionesFacade;
 
     public List<Concurso> getListaConcursos(Cias empresa, Date fechaInicial, Date fechaFinal) {
         return concursoFacade.getConcursosByDate(empresa, fechaInicial, fechaFinal);
@@ -265,8 +273,8 @@ public class ReclutamientoSessionBean {
     public TiposPlanilla findTipoPlanillaById(TiposPlanillaPK id) {
         return tipoPlanillaFacade.find(id);
     }
-    
-    public List<Departamentos> findDepartamentosByCias( Cias cias ){
+
+    public List<Departamentos> findDepartamentosByCias(Cias cias) {
         return depatamentosFacade.findDepartamentosByCias(cias);
     }
 
@@ -275,7 +283,24 @@ public class ReclutamientoSessionBean {
         return tipoDocumentoFacade.findAll();
     }
 
+    @PermitAll
+    public void guardarPuesto(Puestos puestos, Cias cias) {
+        PuestosPK pk = new PuestosPK(cias.getCodCia(), puestoFacade.max(cias));
+        puestos.setPuestosPK(pk);
+        puestoFacade.create(puestos);
+    }
+
     public void guardarCandidato(Candidato c) throws javax.persistence.EntityExistsException {
         candidatoFacade.create(c);
+    }
+
+    @PermitAll
+    public List<AreasStaff> findAreasStaffByCias(Cias cias) {
+        return areasStaffFacade.findAreasByCias(cias);
+    }
+
+    @PermitAll
+    public List<Locaciones> findLocacionesByCias(Cias cias) {
+        return locacionesFacade.findLocacionesByCias(cias);
     }
 }
