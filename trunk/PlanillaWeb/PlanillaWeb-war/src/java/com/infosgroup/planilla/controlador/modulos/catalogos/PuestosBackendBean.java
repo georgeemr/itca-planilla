@@ -261,8 +261,30 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     public Boolean validarFormulario() {
         Boolean e = Boolean.TRUE;
         if (nombre == null || nombre.length() <= 0) {
+            addMessage("Puestos", "El nombre del puesto es un campo requerido.", TipoMensaje.INFORMACION);
             e = Boolean.FALSE;
         }
+
+        if (salarioMinimo == null) {
+            addMessage("Puestos", "Salario Minimo es un campo requerido.", TipoMensaje.INFORMACION);
+            e = Boolean.FALSE;
+        }
+
+        if (salarioMaximo == null) {
+            addMessage("Puestos", "Salario Máximo es un campo requerido.", TipoMensaje.INFORMACION);
+            e = Boolean.FALSE;
+        }
+
+        if ((estado == null) || (estado.equals("-1"))) {
+            addMessage("Puestos", "Seleccione el estado del puesto.", TipoMensaje.INFORMACION);
+            e = Boolean.FALSE;
+        }
+
+        if (descripcion == null || descripcion.length() <= 0) {
+            addMessage("Puestos", "La descripcion del puesto es un campo Obligatorio.", TipoMensaje.INFORMACION);
+            e = Boolean.FALSE;
+        }
+
         return e;
     }
 
