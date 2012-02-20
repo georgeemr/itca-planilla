@@ -213,7 +213,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     }
 
     public List<Locaciones> getListaLocaciones() {
-        listaLocaciones = reclutamientoFacade. findLocacionesByCias( getSessionBeanADM().getCompania() );
+        listaLocaciones = reclutamientoFacade.findLocacionesByCias(getSessionBeanADM().getCompania());
         return listaLocaciones;
     }
 
@@ -234,8 +234,8 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         nuevoPuesto.setSalMaximo(salarioMaximo != null ? new BigDecimal(salarioMaximo) : BigDecimal.ZERO);
         nuevoPuesto.setCodTipoPuesto(tipoPuesto);
         nuevoPuesto.setStatus(estado);
-        nuevoPuesto.setCodDepto(departamento);
-        nuevoPuesto.setAreasStaff(new AreasStaff(new AreasStaffPK(getSessionBeanADM().getCompania().getCodCia(), area)));
+        nuevoPuesto.setCodDepto((departamento != null && departamento != -1) ? departamento : null);
+        nuevoPuesto.setAreasStaff((area != null && area != -1) ? new AreasStaff(new AreasStaffPK(getSessionBeanADM().getCompania().getCodCia(), area)) : null);
         nuevoPuesto.setCodAlterno(codigoAlterno);
         nuevoPuesto.setDescPuesto(descripcion);
         nuevoPuesto.setObjetivo(objetivo);
@@ -256,6 +256,14 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
 
     public String editar$crud$action() {
         return null;
+    }
+
+    public Boolean validarFormulario() {
+        Boolean e = Boolean.TRUE;
+        if (nombre == null || nombre.length() <= 0) {
+            e = Boolean.FALSE;
+        }
+        return e;
     }
 
     @Override

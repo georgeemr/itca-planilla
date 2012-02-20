@@ -63,7 +63,7 @@
                                styleClass="toolbarUsuario" >
                         <p:toolbarGroup align="right"  >
                             <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{puestosBackendBean.guardar$crud$action()}"
-                                             update="mensajes, Nombre, calFecIni, calFecFin, numPlazas, lstPuesto, lstEstado" />  
+                                             update="principalForm:mensajes" />  
                         </p:toolbarGroup>
                     </p:toolbar>
                 </div>
@@ -79,19 +79,18 @@
                 <tr valign="middle" >
                     <td><h:outputLabel value="Nombre " /></td>
                     <td colspan="4" >
-                        <p:inputText id="Nombre" value="#{puestosBackendBean.nombre}" maxlength="100" required="true" 
+                        <p:inputText id="Nombre" value="#{puestosBackendBean.nombre}" maxlength="100" required="true" label="Nombre de Puesto"
                                      requiredMessage="El Nombre del Puesto es un campo obligatorio" style="width: 100%;"/>
                     </td>
                 </tr>
-                
-                                <tr valign="middle" >
+
+                <tr valign="middle" >
                     <td><h:outputLabel value="C&oacute;digo Alterno " /></td>
                     <td colspan="4" >
-                        <p:inputText id="Codigo" value="#{puestosBackendBean.codigoAlterno}" maxlength="100" required="true" 
-                                     style="width: 100%;"/>
+                        <p:inputText id="Codigo" value="#{puestosBackendBean.codigoAlterno}" maxlength="100"  style="width: 100%;"/>
                     </td>
                 </tr>
-                
+
                 <tr valign="middle" >
                     <td><h:outputLabel value="Opciones de Puesto" /></td>
                     <td colspan="5" >
@@ -144,7 +143,7 @@
                 <tr>
                     <td><h:outputLabel value="Departamento " /></td>
                     <td colspan="5">
-                        <h:selectOneMenu id="lstDepartamentos" value="#{puestosBackendBean.departamento}" style="height: 25px;padding-top: 3px;width: 100%;" required="true" requiredMessage="El Departamento del Puesto es un campo obligatorio"  >
+                        <h:selectOneMenu id="lstDepartamentos" value="#{puestosBackendBean.departamento}" style="height: 25px;padding-top: 3px;width: 100%;" requiredMessage="El Departamento del Puesto es un campo obligatorio"  >
                             <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL DEPARTAMENTO]" />
                             <f:selectItems value="#{puestosBackendBean.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
                         </h:selectOneMenu>
@@ -153,31 +152,31 @@
                 <tr>
                     <td><h:outputLabel value="&Aacute;rea " /></td>
                     <td colspan="5">
-                        <h:selectOneMenu id="lstAreas" value="#{puestosBackendBean.area}" style="height: 25px;padding-top: 3px;width: 100%;" required="true" requiredMessage="El Area del Puesto es un campo obligatorio"  >
+                        <h:selectOneMenu id="lstAreas" value="#{puestosBackendBean.area}" style="height: 25px;padding-top: 3px;width: 100%;" requiredMessage="El Area del Puesto es un campo obligatorio"  >
                             <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL AREA]" />
                             <f:selectItems value="#{puestosBackendBean.listaAreas}" var="areas" itemValue="#{areas.areasStaffPK.codArea}" itemLabel="#{areas.nomArea}" />
                         </h:selectOneMenu>
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td><h:outputLabel value="Locaciones " /></td>
                     <td colspan="5">
-                        <h:selectOneMenu id="lstLocaciones" value="#{puestosBackendBean.locacion}" style="height: 25px;padding-top: 3px;width: 100%;" required="true"   >
+                        <h:selectOneMenu id="lstLocaciones" value="#{puestosBackendBean.locacion}" style="height: 25px;padding-top: 3px;width: 100%;" >
                             <f:selectItem itemValue="-1" itemLabel="[SELECCIONE LOCALIZACION]" />
                             <f:selectItems value="#{puestosBackendBean.listaLocaciones}" var="locacion" itemValue="#{locacion.locacionesPK.codLocacion}" itemLabel="#{locacion.desLocacion}" />
                         </h:selectOneMenu>
                     </td>
                 </tr>                
-                
+
                 <tr>
                     <td valign="top" ><h:outputLabel value="Descripci&oacute;n del Puesto " /></td>
-                    <td colspan="5"><p:inputTextarea id="txDescPuesto" value="#{puestosBackendBean.descripcion}" style="width: 100%;" required="true" /></td>
+                    <td colspan="5"><p:inputTextarea id="txDescPuesto" value="#{puestosBackendBean.descripcion}" style="width: 100%;" required="true" label="Descripci&oacute;n del Puesto" /></td>
                 </tr>
 
                 <tr>
                     <td valign="top" ><h:outputLabel value="Objetivo " /></td>
-                    <td colspan="5"><p:inputTextarea id="txObjPuesto" value="#{puestosBackendBean.objetivo}" style="width: 100%;" required="true" /></td>
+                    <td colspan="5"><p:inputTextarea id="txObjPuesto" value="#{puestosBackendBean.objetivo}" style="width: 100%;" required="true" label="Objetivo del Puesto" /></td>
                 </tr>
 
             </table>
