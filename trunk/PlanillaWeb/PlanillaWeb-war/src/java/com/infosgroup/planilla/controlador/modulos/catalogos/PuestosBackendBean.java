@@ -6,10 +6,13 @@ package com.infosgroup.planilla.controlador.modulos.catalogos;
 
 import com.infosgroup.planilla.modelo.entidades.AreasStaff;
 import com.infosgroup.planilla.modelo.entidades.AreasStaffPK;
+import com.infosgroup.planilla.modelo.entidades.Criterio;
+import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.entidades.Departamentos;
-import com.infosgroup.planilla.modelo.entidades.Locaciones;
+import com.infosgroup.planilla.modelo.entidades.DepartamentosPK;
 import com.infosgroup.planilla.modelo.entidades.Puestos;
 import com.infosgroup.planilla.modelo.entidades.TipoPuesto;
+import com.infosgroup.planilla.modelo.entidades.TipoPuestoPK;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
@@ -19,6 +22,9 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -38,7 +44,6 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     private Boolean viaticos;
     private Boolean comision;
     private Boolean informacionConfidencial;
-    private String codigoAlterno;
     private Double salarioMinimo;
     private Double salarioMaximo;
     private Short tipoPuesto;
@@ -47,14 +52,105 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     private Short area;
     private String descripcion;
     private String objetivo;
-    private Short locacion;
+    private Criterio criterioSeleccionado;
+    private String valor;
+    private String valorInicialRango;
+    private String valorFinalRango;
     /* Listas */
     private java.util.List<TipoPuesto> listaTipoPuesto;
     private java.util.List<Departamentos> listaDepartamentos;
     private java.util.List<AreasStaff> listaAreas;
-    private java.util.List<Locaciones> listaLocaciones;
+    private java.util.List<Puestos> listaPuestos;
+    private java.util.List<CriteriosXPuesto> listaCriteriosXPuestos;
+    private java.util.List<Criterio> listaCriterios;
+    //private java.util.List<Locaciones> listaLocaciones;
+    private DataTable tablaPuestos;
+    private Puestos puestoSeleccionado;
+    private CriteriosXPuesto criterioXPuestoSeleccionado;
+    private Integer estadoAccion;
 
     public PuestosBackendBean() {
+    }
+
+    public String getValor() {
+        return valor;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+
+    public String getValorFinalRango() {
+        return valorFinalRango;
+    }
+
+    public void setValorFinalRango(String valorFinalRango) {
+        this.valorFinalRango = valorFinalRango;
+    }
+
+    public String getValorInicialRango() {
+        return valorInicialRango;
+    }
+
+    public void setValorInicialRango(String valorInicialRango) {
+        this.valorInicialRango = valorInicialRango;
+    }
+
+    public Criterio getCriterioSeleccionado() {
+        return criterioSeleccionado;
+    }
+
+    public void setCriterioSeleccionado(Criterio criterioSeleccionado) {
+        this.criterioSeleccionado = criterioSeleccionado;
+    }
+
+    public List<Criterio> getListaCriterios() {
+        listaCriterios = reclutamientoFacade.findListaCriteriosByCias(getSessionBeanADM().getCompania());
+        return listaCriterios;
+    }
+
+    public void setListaCriterios(List<Criterio> listaCriterios) {
+        this.listaCriterios = listaCriterios;
+    }
+
+    public List<CriteriosXPuesto> getListaCriteriosXPuestos() {
+        return listaCriteriosXPuestos;
+    }
+
+    public void setListaCriteriosXPuestos(List<CriteriosXPuesto> listaCriteriosXPuestos) {
+        this.listaCriteriosXPuestos = listaCriteriosXPuestos;
+    }
+
+    public CriteriosXPuesto getCriterioXPuestoSeleccionado() {
+        return criterioXPuestoSeleccionado;
+    }
+
+    public void setCriterioXPuestoSeleccionado(CriteriosXPuesto criterioXPuestoSeleccionado) {
+        this.criterioXPuestoSeleccionado = criterioXPuestoSeleccionado;
+    }
+
+    public Integer getEstadoAccion() {
+        return estadoAccion;
+    }
+
+    public void setEstadoAccion(Integer estadoAccion) {
+        this.estadoAccion = estadoAccion;
+    }
+
+    public Puestos getPuestoSeleccionado() {
+        return puestoSeleccionado;
+    }
+
+    public void setPuestoSeleccionado(Puestos puestoSeleccionado) {
+        this.puestoSeleccionado = puestoSeleccionado;
+    }
+
+    public DataTable getTablaPuestos() {
+        return tablaPuestos;
+    }
+
+    public void setTablaPuestos(DataTable tablaPuestos) {
+        this.tablaPuestos = tablaPuestos;
     }
 
     public Short getArea() {
@@ -169,14 +265,6 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         this.informacionConfidencial = informacionConfidencial;
     }
 
-    public String getCodigoAlterno() {
-        return codigoAlterno;
-    }
-
-    public void setCodigoAlterno(String codigoAlterno) {
-        this.codigoAlterno = codigoAlterno;
-    }
-
     public List<AreasStaff> getListaAreas() {
         listaAreas = reclutamientoFacade.findAreasStaffByCias(getSessionBeanADM().getCompania());
         return listaAreas;
@@ -204,25 +292,20 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         this.listaTipoPuesto = listaTipoPuesto;
     }
 
-    public Short getLocacion() {
-        return locacion;
+    public List<Puestos> getListaPuestos() {
+        listaPuestos = reclutamientoFacade.getPuestosByEmpresa(getSessionBeanADM().getCompania());
+        return listaPuestos;
     }
 
-    public void setLocacion(Short locacion) {
-        this.locacion = locacion;
-    }
-
-    public List<Locaciones> getListaLocaciones() {
-        listaLocaciones = reclutamientoFacade.findLocacionesByCias(getSessionBeanADM().getCompania());
-        return listaLocaciones;
-    }
-
-    public void setListaLocaciones(List<Locaciones> listaLocaciones) {
-        this.listaLocaciones = listaLocaciones;
+    public void setListaPuestos(List<Puestos> listaPuestos) {
+        this.listaPuestos = listaPuestos;
     }
 
     /* Acciones */
     public String guardar$crud$action() {
+        if (validarFormulario().equals(Boolean.FALSE)) {
+            return null;
+        }
         Puestos nuevoPuesto = new Puestos();
         nuevoPuesto.setNomPuesto(nombre);
         nuevoPuesto.setHorasExt(horasExtras == true ? "S" : "N");
@@ -232,15 +315,18 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         nuevoPuesto.setInfConf(informacionConfidencial == true ? "S" : "N");
         nuevoPuesto.setSalMinimo(salarioMinimo != null ? new BigDecimal(salarioMinimo) : BigDecimal.ZERO);
         nuevoPuesto.setSalMaximo(salarioMaximo != null ? new BigDecimal(salarioMaximo) : BigDecimal.ZERO);
-        nuevoPuesto.setCodTipoPuesto(tipoPuesto);
+        nuevoPuesto.setTipoPuesto((tipoPuesto != null && tipoPuesto != -1) ? new TipoPuesto(new TipoPuestoPK(getSessionBeanADM().getCompania().getCodCia(), tipoPuesto)) : null);
         nuevoPuesto.setStatus(estado);
-        nuevoPuesto.setCodDepto((departamento != null && departamento != -1) ? departamento : null);
+        nuevoPuesto.setDepartamentos((departamento != null && departamento != -1) ? new Departamentos(new DepartamentosPK(getSessionBeanADM().getCompania().getCodCia(), departamento)) : null);
         nuevoPuesto.setAreasStaff((area != null && area != -1) ? new AreasStaff(new AreasStaffPK(getSessionBeanADM().getCompania().getCodCia(), area)) : null);
-        nuevoPuesto.setCodAlterno(codigoAlterno);
         nuevoPuesto.setDescPuesto(descripcion);
         nuevoPuesto.setObjetivo(objetivo);
         try {
-            reclutamientoFacade.guardarPuesto(nuevoPuesto, getSessionBeanADM().getCompania());
+            if (getEstadoAccion() == null || getEstadoAccion().equals(0)) {
+                reclutamientoFacade.guardarPuesto(nuevoPuesto, getSessionBeanADM().getCompania());
+            } else if (getEstadoAccion() != null && getEstadoAccion().equals(1)) {
+                reclutamientoFacade.editarPuesto(nuevoPuesto);
+            }
             addMessage("Mantenimiento de Puestos", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
             limpiarCampos();
         } catch (Exception e) {
@@ -251,25 +337,30 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         return null;
     }
 
-    public void eliminar$crud$action(ActionEvent actionEvent) {
-    }
-
-    public String editar$crud$action() {
-        return null;
-    }
-
     public Boolean validarFormulario() {
         Boolean e = Boolean.TRUE;
         if (nombre == null || nombre.length() <= 0) {
-            addMessage("Puestos", "El nombre del puesto es un campo requerido.", TipoMensaje.INFORMACION);
+            addMessage("Puestos", "El nombre del puesto es un campo requerido.", TipoMensaje.ERROR);
             e = Boolean.FALSE;
         }
 
         if (salarioMinimo == null) {
-            addMessage("Puestos", "Salario Minimo es un campo requerido.", TipoMensaje.INFORMACION);
+            addMessage("Puestos", "Salario Minimo es un campo requerido.", TipoMensaje.ERROR);
             e = Boolean.FALSE;
         }
 
+        if (salarioMaximo == null) {
+            addMessage("Puestos", "Salario Máximo es un campo requerido.", TipoMensaje.ERROR);
+            e = Boolean.FALSE;
+        }
+
+        if ((estado == null) || (estado.equals("-1"))) {
+            addMessage("Puestos", "Seleccione el estado del puesto.", TipoMensaje.ERROR);
+            e = Boolean.FALSE;
+        }
+
+        if (descripcion == null || descripcion.length() <= 0) {
+            addMessage("Puestos", "La descripcion del puesto es un campo Obligatorio.", TipoMensaje.ERROR);
         if (salarioMaximo == null) {
             addMessage("Puestos", "Salario Máximo es un campo requerido.", TipoMensaje.INFORMACION);
             e = Boolean.FALSE;
@@ -288,6 +379,98 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         return e;
     }
 
+    public void nuevo$crud$action() {
+        setPuestoSeleccionado(null);
+        setEstadoAccion(0);
+        limpiarCampos();
+    }
+
+    public String consultar$crud$action() {
+        setPuestoSeleccionado(null);
+        setEstadoAccion(2);
+        limpiarCampos();
+        return null;
+    }
+
+    public String editar$crud$action() {
+        if (getPuestoSeleccionado() == null) {
+            addMessage("Mantenimiento de Puestos.", "No ha seleccionado ningún puesto para editar.", TipoMensaje.ERROR);
+            return null;
+        }
+        setNombre(getPuestoSeleccionado().getNomPuesto());
+        setHorasExtras((getPuestoSeleccionado().getHorasExt() != null && getPuestoSeleccionado().getHorasExt().equals("S")) ? Boolean.TRUE : Boolean.FALSE);
+        setHorasDobles((getPuestoSeleccionado().getHorasDob() != null && getPuestoSeleccionado().getHorasDob().equals("S")) ? Boolean.TRUE : Boolean.FALSE);
+        setViaticos((getPuestoSeleccionado().getViaticos() != null && getPuestoSeleccionado().getViaticos().equals("S")) ? Boolean.TRUE : Boolean.FALSE);
+        setComision((getPuestoSeleccionado().getComision() != null && getPuestoSeleccionado().getComision().equals("S")) ? Boolean.TRUE : Boolean.FALSE);
+        setInformacionConfidencial((getPuestoSeleccionado().getInfConf() != null && getPuestoSeleccionado().getInfConf().equals("S")) ? Boolean.TRUE : Boolean.FALSE);
+        setSalarioMinimo(getPuestoSeleccionado().getSalMinimo() != null ? new Double(getPuestoSeleccionado().getSalMaximo().toString()) : 0);
+        setSalarioMaximo(getPuestoSeleccionado().getSalMaximo() != null ? new Double(getPuestoSeleccionado().getSalMaximo().toString()) : 0);
+        setTipoPuesto(getPuestoSeleccionado().getTipoPuesto() != null ? getPuestoSeleccionado().getTipoPuesto().getTipoPuestoPK().getCodTipoPuesto() : new Short("-1"));
+        setEstado(getPuestoSeleccionado().getStatus() != null ? getPuestoSeleccionado().getStatus() : "-1");
+        setDepartamento(getPuestoSeleccionado().getDepartamentos() != null ? getPuestoSeleccionado().getDepartamentos().getDepartamentosPK().getCodDepto() : new Short("-1"));
+        setArea(getPuestoSeleccionado().getAreasStaff() != null ? getPuestoSeleccionado().getPuestosPK().getCodPuesto() : new Short("-1"));
+        setDescripcion(getPuestoSeleccionado().getDescPuesto());
+        setObjetivo(getPuestoSeleccionado().getObjetivo());
+        setEstadoAccion(1);
+        return null;
+    }
+
+    public String criterios$crud$action() {
+        if (getPuestoSeleccionado() == null) {
+            addMessage("Mantenimiento de Puestos.", "No ha seleccionado ningún puesto para ver Criterios.", TipoMensaje.ERROR);
+            return null;
+        }
+        listaCriteriosXPuestos = reclutamientoFacade.criteriosPorPuesto(getPuestoSeleccionado().getPuestosPK());
+        setEstadoAccion(3);
+        return null;
+    }
+
+    public String guardarCriterio$crud$action() {
+
+        if (getCriterioSeleccionado() == null) {
+            addMessage("Mantenimiento de Puestos.", "No ha seleccionado ningun criterio.", TipoMensaje.ERROR);
+            return null;
+        } else if (getPuestoSeleccionado() == null) {
+            addMessage("Mantenimiento de Puestos.", "No ha seleccionado ningun puesto.", TipoMensaje.ERROR);
+            return null;
+        }
+
+        if (getCriterioSeleccionado().getOperador().equals("equal")) {
+            if (valor == null || valor.length() <= 0) {
+                addMessage("Mantenimiento de Puestos.", "Ingrese on valor para el criterio.", TipoMensaje.ERROR);
+                return null;
+            }
+        } else if (getCriterioSeleccionado().getOperador().equals("between")) {
+            if ((valorInicialRango == null || valorInicialRango.length()<= 0) || (valorFinalRango == null || valorFinalRango.length()<=0)) {
+                addMessage("Mantenimiento de Puestos.", "Complemente los dos valores para el criterio.", TipoMensaje.ERROR);
+                return null;
+            }
+        }
+
+        CriteriosXPuesto cxp = new CriteriosXPuesto();
+        cxp.setCriterio1(getCriterioSeleccionado());
+        cxp.setPuestos(getPuestoSeleccionado());
+        cxp.setValor(valor);
+        cxp.setValorInicialRango(valorInicialRango);
+        cxp.setValorFinalRango(valorFinalRango);
+        try {
+            reclutamientoFacade.guardarCriterioXPuesto(cxp);
+            addMessage("Mantenimiento de Puestos.", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+            listaCriteriosXPuestos = reclutamientoFacade.criteriosPorPuesto(getPuestoSeleccionado().getPuestosPK());
+            setValor(null);
+            setValorInicialRango(null);
+            setValorFinalRango(null);
+        } catch (Exception e) {
+            addMessage("Mantenimiento de Puestos.", "Ocurrio un error al intentar guardar los datos.", TipoMensaje.ERROR);
+        }
+        return null;
+    }
+
+    public String limpiarCriterio() {
+        setCriterioSeleccionado(null);
+        return null;
+    }
+
     @Override
     protected void limpiarCampos() {
         setNombre("");
@@ -295,13 +478,70 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         setHorasDobles(Boolean.FALSE);
         setViaticos(Boolean.FALSE);
         setComision(Boolean.FALSE);
+        setInformacionConfidencial(Boolean.FALSE);
         setSalarioMinimo(0.0);
         setSalarioMaximo(0.0);
         setTipoPuesto(new Short("-1"));
         setEstado("-1");
         setDepartamento(new Short("-1"));
-        setArea(area);
+        setArea(new Short("-1"));
         setDescripcion("");
         setObjetivo("");
+    }
+
+    public void eliminar$crud$action(ActionEvent actionEvent) {
+        if (getPuestoSeleccionado() == null) {
+            addMessage("Mantenimiento de Puestos", "Primero seleccione un Puesto", TipoMensaje.ERROR);
+            return;
+        }
+        try {
+            reclutamientoFacade.eliminarPuesto(getPuestoSeleccionado());
+            addMessage("Mantenimiento de Puestos.", "Datos eliminados con éxito", TipoMensaje.INFORMACION);
+            limpiarCampos();
+        } catch (Exception e) {
+            addMessage("Mantenimiento de Puesto.", "Ha ocurrido un error al intentar remover el Puesto.", TipoMensaje.ERROR);
+            System.out.println(e.getMessage());
+        }
+        listaPuestos = reclutamientoFacade.getPuestosByEmpresa(getSessionBeanADM().getCompania());
+    }
+
+    public void eliminarCriterio$crud$action(ActionEvent actionEvent) {
+        if (getCriterioXPuestoSeleccionado() == null) {
+            addMessage("Mantenimiento de Puestos", "Primero seleccione un Criterio", TipoMensaje.ERROR);
+            return;
+        }
+        try {
+            reclutamientoFacade.eliminarCriterioXPuesto(getCriterioXPuestoSeleccionado());
+            addMessage("Mantenimiento de Puestos.", "Datos eliminados con éxito", TipoMensaje.INFORMACION);
+            limpiarCampos();
+            listaCriteriosXPuestos = reclutamientoFacade.criteriosPorPuesto(getPuestoSeleccionado().getPuestosPK());
+        } catch (Exception e) {
+            addMessage("Mantenimiento de Puesto.", "Ha ocurrido un error al intentar remover el Criterio.", TipoMensaje.ERROR);
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void onRowSelectPuesto(SelectEvent event) {
+        setPuestoSeleccionado((Puestos) event.getObject());
+    }
+
+    public void onRowUnSelectPuesto(UnselectEvent event) {
+        setPuestoSeleccionado(null);
+    }
+
+    public void onRowSelectCriterioPuesto(SelectEvent event) {
+        setCriterioXPuestoSeleccionado((CriteriosXPuesto) event.getObject());
+    }
+
+    public void onRowUnSelectCriterioPuesto(UnselectEvent event) {
+        setCriterioXPuestoSeleccionado(null);
+    }
+
+    public void onRowSelectCriterio(SelectEvent event) {
+        setCriterioSeleccionado((Criterio) event.getObject());
+    }
+
+    public void onRowUnSelectCriterio(UnselectEvent event) {
+        setCriterioSeleccionado(null);
     }
 }
