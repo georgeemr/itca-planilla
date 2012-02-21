@@ -7,6 +7,8 @@ package com.infosgroup.planilla.modelo.facades;
 import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK;
+import com.infosgroup.planilla.modelo.entidades.Puestos;
+import com.infosgroup.planilla.modelo.entidades.PuestosPK;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -42,5 +44,30 @@ public class CriteriosXPuestoFacade extends AbstractFacade<CriteriosXPuesto, Cri
         Query q = em.createQuery("SELECT c FROM CriteriosXPuesto c WHERE c.criteriosXPuestoPK.codCia = :codCia", CriteriosXPuesto.class).setParameter("codCia", empresa.getCodCia());
         l = q.getResultList();
         return l != null ? l : new ArrayList<CriteriosXPuesto>();
+    }
+
+    @PermitAll
+    public List<CriteriosXPuesto> getListaCriteriosByPuestos(PuestosPK puesto) {
+        List<CriteriosXPuesto> l = new ArrayList<CriteriosXPuesto>();
+        Query q = em.createQuery("SELECT c FROM CriteriosXPuesto c WHERE c.criteriosXPuestoPK.codCia = :codCia AND c.criteriosXPuestoPK.puesto = :puesto", CriteriosXPuesto.class).setParameter("codCia", puesto.getCodCia()).setParameter("puesto", puesto.getCodPuesto());
+        l = q.getResultList();
+        return l != null ? l : new ArrayList<CriteriosXPuesto>();
+    }
+
+    @PermitAll
+    public CriteriosXPuesto getWithId(CriteriosXPuesto cxp) {
+        CriteriosXPuestoPK pk = new CriteriosXPuestoPK();
+        pk.setCodCia(cxp.getPuestos().getPuestosPK().getCodCia());
+        pk.setCriterio(cxp.getCriterio1().getCriterioPK().getCodigo());
+        pk.setTipoCriterio(cxp.getCriterio1().getCriterioPK().getTipo());
+        pk.setPuesto(cxp.getPuestos().getPuestosPK().getCodPuesto());
+        pk.setCorrelativo(max(pk));
+        cxp.setCriteriosXPuestoPK(pk);
+        return cxp;
+    }
+
+    public Long max(CriteriosXPuestoPK pk) {
+        Long max = (Long) getEntityManager().createQuery("select max(c.criteriosXPuestoPK.correlativo) from CriteriosXPuesto c where c.criteriosXPuestoPK.codCia = :codCia AND c.criteriosXPuestoPK.puesto = :puesto").setParameter("codCia", pk.getCodCia()).setParameter("puesto", pk.getPuesto()).getSingleResult();
+        return (max == null) ? 1 : ++max;
     }
 }

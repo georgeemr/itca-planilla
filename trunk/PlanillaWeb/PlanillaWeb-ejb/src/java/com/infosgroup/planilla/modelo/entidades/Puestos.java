@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -41,13 +42,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Puestos.findBySalMaximo", query = "SELECT p FROM Puestos p WHERE p.salMaximo = :salMaximo"),
     @NamedQuery(name = "Puestos.findBySalMinimo", query = "SELECT p FROM Puestos p WHERE p.salMinimo = :salMinimo"),
     @NamedQuery(name = "Puestos.findByCodAlterno", query = "SELECT p FROM Puestos p WHERE p.codAlterno = :codAlterno"),
-    @NamedQuery(name = "Puestos.findByCodTipoPuesto", query = "SELECT p FROM Puestos p WHERE p.codTipoPuesto = :codTipoPuesto"),
     @NamedQuery(name = "Puestos.findByDescPuesto", query = "SELECT p FROM Puestos p WHERE p.descPuesto = :descPuesto"),
     @NamedQuery(name = "Puestos.findByStatus", query = "SELECT p FROM Puestos p WHERE p.status = :status"),
     @NamedQuery(name = "Puestos.findByInfConf", query = "SELECT p FROM Puestos p WHERE p.infConf = :infConf"),
     @NamedQuery(name = "Puestos.findByCodLocacion", query = "SELECT p FROM Puestos p WHERE p.codLocacion = :codLocacion"),
     @NamedQuery(name = "Puestos.findByPuestoJefe", query = "SELECT p FROM Puestos p WHERE p.puestoJefe = :puestoJefe"),
-    @NamedQuery(name = "Puestos.findByCodDepto", query = "SELECT p FROM Puestos p WHERE p.codDepto = :codDepto"),
     @NamedQuery(name = "Puestos.findByObjetivo", query = "SELECT p FROM Puestos p WHERE p.objetivo = :objetivo"),
     @NamedQuery(name = "Puestos.findByImpactoFinan", query = "SELECT p FROM Puestos p WHERE p.impactoFinan = :impactoFinan"),
     @NamedQuery(name = "Puestos.findByGenero", query = "SELECT p FROM Puestos p WHERE p.genero = :genero"),
@@ -74,15 +73,12 @@ public class Puestos implements Serializable {
     private String viaticos;
     @Column(name = "COMISION", length = 1)
     private String comision;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "SAL_MAXIMO", precision = 16, scale = 2)
     private BigDecimal salMaximo;
     @Column(name = "SAL_MINIMO", precision = 16, scale = 2)
     private BigDecimal salMinimo;
     @Column(name = "COD_ALTERNO", length = 8)
     private String codAlterno;
-    @Column(name = "COD_TIPO_PUESTO")
-    private Short codTipoPuesto;
     @Column(name = "DESC_PUESTO", length = 400)
     private String descPuesto;
     @Column(name = "STATUS")
@@ -93,8 +89,6 @@ public class Puestos implements Serializable {
     private Short codLocacion;
     @Column(name = "PUESTO_JEFE")
     private Short puestoJefe;
-    @Column(name = "COD_DEPTO")
-    private Short codDepto;
     @Column(name = "OBJETIVO", length = 400)
     private String objetivo;
     @Column(name = "IMPACTO_FINAN", precision = 12, scale = 2)
@@ -113,12 +107,24 @@ public class Puestos implements Serializable {
     private String jefatura;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_DEPTO", referencedColumnName = "COD_DEPTO")})
+    @ManyToOne(optional = false)
+    private Departamentos departamentos;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_TIPO_PUESTO", referencedColumnName = "COD_TIPO_PUESTO")})
+    @ManyToOne(optional = false)
+    private TipoPuesto tipoPuesto;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_AREA", referencedColumnName = "COD_AREA")})
     @ManyToOne(optional = false)
     private AreasStaff areasStaff;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
     private List<PruebaXPuesto> pruebaXPuestoList;
-
+    @Transient
+    private String descripcionEstado;
+    
     public Puestos() {
     }
 
@@ -207,14 +213,13 @@ public class Puestos implements Serializable {
         this.codAlterno = codAlterno;
     }
 
-    public Short getCodTipoPuesto() {
-        return codTipoPuesto;
-    }
-
-    public void setCodTipoPuesto(Short codTipoPuesto) {
-        this.codTipoPuesto = codTipoPuesto;
-    }
-
+//    public Short getCodTipoPuesto() {
+//        return codTipoPuesto;
+//    }
+//
+//    public void setCodTipoPuesto(Short codTipoPuesto) {
+//        this.codTipoPuesto = codTipoPuesto;
+//    }
     public String getDescPuesto() {
         return descPuesto;
     }
@@ -255,14 +260,13 @@ public class Puestos implements Serializable {
         this.puestoJefe = puestoJefe;
     }
 
-    public Short getCodDepto() {
-        return codDepto;
-    }
-
-    public void setCodDepto(Short codDepto) {
-        this.codDepto = codDepto;
-    }
-
+//    public Short getCodDepto() {
+//        return codDepto;
+//    }
+//
+//    public void setCodDepto(Short codDepto) {
+//        this.codDepto = codDepto;
+//    }
     public String getObjetivo() {
         return objetivo;
     }
@@ -335,6 +339,21 @@ public class Puestos implements Serializable {
         this.areasStaff = areasStaff;
     }
 
+    public String getDescripcionEstado() {
+        descripcionEstado ="";
+        if ( status!=null ){
+            if ( status.equals("A") ){ descripcionEstado = "Activo"; }
+            if ( status.equals("I") ){ descripcionEstado = "Inactivo"; }
+        }
+        return descripcionEstado;
+    }
+
+    public void setDescripcionEstado(String descripcionEstado) {
+        this.descripcionEstado = descripcionEstado;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -367,6 +386,22 @@ public class Puestos implements Serializable {
 
     public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
         this.criteriosXPuestoList = criteriosXPuestoList;
+    }
+
+    public TipoPuesto getTipoPuesto() {
+        return tipoPuesto;
+    }
+
+    public void setTipoPuesto(TipoPuesto tipoPuesto) {
+        this.tipoPuesto = tipoPuesto;
+    }
+
+    public Departamentos getDepartamentos() {
+        return departamentos;
+    }
+
+    public void setDepartamentos(Departamentos departamentos) {
+        this.departamentos = departamentos;
     }
 
     @XmlTransient
