@@ -8,79 +8,83 @@
 
 .guardar
 {
-background-image: url('../iconos/document-save.png') !important;
+    background-image: url('../iconos/document-save.png') !important;
 }
 
 .cancelar
 {
-background-image: url('../iconos/edit-delete.png') !important;
+    background-image: url('../iconos/edit-delete.png') !important;
 }
 
 .modificar
 {
-background-image: url('../iconos/document-edit.png') !important;
+    background-image: url('../iconos/document-edit.png') !important;
 }
 
 .eliminar
 {
-background-image: url('../iconos/trash-empty.png') !important;
+    background-image: url('../iconos/trash-empty.png') !important;
 }
 
 .mostrarEmpleados
 {
-background-image: url('../iconos/edit-find-user.png') !important;
+    background-image: url('../iconos/edit-find-user.png') !important;
 }
 
 .evaluar
 {
-background-image: url('../iconos/user-properties.png') !important;
+    background-image: url('../iconos/user-properties.png') !important;
 }
 
 .opciones
 {
-background-image: url('../iconos/configure.png') !important;
+    background-image: url('../iconos/configure.png') !important;
 }
 
 .buscar
 {
-background-image: url('../iconos/edit-find.png') !important;
+    background-image: url('../iconos/edit-find.png') !important;
 }
 
 .button-ok
 {
-background-image: url('../iconos/dialog-ok-apply.png') !important;
+    background-image: url('../iconos/dialog-ok-apply.png') !important;
 }
 
 .proceso
 {
-background-image: url('../iconos/system-run.png') !important;
+    background-image: url('../iconos/system-run.png') !important;
 }
 
 .contratar
 {
-background-image: url('../iconos/personal.png') !important;
+    background-image: url('../iconos/personal.png') !important;
 }
 .contratar_w
 {
-background-image: url('../iconos/personal_w.png') !important;
+    background-image: url('../iconos/personal_w.png') !important;
 }
 .nuevo
 {
-background-image: url('../iconos/add.png') !important;
+    background-image: url('../iconos/add.png') !important;
 }
 
 .indicador
 {
-background-image: url('../iconos/arrow.png') !important;
+    background-image: url('../iconos/arrow.png') !important;
 }
 
 .contrato
 {
-background-image: url('../iconos/contrato.png') !important;
+    background-image: url('../iconos/contrato.png') !important;
 }
 
 .documentPDF
 {
-background-image: url('../iconos/document-pdf.png') !important;
+    background-image: url('../iconos/document-pdf.png') !important;
 }
 
+.criterios
+{
+    background-image: url('../iconos/rating.png') !important;
+}
