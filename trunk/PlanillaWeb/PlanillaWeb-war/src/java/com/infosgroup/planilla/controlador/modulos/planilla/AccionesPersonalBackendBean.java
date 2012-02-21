@@ -51,7 +51,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private String urlPlantilla;
     private String urlPlantillaDefault = "/modulos/planilla/acciones/ninguna.xhtml";
     private TipoAccion accionSeleccionada;
-    private AccionPersonal accionPersonalSeleccionada;
     /* Campos de Detalle de Solicitud */
     private SolicitudPermiso solicitudPermiso;
     private SolicitudVacacionesAnuales solicitudVacacionesAnuales;
@@ -60,14 +59,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         return solicitudPermiso;
     }
 
-    public AccionPersonal getAccionPersonalSeleccionada() {
-        return accionPersonalSeleccionada;
-    }
-
-    public void setAccionPersonalSeleccionada(AccionPersonal accionPersonalSeleccionada) {
-        this.accionPersonalSeleccionada = accionPersonalSeleccionada;
-    }
-    
     public void setSolicitudPermiso(SolicitudPermiso solicitudPermiso) {
         this.solicitudPermiso = solicitudPermiso;
     }
