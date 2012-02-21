@@ -5,9 +5,9 @@
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
 import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudPermiso;
+import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudVacacionesAnuales;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
-import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
@@ -42,7 +42,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private List<Empleados> listaJefes;
     private List<Empleados> listaEmp;
     private List<TiposPlanilla> listaTipos;
-//    private List<Planilla> listaPlanillas;
     private Short empresa;
     private Long tipoAccion;
     private DataTable tablaEmpleado;
@@ -52,15 +51,33 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private String urlPlantilla;
     private String urlPlantillaDefault = "/modulos/planilla/acciones/ninguna.xhtml";
     private TipoAccion accionSeleccionada;
+    private AccionPersonal accionPersonalSeleccionada;
     /* Campos de Detalle de Solicitud */
     private SolicitudPermiso solicitudPermiso;
+    private SolicitudVacacionesAnuales solicitudVacacionesAnuales;
 
     public SolicitudPermiso getSolicitudPermiso() {
         return solicitudPermiso;
     }
 
+    public AccionPersonal getAccionPersonalSeleccionada() {
+        return accionPersonalSeleccionada;
+    }
+
+    public void setAccionPersonalSeleccionada(AccionPersonal accionPersonalSeleccionada) {
+        this.accionPersonalSeleccionada = accionPersonalSeleccionada;
+    }
+    
     public void setSolicitudPermiso(SolicitudPermiso solicitudPermiso) {
         this.solicitudPermiso = solicitudPermiso;
+    }
+
+    public SolicitudVacacionesAnuales getSolicitudVacacionesAnuales() {
+        return solicitudVacacionesAnuales;
+    }
+
+    public void setSolicitudVacacionesAnuales(SolicitudVacacionesAnuales solicitudVacacionesAnuales) {
+        this.solicitudVacacionesAnuales = solicitudVacacionesAnuales;
     }
 
     public AccionesPersonalBackendBean() {
@@ -79,7 +96,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     @PostConstruct
     public void init() {
-        listaEmp = planillaSessionBean.listaEmpleados( getSessionBeanADM().getCompania() );
+        listaEmp = planillaSessionBean.listaEmpleados(getSessionBeanADM().getCompania());
         if (isInRole("rrhh")) {
             listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
         } else if (isInRole("jefes")) {
@@ -90,9 +107,9 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
             listaSolicitudes = new ArrayList<AccionPersonal>();
         }
         listaSolicitudes = planillaSessionBean.getAccionesByRol(getSessionBeanEMP().getEmpleadoSesion());
-
         empresa = getSessionBeanADM().getCompania().getCodCia();
         solicitudPermiso = new SolicitudPermiso(this);
+        solicitudVacacionesAnuales = new SolicitudVacacionesAnuales(this);
         fecha = new Date();
     }
 
@@ -149,7 +166,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public List<TiposPlanilla> getListaTipos() {
-        listaTipos = planillaSessionBean.listarTipos( getSessionBeanADM().getCompania() );
+        listaTipos = planillaSessionBean.listarTipos(getSessionBeanADM().getCompania());
         return listaTipos;
     }
 
@@ -230,7 +247,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public String getNombreJefe() {
         nombreJefe = "Ninguno";
         if (getSessionBeanEMP().getEmpleadoSesion() != null) {
-            if (getSessionBeanEMP().getEmpleadoSesion().getEmpleados()/*getJefe()*/!= null) {
+            if (getSessionBeanEMP().getEmpleadoSesion().getEmpleados()/*getJefe()*/ != null) {
                 nombreJefe = getSessionBeanEMP().getEmpleadoSesion().getEmpleados()/*getJefe()*/.getNombreCompleto();
             }
         }
