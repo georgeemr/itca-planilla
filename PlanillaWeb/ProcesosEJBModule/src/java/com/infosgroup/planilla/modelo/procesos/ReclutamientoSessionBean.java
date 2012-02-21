@@ -36,9 +36,12 @@ import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.AgenciasFacade;
 import com.infosgroup.planilla.modelo.entidades.AgenciasPK;
 import com.infosgroup.planilla.modelo.entidades.AreasStaff;
+import com.infosgroup.planilla.modelo.entidades.Criterio;
+import com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK;
 import com.infosgroup.planilla.modelo.entidades.Departamentos;
 import com.infosgroup.planilla.modelo.entidades.Locaciones;
 import com.infosgroup.planilla.modelo.facades.AreasStaffFacade;
+import com.infosgroup.planilla.modelo.facades.CriterioFacade;
 import com.infosgroup.planilla.modelo.facades.DepartamentoFacade;
 import com.infosgroup.planilla.modelo.facades.LocacionesFacade;
 import com.infosgroup.planilla.modelo.facades.TipoDocumentoFacade;
@@ -93,6 +96,8 @@ public class ReclutamientoSessionBean {
     private AreasStaffFacade areasStaffFacade;
     @EJB
     private LocacionesFacade locacionesFacade;
+    @EJB
+    private CriterioFacade criterioFacade;
 
     public List<Concurso> getListaConcursos(Cias empresa, Date fechaInicial, Date fechaFinal) {
         return concursoFacade.getConcursosByDate(empresa, fechaInicial, fechaFinal);
@@ -252,6 +257,11 @@ public class ReclutamientoSessionBean {
         return criteriosXPuestoFacade.getListaCriteriosByEmpresa(empresa);
     }
 
+    @PermitAll
+    public List<CriteriosXPuesto> criteriosPorPuesto(PuestosPK puestos) {
+        return criteriosXPuestoFacade.getListaCriteriosByPuestos(puestos);
+    }
+
     public List<Empleados> findByUsuario(String usuario) {
         return empleadoFacade.findEmpleadosByUsuario(usuario);
     }
@@ -288,6 +298,31 @@ public class ReclutamientoSessionBean {
         PuestosPK pk = new PuestosPK(cias.getCodCia(), puestoFacade.max(cias));
         puestos.setPuestosPK(pk);
         puestoFacade.create(puestos);
+    }
+
+    @PermitAll
+    public void editarPuesto(Puestos puestos) {
+        puestoFacade.edit(puestos);
+    }
+
+    @PermitAll
+    public void eliminarPuesto(Puestos puestos) {
+        puestoFacade.remove(puestos);
+    }
+
+    @PermitAll
+    public void eliminarCriterioXPuesto(CriteriosXPuesto criterio) {
+        criteriosXPuestoFacade.remove(criterio);
+    }
+    
+    @PermitAll
+    public List<Criterio> findListaCriteriosByCias(Cias cias){
+        return criterioFacade.findCriteriosByCias(cias);
+    }
+    
+    @PermitAll
+    public void guardarCriterioXPuesto(CriteriosXPuesto criterioXPuesto){
+        criteriosXPuestoFacade.create(criteriosXPuestoFacade.getWithId(criterioXPuesto));
     }
 
     public void guardarCandidato(Candidato c) throws javax.persistence.EntityExistsException {
