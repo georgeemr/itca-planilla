@@ -4,10 +4,12 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Criterio;
 import com.infosgroup.planilla.modelo.entidades.CriterioPK;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -42,4 +44,12 @@ public class CriterioFacade extends AbstractFacade<Criterio, CriterioPK> {
         }
         return listaCriterios;
     }
+    
+    @PermitAll
+    public List<Criterio> findCriteriosByCias(Cias cias){
+        List<Criterio> l = new ArrayList<Criterio>();
+        l = em.createQuery("SELECT c FROM Criterio c WHERE c.criterioPK.codCia = :codCia", Criterio.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        return l!= null? l : new ArrayList<Criterio>();
+    }
+    
 }
