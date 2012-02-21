@@ -79,7 +79,7 @@
             </f:facet>
 
             <p:column headerText="C&oacute;digo">
-                <h:outputText value="#{sol.empleados.empleadosPK.codEmp}"/>
+                <h:outputText value="#{sol.accionPersonalPK.correlativo}"/>
             </p:column>
 
             <p:column headerText="Nombre" filterBy="#{sol.empleados.nombreCompleto}" >
@@ -253,6 +253,157 @@
                                  ajax="true" image="ui-icon-circle-check" />
 
                 <p:commandButton value="Cerrar" styleClass="opcionMenu" update="mensajes, tablaSol, txtEmp, txtJefe"  action="#{planilla$accionesPersonal.cancelar$action}"
+                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
+            </h:panelGrid>
+
+        </p:dialog>
+
+        <p:dialog id="dialogSolicitudVacaciones" widgetVar="dialogSolicitudVacaciones" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
+            <p:spacer height="10px"/>
+            <p:panel id="panelInformacionVac" style="border:none;" >
+                <h:panelGrid columns="4" >
+                    <p:graphicImage value="../../resources/imagenes/64/info.png" />
+                    <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
+                    <h:outputLabel value="*" styleClass="requerido"/>                                
+                    <h:outputLabel value=" son requeridos." style="font-style: italic;" />
+                </h:panelGrid>
+            </p:panel>
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fieldsetEncabezadoVac">
+                <table border="0" width="100%" >
+                    <tr>
+                        <td><h:outputLabel value="Fecha de Solicitud"/></td>
+                        <td><h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                        </td>
+                        <td></td>
+                        <td>                            
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Empleado"/>
+                            </h:panelGrid>
+                        </td>
+                        <td>
+                            <h:outputLabel id="txtEmpVac" value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="Jefe" /></td>
+                        <td><h:outputLabel id="txtJefeVac" value="#{planilla$accionesPersonal.nombreJefe}" style="font-weight: bold;" /></td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="Observacion"/></td>
+                        <td colspan="3"><p:inputTextarea id="txtobservacionesVac" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                    </tr>
+                </table>
+            </p:fieldset>
+
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fldVacaciones" >
+
+                <table border="0" width="100%" >
+                    <tr>
+                        <td colspan="5" >
+                            <h:outputLabel value="Periodo de Vacaci&oacute;n a pagar" style="font-weight: bold;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Fecha inicial"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><p:calendar id="vacFecInicialPagar" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.fechaInicialPeriodoPagar}" selectListener="#{planilla$accionesPersonal.solicitudPermiso.handleFechaInicial}" onSelectUpdate="txtDias" />
+                        </td>
+                        <td></td>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Fecha final"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><p:calendar id="vacFecFinalPagar" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.fechaFinalPeriodoPagar}" />
+                        </td>
+                    </tr>
+                    <tr><td colspan="5" ><p:spacer height="10" /></td></tr>
+                    <tr>
+                        <td colspan="5" >
+                            <h:outputLabel value="Periodo de Vacaci&oacute;n a Gozar" style="font-weight: bold;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Fecha inicial"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><p:calendar id="vacFecInicialGozar" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.fechaInicialPeriodoGozar}" />
+                        </td>
+                        <td></td>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Fecha final"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td><p:calendar id="vacFecFinalGozar" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.fechaFinalPeriodoGozar}" />
+                        </td>
+
+                    </tr>
+
+                    <tr>                   
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Tipo Planilla"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>    
+                        </td>
+                        <td>                
+                            <h:selectOneMenu id="lstTipoPlanillaVac" style="height: 25px;padding-top: 3px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.tipoPlanilla}" >                       
+                                <f:ajax render="lstPlanillaVac" event="change" execute="lstTipoPlanillaVac" />
+                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
+                                <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                            </h:selectOneMenu>
+                        </td>
+                        <td></td>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Planilla"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>  
+                        </td>
+                        <td>
+                            <h:selectOneMenu id="lstPlanillaVac" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.planilla}" >
+                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
+                                <f:selectItems value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.listaPlanillas}" var="pla" 
+                                               itemValue="#{pla.pkAsString}"
+                                               itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Devengadas</td>
+                        <td>
+                            <h:selectOneMenu id="lstDevengadoVac" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.devengadas}" >
+                                <f:selectItem itemValue="S" itemLabel="SI" />
+                                <f:selectItem itemValue="N" itemLabel="NO" />
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                </table>
+
+            </p:fieldset>
+            <p:spacer height="15" />
+            <h:panelGrid columns="2">
+                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldVacaciones,principalForm:txtobservacionesVac"
+                                 action="#{planilla$accionesPersonal.solicitudVacacionesAnuales.guardarSolicitud$action}"
+                                 ajax="true" image="ui-icon-circle-check" />
+
+                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
                                  onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
             </h:panelGrid>
 
