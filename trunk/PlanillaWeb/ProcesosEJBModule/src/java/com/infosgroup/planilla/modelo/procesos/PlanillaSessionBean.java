@@ -324,22 +324,29 @@ public class PlanillaSessionBean {
         return fechas;
     }
 
+    @PermitAll
     public List<AccionPersonal> listarAccionporTipo(Short cia, Short tipo) {
-        return (tipo != null /*||tipo != 0 */) ? accionPersonalFacade.findByTipo(cia, tipo) : accionPersonalFacade.findByNoAfecta(cia);
-    }
-
-    public List<TipoAccion> listarTiposAcciones() {
-        return tipoAccionFacade.findAll();
+        return (tipo != null) ? accionPersonalFacade.findByTipo(cia, tipo) : accionPersonalFacade.findByNoAfecta(cia);
     }
 
     @PermitAll
-    public List<TipoAccion> listarTipoAccionAfecta() {
-        return tipoAccionFacade.findByAfecta("S");
+    public List<TipoAccion> listarTiposAcciones(Cias cias) {
+        return tipoAccionFacade.listarTipoAccionByCias(cias);
     }
 
     @PermitAll
-    public List<TipoAccion> listarTipoAccionNoAfecta() {
-        return tipoAccionFacade.findByAfecta("N");
+    public List<TipoAccion> listarTipoAccionAfecta(Cias cias) {
+        return tipoAccionFacade.findByAfecta(cias, "S");
+    }
+
+    @PermitAll
+    public List<TipoAccion> listarTipoAccionNoAfecta(Cias cias) {
+        return tipoAccionFacade.findByAfecta(cias, "N");
+    }
+
+    @PermitAll
+    public List<TipoAccion> listarTipoAccionActivas(Cias cias) {
+        return tipoAccionFacade.listarTipoAccionActivas(cias);
     }
 
     public String editar$action(ResumenAsistencia resumen) {
@@ -373,7 +380,7 @@ public class PlanillaSessionBean {
 
     @RolesAllowed({"jefes"})
     public void jefeEditaSolicitud(AccionPersonal a, String estado) {
-        a.setAprobadoJefe( estado );
+        a.setAprobadoJefe(estado);
         a.setfApruebaJefe(new java.util.Date());
         a.setStatus(estado);
         accionPersonalFacade.edit(a);
@@ -381,7 +388,7 @@ public class PlanillaSessionBean {
 
     @RolesAllowed({"rrhh"})
     public void rrhhEditaSolicitud(AccionPersonal a, String estado) {
-        a.setAprobadoRh( estado );
+        a.setAprobadoRh(estado);
         a.setfApruebaRh(new java.util.Date());
         a.setStatus(estado);
         accionPersonalFacade.edit(a);
