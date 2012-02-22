@@ -11,24 +11,33 @@ import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.primefaces.event.DateSelectEvent;
 
 /**
  *
  * @author root
  */
-public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements java.io.Serializable {
+public class SolicitudIncapacidad extends SolicitudDePersonal implements java.io.Serializable {
 
-    private Date fechaInicialPeriodoPagar;
-    private Date fechaFinalPeriodoPagar;
-    private Date fechaInicialPeriodoGozar;
-    private Date fechaFinalPeriodoGozar;
+    private Date fechaPlanilla;
+    private Date fechaRealPlanilla;
+    private Date fechaInicial;
+    private Date fechaFinal;
     private Short tipoPlanilla;
     private String planilla;
-    private String devengadas;
+    private Short dias = 0;
     private List<ProgramacionPla> listaPlanillas;
 
-    public SolicitudVacacionesAnuales(AccionesPersonalBackendBean encabezadoSolicitud) {
+    public SolicitudIncapacidad(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
+    }
+
+    public Short getDias() {
+        return dias;
+    }
+
+    public void setDias(Short dias) {
+        this.dias = dias;
     }
 
     public List<ProgramacionPla> getListaPlanillas() {
@@ -42,20 +51,20 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
         this.listaPlanillas = listaPlanillas;
     }
 
-    public Date getFechaFinalPeriodoPagar() {
-        return fechaFinalPeriodoPagar;
+    public Date getFechaRealPlanilla() {
+        return fechaRealPlanilla;
     }
 
-    public void setFechaFinalPeriodoPagar(Date fechaFinalPeriodoPagar) {
-        this.fechaFinalPeriodoPagar = fechaFinalPeriodoPagar;
+    public void setFechaRealPlanilla(Date fechaRealPlanilla) {
+        this.fechaRealPlanilla = fechaRealPlanilla;
     }
 
-    public Date getFechaInicialPeriodoPagar() {
-        return fechaInicialPeriodoPagar;
+    public Date getFechaPlanilla() {
+        return fechaPlanilla;
     }
 
-    public void setFechaInicialPeriodoPagar(Date fechaInicialPeriodoPagar) {
-        this.fechaInicialPeriodoPagar = fechaInicialPeriodoPagar;
+    public void setFechaPlanilla(Date fechaPlanilla) {
+        this.fechaPlanilla = fechaPlanilla;
     }
 
     public String getPlanilla() {
@@ -74,36 +83,28 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
         this.tipoPlanilla = tipoPlanilla;
     }
 
-    public String getDevengadas() {
-        return devengadas;
+    public Date getFechaFinal() {
+        return fechaFinal;
     }
 
-    public void setDevengadas(String devengadas) {
-        this.devengadas = devengadas;
+    public void setFechaFinal(Date fechaFinal) {
+        this.fechaFinal = fechaFinal;
     }
 
-    public Date getFechaFinalPeriodoGozar() {
-        return fechaFinalPeriodoGozar;
+    public Date getFechaInicial() {
+        return fechaInicial;
     }
 
-    public void setFechaFinalPeriodoGozar(Date fechaFinalPeriodoGozar) {
-        this.fechaFinalPeriodoGozar = fechaFinalPeriodoGozar;
-    }
-
-    public Date getFechaInicialPeriodoGozar() {
-        return fechaInicialPeriodoGozar;
-    }
-
-    public void setFechaInicialPeriodoGozar(Date fechaInicialPeriodoGozar) {
-        this.fechaInicialPeriodoGozar = fechaInicialPeriodoGozar;
+    public void setFechaInicial(Date fechaInicial) {
+        this.fechaInicial = fechaInicial;
     }
 
     @Override
     protected void limpiarCampos() {
-        fechaInicialPeriodoPagar = null;
-        fechaFinalPeriodoPagar = null;
-        fechaInicialPeriodoGozar = null;
-        fechaFinalPeriodoGozar = null;
+        fechaPlanilla = null;
+        fechaRealPlanilla = null;
+        fechaInicial = null;
+        fechaFinal = null;
         tipoPlanilla = null;
         planilla = null;
         getEncabezadoSolicitud().setObservacion(null);
@@ -117,36 +118,29 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
             error = Boolean.FALSE;
         }
 
-        if (fechaInicialPeriodoPagar == null) {
-            addMessage("Acciones de Personal", "Fecha inicio es un campo requerido.", TipoMensaje.ERROR);
+        if (fechaPlanilla == null) {
+            addMessage("Acciones de Personal", "Fecha Planilla es un campo requerido.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
 
-        if (fechaFinalPeriodoPagar == null) {
-            addMessage("Acciones de Personal", "Fecha final es un campo requerido.", TipoMensaje.ERROR);
+        if (fechaRealPlanilla == null) {
+            addMessage("Acciones de Personal", "Fecha Real Planilla es un campo requerido.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
 
-        if (fechaInicialPeriodoPagar != null || fechaFinalPeriodoPagar != null) {
-            if (!validaFechas(fechaInicialPeriodoPagar, fechaFinalPeriodoPagar)) {
-                addMessage("Acciones de Personal", "Los datos de Fecha inicial y Fecha fin no son consistentes.", TipoMensaje.ERROR);
-                error = Boolean.FALSE;
-            }
-        }
-
-        if (fechaInicialPeriodoGozar == null) {
-            addMessage("Acciones de Personal", "Fecha inicial del Periodo de Goce es un campo requerido.", TipoMensaje.ERROR);
+        if (fechaInicial == null) {
+            addMessage("Acciones de Personal", "Fecha inicial del Periodo de Incapacidad es un campo requerido.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
 
-        if (fechaFinalPeriodoGozar == null) {
-            addMessage("Acciones de Personal", "Fecha final del Periodo de goce es un campo requerido.", TipoMensaje.ERROR);
+        if (fechaFinal == null) {
+            addMessage("Acciones de Personal", "Fecha final del Periodo de Incapacidad es un campo requerido.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
 
-        if (fechaInicialPeriodoGozar != null || fechaFinalPeriodoGozar != null) {
-            if (!validaFechas(fechaInicialPeriodoGozar, fechaFinalPeriodoGozar)) {
-                addMessage("Acciones de Personal", "Los datos de Fecha inicial y final de periodo de goce no son consistentes.", TipoMensaje.ERROR);
+        if (fechaInicial != null || fechaFinal != null) {
+            if (!validaFechas(fechaInicial, fechaFinal)) {
+                addMessage("Acciones de Personal", "Los datos de Fecha inicial y final de Incapacidad no son consistentes.", TipoMensaje.ERROR);
                 error = Boolean.FALSE;
             }
         }
@@ -176,11 +170,11 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
         accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
         accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
         accionPersonal.setStatus("G");
-        accionPersonal.setDevengadas(devengadas);
-        accionPersonal.setPeriodo(fechaInicialPeriodoPagar);
-        accionPersonal.setPeriodoFinal(fechaFinalPeriodoPagar);
-        accionPersonal.setFechaFinal(fechaFinalPeriodoGozar);
-        accionPersonal.setFechaInicial(fechaInicialPeriodoGozar);
+        accionPersonal.setDias(dias != null ? dias : 0);
+        accionPersonal.setPeriodo(fechaInicial);
+        accionPersonal.setPeriodoFinal(fechaFinal);
+        accionPersonal.setFechaInicial(fechaPlanilla);
+        accionPersonal.setFechaFinal(fechaRealPlanilla);
         accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));
         accionPersonal.setMes(new Short(planilla.split(":")[2].toString()));
         accionPersonal.setNumPlanilla(new Short(planilla.split(":")[3].toString()));
@@ -192,6 +186,16 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
         planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
         limpiarCampos();
         return null;
+    }
+
+    public void handleFechaInicial(DateSelectEvent event) {
+        setFechaInicial(event.getDate());
+        setDias( calculaDias(getFechaInicial(), getFechaFinal()).shortValue() );
+    }
+
+    public void handleFechaFinal(DateSelectEvent event) {
+        setFechaFinal(event.getDate());
+        setDias( calculaDias(getFechaInicial(), getFechaFinal()).shortValue() );
     }
 
 }

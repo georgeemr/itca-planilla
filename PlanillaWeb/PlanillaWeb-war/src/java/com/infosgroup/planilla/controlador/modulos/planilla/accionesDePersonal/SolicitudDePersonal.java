@@ -54,7 +54,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
             nuevaPK.setCodEmp(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp());
             nuevaPK.setCorrelativo(accionPersonalFacade().max(cias.getCodCia(), encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp()));
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Se desencadeno la siguiente excepcion: ", e);
         }
         return nuevaPK;
     }
@@ -63,7 +63,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         try {
             accionPersonalFacade().create(accionPersonal);
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Se desencadeno la siguiente excepcion: ", e);
         }
     }
 
@@ -81,7 +81,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         }
     }
 
-    private PlanillaSessionBean planillaSessionBean() {
+    public PlanillaSessionBean planillaSessionBean() {
         try {
             Context c = new InitialContext();
             return (PlanillaSessionBean) c.lookup("java:global/PlanillaWeb/ProcesosEJBModule/PlanillaSessionBean!com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean");
@@ -117,12 +117,21 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         return f;
     }
 
+    public Integer calculaDias(java.util.Date f1, java.util.Date f2) {
+        if (f1 != null && f2 != null) {
+            Long d = (f2.getTime() - f1.getTime()) / MILISEGUNDOS_POR_DIA;
+            return d.intValue();
+        } else {
+            return 0;
+        }
+    }
+
     private static MailStatelessBean mailStatelessBean() {
         try {
             Context c = new InitialContext();
             return (MailStatelessBean) c.lookup("java:global/PlanillaWeb/ProcesosEJBModule/MailStatelessBean!com.infosgroup.planilla.modelo.procesos.MailStatelessBean");
         } catch (NamingException ne) {
-            ne.printStackTrace();
+            System.out.println( "Ocurrio la siguiente excepcion: " +ne.getMessage() );
             throw new RuntimeException(ne);
         }
     }

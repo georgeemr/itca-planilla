@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
+import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudIncapacidad;
 import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudPermiso;
 import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudVacacionesAnuales;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
@@ -20,7 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
+//import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.component.datatable.DataTable;
 
@@ -38,7 +39,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private List<AccionPersonal> listaSolicitudes;
     private Short tipo;
     private List<TipoAccion> listaTipo;
-    private List<TipoAccion> listaTipoNoAfecta;
+//    private List<TipoAccion> listaTipoNoAfecta;
     private List<Empleados> listaJefes;
     private List<Empleados> listaEmp;
     private List<TiposPlanilla> listaTipos;
@@ -54,6 +55,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     /* Campos de Detalle de Solicitud */
     private SolicitudPermiso solicitudPermiso;
     private SolicitudVacacionesAnuales solicitudVacacionesAnuales;
+    private SolicitudIncapacidad solicitudIncapacidad;
 
     public SolicitudPermiso getSolicitudPermiso() {
         return solicitudPermiso;
@@ -69,6 +71,14 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     public void setSolicitudVacacionesAnuales(SolicitudVacacionesAnuales solicitudVacacionesAnuales) {
         this.solicitudVacacionesAnuales = solicitudVacacionesAnuales;
+    }
+
+    public SolicitudIncapacidad getSolicitudIncapacidad() {
+        return solicitudIncapacidad;
+    }
+
+    public void setSolicitudIncapacidad(SolicitudIncapacidad solicitudIncapacidad) {
+        this.solicitudIncapacidad = solicitudIncapacidad;
     }
 
     public AccionesPersonalBackendBean() {
@@ -101,6 +111,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         empresa = getSessionBeanADM().getCompania().getCodCia();
         solicitudPermiso = new SolicitudPermiso(this);
         solicitudVacacionesAnuales = new SolicitudVacacionesAnuales(this);
+        solicitudIncapacidad = new SolicitudIncapacidad(this);
         fecha = new Date();
     }
 
@@ -206,7 +217,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public List<TipoAccion> getListaTipo() {
-        listaTipo = planillaSessionBean.listarTipoAccionAfecta();
+        listaTipo = planillaSessionBean.listarTipoAccionActivas(getSessionBeanADM().getCompania())/*listarTipoAccionAfecta()*/;
         return listaTipo;
     }
 
@@ -214,26 +225,26 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.listaTipo = listaTipo;
     }
 
-    public List<TipoAccion> getListaTipoNoAfecta() {
-        return listaTipoNoAfecta;
-    }
-
-    public void setListaTipoNoAfecta(List<TipoAccion> listaTipoNoAfecta) {
-        this.listaTipoNoAfecta = listaTipoNoAfecta;
-    }
+//    public List<TipoAccion> getListaTipoNoAfecta() {
+//        return listaTipoNoAfecta;
+//    }
+//
+//    public void setListaTipoNoAfecta(List<TipoAccion> listaTipoNoAfecta) {
+//        this.listaTipoNoAfecta = listaTipoNoAfecta;
+//    }
 
     public String consulta$action() {
         listaSolicitudes = planillaSessionBean.getAccionesByRol(getSessionBeanEMP().getEmpleadoSesion());
         return null;
     }
 
-    public void cmdEmpActionListener(ActionEvent event) {
-        sessionBeanPLA.setTbEmp(Boolean.TRUE);
-    }
-
-    public void cmdJefeActionListener(ActionEvent event) {
-        sessionBeanPLA.setTbJefes(Boolean.TRUE);
-    }
+//    public void cmdEmpActionListener(ActionEvent event) {
+//        sessionBeanPLA.setTbEmp(Boolean.TRUE);
+//    }
+//
+//    public void cmdJefeActionListener(ActionEvent event) {
+//        sessionBeanPLA.setTbJefes(Boolean.TRUE);
+//    }
 
     public String getNombreJefe() {
         nombreJefe = "Ninguno";
