@@ -140,7 +140,7 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         fechaFinal = null;
         tipoPlanilla = null;
         planilla = null;
-        dias = 0;
+        dias = new Short("0");;
         horas = 0;
         descuento = 0.0;
         getEncabezadoSolicitud().setObservacion(null);

@@ -107,6 +107,7 @@ public class SolicitudIncapacidad extends SolicitudDePersonal implements java.io
         fechaFinal = null;
         tipoPlanilla = null;
         planilla = null;
+        dias = new Short("0");
         getEncabezadoSolicitud().setObservacion(null);
     }
 
