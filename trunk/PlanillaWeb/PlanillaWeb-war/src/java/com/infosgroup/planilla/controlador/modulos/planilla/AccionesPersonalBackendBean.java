@@ -21,7 +21,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-//import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.component.datatable.DataTable;
 
@@ -39,8 +38,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private List<AccionPersonal> listaSolicitudes;
     private Short tipo;
     private List<TipoAccion> listaTipo;
-//    private List<TipoAccion> listaTipoNoAfecta;
-    private List<Empleados> listaJefes;
     private List<Empleados> listaEmp;
     private List<TiposPlanilla> listaTipos;
     private Short empresa;
@@ -158,15 +155,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.listaEmp = listaEmp;
     }
 
-    public List<Empleados> getListaJefes() {
-        listaJefes = planillaSessionBean.listarJefes();
-        return listaJefes;
-    }
-
-    public void setListaJefes(List<Empleados> listaJefes) {
-        this.listaJefes = listaJefes;
-    }
-
     public List<TiposPlanilla> getListaTipos() {
         listaTipos = planillaSessionBean.listarTipos(getSessionBeanADM().getCompania());
         return listaTipos;
@@ -225,26 +213,10 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.listaTipo = listaTipo;
     }
 
-//    public List<TipoAccion> getListaTipoNoAfecta() {
-//        return listaTipoNoAfecta;
-//    }
-//
-//    public void setListaTipoNoAfecta(List<TipoAccion> listaTipoNoAfecta) {
-//        this.listaTipoNoAfecta = listaTipoNoAfecta;
-//    }
-
     public String consulta$action() {
         listaSolicitudes = planillaSessionBean.getAccionesByRol(getSessionBeanEMP().getEmpleadoSesion());
         return null;
     }
-
-//    public void cmdEmpActionListener(ActionEvent event) {
-//        sessionBeanPLA.setTbEmp(Boolean.TRUE);
-//    }
-//
-//    public void cmdJefeActionListener(ActionEvent event) {
-//        sessionBeanPLA.setTbJefes(Boolean.TRUE);
-//    }
 
     public String getNombreJefe() {
         nombreJefe = "Ninguno";
