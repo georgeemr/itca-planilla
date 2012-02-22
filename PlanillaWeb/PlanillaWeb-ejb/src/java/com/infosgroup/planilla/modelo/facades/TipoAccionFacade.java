@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.entidades.TipoAccionPK;
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
@@ -19,9 +19,11 @@ import javax.persistence.Query;
  */
 @Stateless
 public class TipoAccionFacade extends AbstractFacade<TipoAccion, TipoAccionPK> {
+
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
@@ -29,25 +31,22 @@ public class TipoAccionFacade extends AbstractFacade<TipoAccion, TipoAccionPK> {
     public TipoAccionFacade() {
         super(TipoAccion.class);
     }
-    
-    public List<TipoAccion> findByAfecta(String afecta){
+
+    public List<TipoAccion> findByAfecta(Cias cias, String afecta) {
         List<TipoAccion> listaTipo = new ArrayList<TipoAccion>(0);
-        
-        Query tip = em.createQuery("select a from TipoAccion a where a.afectaSal = :af ", TipoAccion.class);
-        tip.setParameter("af", afecta);
-        listaTipo = (List<TipoAccion>)tip.getResultList();
-        
-        if(afecta.matches("S")){
-            TipoAccion noAfecta = new TipoAccion();
-            TipoAccionPK pk = new TipoAccionPK();
-//            pk.setCodCia(1);
-//            pk.setCodTipoaccion(0);
-            noAfecta.setTipoAccionPK(pk);
-            noAfecta.setNomTipoaccion("NO AFECTA PLANILLA");
-            listaTipo.add(noAfecta);
-        }
-        
-        return listaTipo;
+        listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia AND t.afectaSal = :afectaSal ", TipoAccion.class).setParameter("codCia", cias.getCodCia()).setParameter("afectaSal", afecta).getResultList();
+        return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
     }
-    
+
+    public List<TipoAccion> listarTipoAccionActivas(Cias cias) {
+        List<TipoAccion> listaTipo = new ArrayList<TipoAccion>(0);
+        listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia AND t.estado = 'A'", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
+    }
+
+    public List<TipoAccion> listarTipoAccionByCias(Cias cias) {
+        List<TipoAccion> listaTipo = new ArrayList<TipoAccion>(0);
+        listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
+    }
 }
