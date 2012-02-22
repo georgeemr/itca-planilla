@@ -8,16 +8,10 @@ import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBack
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
 import java.util.List;
-import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import org.primefaces.event.DateSelectEvent;
 
 /**
@@ -43,7 +37,7 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         if (tipoPlanilla != null && tipoPlanilla != -1) {
             listaPlanillas = planillaSessionBean().getProgramacionPlaByTipo(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla);
         }
-        return listaPlanillas != null ? listaPlanillas:new ArrayList<ProgramacionPla>();
+        return listaPlanillas != null ? listaPlanillas : new ArrayList<ProgramacionPla>();
     }
 
     public void setListaPlanillas(List<ProgramacionPla> listaPlanillas) {
@@ -185,7 +179,7 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         }
 
         if (tipoPlanilla == null || tipoPlanilla == -1) {
-            addMessage("Acciones de Personal", "Debe seleccionar el tipo planilla.", TipoMensaje.ERROR);
+            addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
 
@@ -201,31 +195,16 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         return error;
     }
 
-    private PlanillaSessionBean planillaSessionBean() {
-        try {
-            Context c = new InitialContext();
-            return (PlanillaSessionBean) c.lookup("java:global/PlanillaWeb/ProcesosEJBModule/PlanillaSessionBean!com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean");
-        } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
-
     public void handleFechaInicial(DateSelectEvent event) {
         setFechaInicial(event.getDate());
+        setDias(calculaDias( getFechaInicial(), getFechaFinal() ).shortValue() );
     }
 
     public void handleFechaFinal(DateSelectEvent event) {
         setFechaFinal(event.getDate());
-        if (getFechaInicial() != null && getFechaFinal() != null) {
-            Long d = (getFechaFinal().getTime() - getFechaInicial().getTime()) / MILISEGUNDOS_POR_DIA;
-            setDias(d.shortValue());
-            d.intValue();
-        } else {
-            addMessage("Acciones de Personal", "Complete los campos de Fecha Inicial y Final", TipoMensaje.ERROR);
-        }
+        setDias( calculaDias( getFechaInicial(), getFechaFinal() ).shortValue() );
     }
-
+    
     public boolean validaAccionPersonal(java.util.Date f1, java.util.Date f2) {
         Boolean error = Boolean.TRUE;
         if (f1 == null) {
