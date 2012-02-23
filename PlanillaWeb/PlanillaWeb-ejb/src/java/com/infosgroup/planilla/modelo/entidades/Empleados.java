@@ -282,6 +282,8 @@ public class Empleados implements Serializable {
     private String correo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
     private List<Evaluacion> evaluacionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
+    private List<CapacitacionXEmpleado> capacitacionXEmpleadoList;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA")})
@@ -944,6 +946,14 @@ public class Empleados implements Serializable {
         return tiposPlanilla;
     }
 
+    @XmlTransient
+    public List<CapacitacionXEmpleado> getCapacitacionXEmpleadoList() {
+        return capacitacionXEmpleadoList;
+    }
+
+    public void setCapacitacionXEmpleadoList(List<CapacitacionXEmpleado> capacitacionXEmpleadoList) {
+        this.capacitacionXEmpleadoList = capacitacionXEmpleadoList;
+    }
     public void setTiposPlanilla(TiposPlanilla tiposPlanilla) {
         this.tiposPlanilla = tiposPlanilla;
     }

@@ -14,8 +14,10 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -38,7 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Capacitacion.findAll", query = "SELECT c FROM Capacitacion c"),
     @NamedQuery(name = "Capacitacion.findByCodCia", query = "SELECT c FROM Capacitacion c WHERE c.capacitacionPK.codCia = :codCia"),
     @NamedQuery(name = "Capacitacion.findByCodCapacitacion", query = "SELECT c FROM Capacitacion c WHERE c.capacitacionPK.codCapacitacion = :codCapacitacion"),
-    @NamedQuery(name = "Capacitacion.findByCodInsti", query = "SELECT c FROM Capacitacion c WHERE c.codInsti = :codInsti"),
+    @NamedQuery(name = "Capacitacion.findByCodInsti", query = "SELECT c FROM Capacitacion c WHERE c.instituciones = :codInsti"),
     @NamedQuery(name = "Capacitacion.findByNomCapacitacion", query = "SELECT c FROM Capacitacion c WHERE c.nomCapacitacion = :nomCapacitacion"),
     @NamedQuery(name = "Capacitacion.findByFechaDesde", query = "SELECT c FROM Capacitacion c WHERE c.fechaDesde = :fechaDesde"),
     @NamedQuery(name = "Capacitacion.findByFechaHasta", query = "SELECT c FROM Capacitacion c WHERE c.fechaHasta = :fechaHasta"),
@@ -51,8 +53,8 @@ public class Capacitacion implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CapacitacionPK capacitacionPK;
-    @Column(name = "COD_INSTI")
-    private Short codInsti;
+    /*@Column(name = "COD_INSTI")
+    private Short codInsti;*/
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
@@ -86,13 +88,21 @@ public class Capacitacion implements Serializable {
     @Size(max = 3)
     @Column(name = "STATUS", length = 3)
     private String status;
-    @JoinTable(name = "CAPACITACION_X_EMPLEADO", joinColumns = {
+    //join bajo prueba
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", insertable = false, updatable = false),
+        @JoinColumn(name = "COD_INSTI", referencedColumnName = "COD_INSTI")})
+    @ManyToOne(optional = false)
+    private Instituciones instituciones;
+    /*@JoinTable(name = "CAPACITACION_X_EMPLEADO", joinColumns = {
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
         @JoinColumn(name = "COD_CAPACITACION", referencedColumnName = "COD_CAPACITACION", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
         @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false)})
     @ManyToMany
-    private List<Empleados> empleadosList;
+    private List<Empleados> empleadosList;*/
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
+    private List<CapacitacionXEmpleado> capacitacionXEmpleadoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
     private List<GastoXCapacitacion> gastoXCapacitacionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
@@ -126,13 +136,21 @@ public class Capacitacion implements Serializable {
         this.capacitacionPK = capacitacionPK;
     }
 
-    public Short getCodInsti() {
-        return codInsti;
+    public Instituciones getInstituciones() {
+        return instituciones;
     }
 
-    public void setCodInsti(Short codInsti) {
-        this.codInsti = codInsti;
+    public void setInstituciones(Instituciones instituciones) {
+        this.instituciones = instituciones;
     }
+
+//    public Instituciones getCodInsti() {
+//        return codInsti;
+//    }
+//
+//    public void setCodInsti(Instituciones codInsti) {
+//        this.codInsti = codInsti;
+//    }
 
     public String getNomCapacitacion() {
         return nomCapacitacion;
@@ -198,13 +216,22 @@ public class Capacitacion implements Serializable {
         this.status = status;
     }
 
-    @XmlTransient
+    /*@XmlTransient
     public List<Empleados> getEmpleadosList() {
         return empleadosList;
     }
 
     public void setEmpleadosList(List<Empleados> empleadosList) {
         this.empleadosList = empleadosList;
+    }*/
+    
+    @XmlTransient
+    public List<CapacitacionXEmpleado> getCapacitacionXEmpleadoList() {
+        return capacitacionXEmpleadoList;
+    }
+
+    public void setCapacitacionXEmpleadoList(List<CapacitacionXEmpleado> capacitacionXEmpleadoList) {
+        this.capacitacionXEmpleadoList = capacitacionXEmpleadoList;
     }
 
     @XmlTransient
