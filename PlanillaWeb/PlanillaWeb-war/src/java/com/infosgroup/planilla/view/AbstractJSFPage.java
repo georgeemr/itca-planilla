@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.view;
 
 import com.infosgroup.planilla.controlador.sessionbean.SessionBeanADM;
+import com.infosgroup.planilla.controlador.sessionbean.SessionBeanCAP;
 import com.infosgroup.planilla.controlador.sessionbean.SessionBeanEMP;
 import com.infosgroup.planilla.controlador.sessionbean.SessionBeanPLA;
 import com.infosgroup.planilla.controlador.sessionbean.SessionBeanREC;
@@ -65,6 +66,16 @@ public abstract class AbstractJSFPage {
     protected SessionBeanEMP sessionBeanEMP;
     @ManagedProperty(value = "#{SessionBeanPLA}")
     protected SessionBeanPLA sessionBeanPLA;
+    @ManagedProperty(value = "#{SessionBeanCAP}")
+    protected SessionBeanCAP sessionBeanCAP;
+
+    public SessionBeanCAP getSessionBeanCAP() {
+        return sessionBeanCAP;
+    }
+
+    public void setSessionBeanCAP(SessionBeanCAP sessionBeanCAP) {
+        this.sessionBeanCAP = sessionBeanCAP;
+    }
 
     public SessionBeanADM getSessionBeanADM() {
         return sessionBeanADM;
