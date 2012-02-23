@@ -63,6 +63,8 @@ public class Instituciones implements Serializable {
     private Integer codDp;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "instituciones")
     private List<DetInstitucion> detInstitucionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "instituciones")
+    private List<Capacitacion> capacitacionList;
 
     public Instituciones() {
     }
@@ -146,6 +148,15 @@ public class Instituciones implements Serializable {
 
     public void setDetInstitucionList(List<DetInstitucion> detInstitucionList) {
         this.detInstitucionList = detInstitucionList;
+    }
+
+    @XmlTransient
+    public List<Capacitacion> getCapacitacionList() {
+        return capacitacionList;
+    }
+
+    public void setCapacitacionList(List<Capacitacion> capacitacionList) {
+        this.capacitacionList = capacitacionList;
     }
 
     @Override
