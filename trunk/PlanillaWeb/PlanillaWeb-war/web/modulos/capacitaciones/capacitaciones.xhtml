@@ -1,0 +1,313 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="./../../plantillas/defaultTemplate.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="dialogos">
+        <p:confirmDialog message="&#191; Esta seguro que desea eliminar el Concurso seleccionado ?"  
+                         showEffect="bounce" hideEffect="explode"  modal="true"
+                         header="Eliminar Concurso" severity="alert" widgetVar="confirmation">  
+            <p:commandButton value="Si, estoy seguro" update="mensajes, tablaConcursos" oncomplete="confirmation.hide()"  
+                             actionListener="#{reclutamiento$concursos.eliminar$crud$action}" />  
+            <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+
+        </p:confirmDialog>        
+    </ui:define>
+
+    <ui:define name="acciones">
+        <p:tab title="Acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true"
+                               action="#{capacitaciones$capacitaciones.nuevo$vh$action()}" update="panelContenido">
+                    <p:graphicImage value="/resources/iconos/new.png"/>
+                    <h:outputText value="Nuevo" styleClass="espacioTexto"/>
+                </p:commandLink>
+
+                <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true"
+                               action="#{capacitaciones$capacitaciones.consultar$vh$action()}" update="tablaConcursos, panelContenido">
+                    <p:graphicImage value="/resources/iconos/search.png"/>
+                    <h:outputText value="Consultar" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true"
+                               action="#{capacitaciones$capacitaciones.editar$cap$action()}" update="mensajes, panelContenido">
+                    <p:graphicImage value="/resources/iconos/edit.png"/>
+                    <h:outputText value="Editar" styleClass="espacioTexto"/>
+                </p:commandLink>
+
+            </h:panelGrid>
+        </p:tab>
+
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" value="Cancelar" ajax="true" action="#{reclutamiento$concursos.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                    <p:graphicImage styleClass="ui-icon ui-icon-circle-close" />
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+
+    </ui:define>
+
+    <ui:define name="titulo">
+        Capacitaciones
+    </ui:define>
+
+    <ui:define name="contenido">       
+
+        <p:panel id="panelInformacion" style="border:none;" >
+            <div>
+                <div style="float:left;width: 30%;" >
+                    <h:panelGrid columns="4" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }"  >
+                        <p:graphicImage value="../../resources/imagenes/64/info.png" />
+                        <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
+                        <h:outputLabel value="*" styleClass="requerido"/>                                
+                        <h:outputLabel value=" son requeridos." style="font-style: italic;" />
+                    </h:panelGrid>
+                </div>    
+                <div style="float:left; width: 70%;"  >
+                    <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" 
+                               styleClass="toolbarUsuario" >
+                        <p:toolbarGroup align="right"  >
+                            <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{capacitaciones$capacitaciones.guardar$cap$action()}"
+                                             update="mensajes, lstStatus, lstInst, Nombre, calFecIni, calFecFin, Duracion, impartida, Razon, costoRazon" />  
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                </div>
+                <div style="clear:both;" ></div>
+            </div>
+        </p:panel>
+
+        <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" />
+
+        <p:fieldset legend="Datos de la capacitaci&#243;n" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" >
+            <p:spacer height="20" />
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Estado: " />
+                <h:selectOneMenu id="lstStatus" value="#{capacitaciones$capacitaciones.status}"  style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
+                    <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                    <f:selectItem itemLabel="Grabado" itemValue="G"/>
+                    <f:selectItem itemLabel="Aprobado" itemValue="A"/>
+                    <f:selectItem itemLabel="Rechazado" itemValue="R"/>
+                    <f:selectItem itemLabel="Realizado" itemValue="RE"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="Instituci&#243;n: " />
+                <h:selectOneMenu id="lstInst" value="#{capacitaciones$capacitaciones.inst}"  style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
+                    <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                    <f:selectItems value="#{capacitaciones$capacitaciones.listaInst}" var="inst" itemValue="#{inst.institucionesPK.codInsti}"  itemLabel="#{inst.desInsti}"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="Nombre: " />
+                <p:inputText id="Nombre" value="#{capacitaciones$capacitaciones.nombre}" maxlength="200" required="true" 
+                             requiredMessage="El Nombre del Concurso es un campo obligatorio" />
+                
+                <h:outputLabel value="Fecha Inicial: " />
+                <p:calendar id="calFecIni" value="#{capacitaciones$capacitaciones.fechaInicial}" showOn="button" required="true" 
+                            requiredMessage="La Fecha Inicial del concurso es un campo obligatorio" pattern="dd/MM/yyyy" />
+
+                <h:outputLabel value="Fecha Final: " />
+                <p:calendar id="calFecFin" value="#{capacitaciones$capacitaciones.fechaFinal}"  showOn="button" required="true"
+                            requiredMessage="La Fecha Final del concurso es un campo obligatorio" pattern="dd/MM/yyyy"/>
+
+                <h:outputLabel value="Duraci&#243;n (Hrs): " />
+                <p:inputText id="Duracion" value="#{capacitaciones$capacitaciones.duracion}" maxlength="100" required="true" 
+                             requiredMessage="La duraci&#243;n es un campo obligatorio" />
+
+                <h:outputLabel value="Impartida por: " />
+                <p:inputText id="impartida" value="#{capacitaciones$capacitaciones.impartido}" maxlength="100" required="true"
+                             requiredMessage="El n&#250;mero de Plazas es un campo obligatorio" 
+                             converterMessage="Ingrese un número entero de plazas." />
+            </h:panelGrid>
+            
+        </p:fieldset>
+        <p:spacer height="20" />
+        <p:fieldset rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" >
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Raz&#243;n de la capacitaci&#243;n: " />
+                <p:inputText id="Razon" value="#{capacitaciones$capacitaciones.razon}" maxlength="200" required="true" 
+                             requiredMessage="La duraci&#243;n es un campo obligatorio" />
+
+                <h:outputLabel value="Costo Raz&#243;n: " />
+                <p:inputText id="costoRazon" value="#{capacitaciones$capacitaciones.costoRazon}" maxlength="11" required="true"
+                             requiredMessage="El n&#250;mero de Plazas es un campo obligatorio" 
+                             converterMessage="Ingrese un número entero de plazas." />
+            </h:panelGrid>
+            
+        </p:fieldset>
+        <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 2)}" 
+                   styleClass="toolbarUsuario" >
+            <p:toolbarGroup align="right" >
+                <p:commandButton value="Eliminar" image="ui-icon ui-icon-circle-minus" ajax="true" onclick="confirmation.show()"/>
+            </p:toolbarGroup>
+        </p:toolbar>
+
+        <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq 2) }" />
+
+        <p:fieldset legend="Consulta de Capacitaciones" rendered="#{(SessionBeanADM.estadoAccion eq 2)}" >
+
+            <p:spacer height="20" />
+            <p:dataTable id="tablaConcursos"
+                         var="capacitacion" rows="5"  paginator="true" 
+                         value="#{capacitaciones$capacitaciones.listaCap}"
+                         emptyMessage="No se han encontrado Concursos."
+                         binding="#{capacitaciones$capacitaciones.tableCapacitaciones}"
+                         paginatorAlwaysVisible="true" selectionMode="single" 
+                         selection="#{SessionBeanCAP.capacitacionSeleccionada}"
+                         rowSelectListener="#{capacitaciones$capacitaciones.onRowSelectConcurso}"  
+                         rowUnselectListener="#{capacitaciones$capacitaciones.onRowUnSelectConcurso}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
+                <f:facet name="header">
+                    <h:outputText value="Concursos"/>
+                </f:facet>
+
+                <p:column sortBy="#{capacitacion.capacitacionPK.codCapacitacion}">
+                    <f:facet name="header">
+                        C&oacute;digo
+                    </f:facet>
+                    <h:outputLabel value="#{capacitacion.capacitacionPK.codCapacitacion}"/>
+                </p:column>
+
+                <p:column sortBy="#{capacitacion.instituciones.desInsti}">
+                    <f:facet name="header">
+                        Institucion
+                    </f:facet>
+                    <h:outputLabel value="#{capacitacion.instituciones.desInsti}" />
+                </p:column> 
+
+                <p:column filterBy="#{capacitacion.nomCapacitacion}" 
+                          filterMatchMode="contains"
+                          headerText="Nombre de la capacitacion">
+                    <h:outputLabel value="#{capacitacion.nomCapacitacion}"/>
+                </p:column> 
+
+                <p:column sortBy="#{capacitacion.fechaDesde}">
+                    <f:facet name="header">
+                        Fecha inicial
+                    </f:facet>
+                    <h:outputLabel value="#{capacitacion.fechaDesde}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputLabel>
+                </p:column>    
+
+                <p:column sortBy="#{capacitacion.fechaHasta}">
+                    <f:facet name="header">
+                        Fecha final
+                    </f:facet>
+                    <h:outputLabel value="#{capacitacion.fechaHasta}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputLabel>
+                </p:column>         
+                
+                <p:column sortBy="#{capacitacion.duracion}"
+                          filterBy="#{capacitacion.duracion}"
+                          filterMatchMode="contains">
+                    <f:facet name="header">
+                        Duracion (Hrs)
+                    </f:facet>
+                    <h:outputLabel value="#{capacitacion.duracion}" />
+                </p:column> 
+
+                <p:column sortBy="#{capacitacion.impartidaPor}"
+                          filterBy="#{capacitacion.impartidaPor}"
+                          filterMatchMode="contains">
+                    <f:facet name="header">
+                        Impartida por
+                    </f:facet>
+                    <h:outputLabel value="#{capacitacion.impartidaPor}" />
+                </p:column>
+                <!--p:column filterBy="# {concurso.estadoConcurso.nombre}"
+                          filterOptions="# {reclutamiento$concursos.itemEstado}"
+                          filterMatchMode="exact" >
+                    <f:facet name="header">
+                        Estado
+                    </f:facet>
+                    <h:outputLabel value="# {concurso.estadoConcurso.nombre}" />
+                </p:column--> 
+
+            </p:dataTable>
+            <p:spacer height="20" />    
+
+        </p:fieldset>
+
+
+        <p:panel id="panelInformacionEdit" style="border:none;" >
+            <div>
+                <div style="float:left;width: 30%;" >
+                    <h:panelGrid columns="4" rendered="#{(SessionBeanADM.estadoAccion eq 1)}" >
+                        <p:graphicImage value="../../resources/imagenes/64/info.png" />
+                        <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
+                        <h:outputLabel value="*" styleClass="requerido"/>                                
+                        <h:outputLabel value=" son requeridos." style="font-style: italic;" />
+                    </h:panelGrid>
+                </div>    
+                <div style="float:left; width: 70%;"  >
+                    <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 1)}"
+                               styleClass="toolbarUsuario" >
+                        <p:toolbarGroup align="right"  >
+                            <p:commandButton id="cmdModificar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{capacitaciones$capacitaciones.guardar$cap$action()}"
+                                             update="mensajes, lstStatus2, lstInst2, Nombre2, calFecIni2, calFecFin2, Duracion2, impartida2, Razon2, costoRazon2" />  
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                </div>
+                <div style="clear:both;" ></div>
+            </div>
+        </p:panel>
+
+        <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq 1)}" />
+
+        <p:fieldset legend="Editar Datos - Informacion de la capacitacion" rendered="#{(SessionBeanADM.estadoAccion eq 1)}" >
+            <p:spacer height="20" />
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Estado: " />
+                <h:selectOneMenu id="lstStatus2" value="#{capacitaciones$capacitaciones.status}"  style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
+                    <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                    <f:selectItem itemLabel="Grabado" itemValue="G"/>
+                    <f:selectItem itemLabel="Aprobado" itemValue="A"/>
+                    <f:selectItem itemLabel="Rechazado" itemValue="R"/>
+                    <f:selectItem itemLabel="Realizado" itemValue="RE"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="Instituci&#243;n: " />
+                <h:selectOneMenu id="lstInst2" value="#{capacitaciones$capacitaciones.inst}"  style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
+                    <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                    <f:selectItems value="#{capacitaciones$capacitaciones.listaInst}" var="inst" itemValue="#{inst.institucionesPK.codInsti}"  itemLabel="#{inst.desInsti}"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="Nombre: " />
+                <p:inputText id="Nombre2" value="#{capacitaciones$capacitaciones.nombre}" maxlength="200" required="true" 
+                             requiredMessage="El Nombre del Concurso es un campo obligatorio" />
+                
+                <h:outputLabel value="Fecha Inicial: " />
+                <p:calendar id="calFecIni2" value="#{capacitaciones$capacitaciones.fechaInicial}" showOn="button" required="true" 
+                            requiredMessage="La Fecha Inicial del concurso es un campo obligatorio" pattern="dd/MM/yyyy" />
+
+                <h:outputLabel value="Fecha Final: " />
+                <p:calendar id="calFecFin2" value="#{capacitaciones$capacitaciones.fechaFinal}"  showOn="button" required="true"
+                            requiredMessage="La Fecha Final del concurso es un campo obligatorio" pattern="dd/MM/yyyy"/>
+
+                <h:outputLabel value="Duraci&#243;n (Hrs): " />
+                <p:inputText id="Duracion2" value="#{capacitaciones$capacitaciones.duracion}" maxlength="100" required="true" 
+                             requiredMessage="La duraci&#243;n es un campo obligatorio" />
+
+                <h:outputLabel value="Impartida por: " />
+                <p:inputText id="impartida2" value="#{capacitaciones$capacitaciones.impartido}" maxlength="100" required="true"
+                             requiredMessage="El n&#250;mero de Plazas es un campo obligatorio" 
+                             converterMessage="Ingrese un número entero de plazas." />
+            </h:panelGrid>
+            
+        </p:fieldset>
+        <p:spacer height="20" />
+        <p:fieldset rendered="#{(SessionBeanADM.estadoAccion eq 1) }" >
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Raz&#243;n de la capacitaci&#243;n: " />
+                <p:inputText id="Razon2" value="#{capacitaciones$capacitaciones.razon}" maxlength="200" required="true" 
+                             requiredMessage="La duraci&#243;n es un campo obligatorio" />
+
+                <h:outputLabel value="Costo Raz&#243;n: " />
+                <p:inputText id="costoRazon2" value="#{capacitaciones$capacitaciones.costoRazon}" maxlength="11" required="true"
+                             requiredMessage="El n&#250;mero de Plazas es un campo obligatorio" 
+                             converterMessage="Ingrese un número entero de plazas." />
+            </h:panelGrid>
+            
+        </p:fieldset>
+
+    </ui:define>
+</ui:composition>
