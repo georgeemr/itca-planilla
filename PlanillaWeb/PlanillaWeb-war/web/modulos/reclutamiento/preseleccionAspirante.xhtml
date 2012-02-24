@@ -10,18 +10,41 @@
     <ui:define name="titulo">Reclutamiento y Selecci&oacute;n de Candidatos</ui:define>
 
     <ui:define name="dialogos" >
+        <p:confirmDialog message="&#191; Esta seguro que desea eliminar la prueba seleccionada ?" showEffect="bounce" hideEffect="explode"  
+                         modal="true" header="Eliminar Prueba" severity="alert" widgetVar="dlgEliminarPrueba">  
+            <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,pruebasXEvaluacionEdit" oncomplete="dlgEliminarPrueba.hide()"  
+                             action="#{reclutamiento$preseleccionAspirante.eliminarPruebaCandidato}" />  
+            <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
 
-        <p:dialog id="dialogoEvaluacion" widgetVar="botonMostrarEvaluacion" header="Evaluaciones" width="650" height="300"  
-                  onCloseUpdate="principalForm:mensajes,principalForm:evCandidatoLst" closeListener="#{reclutamiento$preseleccionAspirante.handleCloseEvaluacionCandidato}"
-                  resizable="false" showEffect="clip" hideEffect="clip">  
-            <h:outputLabel id="lbl1" value="Candidato Seleccionado: "  style="font-weight: bold;"/>
-            <h:outputLabel id="lbl2" value="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado.candidato1.nombreCompleto}" />
+        </p:confirmDialog>        
+
+        <p:dialog id="dialogoEvaluacion" widgetVar="botonMostrarEvaluacion" header="Evaluaciones" width="650" height="500"  resizable="true" showEffect="clip" hideEffect="clip"
+                  onCloseUpdate="principalForm:mensajes,principalForm:evCandidatoLst" closeListener="#{reclutamiento$preseleccionAspirante.handleCloseEvaluacionCandidato}" >  
+
+            <h:panelGrid columns="3" >
+                <p:graphicImage value="/resources/imagenes/64/evaluacion32x32.png" />   
+                <h:outputLabel id="lbl1" value="Candidato Seleccionado: "  style="font-weight: bold;"/>
+                <h:outputLabel id="lbl2" value="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado.candidato1.nombreCompleto}" />
+                <h:outputLabel value="Buscar Prueba." />
+                <p:autoComplete id="autocompletePrueba" forceSelection="true" var="prueba"
+                                value="#{reclutamiento$preseleccionAspirante.pruebaXPuestoSeleccionada}"
+                                itemValue="#{prueba.pruebaToString}" itemLabel="#{prueba.nombre}"
+                                onSelectUpdate="principalForm:mensajes,addPruebaCandidato,dialogoEvaluacion"
+                                completeMethod="#{reclutamiento$preseleccionAspirante.completePrueba}"
+                                converter="#{reclutamiento$preseleccionAspirante.pruebaConverter}" >
+                </p:autoComplete>
+                <p:commandButton id="addPruebaCandidato" image="ui-icon-circle-plus" action="#{reclutamiento$preseleccionAspirante.agregarPruebaCandidato}" update="principalForm:mensajes,autocompletePrueba,pruebasXEvaluacionEdit" />
+            </h:panelGrid>
+
             <p:spacer height="30">
-                <p:dataTable id="pruebasXEvaluacionEdit" value="#{reclutamiento$preseleccionAspirante.evaluacionCandidatos}" 
-                             paginator="true" rows="10"  emptyMessage="No se han encontrado Evaluaciones." 
-                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                             rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" onRowEditUpdate="principalForm:mensajes" onRowSelectUpdate="principalForm:mensajes"
-                             var="evaluacion" dynamic="true" rowEditListener="#{reclutamiento$preseleccionAspirante.onEditNotasCandidato}" >
+                <p:dataTable id="pruebasXEvaluacionEdit" value="#{reclutamiento$preseleccionAspirante.evaluacionCandidatos}" var="evaluacion"
+                             paginator="true" rows="10"  emptyMessage="No se han encontrado Evaluaciones." dynamic="true" 
+                             rowEditListener="#{reclutamiento$preseleccionAspirante.onEditNotasCandidato}" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" onRowEditUpdate="principalForm:mensajes" onRowSelectUpdate="principalForm:mensajes,pruebasXEvaluacionEdit" onRowUnselectUpdate="principalForm:mensajes,pruebasXEvaluacionEdit" >
+
+                    <f:facet name="header">
+                        Evaluaciones por Candidato
+                    </f:facet>
 
                     <p:column headerText="Evaluaci&oacute;n" >  
                         <h:outputLabel value="#{evaluacion.pruebaXPuesto.nombre}" />
@@ -57,6 +80,12 @@
                         <p:rowEditor />  
                     </p:column>  
 
+                    <p:column headerText="Eliminar" >
+                        <p:commandButton  id="cmdEliminar" image="ui-icon-circle-minus" oncomplete="dlgEliminarPrueba.show();"  >
+                            <f:setPropertyActionListener value="#{evaluacion}" target="#{reclutamiento$preseleccionAspirante.pruebaEliminar}" /> 
+                        </p:commandButton>
+                    </p:column>
+
                 </p:dataTable>
             </p:spacer>
 
@@ -70,13 +99,12 @@
 
                 <p:dataTable id="criteriosDisponibles" var="criterio" value="#{reclutamiento$preseleccionAspirante.criteriosDisponibles}" emptyMessage="No se han encontrado mas Criterios" 
                              paginator="true" rows="10" selectionMode="multiple" onRowSelectUpdate="principalForm:criteriosDisponibles,principalForm:criteriosSeleccionados"
-                             selection="#{SessionBeanREC.criteriosAdicionales}" binding="#{reclutamiento$preseleccionAspirante.tableCriteriosAdicionales}"
+                             selection="#{reclutamiento$preseleccionAspirante.criteriosAdicionales}" binding="#{reclutamiento$preseleccionAspirante.tableCriteriosAdicionales}"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                              rowsPerPageTemplate="5,10,25,50,100" >  
 
-                    <p:column headerText="Criterio" 
-                              filterBy="#{criterio.criterio1.nombre}"
-                              filterMatchMode="contains" >  
+                    <p:column headerText="Criterio" filterMatchMode="contains"
+                              filterBy="#{criterio.criterio1.nombre}" >  
                         <h:outputLabel value="#{criterio.criterio1.nombre}" />  
                         <h:outputLabel value="#{criterio.descripcionRango}" />
                     </p:column>  
@@ -87,9 +115,8 @@
 
         </p:dialog> 
 
-        <p:confirmDialog message="&#191;Esta seguro que desea cerrar este Concurso?"  
-                         showEffect="bounce" hideEffect="explode"  modal="true" closable="false"
-                         header="Cerrar Concurso" severity="alert" widgetVar="confirmation">  
+        <p:confirmDialog message="&#191;Esta seguro que desea cerrar este Concurso?" header="Cerrar Concurso" severity="alert"
+                         showEffect="bounce" hideEffect="explode"  modal="true" closable="false" widgetVar="confirmation">  
             <h:panelGrid columns="2">
                 <h:outputLabel value="Comentario final: " />
                 <p:inputTextarea value="#{reclutamiento$preseleccionAspirante.comentarioFinal}" />
@@ -129,7 +156,7 @@
                     <tr>
                         <td> 
                             <h:panelGrid columns="2">
-                                <h:outputLabel value="Acta y Acuerdo" style="font-weight: bold;"/>
+                                <h:outputLabel value="Acta y Acuerdo" style="margin:0 0 0 -3px;padding:0;font-weight: bold;" />
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
@@ -146,7 +173,7 @@
                     <tr>
                         <td>
                             <h:panelGrid columns="2">
-                                <h:outputLabel value="Fecha Inicio" style="font-weight: bold;"/>
+                                <h:outputLabel value="Fecha Inicio" style="margin:0 0 0 -3px;padding:0;font-weight: bold;" />
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
@@ -157,7 +184,7 @@
                     </tr>
                     <tr>
                         <td><h:outputLabel value="Puesto" style="font-weight: bold;"/></td>
-                        <td><h:outputLabel id="lbl_puesto" value="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado.concurso1.puesto.nombre}" /></td>
+                        <td><h:outputLabel id="lbl_puesto" value="#{reclutamiento$preseleccionAspirante.concursoSeleccionado.puestos.nomPuesto}" /></td>
                         <td></td>
                         <td>
                             <h:panelGrid columns="2">
@@ -172,7 +199,7 @@
                     <tr>
                         <td>
                             <h:panelGrid columns="2">
-                                <h:outputLabel value="Representante Patronal" style="font-weight: bold;" />                          
+                                <h:outputLabel value="Representante Patronal" style="margin:0 0 0 -3px;padding:0;font-weight: bold;" />                          
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
@@ -181,12 +208,14 @@
                     <tr>
                         <td>
                             <h:panelGrid columns="2">
-                                <h:outputLabel value="Tipo de Contrato" style="font-weight: bold;" />
+                                <h:outputLabel value="Tipo de Contrato" style="margin:0 0 0 -3px;padding:0;font-weight: bold;" />
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
-                        <td><h:selectOneMenu id="lst_tipoContrato" value="#{reclutamiento$preseleccionAspirante.tipoContratoSeleccionado}" >
-                                <f:selectItem itemValue="" itemLabel="" />
+                        <td><h:selectOneMenu id="lst_tipoContrato" style="height: 25px;padding-top: 3px;width: 200px;" value="#{reclutamiento$preseleccionAspirante.tipoContratoSeleccionado}" >
+                                <f:selectItem itemValue="P" itemLabel="PERMANENTE" />
+                                <f:selectItem itemValue="E" itemLabel="EVENTUAL" />
+                                <f:selectItem itemValue="S" itemLabel="SERVICIOS PROFECIONALES" />
                             </h:selectOneMenu></td>
                         <td></td>
                         <td>
@@ -195,18 +224,19 @@
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
-                        <td><h:selectOneMenu id="lst_estadoContrato" value="#{reclutamiento$preseleccionAspirante.estadoContrato}" >
-                                <f:selectItem itemValue="" itemLabel="" />
+                        <td><h:selectOneMenu id="lst_estadoContrato" style="height: 25px;padding-top: 3px;width: 200px;" value="#{reclutamiento$preseleccionAspirante.estadoContrato}" >
+                                <f:selectItem itemValue="G" itemLabel="GUARDADO" />
+                                <f:selectItem itemValue="E" itemLabel="EMITIDO" />
                             </h:selectOneMenu></td>
                     </tr>
                     <tr>
                         <td>
                             <h:panelGrid columns="2">
-                                <h:outputLabel value="Tipo de Planilla" style="font-weight: bold;" />
+                                <h:outputLabel value="Tipo de Planilla" style="margin:0 0 0 -3px;padding:0;font-weight: bold;" />
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
-                        <td><h:selectOneMenu id="lst_tipoPlanilla" value="#{reclutamiento$preseleccionAspirante.tipoPlanilla}" >
+                        <td><h:selectOneMenu id="lst_tipoPlanilla" style="height: 25px;padding-top: 3px;width: 200px;" value="#{reclutamiento$preseleccionAspirante.tipoPlanilla}" >
                                 <f:selectItems var="tipoPlanilla" value="#{reclutamiento$preseleccionAspirante.listaTipoPlanilla}" itemValue="#{tipoPlanilla.tiposPlanillaPK.codTipopla}" itemLabel="#{tipoPlanilla.nomTipopla}" />
                             </h:selectOneMenu></td>
                         <td></td>
@@ -216,13 +246,13 @@
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>                            
                         </td>
-                        <td><h:selectOneMenu id="lst_sucursal" value="#{reclutamiento$preseleccionAspirante.agencia}" >
+                        <td><h:selectOneMenu id="lst_sucursal" value="#{reclutamiento$preseleccionAspirante.agencia}" style="height: 25px;padding-top: 3px;width: 200px;" >
                                 <f:selectItems var="agencia" value="#{reclutamiento$preseleccionAspirante.listaAgencias}" itemValue="#{agencia.agenciasPK.codAgencia}" itemLabel="#{agencia.nomAgencia}" />
                             </h:selectOneMenu></td>
                     </tr>
                     <tr>
                         <td valign="top"><h:outputLabel value="Observaciones" style="font-weight: bold;" /></td>
-                        <td colspan="3" ><p:inputTextarea id="txObservaciones" value="#{reclutamiento$preseleccionAspirante.observaciones}" /></td>
+                        <td colspan="4" ><p:inputTextarea id="txObservaciones" style="width:100%"  value="#{reclutamiento$preseleccionAspirante.observaciones}" /></td>
                     </tr>
                     <tr>
                         <td valign="top">
@@ -250,6 +280,22 @@
     </ui:define>
 
     <ui:define name="acciones">
+        <p:tab id="accionesCandidato" title="Candidatos" rendered="#{reclutamiento$preseleccionAspirante.concursoSeleccionado ne null}" >
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{reclutamiento$preseleccionAspirante.buscarCandidatosXCriterios}" update="principalForm:mensajes,criteriosSeleccionados,tableCanSeleccionados,wizarPreseleccion" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                    <p:graphicImage value="/resources/iconos/candidato-criterio.png" />
+                    <h:outputText value="Filtrar por Criterios" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{reclutamiento$preseleccionAspirante.buscarAllCandidatos}" update="principalForm:mensajes,criteriosSeleccionados,tableCanSeleccionados,wizarPreseleccion" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                    <p:graphicImage value="/resources/iconos/candidato.png" />
+                    <h:outputText value="Filtrar por Candidato" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu textoNormal"  ajax="true" action="#{reclutamiento$preseleccionAspirante.buscarAllEmpleados}" update="principalForm:mensajes,criteriosSeleccionados,tableCanSeleccionados,wizarPreseleccion" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                    <p:graphicImage value="/resources/iconos/personal.png" />
+                    <h:outputText value="Filtrar por Empleado" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu textoNormal" value="Cancelar" ajax="true" action="#{reclutamiento$preseleccionAspirante.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
@@ -263,6 +309,7 @@
         <p:spacer height="20" />
 
         <p:wizard id="wizarPreseleccion" widgetVar="wiz" flowListener="#{reclutamiento$preseleccionAspirante.onFlowListener}" 
+                  showStepStatus="true"
                   backLabel="Anterior" nextLabel="Siguiente"  >
             <p:tab id="concursoSeleccionado" title="Concursos"  >
                 <p:spacer height="20" />
@@ -270,29 +317,21 @@
                     <h:panelGrid columns="8"  >
                         <h:outputLabel value=""/>
                         <h:outputLabel value="Fecha inicial"/>
-                        <p:calendar id="calFechaInicial"  pattern="dd/MM/yyyy" showOn="button"
-                                    value="#{reclutamiento$preseleccionAspirante.fechaInicial}" />
+                        <p:calendar id="calFechaInicial"  pattern="dd/MM/yyyy" showOn="button" value="#{reclutamiento$preseleccionAspirante.fechaInicial}" />
                         <h:outputLabel value=""/>
                         <h:outputLabel value="Fecha final"/>
-                        <p:calendar id="calFechaFinal" 
-                                    pattern="dd/MM/yyyy" 
-                                    value="#{reclutamiento$preseleccionAspirante.fechaFinal}" 
-                                    showOn="button" />
-                        <p:commandButton value="Buscar" image="buscar" 
-                                         update="mensajes, calFechaInicial, calFechaFinal, tablaConcursos, principalForm:criteriosDisponibles" 
-                                         action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"/>
+                        <p:calendar id="calFechaFinal" pattern="dd/MM/yyyy" showOn="button" value="#{reclutamiento$preseleccionAspirante.fechaFinal}" />
+                        <p:commandButton value="Buscar" image="buscar" action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"
+                                         update="mensajes,calFechaInicial,calFechaFinal,tablaConcursos,principalForm:criteriosDisponibles,panelAcciones" />
                     </h:panelGrid>
                     <p:spacer width="20" />
-                    <p:dataTable id="tablaConcursos"
-                                 var="concurso" 
+                    <p:dataTable id="tablaConcursos" paginator="true" emptyMessage="No se han encontrado concursos."
+                                 var="concurso" rows="5"  onRowSelectUpdate="panelAcciones" onRowUnselectUpdate="panelAcciones"
                                  value="#{reclutamiento$preseleccionAspirante.listaConcurso}"
-                                 rows="5" 
-                                 paginator="true" 
-                                 emptyMessage="No se han encontrado concursos."
                                  binding="#{reclutamiento$preseleccionAspirante.tableConcursos}"
-                                 paginatorAlwaysVisible="true" 
-                                 selectionMode="single"
+                                 paginatorAlwaysVisible="true" selectionMode="single"
                                  rowSelectListener="#{reclutamiento$preseleccionAspirante.onRowSelectConcurso}"
+                                 rowUnselectListener="#{reclutamiento$preseleccionAspirante.onRowUnSelectConcurso}"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
                         <f:facet name="header">
                             <h:outputText value="Concursos"/>
@@ -356,45 +395,50 @@
                 <p:panel id="panelProceso" header="Paso 2 de 5" >
                     <h:panelGrid columns="8" >
                         <h:outputLabel value="Concurso Seleccionado: " style="font-weight: bold;" />
-                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.nombre}" />
+                        <h:outputLabel value="${reclutamiento$preseleccionAspirante.concursoSeleccionado.nombre}" />
                         <h:outputLabel value=""/>
                         <h:outputLabel value="Puesto al que aplica: " style="font-weight: bold;" />
-                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.puestos.nomPuesto}" />
+                        <h:outputLabel value="${reclutamiento$preseleccionAspirante.concursoSeleccionado.puestos.nomPuesto}" />
                         <h:outputLabel value=""/>
-                        <h:outputLabel value="Plazas necesarias: " style="font-weight: bold;" />
-                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.numeroPlazas}" />
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value=""/>
 
                         <h:outputLabel value="Fecha Inicial: " style="font-weight: bold;" />
-                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.fechaInicial}" >
+                        <h:outputLabel value="${reclutamiento$preseleccionAspirante.concursoSeleccionado.fechaInicial}" >
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputLabel>
                         <h:outputLabel value=""/>
                         <h:outputLabel value="Fecha Final: " style="font-weight: bold;" />
-                        <h:outputLabel value="${SessionBeanREC.concursoSeleccionado.fechaFinal}" >
+                        <h:outputLabel value="${reclutamiento$preseleccionAspirante.concursoSeleccionado.fechaFinal}" >
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputLabel>
                         <h:outputLabel value=""/>
                         <h:outputLabel value=""/>
                         <h:outputLabel value=""/>
+
+                        <h:outputLabel value="Plazas necesarias: " style="font-weight: bold;" />
+                        <h:outputLabel value="${reclutamiento$preseleccionAspirante.concursoSeleccionado.numeroPlazas}" />
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value="N&uacute;mero de Precandidatos a mostrar: " style="font-weight: bold;" />
+                        <p:inputText  id="txResultados" style="width: 30px;" value="#{reclutamiento$preseleccionAspirante.maxResultados}" maxlength="3"  >
+                            <p:ajax event="keyup" update="txResultados" />  
+                        </p:inputText>
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value=""/>
+
                     </h:panelGrid>
                 </p:panel>
-                <p:spacer height="20" />
+                <p:spacer height="10" />
                 <table width="100%" >
                     <tr>
                         <td valign="top">
-                            <!-- value="# {SessionBeanREC.concursoSeleccionado.puesto.criteriosXPuestoList}" -->
-                            <p:dataTable id="criteriosSeleccionados" 
-                                         var="criterio" 
+                            <p:dataTable id="criteriosSeleccionados" var="criterio" rows="5" paginator="true" 
                                          value="#{reclutamiento$preseleccionAspirante.criteriosPrincipales}"
-                                         selection="#{SessionBeanREC.criteriosSeleccionados}"
-                                         rows="5" 
-                                         paginator="true" 
-                                         onRowSelectUpdate="tableCanSeleccionados"
-                                         onRowUnselectUpdate="tableCanSeleccionados"
-                                         emptyMessage="No se han encontrado Criterios."
+                                         selection="#{reclutamiento$preseleccionAspirante.criteriosSeleccionados}"
+                                         emptyMessage="No se han encontrado Criterios." selectionMode="multiple"
                                          binding="#{reclutamiento$preseleccionAspirante.tableCriterios}"
-                                         paginatorAlwaysVisible="true" 
-                                         selectionMode="multiple"
+                                         paginatorAlwaysVisible="true" rendered="#{reclutamiento$preseleccionAspirante.optFitrar}"
                                          rowSelectListener="#{reclutamiento$preseleccionAspirante.onRowSelectCriterio}"
                                          rowUnselectListener="#{reclutamiento$preseleccionAspirante.onRowUnSelectCriterio}"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
@@ -411,16 +455,19 @@
                                 </p:column>
 
                                 <f:facet name="footer">  
-                                    <p:commandButton oncomplete="botonMostrarCriterios.show()" value="Mostrar mas criterios" image="ui-icon-plusthick" />
+                                    <h:panelGrid columns="2">
+                                        <p:commandButton oncomplete="botonMostrarCriterios.show()" value="Mostrar mas criterios" image="ui-icon-plusthick" />
+                                    </h:panelGrid>
                                 </f:facet>  
+
                             </p:dataTable>
+
                         </td>
-                        <td></td>
                         <td valign="top">
                             <p:dataTable id="tableCanSeleccionados"  style="display: inline"
                                          var="candidato" 
-                                         value="#{SessionBeanREC.listaCandidatos}"
-                                         selection="#{SessionBeanREC.candidatosSeleccionados}"
+                                         value="#{reclutamiento$preseleccionAspirante.listaCandidatos}"
+                                         selection="#{reclutamiento$preseleccionAspirante.candidatosSeleccionados}"
                                          rows="5" 
                                          paginator="true" 
                                          emptyMessage="Seleccione los criterios para encontrar candidatos."                                     
@@ -436,8 +483,8 @@
                                           filterBy="#{candidato.nombreCompleto}"
                                           filterMatchMode="contains" >
                                     <p:commandLink>  
-                                        <p:graphicImage value="/resources/iconos/personal.png" rendered="#{candidato.sexo eq 'M'}" />   
-                                        <p:graphicImage value="/resources/iconos/personal_w.png" rendered="#{candidato.sexo eq 'F'}" />
+                                        <p:graphicImage value="/resources/iconos/personal.png" rendered="#{candidato.sexo eq 1}" />   
+                                        <p:graphicImage value="/resources/iconos/personal_w.png" rendered="#{candidato.sexo eq 2}" />
                                     </p:commandLink> 
                                     <h:outputLabel value="#{candidato.nombreCompleto}" style="margin-left:10px"/>
                                 </p:column>
@@ -463,7 +510,7 @@
                                  var="candidato" dynamic="true" rowEditListener="#{reclutamiento$preseleccionAspirante.onEditCandidato}" >
 
                         <p:column filterBy="#{candidato.candidato1.nombreCompleto}" filterMatchMode="contains" headerText="Candidato" style="width:450px;" >
-                            <p:commandButton image="#{candidato.candidato1.sexo eq 'M' ? 'contratar' : 'contratar_w'}" oncomplete="botonMostrarEvaluacion.show()"  update="principalForm:lbl1,principalForm:lbl2,principalForm:pruebasXEvaluacionEdit" action="#{reclutamiento$preseleccionAspirante.crearEvaluaciones}">
+                            <p:commandButton image="#{candidato.candidato1.sexo eq 1 ? 'contratar' : 'contratar_w'}" oncomplete="botonMostrarEvaluacion.show()"  update="principalForm:lbl1,principalForm:lbl2,principalForm:pruebasXEvaluacionEdit" action="#{reclutamiento$preseleccionAspirante.listarEvaluaciones}">
                                 <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
                             </p:commandButton>
                             <h:outputText value="#{candidato.candidato1.nombreCompleto}"  style="margin-left:10px" />
@@ -509,8 +556,8 @@
 
                         <p:column headerText="Candidato" >  
                             <p:commandLink>  
-                                <p:graphicImage value="/resources/iconos/personal.png" rendered="#{candidato.candidato1.sexo eq 'M'}" />  
-                                <p:graphicImage value="/resources/iconos/personal_w.png" rendered="#{candidato.candidato1.sexo eq 'F'}" />
+                                <p:graphicImage value="/resources/iconos/personal.png" rendered="#{candidato.candidato1.sexo eq 1}" />  
+                                <p:graphicImage value="/resources/iconos/personal_w.png" rendered="#{candidato.candidato1.sexo eq 2}" />
                             </p:commandLink>  
                             <h:outputText value="#{candidato.candidato1.nombreCompleto}" style="margin-left:10px" />  
                         </p:column>
@@ -545,13 +592,13 @@
 
                         <p:column headerText="Candidato" >  
                             <p:commandLink>  
-                                <p:graphicImage value="/resources/iconos/personal.png" rendered="#{candidato.candidato1.sexo eq 'M'}" />  
-                                <p:graphicImage value="/resources/iconos/personal_w.png" rendered="#{candidato.candidato1.sexo eq 'F'}" />
+                                <p:graphicImage value="/resources/iconos/personal.png" rendered="#{candidato.candidato1.sexo eq 1}" />  
+                                <p:graphicImage value="/resources/iconos/personal_w.png" rendered="#{candidato.candidato1.sexo eq 2}" />
                             </p:commandLink>  
                             <h:outputText value="#{candidato.candidato1.nombreCompleto}" style="margin-left:10px" />  
                         </p:column>
 
-                        <p:column headerText="Contratar">  <!--  action="# {reclutamiento$preseleccionAspirante.contratarCandidato}" -->
+                        <p:column headerText="Contratar"> 
                             <p:commandButton id="cmdContratar"  disabled="#{candidato.estado eq 'C'}" oncomplete="botonMostrarContrato.show()" image="contrato" update="principalForm:lbl_candidato,principalForm:lbl_puesto,principalForm:lbl_puesto,principalForm:cmdOk,principalForm:txtUsuario,principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtRepresentanteP,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" >
                                 <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
                             </p:commandButton>

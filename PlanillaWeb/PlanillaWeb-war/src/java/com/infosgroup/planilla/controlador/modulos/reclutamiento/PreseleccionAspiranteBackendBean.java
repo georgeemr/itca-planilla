@@ -16,9 +16,11 @@ import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
 import com.infosgroup.planilla.modelo.entidades.TiposPlanillaPK;
 import com.infosgroup.planilla.modelo.entidades.Agencias;
 import com.infosgroup.planilla.modelo.entidades.AgenciasPK;
+import com.infosgroup.planilla.modelo.entidades.EvaluacionCandidatoPK;
+import com.infosgroup.planilla.modelo.entidades.PruebaXPuesto;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
-import com.infosgroup.planilla.modelo.procesos.SeguridadSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
+import com.infosgroup.planilla.view.AutocompletePruebaConverter;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -63,15 +65,14 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private List<CriteriosXPuesto> criteriosDisponibles; /* Criterios adicionales*/
 
     private List<CriteriosXPuesto> criteriosPrincipales;
-
     private String actaOAcuerdo;
     private Date dia;
     private Date fechaInicio;
     private Date fechaFin;
     private String representantePatronal;
-    private Long tipoContratoSeleccionado;
+    private String tipoContratoSeleccionado;
     private String comentarioFinal;
-    private Long estadoContrato;
+    private String estadoContrato;
     private Double salario;
     private Boolean error;
     private String observaciones;
@@ -87,6 +88,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     @PostConstruct
     public void init() {
         setDia(new Date());
+        pruebaConverter = new AutocompletePruebaConverter(reclutamientoSessionBean.finPruebaXPuestosByCias(getSessionBeanADM().getCompania()));
     }
 
     public CandidatoConcurso getCandidatoSeleccionado() {
@@ -240,11 +242,11 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         this.criteriosDisponibles = criteriosDisponibles;
     }
 
-    public Long getTipoContratoSeleccionado() {
+    public String getTipoContratoSeleccionado() {
         return tipoContratoSeleccionado;
     }
 
-    public void setTipoContratoSeleccionado(Long tipoContratoSeleccionado) {
+    public void setTipoContratoSeleccionado(String tipoContratoSeleccionado) {
         this.tipoContratoSeleccionado = tipoContratoSeleccionado;
     }
 
@@ -288,11 +290,11 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         this.representantePatronal = representantePatronal;
     }
 
-    public Long getEstadoContrato() {
+    public String getEstadoContrato() {
         return estadoContrato;
     }
 
-    public void setEstadoContrato(Long estadoContrato) {
+    public void setEstadoContrato(String estadoContrato) {
         this.estadoContrato = estadoContrato;
     }
 
@@ -342,9 +344,10 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     }
 
     public String buscarConcurso$action() {
+        setConcursoSeleccionado(null);
         if (fechaInicial != null && fechaFinal != null) {
             if (validaFechas(fechaInicial, fechaFinal) == true) {
-                setListaConcurso(reclutamientoSessionBean.getListaConcursos( getSessionBeanADM().getCompania(), fechaInicial, fechaFinal));
+                setListaConcurso(reclutamientoSessionBean.getListaConcursos(getSessionBeanADM().getCompania(), fechaInicial, fechaFinal));
             } else {
                 addMessage("Buscar concurso", "Los rangos de fecha Ingresados no son consistentes.", TipoMensaje.ERROR);
             }
@@ -371,16 +374,12 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
             addMessage("Cerrar Concurso", "No esta registrado el estado de concurso para guardar los cambios.", TipoMensaje.INFORMACION);
             return;
         }
-        if (getSessionBeanREC().getConcursoSeleccionado() != null) {
-            getSessionBeanREC().getConcursoSeleccionado().setEstadoConcurso(ec);
-            getSessionBeanREC().getConcursoSeleccionado().setComentarioFinal(comentarioFinal);
-            reclutamientoSessionBean.editarConcurso(getSessionBeanREC().getConcursoSeleccionado());
+        if (getConcursoSeleccionado() != null) {
+            getConcursoSeleccionado().setEstadoConcurso(ec);
+            getConcursoSeleccionado().setComentarioFinal(comentarioFinal);
+            reclutamientoSessionBean.editarConcurso(getConcursoSeleccionado());
             addMessage("Cerrar Concurso", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
         }
-    }
-
-    public void onRowSelectConcurso(SelectEvent event) {
-        getSessionBeanREC().setConcursoSeleccionado((Concurso) event.getObject());
     }
 
     public void onRowSelectCriterio(SelectEvent event) {
@@ -415,12 +414,12 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     }
 
     public String onFlowListener(FlowEvent event) {
-        if (getSessionBeanREC().getConcursoSeleccionado() == null) {
+        if (getConcursoSeleccionado() == null) {
             return "concursoSeleccionado";
         }
         if (event.getOldStep().equals("concursoSeleccionado")) {
-            if (getSessionBeanREC().getConcursoSeleccionado() != null) {
-                setCriteriosPrincipales(getSessionBeanREC().getConcursoSeleccionado().getPuestos().getCriteriosXPuestoList());
+            if (getConcursoSeleccionado() != null) {
+                setCriteriosPrincipales(getConcursoSeleccionado().getPuestos().getCriteriosXPuestoList());
             }
         }
         actualizaListas();
@@ -443,19 +442,18 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     }
 
     public String aplicarCriterios() {
-        if (sessionBeanREC.getConcursoSeleccionado() != null) {
-            if (sessionBeanREC.getCandidatosSeleccionados() != null) {
-                for (Candidato n : sessionBeanREC.getCandidatosSeleccionados()) {
-//                    if (n.getConcursoList() == null) {
-//                        n.setConcursoList(new ArrayList<Concurso>());
-//                        n.getConcursoList().add(sessionBeanREC.getConcursoSeleccionado());
-//                    } else if (!n.getConcursoList().contains(sessionBeanREC.getConcursoSeleccionado())) {
-//                        n.getConcursoList().add(sessionBeanREC.getConcursoSeleccionado());
-//                    }
+        if (getConcursoSeleccionado() != null) {
+            if (getCandidatosSeleccionados() != null) {
+                for (Candidato n : getCandidatosSeleccionados()) {
+                    if (n.getConcursoList() == null) {
+                        n.setConcursoList(new ArrayList<Concurso>());
+                        n.getConcursoList().add(getConcursoSeleccionado());
+                    } else if (!n.getConcursoList().contains(getConcursoSeleccionado())) {
+                        n.getConcursoList().add(getConcursoSeleccionado());
+                    }
                     reclutamientoSessionBean.editarCandidato(n);
                 }
-                addMessage("Preselección de Candidatos", "No implementado actualmente.", TipoMensaje.INFORMACION);
-                //addMessage("Preselección de Candidatos", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+                addMessage("Preselección de Candidatos", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
                 return "concursoSeleccionado";
             }
         }
@@ -476,15 +474,15 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     public String contratarCandidato() {
         if (candidatoSeleccionado != null) {
 
-            if (getSessionBeanREC().getConcursoSeleccionado() == null) {
+            if (getConcursoSeleccionado() == null) {
                 addMessage("Contratar Candidato", "No ha seleccionado ningún concurso", TipoMensaje.INFORMACION);
                 return null;
             }
 
             error = Boolean.FALSE;
             Contrato contrato = new Contrato();
-            Agencias s = reclutamientoSessionBean.findAgenciasById(new AgenciasPK(getSessionBeanADM().getCompania().getCodCia(), agencia));
-            TiposPlanilla t = reclutamientoSessionBean.findTipoPlanillaById(new TiposPlanillaPK(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla));
+            //Agencias s = reclutamientoSessionBean.findAgenciasById(new AgenciasPK(getSessionBeanADM().getCompania().getCodCia(), agencia));
+            
 
             if (actaOAcuerdo == null || actaOAcuerdo.length() <= 0) {
                 addMessage("Contratar Candidato", "El campo Acta o Acuerdo es requerido", TipoMensaje.ERROR);
@@ -525,12 +523,12 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
                 }
             }
 
-            if (s == null) {
+            if (agencia == null) {
                 addMessage("Contratar Candidato", "Seleccione una Sucursal", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
             }
 
-            if (t == null) {
+            if (tipoPlanilla == null) {
                 addMessage("Contratar Candidato", "Seleccione el Tipo de Planilla", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
             }
@@ -539,16 +537,16 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
                 return null;
             }
 
-            // 13062012 contrato.setActa(getActaOAcuerdo());
-            // 13062012 contrato.setEstadoContrato(  );
-            // 13062012 contrato.setTipoContrato(tc);
+            contrato.setNumActa(getActaOAcuerdo());
+            contrato.setEstado( estadoContrato );
+            contrato.setTipo(tipoContratoSeleccionado);
             contrato.setFechaAcuerdo(getDia());
             contrato.setFechaInicio(getFechaInicio());
             contrato.setFechaFinal(getFechaFin());
-            contrato.setPuestos(getSessionBeanREC().getConcursoSeleccionado().getPuestos());
+            contrato.setPuestos(getConcursoSeleccionado().getPuestos());
             contrato.setSalario(new BigDecimal(getSalario()));
-            // 13062012 contrato.setAgencias(s);
-            contrato.setTiposPlanilla(t);
+            contrato.setCodAgencia(agencia );
+            contrato.setTiposPlanilla( new TiposPlanilla(new TiposPlanillaPK(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla)));
             contrato.setObservacion(getObservaciones());
             reclutamientoSessionBean.contratarCandidato(candidatoSeleccionado, contrato, usuario);
             limpiarDatosContratacion();
@@ -587,8 +585,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
             CandidatoConcurso c = candidatosGuardados.get(tableSeleccion.getRowIndex());
             c.setEstado(estado);
             reclutamientoSessionBean.editarCandidatoConcurso(c);
-             addMessage("Seleccionar Candidato", "FALTA ESTA FUNCIONALIDAD HA SIDO  COMENTADA, TERMINAR INTEGRACION", TipoMensaje.ERROR_FATAL);
-     //       addMessage("Seleccionar Candidato", "Datos Guardados " + candidatosGuardados.get(tableSeleccion.getRowIndex()).getCandidato1().getNombreCompleto(), TipoMensaje.INFORMACION);
+            addMessage("Seleccionar Candidato", "Datos Guardados " + candidatosGuardados.get(tableSeleccion.getRowIndex()).getCandidato1().getNombreCompleto(), TipoMensaje.INFORMACION);
             actualizaListas();
             ordenarLista();
         }
@@ -606,8 +603,8 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     }
 
     public void handleCloseCriterioAdicional(CloseEvent event) {
-        if (getSessionBeanREC().getCriteriosAdicionales() != null && getSessionBeanREC().getCriteriosAdicionales().length > 0) {
-            for (CriteriosXPuesto criterio : getSessionBeanREC().getCriteriosAdicionales()) {
+        if (getCriteriosAdicionales() != null && getCriteriosAdicionales().length > 0) {
+            for (CriteriosXPuesto criterio : getCriteriosAdicionales()) {
                 if (getCriteriosPrincipales() == null) {
                     setCriteriosPrincipales(new ArrayList<CriteriosXPuesto>());
                 }
@@ -618,19 +615,18 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         }
     }
 
-    public String crearEvaluaciones() {
-        registrarPruebasPorCandidato();
-        setEvaluacionCandidatos(reclutamientoSessionBean.getListEvaluacionCandidato(candidatoSeleccionado));
+    public String listarEvaluaciones() {
+        setEvaluacionCandidatos(reclutamientoSessionBean.getListEvaluacionCandidato(candidatoSeleccionado));//registrarPruebasPorCandidato();
         return null;
     }
 
     public void actualizaListas() {
-        if (getSessionBeanREC().getConcursoSeleccionado() != null) {
+        if (getConcursoSeleccionado() != null) {
             List<String> l = new ArrayList<String>();
             l.add("S");
             l.add("C");
-            setCandidatosGuardados(reclutamientoSessionBean.getListaCandidatoConcurso(getSessionBeanREC().getConcursoSeleccionado(), "P"));
-            setCandidatosContratar(reclutamientoSessionBean.getListaCandidatoSeleccionado(getSessionBeanREC().getConcursoSeleccionado(), l));
+            setCandidatosGuardados(reclutamientoSessionBean.getListaCandidatoConcurso(getConcursoSeleccionado(), "P"));
+            setCandidatosContratar(reclutamientoSessionBean.getListaCandidatoSeleccionado(getConcursoSeleccionado(), l));
         }
     }
 
@@ -644,7 +640,215 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         tableCriteriosAdicionales.setSelection(null);
         setComentarioFinal(null);
         reclutamientoSessionBean.eliminarCriteriosSeleccionados(getSessionBeanADM().getCompania(), getSessionBeanEMP().getEmpleadoSesion().getUsuario());
-        getSessionBeanREC().setConcursoSeleccionado(null);
-        getSessionBeanREC().setCriteriosAdicionales(new CriteriosXPuesto[0]);
+        setConcursoSeleccionado(null);
+        setCriteriosAdicionales(new CriteriosXPuesto[0]);
     }
+
+    public String buscarCandidatosXCriterios() {
+        if (concursoSeleccionado == null) {
+            addMessage("Reclutamiento y Selección", "Aun no ha seleccionado un Concurso.", TipoMensaje.ERROR);
+            return null;
+        }
+        setOptFitrar(Boolean.TRUE);
+        listaCandidatos = reclutamientoSessionBean.getCandidatoConCriteriosPuesto(concursoSeleccionado, getSessionBeanEMP().getEmpleadoSesion().getUsuario(), maxResultados);
+        return null;
+    }
+
+    public String buscarAllCandidatos() {
+        if (concursoSeleccionado == null) {
+            addMessage("Reclutamiento y Selección", "Aun no ha seleccionado un Concurso.", TipoMensaje.ERROR);
+            return null;
+        }
+        setOptFitrar(Boolean.FALSE);
+        listaCandidatos = reclutamientoSessionBean.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
+        return null;
+    }
+
+    public String buscarAllEmpleados() {
+        if (concursoSeleccionado == null) {
+            addMessage("Reclutamiento y Selección", "Aun no ha seleccionado un Concurso.", TipoMensaje.ERROR);
+            return null;
+        }
+        setOptFitrar(Boolean.FALSE);
+        listaCandidatos = reclutamientoSessionBean.findCandidatosLikeEmpleados(getSessionBeanADM().getCompania());
+        return null;
+    }
+    private List<Candidato> listaCandidatos;
+    private Concurso concursoSeleccionado;
+    private Integer maxResultados = 10;
+    private Candidato[] candidatosSeleccionados;
+    private CriteriosXPuesto[] criteriosSeleccionados;
+    private CriteriosXPuesto[] criteriosAdicionales;
+    private PruebaXPuesto pruebaXPuestoSeleccionada;
+    private AutocompletePruebaConverter pruebaConverter;
+    private EvaluacionCandidato pruebaEliminar;
+    private Boolean optFitrar = Boolean.TRUE;
+
+    public Boolean getOptFitrar() {
+        return optFitrar;
+    }
+
+    public void setOptFitrar(Boolean optFitrar) {
+        this.optFitrar = optFitrar;
+    }
+
+    public EvaluacionCandidato getPruebaEliminar() {
+        return pruebaEliminar;
+    }
+
+    public void setPruebaEliminar(EvaluacionCandidato pruebaEliminar) {
+        this.pruebaEliminar = pruebaEliminar;
+    }
+
+    public List<Candidato> getListaCandidatos() {
+        return listaCandidatos;
+    }
+
+    public void setListaCandidatos(List<Candidato> listaCandidatos) {
+        this.listaCandidatos = listaCandidatos;
+    }
+
+    public Concurso getConcursoSeleccionado() {
+        return concursoSeleccionado;
+    }
+
+    public void setConcursoSeleccionado(Concurso concursoSeleccionado) {
+        this.concursoSeleccionado = concursoSeleccionado;
+    }
+
+    public Candidato[] getCandidatosSeleccionados() {
+        return candidatosSeleccionados;
+    }
+
+    public void setCandidatosSeleccionados(Candidato[] candidatosSeleccionados) {
+        this.candidatosSeleccionados = candidatosSeleccionados;
+    }
+
+    public void onRowSelectConcurso(SelectEvent event) {
+        setConcursoSeleccionado((Concurso) event.getObject());
+    }
+
+    public void onRowUnSelectConcurso(UnselectEvent event) {
+        setConcursoSeleccionado(null);
+    }
+
+    public CriteriosXPuesto[] getCriteriosSeleccionados() {
+        return criteriosSeleccionados;
+    }
+
+    public void setCriteriosSeleccionados(CriteriosXPuesto[] criteriosSeleccionados) {
+        this.criteriosSeleccionados = criteriosSeleccionados;
+    }
+
+    public CriteriosXPuesto[] getCriteriosAdicionales() {
+        return criteriosAdicionales;
+    }
+
+    public void setCriteriosAdicionales(CriteriosXPuesto[] criteriosAdicionales) {
+        this.criteriosAdicionales = criteriosAdicionales;
+    }
+
+    public Integer getMaxResultados() {
+        return maxResultados;
+    }
+
+    public void setMaxResultados(Integer maxResultados) {
+        this.maxResultados = maxResultados;
+    }
+
+    public AutocompletePruebaConverter getPruebaConverter() {
+        return pruebaConverter;
+    }
+
+    public void setPruebaConverter(AutocompletePruebaConverter pruebaConverter) {
+        this.pruebaConverter = pruebaConverter;
+    }
+
+    public PruebaXPuesto getPruebaXPuestoSeleccionada() {
+        return pruebaXPuestoSeleccionada;
+    }
+
+    public void setPruebaXPuestoSeleccionada(PruebaXPuesto pruebaXPuestoSeleccionada) {
+        this.pruebaXPuestoSeleccionada = pruebaXPuestoSeleccionada;
+    }
+
+    public List<PruebaXPuesto> completePrueba(String query) {
+        List<PruebaXPuesto> suggestions = new ArrayList<PruebaXPuesto>();
+        for (PruebaXPuesto p : pruebaConverter.listaPruebaXPuesto) {
+            if (p.getNombre().startsWith(query)) {
+                suggestions.add(p);
+            }
+        }
+        return suggestions;
+    }
+
+    public String agregarPrueba() {
+        if (pruebaXPuestoSeleccionada != null) {
+            addMessage("Reclutamiento y Selección", "Ha Seleccionado " + pruebaXPuestoSeleccionada.getNombre(), TipoMensaje.INFORMACION);
+            return null;
+        }
+        addMessage("Reclutamiento y Selección", "No ha Seleccionado ninguna Prueba", TipoMensaje.ERROR);
+
+        return null;
+    }
+
+    public String eliminarPruebaCandidato() {
+        if (pruebaEliminar == null) {
+            addMessage("Reclutamiento y Selección", "No ha Seleccionado ninguna Prueba", TipoMensaje.ERROR);
+            return null;
+        }
+        reclutamientoSessionBean.eliminarEvaluacionCandidato(pruebaEliminar);
+        addMessage("Reclutamiento y Selección", "Datos eliminados con éxito.", TipoMensaje.INFORMACION);
+        setEvaluacionCandidatos(reclutamientoSessionBean.getListEvaluacionCandidato(candidatoSeleccionado));
+        return null;
+    }
+
+    public String agregarPruebaCandidato() {
+        if (candidatoSeleccionado == null) {
+            addMessage("Reclutamiento y Selección", "No ha Seleccionado ningun Candidato", TipoMensaje.ERROR);
+            return null;
+        }
+        if (pruebaXPuestoSeleccionada == null) {
+            addMessage("Reclutamiento y Selección", "No ha Seleccionado ninguna Prueba", TipoMensaje.ERROR);
+            return null;
+        }
+        EvaluacionCandidato nuevaEvaluacion = new EvaluacionCandidato();
+        EvaluacionCandidatoPK pk = new EvaluacionCandidatoPK();
+        nuevaEvaluacion.setCandidatoConcurso(candidatoSeleccionado);
+        nuevaEvaluacion.setFecha(new Date());
+        nuevaEvaluacion.setNota(BigDecimal.ZERO);
+        nuevaEvaluacion.setObservacion("Ninguna");
+        nuevaEvaluacion.setPruebaXPuesto(pruebaXPuestoSeleccionada);
+        pk.setCodCia(pruebaXPuestoSeleccionada.getPruebaXPuestoPK().getCodCia());
+        pk.setPuesto(getConcursoSeleccionado().getPuestos().getPuestosPK().getCodPuesto());
+        pk.setPrueba(pruebaXPuestoSeleccionada.getPruebaXPuestoPK().getCodigo());
+        pk.setCandidato(candidatoSeleccionado.getCandidato1().getCandidatoPK().getCodCandidato());
+        pk.setConcurso(getConcursoSeleccionado().getConcursoPK().getCodConcurso());
+        nuevaEvaluacion.setEvaluacionCandidatoPK(pk);
+
+        for (EvaluacionCandidato a : evaluacionCandidatos) {
+            if (a.getEvaluacionCandidatoPK().equals(a.getEvaluacionCandidatoPK())) {
+                addMessage("Reclutamiento y Selección", "Ya se ha registrado una evaluación de este tipo.", TipoMensaje.ERROR);
+                return null;
+            }
+        }
+
+        try {
+            reclutamientoSessionBean.guardarEvaluacionCandidato(nuevaEvaluacion);
+            addMessage("Reclutamiento y Selección", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
+            setEvaluacionCandidatos(reclutamientoSessionBean.getListEvaluacionCandidato(candidatoSeleccionado));
+            setPruebaXPuestoSeleccionada(null);
+        } catch (Exception e) {
+            addMessage("Reclutamiento y Selección", "Ocurrio un error al intentar guardar.", TipoMensaje.ERROR);
+        }
+        return null;
+    }
+//
+//    public void onRowSelectPrueba(SelectEvent event) {
+//        setPruebaEliminar((EvaluacionCandidato) event.getObject());
+//    }
+//
+//    public void onRowUnSelectPrueba(UnselectEvent event) {
+//        setPruebaEliminar(null);
+//    }
 }

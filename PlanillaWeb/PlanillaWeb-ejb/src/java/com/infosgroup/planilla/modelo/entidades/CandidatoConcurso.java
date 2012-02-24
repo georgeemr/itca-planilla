@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "CandidatoConcurso.findByConcurso", query = "SELECT c FROM CandidatoConcurso c WHERE c.candidatoConcursoPK.concurso = :concurso"),
     @NamedQuery(name = "CandidatoConcurso.findByNotaEvaluacion", query = "SELECT c FROM CandidatoConcurso c WHERE c.notaEvaluacion = :notaEvaluacion"),
     @NamedQuery(name = "CandidatoConcurso.findByObservacion", query = "SELECT c FROM CandidatoConcurso c WHERE c.observacion = :observacion")})
-public class CandidatoConcurso implements Serializable , Comparable<CandidatoConcurso>{
+public class CandidatoConcurso implements Serializable, Comparable<CandidatoConcurso> {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -174,11 +174,11 @@ public class CandidatoConcurso implements Serializable , Comparable<CandidatoCon
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.CandidatoConcurso[ candidatoConcursoPK=" + candidatoConcursoPK + " ]";
     }
-    
+
     @Override
     public int compareTo(CandidatoConcurso t) {
         return (this.notaEvaluacion.compareTo(t.notaEvaluacion) * -1);
-}
+    }
 
     public Integer getOrden() {
         return orden;
@@ -187,5 +187,4 @@ public class CandidatoConcurso implements Serializable , Comparable<CandidatoCon
     public void setOrden(Integer orden) {
         this.orden = orden;
     }
-
 }

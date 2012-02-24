@@ -7,7 +7,6 @@ package com.infosgroup.planilla.modelo.facades;
 import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK;
-import com.infosgroup.planilla.modelo.entidades.Puestos;
 import com.infosgroup.planilla.modelo.entidades.PuestosPK;
 import java.util.ArrayList;
 import java.util.List;

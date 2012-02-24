@@ -287,6 +287,15 @@ public class Candidato implements Serializable {
         @JoinColumn(name = "COD_EQUIPO", referencedColumnName = "COD_EQUIPO", nullable = false)})
     @ManyToMany
     private List<Equipo> equipoList;
+    @JoinTable(name = "CANDIDATO_CONCURSO", joinColumns = {
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
+        @JoinColumn(name = "CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false)
+    }, inverseJoinColumns = {
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
+        @JoinColumn(name = "CONCURSO", referencedColumnName = "COD_CONCURSO", nullable = false)
+    })
+    @ManyToMany
+    private List<Concurso> concursoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato")
     private List<BeneficiarioXCandidato> beneficiarioXCandidatoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato")
@@ -1051,6 +1060,14 @@ public class Candidato implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public List<Concurso> getConcursoList() {
+        return concursoList;
+    }
+
+    public void setConcursoList(List<Concurso> concursoList) {
+        this.concursoList = concursoList;
     }
 
     @Override

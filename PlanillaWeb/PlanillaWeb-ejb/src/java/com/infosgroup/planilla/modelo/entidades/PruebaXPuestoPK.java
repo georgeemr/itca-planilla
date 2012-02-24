@@ -88,7 +88,7 @@ public class PruebaXPuestoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PruebaXPuestoPK[ codCia=" + codCia + ", puesto=" + puesto + ", codigo=" + codigo + " ]";
+        return "" + codCia + ":" + puesto + ":" + codigo + "";
     }
     
 }

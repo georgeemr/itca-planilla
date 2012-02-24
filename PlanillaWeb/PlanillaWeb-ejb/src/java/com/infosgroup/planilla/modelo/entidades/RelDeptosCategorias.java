@@ -25,7 +25,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "RelDeptosCategorias.findAll", query = "SELECT r FROM RelDeptosCategorias r"),
     @NamedQuery(name = "RelDeptosCategorias.findByCodCia", query = "SELECT r FROM RelDeptosCategorias r WHERE r.relDeptosCategoriasPK.codCia = :codCia"),
     @NamedQuery(name = "RelDeptosCategorias.findByCodDepto", query = "SELECT r FROM RelDeptosCategorias r WHERE r.relDeptosCategoriasPK.codDepto = :codDepto"),
-    @NamedQuery(name = "RelDeptosCategorias.findByCodCat", query = "SELECT r FROM RelDeptosCategorias r WHERE r.relDeptosCategoriasPK.codCat = :codCat"),
     @NamedQuery(name = "RelDeptosCategorias.findByPorcentaje", query = "SELECT r FROM RelDeptosCategorias r WHERE r.porcentaje = :porcentaje"),
     @NamedQuery(name = "RelDeptosCategorias.findByCta1", query = "SELECT r FROM RelDeptosCategorias r WHERE r.cta1 = :cta1"),
     @NamedQuery(name = "RelDeptosCategorias.findByCta2", query = "SELECT r FROM RelDeptosCategorias r WHERE r.cta2 = :cta2"),

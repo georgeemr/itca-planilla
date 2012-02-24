@@ -8,18 +8,13 @@ import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.CandidatoPK;
 import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
-import com.infosgroup.planilla.modelo.estructuras.ModelConsultaCriterio;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.annotation.security.PermitAll;
 
 /**
  *
@@ -29,10 +24,6 @@ import java.util.logging.Logger;
 @LocalBean
 public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
 
-    private enum operacion {
-
-        equal, between
-    };
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
@@ -75,119 +66,33 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         }
     }
 
-    public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String usuario) {
+    @PermitAll
+    public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String usuario, Integer maxRegistros) {
         List<Candidato> listaCandidatos = new ArrayList<Candidato>();
-        for (Candidato candidato : findCandidatosAPreseleccionar(c)) {
-            if (getCandidatosByCriterios(c.getConcursoPK().getCodCia(), c.getPuestos().getPuestosPK().getCodPuesto(), candidato.getCandidatoPK().getCodCandidato(), usuario) == 1) {
-                listaCandidatos.add(candidato);
-            }
-        }
-        return listaCandidatos;
-    }
-
-    private Integer getCandidatosByCriterios(Short empresa, Short puesto, Integer candidato, String usuario) {
-        String nativeQuery = "select distinct t.cod_cia, t.puesto, t.tipo_criterio, t.correlativo, t.valor, t.valor_inicial_rango, t.valor_final_rango, "
-                + " u.operador,u.clase, "
-                + " v.campo, v.entidad, v.entidadpk "
-                + "from planilla.criterios_x_puesto t, planilla.criterio u, planilla.criterios_x_candidato v, planilla.criterio_seleccionado w "
-                + "where t.cod_cia = ? and t.puesto = ? "
-                + " and u.cod_cia = t.cod_cia "
-                + " and u.tipo = t.tipo_criterio "
-                + " and u.codigo = t.criterio "
-                + " and v.cod_cia = u.cod_cia "
-                + " and v.tipo_criterio = u.tipo "
-                + " and v.criterio = u.codigo "
-                + " and w.cod_cia = v.cod_cia "
-                + " and w.codigo = v.criterio "
-                + " and w.tipo = v.tipo_criterio "
-                + " and w.usuario = ? union "
-                + " select distinct t.cod_cia, t.puesto, t.tipo_criterio, t.correlativo, t.valor, t.valor_inicial_rango, t.valor_final_rango, "
-                + " u.operador,u.clase, "
-                + " v.campo, v.entidad, v.entidadpk "
-                + "from planilla.criterios_x_puesto t, planilla.criterio u, planilla.criterios_x_candidato v, planilla.criterio_seleccionado w "
-                + "where t.cod_cia = ? "
-                + " and u.cod_cia = t.cod_cia "
-                + " and u.tipo = t.tipo_criterio "
-                + " and u.codigo = t.criterio "
-                + " and v.cod_cia = u.cod_cia "
-                + " and v.tipo_criterio = u.tipo "
-                + " and v.criterio = u.codigo "
-                + " and w.cod_cia = v.cod_cia "
-                + " and w.codigo = v.criterio "
-                + " and w.tipo = v.tipo_criterio "
-                + " and w.usuario = ? ";
-        for (Object o : getEntityManager().createNativeQuery(nativeQuery).setParameter(1, empresa).setParameter(2, puesto).setParameter(3, usuario).setParameter(4, empresa).setParameter(5, usuario).getResultList()) {
-            ModelConsultaCriterio model = new ModelConsultaCriterio((Object[]) o);
-            Object t = getEntityManager().createQuery("SELECT v." + model.getCampo() + " FROM " + model.getEntidad() + " v WHERE v." + model.getEntidadPK().split(":")[0] + " = " + empresa + " AND v." + model.getEntidadPK().split(":")[1] + " =  " + candidato).setMaxResults(1).getSingleResult();
-            if (model.getOperacion().equals(operacion.equal.toString())) {
-                if (model.getValor() == null) {
-                    return 0;
-                }
-                if (model.getClase().equals("java.lang.String")) {
-                    try {
-                        if (!t.toString().equals(model.getValor().toString())) {
-                            return 0;
-                        }
-                    } catch (Exception e) {
-                        return 0;
-                    }
-                } else if (model.getClase().equals("java.lang.Integer")) {
-                    try {
-                        if (!t.toString().equals(model.getValor().toString())) {
-                            return 0;
-                        }
-                    } catch (Exception e) {
-                        return 0;
-                    }
-
-                } else if (model.getClase().equals("java.util.Date")) {
-                    try {
-                        if (!new SimpleDateFormat("dd/MM/yyyy").format((Date) t).equals(new SimpleDateFormat("dd/MM/yyyy").format(model.getValor().toString()))) {
-                            return 0;
-                        }
-                    } catch (Exception e) {
-                        return 0;
-                    }
-                }
-            } else if (model.getOperacion().equals(operacion.between.toString())) {
-                if (model.getValorInicialRango() == null || model.getValorInicialRango() == null) {
-                    return 0;
-                }
-
-                if (model.getClase().equals("java.lang.Integer")) {
-                    try {
-                        if (!(new Integer(t.toString()) >= new Integer(model.getValorInicialRango().toString()) && new Integer(t.toString()) <= new Integer(model.getValorInicialRango().toString()))) {
-                            return 0;
-                        }
-                    } catch (Exception e) {
-                        return 0;
-                    }
-
-                } else if (model.getClase().equals("java.util.Date")) {
-                    SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-                    java.util.Date a = null, b = null, c = null;
-                    try {
-                        a = (Date) t;
-                        b = f.parse(model.getValorInicialRango());
-                        c = f.parse(model.getValorFinalRango());
-                    } catch (ParseException ex) {
-                        Logger.getLogger(CandidatoFacade.class.getName()).log(Level.SEVERE, null, ex);
-                        return 0;
-                    }
-                    try {
-                        if (!(a.compareTo(b) >= 0 && a.compareTo(c) <= 0)) {
-                            return 0;
-                        }
-                    } catch (Exception e) {
-                        return 0;
-                    }
-                }
-            }
-        }
-
-        return 1;
+        StringBuilder query = new StringBuilder();
+        query.append("select * from candidato ");
+        query.append("where cod_cia = ").append(" ? ");
+        query.append("and pkg_web_rh_humanos.candidato_valido( ").append( " ? " );
+        query.append(", cod_candidato, ").append(" ? ");
+        query.append(", ").append(" ? ").append(" ) = 1 ").append(" and rownum <= ").append( maxRegistros != null ? maxRegistros:10 ).append(" order by nombre,apellido");
+        listaCandidatos = em.createNativeQuery(query.toString(),Candidato.class)
+                .setParameter(1, c.getConcursoPK().getCodCia())
+                .setParameter(2, c.getConcursoPK().getCodCia())
+                .setParameter(3, c.getConcursoPK().getCodConcurso())
+                .setParameter(4, usuario)
+                .getResultList();
+        return listaCandidatos != null ? listaCandidatos:new ArrayList<Candidato>() ;
     }
     
+    @PermitAll
+    public List<Candidato> findCandidatosLikeEmpleados(Cias cias) {
+        List<Candidato> listaCandidatos = new ArrayList<Candidato>();
+        StringBuilder query = new StringBuilder();
+        query.append("select distinct * from candidato where ( cod_cia, cod_emp ) in ( select cod_cia, cod_emp from empleados where cod_cia = ? )");
+        listaCandidatos = em.createNativeQuery(query.toString(),Candidato.class).setParameter(1, cias.getCodCia()).getResultList();
+        return listaCandidatos != null ? listaCandidatos:new ArrayList<Candidato>() ;
+    }
+
     public Long max(Cias empresa) {
         Long max = (Long) em.createQuery("SELECT max(c.candidatoPK.codCandidato) FROM Candidato c WHERE c.candidatoPK.codCia = :codCia").setParameter("codCia", empresa.getCodCia()).getSingleResult();
         return max != null ? ( ++max ): 1L;

@@ -31,7 +31,7 @@ public class ContratoFacade extends AbstractFacade<Contrato, ContratoPK> {
     }
 
     public Integer max(Candidato c) {
-        Integer max = (Integer) em.createQuery("SELECT max(c.contratoPK.codigo) FROM Contrato c WHERE c.candidato1 = :candidato").setParameter("candidato", c).getSingleResult();
+        Integer max = (Integer) em.createQuery("SELECT max(c.contratoPK.codContrato) FROM Contrato c WHERE c.candidato = :candidato").setParameter("candidato", c).getSingleResult();
         return max != null ? (++max) : 1;
     }
 }
