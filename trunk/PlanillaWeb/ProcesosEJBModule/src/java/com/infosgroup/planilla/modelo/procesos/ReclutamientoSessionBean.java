@@ -32,6 +32,7 @@ import com.infosgroup.planilla.modelo.facades.CriteriosXPuestoFacade;
 import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
 import com.infosgroup.planilla.modelo.facades.EstadoConcursoFacade;
 import com.infosgroup.planilla.modelo.facades.EvaluacionCandidatoFacade;
+import com.infosgroup.planilla.modelo.facades.PruebaXPuestoFacade;
 import com.infosgroup.planilla.modelo.facades.PuestoFacade;
 import com.infosgroup.planilla.modelo.facades.AgenciasFacade;
 import com.infosgroup.planilla.modelo.entidades.AgenciasPK;
@@ -40,6 +41,7 @@ import com.infosgroup.planilla.modelo.entidades.Criterio;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK;
 import com.infosgroup.planilla.modelo.entidades.Departamentos;
 import com.infosgroup.planilla.modelo.entidades.Locaciones;
+import com.infosgroup.planilla.modelo.entidades.PruebaXPuesto;
 import com.infosgroup.planilla.modelo.facades.AreasStaffFacade;
 import com.infosgroup.planilla.modelo.facades.CriterioFacade;
 import com.infosgroup.planilla.modelo.facades.DepartamentoFacade;
@@ -98,6 +100,8 @@ public class ReclutamientoSessionBean {
     private LocacionesFacade locacionesFacade;
     @EJB
     private CriterioFacade criterioFacade;
+    @EJB
+    private PruebaXPuestoFacade pruebaXPuestoFacade;
 
     public List<Concurso> getListaConcursos(Cias empresa, Date fechaInicial, Date fechaFinal) {
         return concursoFacade.getConcursosByDate(empresa, fechaInicial, fechaFinal);
@@ -193,8 +197,9 @@ public class ReclutamientoSessionBean {
         candidatoFacade.preseleccionarCandidato(concurso, listaCandidatos);
     }
 
-    public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String empleado) {
-        return candidatoFacade.getCandidatoConCriteriosPuesto(c, empleado);
+    @PermitAll
+    public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String empleado, Integer maxResultado) {
+        return candidatoFacade.getCandidatoConCriteriosPuesto(c, empleado, maxResultado);
     }
 
     public void eliminarCriteriosSeleccionados(Cias empresa, String usuario) {
@@ -314,14 +319,14 @@ public class ReclutamientoSessionBean {
     public void eliminarCriterioXPuesto(CriteriosXPuesto criterio) {
         criteriosXPuestoFacade.remove(criterio);
     }
-    
+
     @PermitAll
-    public List<Criterio> findListaCriteriosByCias(Cias cias){
+    public List<Criterio> findListaCriteriosByCias(Cias cias) {
         return criterioFacade.findCriteriosByCias(cias);
     }
-    
+
     @PermitAll
-    public void guardarCriterioXPuesto(CriteriosXPuesto criterioXPuesto){
+    public void guardarCriterioXPuesto(CriteriosXPuesto criterioXPuesto) {
         criteriosXPuestoFacade.create(criteriosXPuestoFacade.getWithId(criterioXPuesto));
     }
 
@@ -338,4 +343,30 @@ public class ReclutamientoSessionBean {
     public List<Locaciones> findLocacionesByCias(Cias cias) {
         return locacionesFacade.findLocacionesByCias(cias);
     }
+
+    @PermitAll
+    public List<PruebaXPuesto> finPruebaXPuestosByCias(Cias cias) {
+        return pruebaXPuestoFacade.findPruebaXPuestoByCias(cias);
+    }
+
+    @PermitAll
+    public void eliminarPruebaXPuesto(PruebaXPuesto pruebaXPuesto) {
+        pruebaXPuestoFacade.remove(pruebaXPuesto);
+    }
+
+    @PermitAll
+    public void eliminarEvaluacionCandidato(EvaluacionCandidato evaluacionCandidato) {
+        evaluacionCandidatoFacade.remove(evaluacionCandidato);
+    }
+
+    @PermitAll
+    public void guardarEvaluacionCandidato(EvaluacionCandidato evaluacionCandidato) {
+        evaluacionCandidatoFacade.create(evaluacionCandidato);
+    }
+    
+    @PermitAll
+    public List<Candidato> findCandidatosLikeEmpleados(Cias cias){
+        return candidatoFacade.findCandidatosLikeEmpleados(cias);
+    }
+    
 }

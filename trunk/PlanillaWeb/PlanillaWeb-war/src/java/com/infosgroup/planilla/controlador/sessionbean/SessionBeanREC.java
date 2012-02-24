@@ -34,7 +34,7 @@ public class SessionBeanREC implements Serializable {
     private List<Candidato> listaCandidatos;
     @ManagedProperty(value="#{SessionBeanEMP}")
     private SessionBeanEMP sessionBeanEMP;
-
+    private Integer maxResultados;
     public SessionBeanREC() {
     }
 
@@ -66,11 +66,19 @@ public class SessionBeanREC implements Serializable {
         if (criteriosSeleccionados == null || criteriosSeleccionados.length <= 0) {
             listaCandidatos = new java.util.ArrayList<Candidato>()/*reclutamientoSessionBean.findCandidatosAPreseleccionar(concursoSeleccionado)*/;
         } else {
-            listaCandidatos = reclutamientoSessionBean.getCandidatoConCriteriosPuesto(concursoSeleccionado, getSessionBeanEMP().getEmpleadoSesion().getUsuario());
+            listaCandidatos = reclutamientoSessionBean.getCandidatoConCriteriosPuesto(concursoSeleccionado, getSessionBeanEMP().getEmpleadoSesion().getUsuario(), maxResultados);
         }
         return listaCandidatos;
     }
 
+    public Integer getMaxResultados() {
+        return maxResultados;
+    }
+
+    public void setMaxResultados(Integer maxResultados) {
+        this.maxResultados = maxResultados;
+    }
+    
     public void setListaCandidatos(List<Candidato> listaCandidatos) {
         this.listaCandidatos = listaCandidatos;
     }

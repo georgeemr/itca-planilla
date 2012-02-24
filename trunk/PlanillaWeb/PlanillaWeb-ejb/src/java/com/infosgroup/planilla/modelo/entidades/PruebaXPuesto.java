@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -33,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PruebaXPuesto.findByCodigo", query = "SELECT p FROM PruebaXPuesto p WHERE p.pruebaXPuestoPK.codigo = :codigo"),
     @NamedQuery(name = "PruebaXPuesto.findByNombre", query = "SELECT p FROM PruebaXPuesto p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "PruebaXPuesto.findByEstado", query = "SELECT p FROM PruebaXPuesto p WHERE p.estado = :estado")})
-public class PruebaXPuesto implements Serializable {
+public class PruebaXPuesto implements Serializable, Comparable<PruebaXPuesto> {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PruebaXPuestoPK pruebaXPuestoPK;
@@ -117,10 +119,25 @@ public class PruebaXPuesto implements Serializable {
         }
         return true;
     }
+    @Transient
+    private String pruebaToString;
+
+    public String getPruebaToString() {
+        pruebaToString = toString();
+        return pruebaToString;
+    }
+
+    public void setPruebaToString(String pruebaToString) {
+        this.pruebaToString = pruebaToString;
+    }
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.PruebaXPuesto[ pruebaXPuestoPK=" + pruebaXPuestoPK + " ]";
+        return pruebaXPuestoPK.toString();
     }
-    
+
+    @Override
+    public int compareTo(PruebaXPuesto t) {
+        return (this.pruebaToString.compareTo(t.pruebaToString));
+    }
 }
