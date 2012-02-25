@@ -824,7 +824,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         nuevaEvaluacion.setEvaluacionCandidatoPK(pk);
 
         for (EvaluacionCandidato a : evaluacionCandidatos) {
-            if (a.getEvaluacionCandidatoPK().equals(a.getEvaluacionCandidatoPK())) {
+            if (a.getEvaluacionCandidatoPK().equals(pk)) {
                 addMessage("Reclutamiento y Selección", "Ya se ha registrado una evaluación de este tipo.", TipoMensaje.ERROR);
                 return null;
             }
@@ -840,12 +840,5 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         }
         return null;
     }
-//
-//    public void onRowSelectPrueba(SelectEvent event) {
-//        setPruebaEliminar((EvaluacionCandidato) event.getObject());
-//    }
-//
-//    public void onRowUnSelectPrueba(UnselectEvent event) {
-//        setPruebaEliminar(null);
-//    }
+
 }
