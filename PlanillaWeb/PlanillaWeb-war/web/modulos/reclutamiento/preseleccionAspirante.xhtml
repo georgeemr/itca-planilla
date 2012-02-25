@@ -31,7 +31,7 @@
                                 itemValue="#{prueba.pruebaToString}" itemLabel="#{prueba.nombre}"
                                 onSelectUpdate="principalForm:mensajes,addPruebaCandidato,dialogoEvaluacion"
                                 completeMethod="#{reclutamiento$preseleccionAspirante.completePrueba}"
-                                converter="#{reclutamiento$preseleccionAspirante.pruebaConverter}" >
+                                converter="#{reclutamiento$preseleccionAspirante.pruebaConverter}" title="Digite el nombre de la prueba que desea agregar." >
                 </p:autoComplete>
                 <p:commandButton id="addPruebaCandidato" image="ui-icon-circle-plus" action="#{reclutamiento$preseleccionAspirante.agregarPruebaCandidato}" update="principalForm:mensajes,autocompletePrueba,pruebasXEvaluacionEdit" />
             </h:panelGrid>
@@ -510,9 +510,10 @@
                                  var="candidato" dynamic="true" rowEditListener="#{reclutamiento$preseleccionAspirante.onEditCandidato}" >
 
                         <p:column filterBy="#{candidato.candidato1.nombreCompleto}" filterMatchMode="contains" headerText="Candidato" style="width:450px;" >
-                            <p:commandButton image="#{candidato.candidato1.sexo eq 1 ? 'contratar' : 'contratar_w'}" oncomplete="botonMostrarEvaluacion.show()"  update="principalForm:lbl1,principalForm:lbl2,principalForm:pruebasXEvaluacionEdit" action="#{reclutamiento$preseleccionAspirante.listarEvaluaciones}">
+                            <p:commandButton id="selectCandidato" image="#{candidato.candidato1.sexo eq 1 ? 'contratar' : 'contratar_w'}" oncomplete="botonMostrarEvaluacion.show()"  update="principalForm:lbl1,principalForm:lbl2,principalForm:pruebasXEvaluacionEdit" action="#{reclutamiento$preseleccionAspirante.listarEvaluaciones}">
                                 <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
                             </p:commandButton>
+                            <p:tooltip for="selectCandidato" value="Ingresar evaluaci&oacute;n" showEffect="fade" hideEffect="fade" />
                             <h:outputText value="#{candidato.candidato1.nombreCompleto}"  style="margin-left:10px" />
                         </p:column>
 
