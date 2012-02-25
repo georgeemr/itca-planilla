@@ -81,6 +81,16 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private List<TiposPlanilla> listaTipoPlanilla;
     private Short agencia;
     private Short tipoPlanilla;
+    private List<Candidato> listaCandidatos;
+    private Concurso concursoSeleccionado;
+    private Integer maxResultados = 10;
+    private Candidato[] candidatosSeleccionados;
+    private CriteriosXPuesto[] criteriosSeleccionados;
+    private CriteriosXPuesto[] criteriosAdicionales;
+    private PruebaXPuesto pruebaXPuestoSeleccionada;
+    private AutocompletePruebaConverter pruebaConverter;
+    private EvaluacionCandidato pruebaEliminar;
+    private Boolean optFitrar = Boolean.TRUE;
 
     public PreseleccionAspiranteBackendBean() {
     }
@@ -481,9 +491,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
 
             error = Boolean.FALSE;
             Contrato contrato = new Contrato();
-            //Agencias s = reclutamientoSessionBean.findAgenciasById(new AgenciasPK(getSessionBeanADM().getCompania().getCodCia(), agencia));
-            
-
             if (actaOAcuerdo == null || actaOAcuerdo.length() <= 0) {
                 addMessage("Contratar Candidato", "El campo Acta o Acuerdo es requerido", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
@@ -538,15 +545,15 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
             }
 
             contrato.setNumActa(getActaOAcuerdo());
-            contrato.setEstado( estadoContrato );
+            contrato.setEstado(estadoContrato);
             contrato.setTipo(tipoContratoSeleccionado);
             contrato.setFechaAcuerdo(getDia());
             contrato.setFechaInicio(getFechaInicio());
             contrato.setFechaFinal(getFechaFin());
             contrato.setPuestos(getConcursoSeleccionado().getPuestos());
             contrato.setSalario(new BigDecimal(getSalario()));
-            contrato.setCodAgencia(agencia );
-            contrato.setTiposPlanilla( new TiposPlanilla(new TiposPlanillaPK(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla)));
+            contrato.setCodAgencia(agencia);
+            contrato.setTiposPlanilla(new TiposPlanilla(new TiposPlanillaPK(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla)));
             contrato.setObservacion(getObservaciones());
             reclutamientoSessionBean.contratarCandidato(candidatoSeleccionado, contrato, usuario);
             limpiarDatosContratacion();
@@ -673,16 +680,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         listaCandidatos = reclutamientoSessionBean.findCandidatosLikeEmpleados(getSessionBeanADM().getCompania());
         return null;
     }
-    private List<Candidato> listaCandidatos;
-    private Concurso concursoSeleccionado;
-    private Integer maxResultados = 10;
-    private Candidato[] candidatosSeleccionados;
-    private CriteriosXPuesto[] criteriosSeleccionados;
-    private CriteriosXPuesto[] criteriosAdicionales;
-    private PruebaXPuesto pruebaXPuestoSeleccionada;
-    private AutocompletePruebaConverter pruebaConverter;
-    private EvaluacionCandidato pruebaEliminar;
-    private Boolean optFitrar = Boolean.TRUE;
 
     public Boolean getOptFitrar() {
         return optFitrar;
