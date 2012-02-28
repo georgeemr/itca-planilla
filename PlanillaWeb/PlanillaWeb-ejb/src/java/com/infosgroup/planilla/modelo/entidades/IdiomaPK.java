@@ -11,71 +11,84 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 /**
- *
- * @author root
+
+ @author root
  */
 @Embeddable
-public class IdiomaPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_CIA", nullable = false)
-    private short codCia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_IDIOMA", nullable = false)
-    private int codIdioma;
+public class IdiomaPK implements Serializable
+{
 
-    public IdiomaPK() {
-    }
+@Basic(optional = false)
+@NotNull
+@Column(name = "COD_CIA", nullable = false)
+private short codCia;
+@Basic(optional = false)
+@NotNull
+@Column(name = "COD_IDIOMA", nullable = false)
+private int codIdioma;
 
-    public IdiomaPK(short codCia, int codIdioma) {
-        this.codCia = codCia;
-        this.codIdioma = codIdioma;
-    }
+public IdiomaPK()
+{
+}
 
-    public short getCodCia() {
-        return codCia;
-    }
+public IdiomaPK(short codCia, int codIdioma)
+{
+    this.codCia = codCia;
+    this.codIdioma = codIdioma;
+}
 
-    public void setCodCia(short codCia) {
-        this.codCia = codCia;
-    }
+public short getCodCia()
+{
+    return codCia;
+}
 
-    public int getCodIdioma() {
-        return codIdioma;
-    }
+public void setCodCia(short codCia)
+{
+    this.codCia = codCia;
+}
 
-    public void setCodIdioma(int codIdioma) {
-        this.codIdioma = codIdioma;
-    }
+public int getCodIdioma()
+{
+    return codIdioma;
+}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (int) codCia;
-        hash += (int) codIdioma;
-        return hash;
-    }
+public void setCodIdioma(int codIdioma)
+{
+    this.codIdioma = codIdioma;
+}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof IdiomaPK)) {
-            return false;
+@Override
+public int hashCode()
+{
+    int hash = 0;
+    hash += (int) codCia;
+    hash += (int) codIdioma;
+    return hash;
+}
+
+@Override
+public boolean equals(Object object)
+{
+    // TODO: Warning - this method won't work in the case the id fields are not set
+    if (!(object instanceof IdiomaPK))
+        {
+        return false;
         }
-        IdiomaPK other = (IdiomaPK) object;
-        if (this.codCia != other.codCia) {
-            return false;
+    IdiomaPK other = (IdiomaPK) object;
+    if (this.codCia != other.codCia)
+        {
+        return false;
         }
-        if (this.codIdioma != other.codIdioma) {
-            return false;
+    if (this.codIdioma != other.codIdioma)
+        {
+        return false;
         }
-        return true;
-    }
+    return true;
+}
 
-    @Override
-    public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.IdiomaPK[ codCia=" + codCia + ", codIdioma=" + codIdioma + " ]";
-    }
-    
+@Override
+public String toString()
+{
+    return "com.infosgroup.planilla.modelo.entidades.IdiomaPK[ codCia=" + codCia + ", codIdioma=" + codIdioma + " ]";
+}
 }

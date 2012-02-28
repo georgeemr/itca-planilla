@@ -93,8 +93,8 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         return listaCandidatos != null ? listaCandidatos:new ArrayList<Candidato>() ;
     }
 
-    public Long max(Cias empresa) {
-        Long max = (Long) em.createQuery("SELECT max(c.candidatoPK.codCandidato) FROM Candidato c WHERE c.candidatoPK.codCia = :codCia").setParameter("codCia", empresa.getCodCia()).getSingleResult();
-        return max != null ? ( ++max ): 1L;
+    public Integer max(Cias empresa) {
+        Integer max = (Integer) em.createQuery("SELECT max(c.candidatoPK.codCandidato) FROM Candidato c WHERE c.candidatoPK.codCia = :codCia").setParameter("codCia", empresa.getCodCia()).getSingleResult();
+        return max != null ? ( ++max ): 1;
     }
 }

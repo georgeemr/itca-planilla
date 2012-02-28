@@ -11,88 +11,104 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 /**
- *
- * @author root
+
+ @author root
  */
 @Embeddable
-public class IdiomaXCandidatoPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_CIA", nullable = false)
-    private short codCia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_CANDIDATO", nullable = false)
-    private int codCandidato;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_IDIOMA", nullable = false)
-    private int codIdioma;
+public class IdiomaXCandidatoPK implements Serializable
+{
 
-    public IdiomaXCandidatoPK() {
-    }
+@Basic(optional = false)
+@NotNull
+@Column(name = "COD_CIA", nullable = false)
+private short codCia;
+@Basic(optional = false)
+@NotNull
+@Column(name = "COD_CANDIDATO", nullable = false)
+private int codCandidato;
+@Basic(optional = false)
+@NotNull
+@Column(name = "COD_IDIOMA", nullable = false)
+private int codIdioma;
 
-    public IdiomaXCandidatoPK(short codCia, int codCandidato, int codIdioma) {
-        this.codCia = codCia;
-        this.codCandidato = codCandidato;
-        this.codIdioma = codIdioma;
-    }
+public IdiomaXCandidatoPK()
+{
+}
 
-    public short getCodCia() {
-        return codCia;
-    }
+public IdiomaXCandidatoPK(short codCia, int codCandidato, int codIdioma)
+{
+    this.codCia = codCia;
+    this.codCandidato = codCandidato;
+    this.codIdioma = codIdioma;
+}
 
-    public void setCodCia(short codCia) {
-        this.codCia = codCia;
-    }
+public short getCodCia()
+{
+    return codCia;
+}
 
-    public int getCodCandidato() {
-        return codCandidato;
-    }
+public void setCodCia(short codCia)
+{
+    this.codCia = codCia;
+}
 
-    public void setCodCandidato(int codCandidato) {
-        this.codCandidato = codCandidato;
-    }
+public int getCodCandidato()
+{
+    return codCandidato;
+}
 
-    public int getCodIdioma() {
-        return codIdioma;
-    }
+public void setCodCandidato(int codCandidato)
+{
+    this.codCandidato = codCandidato;
+}
 
-    public void setCodIdioma(int codIdioma) {
-        this.codIdioma = codIdioma;
-    }
+public int getCodIdioma()
+{
+    return codIdioma;
+}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (int) codCia;
-        hash += (int) codCandidato;
-        hash += (int) codIdioma;
-        return hash;
-    }
+public void setCodIdioma(int codIdioma)
+{
+    this.codIdioma = codIdioma;
+}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof IdiomaXCandidatoPK)) {
-            return false;
+@Override
+public int hashCode()
+{
+    int hash = 0;
+    hash += (int) codCia;
+    hash += (int) codCandidato;
+    hash += (int) codIdioma;
+    return hash;
+}
+
+@Override
+public boolean equals(Object object)
+{
+    // TODO: Warning - this method won't work in the case the id fields are not set
+    if (!(object instanceof IdiomaXCandidatoPK))
+        {
+        return false;
         }
-        IdiomaXCandidatoPK other = (IdiomaXCandidatoPK) object;
-        if (this.codCia != other.codCia) {
-            return false;
+    IdiomaXCandidatoPK other = (IdiomaXCandidatoPK) object;
+    if (this.codCia != other.codCia)
+        {
+        return false;
         }
-        if (this.codCandidato != other.codCandidato) {
-            return false;
+    if (this.codCandidato != other.codCandidato)
+        {
+        return false;
         }
-        if (this.codIdioma != other.codIdioma) {
-            return false;
+    if (this.codIdioma != other.codIdioma)
+        {
+        return false;
         }
-        return true;
-    }
+    return true;
+}
 
-    @Override
-    public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.IdiomaXCandidatoPK[ codCia=" + codCia + ", codCandidato=" + codCandidato + ", codIdioma=" + codIdioma + " ]";
-    }
-    
+@Override
+public String toString()
+{
+    return "com.infosgroup.planilla.modelo.entidades.IdiomaXCandidatoPK[ codCia=" + codCia + ", codCandidato=" + codCandidato + ", codIdioma=" + codIdioma + " ]";
+}
 }
