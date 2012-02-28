@@ -65,10 +65,10 @@ private LocacionesFacade locacionesFacade;
 private EmergenciaXCandidatoFacade emergenciaCandidatoFacade;
 @EJB
 private NivelesXCandidatoFacade nivelesCandidatoFacade;
-    @EJB
-    private CriterioFacade criterioFacade;
-    @EJB
-    private PruebaXPuestoFacade pruebaXPuestoFacade;
+@EJB
+private CriterioFacade criterioFacade;
+@EJB
+private PruebaXPuestoFacade pruebaXPuestoFacade;
 @EJB
 private ReferenciaFacade referenciaFacade;
 
@@ -200,9 +200,10 @@ public void preseleccionarCandidato(Concurso concurso, List<Candidato> listaCand
     candidatoFacade.preseleccionarCandidato(concurso, listaCandidatos);
 }
 
-    @PermitAll
-    public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String empleado, Integer maxResultado) {
-        return candidatoFacade.getCandidatoConCriteriosPuesto(c, empleado, maxResultado);
+@PermitAll
+public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String empleado, Integer maxResultado)
+{
+    return candidatoFacade.getCandidatoConCriteriosPuesto(c, empleado, maxResultado);
 }
 
 public void eliminarCriteriosSeleccionados(Cias empresa, String usuario)
@@ -277,11 +278,14 @@ public List<CriteriosXPuesto> criteriosDisponibles(Cias empresa)
     return criteriosXPuestoFacade.getListaCriteriosByEmpresa(empresa);
 }
 
-    @PermitAll
-    public List<CriteriosXPuesto> criteriosPorPuesto(PuestosPK puestos) {
-        return criteriosXPuestoFacade.getListaCriteriosByPuestos(puestos);
-    }
+@PermitAll
+public List<CriteriosXPuesto> criteriosPorPuesto(PuestosPK puestos)
+{
+    return criteriosXPuestoFacade.getListaCriteriosByPuestos(puestos);
+}
 
+public List<Empleados> findByUsuario(String usuario)
+{
     return empleadoFacade.findEmpleadosByUsuario(usuario);
 }
 
@@ -315,7 +319,7 @@ public List<Departamentos> findDepartamentosByCias(Cias cias)
 @PermitAll
 public TipoDocumento findTipoDocumentoById(TipoDocumentoPK tipoDocumentoPK)
 {
-return tipoDocumentoFacade.find(tipoDocumentoPK);
+    return tipoDocumentoFacade.find(tipoDocumentoPK);
 }
 
 @PermitAll
@@ -332,31 +336,38 @@ public void guardarPuesto(Puestos puestos, Cias cias)
     puestoFacade.create(puestos);
 }
 
-    @PermitAll
-    public void editarPuesto(Puestos puestos) {
-        puestoFacade.edit(puestos);
-    }
+@PermitAll
+public void editarPuesto(Puestos puestos)
+{
+    puestoFacade.edit(puestos);
+}
 
-    @PermitAll
-    public void eliminarPuesto(Puestos puestos) {
-        puestoFacade.remove(puestos);
-    }
+@PermitAll
+public void eliminarPuesto(Puestos puestos)
+{
+    puestoFacade.remove(puestos);
+}
 
-    @PermitAll
-    public void eliminarCriterioXPuesto(CriteriosXPuesto criterio) {
-        criteriosXPuestoFacade.remove(criterio);
-    }
+@PermitAll
+public void eliminarCriterioXPuesto(CriteriosXPuesto criterio)
+{
+    criteriosXPuestoFacade.remove(criterio);
+}
 
-    @PermitAll
-    public List<Criterio> findListaCriteriosByCias(Cias cias) {
-        return criterioFacade.findCriteriosByCias(cias);
-    }
+@PermitAll
+public List<Criterio> findListaCriteriosByCias(Cias cias)
+{
+    return criterioFacade.findCriteriosByCias(cias);
+}
 
-    @PermitAll
-    public void guardarCriterioXPuesto(CriteriosXPuesto criterioXPuesto) {
-        criteriosXPuestoFacade.create(criteriosXPuestoFacade.getWithId(criterioXPuesto));
-    }
+@PermitAll
+public void guardarCriterioXPuesto(CriteriosXPuesto criterioXPuesto)
+{
+    criteriosXPuestoFacade.create(criteriosXPuestoFacade.getWithId(criterioXPuesto));
+}
 
+public void guardarCandidato(Candidato c)
+{
     candidatoFacade.create(c);
 }
 
@@ -397,31 +408,36 @@ public void crearNivelXCandidato(NivelesXCandidato nivelCandidato)
 {
     nivelesCandidatoFacade.create(nivelCandidato);
 }
-    @PermitAll
-    public List<PruebaXPuesto> finPruebaXPuestosByCias(Cias cias) {
-        return pruebaXPuestoFacade.findPruebaXPuestoByCias(cias);
-    }
 
-    @PermitAll
-    public void eliminarPruebaXPuesto(PruebaXPuesto pruebaXPuesto) {
-        pruebaXPuestoFacade.remove(pruebaXPuesto);
-    }
+@PermitAll
+public List<PruebaXPuesto> finPruebaXPuestosByCias(Cias cias)
+{
+    return pruebaXPuestoFacade.findPruebaXPuestoByCias(cias);
+}
 
-    @PermitAll
-    public void eliminarEvaluacionCandidato(EvaluacionCandidato evaluacionCandidato) {
-        evaluacionCandidatoFacade.remove(evaluacionCandidato);
-    }
+@PermitAll
+public void eliminarPruebaXPuesto(PruebaXPuesto pruebaXPuesto)
+{
+    pruebaXPuestoFacade.remove(pruebaXPuesto);
+}
 
-    @PermitAll
-    public void guardarEvaluacionCandidato(EvaluacionCandidato evaluacionCandidato) {
-        evaluacionCandidatoFacade.create(evaluacionCandidato);
-    }
-    
-    @PermitAll
-    public List<Candidato> findCandidatosLikeEmpleados(Cias cias){
-        return candidatoFacade.findCandidatosLikeEmpleados(cias);
-    }
-    
+@PermitAll
+public void eliminarEvaluacionCandidato(EvaluacionCandidato evaluacionCandidato)
+{
+    evaluacionCandidatoFacade.remove(evaluacionCandidato);
+}
+
+@PermitAll
+public void guardarEvaluacionCandidato(EvaluacionCandidato evaluacionCandidato)
+{
+    evaluacionCandidatoFacade.create(evaluacionCandidato);
+}
+
+@PermitAll
+public List<Candidato> findCandidatosLikeEmpleados(Cias cias)
+{
+    return candidatoFacade.findCandidatosLikeEmpleados(cias);
+}
 
 // ===========================================================================
 @PermitAll
