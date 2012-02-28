@@ -169,7 +169,7 @@ public class ReportesStatelessBean {
     @PermitAll
     public List<DetEvaluacion> eliminarRepetidos(List<DetEvaluacion> detalle) {
         List<DetEvaluacion> elementos = detalle;
-        Set auxiliar = new HashSet();
+        Set<DetEvaluacion> auxiliar = new HashSet<DetEvaluacion>();
         auxiliar.addAll(elementos);
         elementos.clear();
         elementos.addAll(auxiliar);

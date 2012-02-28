@@ -5,15 +5,11 @@
 package com.infosgroup.planilla.controlador.modulos;
 
 import java.io.FileOutputStream;
-import java.util.Hashtable;
 import java.util.Properties;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.naming.Context;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
 
 /**
  *

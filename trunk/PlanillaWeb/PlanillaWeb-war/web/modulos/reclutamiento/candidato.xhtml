@@ -1,35 +1,28 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.prime.com.tr/ui"
-                template="./../../plantillas/defaultTemplate.xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core">
-
-    <ui:define name="titulo">
-        Registro de Candidatos
-    </ui:define>
-
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    template="/plantillas/defaultTemplate.xhtml">
+    <ui:define name="titulo">Registro de Candidatos</ui:define>
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true"
-                               action="#{reclutamiento$candidato.nuevo$vh$action()}" update="panelContenido">
+                <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true" action="#{reclutamiento$candidato.nuevo$vh$action()}" update="panelContenido">
                     <p:graphicImage value="/resources/iconos/new.png"/>
                     <h:outputText value="Nuevo" styleClass="espacioTexto"/>
                 </p:commandLink>
-
-                <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true"
-                               action="#{reclutamiento$candidato.consultar$vh$action()}" update="tablaConcursos, panelContenido">
+                <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true" action="#{reclutamiento$candidato.consultar$vh$action()}" update="tablaConcursos, panelContenido">
                     <p:graphicImage value="/resources/iconos/search.png"/>
                     <h:outputText value="Consultar" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true"
-                               action="#{reclutamiento$candidato.editar$crud$action()}" update="mensajes, panelContenido">
+                <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true" action="#{reclutamiento$candidato.editar$crud$action()}" update="mensajes, panelContenido">
                     <p:graphicImage value="/resources/iconos/edit.png"/>
                     <h:outputText value="Editar" styleClass="espacioTexto"/>
                 </p:commandLink>
-
             </h:panelGrid>
         </p:tab>  
         <p:tab title="Otras acciones">
@@ -40,197 +33,456 @@
             </h:panelGrid>
         </p:tab>
     </ui:define>
-
-    <ui:define name="titulo">
-        Registro de Candidatos
-    </ui:define>
-
     <ui:define name="contenido">
-
-        <p:wizard id="wizardCandidato" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" flowListener="#{reclutamiento$candidato.onFlowProcess}" >
-            <p:tab title="Datos Personales" >
-
-                <p:spacer height="20" />
-
-                <h:panelGrid columns="6">
-                    <h:outputLabel value="Nombre: "/>
-                    <p:inputText id="txNombre" value="#{reclutamiento$candidato.nombre}" />
-                    <h:outputLabel value="Apellido: "/>
-                    <p:inputText id="txApellido" value="#{reclutamiento$candidato.apellido}" />
-                    <h:outputLabel value="Apellido de Casada: "/>
-                    <p:inputText id="txApellidoCasada" value="#{reclutamiento$candidato.apellidoDeCasada}" />
-                    <h:outputLabel value="Fecha de Nacimiento: "/>
-                    <p:calendar id="calFechaNacimiento" pattern="dd/MM/yyyy"  value="#{reclutamiento$candidato.fechaNacimiento}" showOn="button"  />
-                    <h:outputLabel value="Sexo: "/>
-                    <h:selectOneMenu id="lstSexo" value="#{reclutamiento$candidato.sexo}" style="height: 25px;padding-top: 3px;" >
-                        <f:selectItems var="sexo" value="#{reclutamiento$candidato.selectSexo}" itemValue="#{sexo.value}" itemLabel="#{sexo.label}" />
-                    </h:selectOneMenu>
-
-                    <h:outputLabel value="Grupo Sanguineo: "/>
-                    <h:selectOneMenu id="lstGrupoSanguineo" style="height: 25px;padding-top: 3px;" >
-                        <f:selectItems var="tipoSangre" value="#{reclutamiento$candidato.listaTipoSangre}" itemValue="#{tipoSangre.tipoSangre}" itemLabel="#{tipoSangre.nomTipoSangre}" />
-                    </h:selectOneMenu>
-
-                    <h:outputLabel value="Tel&eacute;fono: "/>
-                    <p:inputText id="txtTelefono"  />
-
-                    <h:outputLabel value="Salario Aspirado: "/>
-                    <p:inputText id="txtSalarioAspirado"  />
-
-                    <h:outputLabel value="Pais Domicilio: "/>
-                    <h:selectOneMenu id="lstPaisDomicilio" style="height: 25px;padding-top: 3px;" >
-                        <f:selectItems var="pais" value="#{reclutamiento$candidato.listaPaises}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />
-                    </h:selectOneMenu>
-
-                    <h:outputLabel value="Departamento Domicilio: "/>
-                    <h:selectOneMenu id="lstDeptoDomicilio" style="height: 25px;padding-top: 3px;" >
-                        <f:selectItems var="departamento" value="#{reclutamiento$candidato.listaDepartamentos}" itemValue="#{departamento.deptosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
-                    </h:selectOneMenu>
-
-                    <h:outputLabel value="Municipio Domicilio: "/>
-                    <h:selectOneMenu id="lstMunDomicilio" style="height: 25px;padding-top: 3px;" >
-                        <f:selectItems var="municipio" value="#{reclutamiento$candidato.listaMunicipios}" itemValue="#{municipio.municipiosPK.codMuni}" itemLabel="#{municipio.nomMuni}" />
-                    </h:selectOneMenu>
-
-                    <h:outputLabel value="Pais Nacionalidad: "/>
-                    <h:selectOneMenu id="lstPaisNacionalidad" style="height: 25px;padding-top: 3px;" >
-                        <f:selectItems var="pais" value="#{reclutamiento$candidato.listaPaises}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />
-                    </h:selectOneMenu>
-
-                    <h:outputLabel value="Pais Nacimiento: "/>
-                    <h:selectOneMenu id="lstPaisNac" style="height: 25px;padding-top: 3px;" >
-                        <f:selectItems var="pais" value="#{reclutamiento$candidato.listaPaises}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />
-                    </h:selectOneMenu>
-
-                    <h:outputLabel value="Departamento Nacimiento: "/>
-                    <h:selectOneMenu id="lstDeptoNac" style="height: 25px;padding-top: 3px;" >
-                        <f:selectItems var="departamento" value="#{reclutamiento$candidato.listaDepartamentos}" itemValue="#{departamento.deptosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
-                    </h:selectOneMenu>
-
-                    <h:outputLabel value="Municipio Nacimiento: "/>
-                    <h:selectOneMenu id="lstMunNac" style="height: 25px;padding-top: 3px;" >
-                        <f:selectItems var="municipio" value="#{reclutamiento$candidato.listaMunicipios}" itemValue="#{municipio.municipiosPK.codMuni}" itemLabel="#{municipio.nomMuni}" />
-                    </h:selectOneMenu>
-
-                    <h:outputLabel value="Direccion: "/>
-                    <p:inputText />
-
-
-                    <h:outputLabel value="Nivel Academico: "/>
-                    <h:selectOneMenu id="lstNivelAcademico" style="height: 25px;padding-top: 3px;" >
-                        <f:selectItems var="nivelAcademico" value="#{reclutamiento$candidato.listaNivelAcademico}" itemValue="#{nivelAcademico.nivelAcademicoPK.codNivelAcademico}" itemLabel="#{nivelAcademico.nomNivelAcademico}" />
-                    </h:selectOneMenu>
-
-                    <h:outputLabel value="Profesi&oacute;n: "/>
-                    <h:selectOneMenu id="lstProfesion" style="height: 25px;padding-top: 3px;" >
-                        <f:selectItems var="profesion" value="#{reclutamiento$candidato.listaProfesiones}" itemValue="#{profesion.profesionPK.codProfesion}" itemLabel="#{profesion.nomProfesion}" />
-                    </h:selectOneMenu>
-
-                    <h:outputLabel value="Observaciones:"/>
-                    <p:inputTextarea id="txObservaciones" />
-
-                </h:panelGrid>
-
-                <p:spacer height="10" />
-
-                <h:panelGrid columns="1">
-                    <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{reclutamiento$candidato.guardarDatos$action()}" update="mensajes" />          
-                </h:panelGrid>
-
-            </p:tab>
-
-            <p:tab title="Documentos" >
-                <p:spacer height="20" />
-                <p:fieldset legend="Documentos de Identidad" >
-                    <h:panelGrid columns="5">
-                        <h:outputLabel value="Tipo de Documento: " />
-                        <h:selectOneMenu id="lstTipoDocumentos" style="height: 25px;padding-top: 3px;" value="#{reclutamiento$candidato.tipoDocumentoSeleccionado}" >
-                            <f:selectItems var="tipoDocumento" itemLabel="#{tipoDocumento.nomTipoDocumento}" itemValue="#{tipoDocumento.codTipoDocumento}" value="#{reclutamiento$candidato.listaTipoDocumentos}" />
+        <h:panelGrid columns="4">
+            <h:outputLabel value="Fecha de solicitud:"/>
+            <p:calendar navigator="true" pattern="dd/MM/yyyy" showOn="button" value="#{reclutamiento$candidato.fechaSolicitud}" selectOtherMonths="true" required="true"/>
+            <h:outputLabel value="Nombre:"/>
+            <p:inputText value="#{reclutamiento$candidato.nombre}" required="true"/>
+            <h:outputLabel value="Apellido:"/>
+            <p:inputText value="#{reclutamiento$candidato.apellido}" required="true"/>
+            <h:outputLabel value="Apellido de casada:"/>
+            <p:inputText value="#{reclutamiento$candidato.apellidoCasada}" />
+            <h:outputLabel value="Sexo:"/>
+            <h:selectOneMenu value="#{reclutamiento$candidato.sexo}" style="width: 175px; height: 24px; padding-top: 3px;" required="true">
+                <f:selectItem itemValue="1" itemLabel="Masculino"/>
+                <f:selectItem itemValue="2" itemLabel="Femenino"/>
+            </h:selectOneMenu>
+        </h:panelGrid>
+        <p:separator />
+        <p:accordionPanel>
+            <p:tab title="Generales">
+                <p:fieldset legend="Domicilio">
+                    <h:panelGrid columns="4">  
+                        <h:outputLabel value="Pa&iacute;s:"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.generales$pais}">
+                            <f:selectItems var="pais" value="#{reclutamiento$candidato.listaPaises}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />
                         </h:selectOneMenu>
-                        <h:outputLabel value="N&uacute;mero: " />
-                        <p:inputText />
-                        <p:commandButton value="Guardar" image="guardar" />
+                        <h:outputLabel value="Departamento:"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.generales$departamento}">
+                            <f:selectItems var="departamento" value="#{reclutamiento$candidato.listaDepartamentos}" itemValue="#{departamento.deptosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Municipio:"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.generales$municipio}">
+                            <f:selectItems var="municipio" value="#{reclutamiento$candidato.listaMunicipios}" itemValue="#{municipio.municipiosPK.codMuni}" itemLabel="#{municipio.nomMuni}" />
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Tel&eacute;fono:"/>
+                        <p:inputText value="#{reclutamiento$candidato.generales$telefono}"/>
+                        <h:outputLabel value="Direcci&oacute;n:"/>
+                        <p:inputText value="#{reclutamiento$candidato.generales$direccion}"/>
+                    </h:panelGrid>  
+                </p:fieldset>
+                <p:spacer height="5"/>
+                <p:fieldset legend="Datos nacimiento">
+                    <h:panelGrid columns="4">
+                        <h:outputLabel value="Fecha de nacimiento:"/>
+                        <p:calendar navigator="true" pattern="dd/MM/yyyy" showOn="button" value="#{reclutamiento$candidato.generales$fechaNacimiento}"/>
+                        <h:outputLabel value="Pa&iacute;s:"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.generales$pais}">
+                            <f:selectItems var="pais" value="#{reclutamiento$candidato.listaPaises}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Departamento:"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.generales$departamento}">
+                            <f:selectItems var="departamento" value="#{reclutamiento$candidato.listaDepartamentos}" itemValue="#{departamento.deptosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Municipio:"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.generales$municipio}">
+                            <f:selectItems var="municipio" value="#{reclutamiento$candidato.listaMunicipios}" itemValue="#{municipio.municipiosPK.codMuni}" itemLabel="#{municipio.nomMuni}" />
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Pais nacionalidad:"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" >
+                            <f:selectItems var="pais" value="#{reclutamiento$candidato.listaPaises}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Grupo sangu&iacute;neo:"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" >
+                            <f:selectItems var="tipoSangre" value="#{reclutamiento$candidato.listaTipoSangre}" itemValue="#{tipoSangre.tipoSangre}" itemLabel="#{tipoSangre.nomTipoSangre}" />
+                        </h:selectOneMenu>
                     </h:panelGrid>
-                    <p:spacer height="10" />
-                    <p:dataTable id="tableDocumentos" emptyMessage="No se ha encontrado ning&uacute;n Documento" >
-
+                </p:fieldset>
+                <p:spacer height="5"/>
+                <p:fieldset legend="Documentos">
+                    <h:panelGrid columns="6">
+                        <h:outputText value="DUI:"/>
+                        <p:inputText value="#{reclutamiento$candidato.generales$dui}"/>
+                        <h:outputText value="NIT"/>
+                        <p:inputText value="#{reclutamiento$candidato.generales$nit}"/>
+                        <h:outputText value="Fecha expedici&oacute;n DUI:"/>
+                        <p:calendar navigator="true" showOn="button" value="#{reclutamiento$candidato.generales$fechaExpDui}"/>
+                        <h:outputText value="Depto. exped. DUI"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.generales$departamentoExpDui}">
+                            <f:selectItems var="departamento" value="#{reclutamiento$candidato.listaDepartamentos}" itemValue="#{departamento.deptosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                        </h:selectOneMenu>
+                        <h:outputText value="Munic. exped. DUI"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.generales$municipioExpDui}">
+                            <f:selectItems var="municipio" value="#{reclutamiento$candidato.listaMunicipios}" itemValue="#{municipio.municipiosPK.codMuni}" itemLabel="#{municipio.nomMuni}" />
+                        </h:selectOneMenu>
+                        <h:outputText value="Licencia"/>
+                        <p:inputText value="#{reclutamiento$candidato.generales$licenciaConducir}"/>
+                        <h:outputText value="Nombre s/ISSS"/>
+                        <p:inputText value="#{reclutamiento$candidato.generales$nombreISSS}"/>
+                        <h:outputText value="Pasaporte"/>
+                        <p:inputText value="#{reclutamiento$candidato.generales$pasaporte}"/>
+                        <h:outputText value="Nombre s/NIT"/>
+                        <p:inputText value="#{reclutamiento$candidato.generales$nombreNIT}"/>
+                    </h:panelGrid>
+                </p:fieldset>
+            </p:tab>
+            <p:tab title="Preparaci&oacute;n acad&eacute;mica">
+                <p:fieldset legend="Institución">
+                    <h:panelGrid columns="6">
+                        <h:outputText value="Nombre"/>
+                        <p:inputText size="50" value="#{reclutamiento$candidato.preparacion$nombreInstitucion}"/>
+                        <h:outputText value="Pa&iacute;s"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.preparacion$pais}">
+                            <f:selectItems var="pais" value="#{reclutamiento$candidato.listaPaises}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}"/>
+                        </h:selectOneMenu>
+                        <h:outputText value="Departamento"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.preparacion$departamento}">
+                            <f:selectItems var="departamento" value="#{reclutamiento$candidato.listaDepartamentos}" itemValue="#{departamento.deptosPK.codPais}:#{departamento.deptosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:spacer height="10"/>
+                <p:fieldset legend="Nivel alcanzado/Carrera">
+                    <h:panelGrid columns="4">
+                        <h:outputLabel value="Nivel Acad&eacute;mico:"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.preparacion$nivelAcademico}" required="true">
+                            <f:selectItems var="nivelAcademico" value="#{reclutamiento$candidato.listaNivelAcademico}" itemValue="#{nivelAcademico.nivelAcademicoPK.codCia}:#{nivelAcademico.nivelAcademicoPK.codNivelAcademico}" itemLabel="#{nivelAcademico.nomNivelAcademico}" />
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Profesi&oacute;n:"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.preparacion$profesion}" required="true">
+                            <f:selectItems var="profesion" value="#{reclutamiento$candidato.listaProfesiones}" itemValue="#{profesion.profesionPK.codCia}:#{profesion.profesionPK.codProfesion}" itemLabel="#{profesion.nomProfesion}" />
+                        </h:selectOneMenu>
+                        <h:outputText value="A&ntilde;o ingreso:"/>
+                        <p:spinner value="#{reclutamiento$candidato.preparacion$anioIngreso}" required="true"/>
+                        <h:outputText value="A&ntilde;o egreso:"/>
+                        <p:spinner value="#{reclutamiento$candidato.preparacion$anioEgreso}" required="true"/>
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" action="#{reclutamiento$candidato.preparacionAcademica$agregar$action}" update="preparacionAcademicaTable, mensajes"/>
+                <p:dataTable id="preparacionAcademicaTable" value="#{reclutamiento$candidato.preparacionesAcademicasCandidato}" var="preparacionCandidato" rows="2" paginator="true">
+                    <f:facet name="header">
+                        <h:outputText value="Nivel acad&eacute;mico/Carrera"/>
+                    </f:facet>
+                    <p:column headerText="Nombre instituci&oacute;n">
+                        <h:outputText value="#{preparacionCandidato.nombreInstitucion}"/>
+                    </p:column>
+                    <p:column headerText="T&iacute;tulo/Nivel obtenido">
+                        <h:outputText value="#{preparacionCandidato.profesion.nomProfesion}/#{preparacionCandidato.nivelAcademico.nomNivelAcademico}"/>
+                    </p:column>
+                    <p:column headerText="A&ntilde;o ingreso">
+                        <h:outputText value="#{preparacionCandidato.anioIngreso}"/>
+                    </p:column>
+                    <p:column headerText="A&ntilde;o egreso">
+                        <h:outputText value="#{preparacionCandidato.anioEgreso}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
+            <p:tab title="Emergencias">                
+                <p:fieldset legend="Conyuge">
+                    <h:panelGrid columns="6">
+                        <h:outputText value="Nombre:"/>
+                        <p:inputText value="#{reclutamiento$candidato.emergencias$conyuge}"/>
+                        <h:outputText value="Trabajo/Ocupaci&oacute;n:"/>
+                        <p:inputText value="#{reclutamiento$candidato.emergencias$trabajo}"/>
+                        <h:outputText value="Tel&eacute;fono:"/>
+                        <p:inputText value="#{reclutamiento$candidato.emergencias$telefono}"/>
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:spacer height="10"/>
+                <p:fieldset legend="Condiciones f&iacute;sicas">
+                    <h:panelGrid columns="4">
+                        <h:outputText value="Condici&oacute;n de salud general"/>
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.emergencias$condicionSalud}">
+                            <f:selectItem itemValue="1" itemLabel="Buena"/>
+                            <f:selectItem itemValue="2" itemLabel="Regular"/>
+                            <f:selectItem itemValue="3" itemLabel="Mala"/>
+                        </h:selectOneMenu>
+                        <h:outputText value="Tiene actividad limitada"/>
+                        <h:selectBooleanCheckbox value="#{reclutamiento$candidato.emergencias$actividadLimitada}"/>
+                        <h:outputText value="Ha sufrido accidentes"/>
+                        <h:selectBooleanCheckbox value="#{reclutamiento$candidato.emergencias$haSufridoAccidentes}">
+                            <f:ajax event="click" render="emergenciaTipoAccidente"/>
+                        </h:selectBooleanCheckbox>
+                        <h:outputText value="Tipo de accidente"/>
+                        <h:selectOneRadio id="emergenciaTipoAccidente" value="#{reclutamiento$candidato.emergencias$tipoAccidente}" disabled="#{reclutamiento$candidato.emergencias$haSufridoAccidentes eq false}">
+                            <f:selectItem itemLabel="Com&uacute;n" itemValue="1"/>
+                            <f:selectItem itemLabel="Tr&aacute;nsito" itemValue="2"/>
+                            <f:selectItem itemLabel="Laboral" itemValue="3"/>
+                        </h:selectOneRadio>
+                        <h:outputText value="Peso actual"/>
+                        <p:spinner min="0" max="500" stepFactor="0.25" value="#{reclutamiento$candidato.emergencias$pesoActual}"/>
+                        <h:outputText value="Estatura"/>
+                        <p:spinner min="0" max="300" stepFactor="1" value="#{reclutamiento$candidato.emergencias$estatura}"/>
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:spacer height="10"/>
+                <p:fieldset legend="Contactos en casos de emergencia">
+                    <h:panelGrid columns="7">
+                        <h:outputText value="Nombre:"/>
+                        <p:inputText id="parentescoNombre" value="#{reclutamiento$candidato.emergencias$nombreContacto}"/>
+                        <h:outputText value="Tel&eacute;fono:"/>
+                        <p:inputText id="parentescoTelefono" value="${reclutamiento$candidato.emergencias$telefonoContacto}"/>
+                        <h:outputText value="Parentesco:"/>
+                        <h:selectOneMenu id="parentescoParentesco" style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.emergencias$parentescoContacto}">
+                            <f:selectItems value="#{reclutamiento$candidato.parentescoSelectItemListModel}" var="parentesco" itemValue="#{parentesco.parentescoPK.codCia}:#{parentesco.parentescoPK.codParentesco}" itemLabel="#{parentesco.nomParentesco}"/>
+                        </h:selectOneMenu>
+                        <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" update="parentescosTable, parentescoNombre, parentescoTelefono, parentescoParentesco" action="#{reclutamiento$candidato.emergencias$agregarParentesco$action}"/>
+                    </h:panelGrid>
+                    <p:dataTable id="parentescosTable" value="#{reclutamiento$candidato.parentescosCandidatos}" var="parentescoCandidato" rows="2" paginator="true" paginatorAlwaysVisible="true">
                         <f:facet name="header">
-                            Documentos de identidad del Candidato
+                            <h:outputText value="Parientes"/>
                         </f:facet>
-
-                        <p:column headerText="Tipo de Documento" >
-
-
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{parentescoCandidato.nombre}"/>
                         </p:column>
-
-                        <p:column headerText="N&uacute;mero de Documento" >
-
-
+                        <p:column headerText="Tel&eacute;fono">
+                            <h:outputText value="#{parentescoCandidato.telefono}"/>
                         </p:column>
-                        <p:column headerText="Editar" >
-                            <p:rowEditor id="docRowEdit" />
+                        <p:column headerText="Parentesco">
+                            <h:outputText value="#{parentescoCandidato.parentesco.nomParentesco}"/>
                         </p:column>
                     </p:dataTable>
                 </p:fieldset>
-
             </p:tab>
-
-            <p:tab title="Criterios" >
-                <p:spacer height="20" />
-                <p:fieldset legend="Registrar Criterios" >
-
+            <p:tab title="Experiencia laboral">
+                <p:fieldset legend="Informaci&oacute;n de experiencia laboral">
+                    <table>
+                        <tr>
+                            <td>
+                                <h:outputText value="Lugar de trabajo"/>
+                            </td>
+                            <td>
+                                <p:inputText value="#{reclutamiento$candidato.experiencia$lugarTrabajo}"/>
+                            </td>
+                            <td>
+                                <h:outputText value="Posici&oacute;n/Puesto similar a"/>
+                            </td>
+                            <td>
+                                <h:selectOneMenu style="width: 300px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.experiencia$puesto}">
+                                    <f:selectItems value="#{reclutamiento$candidato.puestosSelectItemListModel}" var="puesto" itemValue="#{puesto.puestosPK.codCia}:#{puesto.puestosPK.codPuesto}" itemLabel="#{puesto.nomPuesto}"/>
+                                </h:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText value="Fecha inicio"/>
+                            </td>
+                            <td>
+                                <p:calendar navigator="true" showOn="button" value="#{reclutamiento$candidato.experiencia$fechaInicio}"/>
+                            </td>
+                            <td>
+                                <h:outputText value="Fecha fin"/>
+                            </td>
+                            <td>
+                                <p:calendar navigator="true" showOn="button" value="#{reclutamiento$candidato.experiencia$fechaFin}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText value="Motivo de retiro"/>
+                            </td>
+                            <td colspan="3">
+                                <p:inputTextarea cols="70" value="#{reclutamiento$candidato.experiencia$motivoRetiro}"/>
+                            </td>
+                        </tr>
+                    </table>
                 </p:fieldset>
+                <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" update="mensajes, experienciaLaboralTable" action="#{reclutamiento$candidato.experienciaLaboral$agregar$action}"/>
+                <p:dataTable id="experienciaLaboralTable" value="#{reclutamiento$candidato.experienciasLaboralesCandidato}" var="experienciaLaboral" rows="3" paginator="true" paginatorAlwaysVisible="true">
+                    <f:facet name="header">
+                        <h:outputText value="Experiencia laboral"/>
+                    </f:facet>
+                    <p:column headerText="Lugar de trabajo">
+                        <h:outputText value="#{experienciaLaboral.lugar}"/>
+                    </p:column>
+                    <p:column headerText="Posici&oacute;n/Puesto">
+                        <h:outputText value="#{experienciaLaboral.puesto.nomPuesto}"/>
+                    </p:column>
+                    <p:column headerText="Fecha inicio">
+                        <h:outputText value="#{experienciaLaboral.fechaInicio}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Fecha fin">
+                        <h:outputText value="#{experienciaLaboral.fechaFin}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
+            <p:tab title="Referencias">
+                <p:wizard>
+                    <p:tab title="Laborales">
+                        <p:fieldset legend="Informaci&oacute;n de la referencia">
+                            <h:panelGrid columns="6">
+                                <h:outputText value="Nombre"/>
+                                <p:inputText id="referenciaLaboralNombre" value="#{reclutamiento$candidato.referencias$rl$nombre}"/>
+                                <h:outputText value="Lugar de trabajo"/>
+                                <p:inputText id="referenciaLaboralLugarTrabajo" value="#{reclutamiento$candidato.referencias$rl$lugarTrabajo}"/>
+                                <h:outputText value="Posici&oacute;n/Puesto"/>
+                                <p:inputText id="referenciaLaboralPuesto" value="#{reclutamiento$candidato.referencias$rl$puesto}"/>
+                                <h:outputText value="Tel&eacute;fono"/>
+                                <p:inputText id="referenciaLaboralTelefono" value="#{reclutamiento$candidato.referencias$rl$telefono}"/>
+                                <h:outputText value="Correo electr&oacute;nico"/>
+                                <p:inputText id="referenciaLaboralCorreoElectronico" value="#{reclutamiento$candidato.referencias$rl$correoElectronico}"/>
+                            </h:panelGrid>
+                        </p:fieldset>
+                        <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" update="referenciasLaboralesTable, referenciaLaboralNombre, referenciaLaboralLugarTrabajo, referenciaLaboralPuesto, referenciaLaboralTelefono, referenciaLaboralCorreoElectronico" action="#{reclutamiento$candidato.referenciaLaboral$agregar$action}"/>
+                        <p:dataTable id="referenciasLaboralesTable" value="#{reclutamiento$candidato.referenciasLaboralesCandidato}" var="referenciaLaboral" paginator="true" paginatorAlwaysVisible="true" rows="3">
+                            <f:facet name="header">
+                                <h:outputText value="Referencias laborales"/>
+                            </f:facet>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{referenciaLaboral.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Lugar de trabajo">
+                                <h:outputText value="#{referenciaLaboral.lugarTrabajo}"/>
+                            </p:column>
+                            <p:column headerText="Posici&oacute;n/Puesto">
+                                <h:outputText value="#{referenciaLaboral.puesto}"/>
+                            </p:column>
+                            <p:column headerText="Tel&eacute;fono y correo electr&oacute;nico">
+                                <h:outputText value="#{referenciaLaboral.telefono} - #{referenciaLaboral.correoElectronico}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                    <p:tab title="Personales">
+                        <p:fieldset legend="Informaci&oacute;n de la referencia">
+                            <h:panelGrid columns="6">
+                                <h:outputText value="Nombre"/>
+                                <p:inputText id="referenciaPersonalNombre" value="#{reclutamiento$candidato.referencias$rp$nombre}"/>
+                                <h:outputText value="Lugar de trabajo"/>
+                                <p:inputText id="referenciaPersonalLugarTrabajo" value="#{reclutamiento$candidato.referencias$rp$lugarTrabajo}"/>
+                                <h:outputText value="Tiempo de conocerle"/>
+                                <p:spinner id="referenciaPersonalTiempoConocerle" value="#{reclutamiento$candidato.referencias$rp$tiempoConocerle}" min="0" max="999" stepFactor="1"/>
+                                <h:outputText value="Tel&eacute;fono"/>
+                                <p:inputText id="referenciaPersonalTelefono" value="#{reclutamiento$candidato.referencias$rp$telefono}"/>
+                                <h:outputText value="Correo electr&oacute;nico"/>
+                                <p:inputText id="referenciaPersonalCorreoElectronico" value="#{reclutamiento$candidato.referencias$rp$correoElectronico}"/>
+                            </h:panelGrid>
+                        </p:fieldset>
+                        <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" update="mensajes, referenciasPersonalesTable, referenciaPersonalNombre, referenciaPersonalLugarTrabajo, referenciaPersonalTiempoConocerle, referenciaPersonalTelefono, referenciaPersonalCorreoElectronico" action="#{reclutamiento$candidato.referenciaPersonal$agregar$action}"/>
+                        <p:dataTable id="referenciasPersonalesTable" value="#{reclutamiento$candidato.referenciasPersonalesCandidato}" var="referenciaPersonal" rows="3" paginator="true" paginatorAlwaysVisible="true">
+                            <f:facet name="header">
+                                <h:outputText value="Referencias personales"/>
+                            </f:facet>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{referenciaPersonal.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Lugar de trabajo">
+                                <h:outputText value="#{referenciaPersonal.lugarTrabajo}"/>
+                            </p:column>
+                            <p:column headerText="Tiempo de conocerle">
+                                <h:outputText value="#{referenciaPersonal.tiempoConocerle} a&ntilde;os"/>
+                            </p:column>
+                            <p:column headerText="Tel&eacute;fono y correo electr&oacute;nico">
+                                <h:outputText value="#{referenciaPersonal.telefono} - #{referenciaPersonal.correoElectronico}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                </p:wizard>
+            </p:tab>            
+            <p:tab title="Documentos" >
+                <p:fieldset legend="Documentos de identidad/Otros documentos" >
+                    <h:panelGrid columns="5">
+                        <h:outputLabel value="Tipo de Documento: " />
+                        <h:selectOneMenu id="documentoTipo" style="width: 250px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.documentos$tipo}">
+                            <f:selectItems value="#{reclutamiento$candidato.listaTipoDocumentos}" var="tipoDocumento" itemValue="#{tipoDocumento.tipoDocumentoPK.codCia}:#{tipoDocumento.tipoDocumentoPK.codTipoDocumento}" itemLabel="#{tipoDocumento.nomTipoDocumento}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="N&uacute;mero: "/>
+                        <p:inputText id="documentoNumero" value="#{reclutamiento$candidato.documentos$numero}"/>
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" update="mensajes, documentosTable, documentoTipo, documentoNumero" action="#{reclutamiento$candidato.documento$agregar$action}"/>
+                <p:dataTable id="documentosTable" emptyMessage="No se ha encontrado ning&uacute;n documento" value="#{reclutamiento$candidato.documentosCandidato}" var="documento" rows="3" paginator="true" paginatorAlwaysVisible="true">
+                    <f:facet name="header">
+                        <h:outputText value="Documentos"/>
+                    </f:facet>
+                    <p:column headerText="Tipo de Documento" >
+                        <h:outputText value="#{documento.tipo.nomTipoDocumento}"/>
+                    </p:column>
+                    <p:column headerText="N&uacute;mero de Documento" >
+                        <h:outputText value="#{documento.numero}" />
+                    </p:column>
+                </p:dataTable>
             </p:tab>
 
-            <p:tab title="Finalizar" >
-                <p:spacer height="20" />
-                <h:outputLabel value="Ha registrado correctamente un nuevo Candidato." />
+            <p:tab title="Capacitaciones">
+                <p:fieldset legend="Datos de capacitaci&oacute;n">
+                    <table>
+                        <tr>
+                            <td>
+                                <h:outputText value="Capacitaci&oacute;n"/>
+                            </td>
+                            <td>
+                                <h:selectOneMenu style="width: 380px; height: 24px; padding-top: 3px;">
+                                    <f:selectItems/>
+                                </h:selectOneMenu>
+                            </td>
+                            <td>
+                                <h:outputText value="Descripci&oacute;n"/>
+                            </td>
+                            <td>
+                                <p:inputText size="50"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText value="Instituci&oacute;n"/>
+                            </td>
+                            <td>
+                                <h:selectOneMenu style="width: 380px; height: 24px; padding-top: 3px;">
+                                    <f:selectItems/>
+                                </h:selectOneMenu>
+                            </td>
+                            <td>
+                                <h:outputText value="Fecha"/>
+                            </td>
+                            <td>
+                                <p:calendar navigator="true" showOn="button"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:fieldset>
+                <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s"/>
+                <p:dataTable emptyMessage="[No se ha agregado ninguna capacitaci&oacute;n]" value="#{reclutamiento$candidato.capacitacionesCandidato}" var="capacitacion" rows="3" paginator="true" paginatorAlwaysVisible="true">
+                    <f:facet name="header">
+                        <h:outputText value="Capacitaciones obtenidas"/>
+                    </f:facet>
+                    <p:column headerText="Capacitaci&oacute;n">
+                        <h:outputText title="#{capacitacion.descripcion}" value="#{capacitacion.capacitacion.nomCapacitacion}" />
+                    </p:column>
+                    <p:column headerText="Instituci&oacute;n">
+                        <h:outputText value="#{capacitacion.institucion.desInsti}"/>
+                    </p:column>
+                    <p:column headerText="Fecha">
+                        <h:outputText value="#{capacitacion.fecha}"/>
+                    </p:column>
+                </p:dataTable>
             </p:tab>
-        </p:wizard>
-
-        <p:panel style="border: none;" rendered="#{(SessionBeanADM.estadoAccion eq 2)}" >
-            <p:dataTable id="tableConsultaCandidato" var="candidato" value="#{reclutamiento$candidato.listaCandidatos}"
-                         emptyMessage="No se ha encontrado ning&uacute;n Candidato" paginator="true" rows="10" rowsPerPageTemplate="5,10,25,50,100"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >
-
-                <f:facet name="header">
-                    Consulta de Candidatos
-                </f:facet>
-
-                <p:column headerText="C&oacute;digo" >
-                    <h:outputLabel value="#{candidato.candidatoPK.codCandidato}"/>
-                </p:column>
-
-                <p:column headerText="Nombre" filterBy="#{candidato.nombreCompleto}" filterMatchMode="contains" >
-                    <p:graphicImage value="/resources/iconos/personal.png" rendered="#{candidato.sexo eq 'M'}" />  
-                    <p:graphicImage value="/resources/iconos/personal_w.png" rendered="#{candidato.sexo eq 'F'}" />
-                    <h:outputLabel value="#{candidato.nombreCompleto}"/>
-                </p:column>
-
-                <p:column headerText="Fecha de Nacimiento">
-                    <h:outputLabel value="#{candidato.fechaNac}">
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                    </h:outputLabel>
-                </p:column>
-
-                <p:column headerText="Sexo">
-                    <h:outputLabel value="#{candidato.sexo}"/>
-                </p:column>
-
-                <p:column headerText="Observaci&oacute;n">
-                    <h:outputLabel value="#{candidato.observacion}"/>
-                </p:column>
-
-                <p:column headerText="Estado">
-                    <h:outputLabel value="#{candidato.estado}"/>
-                </p:column>
-
-                <p:column headerText="Editar" >
-                    <p:rowEditor id="docRowEdit" />
-                </p:column>
-            </p:dataTable>
-        </p:panel>
-
+            <p:tab title="Dependientes">
+            </p:tab>
+            <p:tab title="Idiomas">
+            </p:tab>
+            <p:tab title="Beneficiarios">
+            </p:tab>
+            <p:tab title="Equipos de oficina">
+            </p:tab>
+            <p:tab title="Pruebas">
+            </p:tab>
+            <p:tab title="Puestos">
+            </p:tab>
+            <p:tab title="Entrevistas por puesto">
+            </p:tab>
+            <p:tab title="Observaciones">
+                <h:panelGrid>
+                    <h:outputText value="Observaciones"/>
+                    <p:inputTextarea cols="120" rows="5"/>
+                </h:panelGrid>
+            </p:tab>
+        </p:accordionPanel>
+        <p:separator/>
+        <p:commandButton value="Guardar" image="ui-icon ui-icon-disk" action="#{reclutamiento$candidato.guardar$action}" update="mensajes"/>
     </ui:define>
-
 </ui:composition>

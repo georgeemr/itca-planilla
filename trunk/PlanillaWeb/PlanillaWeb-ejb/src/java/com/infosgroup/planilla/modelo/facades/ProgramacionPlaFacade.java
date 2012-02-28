@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -31,7 +32,7 @@ public class ProgramacionPlaFacade extends AbstractFacade<ProgramacionPla, Progr
 
     public List<ProgramacionPla> getProgramacionPlaByTipo(Short empresa, Short tipoPlanilla) {
         List<ProgramacionPla> l = new ArrayList<ProgramacionPla>();
-        Query q = em.createQuery("SELECT p FROM ProgramacionPla p WHERE p.programacionPlaPK.codCia = :codCia AND p.programacionPlaPK.codTipopla = :codTipopla", ProgramacionPla.class);
+        TypedQuery<ProgramacionPla> q = em.createQuery("SELECT p FROM ProgramacionPla p WHERE p.programacionPlaPK.codCia = :codCia AND p.programacionPlaPK.codTipopla = :codTipopla", ProgramacionPla.class);
         q.setParameter("codCia", empresa);
         q.setParameter("codTipopla", tipoPlanilla);
         l=q.getResultList();

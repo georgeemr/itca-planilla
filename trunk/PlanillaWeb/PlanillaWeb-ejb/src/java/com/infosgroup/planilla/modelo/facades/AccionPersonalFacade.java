@@ -50,8 +50,7 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
      */
     public List<AccionPersonal> findAprobacionJefe(Integer jefe, Short cia) {
         List<AccionPersonal> listaAccion = new ArrayList<AccionPersonal>(0);
-        Query acc = em.createQuery("select a from AccionPersonal a where a.accionPersonalPK.codCia = :cia "
-                + "and a.empleado.empleadoPK.codEmp = :jefe and a.status = 'G'", AccionPersonal.class);
+        TypedQuery<AccionPersonal> acc = em.createQuery("select a from AccionPersonal a where a.accionPersonalPK.codCia = :cia and a.empleado.empleadoPK.codEmp = :jefe and a.status = 'G'", AccionPersonal.class);
         acc.setParameter("cia", cia);
         acc.setParameter("jefe", jefe);
         listaAccion = (List<AccionPersonal>) acc.getResultList();
@@ -64,9 +63,7 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
      */
     public List<AccionPersonal> findAccionesAprobadas() {
         List<AccionPersonal> listaAccion = new ArrayList<AccionPersonal>(0);
-
-        Query acc = em.createQuery("select a from AccionPersonal a "
-                + "where a.status = 'B'", AccionPersonal.class);
+        TypedQuery<AccionPersonal> acc = em.createQuery("select a from AccionPersonal a where a.status = 'B'", AccionPersonal.class);
         listaAccion = (List<AccionPersonal>) acc.getResultList();
 
         return listaAccion;
@@ -80,7 +77,7 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
      */
     public List<AccionPersonal> findByTipo(long cia, long tipo) {
         List<AccionPersonal> listaAccion = new ArrayList<AccionPersonal>(0);
-        Query acc = em.createQuery("select a from AccionPersonal a where a.tipoAccion.tipoAccionPK.codCia = :cia and a.tipoAccion.tipoAccionPK.codTipoaccion = :tipo", AccionPersonal.class);
+        TypedQuery<AccionPersonal> acc = em.createQuery("select a from AccionPersonal a where a.tipoAccion.tipoAccionPK.codCia = :cia and a.tipoAccion.tipoAccionPK.codTipoaccion = :tipo", AccionPersonal.class);
         acc.setParameter("cia", cia);
         acc.setParameter("tipo", tipo);
         listaAccion = (List<AccionPersonal>) acc.getResultList();
@@ -89,9 +86,9 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
 
     public List<AccionPersonal> findByNoAfecta(long cia) {
         List<AccionPersonal> listaAccion = new ArrayList<AccionPersonal>(0);
-        Query acc = em.createQuery("select a from AccionPersonal a where a.tipoAccion.tipoAccionPK.codCia = :cia and a.tipoAccion.afectaSal = 'N'", AccionPersonal.class);
+        TypedQuery<AccionPersonal> acc = em.createQuery("select a from AccionPersonal a where a.tipoAccion.tipoAccionPK.codCia = :cia and a.tipoAccion.afectaSal = 'N'", AccionPersonal.class);
         acc.setParameter("cia", cia);
-        listaAccion = (List<AccionPersonal>) acc.getResultList();
+        listaAccion = acc.getResultList();
         return listaAccion != null ? listaAccion : new ArrayList<AccionPersonal>();
     }
 
@@ -141,7 +138,7 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
         Query q = em.createNativeQuery(query.toString(), AccionPersonal.class);
         q.setParameter(1, empleado.getEmpleadosPK().getCodCia());
         q.setParameter(2, empleado.getEmpleadosPK().getCodCia());
-        l = q.getResultList();
+        l = (List<AccionPersonal>) q.getResultList();
         return l != null ? l : new ArrayList<AccionPersonal>();
     }
 

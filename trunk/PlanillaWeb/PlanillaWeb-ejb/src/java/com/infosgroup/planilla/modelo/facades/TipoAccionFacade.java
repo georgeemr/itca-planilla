@@ -12,6 +12,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -33,7 +34,7 @@ public class TipoAccionFacade extends AbstractFacade<TipoAccion, TipoAccionPK> {
     }
 
     public List<TipoAccion> findByAfecta(Cias cias, String afecta) {
-        List<TipoAccion> listaTipo = new ArrayList<TipoAccion>(0);
+        List<TipoAccion> listaTipo = new ArrayList<TipoAccion>(0);        
         listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia AND t.afectaSal = :afectaSal ", TipoAccion.class).setParameter("codCia", cias.getCodCia()).setParameter("afectaSal", afecta).getResultList();
         return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
     }
