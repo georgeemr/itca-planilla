@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -36,7 +37,7 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
 
     public List<Planilla> findByTipoPLanilla(TiposPlanilla tipo) {
         List<Planilla> listPla = new ArrayList<Planilla>(0);
-        Query q = em.createQuery("select p from planilla p where p.tipoPlanilla = :tipoPla", Planilla.class);
+        TypedQuery<Planilla> q = em.createQuery("select p from planilla p where p.tipoPlanilla = :tipoPla", Planilla.class);
         q.setParameter("tipoPla", tipo);
         listPla = q.getResultList();
         return listPla != null ? listPla : new ArrayList<Planilla>();
@@ -44,14 +45,14 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
 
     public List<Planilla> findPlanillaByCias(Cias cia) {
         List<Planilla> listPla = new ArrayList<Planilla>(0);
-        Query q = em.createQuery("SELECT p FROM Planilla p WHERE p.planillaPK.codCia = :codCia", Planilla.class).setParameter("codCia", cia.getCodCia());
+        TypedQuery<Planilla> q = em.createQuery("SELECT p FROM Planilla p WHERE p.planillaPK.codCia = :codCia", Planilla.class).setParameter("codCia", cia.getCodCia());
         listPla = q.getResultList();
         return listPla != null ? listPla : new ArrayList<Planilla>();
     }
 
     public List<Planilla> findPlanillaByTipoPlanilla(Cias cia, Short codTipopla) {
         List<Planilla> listPla = new ArrayList<Planilla>(0);
-        Query q = em.createQuery("SELECT p FROM Planilla p WHERE p.planillaPK.codCia = :codCia AND p.codTipopla = :codTipopla", Planilla.class).setParameter("codCia", cia.getCodCia()).setParameter("codTipopla", codTipopla);
+        TypedQuery<Planilla> q = em.createQuery("SELECT p FROM Planilla p WHERE p.planillaPK.codCia = :codCia AND p.codTipopla = :codTipopla", Planilla.class).setParameter("codCia", cia.getCodCia()).setParameter("codTipopla", codTipopla);
         listPla = q.getResultList();
         return listPla != null ? listPla : new ArrayList<Planilla>();
     }

@@ -5,8 +5,8 @@
 package com.infosgroup.planilla.controlador.sessionbean;
 
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
-//import com.infosgroup.planilla.modelo.entidades.DetPlanilla;
 import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -16,7 +16,7 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean(name = "SessionBeanPLA")
 @SessionScoped
-public class SessionBeanPLA {
+public class SessionBeanPLA implements Serializable{
 
     public SessionBeanPLA() {
     }

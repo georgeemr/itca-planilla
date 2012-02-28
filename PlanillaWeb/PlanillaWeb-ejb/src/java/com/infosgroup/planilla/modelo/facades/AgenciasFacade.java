@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -37,7 +38,7 @@ public class AgenciasFacade extends AbstractFacade<Agencias, AgenciasPK> {
     @PermitAll
     public List<Agencias> findByCompania(Cias compania) {
         List<Agencias> lista = null;
-        Query q = getEntityManager().createQuery("SELECT a FROM Agencias a WHERE a.agenciasPK.codCia = :codCia", Agencias.class).setParameter("codCia", compania.getCodCia());
+        TypedQuery<Agencias> q = getEntityManager().createQuery("SELECT a FROM Agencias a WHERE a.agenciasPK.codCia = :codCia", Agencias.class).setParameter("codCia", compania.getCodCia());
         lista = q.getResultList();
         return lista != null ? lista : new ArrayList<Agencias>(0);
     }

@@ -15,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -34,9 +35,9 @@ public class AreasStaffFacade extends AbstractFacade<AreasStaff, AreasStaffPK> {
     @PermitAll
     public List<AreasStaff> findAreasByCias(Cias cia) {
         List<AreasStaff> l = new ArrayList<AreasStaff>(0);
-        Query acc = em.createQuery("SELECT a FROM AreasStaff a WHERE a.areasStaffPK.codCia = :codCia", AreasStaff.class);
+        TypedQuery<AreasStaff> acc = em.createQuery("SELECT a FROM AreasStaff a WHERE a.areasStaffPK.codCia = :codCia", AreasStaff.class);
         acc.setParameter("codCia", cia.getCodCia());
-        l = (List<AreasStaff>) acc.getResultList();
+        l = acc.getResultList();
         return l != null ? l : new ArrayList<AreasStaff>();
     }
 

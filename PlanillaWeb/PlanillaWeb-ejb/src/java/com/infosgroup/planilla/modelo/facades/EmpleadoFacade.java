@@ -67,7 +67,7 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
 
     public List<Empleados> findByJefes() {
         List<Empleados> listaJefes = new ArrayList<Empleados>(0);
-        Query pue = em.createQuery("select e from Empleados e, PuestoEmpleado p where p.puesto.jefatura = 1 and p.empleado.empleadoPK = e.empleadoPK", Empleados.class);
+        TypedQuery<Empleados> pue = em.createQuery("select e from Empleado e, PuestoEmpleado p where p.puesto.jefatura = 1 "
         listaJefes = pue.getResultList();
         return listaJefes != null ? listaJefes : new ArrayList<Empleados>();
     }
@@ -112,7 +112,7 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
     @PermitAll
     public List<Empleados> findEmpleadosByUsuario(String usuario) {
         List<Empleados> lista = null;
-        Query q = em.createNamedQuery("Empleados.findByUsuario", Empleados.class);
+        TypedQuery<Empleados> q = em.createNamedQuery("Empleado.findByUsuario", Empleados.class);
         q.setParameter("usuario", usuario);
         lista = q.getResultList();
         return lista != null ? lista : new ArrayList<Empleados>();
