@@ -37,6 +37,12 @@ private ProfesionesFacade profesionesFacade;
 private PuestoFacade puestosFacade;
 @EJB
 private ParentescoFacade parentescoFacade;
+@EJB
+private InstitucionesFacade institucionesFacade;
+@EJB
+private CapacitacionFacade capacitacionFacade;
+@EJB
+private IdiomaFacade idiomaFacade;
 
 @PermitAll
 public List<Paises> getListaPaises()
@@ -123,12 +129,48 @@ public List<Puestos> findAllPuestos(Cias cia)
 @PermitAll
 public List<Parentesco> findAllParentescos(Cias cia)
 {
-return parentescoFacade.findAllByCia(cia);
+    return parentescoFacade.findAllByCia(cia);
 }
 
 @PermitAll
 public Parentesco findParentescoById(ParentescoPK parentescoPK)
 {
-return parentescoFacade.find(parentescoPK);
+    return parentescoFacade.find(parentescoPK);
+}
+
+@PermitAll
+public Instituciones findInstitucionById(InstitucionesPK institucionPK)
+{
+    return institucionesFacade.find(institucionPK);
+}
+
+@PermitAll
+public List<Instituciones> findAllInstituciones(Cias cia)
+{
+    return institucionesFacade.findInstitucionByEmpresa(cia);
+}
+
+@PermitAll
+public Capacitacion findCapacitacionById(CapacitacionPK capacitacionPK)
+{
+    return capacitacionFacade.find(capacitacionPK);
+}
+
+@PermitAll
+public List<Capacitacion> findAllCapacitaciones(Cias cia)
+{
+    return capacitacionFacade.findCapByEmpresa(cia);
+}
+
+@PermitAll
+public Idioma findIdiomaById(IdiomaPK idiomaPK)
+{
+    return idiomaFacade.find(idiomaPK);
+}
+
+@PermitAll
+public List<Idioma> findAllIdiomas(Cias cia)
+{
+    return idiomaFacade.findAllByCia(cia);
 }
 }
