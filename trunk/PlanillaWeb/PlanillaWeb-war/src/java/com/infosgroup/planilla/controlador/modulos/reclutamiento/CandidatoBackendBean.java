@@ -11,7 +11,10 @@ import com.infosgroup.planilla.modelo.procesos.SessionBeanParametros;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
@@ -124,21 +127,27 @@ private Integer documentos$numero;
 // ===========================================================================================================
 // = Capacitaciones ==========================================================================================
 // ===========================================================================================================
+private String capacitacion$capacitacion;
 private String capacitacion$descripcion;
-private Integer capacitacion$institucion;
+private String capacitacion$institucion;
 private Date capacitacion$fecha;
 // ===========================================================================================================
 // = Dependientes ============================================================================================
 // ===========================================================================================================
-// = o =
+private String dependientes$nombre;
+private Date dependientes$fechaNacimiento;
+private String dependientes$parentesco;
 // ===========================================================================================================
 // = Idiomas =================================================================================================
 // ===========================================================================================================
-// = o =
+private String idiomas$idioma;
+private Boolean idiomas$lee;
+private Boolean idiomas$escribe;
+private Integer idiomas$nivel;
 // ===========================================================================================================
 // = Beneficiarios ===========================================================================================
 // ===========================================================================================================
-// = o =
+private String beneficiarios$nombre;
 // ===========================================================================================================
 // = Equipos de oficina ======================================================================================
 // ===========================================================================================================
@@ -169,7 +178,9 @@ private List<Profesion> listaProfesiones;
 // ======================================
 private List<Puestos> puestosSelectItemListModel;
 private List<Parentesco> parentescoSelectItemListModel;
+private List<Capacitacion> capacitacionesSelectItemListModel;
 private List<Instituciones> institucionesSelectItemListModel;
+private List<Idioma> idiomasSelectItemListModel;
 
 public List<Puestos> getPuestosSelectItemListModel()
 {
@@ -191,6 +202,16 @@ public void setParentescoSelectItemListModel(List<Parentesco> parentescoSelectIt
     this.parentescoSelectItemListModel = parentescoSelectItemListModel;
 }
 
+public List<Capacitacion> getCapacitacionesSelectItemListModel()
+{
+    return capacitacionesSelectItemListModel;
+}
+
+public void setCapacitacionesSelectItemListModel(List<Capacitacion> capacitacionesSelectItemListModel)
+{
+    this.capacitacionesSelectItemListModel = capacitacionesSelectItemListModel;
+}
+
 public List<Instituciones> getInstitucionesSelectItemListModel()
 {
     return institucionesSelectItemListModel;
@@ -199,6 +220,16 @@ public List<Instituciones> getInstitucionesSelectItemListModel()
 public void setInstitucionesSelectItemListModel(List<Instituciones> institucionesSelectItemListModel)
 {
     this.institucionesSelectItemListModel = institucionesSelectItemListModel;
+}
+
+public List<Idioma> getIdiomasSelectItemListModel()
+{
+    return idiomasSelectItemListModel;
+}
+
+public void setIdiomasSelectItemListModel(List<Idioma> idiomasSelectItemListModel)
+{
+    this.idiomasSelectItemListModel = idiomasSelectItemListModel;
 }
 // ======================================
 private Boolean isError;
@@ -221,6 +252,9 @@ public void init()
     // ===================================================================
     puestosSelectItemListModel = sessionBeanParametros.findAllPuestos(getSessionBeanADM().getCompania());
     parentescoSelectItemListModel = sessionBeanParametros.findAllParentescos(getSessionBeanADM().getCompania());
+    capacitacionesSelectItemListModel = sessionBeanParametros.findAllCapacitaciones(getSessionBeanADM().getCompania());
+    institucionesSelectItemListModel = sessionBeanParametros.findAllInstituciones(getSessionBeanADM().getCompania());
+    idiomasSelectItemListModel = sessionBeanParametros.findAllIdiomas(getSessionBeanADM().getCompania());
     // ===================================================================
     emergencias$pesoActual = 0.00d;
     emergencias$estatura = 0;
@@ -234,6 +268,9 @@ public void init()
     referenciasPersonalesCandidato = new ArrayList<ReferenciaPersonalCandidato>();
     documentosCandidato = new ArrayList<DocumentoCandidato>();
     capacitacionesCandidato = new ArrayList<CapacitacionCandidato>();
+    dependientesCandidato = new ArrayList<DependienteCandidato>();
+    idiomasCandidato = new ArrayList<IdiomaCandidato>();
+    beneficiariosCandidato = new ArrayList<String>();
 }
 
 // ==================================================================================================================
@@ -301,6 +338,7 @@ public String experienciaLaboral$agregar$action()
     return null;
 }
 
+@PermitAll
 public String referenciaLaboral$agregar$action()
 {
     ReferenciaLaboralCandidato r = new ReferenciaLaboralCandidato();
@@ -320,6 +358,7 @@ public String referenciaLaboral$agregar$action()
     return null;
 }
 
+@PermitAll
 public String referenciaPersonal$agregar$action()
 {
     ReferenciaPersonalCandidato r = new ReferenciaPersonalCandidato();
@@ -339,6 +378,7 @@ public String referenciaPersonal$agregar$action()
     return null;
 }
 
+@PermitAll
 public String documento$agregar$action()
 {
     String[] documentoPKStr = documentos$tipo.split(":");
@@ -353,6 +393,75 @@ public String documento$agregar$action()
 }
 
 @PermitAll
+public String capacitaciones$agregar$action()
+{
+    String[] capacitacionPKStr = capacitacion$capacitacion.split(":");
+    String[] institucionPKStr = capacitacion$institucion.split(":");
+
+    CapacitacionPK capacitacionPK = new CapacitacionPK(new Short(capacitacionPKStr[0]), new Integer(capacitacionPKStr[1]));
+    InstitucionesPK institucionesPK = new InstitucionesPK(new Short(institucionPKStr[0]), new Short(institucionPKStr[1]));
+
+    CapacitacionCandidato c = new CapacitacionCandidato();
+    c.setCapacitacion(sessionBeanParametros.findCapacitacionById(capacitacionPK));
+    c.setInstitucion(sessionBeanParametros.findInstitucionById(institucionesPK));
+    c.setDescripcion(capacitacion$descripcion);
+    c.setFecha(capacitacion$fecha);
+
+    capacitacionesCandidato.add(c);
+
+    capacitacion$capacitacion = null;
+    capacitacion$descripcion = null;
+    capacitacion$institucion = null;
+    capacitacion$fecha = null;
+    return null;
+}
+
+@PermitAll
+public String dependientes$agregar$action()
+{
+    String[] parentescoPKStr = dependientes$parentesco.split(":");
+    ParentescoPK parentescoPK = new ParentescoPK(new Short(parentescoPKStr[0]), new Short(parentescoPKStr[1]));
+    DependienteCandidato d = new DependienteCandidato();
+    d.setNombre(dependientes$nombre);
+    d.setFechaNacimiento(dependientes$fechaNacimiento);
+    d.setParentesco(sessionBeanParametros.findParentescoById(parentescoPK));
+    dependientesCandidato.add(d);
+
+    dependientes$parentesco = null;
+    dependientes$nombre = null;
+    dependientes$fechaNacimiento = null;
+
+    return null;
+}
+
+@PermitAll
+public String idiomas$agregar$action()
+{
+    String[] idiomaPKStr = idiomas$idioma.split(":");
+    IdiomaPK idiomaPK = new IdiomaPK(new Short(idiomaPKStr[0]), new Integer(idiomaPKStr[1]));
+    IdiomaCandidato i = new IdiomaCandidato();
+    i.setIdioma(sessionBeanParametros.findIdiomaById(idiomaPK));
+    i.setLee(idiomas$lee);
+    i.setEscribe(idiomas$escribe);
+    i.setNivel(idiomas$nivel);
+    idiomasCandidato.add(i);
+    return null;
+}
+
+@PermitAll
+public String beneficiarios$agregar$action()
+{
+    if((beneficiarios$nombre == null) || beneficiarios$nombre.isEmpty())
+        {
+        addMessage("Infosweb RRHH", "Ingrese el nombre del beneficiario", TipoMensaje.ADVERTENCIA);
+        return null;
+        }
+    beneficiariosCandidato.add(beneficiarios$nombre);
+    beneficiarios$nombre = null ;
+    return null;
+}
+
+@PermitAll
 public String guardar$action()
 {
     Short c = getSessionBeanADM().getCompania().getCodCia();
@@ -360,9 +469,9 @@ public String guardar$action()
     CandidatoPK pkCandidato = new CandidatoPK();
     Candidato candidato = new Candidato();
 
-    GregorianCalendar calendarioHoy = (GregorianCalendar) GregorianCalendar.getInstance();
-    GregorianCalendar calendarioNacimiento = (GregorianCalendar) GregorianCalendar.getInstance();
-    calendarioNacimiento.setTime(generales$fechaNacimiento);
+    //GregorianCalendar calendarioHoy = (GregorianCalendar) GregorianCalendar.getInstance();
+    //GregorianCalendar calendarioNacimiento = (GregorianCalendar) GregorianCalendar.getInstance();
+    //calendarioNacimiento.setTime(generales$fechaNacimiento);
 
     //Integer anioHoy = calendarioHoy.get(GregorianCalendar.YEAR);
     //Integer nac = calendarioNacimiento.get(GregorianCalendar.YEAR);
@@ -568,6 +677,16 @@ public void setApellidoCasada(String apellidoCasada)
     this.apellidoCasada = apellidoCasada;
 }
 
+public String getCapacitacion$capacitacion()
+{
+    return capacitacion$capacitacion;
+}
+
+public void setCapacitacion$capacitacion(String capacitacion$capacitacion)
+{
+    this.capacitacion$capacitacion = capacitacion$capacitacion;
+}
+
 public String getCapacitacion$descripcion()
 {
     return capacitacion$descripcion;
@@ -588,12 +707,12 @@ public void setCapacitacion$fecha(Date capacitacion$fecha)
     this.capacitacion$fecha = capacitacion$fecha;
 }
 
-public Integer getCapacitacion$institucion()
+public String getCapacitacion$institucion()
 {
     return capacitacion$institucion;
 }
 
-public void setCapacitacion$institucion(Integer capacitacion$institucion)
+public void setCapacitacion$institucion(String capacitacion$institucion)
 {
     this.capacitacion$institucion = capacitacion$institucion;
 }
@@ -1178,6 +1297,86 @@ public void setReferencias$rp$tiempoConocerle(Integer referencias$rp$tiempoConoc
     this.referencias$rp$tiempoConocerle = referencias$rp$tiempoConocerle;
 }
 
+public Date getDependientes$fechaNacimiento()
+{
+    return dependientes$fechaNacimiento;
+}
+
+public void setDependientes$fechaNacimiento(Date dependientes$fechaNacimiento)
+{
+    this.dependientes$fechaNacimiento = dependientes$fechaNacimiento;
+}
+
+public String getDependientes$nombre()
+{
+    return dependientes$nombre;
+}
+
+public void setDependientes$nombre(String dependientes$nombre)
+{
+    this.dependientes$nombre = dependientes$nombre;
+}
+
+public String getDependientes$parentesco()
+{
+    return dependientes$parentesco;
+}
+
+public void setDependientes$parentesco(String dependientes$parentesco)
+{
+    this.dependientes$parentesco = dependientes$parentesco;
+}
+
+public Boolean getIdiomas$escribe()
+{
+    return idiomas$escribe;
+}
+
+public void setIdiomas$escribe(Boolean idiomas$escribe)
+{
+    this.idiomas$escribe = idiomas$escribe;
+}
+
+public String getIdiomas$idioma()
+{
+    return idiomas$idioma;
+}
+
+public void setIdiomas$idioma(String idiomas$idioma)
+{
+    this.idiomas$idioma = idiomas$idioma;
+}
+
+public Boolean getIdiomas$lee()
+{
+    return idiomas$lee;
+}
+
+public void setIdiomas$lee(Boolean idiomas$lee)
+{
+    this.idiomas$lee = idiomas$lee;
+}
+
+public Integer getIdiomas$nivel()
+{
+    return idiomas$nivel;
+}
+
+public void setIdiomas$nivel(Integer idiomas$nivel)
+{
+    this.idiomas$nivel = idiomas$nivel;
+}
+
+public String getBeneficiarios$nombre()
+{
+    return beneficiarios$nombre;
+}
+
+public void setBeneficiarios$nombre(String beneficiarios$nombre)
+{
+    this.beneficiarios$nombre = beneficiarios$nombre;
+}
+
 public String getSexo()
 {
     return sexo;
@@ -1280,6 +1479,9 @@ private List<ReferenciaLaboralCandidato> referenciasLaboralesCandidato;
 private List<ReferenciaPersonalCandidato> referenciasPersonalesCandidato;
 private List<DocumentoCandidato> documentosCandidato;
 private List<CapacitacionCandidato> capacitacionesCandidato;
+private List<DependienteCandidato> dependientesCandidato;
+private List<IdiomaCandidato> idiomasCandidato;
+private List<String> beneficiariosCandidato;
 //=======================================
 public List<PreparacionAcademicaCandidato> getPreparacionesAcademicasCandidato()
 {
@@ -1349,5 +1551,35 @@ public List<CapacitacionCandidato> getCapacitacionesCandidato()
 public void setCapacitacionesCandidato(List<CapacitacionCandidato> capacitacionesCandidato)
 {
     this.capacitacionesCandidato = capacitacionesCandidato;
+}
+
+public List<DependienteCandidato> getDependientesCandidato()
+{
+    return dependientesCandidato;
+}
+
+public void setDependientesCandidato(List<DependienteCandidato> dependientesCandidato)
+{
+    this.dependientesCandidato = dependientesCandidato;
+}
+
+public List<IdiomaCandidato> getIdiomasCandidato()
+{
+    return idiomasCandidato;
+}
+
+public void setIdiomasCandidato(List<IdiomaCandidato> idiomasCandidato)
+{
+    this.idiomasCandidato = idiomasCandidato;
+}
+
+public List<String> getBeneficiariosCandidato()
+{
+    return beneficiariosCandidato;
+}
+
+public void setBeneficiariosCandidato(List<String> beneficiariosCandidato)
+{
+    this.beneficiariosCandidato = beneficiariosCandidato;
 }
 }
