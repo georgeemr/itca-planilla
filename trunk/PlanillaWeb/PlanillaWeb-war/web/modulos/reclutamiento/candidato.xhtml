@@ -538,7 +538,7 @@
                                 <h:outputText value="Nivel"/>
                             </td>
                             <td align="left">
-                                <h:selectOneMenu id="idiomasNivel" value="#{reclutamiento$candidato.idiomas$nivel}">
+                                <h:selectOneMenu id="idiomasNivel" style="width: 250px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.idiomas$nivel}">
                                     <f:selectItem itemValue="1" itemLabel="B&aacute;sico"/>
                                     <f:selectItem itemValue="2" itemLabel="Intermedio"/>
                                     <f:selectItem itemValue="3" itemLabel="Avanzado"/>
@@ -594,12 +594,101 @@
                 </p:dataTable>
             </p:tab>
             <p:tab title="Equipos de oficina">
+                <p:fieldset legend="Equipo de oficina">
+                    <h:panelGrid columns="4" width="100%">
+                        <h:outputText value="Equipo"/>
+                        <h:selectOneMenu id="equiposEquipo" style="width: 400px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.equipos$equipo}">
+                            <f:selectItems value="#{reclutamiento$candidato.equiposSelectItemListModel}" var="equipo" itemValue="#{equipo.equipoPK.codCia}:#{equipo.equipoPK.codEquipo}" itemLabel="#{equipo.nomEquipo}"/>
+                        </h:selectOneMenu>
+                        <h:outputText value="Estado"/>
+                        <h:selectOneMenu id="equiposEstado" style="width: 250px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.equipos$estado}">
+                            <f:selectItem itemValue="1" itemLabel="Bajo"/>
+                            <f:selectItem itemValue="2" itemLabel="Medio"/>
+                            <f:selectItem itemValue="3" itemLabel="Alto"/>
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" action="#{reclutamiento$candidato.equipos$agregar$action}" update="mensajes, equiposTable, equiposEquipo, equiposEstado"/>
+                <p:dataTable id="equiposTable" value="#{reclutamiento$candidato.equiposCandidato}" var="equipoCandidato" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5">
+                    <f:facet name="header">
+                        <h:outputText value="Equipos de oficina"/>
+                    </f:facet>
+                    <p:column headerText="Equipo">
+                        <h:outputText value="#{equipoCandidato.equipo.nomEquipo}"/>
+                    </p:column>
+                    <p:column headerText="Estado">
+                        <h:outputText rendered="#{equipoCandidato.estado eq 1}" value="Bajo"/>
+                        <h:outputText rendered="#{equipoCandidato.estado eq 2}" value="Medio"/>
+                        <h:outputText rendered="#{equipoCandidato.estado eq 3}" value="Alto"/>
+                    </p:column>
+                </p:dataTable>
             </p:tab>
             <p:tab title="Pruebas">
+                <p:fieldset legend="Prueba">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td>
+                                <h:outputText value="Tipo"/>
+                            </td>
+                            <td>
+                                <h:selectOneMenu id="pruebasTipo" style="width: 250px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.pruebas$tipoPrueba}">
+                                    <f:selectItems value="#{reclutamiento$candidato.tiposPruebaSelectItemListModel}" var="tipoPrueba" itemValue="#{tipoPrueba.tipoPruebaPK.codCia}:#{tipoPrueba.tipoPruebaPK.codTipoPrueba}" itemLabel="#{tipoPrueba.nomTipoPrueba}"/>
+                                </h:selectOneMenu>
+                            </td>
+                            <td>
+                                <h:outputText value="Resultado"/>
+                            </td>
+                            <td colspan="3">
+                                <p:inputText id="pruebasResultado" size="75" value="#{reclutamiento$candidato.pruebas$resultado}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText value="Nota"/>
+                            </td>
+                            <td>
+                                <p:spinner id="pruebasNota" min="0.00" stepFactor="0.01" style="height: 12px;" value="#{reclutamiento$candidato.pruebas$nota}"/>
+                            </td>
+                            <td>
+                                <h:outputText value="Costo"/>
+                            </td>
+                            <td>
+                                <p:spinner id="pruebasCosto" min="0.00" stepFactor="0.01" style="height: 12px;" value="#{reclutamiento$candidato.pruebas$costo}"/>
+                            </td>
+                            <td> 
+                                <h:outputText value="Fecha"/>
+                            </td>
+                            <td>
+                                <p:calendar id="pruebasFecha" showOn="button" navigator="true" value="#{reclutamiento$candidato.pruebas$fecha}"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:fieldset>
+                <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" action="#{reclutamiento$candidato.pruebas$agregar$action}" update="mensajes, pruebasTable, pruebasResultado, pruebasFecha"/>
+                <p:dataTable id="pruebasTable" rows="3" paginator="true" paginatorAlwaysVisible="true" pageLinks="5" value="#{reclutamiento$candidato.pruebasCandidato}" var="pruebaCandidato">
+                    <f:facet name="header">
+                        <h:outputText value="Pruebas"/>
+                    </f:facet>
+                    <p:column headerText="Tipo">
+                        <h:outputText value="#{pruebaCandidato.tipoPrueba.nomTipoPrueba}"/>
+                    </p:column>
+                    <p:column headerText="Resultado">
+                        <h:outputText value="#{pruebaCandidato.resultado}"/>
+                    </p:column>
+                    <p:column headerText="Nota">
+                        <h:outputText value="#{pruebaCandidato.nota}"/>
+                    </p:column>
+                    <p:column headerText="Costo">
+                        <h:outputText value="#{pruebaCandidato.costo}"/>
+                    </p:column>
+                    <p:column headerText="Fecha">
+                        <h:outputText value="#{pruebaCandidato.fecha}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
             </p:tab>
-            <p:tab title="Puestos">
-            </p:tab>
-            <p:tab title="Entrevistas por puesto">
+            <p:tab title="Puestos/Entrevistas">
             </p:tab>
             <p:tab title="Observaciones">
                 <h:panelGrid>
