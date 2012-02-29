@@ -151,11 +151,16 @@ private String beneficiarios$nombre;
 // ===========================================================================================================
 // = Equipos de oficina ======================================================================================
 // ===========================================================================================================
-// = o =
+private String equipos$equipo;
+private Integer equipos$estado;
 // ===========================================================================================================
 // = Pruebas =================================================================================================
 // ===========================================================================================================
-// = o =
+private String pruebas$tipoPrueba;
+private String pruebas$resultado;
+private Double pruebas$nota;
+private Double pruebas$costo;
+private Date pruebas$fecha;
 // ===========================================================================================================
 // = Puestos =================================================================================================
 // ===========================================================================================================
@@ -181,6 +186,8 @@ private List<Parentesco> parentescoSelectItemListModel;
 private List<Capacitacion> capacitacionesSelectItemListModel;
 private List<Instituciones> institucionesSelectItemListModel;
 private List<Idioma> idiomasSelectItemListModel;
+private List<Equipo> equiposSelectItemListModel;
+private List<TipoPrueba> tiposPruebaSelectItemListModel;
 
 public List<Puestos> getPuestosSelectItemListModel()
 {
@@ -231,12 +238,33 @@ public void setIdiomasSelectItemListModel(List<Idioma> idiomasSelectItemListMode
 {
     this.idiomasSelectItemListModel = idiomasSelectItemListModel;
 }
+
+public List<Equipo> getEquiposSelectItemListModel()
+{
+    return equiposSelectItemListModel;
+}
+
+public void setEquiposSelectItemListModel(List<Equipo> equiposSelectItemListModel)
+{
+    this.equiposSelectItemListModel = equiposSelectItemListModel;
+}
+
+    public List<TipoPrueba> getTiposPruebaSelectItemListModel()
+    {
+        return tiposPruebaSelectItemListModel;
+    }
+
+    public void setTiposPruebaSelectItemListModel(List<TipoPrueba> tiposPruebaSelectItemListModel)
+    {
+        this.tiposPruebaSelectItemListModel = tiposPruebaSelectItemListModel;
+    }
 // ======================================
 private Boolean isError;
 // ===========================================================================================================
 // ===========================================================================================================
 // ===========================================================================================================
 
+@PermitAll
 @PostConstruct
 public void init()
 {
@@ -255,6 +283,8 @@ public void init()
     capacitacionesSelectItemListModel = sessionBeanParametros.findAllCapacitaciones(getSessionBeanADM().getCompania());
     institucionesSelectItemListModel = sessionBeanParametros.findAllInstituciones(getSessionBeanADM().getCompania());
     idiomasSelectItemListModel = sessionBeanParametros.findAllIdiomas(getSessionBeanADM().getCompania());
+    equiposSelectItemListModel = sessionBeanParametros.findAllEquipos(getSessionBeanADM().getCompania());
+    tiposPruebaSelectItemListModel = sessionBeanParametros.findAllTipoPrueba(getSessionBeanADM().getCompania());
     // ===================================================================
     emergencias$pesoActual = 0.00d;
     emergencias$estatura = 0;
@@ -271,6 +301,8 @@ public void init()
     dependientesCandidato = new ArrayList<DependienteCandidato>();
     idiomasCandidato = new ArrayList<IdiomaCandidato>();
     beneficiariosCandidato = new ArrayList<String>();
+    equiposCandidato = new ArrayList<EquipoCandidato>();
+    pruebasCandidato = new ArrayList<PruebaCandidato>();
 }
 
 // ==================================================================================================================
@@ -451,13 +483,43 @@ public String idiomas$agregar$action()
 @PermitAll
 public String beneficiarios$agregar$action()
 {
-    if((beneficiarios$nombre == null) || beneficiarios$nombre.isEmpty())
+    if ((beneficiarios$nombre == null) || beneficiarios$nombre.isEmpty())
         {
         addMessage("Infosweb RRHH", "Ingrese el nombre del beneficiario", TipoMensaje.ADVERTENCIA);
         return null;
         }
     beneficiariosCandidato.add(beneficiarios$nombre);
-    beneficiarios$nombre = null ;
+    beneficiarios$nombre = null;
+    return null;
+}
+
+@PermitAll
+public String equipos$agregar$action()
+{
+    String[] equipoPKStr = equipos$equipo.split(":");
+    EquipoPK equipoPK = new EquipoPK(new Short(equipoPKStr[0]), new Short(equipoPKStr[1]));
+
+    EquipoCandidato e = new EquipoCandidato();
+    e.setEquipo(sessionBeanParametros.findEquipoById(equipoPK));
+    e.setEstado(equipos$estado);
+    equiposCandidato.add(e);
+    return null;
+}
+
+@PermitAll
+public String pruebas$agregar$action()
+{
+    String[] tipoPruebaPKStr = pruebas$tipoPrueba.split(":");
+    TipoPruebaPK tipoPruebaPK = new TipoPruebaPK(new Short(tipoPruebaPKStr[0]), new Short(tipoPruebaPKStr[1]));
+
+    PruebaCandidato p = new PruebaCandidato();
+    p.setTipoPrueba(sessionBeanParametros.findTipoPruebaById(tipoPruebaPK));
+    p.setResultado(pruebas$resultado);
+    p.setNota(pruebas$nota);
+    p.setCosto(pruebas$costo);
+    p.setFecha(pruebas$fecha);
+
+    pruebasCandidato.add(p);
     return null;
 }
 
@@ -1377,6 +1439,76 @@ public void setBeneficiarios$nombre(String beneficiarios$nombre)
     this.beneficiarios$nombre = beneficiarios$nombre;
 }
 
+public String getEquipos$equipo()
+{
+    return equipos$equipo;
+}
+
+public void setEquipos$equipo(String equipos$equipo)
+{
+    this.equipos$equipo = equipos$equipo;
+}
+
+public Integer getEquipos$estado()
+{
+    return equipos$estado;
+}
+
+public void setEquipos$estado(Integer equipos$estado)
+{
+    this.equipos$estado = equipos$estado;
+}
+
+public Double getPruebas$costo()
+{
+    return pruebas$costo;
+}
+
+public void setPruebas$costo(Double pruebas$costo)
+{
+    this.pruebas$costo = pruebas$costo;
+}
+
+public Date getPruebas$fecha()
+{
+    return pruebas$fecha;
+}
+
+public void setPruebas$fecha(Date pruebas$fecha)
+{
+    this.pruebas$fecha = pruebas$fecha;
+}
+
+public Double getPruebas$nota()
+{
+    return pruebas$nota;
+}
+
+public void setPruebas$nota(Double pruebas$nota)
+{
+    this.pruebas$nota = pruebas$nota;
+}
+
+public String getPruebas$tipoPrueba()
+{
+    return pruebas$tipoPrueba;
+}
+
+public void setPruebas$tipoPrueba(String pruebas$tipoPrueba)
+{
+    this.pruebas$tipoPrueba = pruebas$tipoPrueba;
+}
+
+public String getPruebas$resultado()
+{
+    return pruebas$resultado;
+}
+
+public void setPruebas$resultado(String pruebas$resultado)
+{
+    this.pruebas$resultado = pruebas$resultado;
+}
+
 public String getSexo()
 {
     return sexo;
@@ -1482,6 +1614,8 @@ private List<CapacitacionCandidato> capacitacionesCandidato;
 private List<DependienteCandidato> dependientesCandidato;
 private List<IdiomaCandidato> idiomasCandidato;
 private List<String> beneficiariosCandidato;
+private List<EquipoCandidato> equiposCandidato;
+private List<PruebaCandidato> pruebasCandidato;
 //=======================================
 public List<PreparacionAcademicaCandidato> getPreparacionesAcademicasCandidato()
 {
@@ -1581,5 +1715,25 @@ public List<String> getBeneficiariosCandidato()
 public void setBeneficiariosCandidato(List<String> beneficiariosCandidato)
 {
     this.beneficiariosCandidato = beneficiariosCandidato;
+}
+
+public List<EquipoCandidato> getEquiposCandidato()
+{
+    return equiposCandidato;
+}
+
+public void setEquiposCandidato(List<EquipoCandidato> equiposCandidato)
+{
+    this.equiposCandidato = equiposCandidato;
+}
+
+public List<PruebaCandidato> getPruebasCandidato()
+{
+    return pruebasCandidato;
+}
+
+public void setPruebasCandidato(List<PruebaCandidato> pruebasCandidato)
+{
+    this.pruebasCandidato = pruebasCandidato;
 }
 }
