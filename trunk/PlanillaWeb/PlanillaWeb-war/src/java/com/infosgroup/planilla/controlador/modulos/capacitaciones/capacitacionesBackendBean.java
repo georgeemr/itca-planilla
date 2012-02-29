@@ -5,7 +5,13 @@
 package com.infosgroup.planilla.controlador.modulos.capacitaciones;
 
 import com.infosgroup.planilla.modelo.entidades.Capacitacion;
+import com.infosgroup.planilla.modelo.entidades.CapacitacionAreas;
+import com.infosgroup.planilla.modelo.entidades.CapacitacionAreasPK;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionPK;
+import com.infosgroup.planilla.modelo.entidades.CapacitacionTemas;
+import com.infosgroup.planilla.modelo.entidades.CapacitacionTemasPK;
+import com.infosgroup.planilla.modelo.entidades.Capacitadores;
+import com.infosgroup.planilla.modelo.entidades.CapacitadoresPK;
 import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Instituciones;
 import com.infosgroup.planilla.modelo.entidades.InstitucionesPK;
@@ -15,10 +21,12 @@ import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.SelectEvent;
@@ -43,10 +51,16 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
     private String impartido;
     private String razon;
     private BigDecimal costoRazon;
-    public String codCap;
+    private String codCap;
     private Short inst;
+    private Integer codArea;
+    private Integer codTema;
+    private Long codCapacitador;
     private List<Instituciones> listaInst;
     private List<Capacitacion> listaCap;
+    private List<CapacitacionAreas> listaArea;
+    private List<CapacitacionTemas> listaTemas;
+    private List<Capacitadores> listaCapacitadores;
     private DataTable tableCapacitaciones;
     
     public String getCodCap() {
@@ -121,6 +135,30 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
         this.isError = isError;
     }
 
+    public Integer getCodArea() {
+        return codArea;
+    }
+
+    public void setCodArea(Integer codArea) {
+        this.codArea = codArea;
+    }
+
+    public Integer getCodTema() {
+        return codTema;
+    }
+
+    public void setCodTema(Integer codTema) {
+        this.codTema = codTema;
+    }
+
+    public Long getCodCapacitador() {
+        return codCapacitador;
+    }
+
+    public void setCodCapacitador(Long codCapacitador) {
+        this.codCapacitador = codCapacitador;
+    }
+
     public List<Instituciones> getListaInst() {
         listaInst = capacitacionSessionBean.findInstByEmpresa(getSessionBeanADM().getCompania());
         return listaInst;
@@ -137,6 +175,37 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
 
     public void setListaCap(List<Capacitacion> listaCap) {
         this.listaCap = listaCap;
+    }
+
+    public List<CapacitacionAreas> getListaArea() {
+        listaArea = capacitacionSessionBean.findAreaByCap(getSessionBeanADM().getCompania());
+        return listaArea;
+    }
+
+    public void setListaArea(List<CapacitacionAreas> listaArea) {
+        this.listaArea = listaArea;
+    }
+
+    public List<Capacitadores> getListaCapacitadores() {
+        listaCapacitadores = capacitacionSessionBean.findCapacitadoresByCap(getSessionBeanADM().getCompania());
+        return listaCapacitadores;
+    }
+
+    public void setListaCapacitadores(List<Capacitadores> listaCapacitadores) {
+        this.listaCapacitadores = listaCapacitadores;
+    }
+
+    public List<CapacitacionTemas> getListaTemas() {
+        if(codArea != null && codArea != -1){
+            listaTemas = capacitacionSessionBean.findTemaByArea(getSessionBeanADM().getCompania(), codArea);
+        }
+        
+        listaTemas = listaTemas != null ? listaTemas : new ArrayList<CapacitacionTemas>();
+        return listaTemas;
+    }
+
+    public void setListaTemas(List<CapacitacionTemas> listaTemas) {
+        this.listaTemas = listaTemas;
     }
 
     public DataTable getTableCapacitaciones() {
@@ -175,6 +244,10 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
         setRazon(null);
         setCostoRazon(null);
         setDuracion(null);
+        setCodArea(null);
+        setCodCapacitador(null);
+        setCodTema(null);
+        
     }
     
     public capacitacionesBackendBean(){
@@ -219,6 +292,12 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
             Integer cod = capacitacionSessionBean.getMaxCapacitacion(ciaCod);
             pk.setCodCapacitacion(cod);
             capacitacion.setCapacitacionPK(pk);
+            CapacitacionAreas area = capacitacionSessionBean.findByAreaId(new CapacitacionAreasPK(getSessionBeanADM().getCompania().getCodCia(), codArea));
+            capacitacion.setCapacitacionAreas(area);
+            CapacitacionTemas tema = capacitacionSessionBean.findByTemaId(new CapacitacionTemasPK(getSessionBeanADM().getCompania().getCodCia(),area.getCapacitacionAreasPK().getCodArea(), codTema));
+            capacitacion.setCapacitacionTemas(tema);
+            Capacitadores capacitador = capacitacionSessionBean.findByCapId(new CapacitadoresPK(getSessionBeanADM().getCompania().getCodCia(), codCapacitador));
+            capacitacion.setCapacitadores(capacitador);
             capacitacion.setStatus(status);
             capacitacion.setNomCapacitacion(nombre.toUpperCase());
             capacitacion.setInstituciones(capacitacionSessionBean.findByInstId(new InstitucionesPK(inst, c)));
@@ -243,6 +322,14 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
                 addMessage("Mantenimiento de Concursos.", "No ha seleccionado ningún concurso para editar.", TipoMensaje.ERROR);
                 return null;
             }
+            CapacitacionAreas area = capacitacionSessionBean.findByAreaId(new CapacitacionAreasPK(getSessionBeanADM().getCompania().getCodCia(), codArea));
+            capacitacion.setCapacitacionAreas(area);
+            CapacitacionTemasPK temaPK = new CapacitacionTemasPK(getSessionBeanADM().getCompania().getCodCia(),area.getCapacitacionAreasPK().getCodArea(), codTema);
+            CapacitacionTemas tema = capacitacionSessionBean.findByTemaId(temaPK);
+            capacitacion.setCapacitacionTemas(tema);
+            CapacitadoresPK capPK = new CapacitadoresPK(getSessionBeanADM().getCompania().getCodCia(), codCapacitador);
+            Capacitadores capacitador = capacitacionSessionBean.findByCapId(capPK);
+            capacitacion.setCapacitadores(capacitador);
             capacitacion.setNomCapacitacion(nombre);
             capacitacion.setFechaDesde(fechaFinal);
             capacitacion.setFechaHasta(fechaFinal);
@@ -279,6 +366,9 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
         setImpartido(cap.getImpartidaPor());
         setRazon(cap.getRazon());
         setCostoRazon(cap.getCostoRazon());
+        setCodArea(cap.getCapacitacionAreas().getCapacitacionAreasPK().getCodArea());
+        setCodTema(cap.getCapacitacionTemas().getCapacitacionTemasPK().getCodTema());
+        setCodCapacitador(cap.getCapacitadores().getCapacitadoresPK().getCodCapacitador());
         getSessionBeanADM().setEstadoAccion( 1 );
         return null;
     }
@@ -289,6 +379,23 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
 
     public void onRowUnSelectConcurso(UnselectEvent event) {
         getSessionBeanCAP().setCapacitacionSeleccionada(null);
+    }
+    
+    public void eliminar$crud$action(ActionEvent actionEvent) {
+        if (getSessionBeanCAP().getCapacitacionSeleccionada() == null) {
+            addMessage("Mantenimiento de Capacitaciones", "Primero seleccione una Capacitacion", TipoMensaje.ERROR);
+            return;
+        }
+        try {
+            Capacitacion capEliminar = getSessionBeanCAP().getCapacitacionSeleccionada();
+            capacitacionSessionBean.eliminarCapacitacion(capEliminar);
+            addMessage("Mantenimiento de Capacitaciones.", "Datos eliminados con éxito", TipoMensaje.INFORMACION);
+            limpiarCampos();
+        } catch (Exception e) {
+            addMessage("Mantenimiento de Capacitacion.", "Ha ocurrido un error al intentar remover la Capacitacion.", TipoMensaje.ERROR);
+            System.out.println(e.getMessage());
+        }
+        listaCap = capacitacionSessionBean.findCapByEmpresa(getSessionBeanADM().getCompania());
     }
     
 }
