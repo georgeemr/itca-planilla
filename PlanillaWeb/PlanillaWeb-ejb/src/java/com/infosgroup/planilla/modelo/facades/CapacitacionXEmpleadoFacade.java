@@ -29,15 +29,14 @@ public class CapacitacionXEmpleadoFacade extends AbstractFacade<CapacitacionXEmp
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     public CapacitacionXEmpleadoFacade() {
         super(CapacitacionXEmpleado.class);
     }
 
-    public List<CapacitacionXEmpleado> findCapByEmpresaCap(Cias empresa, Capacitacion cap){
+    public List<CapacitacionXEmpleado> findCapByEmpresaCap(Cias empresa, Capacitacion cap) {
         List<CapacitacionXEmpleado> l = new ArrayList<CapacitacionXEmpleado>();
-        l.addAll(getEntityManager().createQuery("SELECT c FROM Capacitacion c WHERE c.capacitacionXEmpleadoPK.codCia = :codCia and c.capacitacionXEmpleadoPK.codCapacitacion = :codCapacitacion", CapacitacionXEmpleado.class).setParameter("codCia", empresa.getCodCia()).setParameter("codCapacitacion", cap).getResultList());
+        l.addAll(getEntityManager().createQuery("SELECT c FROM CapacitacionXEmpleado c WHERE c.capacitacionXEmpleadoPK.codCia = :codCia and c.capacitacionXEmpleadoPK.codCapacitacion = :codCapacitacion", CapacitacionXEmpleado.class).setParameter("codCia", empresa.getCodCia()).setParameter("codCapacitacion", cap.getCapacitacionPK().getCodCapacitacion()).getResultList());
         return l != null ? l : new ArrayList<CapacitacionXEmpleado>();
     }
-
 }
