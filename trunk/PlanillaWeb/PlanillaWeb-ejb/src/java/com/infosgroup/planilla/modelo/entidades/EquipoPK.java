@@ -11,71 +11,84 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 /**
- *
- * @author root
+
+ @author root
  */
 @Embeddable
-public class EquipoPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_CIA", nullable = false)
-    private short codCia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_EQUIPO", nullable = false)
-    private short codEquipo;
+public class EquipoPK implements Serializable
+{
 
-    public EquipoPK() {
-    }
+@Basic(optional = false)
+@NotNull
+@Column(name = "COD_CIA", nullable = false)
+private short codCia;
+@Basic(optional = false)
+@NotNull
+@Column(name = "COD_EQUIPO", nullable = false)
+private short codEquipo;
 
-    public EquipoPK(short codCia, short codEquipo) {
-        this.codCia = codCia;
-        this.codEquipo = codEquipo;
-    }
+public EquipoPK()
+{
+}
 
-    public short getCodCia() {
-        return codCia;
-    }
+public EquipoPK(short codCia, short codEquipo)
+{
+    this.codCia = codCia;
+    this.codEquipo = codEquipo;
+}
 
-    public void setCodCia(short codCia) {
-        this.codCia = codCia;
-    }
+public short getCodCia()
+{
+    return codCia;
+}
 
-    public short getCodEquipo() {
-        return codEquipo;
-    }
+public void setCodCia(short codCia)
+{
+    this.codCia = codCia;
+}
 
-    public void setCodEquipo(short codEquipo) {
-        this.codEquipo = codEquipo;
-    }
+public short getCodEquipo()
+{
+    return codEquipo;
+}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (int) codCia;
-        hash += (int) codEquipo;
-        return hash;
-    }
+public void setCodEquipo(short codEquipo)
+{
+    this.codEquipo = codEquipo;
+}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EquipoPK)) {
-            return false;
+@Override
+public int hashCode()
+{
+    int hash = 0;
+    hash += (int) codCia;
+    hash += (int) codEquipo;
+    return hash;
+}
+
+@Override
+public boolean equals(Object object)
+{
+    // TODO: Warning - this method won't work in the case the id fields are not set
+    if (!(object instanceof EquipoPK))
+        {
+        return false;
         }
-        EquipoPK other = (EquipoPK) object;
-        if (this.codCia != other.codCia) {
-            return false;
+    EquipoPK other = (EquipoPK) object;
+    if (this.codCia != other.codCia)
+        {
+        return false;
         }
-        if (this.codEquipo != other.codEquipo) {
-            return false;
+    if (this.codEquipo != other.codEquipo)
+        {
+        return false;
         }
-        return true;
-    }
+    return true;
+}
 
-    @Override
-    public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.EquipoPK[ codCia=" + codCia + ", codEquipo=" + codEquipo + " ]";
-    }
-    
+@Override
+public String toString()
+{
+    return "com.infosgroup.planilla.modelo.entidades.EquipoPK[ codCia=" + codCia + ", codEquipo=" + codEquipo + " ]";
+}
 }
