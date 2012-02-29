@@ -40,8 +40,6 @@ public class Capacitacion implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CapacitacionPK capacitacionPK;
-    /*@Column(name = "COD_INSTI")
-    private Short codInsti;*/
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
@@ -88,12 +86,35 @@ public class Capacitacion implements Serializable {
         @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false)})
     @ManyToMany
     private List<Empleados> empleadosList;*/
+//    @JoinColumns({
+//        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+//        @JoinColumn(name = "COD_INSTI", referencedColumnName = "COD_INSTI")})
+//    @ManyToOne(optional = false)
+//    private Instituciones instituciones;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_CAPACITADOR", referencedColumnName = "COD_CAPACITADOR")})
+    @ManyToOne(optional = false)
+    private Capacitadores capacitadores;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_AREA_TEMA", referencedColumnName = "COD_AREA"),
+        @JoinColumn(name = "COD_TEMA", referencedColumnName = "COD_TEMA")})
+    @ManyToOne(optional = false)
+    private CapacitacionTemas capacitacionTemas;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_AREA", referencedColumnName = "COD_AREA")})
+    @ManyToOne(optional = false)
+    private CapacitacionAreas capacitacionAreas;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
     private List<CapacitacionXEmpleado> capacitacionXEmpleadoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
     private List<GastoXCapacitacion> gastoXCapacitacionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
     private List<CapacitacionXCandidato> capacitacionXCandidatoList;
+@OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
+    private List<CapacitacionAsistencia> capacitacionAsistenciaList;
 
     public Capacitacion() {
     }
@@ -203,6 +224,30 @@ public class Capacitacion implements Serializable {
         this.status = status;
     }
 
+    public CapacitacionAreas getCapacitacionAreas() {
+        return capacitacionAreas;
+    }
+
+    public void setCapacitacionAreas(CapacitacionAreas capacitacionAreas) {
+        this.capacitacionAreas = capacitacionAreas;
+    }
+
+    public CapacitacionTemas getCapacitacionTemas() {
+        return capacitacionTemas;
+    }
+
+    public void setCapacitacionTemas(CapacitacionTemas capacitacionTemas) {
+        this.capacitacionTemas = capacitacionTemas;
+    }
+
+    public Capacitadores getCapacitadores() {
+        return capacitadores;
+    }
+
+    public void setCapacitadores(Capacitadores capacitadores) {
+        this.capacitadores = capacitadores;
+    }
+
     /*@XmlTransient
     public List<Empleados> getEmpleadosList() {
         return empleadosList;
@@ -216,6 +261,15 @@ public class Capacitacion implements Serializable {
     public List<CapacitacionXEmpleado> getCapacitacionXEmpleadoList() {
         return capacitacionXEmpleadoList;
     }
+    @XmlTransient
+    public List<CapacitacionAsistencia> getCapacitacionAsistenciaList() {
+        return capacitacionAsistenciaList;
+    }
+
+    public void setCapacitacionAsistenciaList(List<CapacitacionAsistencia> capacitacionAsistenciaList) {
+        this.capacitacionAsistenciaList = capacitacionAsistenciaList;
+    }
+
 
     public void setCapacitacionXEmpleadoList(List<CapacitacionXEmpleado> capacitacionXEmpleadoList) {
         this.capacitacionXEmpleadoList = capacitacionXEmpleadoList;
@@ -238,6 +292,15 @@ public class Capacitacion implements Serializable {
     public void setCapacitacionXCandidatoList(List<CapacitacionXCandidato> capacitacionXCandidatoList) {
         this.capacitacionXCandidatoList = capacitacionXCandidatoList;
     }
+
+//    @XmlTransient
+//    public List<CapacitacionAsistencia> getCapacitacionAsistenciaList() {
+//        return capacitacionAsistenciaList;
+//    }
+//
+//    public void setCapacitacionAsistenciaList(List<CapacitacionAsistencia> capacitacionAsistenciaList) {
+//        this.capacitacionAsistenciaList = capacitacionAsistenciaList;
+//    }
 
     @Override
     public int hashCode() {
