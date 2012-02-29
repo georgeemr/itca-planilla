@@ -11,71 +11,84 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 /**
- *
- * @author root
+
+ @author root
  */
 @Embeddable
-public class TipoPruebaPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_CIA", nullable = false)
-    private short codCia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_TIPO_PRUEBA", nullable = false)
-    private short codTipoPrueba;
+public class TipoPruebaPK implements Serializable
+{
 
-    public TipoPruebaPK() {
-    }
+@Basic(optional = false)
+@NotNull
+@Column(name = "COD_CIA", nullable = false)
+private short codCia;
+@Basic(optional = false)
+@NotNull
+@Column(name = "COD_TIPO_PRUEBA", nullable = false)
+private short codTipoPrueba;
 
-    public TipoPruebaPK(short codCia, short codTipoPrueba) {
-        this.codCia = codCia;
-        this.codTipoPrueba = codTipoPrueba;
-    }
+public TipoPruebaPK()
+{
+}
 
-    public short getCodCia() {
-        return codCia;
-    }
+public TipoPruebaPK(short codCia, short codTipoPrueba)
+{
+    this.codCia = codCia;
+    this.codTipoPrueba = codTipoPrueba;
+}
 
-    public void setCodCia(short codCia) {
-        this.codCia = codCia;
-    }
+public short getCodCia()
+{
+    return codCia;
+}
 
-    public short getCodTipoPrueba() {
-        return codTipoPrueba;
-    }
+public void setCodCia(short codCia)
+{
+    this.codCia = codCia;
+}
 
-    public void setCodTipoPrueba(short codTipoPrueba) {
-        this.codTipoPrueba = codTipoPrueba;
-    }
+public short getCodTipoPrueba()
+{
+    return codTipoPrueba;
+}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (int) codCia;
-        hash += (int) codTipoPrueba;
-        return hash;
-    }
+public void setCodTipoPrueba(short codTipoPrueba)
+{
+    this.codTipoPrueba = codTipoPrueba;
+}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoPruebaPK)) {
-            return false;
+@Override
+public int hashCode()
+{
+    int hash = 0;
+    hash += (int) codCia;
+    hash += (int) codTipoPrueba;
+    return hash;
+}
+
+@Override
+public boolean equals(Object object)
+{
+    // TODO: Warning - this method won't work in the case the id fields are not set
+    if (!(object instanceof TipoPruebaPK))
+        {
+        return false;
         }
-        TipoPruebaPK other = (TipoPruebaPK) object;
-        if (this.codCia != other.codCia) {
-            return false;
+    TipoPruebaPK other = (TipoPruebaPK) object;
+    if (this.codCia != other.codCia)
+        {
+        return false;
         }
-        if (this.codTipoPrueba != other.codTipoPrueba) {
-            return false;
+    if (this.codTipoPrueba != other.codTipoPrueba)
+        {
+        return false;
         }
-        return true;
-    }
+    return true;
+}
 
-    @Override
-    public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.TipoPruebaPK[ codCia=" + codCia + ", codTipoPrueba=" + codTipoPrueba + " ]";
-    }
-    
+@Override
+public String toString()
+{
+    return "com.infosgroup.planilla.modelo.entidades.TipoPruebaPK[ codCia=" + codCia + ", codTipoPrueba=" + codTipoPrueba + " ]";
+}
 }
