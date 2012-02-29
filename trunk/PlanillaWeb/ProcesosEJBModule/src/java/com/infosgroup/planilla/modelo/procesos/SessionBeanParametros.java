@@ -43,6 +43,10 @@ private InstitucionesFacade institucionesFacade;
 private CapacitacionFacade capacitacionFacade;
 @EJB
 private IdiomaFacade idiomaFacade;
+@EJB
+private EquipoFacade equipoFacade;
+@EJB
+private TipoPruebaFacade tipoPruebaFacade;
 
 @PermitAll
 public List<Paises> getListaPaises()
@@ -172,5 +176,29 @@ public Idioma findIdiomaById(IdiomaPK idiomaPK)
 public List<Idioma> findAllIdiomas(Cias cia)
 {
     return idiomaFacade.findAllByCia(cia);
+}
+
+@PermitAll
+public Equipo findEquipoById(EquipoPK equipoPK)
+{
+    return equipoFacade.find(equipoPK);
+}
+
+@PermitAll
+public List<Equipo> findAllEquipos(Cias cia)
+{
+    return equipoFacade.findAllByCia(cia);
+}
+
+@PermitAll
+public TipoPrueba findTipoPruebaById(TipoPruebaPK tipoPruebaPK)
+{
+    return tipoPruebaFacade.find(tipoPruebaPK);
+}
+
+@PermitAll
+public List<TipoPrueba> findAllTipoPrueba(Cias cia)
+{
+    return tipoPruebaFacade.findAllByCia(cia);
 }
 }
