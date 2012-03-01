@@ -38,11 +38,7 @@ public class TipoPlanillaFacade extends AbstractFacade<TiposPlanilla, TiposPlani
     @PermitAll
     public List<TiposPlanilla> findByCompania(Cias compania) {
         List<TiposPlanilla> lista = null;
-<<<<<<< .mine
-        Query q = em.createQuery("SELECT t FROM TiposPlanilla t WHERE t.tiposPlanillaPK.codCia = :codCia and t.status = 'A' ORDER BY t.nomTipopla ASC", TiposPlanilla.class).setParameter("codCia", compania.getCodCia());
-=======
-        TypedQuery<TiposPlanilla> q = em.createQuery("SELECT t FROM TiposPlanilla t WHERE t.tiposPlanillaPK.codCia = :codCia and t.status = 'A'", TiposPlanilla.class).setParameter("codCia", compania.getCodCia());
->>>>>>> .r707
+        TypedQuery<TiposPlanilla> q = em.createQuery("SELECT t FROM TiposPlanilla t WHERE t.tiposPlanillaPK.codCia = :codCia and t.status = 'A'  ORDER BY t.nomTipopla ASC", TiposPlanilla.class).setParameter("codCia", compania.getCodCia());
         lista = q.getResultList();
         return lista != null ? lista : new ArrayList<TiposPlanilla>(0);
     }

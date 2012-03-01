@@ -41,7 +41,7 @@ public class CriteriosXPuestoFacade extends AbstractFacade<CriteriosXPuesto, Cri
     @PermitAll
     public List<CriteriosXPuesto> getListaCriteriosByEmpresa(Cias empresa) {
         List<CriteriosXPuesto> l = new ArrayList<CriteriosXPuesto>();
-        TypedQuery<CriteriosXPuesto> q = em.createQuery("SELECT c FROM CriteriosXPuesto c WHERE c.criteriosXPuestoPK.codCia = :codCia", CriteriosXPuesto.class).setParameter("codCia", empresa.getCodCia());
+        Query q = em.createQuery("SELECT c FROM CriteriosXPuesto c WHERE c.criteriosXPuestoPK.codCia = :codCia", CriteriosXPuesto.class).setParameter("codCia", empresa.getCodCia());
         l = q.getResultList();
         return l != null ? l : new ArrayList<CriteriosXPuesto>();
     }
