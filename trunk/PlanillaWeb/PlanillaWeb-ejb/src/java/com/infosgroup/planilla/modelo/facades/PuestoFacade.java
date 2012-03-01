@@ -33,7 +33,7 @@ public class PuestoFacade extends AbstractFacade<Puestos, PuestosPK> {
 
     public List<Puestos> findPuestoByEmpresa(Cias cias) {
         List<Puestos> puestos = new ArrayList<Puestos>();
-        puestos = getEntityManager().createQuery("SELECT p FROM Puestos p WHERE p.puestosPK.codCia = :codCia ORDER BY p.nomPuesto ASC", Puestos.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        puestos = getEntityManager().createQuery("SELECT p FROM Puestos p WHERE p.puestosPK.codCia = :codCia AND p.status = 'A' ORDER BY p.nomPuesto ASC", Puestos.class).setParameter("codCia", cias.getCodCia()).getResultList();
         return puestos != null ? puestos : new ArrayList<Puestos>();
     }
 
