@@ -331,7 +331,7 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
             Capacitadores capacitador = capacitacionSessionBean.findByCapId(capPK);
             capacitacion.setCapacitadores(capacitador);
             capacitacion.setNomCapacitacion(nombre);
-            capacitacion.setFechaDesde(fechaFinal);
+            capacitacion.setFechaDesde(fechaInicial);
             capacitacion.setFechaHasta(fechaFinal);
             capacitacion.setDuracion(duracion);
             capacitacion.setImpartidaPor(impartido);
