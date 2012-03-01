@@ -46,7 +46,7 @@ public class ContratoPK implements Serializable {
         this.codCia = codCia;
     }
 
-    public int getCodContrato() {
+    public Integer getCodContrato() {
         return codContrato;
     }
 
