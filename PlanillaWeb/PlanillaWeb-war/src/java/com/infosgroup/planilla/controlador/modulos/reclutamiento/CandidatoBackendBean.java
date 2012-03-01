@@ -59,7 +59,7 @@ private Integer generales$paisNacimiento;
 private Integer generales$departamentoNacimiento;
 private Integer generales$municipioNacimiento;
 private Integer generales$paisNacionalidad;
-private Integer generales$grupoSanguineo;
+private String generales$grupoSanguineo;
 // = o =
 private String generales$dui;
 private String generales$nit;
@@ -164,11 +164,15 @@ private Date pruebas$fecha;
 // ===========================================================================================================
 // = Puestos =================================================================================================
 // ===========================================================================================================
-// = o =
+private String puestos$puesto;
+private Double puestos$salarioAspirado;
 // ===========================================================================================================
 // = Entrevistas =============================================================================================
 // ===========================================================================================================
-// = o =
+private Date puestos$entrevistas$fecha;
+private String puestos$entrevistas$entrevistador;
+private String puestos$entrevistas$descripcion;
+private String puestos$entrevistas$resultado;
 // ===========================================================================================================
 // ===========================================================================================================
 // ===========================================================================================================
@@ -188,6 +192,7 @@ private List<Instituciones> institucionesSelectItemListModel;
 private List<Idioma> idiomasSelectItemListModel;
 private List<Equipo> equiposSelectItemListModel;
 private List<TipoPrueba> tiposPruebaSelectItemListModel;
+private List<Empleados> empleadosSelectItemListModel;
 
 public List<Puestos> getPuestosSelectItemListModel()
 {
@@ -249,15 +254,25 @@ public void setEquiposSelectItemListModel(List<Equipo> equiposSelectItemListMode
     this.equiposSelectItemListModel = equiposSelectItemListModel;
 }
 
-    public List<TipoPrueba> getTiposPruebaSelectItemListModel()
-    {
-        return tiposPruebaSelectItemListModel;
-    }
+public List<TipoPrueba> getTiposPruebaSelectItemListModel()
+{
+    return tiposPruebaSelectItemListModel;
+}
 
-    public void setTiposPruebaSelectItemListModel(List<TipoPrueba> tiposPruebaSelectItemListModel)
-    {
-        this.tiposPruebaSelectItemListModel = tiposPruebaSelectItemListModel;
-    }
+public void setTiposPruebaSelectItemListModel(List<TipoPrueba> tiposPruebaSelectItemListModel)
+{
+    this.tiposPruebaSelectItemListModel = tiposPruebaSelectItemListModel;
+}
+
+public List<Empleados> getEmpleadosSelectItemListModel()
+{
+    return empleadosSelectItemListModel;
+}
+
+public void setEmpleadosSelectItemListModel(List<Empleados> empleadosSelectItemListModel)
+{
+    this.empleadosSelectItemListModel = empleadosSelectItemListModel;
+}
 // ======================================
 private Boolean isError;
 // ===========================================================================================================
@@ -285,6 +300,7 @@ public void init()
     idiomasSelectItemListModel = sessionBeanParametros.findAllIdiomas(getSessionBeanADM().getCompania());
     equiposSelectItemListModel = sessionBeanParametros.findAllEquipos(getSessionBeanADM().getCompania());
     tiposPruebaSelectItemListModel = sessionBeanParametros.findAllTipoPrueba(getSessionBeanADM().getCompania());
+    empleadosSelectItemListModel = sessionBeanParametros.findAllEmpleados(getSessionBeanADM().getCompania());
     // ===================================================================
     emergencias$pesoActual = 0.00d;
     emergencias$estatura = 0;
@@ -303,6 +319,7 @@ public void init()
     beneficiariosCandidato = new ArrayList<String>();
     equiposCandidato = new ArrayList<EquipoCandidato>();
     pruebasCandidato = new ArrayList<PruebaCandidato>();
+    puestosCandidato = new ArrayList<PuestoCandidato>();
 }
 
 // ==================================================================================================================
@@ -524,6 +541,38 @@ public String pruebas$agregar$action()
 }
 
 @PermitAll
+public String puestos$agregar$action()
+{
+    String[] puestoPKStr = puestos$puesto.split(":");
+    PuestosPK puestoPK = new PuestosPK(new Short(puestoPKStr[0]), new Short(puestoPKStr[1]));
+
+    PuestoCandidato p = new PuestoCandidato();
+    p.setPuesto(sessionBeanParametros.findPuestosById(puestoPK));
+    p.setSalarioAspirado(puestos$salarioAspirado);
+    p.setEntrevistas(new ArrayList<EntrevistaPuestoCandidato>());
+
+    puestosCandidato.add(p);
+    return null;
+}
+
+@PermitAll
+public String puestos$entrevistas$agregar$action()
+{
+    String[] empleadoPKStr = puestos$entrevistas$entrevistador.split(":");
+    EmpleadosPK empleadoPK = new EmpleadosPK(new Short(empleadoPKStr[0]), new Integer(empleadoPKStr[1]));
+
+    EntrevistaPuestoCandidato e = new EntrevistaPuestoCandidato();
+    e.setFecha(puestos$entrevistas$fecha);
+    e.setEmpleado(sessionBeanParametros.findEmpleadoById(empleadoPK));
+    e.setDescripcion(puestos$entrevistas$descripcion);
+    e.setResultado(puestos$entrevistas$resultado);
+
+    if (!puestosCandidato.isEmpty())
+        puestosCandidato.get(puestosCandidato.size() - 1).getEntrevistas().add(e);
+    return null;
+}
+
+@PermitAll
 public String guardar$action()
 {
     Short c = getSessionBeanADM().getCompania().getCodCia();
@@ -562,7 +611,9 @@ public String guardar$action()
         //candidato.setCodDepartamentoNacim(preparacion$anioEgreso);
         //candidato.setCodMunicipioNacim(c);
         //candidato.setCodPaisNacionalidad(preparacion$anioEgreso);
-        //candidato.setTipoSangre(null);        
+        TipoSangre tipoSangre = sessionBeanParametros.findTipoSangreById(generales$grupoSanguineo);
+
+        candidato.setTipoSangre(tipoSangre);
 
         candidato.setNumDui(generales$dui);
         candidato.setNumNit(generales$nit);
@@ -661,12 +712,112 @@ public String guardar$action()
             referencia.setTelefono(referenciaPersonal.getTelefono());
 
             reclutamientoFacade.crearRererencia(referencia);
-
-            for (DocumentoCandidato documentoCandidato : documentosCandidato)
-                {
-                documentoCandidato.toString();
-                }
             }
+
+        for (DocumentoCandidato documentoCandidato : documentosCandidato)
+            {
+            DocumentoPresentadoPK dPK = new DocumentoPresentadoPK();
+            dPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            dPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            dPK.setCodDocumentoPres(reclutamientoFacade.getMaxDocumentoPresentado(candidato));
+
+            DocumentoPresentado d = new DocumentoPresentado();
+            d.setDocumentoPresentadoPK(dPK);
+            d.setCandidato(candidato);
+            d.setTipoDocumento(documentoCandidato.getTipo());
+            d.setObservacion((documentoCandidato.getNumero() != null) ? documentoCandidato.getNumero().toString() : "");
+
+            reclutamientoFacade.crearDocumentoCandidato(d);
+            }
+
+        for (CapacitacionCandidato capacitacionCandidato : capacitacionesCandidato)
+            {
+            CapacitacionXCandidatoPK capacitacionXCandidatoPK = new CapacitacionXCandidatoPK();
+            capacitacionXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            capacitacionXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            capacitacionXCandidatoPK.setCodCapacitacion(reclutamientoFacade.getMaxCapacitacionXCandidato(candidato));
+
+            CapacitacionXCandidato capacitacionXCandidato = new CapacitacionXCandidato();
+            capacitacionXCandidato.setCapacitacionXCandidatoPK(capacitacionXCandidatoPK);
+            capacitacionXCandidato.setCandidato(candidato);
+            capacitacionXCandidato.setCapacitacion(capacitacionCandidato.getCapacitacion());
+            capacitacionXCandidato.setCodInsti(capacitacionCandidato.getInstitucion().getInstitucionesPK().getCodInsti());
+            capacitacionXCandidato.setFecha(capacitacionCandidato.getFecha().toString());
+            capacitacionXCandidato.setNomInstitucion(capacitacionCandidato.getInstitucion().getDesInsti());
+            capacitacionXCandidato.setDescripcion(capacitacionCandidato.getDescripcion());
+
+            reclutamientoFacade.crearCapacitacionXCandidato(capacitacionXCandidato);
+            }
+
+        for (DependienteCandidato dependienteCandidato : dependientesCandidato)
+            {
+            DependienteXCandidatoPK dependienteXCandidatoPK = new DependienteXCandidatoPK();
+            dependienteXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            dependienteXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            dependienteXCandidatoPK.setCodDependiente(reclutamientoFacade.getMaxBeneficiarioXCandidato(candidato));
+
+            DependienteXCandidato dependienteXCandidato = new DependienteXCandidato();
+            dependienteXCandidato.setDependienteXCandidatoPK(dependienteXCandidatoPK);            
+            dependienteXCandidato.setCandidato(candidato);
+            dependienteXCandidato.setCodParentesco(dependienteCandidato.getParentesco().getParentescoPK().getCodParentesco());
+            dependienteXCandidato.setFechaNacimiento(dependienteCandidato.getFechaNacimiento());
+            dependienteXCandidato.setNombre(dependienteCandidato.getNombre());
+
+            reclutamientoFacade.crearDependienteXCandidato(dependienteXCandidato);
+            }
+
+        for (IdiomaCandidato idiomaCandidato : idiomasCandidato)
+            {
+            IdiomaXCandidatoPK idiomaXCandidatoPK = new IdiomaXCandidatoPK();
+            idiomaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            idiomaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            idiomaXCandidatoPK.setCodIdioma(reclutamientoFacade.getMaxIdiomaXCandidato(candidato));
+
+            IdiomaXCandidato idiomaXCandidato = new IdiomaXCandidato(idiomaXCandidatoPK);
+            idiomaXCandidato.setCandidato(candidato);
+            idiomaXCandidato.setLee(idiomaCandidato.getLee() ? "S" : "N");
+            idiomaXCandidato.setEscribe(idiomaCandidato.getEscribe() ? "S" : "N");
+            idiomaXCandidato.setNivel(idiomaCandidato.getNivel().toString());
+
+            reclutamientoFacade.crearIdiomaXCandidato(idiomaXCandidato);
+            }
+
+        for (String beneficiarioCandidato : beneficiariosCandidato)
+            {
+            BeneficiarioXCandidatoPK beneficiarioXCandidatoPK = new BeneficiarioXCandidatoPK();
+            beneficiarioXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            beneficiarioXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            beneficiarioXCandidatoPK.setCodBeneficiario(reclutamientoFacade.getMaxBeneficiarioXCandidato(candidato));
+
+            BeneficiarioXCandidato beneficiarioXCandidato = new BeneficiarioXCandidato(beneficiarioXCandidatoPK);
+            beneficiarioXCandidato.setCandidato(candidato);
+            beneficiarioXCandidato.setNombre(beneficiarioCandidato);
+
+            reclutamientoFacade.crearBeneficiarioXCandidato(beneficiarioXCandidato);
+            }
+
+        // Equipos de oficina
+        for (EquipoCandidato equipoCandidato : equiposCandidato)
+            {
+            candidato.getEquipoList().add(equipoCandidato.getEquipo());
+            }
+        reclutamientoFacade.editarCandidato(candidato);
+
+        // Pruebas
+        for (PruebaCandidato pruebaCandidato : pruebasCandidato)
+            {
+            }
+
+        // Puestos/Entrevistas
+        for (PuestoCandidato puestoCandidato : puestosCandidato)
+            {
+            EntrevistaXCandidatoPK entrevistaXCandidatoPK = new EntrevistaXCandidatoPK();
+            entrevistaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+
+
+            EntrevistaXCandidato entrevistaXCandidato = new EntrevistaXCandidato(entrevistaXCandidatoPK);
+            }
+
         addMessage("Registro de Candidatos", "Datos guardados satisfactoriamente.", TipoMensaje.INFORMACION);
         }
     catch (Exception e)
@@ -1049,12 +1200,12 @@ public void setGenerales$fechaNacimiento(Date generales$fechaNacimiento)
     this.generales$fechaNacimiento = generales$fechaNacimiento;
 }
 
-public Integer getGenerales$grupoSanguineo()
+public String getGenerales$grupoSanguineo()
 {
     return generales$grupoSanguineo;
 }
 
-public void setGenerales$grupoSanguineo(Integer generales$grupoSanguineo)
+public void setGenerales$grupoSanguineo(String generales$grupoSanguineo)
 {
     this.generales$grupoSanguineo = generales$grupoSanguineo;
 }
@@ -1509,6 +1660,66 @@ public void setPruebas$resultado(String pruebas$resultado)
     this.pruebas$resultado = pruebas$resultado;
 }
 
+public String getPuestos$entrevistas$descripcion()
+{
+    return puestos$entrevistas$descripcion;
+}
+
+public void setPuestos$entrevistas$descripcion(String puestos$entrevistas$descripcion)
+{
+    this.puestos$entrevistas$descripcion = puestos$entrevistas$descripcion;
+}
+
+public String getPuestos$entrevistas$entrevistador()
+{
+    return puestos$entrevistas$entrevistador;
+}
+
+public void setPuestos$entrevistas$entrevistador(String puestos$entrevistas$entrevistador)
+{
+    this.puestos$entrevistas$entrevistador = puestos$entrevistas$entrevistador;
+}
+
+public Date getPuestos$entrevistas$fecha()
+{
+    return puestos$entrevistas$fecha;
+}
+
+public void setPuestos$entrevistas$fecha(Date puestos$entrevistas$fecha)
+{
+    this.puestos$entrevistas$fecha = puestos$entrevistas$fecha;
+}
+
+public String getPuestos$entrevistas$resultado()
+{
+    return puestos$entrevistas$resultado;
+}
+
+public void setPuestos$entrevistas$resultado(String puestos$entrevistas$resultado)
+{
+    this.puestos$entrevistas$resultado = puestos$entrevistas$resultado;
+}
+
+public String getPuestos$puesto()
+{
+    return puestos$puesto;
+}
+
+public void setPuestos$puesto(String puestos$puesto)
+{
+    this.puestos$puesto = puestos$puesto;
+}
+
+public Double getPuestos$salarioAspirado()
+{
+    return puestos$salarioAspirado;
+}
+
+public void setPuestos$salarioAspirado(Double puestos$salarioAspirado)
+{
+    this.puestos$salarioAspirado = puestos$salarioAspirado;
+}
+
 public String getSexo()
 {
     return sexo;
@@ -1616,6 +1827,7 @@ private List<IdiomaCandidato> idiomasCandidato;
 private List<String> beneficiariosCandidato;
 private List<EquipoCandidato> equiposCandidato;
 private List<PruebaCandidato> pruebasCandidato;
+private List<PuestoCandidato> puestosCandidato;
 //=======================================
 public List<PreparacionAcademicaCandidato> getPreparacionesAcademicasCandidato()
 {
@@ -1735,5 +1947,15 @@ public List<PruebaCandidato> getPruebasCandidato()
 public void setPruebasCandidato(List<PruebaCandidato> pruebasCandidato)
 {
     this.pruebasCandidato = pruebasCandidato;
+}
+
+public List<PuestoCandidato> getPuestosCandidato()
+{
+    return puestosCandidato;
+}
+
+public void setPuestosCandidato(List<PuestoCandidato> puestosCandidato)
+{
+    this.puestosCandidato = puestosCandidato;
 }
 }
