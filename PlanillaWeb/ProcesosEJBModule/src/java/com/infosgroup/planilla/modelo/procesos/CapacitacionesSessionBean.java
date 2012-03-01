@@ -7,6 +7,7 @@ package com.infosgroup.planilla.modelo.procesos;
 import com.infosgroup.planilla.modelo.entidades.Capacitacion;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionAreas;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionAreasPK;
+import com.infosgroup.planilla.modelo.entidades.CapacitacionAsistencia;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionTemas;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionTemasPK;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionXEmpleado;
@@ -142,4 +143,8 @@ public class CapacitacionesSessionBean {
         return capacitadoresFacade.find(id);
     }
     
+    @PermitAll
+    public void guardarAsistencia(CapacitacionAsistencia asis){
+        asistenciaFacade.create(asis);
+    }
 }
