@@ -38,7 +38,7 @@ public class CandidatoConcursoPK implements Serializable {
         this.concurso = concurso;
     }
 
-    public short getCodCia() {
+    public Short getCodCia() {
         return codCia;
     }
 
