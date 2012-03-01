@@ -74,6 +74,8 @@ public class AccionPersonal implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "CANTIDAD", precision = 12, scale = 2)
     private BigDecimal cantidad;
+    @Column(name = "PORCENTAJE", precision = 11, scale = 2)
+    private BigDecimal porcentaje;
     @Size(max = 500)
     @Column(name = "OBSERVACION", length = 500)
     private String observacion;
@@ -153,7 +155,7 @@ public class AccionPersonal implements Serializable {
     private String aprobadoJefe;
     @Size(max = 1)
     @Column(name = "APROBADO_RH", length = 1)
-    private String aprobadoRh;    
+    private String aprobadoRh;
     @Transient
     private String accEstado;
 
@@ -162,6 +164,14 @@ public class AccionPersonal implements Serializable {
 
     public String getAprobadoJefe() {
         return aprobadoJefe;
+    }
+
+    public BigDecimal getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(BigDecimal porcentaje) {
+        this.porcentaje = porcentaje;
     }
 
     public void setAprobadoJefe(String aprobadoJefe) {
