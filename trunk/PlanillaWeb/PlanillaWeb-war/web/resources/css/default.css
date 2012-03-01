@@ -115,3 +115,13 @@ body {
     font-weight: bold;
     padding: 3px;
 }
+
+.afectadosMaximo{
+    color: red;
+    font-weight: bold;
+}
+
+.afectadosMinimo{
+    color: black;
+    font-weight: bold;
+}
