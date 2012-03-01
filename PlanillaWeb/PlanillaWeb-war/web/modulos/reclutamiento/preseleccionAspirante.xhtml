@@ -10,13 +10,22 @@
     <ui:define name="titulo">Reclutamiento y Selecci&oacute;n de Candidatos</ui:define>
 
     <ui:define name="dialogos" >
+
         <p:confirmDialog message="&#191; Esta seguro que desea eliminar la prueba seleccionada ?" showEffect="bounce" hideEffect="explode"  
                          modal="true" header="Eliminar Prueba" severity="alert" widgetVar="dlgEliminarPrueba">  
             <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,pruebasXEvaluacionEdit" oncomplete="dlgEliminarPrueba.hide()"  
                              action="#{reclutamiento$preseleccionAspirante.eliminarPruebaCandidato}" />  
             <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
 
-        </p:confirmDialog>        
+        </p:confirmDialog>     
+
+        <p:confirmDialog message="&#191; Esta seguro que desea eliminar el beneficiario seleccionado ?" showEffect="bounce" hideEffect="explode"  
+                         modal="true" header="Eliminar Beneficiario" severity="alert" widgetVar="dlgEliminarBeneficiario">  
+            <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,beneficiariosCandidato" oncomplete="dlgEliminarBeneficiario.hide()"  
+                             action="#{reclutamiento$preseleccionAspirante.eliminarBeneficiario}" />  
+            <p:commandButton value="No" onclick="dlgEliminarBeneficiario.hide()" type="button" />   
+
+        </p:confirmDialog>    
 
         <p:dialog id="dialogoEvaluacion" widgetVar="botonMostrarEvaluacion" header="Evaluaciones" width="650" height="500"  resizable="true" showEffect="clip" hideEffect="clip"
                   onCloseUpdate="principalForm:mensajes,principalForm:evCandidatoLst" closeListener="#{reclutamiento$preseleccionAspirante.handleCloseEvaluacionCandidato}" >  
@@ -91,6 +100,71 @@
 
         </p:dialog>    
 
+        <p:dialog id="dialogoBeneficiarios" widgetVar="dialogoBeneficiarios" header="Beneficiarios por Candidato" width="650" height="500"  resizable="true" showEffect="clip" hideEffect="clip" >  
+
+            <p:spacer height="30">
+                <h:panelGrid columns="5" >
+                    <h:outputLabel value="Nombre" />
+                    <p:inputText id="txNombreBe" value="#{reclutamiento$preseleccionAspirante.nombreBeneficiario}" />
+                    <h:outputLabel value="Parentesco" />
+                    <h:selectOneMenu id="listaParentesco" value="#{reclutamiento$preseleccionAspirante.parentesco}" style="height: 25px;padding-top: 3px;width: 200px;"  >
+                        <f:selectItems var="parentesco" value="#{reclutamiento$preseleccionAspirante.listaParentesco}" itemValue="#{parentesco.parentescoPK.codParentesco}" itemLabel="#{parentesco.nomParentesco}" />
+                    </h:selectOneMenu>
+                    <p:commandButton id="addParentesco" image="ui-icon-circle-plus" action="#{reclutamiento$preseleccionAspirante.guardarBeneficiario}" update="principalForm:mensajes,txNombreBe,listaParentesco,beneficiariosCandidato" />
+                </h:panelGrid>
+
+                <p:dataTable id="beneficiariosCandidato" var="beneficiario" value="#{reclutamiento$preseleccionAspirante.listaBeneficiarios}"
+                             paginator="true" rows="10"  emptyMessage="No se han ingresado beneficiarios." dynamic="true" 
+                             rowEditListener="#{reclutamiento$preseleccionAspirante.onEditarBeneficiario}" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" onRowEditUpdate="principalForm:mensajes,beneficiariosCandidato" >
+
+                    <f:facet name="header">
+                        Beneficiarios por Candidato
+                    </f:facet>
+
+
+                    <p:column headerText="Nombre" >  
+
+                        <p:cellEditor  >  
+                            <f:facet name="output">  
+                                <h:outputText value="#{beneficiario.nombre}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{beneficiario.nombre}" style="width:100%" />
+                            </f:facet>  
+                        </p:cellEditor>  
+
+                    </p:column>  
+
+                    <p:column headerText="Parentesco" >  
+                        <p:cellEditor  >  
+                            <f:facet name="output">  
+                                <h:outputText id="nomParentesco" value="#{beneficiario.parentesco.nomParentesco}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <h:selectOneMenu id="listaEdParentesco" value="#{reclutamiento$preseleccionAspirante.parentescoEdit}" style="height: 25px;padding-top: 3px;width: 100px;"  >
+                                    <f:selectItems var="parentesco" value="#{reclutamiento$preseleccionAspirante.listaParentesco}" itemValue="#{parentesco.parentescoPK.codParentesco}" itemLabel="#{parentesco.nomParentesco}" />
+                                    <p:ajax update="nomParentesco" event="select" />
+                                </h:selectOneMenu>
+                            </f:facet>  
+                        </p:cellEditor>  
+                    </p:column>  
+
+                    <p:column headerText="Ingresar" style="width:50px; text-align: left;">  
+                        <p:rowEditor />  
+                    </p:column>  
+
+                    <p:column headerText="Eliminar" >
+                        <p:commandButton  id="cmdEliminarBeneficiario" oncomplete="dlgEliminarBeneficiario.show();" update="principalForm:mensajes,txNombreBe,listaParentesco" image="ui-icon-circle-minus" >
+                            <f:setPropertyActionListener value="#{beneficiario}" target="#{reclutamiento$preseleccionAspirante.beneficiarioSeleccionado}" />  
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+            </p:spacer>
+
+        </p:dialog>    
+
         <p:dialog id="dialogoCriterio" widgetVar="botonMostrarCriterios" header="Seleccionar Criterio" width="425" height="300"  
                   onCloseUpdate="principalForm:criteriosSeleccionados,principalForm:mensajes" resizable="false" showEffect="clip" hideEffect="clip"
                   closeListener="#{reclutamiento$preseleccionAspirante.handleCloseCriterioAdicional}" >
@@ -127,17 +201,18 @@
 
         </p:confirmDialog>  
 
-        <p:dialog id="dialogoContrato" widgetVar="botonMostrarContrato" header="Datos de Contrataci&oacute;n" width="820" height="470"  
+        <p:dialog id="dialogoContrato" widgetVar="botonMostrarContrato" header="Datos de Contrataci&oacute;n" width="820" height="530"  
                   onCloseUpdate="principalForm:mensajes,principalForm:candidatoContratar,principalForm:mensajesContrato" 
                   resizable="false" showEffect="clip" hideEffect="clip">  
             <p:spacer height="20" />
 
             <p:fieldset legend="Contrato de Empleado" >
 
-                <table border="0" >
+                <table border="0" cellspacing="3" cellpadding="1" >
                     <tr align="right">
                         <td colspan="5" align="right">
-                            <h:panelGrid columns="3">
+                            <h:panelGrid columns="4">
+                                <p:graphicImage value="/resources/imagenes/64/info.png" />
                                 <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                                 <h:outputLabel value=" son requeridos" style="font-style: italic;" />
@@ -183,6 +258,18 @@
                         <td><p:calendar id="calFecFinalCon" pattern="dd/MM/yyyy" showOn="button" value="#{reclutamiento$preseleccionAspirante.fechaFin}"/></td>
                     </tr>
                     <tr>
+                        <td>
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="DUI" style="margin:0 0 0 -3px;padding:0;font-weight: bold;" />                          
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td colspan="3" ><p:inputText id="txtDUI" value="#{reclutamiento$preseleccionAspirante.dui}" /></td>
+                        <td>
+                            <p:commandButton id="addben" value="Agregar Beneficiarios" action="#{reclutamiento$preseleccionAspirante.listarBeneficiarios}" image="beneficiarios" update="beneficiariosCandidato" oncomplete="dialogoBeneficiarios.show();" />
+                        </td>
+                    </tr>
+                    <tr>
                         <td><h:outputLabel value="Puesto" style="font-weight: bold;"/></td>
                         <td><h:outputLabel id="lbl_puesto" value="#{reclutamiento$preseleccionAspirante.concursoSeleccionado.puestos.nomPuesto}" /></td>
                         <td></td>
@@ -200,10 +287,10 @@
                         <td>
                             <h:panelGrid columns="2">
                                 <h:outputLabel value="Representante Patronal" style="margin:0 0 0 -3px;padding:0;font-weight: bold;" />                          
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                                <h:outputLabel value="" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
-                        <td colspan="3" ><p:inputText id="txtRepresentanteP" value="#{reclutamiento$preseleccionAspirante.representantePatronal}" /></td>
+                        <td colspan="3" ><h:outputLabel id="txtRepresentanteP" value="#{SessionBeanADM.representantePatronal.nombreCompleto}" /></td>
                     </tr>
                     <tr>
                         <td>
@@ -268,8 +355,8 @@
                 <h:panelGrid columns="2">
                     <f:facet name="footer" >
                         <h:panelGrid columns="2">
-                            <p:commandButton value="Contratar" image="ui-icon-circle-check" action="#{reclutamiento$preseleccionAspirante.contratarCandidato}" update="principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtRepresentanteP,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" />
-                            <p:commandButton value="Cancelar"  image="ui-icon-circle-close" onclick="botonMostrarContrato.hide()" update="principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtRepresentanteP,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" />
+                            <p:commandButton value="Contratar" image="ui-icon-circle-check" action="#{reclutamiento$preseleccionAspirante.contratarCandidato}" update="principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtDUI,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" />
+                            <p:commandButton value="Cancelar"  image="ui-icon-circle-close" onclick="botonMostrarContrato.hide()" update="principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtDUI,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" />
                         </h:panelGrid>
                     </f:facet>
                 </h:panelGrid>
@@ -606,7 +693,9 @@
                         </p:column>
 
                         <p:column headerText="Imprimir Contrato"> 
-                            <p:commandButton id="cmdImprimirContrato" disabled="#{candidato.estado ne 'C'}"  update="principalForm:mensajes,principalForm:candidatoContratar"  image="documentPDF" />
+                            <p:commandButton id="cmdImprimirContrato" ajax="false" disabled="#{candidato.estado ne 'C'}" action="#{reclutamiento$preseleccionAspirante.imprimirContrato}" update="principalForm:mensajes,principalForm:candidatoContratar"  image="documentPDF" >
+                                <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
+                            </p:commandButton>
                         </p:column>
 
                         <f:facet name="footer">
