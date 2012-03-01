@@ -62,17 +62,14 @@
             </h:panelGrid>
         </p:fieldset>
         <p:spacer height="10px"/>
-        <p:dataTable id="tableSolicitud"
-                     rows="5" paginator="true"
+        <p:dataTable id="tableSolicitud" rows="5" paginator="true" paginatorAlwaysVisible="true"
                      emptyMessage="No hay Solicitudes pendientes para aprobar"
                      var="sol" rendered="true" widgetVar="tableSolicitud"
                      value="#{planilla$accionesPersonal.listaSolicitudes}"
                      selection="#{SessionBeanPLA.accionSeleccionada}"
-                     selectionMode="single"
-                     update="tabAcciones,editarSolicitud"
+                     selectionMode="single" update="tabAcciones,editarSolicitud"
                      binding="#{planilla$accionesPersonal.tablaSolicitudes}"
                      rowStyleClass="#{sol.status eq 'G' ? 'solicitudGenerada' : sol.status eq 'J' ? 'solicitudPreAprobada' : sol.status eq 'A' ? 'solicitudAprobada' : sol.status eq 'R' ? 'solicitudRechazada' : null }"
-                     paginatorAlwaysVisible="true"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
             <f:facet name="header">
                 Acciones de personal
@@ -499,7 +496,6 @@
                         </td>
                         <td><p:calendar id="incFecFin" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudIncapacidad.fechaFinal}" selectListener="#{planilla$accionesPersonal.solicitudIncapacidad.handleFechaFinal}" onSelectUpdate="txDiasInc" />
                         </td>
-
                     </tr>
 
                     <tr>
@@ -539,20 +535,10 @@
                             <h:selectOneMenu id="lstPlanillaInc" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudIncapacidad.planilla}" >
                                 <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
                                 <f:selectItems value="#{planilla$accionesPersonal.solicitudIncapacidad.listaPlanillas}" var="pla" 
-                                               itemValue="#{pla.pkAsString}"
-                                               itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
+                                               itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
                             </h:selectOneMenu>
                         </td>
                     </tr>
-                    <!--tr>
-                        <td>Devengadas</td>
-                        <td>
-                            <h:selectOneMenu id="lstDevengadoVac" style="height: 25px;padding-top: 3px;" label="Planilla" value="# {planilla$accionesPersonal.solicitudVacacionesAnuales.devengadas}" >
-                                <f:selectItem itemValue="S" itemLabel="SI" />
-                                <f:selectItem itemValue="N" itemLabel="NO" />
-                            </h:selectOneMenu>
-                        </td>
-                    </tr-->
                 </table>
 
             </p:fieldset>
@@ -568,6 +554,664 @@
 
         </p:dialog>
 
+        <p:dialog id="dialogSolicitudNombramiento" widgetVar="dialogSolicitudNombramiento" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
+            <p:spacer height="10px"/>
+            <p:panel id="panelInformacionNom" style="border:none;" >
+                <h:panelGrid columns="4" >
+                    <p:graphicImage value="../../resources/imagenes/64/info.png" />
+                    <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
+                    <h:outputLabel value="*" styleClass="requerido"/>                                
+                    <h:outputLabel value=" son requeridos." style="font-style: italic;" />
+                </h:panelGrid>
+            </p:panel>
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fieldsetEncabezadoNom">
+                <table border="0" width="100%" cellpadding="3" >
+                    <tr>
+                        <td width="20%;" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;" /></td>
+                        <td width="80%;">
+                            <h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;" >
+                            <h:outputLabel value="Empleado" style="font-weight: bold;" />
+                        </td>
+                        <td width="80%;">
+                            <h:outputLabel id="txtEmpNom" value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;" ><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
+                        <td width="80%;"><h:outputLabel id="txtJefeNom" value="#{planilla$accionesPersonal.nombreJefe}"  /></td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;" ><h:outputLabel value="Departamento" style="font-weight: bold;" /></td>
+                        <td width="80%;"><h:outputLabel id="txtDeptoNom" value="#{SessionBeanEMP.empleadoSesion.departamentos.nomDepto}" /></td>
+                    </tr>
+                    <tr>
+                        <td width="20%;" ><h:outputLabel value="Puesto" style="font-weight: bold;" /></td>
+                        <td width="80%;"><h:outputLabel id="txtPuestoNom" value="#{SessionBeanEMP.empleadoSesion.puestos.nomPuesto}" /></td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesNom" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                    </tr>
+                </table>
+            </p:fieldset>
+
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fldNombramiento" >
+
+                <table border="0"  >
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Departamento"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+
+                        <td>                            
+                            <h:selectOneMenu style="height: 25px;padding-top: 3px;width: 250px;" value="#{planilla$accionesPersonal.solicitudNombramiento.departamento}" >
+                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE UN DEPARTAMENTO]" />
+                                <f:selectItems value="#{planilla$accionesPersonal.solicitudNombramiento.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                            </h:selectOneMenu>
+                        </td>        
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Puesto"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+
+                        <td>                            
+                            <h:selectOneMenu style="height: 25px;padding-top: 3px;width: 250px;" value="#{planilla$accionesPersonal.solicitudNombramiento.puesto}" >
+                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE UN PUESTO]" />
+                                <f:selectItems value="#{planilla$accionesPersonal.solicitudNombramiento.listaPuestos}" var="puesto" itemValue="#{puesto.puestosPK.codPuesto}" itemLabel="#{puesto.nomPuesto}" />
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Fecha inicial"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+
+                        <td>                            
+                            <p:calendar id="nomFecFin" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudNombramiento.fechaInicial}"  />
+                        </td>
+
+                    </tr>
+                </table>
+
+            </p:fieldset>
+            <p:spacer height="15" />
+            <h:panelGrid columns="2">
+                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldNombramiento,principalForm:txtobservacionesNom"
+                                 action="#{planilla$accionesPersonal.solicitudNombramiento.guardarSolicitud$action}"
+                                 ajax="true" image="ui-icon-circle-check" />
+
+                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
+                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
+            </h:panelGrid>
+
+        </p:dialog>
+
+        <p:dialog id="dialogSolicitudVacColectiva" widgetVar="dialogSolicitudVacColectiva" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
+            <p:spacer height="10px"/>
+            <p:panel id="panelInformacionVacCol" style="border:none;" >
+                <h:panelGrid columns="4" >
+                    <p:graphicImage value="../../resources/imagenes/64/info.png" />
+                    <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
+                    <h:outputLabel value="*" styleClass="requerido"/>                                
+                    <h:outputLabel value=" son requeridos." style="font-style: italic;" />
+                </h:panelGrid>
+            </p:panel>
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fieldsetEncabezadoVacCol">
+                <table border="0" width="100%" >
+                    <tr>
+                        <td width="15%;"><h:outputLabel style="font-weight: bold;" value="Fecha de Solicitud"/></td>
+                        <td width="85%;">
+                            <h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="15%;"><h:outputLabel style="font-weight: bold;" value="Observacion"/></td>
+                        <td width="85%;"><p:inputTextarea id="txtobservacionesVacCol" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                    </tr>
+                </table>
+            </p:fieldset>
+
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fldVacColectiva" >
+
+                <table border="0" width="100%" >
+                    <tr>
+                        <td width="15%;" >
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Criterio a Aplicar:" style="font-weight: bold;"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+
+                        <td width="85%" >                            
+                            <h:selectOneMenu id="lstCriterio" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.criterioSeleccionado}" style="height: 25px;padding-top: 3px;width: 250px;" >
+                                <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE UN CRITERIO ]" />
+                                <f:selectItem itemValue="departamentos"  itemLabel=" APLICAR POR DEPARTAMENTO " />
+                                <f:selectItem itemValue="tipoPlanilla"  itemLabel=" APLICAR POR TIPO DE PLANILLA " />
+                                <f:ajax event="change" execute="lstCriterio" listener="#{planilla$accionesPersonal.solicitudVacacionColectiva.limpiarFormaAplicar}" render="fldVacColectiva" />
+                            </h:selectOneMenu>
+                        </td>        
+                    </tr>
+
+                    <tr>
+                        <td width="15%" ></td>
+                        <td width="85%" >
+                            <p:panel id="panelCriteriosDepartamento" style="border:none;" rendered="#{planilla$accionesPersonal.solicitudVacacionColectiva.criterioSeleccionado eq 'departamentos'}" >
+                                <h:panelGrid columns="3">
+                                    <h:outputLabel value="Departamento:" />
+                                    <h:selectOneMenu id="lstDeptosSolVacColDep" style="height: 25px;padding-top: 3px;width: 250px;" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.departamento}" >
+                                        <f:selectItem itemValue="-1" itemLabel="[SELECCIONE UN DEPARTAMENTO]" />
+                                        <f:selectItems value="#{planilla$accionesPersonal.solicitudVacacionColectiva.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                                        <f:ajax event="change" execute="lstDeptosSolVacColDep" listener="#{planilla$accionesPersonal.solicitudVacacionColectiva.calcularAfectados}" render="afectadosDepartamento selectXDepartamento" />
+                                    </h:selectOneMenu>
+                                    <h:outputLabel value="" />
+                                    <h:outputLabel value="Tipo Planilla:" />
+                                    <h:selectOneMenu id="lstTipoPlanillaSolVacColDep" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.tipoPlanilla}" >                       
+                                        <f:ajax render="lstPlanillaTPDep" event="change" execute="lstTipoPlanillaSolVacColDep" />
+                                        <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
+                                        <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                                        <f:ajax event="change" execute="lstTipoPlanillaSolVacColDep" listener="#{planilla$accionesPersonal.solicitudVacacionColectiva.calcularAfectados}" render="afectadosTipoPlanilla lstPlanillaTPDep" />
+                                    </h:selectOneMenu>
+
+                                    <h:panelGroup />
+                                    <h:outputLabel value="Planilla"/>
+                                    <h:selectOneMenu id="lstPlanillaTPDep" style="height: 25px;padding-top: 3px;width: 250px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.planilla}" >
+                                        <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
+                                        <f:selectItems value="#{planilla$accionesPersonal.solicitudVacacionColectiva.listaPlanillas}" var="pla" 
+                                                       itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
+                                    </h:selectOneMenu>
+                                    <h:panelGroup />
+                                    <h:outputLabel value="Total de afectados:" />
+                                    <h:panelGroup>
+                                        <h:panelGrid columns="2">
+                                            <h:outputLabel id="afectadosDepartamento" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.valorAfectados} empleados." styleClass="#{planilla$accionesPersonal.solicitudVacacionColectiva.valorAfectados lt 1 ? 'afectadosMinimo' : 'afectadosMaximo' }" />
+                                            <p:commandButton id="selectXDepartamento" value="Seleccionar" update="tableEmpleadosAfectar" action="#{planilla$accionesPersonal.solicitudVacacionColectiva.listarEmpleados}" image="beneficiarios" oncomplete="dialogoEmpleados.show();" />                                                                                
+                                        </h:panelGrid>
+                                    </h:panelGroup>
+
+                                </h:panelGrid>
+                            </p:panel>
+
+                            <p:panel id="panelCriteriosTipoPlanilla" style="border:none;" rendered="#{planilla$accionesPersonal.solicitudVacacionColectiva.criterioSeleccionado eq 'tipoPlanilla'}" >
+                                <h:panelGrid columns="3">
+                                    <h:outputLabel value="Tipo Planilla:" />
+                                    <h:selectOneMenu id="lstTipoPlanillaSolVacCol" style="height: 25px;padding-top: 3px;width: 200px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.tipoPlanilla}" >                       
+                                        <f:ajax render="lstPlanilla" event="change" execute="lstTipoPlanilla" />
+                                        <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
+                                        <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                                        <f:ajax event="change" execute="lstTipoPlanillaSolVacCol" listener="#{planilla$accionesPersonal.solicitudVacacionColectiva.calcularAfectados}" render="afectadosTipoPlanilla selectXTipoPlanilla lstPlanillaTP" />
+                                    </h:selectOneMenu>
+                                    <h:panelGroup />
+                                    <h:outputLabel value="Planilla"/>
+                                    <h:selectOneMenu id="lstPlanillaTP" style="height: 25px;padding-top: 3px;width: 200px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.planilla}" >
+                                        <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
+                                        <f:selectItems value="#{planilla$accionesPersonal.solicitudVacacionColectiva.listaPlanillas}" var="pla" 
+                                                       itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
+                                    </h:selectOneMenu>
+                                    <h:outputLabel value="" />
+                                    <h:outputLabel value="Total de empleados afectados:" />
+                                    <h:panelGroup>
+                                        <h:panelGrid columns="2"> 
+                                            <h:outputLabel id="afectadosTipoPlanilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.valorAfectados} empleados." styleClass="#{planilla$accionesPersonal.solicitudVacacionColectiva.valorAfectados lt 1 ? 'afectadosMinimo' : 'afectadosMaximo' }" />
+                                            <p:commandButton id="selectXTipoPlanilla" value="Seleccionar" update="tableEmpleadosAfectar" image="beneficiarios" action="#{planilla$accionesPersonal.solicitudVacacionColectiva.listarEmpleados}" oncomplete="dialogoEmpleados.show();" />
+                                        </h:panelGrid>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+
+                            </p:panel>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </p:fieldset>
+            <p:spacer height="15" />
+            <h:panelGrid columns="2">
+                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldVacColectiva,principalForm:txtobservacionesNom"
+                                 action="#{planilla$accionesPersonal.solicitudVacacionColectiva.guardarSolicitud$action}" ajax="true" image="ui-icon-circle-check" />
+
+                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
+                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
+            </h:panelGrid>
+
+        </p:dialog>
+
+        <p:dialog id="dialogoEmpleados" widgetVar="dialogoEmpleados" header="Empleados" width="650" height="445"  resizable="true" showEffect="clip" hideEffect="clip" >  
+
+            <h:panelGrid columns="2" >
+                <p:graphicImage value="/resources/imagenes/64/evaluacion32x32.png" />   
+                <h:outputLabel id="lbl1" value="Seleccione los empleados que desea incluir "  style="font-weight: bold;"/>
+            </h:panelGrid>
+
+            <p:dataTable id="tableEmpleadosAfectar" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.listaEmpleadosAfectar}" var="empleado" 
+                         paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true"  selection="#{planilla$accionesPersonal.solicitudVacacionColectiva.empleadosSeleccionados}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                         rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" onRowSelectUpdate="principalForm:mensajes,tableEmpleadosAfectar,afectadosTipoPlanilla,afectadosDepartamento" onRowUnselectUpdate="principalForm:mensajes,tableEmpleadosAfectar,afectadosTipoPlanilla,afectadosDepartamento" >
+
+                <f:facet name="header">
+                    Empleados
+                </f:facet>
+                <p:column selectionMode="multiple" style="width:18px" /> 
+                <p:column headerText="C&oacute;digo" >  
+                    <h:outputLabel value="#{empleado.empleadosPK.codEmp}" />
+                </p:column>  
+
+                <p:column headerText="Nombre" filterBy="#{empleado.nombreCompleto}" filterMatchMode="contains" >  
+                    <h:outputLabel value="#{empleado.nombreCompleto}" />
+                </p:column>  
+
+            </p:dataTable>
+            <p:spacer height="15" />
+            <h:panelGrid columns="2">
+                <p:commandButton value="Aceptar" styleClass="opcionMenu" update="principalForm:mensajes,afectadosTipoPlanilla,afectadosDepartamento" oncomplete="dialogoEmpleados.hide()" action="#{planilla$accionesPersonal.solicitudVacacionColectiva.actualizarAfectados}" image="ui-icon-circle-check" /> 
+            </h:panelGrid>
+        </p:dialog>    
+
+        <p:dialog id="dialogSolicitudAumentoSueldo" widgetVar="dialogSolicitudAumentoSueldo" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
+            <p:spacer height="10px"/>
+            <p:panel id="panelInformacionAuSal" style="border:none;" >
+                <h:panelGrid columns="4" >
+                    <p:graphicImage value="../../resources/imagenes/64/info.png" />
+                    <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
+                    <h:outputLabel value="*" styleClass="requerido"/>                                
+                    <h:outputLabel value=" son requeridos." style="font-style: italic;" />
+                </h:panelGrid>
+            </p:panel>
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fieldsetEncabezadoAuSal">
+                <table border="0" width="100%" cellpadding="3" >
+                    <tr>
+                        <td width="20%;" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;" /></td>
+                        <td width="80%;">
+                            <h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;" >
+                            <h:outputLabel value="Empleado" style="font-weight: bold;" />
+                        </td>
+                        <td width="80%;">
+                            <h:outputLabel id="txtEmpAuSal" value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;" ><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
+                        <td width="80%;"><h:outputLabel id="txtJefeAuSal" value="#{planilla$accionesPersonal.nombreJefe}"  /></td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;" ><h:outputLabel value="Departamento" style="font-weight: bold;" /></td>
+                        <td width="80%;"><h:outputLabel id="txtDeptoAuSal" value="#{SessionBeanEMP.empleadoSesion.departamentos.nomDepto}" /></td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesAuSal" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                    </tr>
+                </table>
+            </p:fieldset>
+
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fldAumentoSalario" >
+
+                <table border="0" cellpadding="2" >
+
+                    <tr>
+                        <td><h:outputLabel value="Forma:" style="font-weight: bold;" /></td>
+                        <td>
+                            <h:selectOneRadio id="chkFormaAumento" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.formaAumento}" >
+                                <f:selectItem itemValue="P" itemLabel="Aplicar porcentaje" />
+                                <f:selectItem itemValue="V" itemLabel="Aplicar valor" />
+                                <f:ajax event="change" render="etiquetaValor txValorCalculado lbValorCalculado" execute="chkFormaAumento"  />
+                            </h:selectOneRadio>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><h:outputLabel id="etiquetaValor" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.formaAumento eq 'V' ? 'Nuevo Sueldo: ': 'Porcentaje: '}" style="font-weight: bold;" /></td>
+                        <td>
+                            <p:inputText value="#{planilla$accionesPersonal.solicitudAumentoSueldo.sueldoNuevo}" >
+                                <p:ajax event="keyup" update="txValorCalculado" listener="#{planilla$accionesPersonal.solicitudAumentoSueldo.calculoSueldo}" /> 
+                            </p:inputText>
+                        </td>
+                        <td></td>
+                        <td><h:outputLabel id="lbValorCalculado" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.formaAumento eq 'P' ? 'Nuevo Valor: ': '' }" style="font-weight: bold;" /></td>
+                        <td>
+                            <h:outputLabel id="txValorCalculado" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.formaAumento eq 'P' ? planilla$accionesPersonal.solicitudAumentoSueldo.porcentaje : '' }" >
+                                <f:convertNumber maxFractionDigits="2"/>
+                            </h:outputLabel>    
+                        </td>                        
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="Sueldo Anterior: " style="font-weight: bold;" /></td>
+
+                        <td>
+                            <h:outputLabel value="$ #{SessionBeanEMP.empleadoSesion.salario}" style="font-weight: bold;color: red;" >
+                                <f:convertNumber maxFractionDigits="2" />
+                            </h:outputLabel>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h:outputLabel value="Fecha inicial" style="font-weight: bold;" />
+                        </td>
+
+                        <td>                            
+                            <p:calendar id="auSalFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.fechaInicial}"  />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h:outputLabel value="Tipo Planilla:" style="font-weight: bold;" />
+                        </td>
+                        <td>
+                            <h:selectOneMenu id="lstTipoPlanillaAuSal" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.tipoPlanilla}" >                       
+                                <f:ajax render="lstPlanillaAuSal" event="change" execute="lstTipoPlanillaAuSal" />
+                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
+                                <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                            </h:selectOneMenu>
+                        </td>
+                        <td></td>
+                        <td>
+                            <h:outputLabel value="Planilla" style="font-weight: bold;" />
+                        </td>
+                        <td>
+                            <h:selectOneMenu id="lstPlanillaAuSal" style="height: 25px;padding-top: 3px;width: 250px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.planilla}" >
+                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
+                                <f:selectItems value="#{planilla$accionesPersonal.solicitudAumentoSueldo.listaPlanillas}" var="pla" 
+                                               itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                </table>
+
+            </p:fieldset>
+            <p:spacer height="15" />
+            <h:panelGrid columns="2">
+                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldAumentoSalario,principalForm:txtobservacionesAuSal"
+                                 action="#{planilla$accionesPersonal.solicitudAumentoSueldo.guardarSolicitud$action}"
+                                 ajax="true" image="ui-icon-circle-check" />
+
+                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
+                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
+            </h:panelGrid>
+
+        </p:dialog>
+
+
+        <p:dialog id="dialogSolAumSueldoColectivo" widgetVar="dialogSolAumSueldoColectivo" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
+            <p:spacer height="10px"/>
+            <p:panel id="panelAumSueldoColectivo" style="border:none;" >
+                <h:panelGrid columns="4" >
+                    <p:graphicImage value="../../resources/imagenes/64/info.png" />
+                    <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
+                    <h:outputLabel value="*" styleClass="requerido"/>                                
+                    <h:outputLabel value=" son requeridos." style="font-style: italic;" />
+                </h:panelGrid>
+            </p:panel>
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fieldsetEncabezadoAuSalCol">
+                <table border="0" width="100%" cellpadding="3" >
+                    <tr>
+                        <td width="20%;" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;" /></td>
+                        <td width="80%;">
+                            <h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesAuSalCol" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                    </tr>
+                </table>
+            </p:fieldset>
+
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fldAumentoSalarioCol" >
+
+                <table border="0" cellpadding="2" >
+
+                    <tr>
+                        <td width="15%" >
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Criterio a Aplicar:" style="font-weight: bold;"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+
+                        <td width="85%" colspan="5"  >                            
+                            <h:selectOneMenu id="lstCriterioAumSalCol" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.criterioSeleccionado}" style="height: 25px;padding-top: 3px;width: 250px;" >
+                                <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE UN CRITERIO ]" />
+                                <f:selectItem itemValue="rangoSalario"  itemLabel=" APLICAR POR RANGOS DE SALARIO " />
+                                <f:selectItem itemValue="departamentos"  itemLabel=" APLICAR POR DEPARTAMENTOS " />
+                                <f:ajax event="change" execute="lstCriterioAumSalCol" listener="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.limpiarFormaAplicar}" render="fldAumentoSalarioCol" />
+                            </h:selectOneMenu>
+                        </td>        
+                    </tr>
+
+                    <tr>
+                        <td width="15%"  ></td>
+                        <td>
+                            <p:panel id="panelRangos" style="border:none;" rendered="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.criterioSeleccionado eq 'rangoSalario' }" >
+
+                                <table width="100%" >
+                                    <tr>
+                                        <td width="25%">
+                                            <h:outputLabel value="Valor Inicial $: " style="font-weight: bold;" />
+                                        </td>
+                                        <td width="20%">
+                                            <p:inputText style="width: 80px;" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.salarioMinimo}"  >    
+                                                <p:ajax event="blur" update="totalEmpleadosAfectadosSalCol,totalEmpleadosAfectadosSalColV" listener="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.calcularEmpleados}" />  
+                                            </p:inputText>
+                                        </td>
+                                        <td></td>
+                                        <td  width="15%" >
+                                            <h:outputLabel value="Valor Final $: " style="font-weight: bold;" />
+                                        </td>
+                                        <td  width="50%" >
+                                            <p:inputText style="width: 80px;" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.salarioMaximo}" >
+                                                <p:ajax event="blur" update="totalEmpleadosAfectadosSalCol,,totalEmpleadosAfectadosSalColV" listener="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.calcularEmpleados}" />  
+                                            </p:inputText>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="25%" ><h:outputLabel value="Forma:" style="font-weight: bold;" /></td>
+                                        <td width="75%" colspan="4" >
+                                            <h:selectOneRadio id="chkFormaAumentoSalCol" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento}" >
+                                                <f:selectItem itemValue="V" itemLabel="Aplicar valor" />
+                                                <f:selectItem itemValue="P" itemLabel="Aplicar porcentaje" />
+                                                <f:ajax event="change" render="etiquetaValorSalCol lblPorcentaje" execute="chkFormaAumentoSalCol"  />
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="25%" ><h:outputLabel id="etiquetaValorSalCol" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento eq 'V' ? 'Nuevo Sueldo: ': 'Porcentaje: '}" style="font-weight: bold;" /></td>
+                                        <td width="75%" colspan="4">
+                                            <p:inputText value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.sueldoNuevo}" style="width: 80px;" />
+                                            <h:outputLabel id="lblPorcentaje" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento eq 'P' ? '  %  ' : ''}" style="font-weight: bold;" />
+                                        </td>                    
+                                    </tr>
+                                    <tr>
+                                        <td width="25%" ><h:outputLabel value="Fecha inicial" style="font-weight: bold;" /></td>
+                                        <td width="75%" colspan="4" >
+                                            <p:calendar value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.fechaInicial}" showOn="button" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h:outputLabel value="Tipo Planilla:" style="font-weight: bold;" />
+                                        </td>
+                                        <td>
+                                            <h:selectOneMenu id="lstTipoPlanillaRangoSal" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.tipoPlanilla}" >                       
+                                                <f:ajax render="lstPlanillaRangoSal" event="change" execute="lstTipoPlanillaRangoSal" />
+                                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
+                                                <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                                            </h:selectOneMenu>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h:outputLabel value="Planilla" style="font-weight: bold;" />
+                                        </td>
+                                        <td>
+                                            <h:selectOneMenu id="lstPlanillaRangoSal" style="height: 25px;padding-top: 3px;width: 250px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.planilla}" >
+                                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
+                                                <f:selectItems value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.listaPlanillas}" var="pla" 
+                                                               itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
+                                            </h:selectOneMenu>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="5" >
+                                            <h:panelGrid columns="2">
+                                                <h:outputLabel id="totalEmpleadosAfectadosSalCol"  value="Total de Empleados afectados: " />
+                                                <h:outputLabel id="totalEmpleadosAfectadosSalColV"  value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.empleadosAfectados} " styleClass="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.empleadosAfectados lt 1 ? 'afectadosMinimo' : 'afectadosMaximo' }" />
+                                            </h:panelGrid>
+                                        </td>
+                                    </tr>
+
+                                </table>
+
+                            </p:panel>   
+
+                            <p:panel id="panelDepartamentos" style="border:none;" rendered="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.criterioSeleccionado eq 'departamentos' }" >
+
+                                <table width="100%" >
+                                    <tr>
+                                        <td width="20%">
+                                            <h:outputLabel value="Departamento:" style="font-weight: bold;"/>
+                                        </td>
+                                        <td width="80%" >
+                                            <h:selectOneMenu id="lstDeptosSolAumCol" style="height: 25px;padding-top: 3px;width: 250px;" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.departamento}" >
+                                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE UN DEPARTAMENTO]" />
+                                                <f:selectItems value="#{planilla$accionesPersonal.solicitudVacacionColectiva.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                                                <f:ajax event="change" execute="lstDeptosSolAumCol" listener="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.calcularAfectador}" render="totalEmpleadosAfectadosSalColDep totalEmpleadosAfectadosSalColVDep" />
+                                            </h:selectOneMenu>   
+                                        </td>
+
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td width="25%" ><h:outputLabel value="Forma:" style="font-weight: bold;" /></td>
+                                        <td width="75%" colspan="4" >
+                                            <h:selectOneRadio id="chkFormaAumentoSalColDep" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento}" >
+                                                <f:selectItem itemValue="V" itemLabel="Aplicar valor" />
+                                                <f:selectItem itemValue="P" itemLabel="Aplicar porcentaje" />
+                                                <f:ajax event="change" render="etiquetaValorSalColDep lblPorcentajeDep" execute="chkFormaAumentoSalColDep"  />
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="25%" ><h:outputLabel id="etiquetaValorSalColDep" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento eq 'V' ? 'Nuevo Sueldo: ': 'Porcentaje: '}" style="font-weight: bold;" /></td>
+                                        <td width="75%" colspan="4">
+                                            <p:inputText value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.sueldoNuevo}" style="width: 80px;" />
+                                            <h:outputLabel id="lblPorcentajeDep" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento eq 'P' ? '  %  ' : ''}" style="font-weight: bold;" />
+                                        </td>                    
+                                    </tr>
+                                    <tr>
+                                        <td width="25%" ><h:outputLabel value="Fecha inicial" style="font-weight: bold;" /></td>
+                                        <td width="75%" colspan="4" >
+                                            <p:calendar value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.fechaInicial}" showOn="button" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h:outputLabel value="Tipo Planilla:" style="font-weight: bold;" />
+                                        </td>
+                                        <td>
+                                            <h:selectOneMenu id="lstTipoPlanillaSalColDep" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.tipoPlanilla}" >                       
+                                                <f:ajax render="lstPlanillaSalColDep" event="change" execute="lstTipoPlanillaSalColDep" />
+                                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
+                                                <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                                            </h:selectOneMenu>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h:outputLabel value="Planilla" style="font-weight: bold;" />
+                                        </td>
+                                        <td>
+                                            <h:selectOneMenu id="lstPlanillaSalColDep" style="height: 25px;padding-top: 3px;width: 250px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.planilla}" >
+                                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
+                                                <f:selectItems value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.listaPlanillas}" var="pla" 
+                                                               itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
+                                            </h:selectOneMenu>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="5" >
+                                            <h:panelGrid columns="2">
+                                                <h:outputLabel id="totalEmpleadosAfectadosSalColDep"  value="Total de Empleados afectados: " />
+                                                <h:outputLabel id="totalEmpleadosAfectadosSalColVDep"  value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.empleadosAfectados} " styleClass="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.empleadosAfectados lt 1 ? 'afectadosMinimo' : 'afectadosMaximo' }" />
+                                            </h:panelGrid>
+                                        </td>
+                                    </tr>
+
+                                    
+                                    
+                                </table>
+                            </p:panel>   
+                        </td>
+                    </tr>
+                </table>
+            </p:fieldset>
+
+            <p:spacer height="15" />
+            <h:panelGrid columns="2">
+                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldAumentoSalarioCol,principalForm:txtobservacionesAuSalCol"
+                                 action="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.guardarSolicitud$action}" ajax="true" image="ui-icon-circle-check" />
+
+                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
+                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
+            </h:panelGrid>
+
+        </p:dialog>
     </ui:define>
 
 </ui:composition>
