@@ -4,29 +4,9 @@
  */
 package com.infosgroup.planilla.modelo.procesos;
 
-import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
-import com.infosgroup.planilla.modelo.entidades.Agencias;
-import com.infosgroup.planilla.modelo.entidades.Cias;
-import com.infosgroup.planilla.modelo.entidades.Empleados;
-import com.infosgroup.planilla.modelo.entidades.FestivosXDepto;
-import com.infosgroup.planilla.modelo.entidades.Planilla;
-import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
-import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
-import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
-import com.infosgroup.planilla.modelo.entidades.TipoAccion;
-import com.infosgroup.planilla.modelo.entidades.TipoAccionPK;
-import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
-import com.infosgroup.planilla.modelo.entidades.TiposPlanillaPK;
-import com.infosgroup.planilla.modelo.facades.AccionPersonalFacade;
-import com.infosgroup.planilla.modelo.facades.CiasFacade;
-import com.infosgroup.planilla.modelo.facades.FestivosXDeptoFacade;
-import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
-import com.infosgroup.planilla.modelo.facades.PlanillaFacade;
-import com.infosgroup.planilla.modelo.facades.ResumenAsistenciaFacade;
-import com.infosgroup.planilla.modelo.facades.AgenciasFacade;
-import com.infosgroup.planilla.modelo.facades.ProgramacionPlaFacade;
-import com.infosgroup.planilla.modelo.facades.TipoAccionFacade;
-import com.infosgroup.planilla.modelo.facades.TipoPlanillaFacade;
+import com.infosgroup.planilla.modelo.entidades.*;
+import com.infosgroup.planilla.modelo.facades.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -71,6 +51,10 @@ public class PlanillaSessionBean {
     private ProgramacionPlaFacade programacionPlaFacade;
     @EJB
     private FestivosXDeptoFacade festivosProvinciafacade;
+    @EJB
+    private DepartamentoFacade departamentoFacade;
+    @EJB
+    private PuestoFacade puestosFacade;
 
     public List<ResumenAsistencia> getResumen(ResumenAsistencia c) {
         return (c != null) ? resumenFacade.findAll() : new ArrayList<ResumenAsistencia>();
@@ -149,7 +133,9 @@ public class PlanillaSessionBean {
             accionPersonalFacade.edit(accion);
             mailBean.enviarCorreoElectronico(
                     "Sobre Solicitud de Personal",
-                    "Se ha aprobado una solicitud a nombre de: " + accion.getEmpleados().getNombreCompleto(), accion.getEmpleados().getCorreo() + ":" + accion.getEmpleados()./*getJefe()*/getEmpleados().getCorreo());
+                    "Se ha aprobado una solicitud a nombre de: " + accion.getEmpleados().getNombreCompleto(), accion.getEmpleados().getCorreo() + ":" + accion.getEmpleados()./*
+                     * getJefe()
+                     */getEmpleados().getCorreo());
         }
         return null;
     }
@@ -415,5 +401,45 @@ public class PlanillaSessionBean {
     @PermitAll
     public List<ProgramacionPla> getProgramacionPlaByTipo(Short empresa, Short tipoPlanilla) {
         return programacionPlaFacade.getProgramacionPlaByTipo(empresa, tipoPlanilla);
+    }
+
+    public List<Departamentos> findDepartamentos(Cias cias) {
+        return departamentoFacade.findDepartamentosByCias(cias);
+    }
+
+    public List<Puestos> findPuestos(Cias cias) {
+        return puestosFacade.findPuestoByEmpresa(cias);
+    }
+
+    @PermitAll
+    public Integer totalAfectadosDepartamentos(Departamentos departamento) {
+        return empleadoFacade.totalAfectadosDepartamentos(departamento);
+    }
+
+    @PermitAll
+    public Integer totalAfectadosTipoPlanilla(TiposPlanilla tipoPlanilla) {
+        return empleadoFacade.totalAfectadosTipoPlanilla(tipoPlanilla);
+    }
+
+    @PermitAll
+    public Integer totalAfectadosRangoSalarios(Cias cias, BigDecimal s1, BigDecimal s2) {
+        return empleadoFacade.totalAfectadosRangosSalario(cias, s1, s2);
+    }
+
+    @PermitAll
+    public List<Empleados> listaAfectadosDepartamentos(Departamentos departamento) {
+        return empleadoFacade.afectadosDepartamentos(departamento);
+    }
+
+    @PermitAll
+    public List<Empleados> listaAfectadosTipoPlanilla(TiposPlanilla tipoPlanilla) {
+        return empleadoFacade.afectadosTipoPlanilla(tipoPlanilla);
+    }
+
+    @PermitAll
+    public void registrarVacacionColetiva(List<AccionPersonal> solicitudes) {
+        for (AccionPersonal a : solicitudes) {
+            accionPersonalFacade.create(a);
+        }
     }
 }
