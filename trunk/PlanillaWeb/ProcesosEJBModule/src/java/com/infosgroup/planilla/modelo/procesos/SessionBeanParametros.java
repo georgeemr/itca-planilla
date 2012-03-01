@@ -47,6 +47,8 @@ private IdiomaFacade idiomaFacade;
 private EquipoFacade equipoFacade;
 @EJB
 private TipoPruebaFacade tipoPruebaFacade;
+@EJB
+private EmpleadoFacade empleadoFacade;
 
 @PermitAll
 public List<Paises> getListaPaises()
@@ -108,11 +110,13 @@ public List<Profesion> getListaProfesiones()
     return profesionesFacade.findAll();
 }
 
+@PermitAll
 public Deptos findDepartamentoById(DeptosPK deptoPK)
 {
     return departamentosFacade.find(deptoPK);
 }
 
+@PermitAll
 public Municipios findMunicipiosById(MunicipiosPK municipioPK)
 {
     return municipiosFacade.find(municipioPK);
@@ -200,5 +204,23 @@ public TipoPrueba findTipoPruebaById(TipoPruebaPK tipoPruebaPK)
 public List<TipoPrueba> findAllTipoPrueba(Cias cia)
 {
     return tipoPruebaFacade.findAllByCia(cia);
+}
+
+@PermitAll
+public Empleados findEmpleadoById(EmpleadosPK empleadoPK)
+{
+    return empleadoFacade.find(empleadoPK);
+}
+
+@PermitAll
+public List<Empleados> findAllEmpleados(Cias cia)
+{
+    return empleadoFacade.findEmpleadosByCias(cia);
+}
+
+@PermitAll
+public TipoSangre findTipoSangreById(String tipoSangreId)
+{
+    return tipoSangreFacade.find(tipoSangreId);
 }
 }

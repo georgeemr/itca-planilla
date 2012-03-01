@@ -6,12 +6,7 @@ package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.facades.*;
-import com.infosgroup.planilla.modelo.facades.PruebaXPuestoFacade;
 import java.text.SimpleDateFormat;
-import com.infosgroup.planilla.modelo.entidades.Criterio;
-import com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK;
-import com.infosgroup.planilla.modelo.entidades.PruebaXPuesto;
-import com.infosgroup.planilla.modelo.facades.CriterioFacade;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -71,48 +66,88 @@ public class ReclutamientoSessionBean {
     private PruebaXPuestoFacade pruebaXPuestoFacade;
     @EJB
     private ReferenciaFacade referenciaFacade;
+@EJB
+private DocumentoPresentadoFacade documentoPresentadoFacade;
+@EJB
+private DependienteXCandidatoFacade dependienteXCandidatoFacade;
     @EJB
     private BeneficiarioXCandidatoFacade beneficiarioXCandidatoFacade;
     @EJB
     private ParentescoFacade parentescoFacade;
+@EJB
+private CapacitacionXCandidatoFacade capacitacionXCandidatoFacade;
+@EJB
+private IdiomaXCandidatoFacade idiomaXCandidatoFacade;
+@EJB
+private BeneficiarioXCandidatoFacade beneficiarioXCandidatoFacade;
 
-    public List<Concurso> getListaConcursos(Cias empresa, Date fechaInicial, Date fechaFinal) {
+@PermitAll
         return concursoFacade.getConcursosByDate(empresa, fechaInicial, fechaFinal);
     }
+public List<Concurso> getListaConcursos(Cias empresa, Date fechaInicial, Date fechaFinal)
+{
+    return concursoFacade.getConcursosByDate(empresa, fechaInicial, fechaFinal);
+}
 
-    public List<Concurso> getConcursosEvaluados(Cias empresa) {
+@PermitAll
         return concursoFacade.getConcursosActivos(empresa);
     }
+public List<Concurso> getConcursosEvaluados(Cias empresa)
+{
+    return concursoFacade.getConcursosActivos(empresa);
+}
 
-    public List<Concurso> getConcursoByEmpresa(Cias empresa) {
+@PermitAll
         return concursoFacade.findConcursoByEmpresa(empresa);
     }
+public List<Concurso> getConcursoByEmpresa(Cias empresa)
+{
+    return concursoFacade.findConcursoByEmpresa(empresa);
+}
 
-    public List<EstadoConcurso> getEstadoConcursosByEmpresa(Cias empresa) {
+@PermitAll
         return estadoConcursoFacade.findEstadoConcursoByEmpresa(empresa);
     }
+public List<EstadoConcurso> getEstadoConcursosByEmpresa(Cias empresa)
+{
+    return estadoConcursoFacade.findEstadoConcursoByEmpresa(empresa);
+}
 
-    public List<Puestos> getPuestosByEmpresa(Cias empresa) {
+@PermitAll
         return puestoFacade.findPuestoByEmpresa(empresa);
     }
+public List<Puestos> getPuestosByEmpresa(Cias empresa)
+{
+    return puestoFacade.findPuestoByEmpresa(empresa);
+}
 
-    public List<TipoPuesto> getTipoPuestosByEmpresa(Cias empresa) {
+@PermitAll
         return tipoPuestoFacade.findTipoPuestoByEmpresa(empresa);
     }
+public List<TipoPuesto> getTipoPuestosByEmpresa(Cias empresa)
+{
+    return tipoPuestoFacade.findTipoPuestoByEmpresa(empresa);
+}
 
-    public Integer getMaxConcurso(Cias empresa) {
+@PermitAll
         return concursoFacade.max(empresa).intValue();
     }
+public Integer getMaxConcurso(Cias empresa)
+{
+    return concursoFacade.max(empresa).intValue();
+}
 
-    @PermitAll
-    public Integer getMaxEmergenciaCandidato(Candidato c) {
-        return emergenciaCandidatoFacade.max(c);
-    }
+@PermitAll
+public Integer getMaxEmergenciaCandidato(Candidato c)
+{
+    return emergenciaCandidatoFacade.max(c);
+}
 
-    @PermitAll
-    public List<Candidato> getCandidatosByEmpresa(Cias empresa) {
-        return candidatoFacade.findByCanditadoByEmpresa(empresa);
-    }
+@PermitAll
+public List<Candidato> getCandidatosByEmpresa(Cias empresa)
+{
+    return candidatoFacade.findByCanditadoByEmpresa(empresa);
+}
 
     public List<Candidato> getCandidatosByConcurso(Concurso c) {
         return candidatoFacade.findByConcurso(c);
@@ -163,9 +198,11 @@ public class ReclutamientoSessionBean {
         evaluacionCandidatoFacade.edit(ec);
     }
 
-    public Integer getMaxCandidato(Cias empresa) {
-        return candidatoFacade.max(empresa);
-    }
+@PermitAll
+public Integer getMaxCandidato(Cias empresa)
+{
+    return candidatoFacade.max(empresa);
+}
 
     public void editarCandidato(Candidato c) {
         candidatoFacade.edit(c);
@@ -447,4 +484,63 @@ public class ReclutamientoSessionBean {
     public void editarBeneficiarioCandidato(BeneficiarioXCandidato bc) {
         beneficiarioXCandidatoFacade.edit(bc);
     }
+@PermitAll
+public Integer getMaxDocumentoPresentado(Candidato c)
+{
+    return documentoPresentadoFacade.max(c);
+}
+
+@PermitAll
+public void crearDocumentoCandidato(DocumentoPresentado d)
+{
+    documentoPresentadoFacade.create(d);
+}
+
+@PermitAll
+public Integer getMaxDependienteXCandidato(Candidato c)
+{
+    return dependienteXCandidatoFacade.max(c);
+}
+
+@PermitAll
+public void crearDependienteXCandidato(DependienteXCandidato d)
+{
+    dependienteXCandidatoFacade.create(d);
+}
+
+@PermitAll
+public Integer getMaxCapacitacionXCandidato(Candidato c)
+{
+    return capacitacionXCandidatoFacade.max(c);
+}
+
+@PermitAll
+public void crearCapacitacionXCandidato(CapacitacionXCandidato c)
+{
+    capacitacionXCandidatoFacade.create(c);
+}
+
+@PermitAll
+public Integer getMaxIdiomaXCandidato(Candidato c)
+{
+    return idiomaXCandidatoFacade.max(c);
+}
+
+@PermitAll
+public void crearIdiomaXCandidato(IdiomaXCandidato i)
+{
+    idiomaXCandidatoFacade.create(i);
+}
+
+@PermitAll
+public Integer getMaxBeneficiarioXCandidato(Candidato c)
+{
+    return beneficiarioXCandidatoFacade.max(c);
+}
+
+@PermitAll
+public void crearBeneficiarioXCandidato(BeneficiarioXCandidato b)
+{
+    beneficiarioXCandidatoFacade.create(b);
+}
 }
