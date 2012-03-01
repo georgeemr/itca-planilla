@@ -31,8 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "BeneficiarioXCandidato.findByCodCia", query = "SELECT b FROM BeneficiarioXCandidato b WHERE b.beneficiarioXCandidatoPK.codCia = :codCia"),
     @NamedQuery(name = "BeneficiarioXCandidato.findByCodCandidato", query = "SELECT b FROM BeneficiarioXCandidato b WHERE b.beneficiarioXCandidatoPK.codCandidato = :codCandidato"),
     @NamedQuery(name = "BeneficiarioXCandidato.findByCodBeneficiario", query = "SELECT b FROM BeneficiarioXCandidato b WHERE b.beneficiarioXCandidatoPK.codBeneficiario = :codBeneficiario"),
-    @NamedQuery(name = "BeneficiarioXCandidato.findByNombre", query = "SELECT b FROM BeneficiarioXCandidato b WHERE b.nombre = :nombre"),
-    @NamedQuery(name = "BeneficiarioXCandidato.findByCodParentesco", query = "SELECT b FROM BeneficiarioXCandidato b WHERE b.codParentesco = :codParentesco")})
+    @NamedQuery(name = "BeneficiarioXCandidato.findByNombre", query = "SELECT b FROM BeneficiarioXCandidato b WHERE b.nombre = :nombre")})
 public class BeneficiarioXCandidato implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -42,8 +41,11 @@ public class BeneficiarioXCandidato implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "NOMBRE", nullable = false, length = 100)
     private String nombre;
-    @Column(name = "COD_PARENTESCO")
-    private Short codParentesco;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_PARENTESCO", referencedColumnName = "COD_PARENTESCO")})
+    @ManyToOne(optional = false)
+    private Parentesco parentesco;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false, insertable = false, updatable = false)})
@@ -82,12 +84,12 @@ public class BeneficiarioXCandidato implements Serializable {
         this.nombre = nombre;
     }
 
-    public Short getCodParentesco() {
-        return codParentesco;
+    public Parentesco getParentesco() {
+        return parentesco;
     }
 
-    public void setCodParentesco(Short codParentesco) {
-        this.codParentesco = codParentesco;
+    public void setParentesco(Parentesco parentesco) {
+        this.parentesco = parentesco;
     }
 
     public Candidato getCandidato() {
