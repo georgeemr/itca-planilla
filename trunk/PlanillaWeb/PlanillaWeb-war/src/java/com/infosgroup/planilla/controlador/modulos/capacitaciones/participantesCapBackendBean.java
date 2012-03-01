@@ -5,6 +5,8 @@
 package com.infosgroup.planilla.controlador.modulos.capacitaciones;
 
 import com.infosgroup.planilla.modelo.entidades.Capacitacion;
+import com.infosgroup.planilla.modelo.entidades.CapacitacionAsistencia;
+import com.infosgroup.planilla.modelo.entidades.CapacitacionAsistenciaPK;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionXEmpleado;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionXEmpleadoPK;
 import com.infosgroup.planilla.modelo.entidades.Cias;
@@ -15,8 +17,12 @@ import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -312,23 +318,56 @@ public class participantesCapBackendBean extends AbstractJSFPage implements Seri
         listaDetalle = capacitacionSessionBean.findDetByCap(getSessionBeanADM().getCompania(), getSessionBeanCAP().getCapacitacionSeleccionada());
     }
 
+    @PermitAll
     public void enviar$correo$action() {
         try {
             for (CapacitacionXEmpleado det : listaDetalle) {
+                //Creacion de registros para asistencia
+                try {
+                    final long MILLSECS_PER_DAY = 24 * 60 * 60 * 1000;
+                    Long dias = (det.getCapacitacion().getFechaHasta().getTime() - det.getCapacitacion().getFechaDesde().getTime()) / MILLSECS_PER_DAY;
+                    Integer total = dias.intValue() + 2;
+                    for (Integer i = 1; i < total; i++) {
+                        CapacitacionAsistencia asistencia = new CapacitacionAsistencia();
+                        CapacitacionAsistenciaPK pk = new CapacitacionAsistenciaPK();
+                        pk.setCodCia(det.getCapacitacionXEmpleadoPK().getCodCia());
+                        pk.setCodCapacitacion(det.getCapacitacionXEmpleadoPK().getCodCapacitacion());
+                        pk.setCodEmp(det.getCapacitacionXEmpleadoPK().getCodEmp());
+                        pk.setFecha(sumarFechasDias(det.getCapacitacion().getFechaDesde(), i - 1));
+                        asistencia.setCapacitacionAsistenciaPK(pk);
+                        asistencia.setCapacitacion(det.getCapacitacion());
+                        asistencia.setEmpleados(det.getEmpleados());
+                        asistencia.setAsistio("N");
+                        capacitacionSessionBean.guardarAsistencia(asistencia);
+                    }
+                } catch (Exception e) {
+                    addMessage("Mantenimiento de Particiantes.", "Ya se han enviado las notificaciones.", TipoMensaje.ERROR);
+                    System.out.println(e.getMessage());
+                    return;
+                }
+                //Enviar correos
                 StringBuilder mensaje = new StringBuilder();
                 mensaje.append("\n\nPor medio de la presente se le comunica que ha sido convocado a la siguiente Capacitación");
                 mensaje.append("\n\nNombre: ").append(det.getCapacitacion().getNomCapacitacion());
                 mensaje.append("\n\nArea: ").append(det.getCapacitacion().getCapacitacionAreas().getNomArea());
                 mensaje.append("\n\nTema: ").append(det.getCapacitacion().getCapacitacionTemas().getNomTema());
-                mensaje.append("\n\nA celebrarse el día: ").append(det.getCapacitacion().getFechaDesde().toString());
-                //mensaje.append(" a las ").append(det.getCapacitacion().getFechaDesde().getHours()).append(det.getCapacitacion().getFechaDesde().getMinutes());
+                mensaje.append("\n\nA celebrarse el día: ").append(new SimpleDateFormat("dd/MM/yyyy").format(det.getCapacitacion().getFechaDesde()));
 
                 mailStatelessBean.enviarCorreoElectronico("Capacitacion", mensaje.toString(), det.getEmpleados().getCorreo());
-                addMessage("Mantenimiento de participantes.", "Correos enviados a los Participantes de esta capacitación", TipoMensaje.INFORMACION);
+
+
+                addMessage("Mantenimiento de participantes.", "Correos enviados a los Participantes de esta capacitación ", TipoMensaje.INFORMACION);
             }
         } catch (Exception e) {
             addMessage("Mantenimiento de Particiantes.", "Ha ocurrido un error al enviar correos a Participantes.", TipoMensaje.ERROR);
             System.out.println(e.getMessage());
         }
+    }
+
+    public static Date sumarFechasDias(Date fch, int dias) {
+        Calendar cal = new GregorianCalendar();
+        cal.setTimeInMillis(fch.getTime());
+        cal.add(Calendar.DATE, dias);
+        return new Date(cal.getTimeInMillis());
     }
 }
