@@ -4,8 +4,12 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
+import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudAumentoSueldo;
+import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudAumentoSueldoColectivo;
 import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudIncapacidad;
+import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudNombramiento;
 import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudPermiso;
+import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudVacacionColectiva;
 import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudVacacionesAnuales;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
@@ -49,10 +53,48 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private String urlPlantilla;
     private String urlPlantillaDefault = "/modulos/planilla/acciones/ninguna.xhtml";
     private TipoAccion accionSeleccionada;
-    /* Campos de Detalle de Solicitud */
+    /*
+     * Campos de Detalle de Solicitud
+     */
     private SolicitudPermiso solicitudPermiso;
     private SolicitudVacacionesAnuales solicitudVacacionesAnuales;
     private SolicitudIncapacidad solicitudIncapacidad;
+    private SolicitudNombramiento solicitudNombramiento;
+    private SolicitudVacacionColectiva solicitudVacacionColectiva;
+    private SolicitudAumentoSueldo solicitudAumentoSueldo;
+    private SolicitudAumentoSueldoColectivo solicitudAumentoSueldoColectivo;
+
+    public SolicitudAumentoSueldoColectivo getSolicitudAumentoSueldoColectivo() {
+        return solicitudAumentoSueldoColectivo;
+    }
+
+    public void setSolicitudAumentoSueldoColectivo(SolicitudAumentoSueldoColectivo solicitudAumentoSueldoColectivo) {
+        this.solicitudAumentoSueldoColectivo = solicitudAumentoSueldoColectivo;
+    }
+            
+    public SolicitudAumentoSueldo getSolicitudAumentoSueldo() {
+        return solicitudAumentoSueldo;
+    }
+
+    public void setSolicitudAumentoSueldo(SolicitudAumentoSueldo solicitudAumentoSueldo) {
+        this.solicitudAumentoSueldo = solicitudAumentoSueldo;
+    }
+        
+    public SolicitudVacacionColectiva getSolicitudVacacionColectiva() {
+        return solicitudVacacionColectiva;
+    }
+
+    public void setSolicitudVacacionColectiva(SolicitudVacacionColectiva solicitudVacacionColectiva) {
+        this.solicitudVacacionColectiva = solicitudVacacionColectiva;
+    }
+
+    public SolicitudNombramiento getSolicitudNombramiento() {
+        return solicitudNombramiento;
+    }
+
+    public void setSolicitudNombramiento(SolicitudNombramiento solicitudNombramiento) {
+        this.solicitudNombramiento = solicitudNombramiento;
+    }
 
     public SolicitudPermiso getSolicitudPermiso() {
         return solicitudPermiso;
@@ -109,6 +151,10 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         solicitudPermiso = new SolicitudPermiso(this);
         solicitudVacacionesAnuales = new SolicitudVacacionesAnuales(this);
         solicitudIncapacidad = new SolicitudIncapacidad(this);
+        solicitudNombramiento = new SolicitudNombramiento(this);
+        solicitudVacacionColectiva = new SolicitudVacacionColectiva(this);
+        solicitudAumentoSueldo = new SolicitudAumentoSueldo(this);
+        solicitudAumentoSueldoColectivo = new SolicitudAumentoSueldoColectivo(this);
         fecha = new Date();
     }
 
@@ -205,7 +251,9 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public List<TipoAccion> getListaTipo() {
-        listaTipo = planillaSessionBean.listarTipoAccionActivas(getSessionBeanADM().getCompania())/*listarTipoAccionAfecta()*/;
+        listaTipo = planillaSessionBean.listarTipoAccionActivas(getSessionBeanADM().getCompania())/*
+                 * listarTipoAccionAfecta()
+                 */;
         return listaTipo;
     }
 
@@ -221,8 +269,12 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public String getNombreJefe() {
         nombreJefe = "Ninguno";
         if (getSessionBeanEMP().getEmpleadoSesion() != null) {
-            if (getSessionBeanEMP().getEmpleadoSesion().getEmpleados()/*getJefe()*/ != null) {
-                nombreJefe = getSessionBeanEMP().getEmpleadoSesion().getEmpleados()/*getJefe()*/.getNombreCompleto();
+            if (getSessionBeanEMP().getEmpleadoSesion().getEmpleados()/*
+                     * getJefe()
+                     */ != null) {
+                nombreJefe = getSessionBeanEMP().getEmpleadoSesion().getEmpleados()/*
+                         * getJefe()
+                         */.getNombreCompleto();
             }
         }
         return nombreJefe;
