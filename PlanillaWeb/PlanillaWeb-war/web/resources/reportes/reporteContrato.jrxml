@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteContrato" pageWidth="612" pageHeight="792" columnWidth="552" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="21"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="COD_CIA" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer("0")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COD_EMP" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer("0")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+    compania.razon_social as razon_compania,
+    compania.nom_comercial as nombre_compania,
+    empleado.nombres || ' ' || empleado.apellidos as nombre_empleado,
+    empleado.num_dui as dui_empleado,
+    empleado.num_nit as nit_empleado,
+    to_number(to_char(sysdate, 'YYYY') - to_char(empleado.fecha_nac, 'YYYY')) as edad_empleado,
+    decode(empleado.estado_civil, 'S', 'Soltero', 'C', 'Casado', 'V', 'Viudo', 'D', 'Divorciado', 'A','Acompañado', '-') as estado_civil_empleado,
+    decode(empleado.sexo, 1, 'Masculino', 2, 'Femenino', '-') as sexo_empleado,
+    empleado.domicilio as domicilio_empleado,
+    empleado.direccion as direccion_empleado,
+    empleado.titulo as profesion_empleado,
+    pais_empleado.nacionalidad as nacionalidad_empleado,
+    puesto_empleado.nom_puesto as puesto_empleado,
+    representante.nombres || ' ' || representante.apellidos as nombre_representante,
+    representante.num_dui as dui_representante,
+    representante.num_nit as nit_representante,
+    to_number(to_char(sysdate, 'YYYY') - to_char(representante.fecha_nac, 'YYYY')) as edad_representante,
+    decode(representante.estado_civil, 'S', 'Soltero', 'C', 'Casado', 'V', 'Viudo', 'D', 'Divorciado', '-') as estado_civil_representante,
+    decode(representante.sexo, 1, 'Masculino', 2, 'Femenino', '-') as sexo_representante,
+    representante.domicilio as domicilio_representante,
+    representante.direccion as direccion_representante,
+    representante.titulo as profesion_representante,
+    pais_representante.nacionalidad as nacionalidad_representante,
+    puesto_representante.nom_puesto as puesto_representante,
+    contrato.fecha_inicio as fecha_inicio_contrato,
+    contrato.fecha_final as fecha_final_contrato,
+    contrato.fecha_acuerdo as fecha_acuerdo_contrato
+from
+    cias compania,
+    contrato contrato,
+    empleados empleado,
+    puestos puesto_empleado,
+    paises pais_empleado,
+    empleados representante,
+    puestos puesto_representante,
+    paises pais_representante
+where
+        compania.cod_cia = $P{COD_CIA}
+    and contrato.cod_cia = compania.cod_cia
+    and contrato.cod_emp = empleado.cod_emp
+    and empleado.cod_cia = compania.cod_cia
+    and empleado.cod_emp = $P{COD_EMP}
+    and puesto_empleado.cod_cia = compania.cod_cia
+    and puesto_empleado.cod_puesto = empleado.cod_puesto
+    and pais_empleado.cod_pais(+) = empleado.cod_pais
+    and representante.cod_cia = compania.cod_cia
+    and representante.cod_emp = empleado.cod_empref
+    and puesto_representante.cod_cia = compania.cod_cia
+    and puesto_representante.cod_puesto = representante.cod_puesto
+    and pais_representante.cod_pais(+) = representante.cod_pais]]>
+	</queryString>
+	<field name="RAZON_COMPANIA" class="java.lang.String"/>
+	<field name="NOMBRE_COMPANIA" class="java.lang.String"/>
+	<field name="NOMBRE_EMPLEADO" class="java.lang.String"/>
+	<field name="DUI_EMPLEADO" class="java.lang.String"/>
+	<field name="NIT_EMPLEADO" class="java.lang.String"/>
+	<field name="EDAD_EMPLEADO" class="java.math.BigDecimal"/>
+	<field name="ESTADO_CIVIL_EMPLEADO" class="java.lang.String"/>
+	<field name="SEXO_EMPLEADO" class="java.lang.String"/>
+	<field name="DOMICILIO_EMPLEADO" class="java.lang.String"/>
+	<field name="DIRECCION_EMPLEADO" class="java.lang.String"/>
+	<field name="PROFESION_EMPLEADO" class="java.lang.String"/>
+	<field name="NACIONALIDAD_EMPLEADO" class="java.lang.String"/>
+	<field name="PUESTO_EMPLEADO" class="java.lang.String"/>
+	<field name="NOMBRE_REPRESENTANTE" class="java.lang.String"/>
+	<field name="DUI_REPRESENTANTE" class="java.lang.String"/>
+	<field name="NIT_REPRESENTANTE" class="java.lang.String"/>
+	<field name="EDAD_REPRESENTANTE" class="java.math.BigDecimal"/>
+	<field name="ESTADO_CIVIL_REPRESENTANTE" class="java.lang.String"/>
+	<field name="SEXO_REPRESENTANTE" class="java.lang.String"/>
+	<field name="DOMICILIO_REPRESENTANTE" class="java.lang.String"/>
+	<field name="DIRECCION_REPRESENTANTE" class="java.lang.String"/>
+	<field name="PROFESION_REPRESENTANTE" class="java.lang.String"/>
+	<field name="NACIONALIDAD_REPRESENTANTE" class="java.lang.String"/>
+	<field name="PUESTO_REPRESENTANTE" class="java.lang.String"/>
+	<field name="FECHA_INICIO_CONTRATO" class="java.sql.Timestamp"/>
+	<field name="FECHA_FINAL_CONTRATO" class="java.sql.Timestamp"/>
+	<field name="FECHA_ACUERDO_CONTRATO" class="java.sql.Timestamp"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="245" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="0" width="550" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMBRE_COMPANIA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-1" x="0" y="20" width="550" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Contrato Individual de Trabajo]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="276" y="40" width="1" height="200"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-2" x="0" y="40" width="270" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL REPRESENTANTE PATRONAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="0" y="60" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="0" y="100" width="40" height="20"/>
+				<textElement/>
+				<text><![CDATA[Edad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="0" y="80" width="40" height="20"/>
+				<textElement/>
+				<text><![CDATA[Cargo:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="50" y="60" width="220" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMBRE_REPRESENTANTE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-6" x="80" y="100" width="59" height="20"/>
+				<textElement/>
+				<text><![CDATA[años]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="139" y="100" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[Sexo:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="189" y="100" width="81" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SEXO_REPRESENTANTE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-8" x="0" y="120" width="70" height="20"/>
+				<textElement/>
+				<text><![CDATA[Estado civil:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="70" y="120" width="200" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ESTADO_CIVIL_REPRESENTANTE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-9" x="0" y="140" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Profesión u oficio:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="100" y="140" width="170" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PROFESION_REPRESENTANTE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-10" x="0" y="160" width="80" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nacionalidad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" x="0" y="180" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[DUI No.:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="50" y="180" width="220" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DUI_REPRESENTANTE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-12" x="0" y="220" width="80" height="20"/>
+				<textElement/>
+				<text><![CDATA[Lugar y fecha exped.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" x="0" y="200" width="80" height="20"/>
+				<textElement/>
+				<text><![CDATA[NIT No.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="280" y="40" width="270" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL TRABAJADOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" x="280" y="60" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-16" x="280" y="100" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[Edad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-17" x="280" y="80" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[Cargo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-18" x="370" y="100" width="60" height="20"/>
+				<textElement/>
+				<text><![CDATA[años]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="430" y="100" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[Sexo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-20" x="280" y="120" width="70" height="20"/>
+				<textElement/>
+				<text><![CDATA[Estado civil:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-21" x="280" y="140" width="90" height="20"/>
+				<textElement/>
+				<text><![CDATA[Profesión u oficio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-22" x="280" y="160" width="80" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nacionalidad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-23" x="280" y="180" width="80" height="20"/>
+				<textElement/>
+				<text><![CDATA[DUI No.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-24" x="280" y="220" width="80" height="20"/>
+				<textElement/>
+				<text><![CDATA[Lugar y fecha exped.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-25" x="280" y="200" width="80" height="20"/>
+				<textElement/>
+				<text><![CDATA[NIT No.:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="330" y="60" width="220" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMBRE_EMPLEADO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="360" y="180" width="190" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DUI_EMPLEADO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="360" y="200" width="190" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NIT_EMPLEADO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="350" y="120" width="200" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ESTADO_CIVIL_EMPLEADO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="330" y="80" width="220" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PUESTO_EMPLEADO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="370" y="140" width="180" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PROFESION_EMPLEADO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="360" y="160" width="190" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NACIONALIDAD_EMPLEADO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="50" y="200" width="220" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NIT_REPRESENTANTE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="80" y="160" width="190" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NACIONALIDAD_REPRESENTANTE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement key="textField" x="330" y="100" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{EDAD_EMPLEADO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="40" y="80" width="230" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PUESTO_REPRESENTANTE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="480" y="100" width="70" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SEXO_EMPLEADO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement key="textField" x="40" y="100" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{EDAD_REPRESENTANTE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Prevent"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Prevent"/>
+	</columnHeader>
+	<detail>
+		<band height="165" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-1" x="0" y="0" width="552" height="85"/>
+				<textElement textAlignment="Justified" markup="html"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["<html>"+
+"Nosotros <b>" + $F{NOMBRE_REPRESENTANTE} + "</b> representante Legal de <b>" + $F{RAZON_COMPANIA} + "</b> que se abrevia <b>“"+ $F{NOMBRE_COMPANIA} +"”</b> y <b>" + $F{NOMBRE_EMPLEADO} +"</b> de las generales arriba indicadas y actuando en el carácter que aparece expresado, convenimos en celebrar el presente contrato individual de trabajo sujeto a las estipulaciones siguientes:" +
+"<br/><br/>"+
+"<b>PRIMERA:</b><br/>" +
+"El Contratado prestará sus servicios como " + $F{PUESTO_EMPLEADO} + ".<br/><br/>" +
+"<b>SEGUNDA:</b><br/>" +
+"El presente contrato se celebra del " + new SimpleDateFormat("dd/MM/yyyy").format($F{FECHA_INICIO_CONTRATO}) +" al " + new SimpleDateFormat("dd/MM/yyyy").format($F{FECHA_FINAL_CONTRATO}) + " , y será prorrogable por períodos de igual duración, si ninguna de las partes manifiesta en forma escrita su intención de darlo por terminado, con por lo menos quince días de anticipación. Queda estipulado para el trabajador, que los primeros noventa días serán de prueba y dentro de este término cualquiera de las partes podrá dar por terminado el contrato sin expresión de causa ni responsabilidad alguna."+
+"<br/><br/>"+
+"<b>TERCERA:</b><br/>" +
+"El lugar de prestación de servicios será en las Oficinas Administrativas de " + $F{NOMBRE_COMPANIA} + " o en cualquier otro lugar similar que por circunstancias relacionadas con la naturaleza del trabajo se le asigne."+
+"<br/><br/>"+
+"<b>CUARTA:</b><br/>" +
+"La semana laboral será de cuarenta y cuatro horas las cuales estarán sujetas de acuerdo a las condiciones de venta de las distintas sucursales o salas de venta."+
+"<br/><br/>"+
+"<b>QUINTA:</b><br/>" +
+"El pago que recibirá el Contratado en concepto de salario por sus servicios será la suma de $" + $F{EDAD_EMPLEADO} + " y se pagará mensualmente, mediante depósito en cuenta de ahorro o corriente, la cual deberá estar exclusivamente a su nombre y con firma única."+
+"<br/><br/>"+
+"<b>SEXTA:</b><br/>" +
+"Las prestaciones convenidas son las contempladas en las leyes y el Reglamento Interno de trabajo pertinentes, que reconoce al Contratado las prestaciones de ley que incluye el pago de cuota patronal de sanidad militar, seguro y pensiones al Instituto de Previsión Social de la Fuerza Armada IPSFA, pago de indemnización anual del 100%, sobresueldo, aguinaldo anual del 100% y vacaciones anuales remuneradas pagadas conforme a lo estipulado en el Código de Trabajo."+
+"<br/><br/>"+
+"<b>SEPTIMA:</b><br/>" +
+"En el presente contrato individual de trabajo se entenderán incluidos los derechos y deberes laborales establecidos por las leyes y reglamentos de trabajo pertinentes."+
+"<br/><br/>"+
+"<b>OCTAVA:</b><br/>" +
+"Este contrato sustituye cualquier contrato individual de trabajo anterior, ya sea escrito o verbal, que haya estado vigente entre el Contratante y el Contratado, pero no altera en manera alguna los derechos y prerrogativas del Contratado."+
+"<br/><br/>"+
+"<b>NOVENA:</b><br/>" +
+"Este contrato podrá darse por terminado de común acuerdo entre ambas partes. El contratante puede dar por terminado este contrato sin responsabilidad para él, cuando el Contratado no cumpla con las funciones establecidas en este contrato."+
+"<br/><br/>"+
+"<b>DECIMA :</b><br/>" +
+"Herederos o Beneficiarios:"+
+"<br/>"+
+"</html>"]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" positionType="Float" x="0" y="85" width="552" height="19"/>
+				<subreportParameter name="COD_CIA">
+					<subreportParameterExpression><![CDATA[$P{COD_CIA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COD_EMP">
+					<subreportParameterExpression><![CDATA[$P{COD_EMP}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "beneficiarios.jasper"]]></subreportExpression>
+			</subreport>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" positionType="Float" x="0" y="104" width="552" height="61"/>
+				<textElement markup="html"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["<html>"+
+"Este contrato ha sido otorgado y firmado en tres ejemplares quedando uno en poder del trabajador, uno en poder del patrono y otro en poder del Ministerio de Trabajo para los fines legales."+
+"<br/><br/><br/>"+
+"San Salvador, " + new SimpleDateFormat("d MMMM yyyy").format(new java.util.Date()) +
+"</html>"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Prevent"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="360" y="0" width="190" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Prevent"/>
+	</summary>
+</jasperReport>
