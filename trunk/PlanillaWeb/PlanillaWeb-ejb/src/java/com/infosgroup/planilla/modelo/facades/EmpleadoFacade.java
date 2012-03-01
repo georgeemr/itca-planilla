@@ -4,7 +4,12 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+<<<<<<< .mine
 import com.infosgroup.planilla.modelo.entidades.*;
+import java.math.BigDecimal;
+=======
+import com.infosgroup.planilla.modelo.entidades.*;
+>>>>>>> .r703
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -94,6 +99,7 @@ public Empleados toEmpleado(Candidato c)
         e.setApCasada(c.getApCasada());
         e.setFechaNac(c.getFechaNac());
         e.setObservacion(c.getObservacion());
+            e.setCodPais(c.getCodPaisNacimiento());
         }
     return e;
 }
@@ -115,8 +121,22 @@ public String generaUsuario(Candidato c)
         user += n;
         n++;
         }
+<<<<<<< .mine
+        return user;
+    }
+
+    @PermitAll
+    public List<Empleados> findEmpleadosByUsuario(String usuario) {
+        List<Empleados> lista = null;
+        Query q = em.createNamedQuery("Empleados.findByUsuario", Empleados.class);
+        q.setParameter("usuario", usuario);
+        lista = q.getResultList();
+        return lista != null ? lista : new ArrayList<Empleados>();
+    }
+=======
     return user;
 }
+>>>>>>> .r703
 
 @PermitAll
 public List<Empleados> findEmpleadosByUsuario(String usuario)
@@ -126,6 +146,40 @@ public List<Empleados> findEmpleadosByUsuario(String usuario)
     q.setParameter("usuario", usuario);
     lista = q.getResultList();
     return lista != null ? lista : new ArrayList<Empleados>();
+
+    @PermitAll
+    public Integer totalAfectadosDepartamentos(Departamentos departamento) {
+        Long t = (Long) em.createQuery("SELECT count(e.empleadosPK.codEmp) FROM Empleados e where e.empleadosPK.codCia = :codCia AND e.departamentos = :departamentos AND e.status = 'A' ").setParameter("codCia", departamento.getDepartamentosPK().getCodCia()).setParameter("departamentos", departamento).getSingleResult();
+        return t != null ? t.intValue() : 0;
+    }
+
+    @PermitAll
+    public Integer totalAfectadosTipoPlanilla(TiposPlanilla tipoPlanilla) {
+        Long t = (Long) em.createQuery("SELECT count(e.empleadosPK.codEmp) FROM Empleados e where e.empleadosPK.codCia = :codCia AND e.tiposPlanilla = :tiposPlanilla AND e.status = 'A' ").setParameter("codCia", tipoPlanilla.getTiposPlanillaPK().getCodCia()).setParameter("tiposPlanilla", tipoPlanilla).getSingleResult();
+        return t != null ? t.intValue() : 0;
+    }
+
+    @PermitAll
+    public Integer totalAfectadosRangosSalario(Cias cias, BigDecimal si, BigDecimal sf ) {
+        Long t = (Long) em.createQuery("SELECT count(e.empleadosPK.codEmp) FROM Empleados e where e.empleadosPK.codCia = :codCia AND e.status = 'A' AND e.salario BETWEEN :si AND :sf ")
+                .setParameter("codCia", cias.getCodCia())
+                .setParameter("si", si != null ? si: 0)
+                .setParameter("sf", sf != null ? sf: 0)
+                .getSingleResult();
+        return t != null ? t.intValue() : 0;
+    }
+
+    @PermitAll
+    public List<Empleados> afectadosDepartamentos(Departamentos departamento) {
+        List<Empleados> l = em.createQuery("SELECT e FROM Empleados e where e.empleadosPK.codCia = :codCia AND e.departamentos = :departamentos AND e.status = 'A'").setParameter("codCia", departamento.getDepartamentosPK().getCodCia()).setParameter("departamentos", departamento).getResultList();
+        return l != null ? l : new ArrayList<Empleados>();
+    }
+
+    @PermitAll
+    public List<Empleados> afectadosTipoPlanilla(TiposPlanilla tipoPlanilla) {
+        List<Empleados> l = em.createQuery("SELECT e FROM Empleados e where e.empleadosPK.codCia = :codCia AND e.tiposPlanilla = :tiposPlanilla AND e.status = 'A'").setParameter("codCia", tipoPlanilla.getTiposPlanillaPK().getCodCia()).setParameter("tiposPlanilla", tipoPlanilla).getResultList();
+        return l != null ? l : new ArrayList<Empleados>();
+    }
 }
 
 @PermitAll
