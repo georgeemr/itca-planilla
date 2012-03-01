@@ -5,10 +5,7 @@
 package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
 import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
-import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
-import com.infosgroup.planilla.modelo.entidades.AccionPersonalPK;
-import com.infosgroup.planilla.modelo.entidades.Cias;
-import com.infosgroup.planilla.modelo.entidades.TipoAccion;
+import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.estructuras.DetalleAdjuntoCorreo;
 import com.infosgroup.planilla.modelo.facades.AccionPersonalFacade;
 import com.infosgroup.planilla.modelo.procesos.MailStatelessBean;
@@ -59,6 +56,19 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         return nuevaPK;
     }
 
+        public AccionPersonalPK getAccionPersonalPK(Cias cias, Empleados e) {
+        AccionPersonalPK nuevaPK = new AccionPersonalPK();
+        try {
+            nuevaPK.setCodCia(cias.getCodCia());
+            nuevaPK.setCodTipoaccion(encabezadoSolicitud.getAccionSeleccionada().getTipoAccionPK().getCodTipoaccion());
+            nuevaPK.setCodEmp(e.getEmpleadosPK().getCodEmp());
+            nuevaPK.setCorrelativo(accionPersonalFacade().max(cias.getCodCia(), e.getEmpleadosPK().getCodEmp()));
+        } catch (Exception exception) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Se desencadeno la siguiente excepcion: ", exception);
+        }
+        return nuevaPK;
+    }
+    
     public void guardarAccionPersonal(AccionPersonal accionPersonal) {
         try {
             accionPersonalFacade().create(accionPersonal);
