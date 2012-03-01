@@ -71,7 +71,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findByCodAfp", query = "SELECT e FROM Empleados e WHERE e.codAfp = :codAfp"),
     @NamedQuery(name = "Empleados.findByNumHijos", query = "SELECT e FROM Empleados e WHERE e.numHijos = :numHijos"),
     @NamedQuery(name = "Empleados.findByEstadoCivil", query = "SELECT e FROM Empleados e WHERE e.estadoCivil = :estadoCivil"),
-    @NamedQuery(name = "Empleados.findByCodEmpref", query = "SELECT e FROM Empleados e WHERE e.codEmpref = :codEmpref"),
+//    @NamedQuery(name = "Empleados.findByCodEmpref", query = "SELECT e FROM Empleados e WHERE e.codEmpref = :codEmpref"),
     @NamedQuery(name = "Empleados.findByNombreIsss", query = "SELECT e FROM Empleados e WHERE e.nombreIsss = :nombreIsss"),
     @NamedQuery(name = "Empleados.findByConocidoPor", query = "SELECT e FROM Empleados e WHERE e.conocidoPor = :conocidoPor"),
     @NamedQuery(name = "Empleados.findByTitulo", query = "SELECT e FROM Empleados e WHERE e.titulo = :titulo"),
@@ -187,8 +187,8 @@ public class Empleados implements Serializable {
     private Short numHijos;
     @Column(name = "ESTADO_CIVIL", length = 1)
     private String estadoCivil;
-    @Column(name = "COD_EMPREF", length = 6)
-    private String codEmpref;
+//    @Column(name = "COD_EMPREF", length = 6)
+//    private String codEmpref;
     @Column(name = "NOMBRE_ISSS", length = 100)
     private String nombreIsss;
     @Column(name = "CONOCIDO_POR", length = 100)
@@ -311,6 +311,13 @@ public class Empleados implements Serializable {
         @JoinColumn(name = "COD_TIPORENUNCIA", referencedColumnName = "COD_TIPORENUNCIA")})
     @ManyToOne(optional = false)
     private CausasRenuncia causasRenuncia;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_EMPREF", referencedColumnName = "COD_EMP")})
+    @ManyToOne(optional = false)
+  private Empleados representantePatronal;
+//    @Column(name = "COD_EMPREF")
+//    private Integer representantePatronal;
     @Transient
     private String nombreCompleto;
 
@@ -589,13 +596,13 @@ public class Empleados implements Serializable {
         this.estadoCivil = estadoCivil;
     }
 
-    public String getCodEmpref() {
-        return codEmpref;
-    }
-
-    public void setCodEmpref(String codEmpref) {
-        this.codEmpref = codEmpref;
-    }
+//    public String getCodEmpref() {
+//        return codEmpref;
+//    }
+//
+//    public void setCodEmpref(String codEmpref) {
+//        this.codEmpref = codEmpref;
+//    }
 
     public String getNombreIsss() {
         return nombreIsss;
@@ -954,6 +961,7 @@ public class Empleados implements Serializable {
     public void setCapacitacionXEmpleadoList(List<CapacitacionXEmpleado> capacitacionXEmpleadoList) {
         this.capacitacionXEmpleadoList = capacitacionXEmpleadoList;
     }
+
     public void setTiposPlanilla(TiposPlanilla tiposPlanilla) {
         this.tiposPlanilla = tiposPlanilla;
     }
@@ -1032,4 +1040,13 @@ public class Empleados implements Serializable {
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
     }
+
+    public Empleados getRepresentantePatronal() {
+        return representantePatronal;
+    }
+
+    public void setRepresentantePatronal(Empleados representantePatronal) {
+        this.representantePatronal = representantePatronal;
+    }
+    
 }
