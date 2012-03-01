@@ -11,22 +11,25 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
- * @author root
+
+ @author root
  */
 @Stateless
 @LocalBean
-public class TipoSangreFacade extends AbstractFacade<TipoSangre, String> {
+public class TipoSangreFacade extends AbstractFacade<TipoSangre, String>
+{
 
-    @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
-    private EntityManager em;
+@PersistenceContext(unitName = "PlanillaWeb-ejbPU")
+private EntityManager em;
 
-    public TipoSangreFacade() {
-        super(TipoSangre.class);
-    }
+public TipoSangreFacade()
+{
+    super(TipoSangre.class);
+}
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
+@Override
+protected EntityManager getEntityManager()
+{
+    return em;
+}
 }
