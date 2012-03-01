@@ -26,31 +26,37 @@ public AbstractFacade(Class<T> entityClass)
 
 protected abstract EntityManager getEntityManager();
 
+@PermitAll
 public void create(T entity) throws javax.persistence.EntityExistsException
 {
     getEntityManager().persist(entity);
 }
 
+@PermitAll
 public void edit(T entity) throws javax.persistence.EntityNotFoundException
 {
     getEntityManager().merge(entity);
 }
 
+@PermitAll
 public void remove(T entity) throws javax.persistence.EntityNotFoundException
 {
     getEntityManager().remove(getEntityManager().merge(entity));
 }
 
+@PermitAll
 public void refresh(T entity)
 {
     getEntityManager().refresh(entity);
 }
 
+@PermitAll
 public T find(P id)
 {
     return getEntityManager().find(entityClass, id);
 }
 
+@PermitAll
 public List<T> findAll()
 {
     CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
