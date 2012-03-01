@@ -41,13 +41,13 @@ public class TipoAccionFacade extends AbstractFacade<TipoAccion, TipoAccionPK> {
 
     public List<TipoAccion> listarTipoAccionActivas(Cias cias) {
         List<TipoAccion> listaTipo = new ArrayList<TipoAccion>(0);
-        listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia AND t.estado = 'A'", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia AND t.estado = 'A' ORDER BY t.nomTipoaccion", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
         return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
     }
 
     public List<TipoAccion> listarTipoAccionByCias(Cias cias) {
         List<TipoAccion> listaTipo = new ArrayList<TipoAccion>(0);
-        listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia ORDER BY t.nomTipoaccion", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
         return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
     }
 }
