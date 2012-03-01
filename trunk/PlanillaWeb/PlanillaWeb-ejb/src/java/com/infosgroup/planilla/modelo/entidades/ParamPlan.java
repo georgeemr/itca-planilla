@@ -6,13 +6,7 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -189,7 +183,12 @@ public class ParamPlan implements Serializable {
     @Size(max = 100)
     @Column(name = "PUESTO3", length = 100)
     private String puesto3;
-
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_REP_PATRONAL", referencedColumnName = "COD_EMP")})
+    @ManyToOne(optional = false)
+    private Empleados empleados;
+    
     public ParamPlan() {
     }
 
@@ -586,6 +585,14 @@ public class ParamPlan implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public Empleados getEmpleados() {
+        return empleados;
+    }
+
+    public void setEmpleados(Empleados empleados) {
+        this.empleados = empleados;
     }
 
     @Override
