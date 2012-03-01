@@ -11,88 +11,104 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 /**
- *
- * @author root
+
+ @author root
  */
 @Embeddable
-public class BeneficiarioXCandidatoPK implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_CIA", nullable = false)
-    private short codCia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_CANDIDATO", nullable = false)
-    private int codCandidato;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_BENEFICIARIO", nullable = false)
-    private int codBeneficiario;
+public class BeneficiarioXCandidatoPK implements Serializable
+{
 
-    public BeneficiarioXCandidatoPK() {
-    }
+@Basic(optional = false)
+@NotNull
+@Column(name = "COD_CIA", nullable = false)
+private short codCia;
+@Basic(optional = false)
+@NotNull
+@Column(name = "COD_CANDIDATO", nullable = false)
+private int codCandidato;
+@Basic(optional = false)
+@NotNull
+@Column(name = "COD_BENEFICIARIO", nullable = false)
+private int codBeneficiario;
 
-    public BeneficiarioXCandidatoPK(short codCia, int codCandidato, int codBeneficiario) {
-        this.codCia = codCia;
-        this.codCandidato = codCandidato;
-        this.codBeneficiario = codBeneficiario;
-    }
+public BeneficiarioXCandidatoPK()
+{
+}
 
-    public short getCodCia() {
-        return codCia;
-    }
+public BeneficiarioXCandidatoPK(short codCia, int codCandidato, int codBeneficiario)
+{
+    this.codCia = codCia;
+    this.codCandidato = codCandidato;
+    this.codBeneficiario = codBeneficiario;
+}
 
-    public void setCodCia(short codCia) {
-        this.codCia = codCia;
-    }
+public short getCodCia()
+{
+    return codCia;
+}
 
-    public int getCodCandidato() {
-        return codCandidato;
-    }
+public void setCodCia(short codCia)
+{
+    this.codCia = codCia;
+}
 
-    public void setCodCandidato(int codCandidato) {
-        this.codCandidato = codCandidato;
-    }
+public int getCodCandidato()
+{
+    return codCandidato;
+}
 
-    public int getCodBeneficiario() {
-        return codBeneficiario;
-    }
+public void setCodCandidato(int codCandidato)
+{
+    this.codCandidato = codCandidato;
+}
 
-    public void setCodBeneficiario(int codBeneficiario) {
-        this.codBeneficiario = codBeneficiario;
-    }
+public int getCodBeneficiario()
+{
+    return codBeneficiario;
+}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (int) codCia;
-        hash += (int) codCandidato;
-        hash += (int) codBeneficiario;
-        return hash;
-    }
+public void setCodBeneficiario(int codBeneficiario)
+{
+    this.codBeneficiario = codBeneficiario;
+}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BeneficiarioXCandidatoPK)) {
-            return false;
+@Override
+public int hashCode()
+{
+    int hash = 0;
+    hash += (int) codCia;
+    hash += (int) codCandidato;
+    hash += (int) codBeneficiario;
+    return hash;
+}
+
+@Override
+public boolean equals(Object object)
+{
+    // TODO: Warning - this method won't work in the case the id fields are not set
+    if (!(object instanceof BeneficiarioXCandidatoPK))
+        {
+        return false;
         }
-        BeneficiarioXCandidatoPK other = (BeneficiarioXCandidatoPK) object;
-        if (this.codCia != other.codCia) {
-            return false;
+    BeneficiarioXCandidatoPK other = (BeneficiarioXCandidatoPK) object;
+    if (this.codCia != other.codCia)
+        {
+        return false;
         }
-        if (this.codCandidato != other.codCandidato) {
-            return false;
+    if (this.codCandidato != other.codCandidato)
+        {
+        return false;
         }
-        if (this.codBeneficiario != other.codBeneficiario) {
-            return false;
+    if (this.codBeneficiario != other.codBeneficiario)
+        {
+        return false;
         }
-        return true;
-    }
+    return true;
+}
 
-    @Override
-    public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.BeneficiarioXCandidatoPK[ codCia=" + codCia + ", codCandidato=" + codCandidato + ", codBeneficiario=" + codBeneficiario + " ]";
-    }
-    
+@Override
+public String toString()
+{
+    return "com.infosgroup.planilla.modelo.entidades.BeneficiarioXCandidatoPK[ codCia=" + codCia + ", codCandidato=" + codCandidato + ", codBeneficiario=" + codBeneficiario + " ]";
+}
 }
