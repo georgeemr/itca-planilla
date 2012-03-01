@@ -7,6 +7,7 @@ package com.infosgroup.planilla.modelo.procesos;
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.facades.*;
 import com.infosgroup.planilla.modelo.facades.PruebaXPuestoFacade;
+import java.text.SimpleDateFormat;
 import com.infosgroup.planilla.modelo.entidades.Criterio;
 import com.infosgroup.planilla.modelo.entidades.CriteriosXPuestoPK;
 import com.infosgroup.planilla.modelo.entidades.PruebaXPuesto;
@@ -71,6 +72,8 @@ private CriterioFacade criterioFacade;
 private PruebaXPuestoFacade pruebaXPuestoFacade;
 @EJB
 private ReferenciaFacade referenciaFacade;
+    @EJB
+    private BeneficiarioXCandidatoFacade beneficiarioXCandidatoFacade;
 
 public List<Concurso> getListaConcursos(Cias empresa, Date fechaInicial, Date fechaFinal)
 {
@@ -239,15 +242,19 @@ public void actualizarNotaCandidato(List<EvaluacionCandidato> lc)
     evaluacionCandidatoFacade.actualizarNotaCandidato(lc);
 }
 
-public void guardarEmpleado(Empleados e)
-{
-    empleadoFacade.create(e);
-}
+    @PermitAll
+    public void guardarEmpleado(Empleados e) {
+        empleadoFacade.create(e);
+    }
 
-public void guardarContrato(Contrato c)
-{
-    contratoFacade.create(c);
-}
+    @PermitAll
+    public void editarEmpleado(Empleados e) {
+        empleadoFacade.edit(e);
+    }
+
+    public void guardarContrato(Contrato c) {
+        contratoFacade.create(c);
+    }
 
 public Empleados toEmpleado(Candidato c)
 {
@@ -259,10 +266,23 @@ public String generaUsuario(Candidato c)
     return empleadoFacade.generaUsuario(c);
 }
 
-public void contratarCandidato(CandidatoConcurso c, Contrato contrato, String usuario)
+    public void contratarCandidato(CandidatoConcurso c, Contrato contrato, String usuario, Empleados representantePatronal, String dui) {
 {
     Empleados e = toEmpleado(c.getCandidato1());
     e.setUsuario(usuario);
+        e.setDui(dui);
+        e.setSexo(c.getCandidato1().getSexo());
+        e.setPuestos(c.getConcurso1().getPuestos());
+        e.setRepresentantePatronal(representantePatronal);
+        e.setSalario(contrato.getSalario());
+        e.setFechaNac(c.getCandidato1().getFechaNac());
+        e.setStatus("A");
+        e.setEstadoCivil(c.getCandidato1().getEstadoCivil());
+        e.setCodPais(c.getCandidato1().getCodPaisNacionalidad());
+        e.setFecIngreso( c.getCandidato1().getFecIngreso() );
+        e.setTiposPlanilla(contrato.getTiposPlanilla());
+        e.setTipoContra(contrato.getTipo());
+        e.setTitulo(c.getCandidato1().getProfesion() != null ? c.getCandidato1().getProfesion().getNomProfesion() : "");
     guardarEmpleado(e);
     contrato.setCandidato(c.getCandidato1());
     contrato.setEmpleados(e);
@@ -270,6 +290,10 @@ public void contratarCandidato(CandidatoConcurso c, Contrato contrato, String us
     guardarContrato(contrato);
     c.setEstado("C");
     editarCandidatoConcurso(c);
+        c.getCandidato1().setEmpleados(e);
+        editarCandidato(c.getCandidato1());
+        e.setCodContratacion(contrato.getContratoPK().getCodContrato().shortValue());
+        editarEmpleado(e);
 }
 
 @PermitAll
@@ -439,6 +463,25 @@ public List<Candidato> findCandidatosLikeEmpleados(Cias cias)
     return candidatoFacade.findCandidatosLikeEmpleados(cias);
 }
 
+    @PermitAll
+    public List<Parentesco> findParentescoByCias(Cias cias) {
+        return parentescoFacade.findParentescoByCias(cias);
+    }
+
+    @PermitAll
+    public List<BeneficiarioXCandidato> findBeneficiariosByCandidato(Candidato c) {
+        return beneficiarioXCandidatoFacade.findByCandidato(c);
+    }
+
+    @PermitAll
+    public BeneficiarioXCandidatoPK getPkBeneficiarioCandiato(Candidato c) {
+        return new BeneficiarioXCandidatoPK(c.getCandidatoPK().getCodCia(), c.getCandidatoPK().getCodCandidato(), beneficiarioXCandidatoFacade.max(c));
+    }
+
+    @PermitAll
+    public void guardarBeneficiarioCandidato(BeneficiarioXCandidato bc) {
+        beneficiarioXCandidatoFacade.create(bc);
+    }
 // ===========================================================================
 @PermitAll
 public Integer maxReferencia(Candidato c)
@@ -458,4 +501,14 @@ public void crearRererencia(Referencia referencia)
     referenciaFacade.create(referencia);
 }
 // ================================================================
+
+    @PermitAll
+    public void eliminarBeneficiarioCandidato(BeneficiarioXCandidato bc) {
+        beneficiarioXCandidatoFacade.remove(bc);
+    }
+
+    @PermitAll
+    public void editarBeneficiarioCandidato(BeneficiarioXCandidato bc) {
+        beneficiarioXCandidatoFacade.edit(bc);
+    }
 }
