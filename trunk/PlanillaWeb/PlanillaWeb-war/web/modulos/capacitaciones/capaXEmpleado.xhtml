@@ -51,7 +51,7 @@
                 <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true"
                                action="#{capacitaciones$capaXEmpleado.editar$Det$action()}" update="tblDetalle, panelContenido">
                     <p:graphicImage value="/resources/iconos/new.png"/>
-                    <h:outputText value="Detalle" styleClass="espacioTexto"/>
+                    <h:outputText value="Notas" styleClass="espacioTexto"/>
                 </p:commandLink>
 
                 <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true"
@@ -74,15 +74,15 @@
     </ui:define>
 
     <ui:define name="titulo">
-        Capacitaciones
+        Capacitaciones por Empleado
     </ui:define>
 
     <ui:define name="contenido">       
 
-        <p:panel id="panelInformacion" style="border:none;" >
+        <!--p:panel id="panelInformacion" style="border:none;" >
             <div>
                 <div style="float:left;width: 30%;" >
-                    <h:panelGrid columns="4" rendered="#{(SessionBeanADM.estadoAccion eq 2) }"  >
+                    <h:panelGrid columns="4" rendered="# {(SessionBeanADM.estadoAccion eq 2) }"  >
                         <p:graphicImage value="../../resources/imagenes/64/info.png" />
                         <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
                         <h:outputLabel value="*" styleClass="requerido"/>                                
@@ -90,17 +90,17 @@
                     </h:panelGrid>
                 </div>    
                 <div style="float:left; width: 70%;"  >
-                    <!--p:toolbar rendered="# {(SessionBeanADM.estadoAccion eq 2)}" 
+                    <p:toolbar rendered="# {(SessionBeanADM.estadoAccion eq 2)}" 
                                styleClass="toolbarUsuario" >
                         <p:toolbarGroup align="right"  >
                             <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="# {capacitaciones$capaXEmpleado.guardar$cap$action()}"
                                              update="mensajes, lstStatus, lstInst, Nombre, calFecIni, calFecFin, impartida, txtEmp, costoRazon, tblDetalle" />  
                         </p:toolbarGroup>
-                    </p:toolbar-->
+                    </p:toolbar>
                 </div>
                 <div style="clear:both;" ></div>
             </div>
-        </p:panel>
+        </p:panel-->
 
         <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq 2) }" />
 
@@ -181,7 +181,9 @@
                          selectionMode="single"
                          paginatorAlwaysVisible="true"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
-                <p:column headerText="Codigo" filterBy="#{detalle.empleados.empleadosPK.codEmp}" >
+                <f:facet name="header">
+                    <h:outputText value="Notas"/>
+                </f:facet><p:column headerText="Codigo" filterBy="#{detalle.empleados.empleadosPK.codEmp}" >
                     <h:outputText value="#{detalle.empleados.empleadosPK.codEmp}"/>
                 </p:column>
                 <p:column headerText="Nombre" filterBy="#{detalle.empleados.nombreCompleto}" >
@@ -210,12 +212,12 @@
                 </p:column-->
             </p:dataTable>
         
-        <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0)}" 
+        <!--p:toolbar rendered="# {(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0)}" 
                    styleClass="toolbarUsuario" >
             <p:toolbarGroup align="right" >
                 <p:commandButton value="Eliminar" image="ui-icon ui-icon-circle-minus" ajax="true" onclick="confirmation.show()"/>
             </p:toolbarGroup>
-        </p:toolbar>
+        </p:toolbar-->
 
         <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0)}" />
 
@@ -233,7 +235,7 @@
                          rowUnselectListener="#{capacitaciones$capaXEmpleado.onRowUnSelectCapacitacion}"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
                 <f:facet name="header">
-                    <h:outputText value="Concursos"/>
+                    <h:outputText value="Capacitaciones"/>
                 </f:facet>
 
                 <p:column sortBy="#{capacitacion.capacitacionPK.codCapacitacion}">
