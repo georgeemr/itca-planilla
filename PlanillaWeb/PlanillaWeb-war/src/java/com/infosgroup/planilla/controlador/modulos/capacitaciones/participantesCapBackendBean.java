@@ -325,7 +325,7 @@ public class participantesCapBackendBean extends AbstractJSFPage implements Seri
                 //Creacion de registros para asistencia
                 try {
                     final long MILLSECS_PER_DAY = 24 * 60 * 60 * 1000;
-                    Long dias = (det.getCapacitacion().getFechaHasta().getTime() - det.getCapacitacion().getFechaDesde().getTime()) / MILLSECS_PER_DAY;
+                    Long dias = (getSessionBeanCAP().getCapacitacionSeleccionada().getFechaHasta().getTime() - getSessionBeanCAP().getCapacitacionSeleccionada().getFechaDesde().getTime()) / MILLSECS_PER_DAY;
                     Integer total = dias.intValue() + 2;
                     for (Integer i = 1; i < total; i++) {
                         CapacitacionAsistencia asistencia = new CapacitacionAsistencia();
@@ -333,9 +333,9 @@ public class participantesCapBackendBean extends AbstractJSFPage implements Seri
                         pk.setCodCia(det.getCapacitacionXEmpleadoPK().getCodCia());
                         pk.setCodCapacitacion(det.getCapacitacionXEmpleadoPK().getCodCapacitacion());
                         pk.setCodEmp(det.getCapacitacionXEmpleadoPK().getCodEmp());
-                        pk.setFecha(sumarFechasDias(det.getCapacitacion().getFechaDesde(), i - 1));
+                        pk.setFecha(sumarFechasDias(getSessionBeanCAP().getCapacitacionSeleccionada().getFechaDesde(), i - 1));
                         asistencia.setCapacitacionAsistenciaPK(pk);
-                        asistencia.setCapacitacion(det.getCapacitacion());
+                        asistencia.setCapacitacion(getSessionBeanCAP().getCapacitacionSeleccionada());
                         asistencia.setEmpleados(det.getEmpleados());
                         asistencia.setAsistio("N");
                         capacitacionSessionBean.guardarAsistencia(asistencia);
