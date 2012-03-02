@@ -18,9 +18,9 @@ public class PruebaXPuestoPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
-    @Basic(optional = false)
-    @Column(name = "PUESTO", nullable = false)
-    private long puesto;
+//    @Basic(optional = false)
+//    @Column(name = "PUESTO", nullable = false)
+//    private long puesto;
     @Basic(optional = false)
     @Column(name = "CODIGO", nullable = false)
     private long codigo;
@@ -30,7 +30,7 @@ public class PruebaXPuestoPK implements Serializable {
 
     public PruebaXPuestoPK(short codCia, long puesto, long codigo) {
         this.codCia = codCia;
-        this.puesto = puesto;
+//        this.puesto = puesto;
         this.codigo = codigo;
     }
 
@@ -42,13 +42,13 @@ public class PruebaXPuestoPK implements Serializable {
         this.codCia = codCia;
     }
 
-    public long getPuesto() {
-        return puesto;
-    }
-
-    public void setPuesto(long puesto) {
-        this.puesto = puesto;
-    }
+//    public long getPuesto() {
+//        return puesto;
+//    }
+//
+//    public void setPuesto(long puesto) {
+//        this.puesto = puesto;
+//    }
 
     public long getCodigo() {
         return codigo;
@@ -62,7 +62,7 @@ public class PruebaXPuestoPK implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) puesto;
+//        hash += (int) puesto;
         hash += (int) codigo;
         return hash;
     }
@@ -77,9 +77,9 @@ public class PruebaXPuestoPK implements Serializable {
         if (this.codCia != other.codCia) {
             return false;
         }
-        if (this.puesto != other.puesto) {
-            return false;
-        }
+//        if (this.puesto != other.puesto) {
+//            return false;
+//        }
         if (this.codigo != other.codigo) {
             return false;
         }
@@ -88,7 +88,7 @@ public class PruebaXPuestoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "" + codCia + ":" + puesto + ":" + codigo + "";
+        return "" + codCia + ":" +/* puesto + ":" + */codigo + "";
     }
     
 }

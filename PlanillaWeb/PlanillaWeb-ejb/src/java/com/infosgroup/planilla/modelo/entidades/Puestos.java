@@ -120,8 +120,8 @@ public class Puestos implements Serializable {
         @JoinColumn(name = "COD_AREA", referencedColumnName = "COD_AREA")})
     @ManyToOne(optional = false)
     private AreasStaff areasStaff;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-    private List<PruebaXPuesto> pruebaXPuestoList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
+//    private List<PruebaXPuesto> pruebaXPuestoList;
     @Transient
     private String descripcionEstado;
     
@@ -404,12 +404,12 @@ public class Puestos implements Serializable {
         this.departamentos = departamentos;
     }
 
-    @XmlTransient
-    public List<PruebaXPuesto> getPruebaXPuestoList() {
-        return pruebaXPuestoList;
-    }
-
-    public void setPruebaXPuestoList(List<PruebaXPuesto> pruebaXPuestoList) {
-        this.pruebaXPuestoList = pruebaXPuestoList;
-    }
+//    @XmlTransient
+//    public List<PruebaXPuesto> getPruebaXPuestoList() {
+//        return pruebaXPuestoList;
+//    }
+//
+//    public void setPruebaXPuestoList(List<PruebaXPuesto> pruebaXPuestoList) {
+//        this.pruebaXPuestoList = pruebaXPuestoList;
+//    }
 }
