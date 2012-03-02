@@ -7,9 +7,9 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="dialogos">
-        <p:confirmDialog message="&#191; Esta seguro que desea eliminar el Concurso seleccionado ?"  
+        <p:confirmDialog message="&#191; Esta seguro que desea eliminar el Empleado seleccionado ?"  
                          showEffect="bounce" hideEffect="explode"  modal="true"
-                         header="Eliminar Concurso" severity="alert" widgetVar="confirmation">  
+                         header="Eliminar Empleado" severity="alert" widgetVar="confirmation">  
             <p:commandButton value="Si, estoy seguro" update="mensajes, tablaConcursos" oncomplete="confirmation.hide()"  
                              actionListener="#{reclutamiento$concursos.eliminar$crud$action}" />  
             <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
@@ -78,34 +78,9 @@
     </ui:define>
 
     <ui:define name="contenido">       
-
-        <!--p:panel id="panelInformacion" style="border:none;" >
-            <div>
-                <div style="float:left;width: 30%;" >
-                    <h:panelGrid columns="4" rendered="# {(SessionBeanADM.estadoAccion eq 2) }"  >
-                        <p:graphicImage value="../../resources/imagenes/64/info.png" />
-                        <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
-                        <h:outputLabel value="*" styleClass="requerido"/>                                
-                        <h:outputLabel value=" son requeridos." style="font-style: italic;" />
-                    </h:panelGrid>
-                </div>    
-                <div style="float:left; width: 70%;"  >
-                    <p:toolbar rendered="# {(SessionBeanADM.estadoAccion eq 2)}" 
-                               styleClass="toolbarUsuario" >
-                        <p:toolbarGroup align="right"  >
-                            <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="# {capacitaciones$capaXEmpleado.guardar$cap$action()}"
-                                             update="mensajes, lstStatus, lstInst, Nombre, calFecIni, calFecFin, impartida, txtEmp, costoRazon, tblDetalle" />  
-                        </p:toolbarGroup>
-                    </p:toolbar>
-                </div>
-                <div style="clear:both;" ></div>
-            </div>
-        </p:panel-->
-
         <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq 2) }" />
 
         <p:fieldset legend="Datos de la capacitaci&#243;n" rendered="#{(SessionBeanADM.estadoAccion eq 2) }" >
-            <p:spacer height="20" />
             <h:panelGrid columns="4">
                 <h:outputLabel value="Nombre: " />
                 <h:outputLabel value="#{capacitaciones$capaXEmpleado.nomCapacitacion}" style=" font-weight: bold"/>
@@ -121,10 +96,6 @@
                 <p:spacer/>
                 <h:outputLabel value="Instituci&#243;n: " />
                 <h:outputLabel value="#{capacitaciones$capaXEmpleado.nomInst}" style=" font-weight: bold"/>
-                <p:spacer/>
-                <p:spacer/>
-                <h:outputLabel value="Impartida por: " />
-                <h:outputLabel value="#{capacitaciones$capaXEmpleado.impartido}" style=" font-weight: bold"/>
                 <p:spacer/>
                 <p:spacer/>
                 <h:outputLabel value="Capacitador: " />

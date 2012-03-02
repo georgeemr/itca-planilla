@@ -18,7 +18,7 @@
         
         <p:dialog id="dialogBuscaEmp" widgetVar="dialogBuscaEmp" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="500" height="350">
             <p:dataTable id="tablBusEmp"
-                         rows="3" paginator="true"
+                         rows="3" paginator="true" onRowSelectComplete="dialogBuscaEmp.hide();"
                          emptyMessage="No hay Empleados que mostrar"
                          var="det" update="txtEmp, tlEmp, tblAsistencia"
                          value="#{capacitaciones$asistenciaCapacitacion.listaDetalle}"
@@ -33,14 +33,9 @@
                 <p:column headerText="Nombre" filterBy="#{jefe.nombreCompleto}" >
                     <h:outputText value="#{det.empleados.nombreCompleto}"/>
                 </p:column>
-                <f:facet name="footer">
+                <!--f:facet name="footer">
                     <p:commandButton value="Seleccionar empleado" oncomplete="dialogBuscaEmp.hide();"/>
-                </f:facet>
-                <!--p:column>
-                        <p:commandButton update="dialogBuscaJefe, dialogNoAfecta, txtJefe, tlJefe" onclick="dialogBuscaJefe.hide()" value="Seleccionar" >
-                            <f:setPropertyActionListener value="# {jefe}" target="# {planilla$accionesPersonal.jefeSeleccionado}"/>
-                        </p:commandButton>
-                </p:column-->
+                </f:facet-->
             </p:dataTable>
         </p:dialog>
     </ui:define>
@@ -78,34 +73,9 @@
     </ui:define>
 
     <ui:define name="contenido">       
-
-        <!--p:panel id="panelInformacion" style="border:none;" >
-            <div>
-                <div style="float:left;width: 30%;" >
-                    <h:panelGrid columns="4" rendered="# {(SessionBeanADM.estadoAccion eq 2) }"  >
-                        <p:graphicImage value="../../resources/imagenes/64/info.png" />
-                        <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
-                        <h:outputLabel value="*" styleClass="requerido"/>                                
-                        <h:outputLabel value=" son requeridos." style="font-style: italic;" />
-                    </h:panelGrid>
-                </div>    
-                <div style="float:left; width: 70%;"  >
-                    <p:toolbar rendered="# {(SessionBeanADM.estadoAccion eq 2)}" 
-                               styleClass="toolbarUsuario" >
-                        <p:toolbarGroup align="right"  >
-                            <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="# {capacitaciones$capaXEmpleado.guardar$cap$action()}"
-                                             update="mensajes, lstStatus, lstInst, Nombre, calFecIni, calFecFin, impartida, txtEmp, costoRazon, tblDetalle" />  
-                        </p:toolbarGroup>
-                    </p:toolbar>
-                </div>
-                <div style="clear:both;" ></div>
-            </div>
-        </p:panel-->
-
         <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq 2) }" />
 
         <p:fieldset legend="Capacitaci&#243;n" rendered="#{(SessionBeanADM.estadoAccion eq 2) }" >
-            <p:spacer height="20" />
             <h:panelGrid columns="4">
                 <h:outputLabel value="Nombre: " />
                 <h:outputLabel value="#{capacitaciones$asistenciaCapacitacion.nomCapacitacion}" style=" font-weight: bold"/>
@@ -121,10 +91,6 @@
                 <p:spacer/>
                 <h:outputLabel value="Instituci&#243;n: " />
                 <h:outputLabel value="#{capacitaciones$asistenciaCapacitacion.nomInst}" style=" font-weight: bold"/>
-                <p:spacer/>
-                <p:spacer/>
-                <h:outputLabel value="Impartida por: " />
-                <h:outputLabel value="#{capacitaciones$asistenciaCapacitacion.impartido}" style=" font-weight: bold"/>
                 <p:spacer/>
                 <p:spacer/>
                 <h:outputLabel value="Capacitador: " />
@@ -157,7 +123,7 @@
                 <h:outputLabel value="Empleado"/>
                     <p:toolbar id="tlEmp" >
                         <p:toolbarGroup align="left">
-                            <p:inputText value="#{capacitaciones$asistenciaCapacitacion.nomEmp}" id="txtEmp" immediate="true" />
+                            <p:inputText value="#{capacitaciones$asistenciaCapacitacion.nomEmp}" id="txtEmp" immediate="true" style=" width: 300px" />
                             <p:commandButton id="cmdBuscaE" onclick="dialogBuscaEmp.show()" update="tablBusEmp"
                                              type="button" image="ui-icon ui-icon-search" />
                         </p:toolbarGroup>
@@ -171,7 +137,7 @@
                          rows="3" paginator="true"
                          emptyMessage="No hay jefes que mostrar"
                          rowEditListener="#{capacitaciones$asistenciaCapacitacion.rowEditListener}"
-                         var="asistencia" update="txtJefe"
+                         var="asistencia" update="txtEmp"
                          value="#{capacitaciones$asistenciaCapacitacion.listaAsistencia}"
                          selection="#{SessionBeanCAP.asistenciaSeleccionada}"
                          selectionMode="single"

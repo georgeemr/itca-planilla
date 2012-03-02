@@ -19,8 +19,8 @@
         <p:dialog id="dialogBuscaEmp" widgetVar="dialogBuscaEmp" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="500" height="500">
             <p:dataTable id="tablBusEmp"
                          rows="5" paginator="true"
-                         emptyMessage="No hay Empleados que mostrar"
-                         var="emp" update="txtEmp, tlEmp"
+                         emptyMessage="No hay Empleados que mostrar" onRowSelectComplete="dialogBuscaEmp.hide();"
+                         var="emp" update="txtEmp, tlEmp, tblDetalle" 
                          value="#{capacitaciones$participantesCapacitacion.listaEmpleado}"
                          selection="#{SessionBeanCAP.empleadoSeleccionado}"
                          rowSelectListener="#{capacitaciones$participantesCapacitacion.onRowSelectEmpleado}"  
@@ -33,9 +33,9 @@
                 <p:column headerText="Nombre" filterBy="#{jefe.nombreCompleto}" >
                     <h:outputText value="#{emp.nombreCompleto}"/>
                 </p:column>
-                <f:facet name="footer">
+                <!--f:facet name="footer">
                     <p:commandButton value="Seleccionar Empleado" oncomplete="dialogBuscaEmp.hide();"/>
-                </f:facet>
+                </f:facet-->
                 <!--p:column>
                         <p:commandButton update="dialogBuscaJefe, dialogNoAfecta, txtJefe, tlJefe" onclick="dialogBuscaJefe.hide()" value="Seleccionar" >
                             <f:setPropertyActionListener value="# {jefe}" target="# {planilla$accionesPersonal.jefeSeleccionado}"/>
@@ -78,36 +78,11 @@
     </ui:define>
 
     <ui:define name="contenido">       
-
-        <p:panel id="panelInformacion" style="border:none;" >
-            <div>
-                <!--div style="float:left;width: 30%;" >
-                    <h:panelGrid columns="4" rendered="# {(SessionBeanADM.estadoAccion eq 2) }"  >
-                        <p:graphicImage value="../../resources/imagenes/64/info.png" />
-                        <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
-                        <h:outputLabel value="*" styleClass="requerido"/>                                
-                        <h:outputLabel value=" son requeridos." style="font-style: italic;" />
-                    </h:panelGrid>
-                </div-->    
-                <div style="float:left; width: 70%;"  >
-                    <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 2)}" 
-                               styleClass="toolbarUsuario" >
-                        <p:toolbarGroup align="right"  >
-                            <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{capacitaciones$participantesCapacitacion.guardar$cap$action()}"
-                                             update="mensajes, lstStatus, lstInst, Nombre, calFecIni, calFecFin, impartida, txtEmp, costoRazon, tblDetalle" />  
-                        </p:toolbarGroup>
-                    </p:toolbar>
-                </div>
-                <div style="clear:both;" ></div>
-            </div>
-        </p:panel>
-
         <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq 2) }" />
 
         <p:fieldset legend="Capacitaci&#243;n" rendered="#{(SessionBeanADM.estadoAccion eq 2) }" >
-            <p:spacer height="20" />
             <h:panelGrid columns="4">
-                <h:outputLabel value="Nombre: " style=" font-weight: bold"/>
+                <h:outputLabel value="Nombre: "/>
                 <h:outputLabel value="#{capacitaciones$participantesCapacitacion.nomCapacitacion}" style=" font-weight: bold"/>
                 <p:spacer/>
                 <p:spacer/>
@@ -121,10 +96,6 @@
                 <p:spacer/>
                 <h:outputLabel value="Instituci&#243;n: " />
                 <h:outputLabel value="#{capacitaciones$participantesCapacitacion.nomInst}" style=" font-weight: bold"/>
-                <p:spacer/>
-                <p:spacer/>
-                <h:outputLabel value="Impartida por: " />
-                <h:outputLabel value="#{capacitaciones$participantesCapacitacion.impartido}" style=" font-weight: bold"/>
                 <p:spacer/>
                 <p:spacer/>
                 <h:outputLabel value="Capacitador: " />
@@ -147,25 +118,15 @@
                     <f:selectItem itemLabel="Rechazado" itemValue="R"/>
                     <f:selectItem itemLabel="Realizado" itemValue="RE"/>
                 </h:selectOneMenu>
-                
-            </h:panelGrid>
-            
-        </p:fieldset>
-        <p:spacer height="20"/>
-        <p:fieldset rendered="#{(SessionBeanADM.estadoAccion eq 2)}" legend="Participantes">
-            <h:panelGrid columns="4">
-                <h:outputLabel value="Empleado"/>
-                    <p:toolbar id="tlEmp" >
+                <p:spacer/>
+                <p:spacer/>
+                <p:toolbar id="tlEmp" >
                         <p:toolbarGroup align="left">
-                            <p:inputText value="#{capacitaciones$participantesCapacitacion.nomEmp}" id="txtEmp" immediate="true" />
-                            <p:commandButton id="cmdBuscaE" onclick="dialogBuscaEmp.show()"
+                            <!--p:inputText value="# {capacitaciones$participantesCapacitacion.nomEmp}" id="txtEmp" immediate="true" style=" width: 300px;"/-->
+                            <p:commandButton id="cmdBuscaE" onclick="dialogBuscaEmp.show()" value="Agregar Empleado"
                                              type="button" image="ui-icon ui-icon-search" />
                         </p:toolbarGroup>
                     </p:toolbar>
-                <!--h:outputLabel value="Nota: " />
-                <p:inputText id="costoRazon" value="# {capacitaciones$participantesCapacitacion.nota}" maxlength="11" required="true"
-                             requiredMessage="El n&#250;mero de Plazas es un campo obligatorio" 
-                             converterMessage="Ingrese un número entero de plazas." /-->
             </h:panelGrid>
             
         </p:fieldset>
@@ -194,7 +155,7 @@
                 </p:column>
                 
             </p:dataTable>
-                <div style="float:left; width: 70%;"  >
+                <div style="float:left; width: 100%;"  >
                     <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 2)}" 
                                styleClass="toolbarUsuario" >
                         <p:toolbarGroup align="left"  >
