@@ -435,9 +435,14 @@ public class PlanillaSessionBean {
     public List<Empleados> listaAfectadosTipoPlanilla(TiposPlanilla tipoPlanilla) {
         return empleadoFacade.afectadosTipoPlanilla(tipoPlanilla);
     }
-
+    
     @PermitAll
-    public void registrarVacacionColetiva(List<AccionPersonal> solicitudes) {
+    public List<Empleados> listarAfectadosRangoSalarios(Cias cias, BigDecimal s1, BigDecimal s2) {
+        return empleadoFacade.afectadosRangosSalario(cias, s1, s2);
+    }
+    
+    @PermitAll
+    public void registrarAccionPersonalColectiva(List<AccionPersonal> solicitudes) {
         for (AccionPersonal a : solicitudes) {
             accionPersonalFacade.create(a);
         }

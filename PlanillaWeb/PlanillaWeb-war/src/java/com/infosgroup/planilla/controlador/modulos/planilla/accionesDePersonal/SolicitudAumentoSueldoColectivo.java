@@ -5,10 +5,11 @@
 package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
 import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
-import com.infosgroup.planilla.modelo.entidades.Departamentos;
-import com.infosgroup.planilla.modelo.entidades.DepartamentosPK;
-import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
+import com.infosgroup.planilla.modelo.entidades.*;
+import com.infosgroup.planilla.view.TipoMensaje;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -103,8 +104,52 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
         if (validarSolicitud()) {
             return null;
         }
-
+        try {
+            if (criterioSeleccionado.equals("rangoSalario")) {
+                planillaSessionBean().registrarAccionPersonalColectiva(obtenerAccionesPersonal(planillaSessionBean().listarAfectadosRangoSalarios(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), new BigDecimal(salarioMinimo), new BigDecimal(salarioMaximo))));
+            } else if (criterioSeleccionado.equals("departamentos")) {
+                planillaSessionBean().registrarAccionPersonalColectiva(obtenerAccionesPersonal(planillaSessionBean().listaAfectadosDepartamentos( new Departamentos(new DepartamentosPK(getEncabezadoSolicitud().getEmpresa(), departamento)) )));
+            }
+            addMessage("Solicitud de Aumentos de Sueldo Colectivo", "Datos guardados exitosamente.", TipoMensaje.INFORMACION);
+            getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
+            planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
+        } catch (Exception exception) {
+            addMessage("Solicitud de Vacaciones Colectivas", exception.getMessage(), TipoMensaje.ERROR);
+        }
+        limpiarCampos();
         return null;
+    }
+
+    public List<AccionPersonal> obtenerAccionesPersonal(List<Empleados> listaEmpleados) throws Exception {
+        List<AccionPersonal> l = new ArrayList<AccionPersonal>();
+        if (listaEmpleados == null || listaEmpleados.size() <= 0) {
+            throw new Exception("No ha seleccionado ningun empleado para generar la solicitud.");
+        }
+        for (Empleados e : listaEmpleados) {
+            l.add(getAccionPersonal(e));
+        }
+        return l;
+    }
+
+    public AccionPersonal getAccionPersonal(Empleados e) {
+        AccionPersonal accionPersonal = new AccionPersonal();
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), e));
+        accionPersonal.setTipoAccion(getTipoAccion());
+        accionPersonal.setEmpleados(e);
+        accionPersonal.setFecha(new Date());
+        accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
+        accionPersonal.setDepartamentos(e.getDepartamentos());
+        accionPersonal.setStatus("G");
+        accionPersonal.setFechaInicial(fechaInicial);
+        accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));
+        accionPersonal.setMes(new Short(planilla.split(":")[2].toString()));
+        accionPersonal.setNumPlanilla(new Short(planilla.split(":")[3].toString()));
+        accionPersonal.setCodTipopla(tipoPlanilla);
+        accionPersonal.setSueldoAnterior(e.getSalario());
+        accionPersonal.setCantidad(formaAumento.equals("V") ? new BigDecimal(sueldoNuevo) : new BigDecimal(e.getSalario().doubleValue() + (sueldoNuevo / 100) * e.getSalario().doubleValue()));
+        accionPersonal.setPorcentaje(formaAumento.equals("P") ? new BigDecimal(sueldoNuevo) : BigDecimal.ZERO);
+        accionPersonal.setPuestos(e.getPuestos());
+        return accionPersonal;
     }
 
     public Double getSalarioMaximo() {
@@ -125,7 +170,48 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
 
     @Override
     boolean validarSolicitud() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Boolean e = Boolean.FALSE;
+        if (criterioSeleccionado.equals("-1")) {
+            addMessage("Acciones de Personal", "Seleccione un criterio.", TipoMensaje.ERROR);
+            return Boolean.TRUE;
+        }
+        if (criterioSeleccionado.equals("rangoSalario")) {
+            if (salarioMinimo == null || salarioMaximo == null) {
+                addMessage("Acciones de Personal", "Complete los datos de rango de salario.", TipoMensaje.ERROR);
+                e = Boolean.TRUE;
+            }
+        }
+
+        if (empleadosAfectados == null || empleadosAfectados <= 0) {
+            addMessage("Acciones de Personal", "Los datos ingresados no han generado datos para aplicar esta solicitud.", TipoMensaje.ERROR);
+            return Boolean.TRUE;
+        }
+
+        if (sueldoNuevo == null) {
+            addMessage("Acciones de Personal", "El valor del sueldo es un campo requerido.", TipoMensaje.ERROR);
+            e = Boolean.TRUE;
+        }
+
+        if (sueldoNuevo != null && sueldoNuevo <= 0) {
+            addMessage("Acciones de Personal", "El valor del sueldo debe ser positivo y mayor que cero.", TipoMensaje.ERROR);
+            e = Boolean.TRUE;
+        }
+
+        if (fechaInicial == null) {
+            addMessage("Acciones de Personal", "Fecha inicial es un campo requerido.", TipoMensaje.ERROR);
+            e = Boolean.TRUE;
+        }
+
+        if (tipoPlanilla == null || tipoPlanilla == -1) {
+            addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
+            e = Boolean.TRUE;
+        }
+
+        if ((tipoPlanilla != null && tipoPlanilla != -1) && (planilla == null || planilla.equals("-1"))) {
+            addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
+            e = Boolean.TRUE;
+        }
+        return e;
     }
 
     @Override
@@ -133,6 +219,12 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
         setSalarioMaximo(0.0);
         setSalarioMinimo(0.0);
         setEmpleadosAfectados(0);
+        setFechaInicial(null);
+        setFormaAumento("V");
+        setDepartamento(new Short("-1"));
+        tipoPlanilla = -1;
+        planilla = null;
+        setSueldoNuevo(0.0);
     }
 
     public Integer getEmpleadosAfectados() {
