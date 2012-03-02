@@ -6,20 +6,20 @@
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
-    <!-- ======================================================================================================= -->
+    
     <ui:define name="titulo">
         <h:outputText value="Head-Count"/>
     </ui:define>
-    <!-- ======================================================================================================= -->
+    
     <ui:define name="acciones">
-        <p:tab title="Head-Count">
+        <!-- p:tab title="Head-Count">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{empleados$HeadCount.generarHeadCount$action}" update="principalForm:mensajes, principalForm:headCountTable" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="# {empleados$HeadCount.generarHeadCount$action}" update="principalForm:mensajes, principalForm:headCountTable" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/mail-meeting-request-reply.png"/>
                     <h:outputText value="Mostrar head-count" styleClass="espacioTexto"/>
                 </p:commandLink>
             </h:panelGrid>
-        </p:tab>
+        </p:tab -->
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{empleados$HeadCount.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
@@ -29,12 +29,13 @@
             </h:panelGrid>
         </p:tab>
     </ui:define>
-    <!-- ======================================================================================================= -->
+    
     <ui:define name="contenido">
         <h:panelGrid columns="2">
             <h:outputText value="Gerencia"/>
-            <h:selectOneMenu value="#{empleados$HeadCount.gerenciaSeleccionada}" style="width: 600px">
+            <h:selectOneMenu id="lstGerencias"  value="#{empleados$HeadCount.gerenciaSeleccionada}" style="height: 25px;padding-top: 3px;width: 600px">
                 <f:selectItems value="#{empleados$HeadCount.gerenciasModel}"/>
+                <f:ajax event="change" render="headCountTable" execute="lstGerencias" listener="#{empleados$HeadCount.generarHeadCount}" />
             </h:selectOneMenu>
         </h:panelGrid>
         <p:spacer height="10"/>
@@ -55,11 +56,11 @@
                 <f:facet name="header">
                     <h:outputText value="Salario"/>
                 </f:facet>
-                <h:outputText value="#{nodo.salario}"/>
+                <h:outputText value="$ #{nodo.salario}"/>
             </p:column>
         </p:treeTable>
     </ui:define>
-    <!-- ======================================================================================================= -->
+    
     <ui:define name="dialogos"/>
-    <!-- ======================================================================================================= -->
+    
 </ui:composition>
