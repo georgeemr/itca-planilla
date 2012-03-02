@@ -612,9 +612,9 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         }
     }
     
-    public void registrarPruebasPorCandidato() {
-        //reclutamientoSessionBean.registraPruebasPorCandidato(candidatoSeleccionado);
-    }
+//    public void registrarPruebasPorCandidato() {
+//        //reclutamientoSessionBean.registraPruebasPorCandidato(candidatoSeleccionado);
+//    }
     
     public void handleCloseEvaluacionCandidato(CloseEvent event) {
         if (evaluacionCandidatos != null && evaluacionCandidatos.size() > 0) {

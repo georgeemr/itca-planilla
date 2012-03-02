@@ -136,6 +136,12 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
     }
 
     @PermitAll
+    public List<Empleados> afectadosRangosSalario(Cias cias, BigDecimal si, BigDecimal sf) {
+        List<Empleados> l = em.createQuery("SELECT e FROM Empleados e where e.empleadosPK.codCia = :codCia AND e.status = 'A' AND e.salario BETWEEN :si AND :sf ").setParameter("codCia", cias.getCodCia()).setParameter("si", si != null ? si : 0).setParameter("sf", sf != null ? sf : 0).getResultList();
+        return l != null ? l : new ArrayList<Empleados>();
+    }
+
+    @PermitAll
     public List<Empleados> afectadosDepartamentos(Departamentos departamento) {
         List<Empleados> l = em.createQuery("SELECT e FROM Empleados e where e.empleadosPK.codCia = :codCia AND e.departamentos = :departamentos AND e.status = 'A'").setParameter("codCia", departamento.getDepartamentosPK().getCodCia()).setParameter("departamentos", departamento).getResultList();
         return l != null ? l : new ArrayList<Empleados>();

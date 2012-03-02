@@ -56,7 +56,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         return nuevaPK;
     }
 
-        public AccionPersonalPK getAccionPersonalPK(Cias cias, Empleados e) {
+    public AccionPersonalPK getAccionPersonalPK(Cias cias, Empleados e) {
         AccionPersonalPK nuevaPK = new AccionPersonalPK();
         try {
             nuevaPK.setCodCia(cias.getCodCia());
@@ -68,7 +68,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         }
         return nuevaPK;
     }
-    
+
     public void guardarAccionPersonal(AccionPersonal accionPersonal) {
         try {
             accionPersonalFacade().create(accionPersonal);
@@ -141,7 +141,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
             Context c = new InitialContext();
             return (MailStatelessBean) c.lookup("java:global/PlanillaWeb/ProcesosEJBModule/MailStatelessBean!com.infosgroup.planilla.modelo.procesos.MailStatelessBean");
         } catch (NamingException ne) {
-            System.out.println( "Ocurrio la siguiente excepcion: " +ne.getMessage() );
+            System.out.println("Ocurrio la siguiente excepcion: " + ne.getMessage());
             throw new RuntimeException(ne);
         }
     }
