@@ -236,57 +236,57 @@ public class capaXEmpleadoBackendBean extends AbstractJSFPage implements Seriali
         }
     }
 
-    public String guardar$cap$action() {
-        isError = Boolean.FALSE;
-        //validaCampos$action();
-        Short c = getSessionBeanADM().getCompania().getCodCia();
-        if (isError) {
-            return null;
-        }
-        CapacitacionXEmpleado detalleCap = new CapacitacionXEmpleado();
-        /* Crear Detalle*/
-        if (getSessionBeanADM().getEstadoAccion().equals(2)) {
-            CapacitacionXEmpleado detalle = new CapacitacionXEmpleado();
-            CapacitacionXEmpleadoPK pk = new CapacitacionXEmpleadoPK();
-            pk.setCodCia(c);
-            Cias ciaCod = getSessionBeanADM().getCompania();
-            Integer cod = capacitacionSessionBean.getMaxCapacitacion(ciaCod);
-            pk.setCodCapacitacion(cod);
-            pk.setCodCapacitacion(getSessionBeanCAP().getCapacitacionSeleccionada().getCapacitacionPK().getCodCapacitacion());
-            pk.setCodEmp(getSessionBeanCAP().getEmpleadoSeleccionado().getEmpleadosPK().getCodEmp());
-            detalle.setCapacitacionXEmpleadoPK(pk);
-            detalle.setEmpleados(getSessionBeanCAP().getEmpleadoSeleccionado());
-            detalle.setNota(nota);
-            try {
-                capacitacionSessionBean.guardarDetalleCapacitacion(detalle);
-                addMessage("Mantenimiento de Detalle de Capacitaciones.", "Datos guardados con éxito", TipoMensaje.INFORMACION);
-                limpiarCampos();
-                listaDetalle = capacitacionSessionBean.findDetByCap(ciaCod, getSessionBeanCAP().getCapacitacionSeleccionada());
-            } catch (Exception e) {
-                addMessage("Mantenimiento de Detalle de Capacitaciones.", "Ha ocurrido un error al intentar guardar la capacitacion.", TipoMensaje.ERROR);
-                System.out.println(e.getMessage());
-            }
-        } else if (getSessionBeanADM().getEstadoAccion().equals(1)) {
-            /* Modificar Detalle */
-            detalleCap = getSessionBeanCAP().getDetalleCapSeleccionada();
-            if (detalleCap == null) {
-                addMessage("Mantenimiento de Capacitacion.", "No ha seleccionado ninguna Capacitacion para editar.", TipoMensaje.ERROR);
-                return null;
-            }
-            detalleCap.setEmpleados(getSessionBeanCAP().getEmpleadoSeleccionado());
-            detalleCap.setNota(nota);
-            try {
-                capacitacionSessionBean.editarDetalleCapacitacion(detalleCap);
-                addMessage("Mantenimiento de Detalle de Capacitacion.", "Datos actualizados con éxito", TipoMensaje.INFORMACION);
-                limpiarCampos();
-            } catch (Exception e) {
-                addMessage("Mantenimiento de Detalle de Capacitacion.", "Ha ocurrido un error al intentar actualizar el Detallle Capacitacion.", TipoMensaje.ERROR);
-                System.out.println(e.getMessage());
-            }
-        }
-
-        return null;
-    }
+//    public String guardar$cap$action() {
+//        isError = Boolean.FALSE;
+//        //validaCampos$action();
+//        Short c = getSessionBeanADM().getCompania().getCodCia();
+//        if (isError) {
+//            return null;
+//        }
+//        CapacitacionXEmpleado detalleCap = new CapacitacionXEmpleado();
+//        /* Crear Detalle*/
+//        if (getSessionBeanADM().getEstadoAccion().equals(2)) {
+//            CapacitacionXEmpleado detalle = new CapacitacionXEmpleado();
+//            CapacitacionXEmpleadoPK pk = new CapacitacionXEmpleadoPK();
+//            pk.setCodCia(c);
+//            Cias ciaCod = getSessionBeanADM().getCompania();
+//            Integer cod = capacitacionSessionBean.getMaxCapacitacion(ciaCod);
+//            pk.setCodCapacitacion(cod);
+//            pk.setCodCapacitacion(getSessionBeanCAP().getCapacitacionSeleccionada().getCapacitacionPK().getCodCapacitacion());
+//            pk.setCodEmp(getSessionBeanCAP().getEmpleadoSeleccionado().getEmpleadosPK().getCodEmp());
+//            detalle.setCapacitacionXEmpleadoPK(pk);
+//            detalle.setEmpleados(getSessionBeanCAP().getEmpleadoSeleccionado());
+//            detalle.setNota(nota);
+//            try {
+//                capacitacionSessionBean.guardarDetalleCapacitacion(detalle);
+//                addMessage("Mantenimiento de Detalle de Capacitaciones.", "Datos guardados con éxito", TipoMensaje.INFORMACION);
+//                limpiarCampos();
+//                listaDetalle = capacitacionSessionBean.findDetByCap(ciaCod, getSessionBeanCAP().getCapacitacionSeleccionada());
+//            } catch (Exception e) {
+//                addMessage("Mantenimiento de Detalle de Capacitaciones.", "Ha ocurrido un error al intentar guardar la capacitacion.", TipoMensaje.ERROR);
+//                System.out.println(e.getMessage());
+//            }
+//        } else if (getSessionBeanADM().getEstadoAccion().equals(1)) {
+//            /* Modificar Detalle */
+//            detalleCap = getSessionBeanCAP().getDetalleCapSeleccionada();
+//            if (detalleCap == null) {
+//                addMessage("Mantenimiento de Capacitacion.", "No ha seleccionado ninguna Capacitacion para editar.", TipoMensaje.ERROR);
+//                return null;
+//            }
+//            detalleCap.setEmpleados(getSessionBeanCAP().getEmpleadoSeleccionado());
+//            detalleCap.setNota(nota);
+//            try {
+//                capacitacionSessionBean.editarDetalleCapacitacion(detalleCap);
+//                addMessage("Mantenimiento de Detalle de Capacitacion.", "Datos actualizados con éxito", TipoMensaje.INFORMACION);
+//                limpiarCampos();
+//            } catch (Exception e) {
+//                addMessage("Mantenimiento de Detalle de Capacitacion.", "Ha ocurrido un error al intentar actualizar el Detallle Capacitacion.", TipoMensaje.ERROR);
+//                System.out.println(e.getMessage());
+//            }
+//        }
+//
+//        return null;
+//    }
 
     public void onRowSelectCapacitacion(SelectEvent event) {
         getSessionBeanCAP().setCapacitacionSeleccionada((Capacitacion) event.getObject());
