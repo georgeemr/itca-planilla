@@ -13,6 +13,7 @@ import com.infosgroup.planilla.modelo.procesos.CapacitacionesSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -245,6 +246,7 @@ public class asistenciaCapBackendBean extends AbstractJSFPage implements Seriali
         setNomCapacitador(cap.getCapacitadores().getNombre());
         Cias comp = getSessionBeanADM().getCompania();
         listaDetalle = capacitacionSessionBean.findDetByCap(getSessionBeanADM().getCompania(), cap);
+        listaAsistencia = new ArrayList<CapacitacionAsistencia>();
         getSessionBeanADM().setEstadoAccion(2);
         return null;
     }
