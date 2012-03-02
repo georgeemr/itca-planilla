@@ -74,6 +74,8 @@ public class Capacitacion implements Serializable {
     @Column(name = "STATUS", length = 3)
     private String status;
     //join bajo prueba
+    @Column(name = "NOTA_CAPACITACION", precision = 5, scale = 2)
+    private BigDecimal notaCapacitacion;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", insertable = false, updatable = false),
         @JoinColumn(name = "COD_INSTI", referencedColumnName = "COD_INSTI")})
@@ -222,6 +224,14 @@ public class Capacitacion implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public BigDecimal getNotaCapacitacion() {
+        return notaCapacitacion;
+    }
+
+    public void setNotaCapacitacion(BigDecimal notaCapacitacion) {
+        this.notaCapacitacion = notaCapacitacion;
     }
 
     public CapacitacionAreas getCapacitacionAreas() {
