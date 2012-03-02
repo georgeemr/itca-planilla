@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "PruebaXPuesto.findAll", query = "SELECT p FROM PruebaXPuesto p"),
     @NamedQuery(name = "PruebaXPuesto.findByCodCia", query = "SELECT p FROM PruebaXPuesto p WHERE p.pruebaXPuestoPK.codCia = :codCia"),
-    @NamedQuery(name = "PruebaXPuesto.findByPuesto", query = "SELECT p FROM PruebaXPuesto p WHERE p.pruebaXPuestoPK.puesto = :puesto"),
+    //@NamedQuery(name = "PruebaXPuesto.findByPuesto", query = "SELECT p FROM PruebaXPuesto p WHERE p.pruebaXPuestoPK.puesto = :puesto"),
     @NamedQuery(name = "PruebaXPuesto.findByCodigo", query = "SELECT p FROM PruebaXPuesto p WHERE p.pruebaXPuestoPK.codigo = :codigo"),
     @NamedQuery(name = "PruebaXPuesto.findByNombre", query = "SELECT p FROM PruebaXPuesto p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "PruebaXPuesto.findByEstado", query = "SELECT p FROM PruebaXPuesto p WHERE p.estado = :estado")})
@@ -45,11 +45,11 @@ public class PruebaXPuesto implements Serializable, Comparable<PruebaXPuesto> {
     @Basic(optional = false)
     @Column(name = "ESTADO", nullable = false, length = 1)
     private String estado;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "PUESTO", referencedColumnName = "COD_PUESTO", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Puestos puestos;
+//    @JoinColumns({
+//        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+//        @JoinColumn(name = "PUESTO", referencedColumnName = "COD_PUESTO", nullable = false, insertable = false, updatable = false)})
+//    @ManyToOne(optional = false)
+//    private Puestos puestos;
 
     public PruebaXPuesto() {
     }
@@ -92,13 +92,13 @@ public class PruebaXPuesto implements Serializable, Comparable<PruebaXPuesto> {
         this.estado = estado;
     }
 
-    public Puestos getPuestos() {
-        return puestos;
-    }
-
-    public void setPuestos(Puestos puestos) {
-        this.puestos = puestos;
-    }
+//    public Puestos getPuestos() {
+//        return puestos;
+//    }
+//
+//    public void setPuestos(Puestos puestos) {
+//        this.puestos = puestos;
+//    }
 
     @Override
     public int hashCode() {

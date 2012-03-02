@@ -20,10 +20,10 @@ public class EvaluacionCandidatoPK implements Serializable {
     @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "PUESTO", nullable = false)
-    private short puesto;
+//    @Basic(optional = false)
+//    @NotNull
+//    @Column(name = "PUESTO", nullable = false)
+//    private short puesto;
     @Basic(optional = false)
     @NotNull
     @Column(name = "PRUEBA", nullable = false)
@@ -42,7 +42,7 @@ public class EvaluacionCandidatoPK implements Serializable {
 
     public EvaluacionCandidatoPK(short codCia, short puesto, long prueba, int candidato, long concurso) {
         this.codCia = codCia;
-        this.puesto = puesto;
+//        this.puesto = puesto;
         this.prueba = prueba;
         this.candidato = candidato;
         this.concurso = concurso;
@@ -56,13 +56,13 @@ public class EvaluacionCandidatoPK implements Serializable {
         this.codCia = codCia;
     }
 
-    public short getPuesto() {
-        return puesto;
-    }
-
-    public void setPuesto(short puesto) {
-        this.puesto = puesto;
-    }
+//    public short getPuesto() {
+//        return puesto;
+//    }
+//
+//    public void setPuesto(short puesto) {
+//        this.puesto = puesto;
+//    }
 
     public long getPrueba() {
         return prueba;
@@ -92,7 +92,7 @@ public class EvaluacionCandidatoPK implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (int) codCia;
-        hash += (int) puesto;
+//        hash += (int) puesto;
         hash += (int) prueba;
         hash += (int) candidato;
         hash += (int) concurso;
@@ -109,9 +109,9 @@ public class EvaluacionCandidatoPK implements Serializable {
         if (this.codCia != other.codCia) {
             return false;
         }
-        if (this.puesto != other.puesto) {
-            return false;
-        }
+//        if (this.puesto != other.puesto) {
+//            return false;
+//        }
         if (this.prueba != other.prueba) {
             return false;
         }
@@ -126,7 +126,7 @@ public class EvaluacionCandidatoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.EvaluacionCandidatoPK[ codCia=" + codCia + ", puesto=" + puesto + ", prueba=" + prueba + ", candidato=" + candidato + ", concurso=" + concurso + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.EvaluacionCandidatoPK[ codCia=" + codCia + /*", puesto=" + puesto +*/ ", prueba=" + prueba + ", candidato=" + candidato + ", concurso=" + concurso + " ]";
     }
     
 }

@@ -11,11 +11,19 @@
 
     <ui:define name="dialogos" >
 
+        <p:confirmDialog message="&#191; Esta seguro que desea eliminar el candidato seleccionado ?" showEffect="bounce" hideEffect="explode"  
+                         modal="true" header="Eliminar Prueba" severity="alert" widgetVar="dlgEliminarPrecandidato">  
+            <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,evCandidatoLst" oncomplete="dlgEliminarPrecandidato.hide()"  
+                             action="#{reclutamiento$preseleccionAspirante.eliminarCandidato}" />  
+            <p:commandButton value="No" onclick="dlgEliminarPrecandidato.hide()" type="button" />   
+
+        </p:confirmDialog>  
+
         <p:confirmDialog message="&#191; Esta seguro que desea eliminar la prueba seleccionada ?" showEffect="bounce" hideEffect="explode"  
                          modal="true" header="Eliminar Prueba" severity="alert" widgetVar="dlgEliminarPrueba">  
             <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,pruebasXEvaluacionEdit" oncomplete="dlgEliminarPrueba.hide()"  
                              action="#{reclutamiento$preseleccionAspirante.eliminarPruebaCandidato}" />  
-            <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+            <p:commandButton value="No" onclick="dlgEliminarPrueba.hide()" type="button" />   
 
         </p:confirmDialog>     
 
@@ -586,10 +594,16 @@
             </p:tab>
 
             <p:tab id="candidatosPreselect" title="Evaluaci&oacute;n"  >
-                <p:spacer height="20" />
+                <p:spacer height="10" />
                 <p:panel id="panelCandidatosPre" header="Paso 3 de 5" >
                     <p:spacer height="10" />
-
+                    <p:panel  >
+                        <h:panelGrid columns="2">
+                            <p:graphicImage value="../../resources/imagenes/64/info.png" />
+                            <h:outputLabel value="De clic en la imagen para ingresar evaluación"/>
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:spacer height="10" />
                     <p:dataTable id="evCandidatoLst" value="#{reclutamiento$preseleccionAspirante.candidatosGuardados}" 
                                  paginator="true" rows="5"  
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
@@ -597,10 +611,9 @@
                                  var="candidato" dynamic="true" rowEditListener="#{reclutamiento$preseleccionAspirante.onEditCandidato}" >
 
                         <p:column filterBy="#{candidato.candidato1.nombreCompleto}" filterMatchMode="contains" headerText="Candidato" style="width:450px;" >
-                            <p:commandButton id="selectCandidato" image="#{candidato.candidato1.sexo eq 1 ? 'contratar' : 'contratar_w'}" oncomplete="botonMostrarEvaluacion.show()"  update="principalForm:lbl1,principalForm:lbl2,principalForm:pruebasXEvaluacionEdit" action="#{reclutamiento$preseleccionAspirante.listarEvaluaciones}">
+                            <p:commandButton id="selectCandidato" image="#{candidato.candidato1.sexo eq 1 ? 'contratar' : 'contratar_w'}" oncomplete="botonMostrarEvaluacion.show()"  update="principalForm:lbl1,principalForm:lbl2,principalForm:pruebasXEvaluacionEdit" action="#{reclutamiento$preseleccionAspirante.listarEvaluaciones}" label="Ingresar evaluac&oacute;n" title="Ingresar evaluac&oacute;n">
                                 <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
                             </p:commandButton>
-                            <p:tooltip for="selectCandidato" value="Ingresar evaluaci&oacute;n" showEffect="fade" hideEffect="fade" />
                             <h:outputText value="#{candidato.candidato1.nombreCompleto}"  style="margin-left:10px" />
                         </p:column>
 
@@ -624,6 +637,12 @@
                         <p:column headerText="Ingresar" style="width:50px; text-align: left;">  
                             <p:rowEditor />  
                         </p:column>  
+
+                        <p:column headerText="Remover" >
+                            <p:commandButton  id="cmdEliminarPreseleccionCandidato"  rendered="#{ (candidato.estado ne 'C') and (candidato.estado ne 'S') }" image="ui-icon-circle-minus" oncomplete="dlgEliminarPrecandidato.show();"  >
+                                <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
+                            </p:commandButton>
+                        </p:column>
 
                     </p:dataTable>
 

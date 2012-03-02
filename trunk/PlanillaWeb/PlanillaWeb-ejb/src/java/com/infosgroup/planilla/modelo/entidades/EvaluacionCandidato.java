@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "EvaluacionCandidato.findAll", query = "SELECT e FROM EvaluacionCandidato e"),
     @NamedQuery(name = "EvaluacionCandidato.findByCodCia", query = "SELECT e FROM EvaluacionCandidato e WHERE e.evaluacionCandidatoPK.codCia = :codCia"),
-    @NamedQuery(name = "EvaluacionCandidato.findByPuesto", query = "SELECT e FROM EvaluacionCandidato e WHERE e.evaluacionCandidatoPK.puesto = :puesto"),
+    //@NamedQuery(name = "EvaluacionCandidato.findByPuesto", query = "SELECT e FROM EvaluacionCandidato e WHERE e.evaluacionCandidatoPK.puesto = :puesto"),
     @NamedQuery(name = "EvaluacionCandidato.findByPrueba", query = "SELECT e FROM EvaluacionCandidato e WHERE e.evaluacionCandidatoPK.prueba = :prueba"),
     @NamedQuery(name = "EvaluacionCandidato.findByCandidato", query = "SELECT e FROM EvaluacionCandidato e WHERE e.evaluacionCandidatoPK.candidato = :candidato"),
     @NamedQuery(name = "EvaluacionCandidato.findByConcurso", query = "SELECT e FROM EvaluacionCandidato e WHERE e.evaluacionCandidatoPK.concurso = :concurso"),
@@ -59,7 +59,7 @@ public class EvaluacionCandidato implements Serializable {
     private Date fecha;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "PUESTO", referencedColumnName = "PUESTO", nullable = false, insertable = false, updatable = false),
+        /*@JoinColumn(name = "PUESTO", referencedColumnName = "PUESTO", nullable = false, insertable = false, updatable = false),*/
         @JoinColumn(name = "PRUEBA", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private PruebaXPuesto pruebaXPuesto;
