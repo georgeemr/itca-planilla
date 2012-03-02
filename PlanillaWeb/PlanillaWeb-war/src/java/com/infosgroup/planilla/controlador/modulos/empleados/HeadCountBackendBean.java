@@ -17,6 +17,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.behavior.AjaxBehavior;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -53,9 +55,10 @@ public class HeadCountBackendBean extends AbstractJSFPage implements Serializabl
     private List<SelectItem> gerenciasModel;
 
     public List<SelectItem> getGerenciasModel() {
-        List<Gerencia> listaGerencias = empleadosBean.listarGerencias();
+        List<Gerencia> listaGerencias = empleadosBean.listarGerencias(getSessionBeanADM().getCompania());
         gerenciasModel = new ArrayList<SelectItem>(0);
-        gerenciasModel.add(new SelectItem("1:0", "[TODAS LAS GERENCIAS]"));
+        gerenciasModel.add(new SelectItem("-1:0", "[ SELECCIONE UNA GERENCIA ]"));
+        gerenciasModel.add(new SelectItem("1:0", "[ TODAS LAS GERENCIAS ]"));
         for (Gerencia gerencia : listaGerencias) {
             gerenciasModel.add(new SelectItem("" + gerencia.getGerenciaPK().getCodCia() + ":" + gerencia.getGerenciaPK().getCodGerencia(), gerencia.getNomGerencia()));
         }
@@ -75,14 +78,20 @@ public class HeadCountBackendBean extends AbstractJSFPage implements Serializabl
         this.gerenciaSeleccionada = gerenciaSeleccionada;
     }
 
-    public String generarHeadCount$action() {
+    public void generarHeadCount(AjaxBehaviorEvent e) {
         String[] gerenciaSel = gerenciaSeleccionada.split(":");
         GerenciaPK gerenciaPK = new GerenciaPK();
+
+        if (gerenciaSel[0].equals("-1")) {
+            raiz = new DefaultTreeNode("Raiz", null);
+            return;
+        }
+
         gerenciaPK.setCodCia(Short.parseShort(gerenciaSel[0]));
         gerenciaPK.setCodGerencia(Short.parseShort(gerenciaSel[1]));
         Gerencia gerencia = empleadosBean.findGerenciaByPK(gerenciaPK);
         List<HeadCountModel> listaHCM = empleadosBean.generarHeadCount(gerencia);
-        List<Gerencia> listaGerencias = empleadosBean.listarGerencias();
+        List<Gerencia> listaGerencias = empleadosBean.listarGerencias(getSessionBeanADM().getCompania());
         raiz = new DefaultTreeNode("Raiz", null);
         TreeNode[] nodoGerencia = new TreeNode[listaGerencias.size()];
         for (Gerencia g : listaGerencias) {
@@ -102,6 +111,5 @@ public class HeadCountBackendBean extends AbstractJSFPage implements Serializabl
         for (HeadCountModel hcm : listaHCM) {
             new DefaultTreeNode(hcm, nodoGerencia[hcm.getIdGerencia().intValueExact() - 1]);
         }
-        return null;
     }
 }
