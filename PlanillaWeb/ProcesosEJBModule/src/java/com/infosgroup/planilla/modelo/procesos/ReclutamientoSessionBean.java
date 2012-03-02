@@ -77,6 +77,10 @@ public class ReclutamientoSessionBean {
     private CapacitacionXCandidatoFacade capacitacionXCandidatoFacade;
     @EJB
     private IdiomaXCandidatoFacade idiomaXCandidatoFacade;
+@EJB
+private EntrevistaXCandidatoFacade entrevistaXCandidatoFacade;
+@EJB
+private TipoPruebaXCandidatoFacade tipoPruebaXCandidatoFacade;
 
     @PermitAll
     public List<Concurso> getListaConcursos(Cias empresa, Date fechaInicial, Date fechaFinal) {
@@ -492,7 +496,7 @@ public class ReclutamientoSessionBean {
     }
 
     @PermitAll
-    public void crearDocumentoCandidato(DocumentoPresentado d) {
+public void crearDocumentoPresentado(DocumentoPresentado d)
         documentoPresentadoFacade.create(d);
     }
 
@@ -534,5 +538,29 @@ public class ReclutamientoSessionBean {
     @PermitAll
     public void crearBeneficiarioXCandidato(BeneficiarioXCandidato b) {
         beneficiarioXCandidatoFacade.create(b);
+}
+
+@PermitAll
+public Short getMaxEntrevistaXCandidato(Puestos p, Candidato c)
+{
+    return entrevistaXCandidatoFacade.max(p, c);
+}
+
+@PermitAll
+public void crearEntrevistaXCandidato(EntrevistaXCandidato e)
+{
+    entrevistaXCandidatoFacade.create(e);
+}
+
+@PermitAll
+public Short getMaxTipoPruebaXCandidato(Candidato c)
+{
+    return tipoPruebaXCandidatoFacade.max(c);
+}
+
+@PermitAll
+public void crearTipoPruebaXCandidatoFacade(TipoPruebaXCandidato t)
+{
+    tipoPruebaXCandidatoFacade.create(t);
     }
 }
