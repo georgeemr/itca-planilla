@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "BeneficiarioXCandidato.findByCodCia", query = "SELECT b FROM BeneficiarioXCandidato b WHERE b.beneficiarioXCandidatoPK.codCia = :codCia"),
     @NamedQuery(name = "BeneficiarioXCandidato.findByCodCandidato", query = "SELECT b FROM BeneficiarioXCandidato b WHERE b.beneficiarioXCandidatoPK.codCandidato = :codCandidato"),
     @NamedQuery(name = "BeneficiarioXCandidato.findByCodBeneficiario", query = "SELECT b FROM BeneficiarioXCandidato b WHERE b.beneficiarioXCandidatoPK.codBeneficiario = :codBeneficiario"),
-    @NamedQuery(name = "BeneficiarioXCandidato.findByNombre", query = "SELECT b FROM BeneficiarioXCandidato b WHERE b.nombre = :nombre")})
+    @NamedQuery(name = "BeneficiarioXCandidato.findByNombre", query = "SELECT b FROM BeneficiarioXCandidato b WHERE b.nombre = :nombre")
     })
 public class BeneficiarioXCandidato implements Serializable
 {
@@ -36,16 +36,20 @@ protected BeneficiarioXCandidatoPK beneficiarioXCandidatoPK;
 @Size(min = 1, max = 100)
 @Column(name = "NOMBRE", nullable = false, length = 100)
 private String nombre;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_PARENTESCO", referencedColumnName = "COD_PARENTESCO")})
-    @ManyToOne(optional = false)
-    private Parentesco parentesco;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Candidato candidato;
+@JoinColumns(
+    {
+    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+    @JoinColumn(name = "COD_PARENTESCO", referencedColumnName = "COD_PARENTESCO")
+    })
+@ManyToOne(optional = false)
+private Parentesco parentesco;
+@JoinColumns(
+    {
+    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+    @JoinColumn(name = "COD_CANDIDATO", referencedColumnName = "COD_CANDIDATO", nullable = false, insertable = false, updatable = false)
+    })
+@ManyToOne(optional = false)
+private Candidato candidato;
 
 public BeneficiarioXCandidato()
 {
@@ -87,12 +91,14 @@ public void setNombre(String nombre)
     this.nombre = nombre;
 }
 
-    public Parentesco getParentesco() {
-        return parentesco;
+public Parentesco getParentesco()
+{
+    return parentesco;
 }
 
-    public void setParentesco(Parentesco parentesco) {
-        this.parentesco = parentesco;
+public void setParentesco(Parentesco parentesco)
+{
+    this.parentesco = parentesco;
 }
 
 public Candidato getCandidato()
