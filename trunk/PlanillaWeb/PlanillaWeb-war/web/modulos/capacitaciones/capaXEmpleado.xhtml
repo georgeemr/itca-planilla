@@ -147,7 +147,14 @@
                     <f:selectItem itemLabel="Rechazado" itemValue="R"/>
                     <f:selectItem itemLabel="Realizado" itemValue="RE"/>
                 </h:selectOneMenu>
-                
+                <h:outputLabel value="Nota General: " />
+                <p:toolbar id="tlNota" >
+                        <p:toolbarGroup align="left">
+                            <p:inputText value="#{capacitaciones$capaXEmpleado.notaCapacitacion}" id="nota" immediate="true" style=" width: 50px;"/>
+                            <p:commandButton id="cmdGuardarNota" type="push" image="ui-icon ui-icon-disk" action="#{capacitaciones$capaXEmpleado.guardar$notaCap$action()}"
+                                             update="mensajes, nota"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
             </h:panelGrid>
             
         </p:fieldset>
