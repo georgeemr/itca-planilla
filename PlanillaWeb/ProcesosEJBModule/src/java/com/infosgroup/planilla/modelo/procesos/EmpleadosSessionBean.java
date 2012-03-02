@@ -4,20 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.procesos;
 
-import com.infosgroup.planilla.modelo.entidades.Campania;
-import com.infosgroup.planilla.modelo.entidades.DetEvaluacion;
-import com.infosgroup.planilla.modelo.entidades.DetEvaluacionPK;
-import com.infosgroup.planilla.modelo.entidades.Empleados;
-import com.infosgroup.planilla.modelo.entidades.EmpleadosPK;
-import com.infosgroup.planilla.modelo.entidades.Evaluacion;
-import com.infosgroup.planilla.modelo.entidades.Factor;
-import com.infosgroup.planilla.modelo.entidades.Gerencia;
-import com.infosgroup.planilla.modelo.entidades.GerenciaPK;
-import com.infosgroup.planilla.modelo.entidades.Plantilla;
-import com.infosgroup.planilla.modelo.entidades.Puestos;
-import com.infosgroup.planilla.modelo.entidades.Respuesta;
-import com.infosgroup.planilla.modelo.entidades.RespuestaPK;
-import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
+import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
 import com.infosgroup.planilla.modelo.estructuras.HeadCountModel;
 import com.infosgroup.planilla.modelo.estructuras.PreguntaRespuesta;
@@ -194,8 +181,8 @@ public class EmpleadosSessionBean {
     }
 
     @PermitAll
-    public List<Gerencia> listarGerencias() {
-        return gerenciaFacade.findAll();
+    public List<Gerencia> listarGerencias(Cias cias) {
+        return gerenciaFacade.findGerenciasByCias(cias);
     }
 
     @PermitAll
