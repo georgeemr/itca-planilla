@@ -15,7 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CapacitacionAsistencia.findByFecha", query = "SELECT c FROM CapacitacionAsistencia c WHERE c.capacitacionAsistenciaPK.fecha = :fecha"),
     @NamedQuery(name = "CapacitacionAsistencia.findByAsistio", query = "SELECT c FROM CapacitacionAsistencia c WHERE c.asistio = :asistio")})
 public class CapacitacionAsistencia implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CapacitacionAsistenciaPK capacitacionAsistenciaPK;
@@ -47,6 +50,8 @@ public class CapacitacionAsistencia implements Serializable {
         @JoinColumn(name = "COD_CAPACITACION", referencedColumnName = "COD_CAPACITACION", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Capacitacion capacitacion;
+    @Transient
+    private Boolean asiste;
 
     public CapacitacionAsistencia() {
     }
@@ -115,5 +120,20 @@ public class CapacitacionAsistencia implements Serializable {
     public String toString() {
         return "enitdadesplanilla.CapacitacionAsistencia[ capacitacionAsistenciaPK=" + capacitacionAsistenciaPK + " ]";
     }
-    
+
+    @XmlTransient
+    public Boolean getAsiste() {
+        if (asistio.equals("N")) {
+            asiste = false;
+        } else {
+            if (asistio.equals("S")) {
+                asiste = true;
+            }
+        }
+        return asiste;
+    }
+
+    public void setAsiste(Boolean asiste) {
+        this.asiste = asiste;
+    }
 }
