@@ -147,4 +147,14 @@ public class CapacitacionesSessionBean {
     public void guardarAsistencia(CapacitacionAsistencia asis){
         asistenciaFacade.create(asis);
     }
+    
+    @PermitAll
+    public void editarAsistencia(CapacitacionAsistencia asis){
+        asistenciaFacade.edit(asis);
+    }
+    
+    @PermitAll
+    public List<CapacitacionAsistencia> findAsistenciaByDet(Cias cia, Capacitacion cap, Empleados emp){
+        return asistenciaFacade.findAsistenciaByEmpresa(cia, cap, emp);
+    }
 }
