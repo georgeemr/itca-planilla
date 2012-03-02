@@ -272,6 +272,37 @@ public class participantesCapBackendBean extends AbstractJSFPage implements Seri
     public void onRowSelectEmpleado(SelectEvent event) {
         getSessionBeanCAP().setEmpleadoSeleccionado((Empleados) event.getObject());
         nomEmp = getSessionBeanCAP().getEmpleadoSeleccionado().getNombreCompleto();
+        //Guardar Empleado
+        isError = Boolean.FALSE;
+        //validaCampos$action();
+        Short c = getSessionBeanADM().getCompania().getCodCia();
+        if (isError) {
+            return;
+        }
+        CapacitacionXEmpleado detalleCap = new CapacitacionXEmpleado();
+        /* Crear Detalle*/
+        if (getSessionBeanADM().getEstadoAccion().equals(2)) {
+            CapacitacionXEmpleado detalle = new CapacitacionXEmpleado();
+            CapacitacionXEmpleadoPK pk = new CapacitacionXEmpleadoPK();
+            pk.setCodCia(c);
+            Cias ciaCod = getSessionBeanADM().getCompania();
+            Integer cod = capacitacionSessionBean.getMaxCapacitacion(ciaCod);
+            pk.setCodCapacitacion(cod);
+            pk.setCodCapacitacion(getSessionBeanCAP().getCapacitacionSeleccionada().getCapacitacionPK().getCodCapacitacion());
+            pk.setCodEmp(getSessionBeanCAP().getEmpleadoSeleccionado().getEmpleadosPK().getCodEmp());
+            detalle.setCapacitacionXEmpleadoPK(pk);
+            detalle.setEmpleados(getSessionBeanCAP().getEmpleadoSeleccionado());
+            detalle.setNota(BigDecimal.ZERO);
+            try {
+                capacitacionSessionBean.guardarDetalleCapacitacion(detalle);
+                addMessage("Mantenimiento de Detalle de Capacitaciones.", "Datos guardados con éxito", TipoMensaje.INFORMACION);
+                limpiarCampos();
+                listaDetalle = capacitacionSessionBean.findDetByCap(ciaCod, getSessionBeanCAP().getCapacitacionSeleccionada());
+            } catch (Exception e) {
+                addMessage("Mantenimiento de Detalle de Capacitaciones.", "Este participante ya ha sido agregado a esta Capacitación.", TipoMensaje.ERROR);
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     public void onRowSelectDetalle(SelectEvent event) {

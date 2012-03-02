@@ -43,7 +43,7 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
     @EJB
     private CapacitacionesSessionBean capacitacionSessionBean;
     private Boolean isError;
-    private String status;
+    private String status = "G";
     private String nombre;
     private Date fechaInicial;
     private Date fechaFinal;
@@ -255,11 +255,12 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
     }
     
     public void nuevo$vh$action() {
-        setEstadoAccion(0);
+        setEstadoAccion(2);
+        setStatus("G");
     }
 
     public void consultar$vh$action() {
-        setEstadoAccion(2);
+        setEstadoAccion(0);
     }
 
     public void setEstadoAccion(Integer estadoAccion) {
@@ -285,7 +286,7 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
         Capacitacion capacitacion = new Capacitacion();
         //Concurso concurso = new Concurso();
         /* Crear Capacitacion */
-        if (getSessionBeanADM().getEstadoAccion() == null || getSessionBeanADM().getEstadoAccion().equals(0)) {
+        if (getSessionBeanADM().getEstadoAccion().equals(2)) {
             CapacitacionPK pk = new CapacitacionPK();
             pk.setCodCia(c);
             Cias ciaCod = getSessionBeanADM().getCompania();
@@ -304,7 +305,7 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
             capacitacion.setFechaDesde(fechaInicial);
             capacitacion.setFechaHasta(fechaFinal);
             capacitacion.setDuracion(duracion);
-            capacitacion.setImpartidaPor(impartido.toUpperCase());
+            //capacitacion.setImpartidaPor(impartido.toUpperCase());
             capacitacion.setRazon(razon.toUpperCase());
             capacitacion.setCostoRazon(costoRazon);
             try {
