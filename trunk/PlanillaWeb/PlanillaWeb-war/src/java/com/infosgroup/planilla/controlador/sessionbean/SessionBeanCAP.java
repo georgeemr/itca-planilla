@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.controlador.sessionbean;
 
 import com.infosgroup.planilla.modelo.entidades.Capacitacion;
+import com.infosgroup.planilla.modelo.entidades.CapacitacionAsistencia;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionXEmpleado;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.procesos.CapacitacionesSessionBean;
@@ -26,6 +27,7 @@ public class SessionBeanCAP implements Serializable {
     private Capacitacion capacitacionSeleccionada;
     private CapacitacionXEmpleado detalleCapSeleccionada;
     private Empleados empleadoSeleccionado;
+    private CapacitacionAsistencia asistenciaSeleccionada;
 
     public Capacitacion getCapacitacionSeleccionada() {
         return capacitacionSeleccionada;
@@ -49,6 +51,14 @@ public class SessionBeanCAP implements Serializable {
 
     public void setEmpleadoSeleccionado(Empleados empleadoSeleccionado) {
         this.empleadoSeleccionado = empleadoSeleccionado;
+    }
+
+    public CapacitacionAsistencia getAsistenciaSeleccionada() {
+        return asistenciaSeleccionada;
+    }
+
+    public void setAsistenciaSeleccionada(CapacitacionAsistencia asistenciaSeleccionada) {
+        this.asistenciaSeleccionada = asistenciaSeleccionada;
     }
     
     
