@@ -17,7 +17,7 @@ public class PuestoCandidato implements Serializable
 
 private Puestos puesto;
 private Double salarioAspirado;
-private List<EntrevistaPuestoCandidato> entrevistas;
+private List<EntrevistaCandidato> entrevistas;
 
 public Puestos getPuesto()
 {
@@ -39,12 +39,12 @@ public void setSalarioAspirado(Double salarioAspirado)
     this.salarioAspirado = salarioAspirado;
 }
 
-public List<EntrevistaPuestoCandidato> getEntrevistas()
+public List<EntrevistaCandidato> getEntrevistas()
 {
     return entrevistas;
 }
 
-public void setEntrevistas(List<EntrevistaPuestoCandidato> entrevistas)
+public void setEntrevistas(List<EntrevistaCandidato> entrevistas)
 {
     this.entrevistas = entrevistas;
 }

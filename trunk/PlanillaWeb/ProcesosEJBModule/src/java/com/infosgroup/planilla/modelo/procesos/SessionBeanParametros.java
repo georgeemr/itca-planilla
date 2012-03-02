@@ -223,4 +223,10 @@ public TipoSangre findTipoSangreById(String tipoSangreId)
 {
     return tipoSangreFacade.find(tipoSangreId);
 }
+
+@PermitAll
+public Paises findPaisesByid(short paisId)
+{
+    return paisFacade.find(paisId);
+}
 }

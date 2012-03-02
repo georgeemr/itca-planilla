@@ -11,6 +11,7 @@ import com.infosgroup.planilla.modelo.procesos.SessionBeanParametros;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +21,7 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -33,7 +35,6 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
 
 @EJB
 private ReclutamientoSessionBean reclutamientoFacade;
-// = o =
 @EJB
 private SessionBeanParametros sessionBeanParametros;
 // ===========================================================================================================
@@ -44,28 +45,29 @@ private String nombre;
 private String apellido;
 private String apellidoCasada;
 private String sexo;
+private String observaciones;
 // ===========================================================================================================
 // = Generales ===============================================================================================
 // ===========================================================================================================
-private Integer generales$pais;
-private Integer generales$departamento;
-private Integer generales$municipio;
+private String generales$pais;
+private String generales$departamento;
+private String generales$municipio;
 private String generales$telefono;
 private String generales$direccion;
 // = o =
 @NotNull
 private Date generales$fechaNacimiento;
-private Integer generales$paisNacimiento;
-private Integer generales$departamentoNacimiento;
-private Integer generales$municipioNacimiento;
-private Integer generales$paisNacionalidad;
+private String generales$paisNacimiento;
+private String generales$departamentoNacimiento;
+private String generales$municipioNacimiento;
+private String generales$paisNacionalidad;
 private String generales$grupoSanguineo;
 // = o =
 private String generales$dui;
 private String generales$nit;
 private Date generales$fechaExpDui;
-private Integer generales$departamentoExpDui;
-private Integer generales$municipioExpDui;
+private String generales$departamentoExpDui;
+private String generales$municipioExpDui;
 private String generales$licenciaConducir;
 private String generales$pasaporte;
 private String generales$nombreISSS;
@@ -178,9 +180,15 @@ private String puestos$entrevistas$resultado;
 // ===========================================================================================================
 private List<TipoDocumento> listaTipoDocumentos;
 private List<Candidato> listaCandidatos;
-private List<Paises> listaPaises;
-private List<Deptos> listaDepartamentos;
-private List<Municipios> listaMunicipios;
+private List<Paises> paisesSelectItemListModel;
+private List<Deptos> deptosDomicilioSelectItemListModel;
+private List<Municipios> municipiosDomicilioSelectItemListModel;
+private List<Deptos> deptosNacSelectItemListModel;
+private List<Municipios> municipiosNacDomicilioSelectItemListModel;
+private List<Deptos> deptosExpDUISelectItemListModel;
+private List<Municipios> municipiosExpDUISelectItemListModel;
+private List<Deptos> deptosPrepAcadSelectItemListModel;
+//private List<Municipios> municipiosPrepAcadSelectItemListModel;
 private List<TipoSangre> listaTipoSangre;
 private List<NivelAcademico> listaNivelAcademico;
 private List<Profesion> listaProfesiones;
@@ -193,6 +201,86 @@ private List<Idioma> idiomasSelectItemListModel;
 private List<Equipo> equiposSelectItemListModel;
 private List<TipoPrueba> tiposPruebaSelectItemListModel;
 private List<Empleados> empleadosSelectItemListModel;
+
+public List<Deptos> getDeptosDomicilioSelectItemListModel()
+{
+    return deptosDomicilioSelectItemListModel;
+}
+
+public void setDeptosDomicilioSelectItemListModel(List<Deptos> deptosDomicilioSelectItemListModel)
+{
+    this.deptosDomicilioSelectItemListModel = deptosDomicilioSelectItemListModel;
+}
+
+public List<Deptos> getDeptosExpDUISelectItemListModel()
+{
+    return deptosExpDUISelectItemListModel;
+}
+
+public void setDeptosExpDUISelectItemListModel(List<Deptos> deptosExpDUISelectItemListModel)
+{
+    this.deptosExpDUISelectItemListModel = deptosExpDUISelectItemListModel;
+}
+
+public List<Deptos> getDeptosNacSelectItemListModel()
+{
+    return deptosNacSelectItemListModel;
+}
+
+public void setDeptosNacSelectItemListModel(List<Deptos> deptosNacSelectItemListModel)
+{
+    this.deptosNacSelectItemListModel = deptosNacSelectItemListModel;
+}
+
+public List<Municipios> getMunicipiosDomicilioSelectItemListModel()
+{
+    return municipiosDomicilioSelectItemListModel;
+}
+
+public void setMunicipiosDomicilioSelectItemListModel(List<Municipios> municipiosDomicilioSelectItemListModel)
+{
+    this.municipiosDomicilioSelectItemListModel = municipiosDomicilioSelectItemListModel;
+}
+
+public List<Municipios> getMunicipiosExpDUISelectItemListModel()
+{
+    return municipiosExpDUISelectItemListModel;
+}
+
+public void setMunicipiosExpDUISelectItemListModel(List<Municipios> municipiosExpDUISelectItemListModel)
+{
+    this.municipiosExpDUISelectItemListModel = municipiosExpDUISelectItemListModel;
+}
+
+public List<Municipios> getMunicipiosNacDomicilioSelectItemListModel()
+{
+    return municipiosNacDomicilioSelectItemListModel;
+}
+
+public void setMunicipiosNacDomicilioSelectItemListModel(List<Municipios> municipiosNacDomicilioSelectItemListModel)
+{
+    this.municipiosNacDomicilioSelectItemListModel = municipiosNacDomicilioSelectItemListModel;
+}
+
+public List<Paises> getPaisesSelectItemListModel()
+{
+    return paisesSelectItemListModel;
+}
+
+public void setPaisesSelectItemListModel(List<Paises> paisesSelectItemListModel)
+{
+    this.paisesSelectItemListModel = paisesSelectItemListModel;
+}
+
+public List<Deptos> getDeptosPrepAcadSelectItemListModel()
+{
+    return deptosPrepAcadSelectItemListModel;
+}
+
+public void setDeptosPrepAcadSelectItemListModel(List<Deptos> deptosPrepAcadSelectItemListModel)
+{
+    this.deptosPrepAcadSelectItemListModel = deptosPrepAcadSelectItemListModel;
+}
 
 public List<Puestos> getPuestosSelectItemListModel()
 {
@@ -285,9 +373,21 @@ public void init()
 {
     fechaSolicitud = Calendar.getInstance().getTime();
     listaCandidatos = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
-    listaPaises = sessionBeanParametros.getListaPaises();
-    listaDepartamentos = sessionBeanParametros.getListaDepartamentos();
-    listaMunicipios = sessionBeanParametros.getListaMunicipios();
+
+    paisesSelectItemListModel = sessionBeanParametros.getListaPaises();
+
+    deptosDomicilioSelectItemListModel = new ArrayList<Deptos>();
+    municipiosDomicilioSelectItemListModel = new ArrayList<Municipios>();
+
+    deptosNacSelectItemListModel = new ArrayList<Deptos>();
+    municipiosNacDomicilioSelectItemListModel = new ArrayList<Municipios>();
+
+    //deptosExpDUISelectItemListModel = new ArrayList<Deptos>();
+    deptosExpDUISelectItemListModel = sessionBeanParametros.findDepartamentosByPais(sessionBeanParametros.findPaisesByid(new Short("1")));
+    municipiosExpDUISelectItemListModel = new ArrayList<Municipios>();
+
+//    listaDepartamentos = sessionBeanParametros.getListaDepartamentos();
+//    listaMunicipios = sessionBeanParametros.getListaMunicipios();
     listaNivelAcademico = sessionBeanParametros.getListaNivelAcademicos();
     listaTipoSangre = sessionBeanParametros.getListaTipoSangre();
     listaProfesiones = sessionBeanParametros.getListaProfesiones();
@@ -319,48 +419,90 @@ public void init()
     beneficiariosCandidato = new ArrayList<String>();
     equiposCandidato = new ArrayList<EquipoCandidato>();
     pruebasCandidato = new ArrayList<PruebaCandidato>();
-    puestosCandidato = new ArrayList<PuestoCandidato>();
+    entrevistasCandidato = new ArrayList<EntrevistaCandidato>();
 }
 
+// == Acciones ======================================================================================================
 // ==================================================================================================================
 @PermitAll
 public String preparacionAcademica$agregar$action()
 {
-    //String[] paisPKStr = preparacion$pais.split(":");
-    String[] deptoPKStr = preparacion$departamento.split(":");
-    String[] nivelAcademicoPKStr = preparacion$nivelAcademico.split(":");
-    String[] profesionPKStr = preparacion$profesion.split(":");
-
-    boolean hayError = false;
-
-    if ((preparacion$nombreInstitucion == null) || preparacion$nombreInstitucion.trim().isEmpty())
+    try
         {
-        addMessage("Preparacion academica", "Ingrese el nombre de la institucion", TipoMensaje.INFORMACION);
-        hayError = true;
+        String[] deptoPKStr = preparacion$departamento.split(":");
+        String[] nivelAcademicoPKStr = preparacion$nivelAcademico.split(":");
+        String[] profesionPKStr = preparacion$profesion.split(":");
+
+        boolean hayError = false;
+
+        if ((preparacion$nombreInstitucion == null) || preparacion$nombreInstitucion.trim().isEmpty())
+            {
+            addMessage("Preparacion academica", "Ingrese el nombre de la institucion", TipoMensaje.INFORMACION);
+            hayError = true;
+            }
+
+        if (preparacion$anioIngreso == null)
+            {
+            addMessage("Preparacion academica", "Ingrese el año de ingreso", TipoMensaje.INFORMACION);
+            hayError = true;
+            }
+
+        if (preparacion$anioEgreso == null)
+            {
+            addMessage("Preparacion academica", "Ingrese el año de egreso", TipoMensaje.INFORMACION);
+            hayError = true;
+            }
+
+        if ((preparacion$anioIngreso != null) && (preparacion$anioEgreso != null) && (preparacion$anioIngreso > preparacion$anioEgreso))
+            {
+            addMessage("Preparacion academica", "El año de ingreso debe ser menor o igual que el año de egreso", TipoMensaje.INFORMACION);
+            hayError = true;
+            }
+
+        if (hayError)
+            return null;
+
+        DeptosPK deptoPK = new DeptosPK(new Short(deptoPKStr[0]), new Short(deptoPKStr[1]));
+        NivelAcademicoPK nivelAcademicoPK = new NivelAcademicoPK(new Short(nivelAcademicoPKStr[0]), new Short(nivelAcademicoPKStr[1]));
+        ProfesionPK profesionPK = new ProfesionPK(new Short(profesionPKStr[0]), new Short(profesionPKStr[1]));
+
+        PreparacionAcademicaCandidato p = new PreparacionAcademicaCandidato();
+        p.setNombreInstitucion(preparacion$nombreInstitucion);
+        p.setDepartamentoInstitucion(sessionBeanParametros.findDepartamentoById(deptoPK));
+        p.setNivelAcademico(sessionBeanParametros.findNivelAcademicoById(nivelAcademicoPK));
+        p.setProfesion(sessionBeanParametros.findProfesionById(profesionPK));
+        p.setAnioIngreso(preparacion$anioIngreso);
+        p.setAnioEgreso(preparacion$anioEgreso);
+
+        preparacionesAcademicasCandidato.add(p);
         }
-
-    if (hayError)
-        return null;
-
-    DeptosPK deptoPK = new DeptosPK(new Short(deptoPKStr[0]), new Short(deptoPKStr[1]));
-    NivelAcademicoPK nivelAcademicoPK = new NivelAcademicoPK(new Short(nivelAcademicoPKStr[0]), new Short(nivelAcademicoPKStr[1]));
-    ProfesionPK profesionPK = new ProfesionPK(new Short(profesionPKStr[0]), new Short(profesionPKStr[1]));
-
-    PreparacionAcademicaCandidato p = new PreparacionAcademicaCandidato();
-    p.setNombreInstitucion(preparacion$nombreInstitucion);
-    p.setDepartamentoInstitucion(sessionBeanParametros.findDepartamentoById(deptoPK));
-    p.setNivelAcademico(sessionBeanParametros.findNivelAcademicoById(nivelAcademicoPK));
-    p.setProfesion(sessionBeanParametros.findProfesionById(profesionPK));
-    p.setAnioIngreso(preparacion$anioIngreso);
-    p.setAnioEgreso(preparacion$anioEgreso);
-
-    preparacionesAcademicasCandidato.add(p);
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.ERROR_FATAL);
+        }
     return null;
 }
 
 @PermitAll
 public String emergencias$agregarParentesco$action()
 {
+    Boolean hayError = Boolean.FALSE;
+
+    if ((emergencias$nombreContacto == null) || emergencias$nombreContacto.trim().isEmpty())
+        {
+        addMessage("Emergencias", "Ingrese el nombre del contacto", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if ((emergencias$telefonoContacto == null) || emergencias$telefonoContacto.trim().isEmpty())
+        {
+        addMessage("Emergencias", "Ingrese el tel&eacute;fono del contacto", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if (hayError)
+        return null;
+
     String[] parentescoPKStr = emergencias$parentescoContacto.split(":");
     ParentescoPK parentescoPK = new ParentescoPK(new Short(parentescoPKStr[0]), new Short(parentescoPKStr[1]));
 
@@ -375,220 +517,477 @@ public String emergencias$agregarParentesco$action()
 @PermitAll
 public String experienciaLaboral$agregar$action()
 {
-    ExperienciaLaboralCandidato e = new ExperienciaLaboralCandidato();
-    e.setLugar(experiencia$lugarTrabajo);
-    String[] puesto = experiencia$puesto.split(":");
-    PuestosPK puestoPK = new PuestosPK(new Short(puesto[0]), new Short(puesto[1]));
-    e.setPuesto(sessionBeanParametros.findPuestosById(puestoPK));
-    e.setFechaInicio(experiencia$fechaInicio);
-    e.setFechaFin(experiencia$fechaFin);
-    e.setMotivoRetiro(experiencia$motivoRetiro);
-    experienciasLaboralesCandidato.add(e);
+    try
+        {
+        Boolean hayError = Boolean.FALSE;
+
+        if ((experiencia$lugarTrabajo == null) || experiencia$lugarTrabajo.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el nombre del lugar de trabajo", TipoMensaje.ADVERTENCIA);
+            hayError = Boolean.TRUE;
+            }
+
+        if (experiencia$fechaInicio == null)
+            {
+            addMessage("Infosweb RRHH", "Ingrese la fecha de inicio", TipoMensaje.ADVERTENCIA);
+            hayError = Boolean.TRUE;
+            }
+
+        if (experiencia$fechaFin == null)
+            {
+            addMessage("Infosweb RRHH", "Ingrese la fecha de finalizaci&oacute;n", TipoMensaje.ADVERTENCIA);
+            hayError = Boolean.TRUE;
+            }
+
+        if (hayError)
+            return null;
+
+        String[] puestoPKStr = experiencia$puesto.split(":");
+        PuestosPK puestoPK = new PuestosPK(new Short(puestoPKStr[0]), new Short(puestoPKStr[1]));
+
+        ExperienciaLaboralCandidato e = new ExperienciaLaboralCandidato();
+        e.setLugar(experiencia$lugarTrabajo);
+        e.setPuesto(sessionBeanParametros.findPuestosById(puestoPK));
+        e.setFechaInicio(experiencia$fechaInicio);
+        e.setFechaFin(experiencia$fechaFin);
+        e.setMotivoRetiro(experiencia$motivoRetiro);
+        experienciasLaboralesCandidato.add(e);
+        }
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.ERROR_FATAL);
+        }
     return null;
 }
 
 @PermitAll
 public String referenciaLaboral$agregar$action()
 {
-    ReferenciaLaboralCandidato r = new ReferenciaLaboralCandidato();
-    r.setNombre(referencias$rl$nombre);
-    r.setLugarTrabajo(referencias$rl$lugarTrabajo);
-    r.setPuesto(referencias$rl$puesto);
-    r.setTelefono(referencias$rl$telefono);
-    r.setCorreoElectronico(referencias$rl$correoElectronico);
+    try
+        {
+        Boolean hayError = Boolean.FALSE;
 
-    referenciasLaboralesCandidato.add(r);
+        if ((referencias$rl$nombre == null) || referencias$rl$nombre.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el nombre de la referencia", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
 
-    referencias$rl$nombre = null;
-    referencias$rl$lugarTrabajo = null;
-    referencias$rl$puesto = null;
-    referencias$rl$telefono = null;
-    referencias$rl$correoElectronico = null;
+        if ((referencias$rl$lugarTrabajo == null) || referencias$rl$lugarTrabajo.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el nombre del lugar de trabajo", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if ((referencias$rl$puesto == null) || referencias$rl$puesto.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el puesto de trabajo de la referencia", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if ((referencias$rl$telefono == null) || referencias$rl$telefono.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el tel&eacute;fono de la referencia", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if ((referencias$rl$correoElectronico == null) || referencias$rl$correoElectronico.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el correo electr&oacute;nico de la referencia", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (hayError)
+            return null;
+
+        ReferenciaLaboralCandidato r = new ReferenciaLaboralCandidato();
+        r.setNombre(referencias$rl$nombre);
+        r.setLugarTrabajo(referencias$rl$lugarTrabajo);
+        r.setPuesto(referencias$rl$puesto);
+        r.setTelefono(referencias$rl$telefono);
+        r.setCorreoElectronico(referencias$rl$correoElectronico);
+
+        referenciasLaboralesCandidato.add(r);
+
+        referencias$rl$nombre = null;
+        referencias$rl$lugarTrabajo = null;
+        referencias$rl$puesto = null;
+        referencias$rl$telefono = null;
+        referencias$rl$correoElectronico = null;
+        }
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.INFORMACION);
+        }
     return null;
 }
 
 @PermitAll
 public String referenciaPersonal$agregar$action()
 {
-    ReferenciaPersonalCandidato r = new ReferenciaPersonalCandidato();
-    r.setNombre(referencias$rp$nombre);
-    r.setLugarTrabajo(referencias$rp$lugarTrabajo);
-    r.setTiempoConocerle(referencias$rp$tiempoConocerle);
-    r.setTelefono(referencias$rp$telefono);
-    r.setCorreoElectronico(referencias$rp$correoElectronico);
+    try
+        {
+        Boolean hayError = Boolean.FALSE;
 
-    referenciasPersonalesCandidato.add(r);
+        if ((referencias$rp$nombre == null) || referencias$rp$nombre.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el nombre de la referencia", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
 
-    referencias$rp$nombre = null;
-    referencias$rp$lugarTrabajo = null;
-    referencias$rp$tiempoConocerle = 0;
-    referencias$rp$telefono = null;
-    referencias$rp$correoElectronico = null;
+        if ((referencias$rp$lugarTrabajo == null) || referencias$rp$lugarTrabajo.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el nombre del lugar de trabajo", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (referencias$rp$tiempoConocerle == null)
+            {
+            addMessage("Infosweb RRHH", "Ingrese el tiempo (en años) de conocer con la referencia", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if ((referencias$rp$telefono == null) || referencias$rp$telefono.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el tel&eacute;fono de la referencia", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if ((referencias$rp$correoElectronico == null) || referencias$rp$correoElectronico.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el correo electr&oacute;nico de la referencia", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (hayError)
+            return null;
+
+        ReferenciaPersonalCandidato r = new ReferenciaPersonalCandidato();
+        r.setNombre(referencias$rp$nombre);
+        r.setLugarTrabajo(referencias$rp$lugarTrabajo);
+        r.setTiempoConocerle(referencias$rp$tiempoConocerle);
+        r.setTelefono(referencias$rp$telefono);
+        r.setCorreoElectronico(referencias$rp$correoElectronico);
+
+        referenciasPersonalesCandidato.add(r);
+
+        referencias$rp$nombre = null;
+        referencias$rp$lugarTrabajo = null;
+        referencias$rp$tiempoConocerle = 0;
+        referencias$rp$telefono = null;
+        referencias$rp$correoElectronico = null;
+        }
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.ERROR_FATAL);
+        }
     return null;
 }
 
 @PermitAll
 public String documento$agregar$action()
 {
-    String[] documentoPKStr = documentos$tipo.split(":");
-    TipoDocumentoPK tipoDocumentoPK = new TipoDocumentoPK(new Short(documentoPKStr[0]), new Short(documentoPKStr[1]));
+    try
+        {
+        String[] documentoPKStr = documentos$tipo.split(":");
+        TipoDocumentoPK tipoDocumentoPK = new TipoDocumentoPK(new Short(documentoPKStr[0]), new Short(documentoPKStr[1]));
 
-    DocumentoCandidato d = new DocumentoCandidato();
-    d.setTipo(reclutamientoFacade.findTipoDocumentoById(tipoDocumentoPK));
-    d.setNumero(documentos$numero);
+        DocumentoCandidato d = new DocumentoCandidato();
+        d.setTipo(reclutamientoFacade.findTipoDocumentoById(tipoDocumentoPK));
+        d.setNumero(documentos$numero);
 
-    documentosCandidato.add(d);
+        documentosCandidato.add(d);
+        }
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.ERROR_FATAL);
+        }
     return null;
 }
 
 @PermitAll
 public String capacitaciones$agregar$action()
 {
-    String[] capacitacionPKStr = capacitacion$capacitacion.split(":");
-    String[] institucionPKStr = capacitacion$institucion.split(":");
+    try
+        {
+        Boolean hayError = Boolean.TRUE;
 
-    CapacitacionPK capacitacionPK = new CapacitacionPK(new Short(capacitacionPKStr[0]), new Integer(capacitacionPKStr[1]));
-    InstitucionesPK institucionesPK = new InstitucionesPK(new Short(institucionPKStr[0]), new Short(institucionPKStr[1]));
+        if (capacitacion$fecha == null)
+            {
+            addMessage("Infosweb RRHH", "Ingrese la fecha de la capacitaci&oacute;n", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
 
-    CapacitacionCandidato c = new CapacitacionCandidato();
-    c.setCapacitacion(sessionBeanParametros.findCapacitacionById(capacitacionPK));
-    c.setInstitucion(sessionBeanParametros.findInstitucionById(institucionesPK));
-    c.setDescripcion(capacitacion$descripcion);
-    c.setFecha(capacitacion$fecha);
+        if (hayError)
+            return null;
 
-    capacitacionesCandidato.add(c);
+        String[] capacitacionPKStr = capacitacion$capacitacion.split(":");
+        String[] institucionPKStr = capacitacion$institucion.split(":");
 
-    capacitacion$capacitacion = null;
-    capacitacion$descripcion = null;
-    capacitacion$institucion = null;
-    capacitacion$fecha = null;
+        CapacitacionPK capacitacionPK = new CapacitacionPK(new Short(capacitacionPKStr[0]), new Integer(capacitacionPKStr[1]));
+        InstitucionesPK institucionesPK = new InstitucionesPK(new Short(institucionPKStr[0]), new Short(institucionPKStr[1]));
+
+        CapacitacionCandidato c = new CapacitacionCandidato();
+        c.setCapacitacion(sessionBeanParametros.findCapacitacionById(capacitacionPK));
+        c.setInstitucion(sessionBeanParametros.findInstitucionById(institucionesPK));
+        c.setDescripcion(capacitacion$descripcion);
+        c.setFecha(capacitacion$fecha);
+
+        capacitacionesCandidato.add(c);
+
+        capacitacion$capacitacion = null;
+        capacitacion$descripcion = null;
+        capacitacion$institucion = null;
+        capacitacion$fecha = null;
+        }
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.ERROR_FATAL);
+        }
     return null;
 }
 
 @PermitAll
 public String dependientes$agregar$action()
 {
-    String[] parentescoPKStr = dependientes$parentesco.split(":");
-    ParentescoPK parentescoPK = new ParentescoPK(new Short(parentescoPKStr[0]), new Short(parentescoPKStr[1]));
-    DependienteCandidato d = new DependienteCandidato();
-    d.setNombre(dependientes$nombre);
-    d.setFechaNacimiento(dependientes$fechaNacimiento);
-    d.setParentesco(sessionBeanParametros.findParentescoById(parentescoPK));
-    dependientesCandidato.add(d);
+    try
+        {
+        Boolean hayError = Boolean.FALSE;
 
-    dependientes$parentesco = null;
-    dependientes$nombre = null;
-    dependientes$fechaNacimiento = null;
+        if ((dependientes$nombre == null) || dependientes$nombre.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el nombre del dependiente", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
 
+        if ((dependientes$fechaNacimiento == null))
+            {
+            addMessage("Infosweb RRHH", "Ingrese fecha de nacimiento del dependiente", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (hayError)
+            return null;
+
+        String[] parentescoPKStr = dependientes$parentesco.split(":");
+        ParentescoPK parentescoPK = new ParentescoPK(new Short(parentescoPKStr[0]), new Short(parentescoPKStr[1]));
+        DependienteCandidato d = new DependienteCandidato();
+        d.setNombre(dependientes$nombre);
+        d.setFechaNacimiento(dependientes$fechaNacimiento);
+        d.setParentesco(sessionBeanParametros.findParentescoById(parentescoPK));
+        dependientesCandidato.add(d);
+
+        dependientes$parentesco = null;
+        dependientes$nombre = null;
+        dependientes$fechaNacimiento = null;
+        }
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.INFORMACION);
+        }
     return null;
 }
 
 @PermitAll
 public String idiomas$agregar$action()
 {
-    String[] idiomaPKStr = idiomas$idioma.split(":");
-    IdiomaPK idiomaPK = new IdiomaPK(new Short(idiomaPKStr[0]), new Integer(idiomaPKStr[1]));
-    IdiomaCandidato i = new IdiomaCandidato();
-    i.setIdioma(sessionBeanParametros.findIdiomaById(idiomaPK));
-    i.setLee(idiomas$lee);
-    i.setEscribe(idiomas$escribe);
-    i.setNivel(idiomas$nivel);
-    idiomasCandidato.add(i);
+    try
+        {
+        String[] idiomaPKStr = idiomas$idioma.split(":");
+        IdiomaPK idiomaPK = new IdiomaPK(new Short(idiomaPKStr[0]), new Integer(idiomaPKStr[1]));
+        IdiomaCandidato i = new IdiomaCandidato();
+        i.setIdioma(sessionBeanParametros.findIdiomaById(idiomaPK));
+        i.setLee(idiomas$lee);
+        i.setEscribe(idiomas$escribe);
+        i.setNivel(idiomas$nivel);
+        idiomasCandidato.add(i);
+        }
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.INFORMACION);
+        }
     return null;
 }
 
 @PermitAll
 public String beneficiarios$agregar$action()
 {
-    if ((beneficiarios$nombre == null) || beneficiarios$nombre.isEmpty())
+    try
         {
-        addMessage("Infosweb RRHH", "Ingrese el nombre del beneficiario", TipoMensaje.ADVERTENCIA);
-        return null;
+        Boolean hayError = Boolean.FALSE;
+
+        if ((beneficiarios$nombre == null) || beneficiarios$nombre.isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el nombre del beneficiario", TipoMensaje.ADVERTENCIA);
+            hayError = Boolean.TRUE;
+            }
+
+        if (hayError)
+            return null;
+
+        beneficiariosCandidato.add(beneficiarios$nombre);
+        beneficiarios$nombre = null;
         }
-    beneficiariosCandidato.add(beneficiarios$nombre);
-    beneficiarios$nombre = null;
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.INFORMACION);
+        }
     return null;
 }
 
 @PermitAll
 public String equipos$agregar$action()
 {
-    String[] equipoPKStr = equipos$equipo.split(":");
-    EquipoPK equipoPK = new EquipoPK(new Short(equipoPKStr[0]), new Short(equipoPKStr[1]));
+    try
+        {
+        String[] equipoPKStr = equipos$equipo.split(":");
+        EquipoPK equipoPK = new EquipoPK(new Short(equipoPKStr[0]), new Short(equipoPKStr[1]));
 
-    EquipoCandidato e = new EquipoCandidato();
-    e.setEquipo(sessionBeanParametros.findEquipoById(equipoPK));
-    e.setEstado(equipos$estado);
-    equiposCandidato.add(e);
+        EquipoCandidato e = new EquipoCandidato();
+        e.setEquipo(sessionBeanParametros.findEquipoById(equipoPK));
+        e.setEstado(equipos$estado);
+        equiposCandidato.add(e);
+        }
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.INFORMACION);
+        }
     return null;
 }
 
 @PermitAll
 public String pruebas$agregar$action()
 {
-    String[] tipoPruebaPKStr = pruebas$tipoPrueba.split(":");
-    TipoPruebaPK tipoPruebaPK = new TipoPruebaPK(new Short(tipoPruebaPKStr[0]), new Short(tipoPruebaPKStr[1]));
+    try
+        {
+        Boolean hayError = Boolean.FALSE;
 
-    PruebaCandidato p = new PruebaCandidato();
-    p.setTipoPrueba(sessionBeanParametros.findTipoPruebaById(tipoPruebaPK));
-    p.setResultado(pruebas$resultado);
-    p.setNota(pruebas$nota);
-    p.setCosto(pruebas$costo);
-    p.setFecha(pruebas$fecha);
+        if ((pruebas$resultado == null) || pruebas$resultado.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el resultado de la prueba", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
 
-    pruebasCandidato.add(p);
+        if (pruebas$nota == null)
+            {
+            addMessage("Infosweb RRHH", "Ingrese la nota de la prueba", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (pruebas$costo == null)
+            {
+            addMessage("Infosweb RRHH", "Ingrese el costo de la prueba", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (pruebas$fecha == null)
+            {
+            addMessage("Infosweb RRHH", "Ingrese la fecha de la prueba", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (hayError)
+            return null;
+
+        String[] tipoPruebaPKStr = pruebas$tipoPrueba.split(":");
+        TipoPruebaPK tipoPruebaPK = new TipoPruebaPK(new Short(tipoPruebaPKStr[0]), new Short(tipoPruebaPKStr[1]));
+
+        PruebaCandidato p = new PruebaCandidato();
+        p.setTipoPrueba(sessionBeanParametros.findTipoPruebaById(tipoPruebaPK));
+        p.setResultado(pruebas$resultado);
+        p.setNota(pruebas$nota);
+        p.setCosto(pruebas$costo);
+        p.setFecha(pruebas$fecha);
+
+        pruebasCandidato.add(p);
+
+        pruebas$resultado = null;
+        pruebas$nota = null;
+        pruebas$costo = null;
+        pruebas$fecha = null;
+        }
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.INFORMACION);
+        }
     return null;
 }
 
+/* @PermitAll
+ public String puestos$agregar$action()
+ {
+ try
+ {
+
+
+ PuestoCandidato p = new PuestoCandidato();
+ //p.setPuesto();
+ p.setSalarioAspirado(puestos$salarioAspirado);
+ p.setEntrevistas(new ArrayList<EntrevistaCandidato>());
+
+ puestosCandidato.add(p);
+ }
+ catch (Exception excpt)
+ {
+ addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.INFORMACION);
+ }
+ return null;
+ } */
 @PermitAll
-public String puestos$agregar$action()
+public String entrevistas$agregar$action()
 {
-    String[] puestoPKStr = puestos$puesto.split(":");
-    PuestosPK puestoPK = new PuestosPK(new Short(puestoPKStr[0]), new Short(puestoPKStr[1]));
+    try
+        {
+        Boolean hayError = Boolean.FALSE;
 
-    PuestoCandidato p = new PuestoCandidato();
-    p.setPuesto(sessionBeanParametros.findPuestosById(puestoPK));
-    p.setSalarioAspirado(puestos$salarioAspirado);
-    p.setEntrevistas(new ArrayList<EntrevistaPuestoCandidato>());
+        if (puestos$salarioAspirado == null)
+            {
+            addMessage("Infosweb RRHH", "Ingrese el salario aspirado", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
 
-    puestosCandidato.add(p);
-    return null;
-}
+        if (puestos$entrevistas$fecha == null)
+            {
+            addMessage("Infosweb RRHH", "Ingrese la fecha de la entrevista", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
 
-@PermitAll
-public String puestos$entrevistas$agregar$action()
-{
-    String[] empleadoPKStr = puestos$entrevistas$entrevistador.split(":");
-    EmpleadosPK empleadoPK = new EmpleadosPK(new Short(empleadoPKStr[0]), new Integer(empleadoPKStr[1]));
+        if (hayError)
+            return null;
 
-    EntrevistaPuestoCandidato e = new EntrevistaPuestoCandidato();
-    e.setFecha(puestos$entrevistas$fecha);
-    e.setEmpleado(sessionBeanParametros.findEmpleadoById(empleadoPK));
-    e.setDescripcion(puestos$entrevistas$descripcion);
-    e.setResultado(puestos$entrevistas$resultado);
+        String[] puestoPKStr = puestos$puesto.split(":");
+        PuestosPK puestoPK = new PuestosPK(new Short(puestoPKStr[0]), new Short(puestoPKStr[1]));
 
-    if (!puestosCandidato.isEmpty())
-        puestosCandidato.get(puestosCandidato.size() - 1).getEntrevistas().add(e);
+        String[] empleadoPKStr = puestos$entrevistas$entrevistador.split(":");
+        EmpleadosPK empleadoPK = new EmpleadosPK(new Short(empleadoPKStr[0]), new Integer(empleadoPKStr[1]));
+
+        EntrevistaCandidato e = new EntrevistaCandidato();
+        e.setPuesto(sessionBeanParametros.findPuestosById(puestoPK));
+        e.setSalarioAspirado(puestos$salarioAspirado);
+        e.setFecha(puestos$entrevistas$fecha);
+        e.setEntrevistador(sessionBeanParametros.findEmpleadoById(empleadoPK));
+        e.setDescripcion(puestos$entrevistas$descripcion);
+        e.setResultado(puestos$entrevistas$resultado);
+
+        entrevistasCandidato.add(e);
+        }
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.INFORMACION);
+        }
     return null;
 }
 
 @PermitAll
 public String guardar$action()
 {
-    Short c = getSessionBeanADM().getCompania().getCodCia();
-
-    CandidatoPK pkCandidato = new CandidatoPK();
-    Candidato candidato = new Candidato();
-
-    //GregorianCalendar calendarioHoy = (GregorianCalendar) GregorianCalendar.getInstance();
-    //GregorianCalendar calendarioNacimiento = (GregorianCalendar) GregorianCalendar.getInstance();
-    //calendarioNacimiento.setTime(generales$fechaNacimiento);
-
-    //Integer anioHoy = calendarioHoy.get(GregorianCalendar.YEAR);
-    //Integer nac = calendarioNacimiento.get(GregorianCalendar.YEAR);
-    //Integer edad = anioHoy - nac;
     try
         {
+        Short c = getSessionBeanADM().getCompania().getCodCia();
+
+        CandidatoPK pkCandidato = new CandidatoPK();
+        Candidato candidato = new Candidato();
+
         pkCandidato.setCodCia(c);
         Integer i = reclutamientoFacade.getMaxCandidato(getSessionBeanADM().getCompania());
         pkCandidato.setCodCandidato(i);
@@ -629,7 +1028,7 @@ public String guardar$action()
         candidato.setTrabajoConyuge(emergencias$trabajo);
         candidato.setTelefono(emergencias$telefono);
 
-        //candidato.setObservacion(observaciones);
+        candidato.setObservacion(observaciones);
         candidato.setEstado("A");
         reclutamientoFacade.guardarCandidato(candidato);
 
@@ -688,7 +1087,7 @@ public String guardar$action()
             referencia.setTipoReferencia('L');
             referencia.setNomReferencia(referenciaLaboral.getNombre());
             referencia.setLugar(referenciaLaboral.getLugarTrabajo());
-            //referencia.setEmail(referenciaLaboral.getCorreoElectronico())
+            referencia.setEmail(referenciaLaboral.getCorreoElectronico());
             referencia.setTelefono(referenciaLaboral.getTelefono());
 
             reclutamientoFacade.crearRererencia(referencia);
@@ -708,7 +1107,7 @@ public String guardar$action()
             referencia.setNomReferencia(referenciaPersonal.getNombre());
             referencia.setLugar(referenciaPersonal.getLugarTrabajo());
             referencia.setTiempo(referenciaPersonal.getTiempoConocerle().toString());
-            //referencia.setEmail(referenciaLaboral.getCorreoElectronico())
+            referencia.setEmail(referenciaPersonal.getCorreoElectronico());
             referencia.setTelefono(referenciaPersonal.getTelefono());
 
             reclutamientoFacade.crearRererencia(referencia);
@@ -727,7 +1126,7 @@ public String guardar$action()
             d.setTipoDocumento(documentoCandidato.getTipo());
             d.setObservacion((documentoCandidato.getNumero() != null) ? documentoCandidato.getNumero().toString() : "");
 
-            reclutamientoFacade.crearDocumentoCandidato(d);
+            reclutamientoFacade.crearDocumentoPresentado(d);
             }
 
         for (CapacitacionCandidato capacitacionCandidato : capacitacionesCandidato)
@@ -757,7 +1156,7 @@ public String guardar$action()
             dependienteXCandidatoPK.setCodDependiente(reclutamientoFacade.getMaxBeneficiarioXCandidato(candidato));
 
             DependienteXCandidato dependienteXCandidato = new DependienteXCandidato();
-            dependienteXCandidato.setDependienteXCandidatoPK(dependienteXCandidatoPK);            
+            dependienteXCandidato.setDependienteXCandidatoPK(dependienteXCandidatoPK);
             dependienteXCandidato.setCandidato(candidato);
             dependienteXCandidato.setCodParentesco(dependienteCandidato.getParentesco().getParentescoPK().getCodParentesco());
             dependienteXCandidato.setFechaNacimiento(dependienteCandidato.getFechaNacimiento());
@@ -796,26 +1195,47 @@ public String guardar$action()
             reclutamientoFacade.crearBeneficiarioXCandidato(beneficiarioXCandidato);
             }
 
-        // Equipos de oficina
         for (EquipoCandidato equipoCandidato : equiposCandidato)
             {
             candidato.getEquipoList().add(equipoCandidato.getEquipo());
             }
         reclutamientoFacade.editarCandidato(candidato);
 
-        // Pruebas
         for (PruebaCandidato pruebaCandidato : pruebasCandidato)
             {
+            TipoPruebaXCandidatoPK tipoPruebaXCandidatoPK = new TipoPruebaXCandidatoPK();
+            tipoPruebaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            tipoPruebaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            tipoPruebaXCandidatoPK.setCodTipoPrueba(reclutamientoFacade.getMaxTipoPruebaXCandidato(candidato));
+
+            TipoPruebaXCandidato tipoPruebaXCandidato = new TipoPruebaXCandidato(tipoPruebaXCandidatoPK);
+            tipoPruebaXCandidato.setCandidato(candidato);
+            tipoPruebaXCandidato.setTipoPrueba(pruebaCandidato.getTipoPrueba());
+            tipoPruebaXCandidato.setFecha(pruebaCandidato.getFecha());
+            tipoPruebaXCandidato.setCosto(new BigDecimal(pruebaCandidato.getCosto()));
+            tipoPruebaXCandidato.setNota(new BigDecimal(pruebaCandidato.getNota()));
+            tipoPruebaXCandidato.setResultado(tipoPruebaXCandidato.getResultado());
+
+            reclutamientoFacade.crearTipoPruebaXCandidatoFacade(tipoPruebaXCandidato);
             }
 
-        // Puestos/Entrevistas
-        for (PuestoCandidato puestoCandidato : puestosCandidato)
+        for (EntrevistaCandidato entrevistaCandidato : entrevistasCandidato)
             {
             EntrevistaXCandidatoPK entrevistaXCandidatoPK = new EntrevistaXCandidatoPK();
             entrevistaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-
+            entrevistaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            entrevistaXCandidatoPK.setCodPuesto(entrevistaCandidato.getPuesto().getPuestosPK().getCodPuesto());
+            entrevistaXCandidatoPK.setCodEntrevista(reclutamientoFacade.getMaxEntrevistaXCandidato(entrevistaCandidato.getPuesto(), candidato));
 
             EntrevistaXCandidato entrevistaXCandidato = new EntrevistaXCandidato(entrevistaXCandidatoPK);
+            entrevistaXCandidato.setEntrevistaXCandidatoPK(entrevistaXCandidatoPK);
+            entrevistaXCandidato.setCandidato(candidato);
+            entrevistaXCandidato.setPuesto(entrevistaCandidato.getPuesto());
+            entrevistaXCandidato.setEmpleado(entrevistaCandidato.getEntrevistador());
+            entrevistaXCandidato.setDescripcion(entrevistaCandidato.getDescripcion());
+            entrevistaXCandidato.setResultado(entrevistaCandidato.getResultado());
+
+            reclutamientoFacade.crearEntrevistaXCandidato(entrevistaXCandidato);
             }
 
         addMessage("Registro de Candidatos", "Datos guardados satisfactoriamente.", TipoMensaje.INFORMACION);
@@ -823,7 +1243,7 @@ public String guardar$action()
     catch (Exception e)
         {
         e.printStackTrace(System.err);
-        addMessage("Registro de Candidatos", "El candidato ingresado ya existe.", TipoMensaje.ERROR_FATAL);
+        addMessage("Registro de Candidatos", e.toString(), TipoMensaje.ERROR_FATAL);
         }
     return null;
 }
@@ -1130,32 +1550,32 @@ public void setFechaSolicitud(Date fechaSolicitud)
     this.fechaSolicitud = fechaSolicitud;
 }
 
-public Integer getGenerales$departamento()
+public String getGenerales$departamento()
 {
     return generales$departamento;
 }
 
-public void setGenerales$departamento(Integer generales$departamento)
+public void setGenerales$departamento(String generales$departamento)
 {
     this.generales$departamento = generales$departamento;
 }
 
-public Integer getGenerales$departamentoExpDui()
+public String getGenerales$departamentoExpDui()
 {
     return generales$departamentoExpDui;
 }
 
-public void setGenerales$departamentoExpDui(Integer generales$departamentoExpDui)
+public void setGenerales$departamentoExpDui(String generales$departamentoExpDui)
 {
     this.generales$departamentoExpDui = generales$departamentoExpDui;
 }
 
-public Integer getGenerales$departamentoNacimiento()
+public String getGenerales$departamentoNacimiento()
 {
     return generales$departamentoNacimiento;
 }
 
-public void setGenerales$departamentoNacimiento(Integer generales$departamentoNacimiento)
+public void setGenerales$departamentoNacimiento(String generales$departamentoNacimiento)
 {
     this.generales$departamentoNacimiento = generales$departamentoNacimiento;
 }
@@ -1220,32 +1640,32 @@ public void setGenerales$licenciaConducir(String generales$licenciaConducir)
     this.generales$licenciaConducir = generales$licenciaConducir;
 }
 
-public Integer getGenerales$municipio()
+public String getGenerales$municipio()
 {
     return generales$municipio;
 }
 
-public void setGenerales$municipio(Integer generales$municipio)
+public void setGenerales$municipio(String generales$municipio)
 {
     this.generales$municipio = generales$municipio;
 }
 
-public Integer getGenerales$municipioExpDui()
+public String getGenerales$municipioExpDui()
 {
     return generales$municipioExpDui;
 }
 
-public void setGenerales$municipioExpDui(Integer generales$municipioExpDui)
+public void setGenerales$municipioExpDui(String generales$municipioExpDui)
 {
     this.generales$municipioExpDui = generales$municipioExpDui;
 }
 
-public Integer getGenerales$municipioNacimiento()
+public String getGenerales$municipioNacimiento()
 {
     return generales$municipioNacimiento;
 }
 
-public void setGenerales$municipioNacimiento(Integer generales$municipioNacimiento)
+public void setGenerales$municipioNacimiento(String generales$municipioNacimiento)
 {
     this.generales$municipioNacimiento = generales$municipioNacimiento;
 }
@@ -1280,32 +1700,32 @@ public void setGenerales$nombreNIT(String generales$nombreNIT)
     this.generales$nombreNIT = generales$nombreNIT;
 }
 
-public Integer getGenerales$pais()
+public String getGenerales$pais()
 {
     return generales$pais;
 }
 
-public void setGenerales$pais(Integer generales$pais)
+public void setGenerales$pais(String generales$pais)
 {
     this.generales$pais = generales$pais;
 }
 
-public Integer getGenerales$paisNacimiento()
+public String getGenerales$paisNacimiento()
 {
     return generales$paisNacimiento;
 }
 
-public void setGenerales$paisNacimiento(Integer generales$paisNacimiento)
+public void setGenerales$paisNacimiento(String generales$paisNacimiento)
 {
     this.generales$paisNacimiento = generales$paisNacimiento;
 }
 
-public Integer getGenerales$paisNacionalidad()
+public String getGenerales$paisNacionalidad()
 {
     return generales$paisNacionalidad;
 }
 
-public void setGenerales$paisNacionalidad(Integer generales$paisNacionalidad)
+public void setGenerales$paisNacionalidad(String generales$paisNacionalidad)
 {
     this.generales$paisNacionalidad = generales$paisNacionalidad;
 }
@@ -1730,6 +2150,16 @@ public void setSexo(String sexo)
     this.sexo = sexo;
 }
 
+public String getObservaciones()
+{
+    return observaciones;
+}
+
+public void setObservaciones(String observaciones)
+{
+    this.observaciones = observaciones;
+}
+
 // ==================================================================================================================
 // ==================================================================================================================
 // ==================================================================================================================
@@ -1743,26 +2173,25 @@ public void setListaCandidatos(List<Candidato> listaCandidatos)
     this.listaCandidatos = listaCandidatos;
 }
 
-public List<Deptos> getListaDepartamentos()
-{
-    return listaDepartamentos;
-}
-
-public void setListaDepartamentos(List<Deptos> listaDepartamentos)
-{
-    this.listaDepartamentos = listaDepartamentos;
-}
-
-public List<Municipios> getListaMunicipios()
-{
-    return listaMunicipios;
-}
-
-public void setListaMunicipios(List<Municipios> listaMunicipios)
-{
-    this.listaMunicipios = listaMunicipios;
-}
-
+//public List<Deptos> getListaDepartamentos()
+//{
+//    return listaDepartamentos;
+//}
+//
+//public void setListaDepartamentos(List<Deptos> listaDepartamentos)
+//{
+//    this.listaDepartamentos = listaDepartamentos;
+//}
+//
+//public List<Municipios> getListaMunicipios()
+//{
+//    return listaMunicipios;
+//}
+//
+//public void setListaMunicipios(List<Municipios> listaMunicipios)
+//{
+//    this.listaMunicipios = listaMunicipios;
+//}
 public List<NivelAcademico> getListaNivelAcademico()
 {
     return listaNivelAcademico;
@@ -1773,16 +2202,15 @@ public void setListaNivelAcademico(List<NivelAcademico> listaNivelAcademico)
     this.listaNivelAcademico = listaNivelAcademico;
 }
 
-public List<Paises> getListaPaises()
-{
-    return listaPaises;
-}
-
-public void setListaPaises(List<Paises> listaPaises)
-{
-    this.listaPaises = listaPaises;
-}
-
+//public List<Paises> getListaPaises()
+//{
+//    return listaPaises;
+//}
+//
+//public void setListaPaises(List<Paises> listaPaises)
+//{
+//    this.listaPaises = listaPaises;
+//}
 public List<Profesion> getListaProfesiones()
 {
     return listaProfesiones;
@@ -1827,7 +2255,7 @@ private List<IdiomaCandidato> idiomasCandidato;
 private List<String> beneficiariosCandidato;
 private List<EquipoCandidato> equiposCandidato;
 private List<PruebaCandidato> pruebasCandidato;
-private List<PuestoCandidato> puestosCandidato;
+private List<EntrevistaCandidato> entrevistasCandidato;
 //=======================================
 public List<PreparacionAcademicaCandidato> getPreparacionesAcademicasCandidato()
 {
@@ -1949,13 +2377,61 @@ public void setPruebasCandidato(List<PruebaCandidato> pruebasCandidato)
     this.pruebasCandidato = pruebasCandidato;
 }
 
-public List<PuestoCandidato> getPuestosCandidato()
+public List<EntrevistaCandidato> getEntrevistasCandidato()
 {
-    return puestosCandidato;
+    return entrevistasCandidato;
 }
 
-public void setPuestosCandidato(List<PuestoCandidato> puestosCandidato)
+public void setEntrevistasCandidato(List<EntrevistaCandidato> entrevistasCandidato)
 {
-    this.puestosCandidato = puestosCandidato;
+    this.entrevistasCandidato = entrevistasCandidato;
+}
+
+// ============================================================================================
+public void paisDomicilio_ajaxListener(AjaxBehaviorEvent event)
+{
+    Paises pais = sessionBeanParametros.findPaisesByid(new Short(generales$pais));
+    deptosDomicilioSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
+    municipiosDomicilioSelectItemListModel = new ArrayList<Municipios>();
+}
+
+public void deptoDomicilio_ajaxListener(AjaxBehaviorEvent event)
+{
+    String[] deptoDomicilioPKStr = generales$departamento.split(":");
+    DeptosPK departamentoPK = new DeptosPK(new Short(deptoDomicilioPKStr[0]), new Short(deptoDomicilioPKStr[1]));
+    Deptos departamento = sessionBeanParametros.findDepartamentoById(departamentoPK);
+    municipiosDomicilioSelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(departamento);
+}
+
+// ============================================================================================
+public void paisNacimiento_ajaxListener(AjaxBehaviorEvent event)
+{
+    Paises pais = sessionBeanParametros.findPaisesByid(new Short(generales$paisNacimiento));
+    deptosNacSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
+    municipiosNacDomicilioSelectItemListModel = new ArrayList<Municipios>();
+}
+
+public void deptoNacimiento_ajaxListener(AjaxBehaviorEvent event)
+{
+    String[] deptoDomicilioPKStr = generales$departamentoNacimiento.split(":");
+    DeptosPK departamentoPK = new DeptosPK(new Short(deptoDomicilioPKStr[0]), new Short(deptoDomicilioPKStr[1]));
+    Deptos departamento = sessionBeanParametros.findDepartamentoById(departamentoPK);
+    municipiosNacDomicilioSelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(departamento);
+}
+
+// ============================================================================================
+public void deptoExpDUI_ajaxListener(AjaxBehaviorEvent event)
+{
+    String[] deptoDomicilioPKStr = generales$departamentoExpDui.split(":");
+    DeptosPK departamentoPK = new DeptosPK(new Short(deptoDomicilioPKStr[0]), new Short(deptoDomicilioPKStr[1]));
+    Deptos departamento = sessionBeanParametros.findDepartamentoById(departamentoPK);
+    municipiosExpDUISelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(departamento);
+}
+// ============================================================================================
+
+public void paisPrepAcad_ajaxListener(AjaxBehaviorEvent event)
+{
+    Paises pais = sessionBeanParametros.findPaisesByid(new Short(preparacion$pais));
+    deptosPrepAcadSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
 }
 }
