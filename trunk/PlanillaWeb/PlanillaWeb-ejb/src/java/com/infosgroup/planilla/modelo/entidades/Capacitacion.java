@@ -60,8 +60,6 @@ public class Capacitacion implements Serializable {
     @NotNull
     @Column(name = "DURACION", nullable = false, precision = 5, scale = 2)
     private BigDecimal duracion;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "IMPARTIDA_POR", nullable = false, length = 100)
     private String impartidaPor;
