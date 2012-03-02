@@ -56,18 +56,10 @@
 
     <ui:define name="contenido">       
 
-        <p:panel id="panelInformacion" style="border:none;" >
+        <p:panel id="panelInformacion" style="border:none;" rendered="#{(SessionBeanADM.estadoAccion eq 2)}" >
             <div>
-                <div style="float:left;width: 30%;" >
-                    <h:panelGrid columns="4" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }"  >
-                        <p:graphicImage value="../../resources/imagenes/64/info.png" />
-                        <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
-                        <h:outputLabel value="*" styleClass="requerido"/>                                
-                        <h:outputLabel value=" son requeridos." style="font-style: italic;" />
-                    </h:panelGrid>
-                </div>    
-                <div style="float:left; width: 70%;"  >
-                    <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" 
+                <div style="float:left; width: 100%;"  >
+                    <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 2)}" 
                                styleClass="toolbarUsuario" >
                         <p:toolbarGroup align="right"  >
                             <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{capacitaciones$capacitaciones.guardar$cap$action()}"
@@ -79,45 +71,44 @@
             </div>
         </p:panel>
 
-        <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" />
-
-        <p:fieldset legend="Datos de la capacitaci&#243;n" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" >
-            <p:spacer height="20" />
+        <p:fieldset legend="Capacitaci&#243;n" rendered="#{(SessionBeanADM.estadoAccion eq 2)}" >
             <h:panelGrid columns="4">
                 <h:outputLabel value="Instituci&#243;n: " />
-                <h:selectOneMenu id="lstInst" value="#{capacitaciones$capacitaciones.inst}" style="height: 25px;padding-top: 3px; width: 300px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
+                <h:selectOneMenu id="lstInst" value="#{capacitaciones$capacitaciones.inst}" style="height: 25px;padding-top: 3px; width: 300px;" required="true" requiredMessage="La institución es un campo obligatorio"  >
                     <f:selectItem itemLabel="Seleccione" itemValue=""/>
                     <f:selectItems value="#{capacitaciones$capacitaciones.listaInst}" var="inst" itemValue="#{inst.institucionesPK.codInsti}"  itemLabel="#{inst.desInsti}"/>
                 </h:selectOneMenu>
-                <p:spacer/>
-                <p:spacer/>
+                <p:spacer rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
+                <p:spacer rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
                 <h:outputLabel value="Nombre: " />
                 <p:inputText id="Nombre" value="#{capacitaciones$capacitaciones.nombre}" maxlength="200" required="true" style=" width: 300px;"
-                             requiredMessage="El Nombre del Concurso es un campo obligatorio" />
-                <p:spacer/>
-                <p:spacer/>
+                             requiredMessage="El Nombre la Capacitación es un campo obligatorio" />
+                <p:spacer rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
+                <p:spacer rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
                 <h:outputLabel value="Area: " />
-                <h:selectOneMenu id="lstArea" value="#{capacitaciones$capacitaciones.codArea}"  style="height: 25px;padding-top: 3px; width: 300px;">
+                <h:selectOneMenu id="lstArea" value="#{capacitaciones$capacitaciones.codArea}"  style="height: 25px;padding-top: 3px; width: 300px;"
+                                 required="true" requiredMessage="El Area es un campo obligatorio">
                     <f:ajax render="lstTema" event="change" execute="lstArea" />
                     <f:selectItem itemLabel="Seleccione" itemValue="-1"/>
                     <f:selectItems value="#{capacitaciones$capacitaciones.listaArea}" var="area" itemValue="#{area.capacitacionAreasPK.codArea}"  itemLabel="#{area.nomArea}"/>
                 </h:selectOneMenu>
-                <p:spacer/>
-                <p:spacer/>
+                <p:spacer rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
+                <p:spacer rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
                 <h:outputLabel value="Tema: " />
-                <h:selectOneMenu id="lstTema" value="#{capacitaciones$capacitaciones.codTema}"  style="height: 25px;padding-top: 3px; width: 300px;" >
+                <h:selectOneMenu id="lstTema" value="#{capacitaciones$capacitaciones.codTema}"  style="height: 25px;padding-top: 3px; width: 300px;"
+                                 required="true" requiredMessage="El Tema es un campo obligatorio">
                     <f:selectItem itemLabel="Seleccione" itemValue=""/>
                     <f:selectItems value="#{capacitaciones$capacitaciones.listaTemas}" var="tema" itemValue="#{tema.capacitacionTemasPK.codTema}"  itemLabel="#{tema.nomTema}"/>
                 </h:selectOneMenu>
-                <p:spacer/>
-                <p:spacer/>
+                <p:spacer rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
+                <p:spacer rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
                 <h:outputLabel value="Capacitador: " />
-                <h:selectOneMenu id="lstCapacitador" value="#{capacitaciones$capacitaciones.codCapacitador}"  style="height: 25px;padding-top: 3px; width: 300px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
+                <h:selectOneMenu id="lstCapacitador" value="#{capacitaciones$capacitaciones.codCapacitador}"  style="height: 25px;padding-top: 3px; width: 300px;" required="true" requiredMessage="El Capacitador es un campo obligatorio"  >
                     <f:selectItem itemLabel="Seleccione" itemValue=""/>
                     <f:selectItems value="#{capacitaciones$capacitaciones.listaCapacitadores}" var="capa" itemValue="#{capa.capacitadoresPK.codCapacitador}"  itemLabel="#{capa.nombre}"/>
                 </h:selectOneMenu>
-                <p:spacer/>
-                <p:spacer/>
+                <p:spacer rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
+                <p:spacer rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
                 <h:outputLabel value="Fecha Inicial: " />
                 <p:calendar id="calFecIni" value="#{capacitaciones$capacitaciones.fechaInicial}" showOn="button" required="true" 
                             requiredMessage="La Fecha Inicial del concurso es un campo obligatorio" pattern="dd/MM/yyyy" />
@@ -130,14 +121,8 @@
                 <p:inputText id="Duracion" value="#{capacitaciones$capacitaciones.duracion}" maxlength="100" required="true" 
                              requiredMessage="La duraci&#243;n es un campo obligatorio" />
 
-                <p:spacer/>
-                <p:spacer/>
-                <h:outputLabel value="Impartida por: " />
-                <p:inputText id="impartida" value="#{capacitaciones$capacitaciones.impartido}" maxlength="100" required="true" style=" width: 300px;"
-                             requiredMessage="El n&#250;mero de Plazas es un campo obligatorio" 
-                             converterMessage="Ingrese un número entero de plazas." />
-                <p:spacer/>
-                <p:spacer/>
+                <p:spacer rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
+                <p:spacer rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
                 <h:outputLabel value="Estado: " />
                 <h:selectOneMenu id="lstStatus" value="#{capacitaciones$capacitaciones.status}"  style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
                     <f:selectItem itemLabel="Seleccione" itemValue=""/>
@@ -148,38 +133,33 @@
                 </h:selectOneMenu>
                 
             </h:panelGrid>
-            
         </p:fieldset>
-        <p:spacer height="20" />
-        <p:fieldset rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" >
+        <p:spacer height="20"  rendered="#{(SessionBeanADM.estadoAccion eq 2)}" />
+        <p:fieldset rendered="#{(SessionBeanADM.estadoAccion eq 2)}" >
             <h:panelGrid columns="2">
                 <h:outputLabel value="Raz&#243;n de la capacitaci&#243;n: " />
-                <p:inputText id="Razon" value="#{capacitaciones$capacitaciones.razon}" maxlength="200" required="true" style=" width: 300px;"
-                             requiredMessage="La duraci&#243;n es un campo obligatorio" />
+                <p:inputText id="Razon" value="#{capacitaciones$capacitaciones.razon}" maxlength="200" style=" width: 300px;"/>
 
                 <h:outputLabel value="Costo Raz&#243;n: " />
-                <p:inputText id="costoRazon" value="#{capacitaciones$capacitaciones.costoRazon}" maxlength="11" required="true"
-                             requiredMessage="El n&#250;mero de Plazas es un campo obligatorio" 
+                <p:inputText id="costoRazon" value="#{capacitaciones$capacitaciones.costoRazon}" maxlength="11"
                              converterMessage="Ingrese un número entero de plazas." />
             </h:panelGrid>
             
         </p:fieldset>
-        <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 2)}" 
+        <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0)}" 
                    styleClass="toolbarUsuario" >
             <p:toolbarGroup align="right" >
                 <p:commandButton value="Eliminar" image="ui-icon ui-icon-circle-minus" ajax="true" onclick="confirmation.show()"/>
             </p:toolbarGroup>
         </p:toolbar>
 
-        <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq 2) }" />
-
-        <p:fieldset legend="Consulta de Capacitaciones" rendered="#{(SessionBeanADM.estadoAccion eq 2)}" >
-
-            <p:spacer height="20" />
+        <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" />
+        <p:fieldset legend="Consulta de Capacitaciones" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0)}" >
+            <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0)}" />
             <p:dataTable id="tablaConcursos"
                          var="capacitacion" rows="5"  paginator="true" 
                          value="#{capacitaciones$capacitaciones.listaCap}"
-                         emptyMessage="No se han encontrado Concursos."
+                         emptyMessage="No se han encontrado Capacitaciones."
                          binding="#{capacitaciones$capacitaciones.tableCapacitaciones}"
                          paginatorAlwaysVisible="true" selectionMode="single" 
                          selection="#{SessionBeanCAP.capacitacionSeleccionada}"
@@ -187,7 +167,7 @@
                          rowUnselectListener="#{capacitaciones$capacitaciones.onRowUnSelectConcurso}"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
                 <f:facet name="header">
-                    <h:outputText value="Concursos"/>
+                    <h:outputText value="Capacitaciones"/>
                 </f:facet>
 
                 <p:column sortBy="#{capacitacion.capacitacionPK.codCapacitacion}">
@@ -197,17 +177,17 @@
                     <h:outputLabel value="#{capacitacion.capacitacionPK.codCapacitacion}"/>
                 </p:column>
 
+                <p:column filterBy="#{capacitacion.nomCapacitacion}" 
+                          filterMatchMode="contains"
+                          headerText="Nombre de la capacitacion">
+                    <h:outputLabel value="#{capacitacion.nomCapacitacion}"/>
+                </p:column> 
+
                 <p:column sortBy="#{capacitacion.instituciones.desInsti}">
                     <f:facet name="header">
                         Institucion
                     </f:facet>
                     <h:outputLabel value="#{capacitacion.instituciones.desInsti}" />
-                </p:column> 
-
-                <p:column filterBy="#{capacitacion.nomCapacitacion}" 
-                          filterMatchMode="contains"
-                          headerText="Nombre de la capacitacion">
-                    <h:outputLabel value="#{capacitacion.nomCapacitacion}"/>
                 </p:column> 
 
                 <p:column sortBy="#{capacitacion.fechaDesde}">
@@ -232,9 +212,14 @@
                           filterBy="#{capacitacion.duracion}"
                           filterMatchMode="contains">
                     <f:facet name="header">
-                        Duracion (Hrs)
+                        Estado
                     </f:facet>
-                    <h:outputLabel value="#{capacitacion.duracion}" />
+                    <h:selectOneMenu id="lstStatus" value="#{capacitacion.status}"  style="height: 25px;padding-top: 3px;" disabled="true" >
+                    <f:selectItem itemLabel="Grabado" itemValue="G"/>
+                    <f:selectItem itemLabel="Aprobado" itemValue="A"/>
+                    <f:selectItem itemLabel="Rechazado" itemValue="R"/>
+                    <f:selectItem itemLabel="Realizado" itemValue="RE"/>
+                </h:selectOneMenu>
                 </p:column> 
 
                 <p:column sortBy="#{capacitacion.impartidaPor}"
@@ -243,34 +228,18 @@
                     <f:facet name="header">
                         Impartida por
                     </f:facet>
-                    <h:outputLabel value="#{capacitacion.impartidaPor}" />
+                    <h:outputLabel value="#{capacitacion.capacitadores.nombre}" />
                 </p:column>
-                <!--p:column filterBy="# {concurso.estadoConcurso.nombre}"
-                          filterOptions="# {reclutamiento$concursos.itemEstado}"
-                          filterMatchMode="exact" >
-                    <f:facet name="header">
-                        Estado
-                    </f:facet>
-                    <h:outputLabel value="# {concurso.estadoConcurso.nombre}" />
-                </p:column--> 
 
             </p:dataTable>
-            <p:spacer height="20" />    
+            <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0)}" />    
 
         </p:fieldset>
 
 
         <p:panel id="panelInformacionEdit" style="border:none;" >
             <div>
-                <div style="float:left;width: 30%;" >
-                    <h:panelGrid columns="4" rendered="#{(SessionBeanADM.estadoAccion eq 1)}" >
-                        <p:graphicImage value="../../resources/imagenes/64/info.png" />
-                        <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
-                        <h:outputLabel value="*" styleClass="requerido"/>                                
-                        <h:outputLabel value=" son requeridos." style="font-style: italic;" />
-                    </h:panelGrid>
-                </div>    
-                <div style="float:left; width: 70%;"  >
+                <div style="float:left; width: 100%;"  >
                     <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 1)}"
                                styleClass="toolbarUsuario" >
                         <p:toolbarGroup align="right"  >
@@ -283,10 +252,9 @@
             </div>
         </p:panel>
 
-        <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq 1)}" />
 
         <p:fieldset legend="Editar Datos - Informacion de la capacitacion" rendered="#{(SessionBeanADM.estadoAccion eq 1)}" >
-            <p:spacer height="20" />
+
             <h:panelGrid columns="4">
                 <h:outputLabel value="Instituci&#243;n: " />
                 <h:selectOneMenu id="lstInst2" value="#{capacitaciones$capacitaciones.inst}"  style="height: 25px;padding-top: 3px; width: 300px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
@@ -334,13 +302,6 @@
                 <h:outputLabel value="Duraci&#243;n (Hrs): " />
                 <p:inputText id="Duracion2" value="#{capacitaciones$capacitaciones.duracion}" maxlength="100" required="true" 
                              requiredMessage="La duraci&#243;n es un campo obligatorio" />
-
-                <p:spacer/>
-                <p:spacer/>
-                <h:outputLabel value="Impartida por: " />
-                <p:inputText id="impartida2" value="#{capacitaciones$capacitaciones.impartido}" maxlength="100" required="true" style=" width: 300px;"
-                             requiredMessage="El n&#250;mero de Plazas es un campo obligatorio" 
-                             converterMessage="Ingrese un número entero de plazas." />
                 <p:spacer/>
                 <p:spacer/>
                 <h:outputLabel value="Estado: " />
