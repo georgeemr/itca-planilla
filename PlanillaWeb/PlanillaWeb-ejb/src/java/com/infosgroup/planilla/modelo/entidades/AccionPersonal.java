@@ -53,7 +53,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AccionPersonal.findBySueldoAnterior", query = "SELECT a FROM AccionPersonal a WHERE a.sueldoAnterior = :sueldoAnterior"),
     @NamedQuery(name = "AccionPersonal.findByStatus", query = "SELECT a FROM AccionPersonal a WHERE a.status = :status"),
     @NamedQuery(name = "AccionPersonal.findByFechaCanje", query = "SELECT a FROM AccionPersonal a WHERE a.fechaCanje = :fechaCanje"),
-    @NamedQuery(name = "AccionPersonal.findByCodTiporetiro", query = "SELECT a FROM AccionPersonal a WHERE a.codTiporetiro = :codTiporetiro"),
+    //@NamedQuery(name = "AccionPersonal.findByCodTiporetiro", query = "SELECT a FROM AccionPersonal a WHERE a.codTiporetiro = :codTiporetiro"),
     @NamedQuery(name = "AccionPersonal.findByTipoIngreso", query = "SELECT a FROM AccionPersonal a WHERE a.tipoIngreso = :tipoIngreso"),
     @NamedQuery(name = "AccionPersonal.findByAprobadoJefe", query = "SELECT a FROM AccionPersonal a WHERE a.aprobadoJefe = :aprobadoJefe"),
     @NamedQuery(name = "AccionPersonal.findByAprobadoRh", query = "SELECT a FROM AccionPersonal a WHERE a.aprobadoRh = :aprobadoRh")})
@@ -110,8 +110,8 @@ public class AccionPersonal implements Serializable {
     @Column(name = "FECHA_CANJE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCanje;
-    @Column(name = "COD_TIPORETIRO")
-    private Short codTiporetiro;
+//    @Column(name = "COD_TIPORETIRO")
+//    private Short codTiporetiro;
     @Column(name = "TIPO_INGRESO")
     private Short tipoIngreso;
     @Column(name = "F_APRUEBA_JEFE")
@@ -150,6 +150,11 @@ public class AccionPersonal implements Serializable {
         @JoinColumn(name = "COD_DEPTO", referencedColumnName = "COD_DEPTO")})
     @ManyToOne(optional = false)
     private Departamentos departamentos;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_TIPORETIRO", referencedColumnName = "COD_TIPORENUNCIA")})
+    @ManyToOne(optional = false)
+    private CausasRenuncia causasRenuncia;
     @Size(max = 1)
     @Column(name = "APROBADO_JEFE", length = 1)
     private String aprobadoJefe;
@@ -346,12 +351,20 @@ public class AccionPersonal implements Serializable {
         this.fechaCanje = fechaCanje;
     }
 
-    public Short getCodTiporetiro() {
-        return codTiporetiro;
+//    public Short getCodTiporetiro() {
+//        return codTiporetiro;
+//    }
+//
+//    public void setCodTiporetiro(Short codTiporetiro) {
+//        this.codTiporetiro = codTiporetiro;
+//    }
+
+    public CausasRenuncia getCausasRenuncia() {
+        return causasRenuncia;
     }
 
-    public void setCodTiporetiro(Short codTiporetiro) {
-        this.codTiporetiro = codTiporetiro;
+    public void setCausasRenuncia(CausasRenuncia causasRenuncia) {
+        this.causasRenuncia = causasRenuncia;
     }
 
     public Short getTipoIngreso() {
