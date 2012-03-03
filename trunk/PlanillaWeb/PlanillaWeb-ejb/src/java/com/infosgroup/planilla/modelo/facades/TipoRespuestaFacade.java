@@ -19,6 +19,7 @@ public class TipoRespuestaFacade extends AbstractFacade<TipoRespuesta, TipoRespu
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
