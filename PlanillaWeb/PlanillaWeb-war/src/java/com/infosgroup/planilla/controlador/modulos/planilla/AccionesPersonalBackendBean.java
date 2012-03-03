@@ -4,13 +4,7 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
-import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudAumentoSueldo;
-import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudAumentoSueldoColectivo;
-import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudIncapacidad;
-import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudNombramiento;
-import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudPermiso;
-import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudVacacionColectiva;
-import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudVacacionesAnuales;
+import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.*;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.TipoAccion;
@@ -63,7 +57,16 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private SolicitudVacacionColectiva solicitudVacacionColectiva;
     private SolicitudAumentoSueldo solicitudAumentoSueldo;
     private SolicitudAumentoSueldoColectivo solicitudAumentoSueldoColectivo;
+    private SolicitudRetiro solicitudRetiro;
 
+    public SolicitudRetiro getSolicitudRetiro() {
+        return solicitudRetiro;
+    }
+
+    public void setSolicitudRetiro(SolicitudRetiro solicitudRetiro) {
+        this.solicitudRetiro = solicitudRetiro;
+    }
+    
     public SolicitudAumentoSueldoColectivo getSolicitudAumentoSueldoColectivo() {
         return solicitudAumentoSueldoColectivo;
     }
@@ -155,6 +158,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         solicitudVacacionColectiva = new SolicitudVacacionColectiva(this);
         solicitudAumentoSueldo = new SolicitudAumentoSueldo(this);
         solicitudAumentoSueldoColectivo = new SolicitudAumentoSueldoColectivo(this);
+        solicitudRetiro = new SolicitudRetiro(this);
         fecha = new Date();
     }
 
