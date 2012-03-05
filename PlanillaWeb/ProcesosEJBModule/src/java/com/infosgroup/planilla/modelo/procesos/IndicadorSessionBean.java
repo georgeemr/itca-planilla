@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.procesos;
 
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Indicador;
 import com.infosgroup.planilla.modelo.facades.IndicadorFacade;
 import java.util.List;
@@ -22,7 +23,7 @@ public class IndicadorSessionBean {
     @EJB
     private IndicadorFacade indicadorFacade;
 
-    public List<Indicador> listarIndicadores() {
-        return indicadorFacade.findAll();
+    public List<Indicador> listarIndicadores( Cias cias ) {
+        return indicadorFacade.findIndicadoresByCias(cias);
     }
 }
