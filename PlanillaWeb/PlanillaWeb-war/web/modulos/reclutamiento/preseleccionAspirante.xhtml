@@ -639,7 +639,7 @@
                         </p:column>  
 
                         <p:column headerText="Remover" >
-                            <p:commandButton  id="cmdEliminarPreseleccionCandidato"  rendered="#{ (candidato.estado ne 'C') and (candidato.estado ne 'S') }" image="ui-icon-circle-minus" oncomplete="dlgEliminarPrecandidato.show();"  >
+                            <p:commandButton  id="cmdEliminarPreseleccionCandidato"  rendered="#{ (candidato.estado ne 'C') and (candidato.estado ne 'S') }" image="ui-icon-circle-minus" oncomplete="dlgEliminarPrecandidato.show();" title="Remover Candidato de este concurso." >
                                 <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
                             </p:commandButton>
                         </p:column>
@@ -653,6 +653,13 @@
                 <p:spacer height="20" />
                 <p:panel id="panelSeleccion" header="Paso 4 de 5" >
                     <p:spacer height="20" />
+                    <p:panel  >
+                        <h:panelGrid columns="2">
+                            <p:graphicImage value="../../resources/imagenes/64/info.png" />
+                            <h:outputLabel value="Seleccione las personas candidatas a contratar."/>
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:spacer height="10" />
                     <p:dataTable id="candidatoSelection" value="#{reclutamiento$preseleccionAspirante.candidatosGuardados}" var="candidato" paginator="true" rows="5"
                                  update="principalForm:panelSeleccion,principalForm:candidatoSelection"
                                  rowStyleClass="#{candidato.orden lt 6 ? 'candidatoSugerido' : null}" emptyMessage="No ha seleccionado ning&uacute;n candidato."
@@ -674,11 +681,11 @@
                         </p:column>
 
                         <p:column headerText="Seleccionado">  
-                            <p:commandButton id="cmdSeleccionar" rendered="#{candidato.estado eq 'P'}" action="#{reclutamiento$preseleccionAspirante.seleccionarCandidato}" update="principalForm:mensajes,principalForm:candidatoSelection"  image="nuevo" />
-                            <p:tooltip for="cmdSeleccionar" value="Marcar como seleccionado" showEvent="focus" hideEvent="blur"/>                              
-                            <p:commandButton id="cmdDesSeleccionar" rendered="#{candidato.estado eq 'S'}" action="#{reclutamiento$preseleccionAspirante.deseleccionarCandidato}" update="principalForm:mensajes,principalForm:candidatoSelection"  image="button-ok" />
-                            <p:tooltip for="cmdDesSeleccionar" value="Deseleccionar este candidato" showEvent="focus" hideEvent="blur"/>                              
-                            <p:commandButton disabled="true" rendered="#{candidato.estado eq 'C'}" image="contrato" />
+                            <p:commandButton id="cmdSeleccionar" rendered="#{candidato.estado eq 'P'}" action="#{reclutamiento$preseleccionAspirante.seleccionarCandidato}" update="principalForm:mensajes,principalForm:candidatoSelection"  image="nuevo" title="Marcar como seleccionado" />
+
+                            <p:commandButton id="cmdDesSeleccionar" title="Deseleccionar Candidato" rendered="#{candidato.estado eq 'S'}" action="#{reclutamiento$preseleccionAspirante.deseleccionarCandidato}" update="principalForm:mensajes,principalForm:candidatoSelection"  image="button-ok" />
+
+                            <p:commandButton disabled="true" rendered="#{candidato.estado eq 'C'}" image="contrato" title="Candidato contratado" />
                         </p:column>
 
                     </p:dataTable>
@@ -706,13 +713,13 @@
                         </p:column>
 
                         <p:column headerText="Contratar"> 
-                            <p:commandButton id="cmdContratar"  disabled="#{candidato.estado eq 'C'}" oncomplete="botonMostrarContrato.show()" image="contrato" update="principalForm:lbl_candidato,principalForm:lbl_puesto,principalForm:lbl_puesto,principalForm:cmdOk,principalForm:txtUsuario,principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtRepresentanteP,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" >
+                            <p:commandButton id="cmdContratar"  disabled="#{candidato.estado eq 'C'}" oncomplete="botonMostrarContrato.show()" image="contrato" update="principalForm:lbl_candidato,principalForm:lbl_puesto,principalForm:lbl_puesto,principalForm:cmdOk,principalForm:txtUsuario,principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtRepresentanteP,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" title="Contratar Candidato" >
                                 <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
                             </p:commandButton>
                         </p:column>
 
                         <p:column headerText="Imprimir Contrato"> 
-                            <p:commandButton id="cmdImprimirContrato" ajax="false" disabled="#{candidato.estado ne 'C'}" action="#{reclutamiento$preseleccionAspirante.imprimirContrato}" update="principalForm:mensajes,principalForm:candidatoContratar"  image="documentPDF" >
+                            <p:commandButton id="cmdImprimirContrato" ajax="false" disabled="#{candidato.estado ne 'C'}" action="#{reclutamiento$preseleccionAspirante.imprimirContrato}" update="principalForm:mensajes,principalForm:candidatoContratar"  image="documentPDF"  title="Imprimir contrato" >
                                 <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$preseleccionAspirante.candidatoSeleccionado}" />  
                             </p:commandButton>
                         </p:column>
