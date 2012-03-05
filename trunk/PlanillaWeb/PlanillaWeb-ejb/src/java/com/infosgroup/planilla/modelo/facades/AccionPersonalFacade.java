@@ -75,6 +75,7 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
      * @param tipo
      * @return 
      */
+    @PermitAll
     public List<AccionPersonal> findByTipo(long cia, long tipo) {
         List<AccionPersonal> listaAccion = new ArrayList<AccionPersonal>(0);
         TypedQuery<AccionPersonal> acc = em.createQuery("select a from AccionPersonal a where a.tipoAccion.tipoAccionPK.codCia = :cia and a.tipoAccion.tipoAccionPK.codTipoaccion = :tipo", AccionPersonal.class);
@@ -83,7 +84,8 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
         listaAccion = (List<AccionPersonal>) acc.getResultList();
         return listaAccion != null ? listaAccion : new ArrayList<AccionPersonal>(0);
     }
-
+    
+    @PermitAll
     public List<AccionPersonal> findByNoAfecta(long cia) {
         List<AccionPersonal> listaAccion = new ArrayList<AccionPersonal>(0);
         TypedQuery<AccionPersonal> acc = em.createQuery("select a from AccionPersonal a where a.tipoAccion.tipoAccionPK.codCia = :cia and a.tipoAccion.afectaSal = 'N'", AccionPersonal.class);
@@ -94,22 +96,22 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
 
     @PermitAll
     public List<AccionPersonal> findByTipoAccionEmpleadoAnio(Empleados empleado, TipoAccion tipoAccion, Long anio) {
-        TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.accionPersonalPK.anio = :anio AND a.accionPersonalPK.idEmpleado = :idEmpleado AND a.accionPersonalPK.codTipoaccion = :codTipoaccion AND a.status = :status", AccionPersonal.class);
-        tq.setParameter("codCia", 1);
-        tq.setParameter("anio", anio);
-        tq.setParameter("idEmpleado", empleado.getEmpleadosPK().getCodEmp());
-        tq.setParameter("codTipoaccion", tipoAccion.getTipoAccionPK().getCodTipoaccion());
-        tq.setParameter("status", "B");
-        return tq.getResultList();
+        List<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.anio = :anio AND a.accionPersonalPK.codEmp = :codEmp AND a.accionPersonalPK.codTipoaccion = :codTipoaccion AND a.status = :status", AccionPersonal.class)
+        .setParameter("codCia", empleado.getEmpleadosPK().getCodCia())
+        .setParameter("anio", anio)
+        .setParameter("codEmp", empleado.getEmpleadosPK().getCodEmp())
+        .setParameter("codTipoaccion", tipoAccion.getTipoAccionPK().getCodTipoaccion())
+        .setParameter("status", "B").getResultList();
+        return tq != null ?tq:new ArrayList<AccionPersonal>();
     }
 
     @PermitAll
     public List<AccionPersonal> findByVacacionesEmpleadoAnio(Empleados empleado, Long anio) {
         List<AccionPersonal> l = new ArrayList<AccionPersonal>();
-        TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.accionPersonalPK.anio = :anio AND a.accionPersonalPK.idEmpleado = :idEmpleado AND (a.accionPersonalPK.codTipoaccion = 1 OR a.accionPersonalPK.codTipoaccion = 2) AND a.status = :status", AccionPersonal.class);
-        tq.setParameter("codCia", 1);
+        TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.anio = :anio AND a.accionPersonalPK.codEmp = :codEmp AND (a.accionPersonalPK.codTipoaccion = 1 OR a.accionPersonalPK.codTipoaccion = 2) AND a.status = :status", AccionPersonal.class);
+        tq.setParameter("codCia", empleado.getEmpleadosPK().getCodCia());
         tq.setParameter("anio", anio);
-        tq.setParameter("idEmpleado", empleado.getEmpleadosPK().getCodEmp());
+        tq.setParameter("codEmp", empleado.getEmpleadosPK().getCodEmp());
         tq.setParameter("status", "B");
         l = tq.getResultList();
         return l != null ? l : new ArrayList<AccionPersonal>();

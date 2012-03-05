@@ -41,7 +41,7 @@ public class CalendarioBackendBean extends AbstractJSFPage implements Serializab
     @PostConstruct
     public void init() {
         anio = "" + Calendar.getInstance().get(Calendar.YEAR);
-        listaEmpleados = empleadosBean.listarEmpleados();
+        listaEmpleados = empleadosBean.findEmpleadosByCias( getSessionBeanADM().getCompania() );
     }
 
     @Override

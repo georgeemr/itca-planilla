@@ -222,4 +222,9 @@ public class EmpleadosSessionBean {
     public List<Campania> findAllByCia(Short empresa) {
         return campaniasFacade.findAllByCia(empresa);
     }
+    
+    @PermitAll
+    public List<Empleados> findEmpleadosByCias(Cias empresa) {
+        return empleadosFacade.findEmpleadosByCias(empresa);
+    }    
 }
