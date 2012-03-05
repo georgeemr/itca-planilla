@@ -69,7 +69,7 @@
                             <td colspan="2">
                                 <p:spacer height="5"/>
                                 <p:dataTable style="width: 200px;" value="#{planilla$calendario.listaEmpleados}" var="empleado" selectionMode="single" selection="#{planilla$calendario.empleadoSeleccionado}" rows="5" paginator="true" paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}">
-                                    <p:column headerText="Empleado" filterBy="#{empleado.nombreCompleto}" sortBy="#{empleado.nombreCompleto}">
+                                    <p:column headerText="Empleado" filterBy="#{empleado.nombreCompleto}" sortBy="#{empleado.nombreCompleto}" filterMatchMode="contains" >
                                         <h:outputText value="#{empleado.nombreCompleto}"/>
                                     </p:column>
                                 </p:dataTable>
