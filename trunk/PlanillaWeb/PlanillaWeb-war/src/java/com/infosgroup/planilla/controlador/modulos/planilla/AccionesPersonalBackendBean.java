@@ -58,7 +58,16 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private SolicitudAumentoSueldo solicitudAumentoSueldo;
     private SolicitudAumentoSueldoColectivo solicitudAumentoSueldoColectivo;
     private SolicitudRetiro solicitudRetiro;
+    private SolicitudNoAfectaPlanilla solicitudNoAfectaPlanilla;
 
+    public SolicitudNoAfectaPlanilla getSolicitudNoAfectaPlanilla() {
+        return solicitudNoAfectaPlanilla;
+    }
+
+    public void setSolicitudNoAfectaPlanilla(SolicitudNoAfectaPlanilla solicitudNoAfectaPlanilla) {
+        this.solicitudNoAfectaPlanilla = solicitudNoAfectaPlanilla;
+    }
+    
     public SolicitudRetiro getSolicitudRetiro() {
         return solicitudRetiro;
     }
@@ -159,6 +168,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         solicitudAumentoSueldo = new SolicitudAumentoSueldo(this);
         solicitudAumentoSueldoColectivo = new SolicitudAumentoSueldoColectivo(this);
         solicitudRetiro = new SolicitudRetiro(this);
+        solicitudNoAfectaPlanilla = new SolicitudNoAfectaPlanilla(this);
         fecha = new Date();
     }
 
@@ -255,9 +265,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public List<TipoAccion> getListaTipo() {
-        listaTipo = planillaSessionBean.listarTipoAccionActivas(getSessionBeanADM().getCompania())/*
-                 * listarTipoAccionAfecta()
-                 */;
+        listaTipo = planillaSessionBean.listarTipoAccionAfectaPlanilla(getSessionBeanADM().getCompania());
         return listaTipo;
     }
 

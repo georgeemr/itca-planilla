@@ -56,6 +56,19 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         return nuevaPK;
     }
 
+    public AccionPersonalPK getAccionPersonalPK(Cias cias, TipoAccion tipoAccion) {
+        AccionPersonalPK nuevaPK = new AccionPersonalPK();
+        try {
+            nuevaPK.setCodCia(cias.getCodCia());
+            nuevaPK.setCodTipoaccion(tipoAccion.getTipoAccionPK().getCodTipoaccion());
+            nuevaPK.setCodEmp(encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp());
+            nuevaPK.setCorrelativo(accionPersonalFacade().max(cias.getCodCia(), encabezadoSolicitud.getSessionBeanEMP().getEmpleadoSesion().getEmpleadosPK().getCodEmp()));
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Se desencadeno la siguiente excepcion: ", e);
+        }
+        return nuevaPK;
+    }
+
     public AccionPersonalPK getAccionPersonalPK(Cias cias, Empleados e) {
         AccionPersonalPK nuevaPK = new AccionPersonalPK();
         try {
