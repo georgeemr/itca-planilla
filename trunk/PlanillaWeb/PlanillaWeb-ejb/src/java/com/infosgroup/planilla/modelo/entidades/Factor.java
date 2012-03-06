@@ -111,4 +111,18 @@ public String toString()
 {
     return "com.infosgroup.planilla.modelo.entidades.Factor[ factorPK=" + factorPK + " ]";
 }
+// ===========================================
+//@Column(name = "PONDERACION")
+//private Integer ponderacion;
+//
+//public Integer getPonderacion()
+//{
+//    return ponderacion;
+//}
+//
+//public void setPonderacion(Integer ponderacion)
+//{
+//    this.ponderacion = ponderacion;
+//}
+// ===========================================
 }
