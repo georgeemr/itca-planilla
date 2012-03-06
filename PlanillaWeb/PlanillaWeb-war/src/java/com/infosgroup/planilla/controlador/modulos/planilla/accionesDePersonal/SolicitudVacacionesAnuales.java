@@ -127,7 +127,7 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
             error = Boolean.FALSE;
         }
 
-        if (fechaInicialPeriodoPagar != null || fechaFinalPeriodoPagar != null) {
+        if (fechaInicialPeriodoPagar != null && fechaFinalPeriodoPagar != null) {
             if (!validaFechas(fechaInicialPeriodoPagar, fechaFinalPeriodoPagar)) {
                 addMessage("Acciones de Personal", "Los datos de Fecha inicial y Fecha fin no son consistentes.", TipoMensaje.ERROR);
                 error = Boolean.FALSE;
@@ -144,7 +144,7 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
             error = Boolean.FALSE;
         }
 
-        if (fechaInicialPeriodoGozar != null || fechaFinalPeriodoGozar != null) {
+        if (fechaInicialPeriodoGozar != null && fechaFinalPeriodoGozar != null) {
             if (!validaFechas(fechaInicialPeriodoGozar, fechaFinalPeriodoGozar)) {
                 addMessage("Acciones de Personal", "Los datos de Fecha inicial y final de periodo de goce no son consistentes.", TipoMensaje.ERROR);
                 error = Boolean.FALSE;
