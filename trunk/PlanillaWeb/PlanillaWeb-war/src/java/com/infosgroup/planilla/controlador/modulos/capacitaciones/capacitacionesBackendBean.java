@@ -641,10 +641,10 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
                 //Enviar correos
                 StringBuilder mensaje = new StringBuilder();
                 mensaje.append("\n\nPor medio de la presente se le comunica que ha sido convocado a la siguiente Capacitación");
-                mensaje.append("\n\nNombre: ").append(det.getCapacitacion().getNomCapacitacion());
-                mensaje.append("\n\nArea: ").append(det.getCapacitacion().getCapacitacionAreas().getNomArea());
-                mensaje.append("\n\nTema: ").append(det.getCapacitacion().getCapacitacionTemas().getNomTema());
-                mensaje.append("\n\nA celebrarse el día: ").append(new SimpleDateFormat("dd/MM/yyyy").format(det.getCapacitacion().getFechaDesde()));
+                mensaje.append("\n\nNombre: ").append(getSessionBeanCAP().getCapacitacionSeleccionada().getNomCapacitacion());
+                mensaje.append("\n\nArea: ").append(getSessionBeanCAP().getCapacitacionSeleccionada().getCapacitacionAreas().getNomArea());
+                mensaje.append("\n\nTema: ").append(getSessionBeanCAP().getCapacitacionSeleccionada().getCapacitacionTemas().getNomTema());
+                mensaje.append("\n\nA celebrarse el día: ").append(new SimpleDateFormat("dd/MM/yyyy").format(getSessionBeanCAP().getCapacitacionSeleccionada().getFechaDesde()));
 
                 mailStatelessBean.enviarCorreoElectronico("Capacitacion", mensaje.toString(), det.getEmpleados().getCorreo());
 
