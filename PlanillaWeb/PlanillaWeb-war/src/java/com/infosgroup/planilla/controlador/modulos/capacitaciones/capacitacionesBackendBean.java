@@ -7,28 +7,39 @@ package com.infosgroup.planilla.controlador.modulos.capacitaciones;
 import com.infosgroup.planilla.modelo.entidades.Capacitacion;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionAreas;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionAreasPK;
+import com.infosgroup.planilla.modelo.entidades.CapacitacionAsistencia;
+import com.infosgroup.planilla.modelo.entidades.CapacitacionAsistenciaPK;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionPK;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionTemas;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionTemasPK;
+import com.infosgroup.planilla.modelo.entidades.CapacitacionXEmpleado;
+import com.infosgroup.planilla.modelo.entidades.CapacitacionXEmpleadoPK;
 import com.infosgroup.planilla.modelo.entidades.Capacitadores;
 import com.infosgroup.planilla.modelo.entidades.CapacitadoresPK;
 import com.infosgroup.planilla.modelo.entidades.Cias;
+import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.Instituciones;
 import com.infosgroup.planilla.modelo.entidades.InstitucionesPK;
 import com.infosgroup.planilla.modelo.procesos.CapacitacionesSessionBean;
+import com.infosgroup.planilla.modelo.procesos.MailStatelessBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.List;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -42,6 +53,8 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
 
     @EJB
     private CapacitacionesSessionBean capacitacionSessionBean;
+    @EJB
+    private MailStatelessBean mailStatelessBean;
     private Boolean isError;
     private String status = "G";
     private String nombre;
@@ -56,6 +69,19 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
     private Integer codArea;
     private Integer codTema;
     private Long codCapacitador;
+    //planilla para otras acciones
+    private String nomCapacitacion;
+    private String nomInst;
+    private String nomEmp;
+    private String nomArea;
+    private String nomTema;
+    private String nomCapacitador;
+    private BigDecimal notaCapacitacion;
+    private List<CapacitacionXEmpleado> listaDetalle;
+    private List<Empleados> listaEmpleado;
+    private List<CapacitacionAsistencia> listaAsistencia;
+    private CapacitacionXEmpleado detalleSelec;
+    
     private List<Instituciones> listaInst;
     private List<Capacitacion> listaCap;
     private List<CapacitacionAreas> listaArea;
@@ -159,6 +185,94 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
         this.codCapacitador = codCapacitador;
     }
 
+    public CapacitacionXEmpleado getDetalleSelec() {
+        return detalleSelec;
+    }
+
+    public void setDetalleSelec(CapacitacionXEmpleado detalleSelec) {
+        this.detalleSelec = detalleSelec;
+    }
+
+    public List<CapacitacionAsistencia> getListaAsistencia() {
+        return listaAsistencia;
+    }
+
+    public void setListaAsistencia(List<CapacitacionAsistencia> listaAsistencia) {
+        this.listaAsistencia = listaAsistencia;
+    }
+
+    public List<CapacitacionXEmpleado> getListaDetalle() {
+        return listaDetalle;
+    }
+
+    public void setListaDetalle(List<CapacitacionXEmpleado> listaDetalle) {
+        this.listaDetalle = listaDetalle;
+    }
+
+    public List<Empleados> getListaEmpleado() {
+        return listaEmpleado;
+    }
+
+    public void setListaEmpleado(List<Empleados> listaEmpleado) {
+        this.listaEmpleado = listaEmpleado;
+    }
+
+    public String getNomArea() {
+        return nomArea;
+    }
+
+    public void setNomArea(String nomArea) {
+        this.nomArea = nomArea;
+    }
+
+    public String getNomCapacitacion() {
+        return nomCapacitacion;
+    }
+
+    public void setNomCapacitacion(String nomCapacitacion) {
+        this.nomCapacitacion = nomCapacitacion;
+    }
+
+    public String getNomCapacitador() {
+        return nomCapacitador;
+    }
+
+    public void setNomCapacitador(String nomCapacitador) {
+        this.nomCapacitador = nomCapacitador;
+    }
+
+    public String getNomEmp() {
+        return nomEmp;
+    }
+
+    public void setNomEmp(String nomEmp) {
+        this.nomEmp = nomEmp;
+    }
+
+    public String getNomInst() {
+        return nomInst;
+    }
+
+    public void setNomInst(String nomInst) {
+        this.nomInst = nomInst;
+    }
+
+    public String getNomTema() {
+        return nomTema;
+    }
+
+    public void setNomTema(String nomTema) {
+        this.nomTema = nomTema;
+    }
+
+    public BigDecimal getNotaCapacitacion() {
+        return notaCapacitacion;
+    }
+
+    public void setNotaCapacitacion(BigDecimal notaCapacitacion) {
+        this.notaCapacitacion = notaCapacitacion;
+    }
+
     public List<Instituciones> getListaInst() {
         listaInst = capacitacionSessionBean.findInstByEmpresa(getSessionBeanADM().getCompania());
         return listaInst;
@@ -247,22 +361,67 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
         setCodArea(null);
         setCodCapacitador(null);
         setCodTema(null);
-        
+        getSessionBeanCAP().setCapacitacionSeleccionada(null);
     }
     
     public capacitacionesBackendBean(){
         
     }
     
+    public void consultar$vh$action() {
+        setEstadoAccion(0);
+        setDetalleSelec(null);
+        setNomEmp(null);
+    }
+
     public void nuevo$vh$action() {
         setEstadoAccion(2);
         setStatus("G");
     }
-
-    public void consultar$vh$action() {
-        setEstadoAccion(0);
+    
+    public void participante$ver$action() {
+        getSessionBeanADM().setEstadoAccion(3);
+        participantes$vh$action();
+        listaEmpleado = capacitacionSessionBean.findEmpByEmpresa(getSessionBeanADM().getCompania());
     }
+    
+    public void asistencia$ver$action() {
+        getSessionBeanADM().setEstadoAccion(4);
+        participantes$vh$action();
+        listaAsistencia = new ArrayList<CapacitacionAsistencia>();
+    }
+    
+    public void notas$ver$action() {
+        getSessionBeanADM().setEstadoAccion(5);
+        participantes$vh$action();
+        listaEmpleado = capacitacionSessionBean.findEmpByEmpresa(getSessionBeanADM().getCompania());
+    }
+        
+    
+    public String editar$cap$action() {
+        if (getSessionBeanCAP().getCapacitacionSeleccionada() == null) {
+        addMessage("Mantenimiento de Capacitaciones.", "No ha seleccionado ninguna capacitacion para editar.", TipoMensaje.ERROR);
+        return null;
+        }
+        Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
+        setStatus(cap.getStatus());
+        setInst(cap.getInstituciones().getInstitucionesPK().getCodInsti());
+        setNombre(cap.getNomCapacitacion());
+        setFechaInicial(cap.getFechaDesde());
+        setFechaFinal(cap.getFechaHasta());
+        setDuracion(cap.getDuracion());
+        setImpartido(cap.getImpartidaPor());
+        setRazon(cap.getRazon());
+        setCostoRazon(cap.getCostoRazon());
+        setCodArea(cap.getCapacitacionAreas().getCapacitacionAreasPK().getCodArea());
+        setCodTema(cap.getCapacitacionTemas().getCapacitacionTemasPK().getCodTema());
+        setCodCapacitador(cap.getCapacitadores().getCapacitadoresPK().getCodCapacitador());
+        getSessionBeanADM().setEstadoAccion( 1 );
+        return null;
+    }
+    
 
+    
     public void setEstadoAccion(Integer estadoAccion) {
         getSessionBeanADM().setEstadoAccion(estadoAccion);
         limpiarCampos();
@@ -282,7 +441,7 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
         if (isError) {
             return null;
         }
-
+        
         Capacitacion capacitacion = new Capacitacion();
         //Concurso concurso = new Concurso();
         /* Crear Capacitacion */
@@ -301,7 +460,9 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
             capacitacion.setCapacitadores(capacitador);
             capacitacion.setStatus(status);
             capacitacion.setNomCapacitacion(nombre.toUpperCase());
-            capacitacion.setInstituciones(capacitacionSessionBean.findByInstId(new InstitucionesPK(inst, c)));
+            InstitucionesPK instPK = new InstitucionesPK(c,inst);
+            Instituciones instucion = capacitacionSessionBean.findByInstId(instPK);
+            capacitacion.setInstituciones(instucion);
             capacitacion.setFechaDesde(fechaInicial);
             capacitacion.setFechaHasta(fechaFinal);
             capacitacion.setDuracion(duracion);
@@ -332,6 +493,9 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
             Capacitadores capacitador = capacitacionSessionBean.findByCapId(capPK);
             capacitacion.setCapacitadores(capacitador);
             capacitacion.setNomCapacitacion(nombre);
+            InstitucionesPK instPK = new InstitucionesPK(c, inst);
+            Instituciones instucion = capacitacionSessionBean.findByInstId(instPK);
+            capacitacion.setInstituciones(instucion);
             capacitacion.setFechaDesde(fechaInicial);
             capacitacion.setFechaHasta(fechaFinal);
             capacitacion.setDuracion(duracion);
@@ -349,28 +513,6 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
             }
         }
 
-        return null;
-    }
-    
-    public String editar$cap$action() {
-        if (getSessionBeanCAP().getCapacitacionSeleccionada() == null) {
-        addMessage("Mantenimiento de Capacitaciones.", "No ha seleccionado ninguna capacitacion para editar.", TipoMensaje.ERROR);
-        return null;
-        }
-        Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
-        setStatus(cap.getStatus());
-        setInst(cap.getInstituciones().getInstitucionesPK().getCodInsti());
-        setNombre(cap.getNomCapacitacion());
-        setFechaInicial(cap.getFechaDesde());
-        setFechaFinal(cap.getFechaHasta());
-        setDuracion(cap.getDuracion());
-        setImpartido(cap.getImpartidaPor());
-        setRazon(cap.getRazon());
-        setCostoRazon(cap.getCostoRazon());
-        setCodArea(cap.getCapacitacionAreas().getCapacitacionAreasPK().getCodArea());
-        setCodTema(cap.getCapacitacionTemas().getCapacitacionTemasPK().getCodTema());
-        setCodCapacitador(cap.getCapacitadores().getCapacitadoresPK().getCodCapacitador());
-        getSessionBeanADM().setEstadoAccion( 1 );
         return null;
     }
     
@@ -399,4 +541,213 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
         listaCap = capacitacionSessionBean.findCapByEmpresa(getSessionBeanADM().getCompania());
     }
     
+        //participantes-------------------------------------------------------------
+    public String participantes$vh$action(){
+        if (getSessionBeanCAP().getCapacitacionSeleccionada() == null) {
+            addMessage("Mantenimiento de Capacitaciones.", "No ha seleccionado ninguna capacitacion para editar.", TipoMensaje.ERROR);
+            return null;
+        }
+        Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
+        setStatus(cap.getStatus());
+        setInst(cap.getInstituciones().getInstitucionesPK().getCodInsti());
+        setNomCapacitacion(cap.getNomCapacitacion());
+        setNomInst(cap.getInstituciones().getDesInsti());
+        setFechaInicial(cap.getFechaDesde());
+        setFechaFinal(cap.getFechaHasta());
+        setDuracion(cap.getDuracion());
+        setImpartido(cap.getImpartidaPor());
+        setNomArea(cap.getCapacitacionAreas().getNomArea());
+        setNomTema(cap.getCapacitacionTemas().getNomTema());
+        setNomCapacitador(cap.getCapacitadores().getNombre());
+        setNotaCapacitacion(cap.getNotaCapacitacion());
+        Cias comp = getSessionBeanADM().getCompania();
+        listaEmpleado = capacitacionSessionBean.findEmpByEmpresa(comp);
+        listaDetalle = capacitacionSessionBean.findDetByCap(getSessionBeanADM().getCompania(), cap);
+        //getSessionBeanADM().setEstadoAccion(3);
+        return null;
+    }
+    
+    public void onRowSelectEmpleado(SelectEvent event) {
+        getSessionBeanCAP().setEmpleadoSeleccionado((Empleados) event.getObject());
+        nomEmp = getSessionBeanCAP().getEmpleadoSeleccionado().getNombreCompleto();
+        //Guardar Empleado
+        isError = Boolean.FALSE;
+        //validaCampos$action();
+        Short c = getSessionBeanADM().getCompania().getCodCia();
+        Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
+        if(cap.getStatus().equals("N")){
+            addMessage("Mantenimiento Participantes", "Esta Capacitacion ya fue notificada, no se pueden agregar más participantes", TipoMensaje.INFORMACION);
+            isError = true;
+        }
+        if (isError) {
+            return;
+        }
+        CapacitacionXEmpleado detalleCap = new CapacitacionXEmpleado();
+        /* Crear Detalle*/
+        CapacitacionXEmpleado detalle = new CapacitacionXEmpleado();
+        CapacitacionXEmpleadoPK pk = new CapacitacionXEmpleadoPK();
+        pk.setCodCia(c);
+        Cias ciaCod = getSessionBeanADM().getCompania();
+        Integer cod = capacitacionSessionBean.getMaxCapacitacion(ciaCod);
+        pk.setCodCapacitacion(cod);
+        pk.setCodCapacitacion(getSessionBeanCAP().getCapacitacionSeleccionada().getCapacitacionPK().getCodCapacitacion());
+        pk.setCodEmp(getSessionBeanCAP().getEmpleadoSeleccionado().getEmpleadosPK().getCodEmp());
+        detalle.setCapacitacionXEmpleadoPK(pk);
+        detalle.setEmpleados(getSessionBeanCAP().getEmpleadoSeleccionado());
+        detalle.setNota(BigDecimal.ZERO);
+        try {
+            capacitacionSessionBean.guardarDetalleCapacitacion(detalle);
+            addMessage("Mantenimiento de Detalle de Capacitaciones.", "Datos guardados con éxito", TipoMensaje.INFORMACION);
+            getSessionBeanCAP().setEmpleadoSeleccionado(null);
+            setNomEmp(null);
+            listaDetalle = capacitacionSessionBean.findDetByCap(ciaCod, getSessionBeanCAP().getCapacitacionSeleccionada());
+        } catch (Exception e) {
+            addMessage("Mantenimiento de Detalle de Capacitaciones.", "Este participante ya ha sido agregado a esta Capacitación.", TipoMensaje.ERROR);
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void onRowSelectDetalle(SelectEvent event) {
+        getSessionBeanCAP().setDetalleCapSeleccionada((CapacitacionXEmpleado) event.getObject());
+    }
+    
+    @PermitAll
+    public void enviar$correo$action() {
+        try {
+            for (CapacitacionXEmpleado det : listaDetalle) {
+                //Creacion de registros para asistencia
+                try {
+                    final long MILLSECS_PER_DAY = 24 * 60 * 60 * 1000;
+                    Long dias = (getSessionBeanCAP().getCapacitacionSeleccionada().getFechaHasta().getTime() - getSessionBeanCAP().getCapacitacionSeleccionada().getFechaDesde().getTime()) / MILLSECS_PER_DAY;
+                    Integer total = dias.intValue() + 2;
+                    for (Integer i = 1; i < total; i++) {
+                        CapacitacionAsistencia asistencia = new CapacitacionAsistencia();
+                        CapacitacionAsistenciaPK pk = new CapacitacionAsistenciaPK();
+                        pk.setCodCia(det.getCapacitacionXEmpleadoPK().getCodCia());
+                        pk.setCodCapacitacion(det.getCapacitacionXEmpleadoPK().getCodCapacitacion());
+                        pk.setCodEmp(det.getCapacitacionXEmpleadoPK().getCodEmp());
+                        pk.setFecha(sumarFechasDias(getSessionBeanCAP().getCapacitacionSeleccionada().getFechaDesde(), i - 1));
+                        asistencia.setCapacitacionAsistenciaPK(pk);
+                        asistencia.setCapacitacion(getSessionBeanCAP().getCapacitacionSeleccionada());
+                        asistencia.setEmpleados(det.getEmpleados());
+                        asistencia.setAsistio("N");
+                        capacitacionSessionBean.guardarAsistencia(asistencia);
+                    }
+                } catch (Exception e) {
+                    addMessage("Mantenimiento de Particiantes.", "Ya se han enviado las notificaciones.", TipoMensaje.ERROR);
+                    System.out.println(e.getMessage());
+                    return;
+                }
+                //Enviar correos
+                StringBuilder mensaje = new StringBuilder();
+                mensaje.append("\n\nPor medio de la presente se le comunica que ha sido convocado a la siguiente Capacitación");
+                mensaje.append("\n\nNombre: ").append(det.getCapacitacion().getNomCapacitacion());
+                mensaje.append("\n\nArea: ").append(det.getCapacitacion().getCapacitacionAreas().getNomArea());
+                mensaje.append("\n\nTema: ").append(det.getCapacitacion().getCapacitacionTemas().getNomTema());
+                mensaje.append("\n\nA celebrarse el día: ").append(new SimpleDateFormat("dd/MM/yyyy").format(det.getCapacitacion().getFechaDesde()));
+
+                mailStatelessBean.enviarCorreoElectronico("Capacitacion", mensaje.toString(), det.getEmpleados().getCorreo());
+
+            }
+            Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
+            cap.setStatus("N");
+            capacitacionSessionBean.editarCapacitacion(cap);
+
+            addMessage("Mantenimiento de participantes.", "Correos enviados a los Participantes de esta capacitación ", TipoMensaje.INFORMACION);
+        } catch (Exception e) {
+            addMessage("Mantenimiento de Particiantes.", "Ha ocurrido un error al enviar correos a Participantes.", TipoMensaje.ERROR);
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static Date sumarFechasDias(Date fch, int dias) {
+        Calendar cal = new GregorianCalendar();
+        cal.setTimeInMillis(fch.getTime());
+        cal.add(Calendar.DATE, dias);
+        return new Date(cal.getTimeInMillis());
+    }
+    
+    public void eliminar$participante$action(ActionEvent actionEvent){
+        isError = false;
+        Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
+        if(cap.getStatus().equals("N")){
+            addMessage("Mantenimiento Participantes", "Esta Capacitacion ya fue notificada, no se pueden eliminar participantes", TipoMensaje.INFORMACION);
+            isError = true;
+        }
+        if (getSessionBeanCAP().getDetalleCapSeleccionada() == null) {
+            addMessage("Mantenimiento de Participantes", "Primero seleccione un Participante", TipoMensaje.ERROR);
+            isError = true;
+        }
+        if(isError)
+            return;
+        try {
+            CapacitacionXEmpleado participante = getSessionBeanCAP().getDetalleCapSeleccionada();
+            capacitacionSessionBean.eliminarDetalleCapacitacion(participante);
+            addMessage("Mantenimiento de participantes.", "Datos eliminados con éxito", TipoMensaje.INFORMACION);
+            setNomEmp(null);
+        } catch (Exception e) {
+            addMessage("Mantenimiento de Particiantes.", "Ha ocurrido un error al intentar remover al Participante.", TipoMensaje.ERROR);
+            System.out.println(e.getMessage());
+        }
+        listaDetalle = capacitacionSessionBean.findDetByCap(getSessionBeanADM().getCompania(), getSessionBeanCAP().getCapacitacionSeleccionada());
+    }
+    
+    //Asistencia----------------------------------------------------------------
+    public void onRowSelectDetalleAsistencia(SelectEvent event) {
+        setDetalleSelec((CapacitacionXEmpleado) event.getObject());
+        //getSessionBeanCAP().setDetalleCapSeleccionada((CapacitacionXEmpleado) event.getObject());
+        Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
+        CapacitacionXEmpleado detalle = detalleSelec;
+        Empleados empleado = detalle.getEmpleados();
+        listaAsistencia = capacitacionSessionBean.findAsistenciaByDet(getSessionBeanADM().getCompania(), cap, empleado);
+        nomEmp = detalleSelec.getEmpleados().getNombreCompleto();
+    }
+    
+    public void rowEditListenerAsistencia(RowEditEvent event) {
+        boolean hayError = false;
+        CapacitacionAsistencia asistencia = (CapacitacionAsistencia) event.getObject();
+        try {
+            asistencia.setAsistio((asistencia.getAsiste()) ? "N" : "S");
+            capacitacionSessionBean.editarAsistencia(asistencia);
+            addMessage("Mantenimiento de Asistencia de Capacitacion.", "Asistencias actualizadas con éxito", TipoMensaje.INFORMACION);
+            setDetalleSelec(null);
+        } catch (Exception e) {
+            addMessage("Mantenimiento de Asistencia de Capacitacion.", "Ha ocurrido un error al intentar actualizar la Asistencia de Capacitacion.", TipoMensaje.ERROR);
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    //Notas---------------------------------------------------------------------
+    public void rowEditListenerNotas(RowEditEvent event) {
+        boolean hayError = false;
+        CapacitacionXEmpleado detalle = (CapacitacionXEmpleado) event.getObject();
+        //detalle.setNota(nota);
+        try {
+            capacitacionSessionBean.editarDetalleCapacitacion(detalle);
+            addMessage("Mantenimiento de Detalle de Capacitacion.", "Datos actualizados con éxito", TipoMensaje.INFORMACION);
+            limpiarCampos();
+        } catch (Exception e) {
+            addMessage("Mantenimiento de Detalle de Capacitacion.", "Ha ocurrido un error al intentar actualizar el Detallle Capacitacion.", TipoMensaje.ERROR);
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void guardar$notaCap$action(){
+        isError = false;
+        if(notaCapacitacion == null){
+            isError = true;
+        }
+        if(isError)
+            return;
+        try{
+            Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
+        cap.setNotaCapacitacion(notaCapacitacion);
+        capacitacionSessionBean.editarCapacitacion(cap);
+        addMessage("Mantenimiento de Detalle de Capacitacion.", "Nota general actualizada con éxito", TipoMensaje.INFORMACION);
+        }catch (Exception e) {
+            addMessage("Mantenimiento de Detalle de Capacitacion.", "Ha ocurrido un error al intentar actualizar la nota general.", TipoMensaje.ERROR);
+            System.out.println(e.getMessage());
+        }
+    }
+       
 }
