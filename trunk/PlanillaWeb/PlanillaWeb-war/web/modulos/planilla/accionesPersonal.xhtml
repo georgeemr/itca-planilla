@@ -54,9 +54,9 @@
         <p:fieldset id="fieldset1">
             <h:panelGrid columns="2">
                 <h:outputLabel value="Acci&oacute;n de Personal"/>
-                <h:selectOneMenu id="lstAcc" style="height: 25px;padding-top: 3px;" value="#{planilla$accionesPersonal.tipo}">
+                <h:selectOneMenu id="lstAcc" style="height: 25px;padding-top: 3px; width: 250px;" value="#{planilla$accionesPersonal.tipo}">
                     <f:ajax event="change" listener="#{planilla$accionesPersonal.seleccionarAccion}" execute="lstAcc" render="@form" />
-                    <f:selectItem  itemValue="-1" itemLabel="[SELECCIONE UN TIPO DE ACCI&Oacute;N]" />
+                    <f:selectItem  itemValue="-1" itemLabel="[ SELECCIONE UN TIPO DE ACCI&Oacute;N ]" />
                     <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc" itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
                 </h:selectOneMenu>
             </h:panelGrid>
@@ -1317,6 +1317,118 @@
             <h:panelGrid columns="2">
                 <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldRetiro,principalForm:txtobservacionesRetiro"
                                  action="#{planilla$accionesPersonal.solicitudRetiro.guardarSolicitud$action()}"
+                                 ajax="true" image="ui-icon-circle-check" />
+
+                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
+                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
+            </h:panelGrid>
+
+        </p:dialog>
+
+        <p:dialog id="dialogSolicitudNA" widgetVar="dialogSolicitudNA" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
+            <p:spacer height="10px"/>
+            <p:panel id="panelInformacionNA" style="border:none;" >
+                <h:panelGrid columns="4" >
+                    <p:graphicImage value="../../resources/imagenes/64/info.png" />
+                    <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
+                    <h:outputLabel value="*" styleClass="requerido"/>                                
+                    <h:outputLabel value=" son requeridos." style="font-style: italic;" />
+                </h:panelGrid>
+            </p:panel>
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fieldsetEncabezadoNA">
+                <table border="0" width="100%" cellpadding="3" >
+                    <tr>
+                        <td width="20%;" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;" /></td>
+                        <td width="80%;">
+                            <h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;" >
+                            <h:outputLabel value="Empleado" style="font-weight: bold;" />
+                        </td>
+                        <td width="80%;">
+                            <h:outputLabel value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;" ><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
+                        <td width="80%;"><h:outputLabel  value="#{planilla$accionesPersonal.nombreJefe}"  /></td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;" ><h:outputLabel value="Departamento" style="font-weight: bold;" /></td>
+                        <td width="80%;"><h:outputLabel  value="#{SessionBeanEMP.empleadoSesion.departamentos.nomDepto}" /></td>
+                    </tr>
+                    <tr>
+                        <td width="20%;" ><h:outputLabel value="Puesto" style="font-weight: bold;" /></td>
+                        <td width="80%;"><h:outputLabel  value="#{SessionBeanEMP.empleadoSesion.puestos.nomPuesto}" /></td>
+                    </tr>
+
+                    <tr>
+                        <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesNA" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                    </tr>
+                </table>
+            </p:fieldset>
+
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fldNoAfectaPlanilla" >
+
+                <table border="0"  >
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Tipo de Acci&oacute;n"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+
+                        <td>                            
+                            <h:selectOneMenu style="height: 25px;padding-top: 3px;width: 250px;" value="#{planilla$accionesPersonal.solicitudNoAfectaPlanilla.tipoAccionSeleccionada}" >
+                                <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE UN TIPO DE ACCI&Oacute;N ]" />
+                                <f:selectItems value="#{planilla$accionesPersonal.solicitudNoAfectaPlanilla.listaTipoAccionNoAfecta}" var="tipoAccion" itemValue="#{tipoAccion.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAccion.nomTipoaccion}" />
+                            </h:selectOneMenu>
+                        </td>        
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Fecha inicial"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+
+                        <td>                            
+                            <p:calendar id="fecInicialNA" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudNoAfectaPlanilla.fechaInicial}"  />
+                        </td>
+
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Fecha Final"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+
+                        <td>                            
+                            <p:calendar id="fecFinalNA" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudNoAfectaPlanilla.fechaFinal}"  />
+                        </td>
+                    </tr>
+                </table>
+
+            </p:fieldset>
+            <p:spacer height="15" />
+            <h:panelGrid columns="2">
+                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldNoAfectaPlanilla,principalForm:txtobservacionesNA"
+                                 action="#{planilla$accionesPersonal.solicitudNoAfectaPlanilla.guardarSolicitud$action}"
                                  ajax="true" image="ui-icon-circle-check" />
 
                 <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
