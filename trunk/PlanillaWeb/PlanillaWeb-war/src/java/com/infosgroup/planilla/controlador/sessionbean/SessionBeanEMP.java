@@ -18,104 +18,125 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 /**
- *
- * @author root
+
+ @author root
  */
 @ManagedBean(name = "SessionBeanEMP")
 @SessionScoped
-public class SessionBeanEMP implements java.io.Serializable {
+public class SessionBeanEMP implements java.io.Serializable
+{
 
-    @EJB
-    private EmpleadoFacade empleadoFacade;
-    @EJB
-    private EmpleadosSessionBean empleadosBean;
-    private Empleados empleadoSesion;
+@EJB
+private EmpleadoFacade empleadoFacade;
+@EJB
+private EmpleadosSessionBean empleadosBean;
+private Empleados empleadoSesion;
 
-    public Empleados getEmpleadoSesion() {
-        return empleadoSesion;
-    }
+public Empleados getEmpleadoSesion()
+{
+    return empleadoSesion;
+}
 
-    public void setEmpleadoSesion(Empleados empleadoSesion) {
-        this.empleadoSesion = empleadoSesion;
-    }
+public void setEmpleadoSesion(Empleados empleadoSesion)
+{
+    this.empleadoSesion = empleadoSesion;
+}
 
-    @PostConstruct
-    public void postConstruct() {
-        try {
-            empleadoSesion = (FacesContext.getCurrentInstance().getExternalContext().getRemoteUser() != null) ? empleadosBean.buscarEmpleadoPorUsuario(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser()) : null;
-        } catch (javax.persistence.NoResultException e) {
-            System.out.println( "Usuario no encontrado en la base de datos. " );
+@PostConstruct
+public void postConstruct()
+{
+    try
+        {
+        empleadoSesion = (FacesContext.getCurrentInstance().getExternalContext().getRemoteUser() != null) ? empleadosBean.buscarEmpleadoPorUsuario(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser()) : null;
         }
-    }
-    private Evaluacion evaluacionSeleccionada;
-
-    public Evaluacion getEvaluacionSeleccionada() {
-        return evaluacionSeleccionada;
-    }
-
-    public void setEvaluacionSeleccionada(Evaluacion evaluacionSeleccionada) {
-        this.evaluacionSeleccionada = evaluacionSeleccionada;
-    }
-    private List<Factor> listaFactores;
-
-    public List<Factor> getListaFactores() {
-        if (evaluacionSeleccionada != null) {
-            listaFactores = empleadosBean.listarFactoresPorPlantilla(evaluacionSeleccionada.getPlantilla1());
+    catch (javax.persistence.NoResultException e)
+        {
+        System.out.println("Usuario no encontrado en la base de datos. ");
         }
-        return listaFactores;
-    }
+}
+private Evaluacion evaluacionSeleccionada;
 
-    public void setListaFactores(List<Factor> listaFactores) {
-        this.listaFactores = listaFactores;
-    }
-    private Factor factorActual;
+public Evaluacion getEvaluacionSeleccionada()
+{
+    return evaluacionSeleccionada;
+}
 
-    public Factor getFactorActual() {
-        return factorActual;
-    }
+public void setEvaluacionSeleccionada(Evaluacion evaluacionSeleccionada)
+{
+    this.evaluacionSeleccionada = evaluacionSeleccionada;
+}
+private List<Factor> listaFactores;
 
-    public void setFactorActual(Factor factorActual) {
-        this.factorActual = factorActual;
-    }
-    private List<DetalleEvaluacion> detalleEvaluacionTemporal;
+public List<Factor> getListaFactores()
+{
+    if (evaluacionSeleccionada != null)
+        {
+        listaFactores = empleadosBean.listarFactoresPorPlantilla(evaluacionSeleccionada.getPlantilla1());
+        }
+    return listaFactores;
+}
 
-    public List<DetalleEvaluacion> getDetalleEvaluacionTemporal() {
-        return detalleEvaluacionTemporal;
-    }
+public void setListaFactores(List<Factor> listaFactores)
+{
+    this.listaFactores = listaFactores;
+}
+private Factor factorActual;
 
-    public void setDetalleEvaluacionTemporal(List<DetalleEvaluacion> detalleEvaluacionTemporal) {
-        this.detalleEvaluacionTemporal = detalleEvaluacionTemporal;
-    }
-// 13022012    
-//    private PuestoEmpleado[] puestosEmpleadosEvaluadores;
-//
-//    public PuestoEmpleado[] getPuestosEmpleadosEvaluadores() {
-//        return puestosEmpleadosEvaluadores;
-//    }
-// 13022012      
-//    public void setPuestosEmpleadosEvaluadores(PuestoEmpleado[] puestosEmpleadosEvaluadores) {
-//        this.puestosEmpleadosEvaluadores = puestosEmpleadosEvaluadores;
-//    }
-//    private PuestoEmpleado[] puestosEmpleadosEvaluados;
-//
-//    public PuestoEmpleado[] getPuestosEmpleadosEvaluados() {
-//        return puestosEmpleadosEvaluados;
-//    }
-//
-//    public void setPuestosEmpleadosEvaluados(PuestoEmpleado[] puestosEmpleadosEvaluados) {
-//        this.puestosEmpleadosEvaluados = puestosEmpleadosEvaluados;
-//    }
-//    private PuestoEmpleado puestoEmpleadoSession;
-//
-//    @PermitAll
-//    public PuestoEmpleado getPuestoEmpleadoSession() {
-//        if (empleadoSesion != null) {
-//            puestoEmpleadoSession = empleadoFacade.getUltimoPuesto(empleadoSesion);
+public Factor getFactorActual()
+{
+    return factorActual;
+}
+
+public void setFactorActual(Factor factorActual)
+{
+    this.factorActual = factorActual;
+}
+private List<DetalleEvaluacion> detalleEvaluacionTemporal;
+
+public List<DetalleEvaluacion> getDetalleEvaluacionTemporal()
+{
+    return detalleEvaluacionTemporal;
+}
+
+public void setDetalleEvaluacionTemporal(List<DetalleEvaluacion> detalleEvaluacionTemporal)
+{
+    this.detalleEvaluacionTemporal = detalleEvaluacionTemporal;
+}
+private Empleados[] puestosEmpleadosEvaluadores;
+
+public Empleados[] getPuestosEmpleadosEvaluadores()
+{
+    return puestosEmpleadosEvaluadores;
+}
+
+public void setPuestosEmpleadosEvaluadores(Empleados[] puestosEmpleadosEvaluadores)
+{
+    this.puestosEmpleadosEvaluadores = puestosEmpleadosEvaluadores;
+}
+private Empleados[] puestosEmpleadosEvaluados;
+
+public Empleados[] getPuestosEmpleadosEvaluados()
+{
+    return puestosEmpleadosEvaluados;
+}
+
+public void setPuestosEmpleadosEvaluados(Empleados[] puestosEmpleadosEvaluados)
+{
+    this.puestosEmpleadosEvaluados = puestosEmpleadosEvaluados;
+}
+private Empleados puestoEmpleadoSession;
+
+//@PermitAll
+//public Empleados getPuestoEmpleadoSession()
+//{
+//    if (empleadoSesion != null)
+//        {
+//        puestoEmpleadoSession = empleadoFacade.getUltimoPuesto(empleadoSesion);
 //        }
-//        return puestoEmpleadoSession;
-//    }
-//
-//    public void setPuestoEmpleadoSession(PuestoEmpleado puestoEmpleadoSession) {
-//        this.puestoEmpleadoSession = puestoEmpleadoSession;
-//    }
+//    return puestoEmpleadoSession;
+//}
+public void setPuestoEmpleadoSession(Empleados puestoEmpleadoSession)
+{
+    this.puestoEmpleadoSession = puestoEmpleadoSession;
+}
 }

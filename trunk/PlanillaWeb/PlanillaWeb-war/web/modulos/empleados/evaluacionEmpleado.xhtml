@@ -26,27 +26,27 @@
         <p:fieldset legend="Evaluaci&oacute;n del empleado">
             <h:panelGrid columns="4" width="100%">
                 <h:outputText value="Campaña" styleClass="negrita"/>
-                <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.campania.nombre}"/>
+                <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.campania.nomCampania}"/>
                 <h:outputText value="Tipo de evaluacion" styleClass="negrita"/>
                 <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.plantilla1.tipoEvaluacion.nomTipoEvaluacion}"/>
                 <h:outputText value="Plantilla" styleClass="negrita"/>
                 <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.plantilla1.nombre}"/>
                 <h:outputText value="Empleado" styleClass="negrita"/>
                 <h:panelGrid columns="3" cellspacing="0" cellpadding="0">
-                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleado1.nombres}"/>
+                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleados.nombres}"/>
                     <p:spacer width="4"/>
-                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleado1.apellidos}"/>
+                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleados.apellidos}"/>
                     <p:spacer width="4"/>
-                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleado1.apCasada}" rendered="#{SessionBeanEMP.evaluacionSeleccionada.empleado1.apCasada ne null}"/>
+                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleados.apCasada}" rendered="#{SessionBeanEMP.evaluacionSeleccionada.empleados.apCasada ne null}"/>
                 </h:panelGrid>
             </h:panelGrid>
             <p:separator/>
             <p:wizard id="wizard1" backLabel="Anterior" flowListener="#{empleados$evaluacionEmpleado.defaultFlowListener}" nextLabel="Siguiente" showStepStatus="true" showNavBar="true">
                 <c:forEach items="#{SessionBeanEMP.listaFactores}" var="factor" varStatus="status">
-                    <p:tab title="#{factor.nombre}" id="tab#{status.count}">
+                    <p:tab title="#{factor.nomFactor}" id="tab#{status.count}">
                         <p:dataTable binding="#{empleados$evaluacionEmpleado.wizardTable[status.count-1]}" value="#{empleados$evaluacionEmpleado.listaPreguntas}" var="pregunta">
                             <f:facet name="header">
-                                <h:outputText value="Ponderaci&oacute;n: #{factor.ponderacion}%"/>
+                                
                             </f:facet>
                             <p:column headerText="ID">
                                 <h:outputText value="#{pregunta.preguntaPK.codPregunta}"/>
@@ -55,8 +55,8 @@
                                 <h:outputText value="#{pregunta.descripcion}"/>
                             </p:column>
                             <p:column headerText="Respuesta">
-                                <h:selectOneMenu value="#{pregunta.respuestaSeleccionada}">
-                                    <f:selectItems value="#{pregunta.respuestaList}" var="respuesta" itemValue="#{respuesta.respuestaPK.codCia}:#{respuesta.respuestaPK.codTipoRespuesta}:#{respuesta.respuestaPK.grupoRespuesta}:#{respuesta.respuestaPK.codRespuesta}" itemLabel="#{respuesta.nivel}" itemDescription="#{respuesta.texto}"/>                                    
+                                <h:selectOneMenu value="#{pregunta.respuesta}">
+                                    <f:selectItems value="#{pregunta.respuestaList}" var="respuesta" itemValue="#{respuesta.respuestaPK.codCia}:#{respuesta.respuestaPK.codTipoRespuesta}:#{respuesta.respuestaPK.codRespuesta}" itemLabel="#{respuesta.nivel}" itemDescription="#{respuesta.texto}"/>                                    
                                 </h:selectOneMenu>
                             </p:column>
                         </p:dataTable>
