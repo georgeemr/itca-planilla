@@ -16,11 +16,11 @@
 
         </p:confirmDialog>
         
-        <p:dialog id="dialogBuscaEmp" widgetVar="dialogBuscaEmp" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="500" height="350">
+        <p:dialog id="dialogBuscaEmp" widgetVar="dialogBuscaEmp" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="700" height="250">
             <p:dataTable id="tablBusEmp"
                          rows="3" paginator="true"
                          emptyMessage="No hay Empleados que mostrar"
-                         var="emp" update="txtEmp tlEmp"
+                         var="emp" update="txtEmp tlEmp, "
                          value="#{capacitaciones$capaXEmpleado.listaEmpleado}"
                          selection="#{SessionBeanCAP.empleadoSeleccionado}"
                          rowSelectListener="#{capacitaciones$capaXEmpleado.onRowSelectEmpleado}"  
@@ -49,13 +49,13 @@
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true"
-                               action="#{capacitaciones$capaXEmpleado.editar$Det$action()}" update="tblDetalle, panelContenido">
+                               action="#{capacitaciones$capaXEmpleado.editar$Det$action()}" update="tblDetalle, panelContenido, nota, tlNota">
                     <p:graphicImage value="/resources/iconos/new.png"/>
                     <h:outputText value="Notas" styleClass="espacioTexto"/>
                 </p:commandLink>
 
                 <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true"
-                               action="#{capacitaciones$capaXEmpleado.consultar$vh$action()}" update="tablaCapacitacion, panelContenido">
+                               action="#{capacitaciones$capaXEmpleado.consultar$vh$action()}" update="tablaCapacitacion, panelContenido, nota, tlNota">
                     <p:graphicImage value="/resources/iconos/search.png"/>
                     <h:outputText value="Consultar" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -117,6 +117,7 @@
                     <f:selectItem itemLabel="Aprobado" itemValue="A"/>
                     <f:selectItem itemLabel="Rechazado" itemValue="R"/>
                     <f:selectItem itemLabel="Realizado" itemValue="RE"/>
+                    <f:selectItem itemLabel="Notificada" itemValue="N"/>
                 </h:selectOneMenu>
                 <h:outputLabel value="Nota General: " />
                 <p:toolbar id="tlNota" >
@@ -203,9 +204,9 @@
 
             <p:spacer height="20" />
             <p:dataTable id="tablaCapacitacion"
-                         var="capacitacion" rows="5"  paginator="true" 
+                         var="capacitacion" rows="5"  paginator="true" update="nota"
                          value="#{capacitaciones$capaXEmpleado.listaCap}"
-                         emptyMessage="No se han encontrado Concursos."
+                         emptyMessage="No se han encontrado Capacitaciones."
                          binding="#{capacitaciones$capaXEmpleado.tableCapacitaciones}"
                          paginatorAlwaysVisible="true" selectionMode="single" 
                          selection="#{SessionBeanCAP.capacitacionSeleccionada}"

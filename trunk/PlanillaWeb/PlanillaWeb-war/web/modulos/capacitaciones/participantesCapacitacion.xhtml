@@ -16,11 +16,11 @@
 
         </p:confirmDialog>
         
-        <p:dialog id="dialogBuscaEmp" widgetVar="dialogBuscaEmp" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="500" height="500">
+        <p:dialog id="dialogBuscaEmp" widgetVar="dialogBuscaEmp" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="700" height="300">
             <p:dataTable id="tablBusEmp"
                          rows="5" paginator="true"
                          emptyMessage="No hay Empleados que mostrar" onRowSelectComplete="dialogBuscaEmp.hide();"
-                         var="emp" update="txtEmp, tlEmp, tblDetalle" 
+                         var="emp" update="txtEmp, tlEmp, tblDetalle, mensajes" 
                          value="#{capacitaciones$participantesCapacitacion.listaEmpleado}"
                          selection="#{SessionBeanCAP.empleadoSeleccionado}"
                          rowSelectListener="#{capacitaciones$participantesCapacitacion.onRowSelectEmpleado}"  
@@ -117,6 +117,7 @@
                     <f:selectItem itemLabel="Aprobado" itemValue="A"/>
                     <f:selectItem itemLabel="Rechazado" itemValue="R"/>
                     <f:selectItem itemLabel="Realizado" itemValue="RE"/>
+                    <f:selectItem itemLabel="Notificada" itemValue="N"/>
                 </h:selectOneMenu>
                 <p:spacer/>
                 <p:spacer/>
@@ -134,7 +135,7 @@
         <p:dataTable id="tblDetalle"
                          rendered="#{(SessionBeanADM.estadoAccion eq 2) }"
                          rows="3" paginator="true"
-                         emptyMessage="No hay jefes que mostrar"
+                         emptyMessage="No hay Empleados que mostrar"
                          var="detalle" update="txtJefe"
                          value="#{capacitaciones$participantesCapacitacion.listaDetalle}"
                          selection="#{SessionBeanCAP.detalleCapSeleccionada}"
