@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Criterio.findByOperador", query = "SELECT c FROM Criterio c WHERE c.operador = :operador"),
     @NamedQuery(name = "Criterio.findByClase", query = "SELECT c FROM Criterio c WHERE c.clase = :clase")})
 public class Criterio implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CriterioPK criterioPK;
@@ -150,5 +151,4 @@ public class Criterio implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.planilla.Criterio[ criterioPK=" + criterioPK + " ]";
     }
-    
 }

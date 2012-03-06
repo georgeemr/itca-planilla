@@ -5,16 +5,7 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -35,6 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CriteriosXPuesto.findByValorInicialRango", query = "SELECT c FROM CriteriosXPuesto c WHERE c.valorInicialRango = :valorInicialRango"),
     @NamedQuery(name = "CriteriosXPuesto.findByValorFinalRango", query = "SELECT c FROM CriteriosXPuesto c WHERE c.valorFinalRango = :valorFinalRango")})
 public class CriteriosXPuesto implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CriteriosXPuestoPK criteriosXPuestoPK;
@@ -57,7 +49,10 @@ public class CriteriosXPuesto implements Serializable {
     private Criterio criterio1;
     @Transient
     private String descripcionRango;
-    
+    @Basic(optional = false)
+    @Column(name = "VALOR_TRANSIENT", nullable = false, length = 200)
+    private String valorTransient;
+
     public CriteriosXPuesto() {
     }
 
@@ -116,18 +111,26 @@ public class CriteriosXPuesto implements Serializable {
     public void setCriterio1(Criterio criterio1) {
         this.criterio1 = criterio1;
     }
-    
+
     public String getDescripcionRango() {
         if (getCriterio1() != null) {
             if (getCriterio1().getOperador().equals("equal")) {
-                descripcionRango = "( igual a " + getValor() + " )";
+                descripcionRango = "( igual a " +  getValorTransient() + " )";
             } else if (getCriterio1().getOperador().equals("between")) {
-                descripcionRango = "( entre " + valorInicialRango + " y " + valorFinalRango + " )";
+                descripcionRango = "( entre " + valorInicialRango + " y " + valorFinalRango + " )"  /*+getValorTransient()!=null ?getValorTransient():""*/ ;
             } else {
                 descripcionRango = "";
             }
         }
         return descripcionRango;
+    }
+
+    public String getValorTransient() {
+        return valorTransient;
+    }
+
+    public void setValorTransient(String valorTransient) {
+        this.valorTransient = valorTransient;
     }
 
     public void setDescripcionRango(String descripcionRango) {
@@ -158,5 +161,4 @@ public class CriteriosXPuesto implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.planilla.CriteriosXPuesto[ criteriosXPuestoPK=" + criteriosXPuestoPK + " ]";
     }
-    
 }
