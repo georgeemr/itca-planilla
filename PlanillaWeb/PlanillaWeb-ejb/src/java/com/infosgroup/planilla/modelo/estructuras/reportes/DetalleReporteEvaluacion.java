@@ -4,63 +4,77 @@
  */
 package com.infosgroup.planilla.modelo.estructuras.reportes;
 
+import java.io.Serializable;
+
 /**
- *
- * @author root
+
+ @author root
  */
-public class DetalleReporteEvaluacion {
+public class DetalleReporteEvaluacion implements Serializable
+{
 
-    private String nivel;
-    private Integer puntaje;
-    private Integer valor;
-    private Integer ponderacion;
-    private Integer subTotal;
+private String nivel;
+private Integer puntaje;
+private Integer valor;
+private Integer ponderacion;
+private Integer subTotal;
 
-    public DetalleReporteEvaluacion(String nivel, Integer puntaje, Integer valor, Integer ponderacion, Integer subTotal) {
-        this.nivel = nivel;
-        this.puntaje = puntaje;
-        this.valor = valor;
-        this.ponderacion = ponderacion;
-        this.subTotal = subTotal;
-    }
+public DetalleReporteEvaluacion(String nivel, Integer puntaje, Integer valor, Integer ponderacion, Integer subTotal)
+{
+    this.nivel = nivel;
+    this.puntaje = puntaje;
+    this.valor = valor;
+    this.ponderacion = ponderacion;
+    this.subTotal = subTotal;
+}
 
-    public String getNivel() {
-        return nivel;
-    }
+public String getNivel()
+{
+    return nivel;
+}
 
-    public void setNivel(String nivel) {
-        this.nivel = nivel;
-    }
+public void setNivel(String nivel)
+{
+    this.nivel = nivel;
+}
 
-    public Integer getPonderacion() {
-        return ponderacion;
-    }
+public Integer getPonderacion()
+{
+    return ponderacion;
+}
 
-    public void setPonderacion(Integer ponderacion) {
-        this.ponderacion = ponderacion;
-    }
+public void setPonderacion(Integer ponderacion)
+{
+    this.ponderacion = ponderacion;
+}
 
-    public Integer getSubTotal() {
-        return subTotal;
-    }
+public Integer getSubTotal()
+{
+    return subTotal;
+}
 
-    public void setSubTotal(Integer subTotal) {
-        this.subTotal = subTotal;
-    }
+public void setSubTotal(Integer subTotal)
+{
+    this.subTotal = subTotal;
+}
 
-    public Integer getValor() {
-        return valor;
-    }
+public Integer getValor()
+{
+    return valor;
+}
 
-    public void setValor(Integer valor) {
-        this.valor = valor;
-    }
+public void setValor(Integer valor)
+{
+    this.valor = valor;
+}
 
-    public Integer getPuntaje() {
-        return puntaje;
-    }
+public Integer getPuntaje()
+{
+    return puntaje;
+}
 
-    public void setPuntaje(Integer puntaje) {
-        this.puntaje = puntaje;
-    }
+public void setPuntaje(Integer puntaje)
+{
+    this.puntaje = puntaje;
+}
 }
