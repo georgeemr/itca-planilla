@@ -120,7 +120,7 @@ public String cerrarCampania()
         addMessage("Evaluación de Desempeño", "No ha seleccionado ninguna Campaña.", TipoMensaje.ERROR);
         return null;
         }
-    campaniaSeleccionada.setEstado("0");
+    campaniaSeleccionada.setEstado("C");
     empleadosBean.editarCampania(campaniaSeleccionada);
     campaniaSeleccionada = null;
     listaCampanias = empleadosBean.listarCampaniasPorEmpleado(sessionBeanEMP.getEmpleadoSesion());
