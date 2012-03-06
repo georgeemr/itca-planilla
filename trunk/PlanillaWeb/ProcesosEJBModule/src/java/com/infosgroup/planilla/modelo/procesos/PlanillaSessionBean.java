@@ -321,16 +321,16 @@ public class PlanillaSessionBean {
     public List<TipoAccion> listarTiposAcciones(Cias cias) {
         return tipoAccionFacade.listarTipoAccionByCias(cias);
     }
-
-    @PermitAll
-    public List<TipoAccion> listarTipoAccionAfecta(Cias cias) {
-        return tipoAccionFacade.findByAfecta(cias, "S");
-    }
-
-    @PermitAll
-    public List<TipoAccion> listarTipoAccionNoAfecta(Cias cias) {
-        return tipoAccionFacade.findByAfecta(cias, "N");
-    }
+//
+//    @PermitAll
+//    public List<TipoAccion> listarTipoAccionAfecta(Cias cias) {
+//        return tipoAccionFacade.findByAfecta(cias, "S");
+//    }
+//
+//    @PermitAll
+//    public List<TipoAccion> listarTipoAccionNoAfecta(Cias cias) {
+//        return tipoAccionFacade.findByAfecta(cias, "N");
+//    }
 
     @PermitAll
     public List<TipoAccion> listarTipoAccionActivas(Cias cias) {
@@ -453,5 +453,15 @@ public class PlanillaSessionBean {
     @PermitAll
     public List<CausasRenuncia> findCausasRenunciasByCias(Cias cias) {
         return causasRenunciaFacade.findByCias(cias);
+    }
+
+    @PermitAll
+    public List<TipoAccion> listarTipoAccionAfectaPlanilla(Cias cias) {
+        return tipoAccionFacade.listarTipoAccionAfectaPlanilla(cias);
+    }
+
+    @PermitAll
+    public List<TipoAccion> listarTipoAccionNoAfectaPlanilla(Cias cias) {
+        return tipoAccionFacade.listarTipoAccionNoAfectaPlanilla(cias);
     }
 }
