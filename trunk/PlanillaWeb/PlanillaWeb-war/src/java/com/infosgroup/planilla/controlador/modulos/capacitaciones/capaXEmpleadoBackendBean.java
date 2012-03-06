@@ -231,6 +231,7 @@ public class capaXEmpleadoBackendBean extends AbstractJSFPage implements Seriali
     public void consultar$vh$action() {
         setEstadoAccion(0);
         getSessionBeanCAP().setCapacitacionSeleccionada(null);
+        setNotaCapacitacion(null);
     }
 
     public void setEstadoAccion(Integer estadoAccion) {
