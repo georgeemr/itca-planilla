@@ -10,133 +10,158 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
- *
- * @author root
+
+ @author root
  */
 @Embeddable
-public class EvaluacionPK implements Serializable {
-    @Basic(optional = false)
-    @Column(name = "COD_CIA", nullable = false)
-    private short codCia;
-    @Basic(optional = false)
-    @Column(name = "PERIODO", nullable = false)
-    private short periodo;
-    @Basic(optional = false)
-    @Column(name = "COD_CAMPANIA", nullable = false)
-    private short codCampania;
-    @Basic(optional = false)
-    @Column(name = "TIPO_EVALUACION", nullable = false)
-    private short tipoEvaluacion;
-    @Basic(optional = false)
-    @Column(name = "PLANTILLA", nullable = false)
-    private long plantilla;
-    @Basic(optional = false)
-    @Column(name = "COD_EMP", nullable = false)
-    private int codEmp;
+public class EvaluacionPK implements Serializable
+{
 
-    public EvaluacionPK() {
-    }
+@Basic(optional = false)
+@Column(name = "COD_CIA", nullable = false)
+private short codCia;
+@Basic(optional = false)
+@Column(name = "PERIODO", nullable = false)
+private int periodo;
+@Basic(optional = false)
+@Column(name = "COD_CAMPANIA", nullable = false)
+private short codCampania;
+@Basic(optional = false)
+@Column(name = "TIPO_EVALUACION", nullable = false)
+private int tipoEvaluacion;
+@Basic(optional = false)
+@Column(name = "PLANTILLA", nullable = false)
+private long plantilla;
+@Basic(optional = false)
+@Column(name = "COD_EMP", nullable = false)
+private int codEmp;
 
-    public EvaluacionPK(short codCia, short periodo, short codCampania, short tipoEvaluacion, long plantilla, int codEmp) {
-        this.codCia = codCia;
-        this.periodo = periodo;
-        this.codCampania = codCampania;
-        this.tipoEvaluacion = tipoEvaluacion;
-        this.plantilla = plantilla;
-        this.codEmp = codEmp;
-    }
+public EvaluacionPK()
+{
+}
 
-    public short getCodCia() {
-        return codCia;
-    }
+public EvaluacionPK(short codCia, short periodo, short codCampania, short tipoEvaluacion, long plantilla, int codEmp)
+{
+    this.codCia = codCia;
+    this.periodo = periodo;
+    this.codCampania = codCampania;
+    this.tipoEvaluacion = tipoEvaluacion;
+    this.plantilla = plantilla;
+    this.codEmp = codEmp;
+}
 
-    public void setCodCia(short codCia) {
-        this.codCia = codCia;
-    }
+public short getCodCia()
+{
+    return codCia;
+}
 
-    public short getPeriodo() {
-        return periodo;
-    }
+public void setCodCia(short codCia)
+{
+    this.codCia = codCia;
+}
 
-    public void setPeriodo(short periodo) {
-        this.periodo = periodo;
-    }
+public int getPeriodo()
+{
+    return periodo;
+}
 
-    public short getCodCampania() {
-        return codCampania;
-    }
+public void setPeriodo(int periodo)
+{
+    this.periodo = periodo;
+}
 
-    public void setCodCampania(short codCampania) {
-        this.codCampania = codCampania;
-    }
+public short getCodCampania()
+{
+    return codCampania;
+}
 
-    public short getTipoEvaluacion() {
-        return tipoEvaluacion;
-    }
+public void setCodCampania(short codCampania)
+{
+    this.codCampania = codCampania;
+}
 
-    public void setTipoEvaluacion(short tipoEvaluacion) {
-        this.tipoEvaluacion = tipoEvaluacion;
-    }
+public int getTipoEvaluacion()
+{
+    return tipoEvaluacion;
+}
 
-    public long getPlantilla() {
-        return plantilla;
-    }
+public void setTipoEvaluacion(int tipoEvaluacion)
+{
+    this.tipoEvaluacion = tipoEvaluacion;
+}
 
-    public void setPlantilla(long plantilla) {
-        this.plantilla = plantilla;
-    }
+public long getPlantilla()
+{
+    return plantilla;
+}
 
-    public int getCodEmp() {
-        return codEmp;
-    }
+public void setPlantilla(long plantilla)
+{
+    this.plantilla = plantilla;
+}
 
-    public void setCodEmp(int codEmp) {
-        this.codEmp = codEmp;
-    }
+public int getCodEmp()
+{
+    return codEmp;
+}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (int) codCia;
-        hash += (int) periodo;
-        hash += (int) codCampania;
-        hash += (int) tipoEvaluacion;
-        hash += (int) plantilla;
-        hash += (int) codEmp;
-        return hash;
-    }
+public void setCodEmp(int codEmp)
+{
+    this.codEmp = codEmp;
+}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EvaluacionPK)) {
-            return false;
+@Override
+public int hashCode()
+{
+    int hash = 0;
+    hash += (int) codCia;
+    hash += (int) periodo;
+    hash += (int) codCampania;
+    hash += (int) tipoEvaluacion;
+    hash += (int) plantilla;
+    hash += (int) codEmp;
+    return hash;
+}
+
+@Override
+public boolean equals(Object object)
+{
+    // TODO: Warning - this method won't work in the case the id fields are not set
+    if (!(object instanceof EvaluacionPK))
+        {
+        return false;
         }
-        EvaluacionPK other = (EvaluacionPK) object;
-        if (this.codCia != other.codCia) {
-            return false;
+    EvaluacionPK other = (EvaluacionPK) object;
+    if (this.codCia != other.codCia)
+        {
+        return false;
         }
-        if (this.periodo != other.periodo) {
-            return false;
+    if (this.periodo != other.periodo)
+        {
+        return false;
         }
-        if (this.codCampania != other.codCampania) {
-            return false;
+    if (this.codCampania != other.codCampania)
+        {
+        return false;
         }
-        if (this.tipoEvaluacion != other.tipoEvaluacion) {
-            return false;
+    if (this.tipoEvaluacion != other.tipoEvaluacion)
+        {
+        return false;
         }
-        if (this.plantilla != other.plantilla) {
-            return false;
+    if (this.plantilla != other.plantilla)
+        {
+        return false;
         }
-        if (this.codEmp != other.codEmp) {
-            return false;
+    if (this.codEmp != other.codEmp)
+        {
+        return false;
         }
-        return true;
-    }
+    return true;
+}
 
-    @Override
-    public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.planilla.EvaluacionPK[ codCia=" + codCia + ", periodo=" + periodo + ", codCampania=" + codCampania + ", tipoEvaluacion=" + tipoEvaluacion + ", plantilla=" + plantilla + ", codEmp=" + codEmp + " ]";
-    }
-    
+@Override
+public String toString()
+{
+    return "com.infosgroup.planilla.modelo.entidades.planilla.EvaluacionPK[ codCia=" + codCia + ", periodo=" + periodo + ", codCampania=" + codCampania + ", tipoEvaluacion=" + tipoEvaluacion + ", plantilla=" + plantilla + ", codEmp=" + codEmp + " ]";
+}
 }

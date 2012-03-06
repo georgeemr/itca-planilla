@@ -274,7 +274,23 @@ private Short codContratacion;
 private String docente;
 @Column(name = "CORREO", length = 150)
 private String correo;
-@OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
+
+/* @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
+ private List<Evaluacion> evaluacionList; */
+@JoinTable(name = "EVALUADOR_EVALUACIONES", joinColumns =
+    {
+    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
+    @JoinColumn(name = "EVALUADOR", referencedColumnName = "COD_EMP", nullable = false)
+    }, inverseJoinColumns =
+    {
+    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
+    @JoinColumn(name = "PERIODO", referencedColumnName = "PERIODO", nullable = false),
+    @JoinColumn(name = "CAMPANIA", referencedColumnName = "COD_CAMPANIA", nullable = false),
+    @JoinColumn(name = "TIPO_EVALUACION", referencedColumnName = "TIPO_EVALUACION", nullable = false),
+    @JoinColumn(name = "PLANTILLA", referencedColumnName = "PLANTILLA", nullable = false),
+    @JoinColumn(name = "EMPLEADO", referencedColumnName = "COD_EMP", nullable = false)
+    })
+@ManyToMany
 private List<Evaluacion> evaluacionList;
 @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
 private List<CapacitacionXEmpleado> capacitacionXEmpleadoList;
@@ -315,11 +331,13 @@ private Departamentos departamentos;
     })
 @ManyToOne(optional = false)
 private CausasRenuncia causasRenuncia;
-    @JoinColumns({
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "COD_EMPREF", referencedColumnName = "COD_EMP")})
-    @ManyToOne(optional = false)
-  private Empleados representantePatronal;
+@JoinColumns(
+    {
+    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+    @JoinColumn(name = "COD_EMPREF", referencedColumnName = "COD_EMP")
+    })
+@ManyToOne(optional = false)
+private Empleados representantePatronal;
 //    @Column(name = "COD_EMPREF")
 //    private Integer representantePatronal;
 @Transient
@@ -676,7 +694,6 @@ public void setEstadoCivil(String estadoCivil)
 //    public void setCodEmpref(String codEmpref) {
 //        this.codEmpref = codEmpref;
 //    }
-
 public String getNombreIsss()
 {
     return nombreIsss;
@@ -1221,12 +1238,13 @@ public void setNombreCompleto(String nombreCompleto)
     this.nombreCompleto = nombreCompleto;
 }
 
-    public Empleados getRepresentantePatronal() {
-        return representantePatronal;
-    }
+public Empleados getRepresentantePatronal()
+{
+    return representantePatronal;
+}
 
-    public void setRepresentantePatronal(Empleados representantePatronal) {
-        this.representantePatronal = representantePatronal;
-    }
-    
+public void setRepresentantePatronal(Empleados representantePatronal)
+{
+    this.representantePatronal = representantePatronal;
+}
 }

@@ -43,14 +43,14 @@
                             <f:facet name="header">
                                 <h:outputText value="Campa&ntilde;as"/>
                             </f:facet>
-                            <p:column headerText="Campa&ntilde;a" filterBy="#{campania.nombre}" sortBy="#{campania.nombre}">
+                            <p:column headerText="Campa&ntilde;a" filterBy="#{campania.nomCampania}" sortBy="#{campania.nomCampania}">
                                 <p:graphicImage url="/resources/iconos/rating.png" height="16" width="16"/>
                                 <p:spacer width="5"/>
-                                <h:outputText id="nombreCompania" value="#{campania.nombre} - Evaluados: #{campania.empleadosEvaluados}"/>
+                                <h:outputText id="nombreCompania" value="#{campania.nomCampania} - Evaluados: #{campania.empleadosEvaluados}"/>
                                 <p:tooltip for="nombreCompania" showEffect="grow" hideEffect="grow">
                                     <p:graphicImage url="/resources/iconos/help-hint.png" height="16" width="16"/>
                                     <p:spacer width="5"/>
-                                    <h:outputText value="#{campania.nombre} (del "/>
+                                    <h:outputText value="#{campania.nomCampania} (del "/>
                                     <h:outputText value="#{campania.fechaInicial}">
                                         <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
                                     </h:outputText>
@@ -71,16 +71,16 @@
                             <f:facet name="header">
                                 <h:outputText value="Evaluaciones"/>
                             </f:facet>
-                            <p:column headerText="Empleado" filterBy="#{evaluacion.empleado1.nombreCompleto}" sortBy="#{evaluacion.empleado1.nombreCompleto}">
-                                <p:graphicImage url="/resources/iconos/meeting-participant.png" height="16" width="16" rendered="#{evaluacion.empleado1.candidato.sexo eq 'M'}"/>
-                                <p:graphicImage url="/resources/iconos/personal_w.png" height="16" width="16" rendered="#{evaluacion.empleado1.candidato.sexo eq 'F'}"/>
+                            <p:column headerText="Empleado" filterBy="#{evaluacion.empleados.nombreCompleto}" sortBy="#{evaluacion.empleados.nombreCompleto}">
+                                <p:graphicImage url="/resources/iconos/meeting-participant.png" height="16" width="16" rendered="#{evaluacion.empleados eq 'M'}"/>
+                                <p:graphicImage url="/resources/iconos/personal_w.png" height="16" width="16" rendered="#{evaluacion.empleados eq 'F'}"/>
                                 <p:spacer width="5"/>
-                                <h:outputText id="nombreEmpleado" value="#{evaluacion.empleado1.nombreCompleto}"/>
+                                <h:outputText id="nombreEmpleado" value="#{evaluacion.empleados.nombreCompleto}"/>
                                 <h:outputText value=" ( Evaluaci&oacute;n realizada ) " rendered="#{evaluacion.finalizada eq 1 }"/>
                                 <p:tooltip for="nombreEmpleado" showEffect="grow" hideEffect="grow">
                                     <p:graphicImage url="/resources/iconos/help-hint.png" height="16" width="16"/>
                                     <p:spacer width="5"/>
-                                    <h:outputText value="#{evaluacion.empleado1.nombreCompleto}: evaluado para #{evaluacion.plantilla1.tipoEvaluacion.nomTipoEvaluacion} usando la plantilla #{evaluacion.plantilla1.nombre}"/>
+                                    <h:outputText value="#{evaluacion.empleados.nombreCompleto}: evaluado para #{evaluacion.plantilla1.tipoEvaluacion.nomTipoEvaluacion} usando la plantilla #{evaluacion.plantilla1.nombre}"/>
                                 </p:tooltip>
                             </p:column>
                         </p:dataTable>

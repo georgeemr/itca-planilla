@@ -4,7 +4,6 @@
  */
 package com.infosgroup.planilla.modelo.estructuras;
 
-import com.infosgroup.planilla.modelo.entidades.Pregunta;
 import com.infosgroup.planilla.modelo.entidades.Respuesta;
 import java.io.Serializable;
 

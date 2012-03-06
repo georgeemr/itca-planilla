@@ -36,7 +36,7 @@
                 <table width="100%" cellpadding="0" cellspacing="5" border="0">
                     <tr valign="center">
                         <td width="34%">
-                            <h:outputText id="campaniaText" value="Campaña: #{empleados$definirEvaluaciones.campaniaSeleccionada.nombre}"/>
+                            <h:outputText id="campaniaText" value="Campaña: #{empleados$definirEvaluaciones.campaniaSeleccionada.nomCampania}"/>
                         </td>
                         <td width="33%">
                             <h:outputText id="tipoEvaluacionText" value="Tipo de evaluaci&oacute;n: #{empleados$definirEvaluaciones.tipoEvaluacionSeleccionada.nomTipoEvaluacion}"/>
@@ -49,9 +49,9 @@
                         <td width="34%">
                             <p:dataList id="campaniasDataList" value="#{empleados$definirEvaluaciones.listaCampanias}" var="campania" paginator="true" rows="5" effectSpeed="fast" paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25" itemType="none">
                                 <p:column>
-                                    <p:commandLink update="principalForm:campaniaText" title="Campa&ntilde;a: #{campania.nombre}, num. #{campania.campaniaPK.codCampania} del periodo #{campania.campaniaPK.periodo}" styleClass="textonormal" onmouseover="this.className='textonegrita'" onmouseout="this.className='textonormal'">
+                                    <p:commandLink update="principalForm:campaniaText" title="Campa&ntilde;a: #{campania.nomCampania}, num. #{campania.campaniaPK.codCampania} del periodo #{campania.campaniaPK.periodo}" styleClass="textonormal" onmouseover="this.className='textonegrita'" onmouseout="this.className='textonormal'">
                                         <p:graphicImage value="/resources/iconos/task-accepted.png"/>
-                                        <h:outputText value="#{campania.nombre}" style="margin-left:5px"/>
+                                        <h:outputText value="#{campania.nomCampania}" style="margin-left:5px"/>
                                         <f:setPropertyActionListener value="#{campania}" target="#{empleados$definirEvaluaciones.campaniaSeleccionada}"/>
                                     </p:commandLink>                        
                                 </p:column>
@@ -85,7 +85,7 @@
             <p:tab id="tab1" title="Evaluadores">
                 <h:panelGrid columns="4" width="100%">
                     <h:outputText value="Campa&ntilde;a"/>
-                    <h:outputLabel value="#{empleados$definirEvaluaciones.campaniaSeleccionada.nombre}" style="font-weight: bold"/>
+                    <h:outputLabel value="#{empleados$definirEvaluaciones.campaniaSeleccionada.nomCampania}" style="font-weight: bold"/>
                     <h:outputText value="Tipo de evaluaci&oacute;n"/>
                     <h:outputLabel value="#{empleados$definirEvaluaciones.tipoEvaluacionSeleccionada.nomTipoEvaluacion}" style="font-weight: bold"/>
                     <h:outputText value="Plantilla"/>
@@ -96,18 +96,18 @@
                     <f:facet name="header">
                         <h:outputText value="Empleados evaluadores"/>
                     </f:facet>
-                    <p:column headerText="Puesto" filterBy="#{puestoEmpleado1.puesto.nombre}" filterMatchMode="exact" filterOptions="#{empleados$definirEvaluaciones.puestosOptions}">
-                        <h:outputText value="#{puestoEmpleado1.puesto.nombre}"/>
+                    <p:column headerText="Puesto" filterBy="#{puestoEmpleado1.puestos.nomPuesto}" filterMatchMode="exact" filterOptions="#{empleados$definirEvaluaciones.puestosOptions}">
+                        <h:outputText value="#{puestoEmpleado1.puestos.nomPuesto}"/>
                     </p:column>
-                    <p:column headerText="Empleado" filterBy="#{puestoEmpleado1.empleado.nombreCompleto}" filterMatchMode="contains">
-                        <h:outputText value="#{puestoEmpleado1.empleado.nombreCompleto}"/>
+                    <p:column headerText="Empleado" filterBy="#{puestoEmpleado1.nombreCompleto}" filterMatchMode="contains">
+                        <h:outputText value="#{puestoEmpleado1.nombreCompleto}"/>
                     </p:column>
                 </p:dataTable>
             </p:tab>
             <p:tab id="tab2" title="Evaluados">
                 <h:panelGrid columns="4" width="100%">
                     <h:outputText value="Campa&ntilde;a"/>
-                    <h:outputLabel value="#{empleados$definirEvaluaciones.campaniaSeleccionada.nombre}" style="font-weight: bold"/>
+                    <h:outputLabel value="#{empleados$definirEvaluaciones.campaniaSeleccionada.nomCampania}" style="font-weight: bold"/>
                     <h:outputText value="Tipo de evaluaci&oacute;n"/>
                     <h:outputLabel value="#{empleados$definirEvaluaciones.tipoEvaluacionSeleccionada.nomTipoEvaluacion}" style="font-weight: bold"/>
                     <h:outputText value="Plantilla"/>
@@ -118,11 +118,11 @@
                     <f:facet name="header">
                         <h:outputText value="Empleados evaluados"/>
                     </f:facet>
-                    <p:column headerText="Puesto" filterBy="#{puestoEmpleado2.puesto.nombre}" filterMatchMode="exact" filterOptions="#{empleados$definirEvaluaciones.puestosOptions}">
-                        <h:outputText value="#{puestoEmpleado2.puesto.nombre}"/>
+                    <p:column headerText="Puesto" filterBy="#{puestoEmpleado2.puestos.nomPuesto}" filterMatchMode="exact" filterOptions="#{empleados$definirEvaluaciones.puestosOptions}">
+                        <h:outputText value="#{puestoEmpleado2.puestos.nomPuesto}"/>
                     </p:column>
-                    <p:column headerText="Empleado" filterBy="#{puestoEmpleado2.empleado.nombreCompleto}" filterMatchMode="contains">
-                        <h:outputText value="#{puestoEmpleado2.empleado.nombreCompleto}"/>
+                    <p:column headerText="Empleado" filterBy="#{puestoEmpleado2.nombreCompleto}" filterMatchMode="contains">
+                        <h:outputText value="#{puestoEmpleado2.nombreCompleto}"/>
                     </p:column>
                 </p:dataTable>
             </p:tab>
