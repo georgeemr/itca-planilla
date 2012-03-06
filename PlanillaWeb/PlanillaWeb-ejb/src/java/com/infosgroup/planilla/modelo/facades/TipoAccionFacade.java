@@ -34,20 +34,27 @@ public class TipoAccionFacade extends AbstractFacade<TipoAccion, TipoAccionPK> {
     }
 
     public List<TipoAccion> findByAfecta(Cias cias, String afecta) {
-        List<TipoAccion> listaTipo = new ArrayList<TipoAccion>(0);        
-        listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia AND t.afectaSal = :afectaSal ", TipoAccion.class).setParameter("codCia", cias.getCodCia()).setParameter("afectaSal", afecta).getResultList();
+        List<TipoAccion> listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia AND t.afectaSal = :afectaSal ", TipoAccion.class).setParameter("codCia", cias.getCodCia()).setParameter("afectaSal", afecta).getResultList();
         return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
     }
 
     public List<TipoAccion> listarTipoAccionActivas(Cias cias) {
-        List<TipoAccion> listaTipo = new ArrayList<TipoAccion>(0);
-        listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia AND t.estado = 'A' ORDER BY t.nomTipoaccion", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        List<TipoAccion> listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia AND t.estado = 'A' ORDER BY t.nomTipoaccion", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
         return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
     }
 
     public List<TipoAccion> listarTipoAccionByCias(Cias cias) {
-        List<TipoAccion> listaTipo = new ArrayList<TipoAccion>(0);
-        listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia ORDER BY t.nomTipoaccion", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        List<TipoAccion> listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia ORDER BY t.nomTipoaccion", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
+    }
+
+    public List<TipoAccion> listarTipoAccionAfectaPlanilla(Cias cias) {
+        List<TipoAccion> listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia AND t.estado = 'A' AND t.afectaSal = 'S' ORDER BY t.nomTipoaccion", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
+    }
+
+    public List<TipoAccion> listarTipoAccionNoAfectaPlanilla(Cias cias) {
+        List<TipoAccion> listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia AND t.estado = 'A' AND t.afectaSal = 'N' ORDER BY t.nomTipoaccion", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
         return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
     }
 }
