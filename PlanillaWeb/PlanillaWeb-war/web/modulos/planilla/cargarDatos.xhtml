@@ -12,10 +12,61 @@
 
     <ui:define name="dialogos">
 
+        <p:confirmDialog message="&#191; Esta seguro que desea procesar los datos ingresados ?" showEffect="bounce" hideEffect="explode"  
+                         modal="true" header="Procesar datos" severity="alert" widgetVar="procesarEmpleados">  
+            <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes" oncomplete="procesarEmpleados.hide()"  
+                             action="#{planilla$CargarDatosBackendBean.procesar}" />  
+            <p:commandButton value="No" onclick="procesarEmpleados.hide()" type="button" />   
+
+        </p:confirmDialog>  
+
+        <p:dialog id="dialogoEmpleados" widgetVar="dialogoEmpleados" header="Empleados" width="650" height="450"  resizable="true" showEffect="clip" hideEffect="clip" >  
+
+            <h:panelGrid columns="2" >
+                <p:graphicImage value="/resources/imagenes/64/meeting-participant.png" />   
+                <h:outputLabel id="lbl1" value="Empleados que ser&aacute;n incluidos "  style="font-weight: bold;"/>
+            </h:panelGrid>
+
+            <p:dataTable id="tableEmpleados" value="#{planilla$CargarDatosBackendBean.listaEmpleados}" var="empleado" 
+                         paginator="true" rows="10"  emptyMessage="No se han encontrado Empleados." dynamic="true"  
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                         rowsPerPageTemplate="5,10,25,50,100,1000,10000" style="margin-top: 5px;" >
+
+                <p:column headerText="C&oacute;digo" >  
+                    <h:outputLabel value="#{empleado.empleadosPK.codEmp}" />
+                </p:column>  
+
+                <p:column headerText="Nombre" filterBy="#{empleado.nombreCompleto}" filterMatchMode="contains" >  
+                    <h:outputLabel value="#{empleado.nombreCompleto}" />
+                </p:column>  
+                <p:column headerText="Puesto" filterBy="#{empleado.puestos.nomPuesto}" filterMatchMode="contains" >  
+                    <h:outputLabel value="#{empleado.puestos.nomPuesto}" />
+                </p:column>  
+
+            </p:dataTable>
+            <p:spacer height="15" />
+        </p:dialog>    
     </ui:define>
 
     <ui:define name="acciones">
-        acciones
+        <p:tab id="tabAcciones" title="Acciones" rendered="#{planilla$CargarDatosBackendBean.listaEmpleados ne null}" >
+            <h:panelGrid columns="1"  >
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes,tableEmpleados"
+                               onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" 
+                               onclick="dialogoEmpleados.show();">
+                    <p:graphicImage value="/resources/iconos/personal.png"/>
+                    <h:outputText value="Mostrar empleados" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+        <p:tab title="Acciones comunes">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{planilla$accionesPersonal.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
     </ui:define>
 
     <ui:define name="contenido">
@@ -84,23 +135,24 @@
                         <h:outputLabel value="Tipo de Deducci&oacute;n: #{planilla$CargarDatosBackendBean.deduccionPrestacionSeleccionada.descripcionSumaResta}" style="font-weight: bold;" rendered="#{(planilla$CargarDatosBackendBean.deduccionPrestacion ne null) and ( planilla$CargarDatosBackendBean.deduccionPrestacion ne '-1' ) }" />
                     </td>
                 </tr>
-
+                <tr><td colspan="2" ><p:spacer height="10" /></td></tr>
                 <tr>
-                    <td></td>
-                    <td><!-- allowTypes="*.txt" -->
+                    <td><h:outputLabel value="Seleccionar Archivo" /></td>
+                    <td>
                         <p:fileUpload id="file" sizeLimit="2097152"
-                            label="Seleccionar"  widgetVar="uploader"
-                            image="../../resources/imagenes/64/upload.png"
-                            cancelImage="/resources/iconos/edit-delete.png"
-                            description="Seleccione el archivo"
-                            fileUploadListener="#{planilla$CargarDatosBackendBean.handleFileUpload}" update="mensajes"  > 
+                                      label="Seleccionar"  widgetVar="uploader"
+                                      image="../../resources/imagenes/64/upload.png"
+                                      cancelImage="/resources/iconos/edit-delete.png"
+                                      description="Seleccione el archivo" allowTypes="*.txt"
+                                      fileUploadListener="#{planilla$CargarDatosBackendBean.handleFileUpload}" update="mensajes,panelAcciones"  > 
                         </p:fileUpload>
                     </td>
                 </tr>
-
+                <tr><td colspan="2" ><p:spacer height="10" /></td></tr>
                 <tr>
-                    <td colspan="2" >
-                        <p:commandButton value="Cargar Movimientos" />
+                    <td></td>
+                    <td>
+                        <p:commandButton value="Cargar Movimientos" image="ui-icon-circle-check" onclick="#{planilla$CargarDatosBackendBean.listaEmpleados ne null ? 'procesarEmpleados.show();' :''}" update="mensajes,panelContenido" action="#{planilla$CargarDatosBackendBean.procesar}" />
                     </td>
                 </tr>
             </table>

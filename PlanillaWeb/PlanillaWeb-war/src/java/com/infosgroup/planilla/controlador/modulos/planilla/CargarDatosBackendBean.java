@@ -32,9 +32,9 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
     private List<TiposPlanilla> listaTipos;
     private List<ProgramacionPla> listaPlanillas;
     private List<DeducPresta> listaDeduccionPrestacion;
-    private Short tipoPlanilla;
-    private Integer deduccionPrestacion;
-    private String planilla;
+    private Short tipoPlanilla = -1;
+    private Integer deduccionPrestacion = -1;
+    private String planilla = "-1";
     private String anio;
     private String mes;
     private String numeroPlanilla;
@@ -99,13 +99,15 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
 
                 if (codDeduccion.equals(deduccionPrestacion) && codEmpresa.equals(empresa)) {
                     //if (planillaSessionBean.existeEnResumen(new ResumenAsistenciaPK(empresa, new Short(anio), new Short(mes), new Short(numeroPlanilla), codEmpleado, tipoPlanilla))) {
-                        listaEmpleados.add(planillaSessionBean.findEmpleadosByID(new EmpleadosPK(empresa, codEmpleado)));
+                    listaEmpleados.add(planillaSessionBean.findEmpleadosByID(new EmpleadosPK(empresa, codEmpleado)));
                     //}
                 }
             }
 
-            addMessage("Carga de Datos", "Datos procesados con exito, " +listaEmpleados.size() + " empleados cargados.", TipoMensaje.INFORMACION);
+            addMessage("Carga de Datos", "Datos obtenidos con exito, " + listaEmpleados.size() + " empleados cargados.", TipoMensaje.INFORMACION);
         } catch (Exception e) {
+            addMessage("Carga de Datos", "Ha sido imposible reconocer la estructura del archivo seleccionado.", TipoMensaje.ERROR);
+            e.printStackTrace();
         }
     }
 
@@ -200,11 +202,22 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
 
     @Override
     protected void limpiarCampos() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        tipoPlanilla = -1;
+        deduccionPrestacion = -1;
+        planilla = "-1";
     }
 
-    public void procesar() {
+    public String procesar() {
         // Eliminando los movimientos para ese tipo de planilla
         // planillaSessionBean.eliminarMovimientosDP(empresa, new Short(anio), new Short(mes), tipoPlanilla, new Short(numeroPlanilla), deduccionPrestacion.shortValue());
+
+        if (listaEmpleados == null || listaEmpleados.size() <= 0) {
+            addMessage("Cargar Datos", "No se han ingresado datos de empleados.", TipoMensaje.ERROR);
+            return null;
+        }
+
+        addMessage("Cargar Datos", "Datos procesados con exito.", TipoMensaje.INFORMACION);
+        limpiarCampos();
+        return null;
     }
 }
