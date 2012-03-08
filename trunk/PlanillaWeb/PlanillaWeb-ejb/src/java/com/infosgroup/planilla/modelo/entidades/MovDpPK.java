@@ -8,7 +8,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -17,23 +16,18 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class MovDpPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ANIO", nullable = false)
     private short anio;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "MES", nullable = false)
     private short mes;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "NUM_PLANILLA", nullable = false)
     private short numPlanilla;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "NO_MOVTO", nullable = false)
     private int noMovto;
 
@@ -126,7 +120,7 @@ public class MovDpPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.MovDpPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", noMovto=" + noMovto + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.MovDpPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", noMovto=" + noMovto + " ]";
     }
     
 }

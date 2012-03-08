@@ -17,27 +17,21 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class ResumenAsistenciaPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private short codCia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ANIO", nullable = false)
     private short anio;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "MES", nullable = false)
     private short mes;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "NUM_PLANILLA", nullable = false)
     private short numPlanilla;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_EMP", nullable = false)
     private int codEmp;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_TIPOPLA", nullable = false)
     private short codTipopla;
 
