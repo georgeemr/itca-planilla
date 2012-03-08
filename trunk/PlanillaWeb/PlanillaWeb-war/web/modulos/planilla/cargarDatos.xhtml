@@ -152,7 +152,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <p:commandButton value="Cargar Movimientos" image="ui-icon-circle-check" onclick="#{planilla$CargarDatosBackendBean.listaEmpleados ne null ? 'procesarEmpleados.show();' :''}" update="mensajes,panelContenido" action="#{planilla$CargarDatosBackendBean.procesar}" />
+                        <p:commandButton value="Cargar Movimientos" image="ui-icon-circle-check" onclick="#{planilla$CargarDatosBackendBean.listaEmpleados ne null ? 'procesarEmpleados.show();' :''}" update="mensajes,panelContenido,panelAcciones" action="#{planilla$CargarDatosBackendBean.procesar}" />
                     </td>
                 </tr>
             </table>
