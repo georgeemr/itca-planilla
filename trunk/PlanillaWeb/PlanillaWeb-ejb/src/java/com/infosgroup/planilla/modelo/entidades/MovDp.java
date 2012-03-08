@@ -93,7 +93,7 @@ public class MovDp implements Serializable {
         @JoinColumn(name = "COD_DP", referencedColumnName = "COD_DP", nullable = false)})
     @ManyToOne(optional = false)
     private DeducPresta deducPresta;
-
+    
     public MovDp() {
     }
 
