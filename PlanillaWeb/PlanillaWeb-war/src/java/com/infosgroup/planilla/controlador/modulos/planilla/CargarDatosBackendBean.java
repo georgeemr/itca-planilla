@@ -74,25 +74,31 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
             while (bufferedReader.ready()) {
                 Integer codDeduccion = null;
                 Integer codEmpleado = null;
-                Short codEmpresa = 1; //-----Validar con archivo obtenido
+                Short codEmpresa = null;
                 Double valor = null;
                 String linea = bufferedReader.readLine();
                 String[] valores = linea.split(",");
 
                 try {
-                    codDeduccion = Integer.parseInt(valores[0]);
+                    codEmpresa = Short.parseShort(valores[0]);
+                } catch (Exception excpt) {
+                    codEmpresa = 0;
+                }
+
+                try {
+                    codDeduccion = Integer.parseInt(valores[1]);
                 } catch (Exception excpt) {
                     codDeduccion = 0;
                 }
 
                 try {
-                    codEmpleado = Integer.parseInt(valores[1]);
+                    codEmpleado = Integer.parseInt(valores[2]);
                 } catch (Exception excpt) {
                     codEmpleado = 0;
                 }
 
                 try {
-                    valor = Double.parseDouble(valores[2]);
+                    valor = Double.parseDouble(valores[3]);
                 } catch (Exception excpt) {
                     valor = 0.00d;
                 }
