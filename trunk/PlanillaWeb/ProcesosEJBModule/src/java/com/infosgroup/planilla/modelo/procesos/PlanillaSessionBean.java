@@ -6,8 +6,6 @@ package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.facades.*;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
