@@ -10,8 +10,9 @@ import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -40,7 +41,7 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
     private String numeroPlanilla;
     private DeducPresta deduccionPrestacionSeleccionada;
     private Short empresa;
-    private List<Empleados> listaEmpleados;
+    private List<ResumenAsistencia> listaResumenAsistencia;
 
     public CargarDatosBackendBean() {
     }
@@ -50,12 +51,12 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
         empresa = getSessionBeanADM().getCompania().getCodCia();
     }
 
-    public List<Empleados> getListaEmpleados() {
-        return listaEmpleados;
+    public List<ResumenAsistencia> getListaResumenAsistencia() {
+        return listaResumenAsistencia;
     }
 
-    public void setListaEmpleados(List<Empleados> listaEmpleados) {
-        this.listaEmpleados = listaEmpleados;
+    public void setListaResumenAsistencia(List<ResumenAsistencia> listaResumenAsistencia) {
+        this.listaResumenAsistencia = listaResumenAsistencia;
     }
 
     public void handleFileUpload(FileUploadEvent event) {
@@ -65,12 +66,11 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
             addMessage("Carga de Datos", "Seleccione un archivo.", TipoMensaje.ERROR);
             return;
         }
-
+        listaResumenAsistencia = new ArrayList<ResumenAsistencia>();
         try {
 
             InputStreamReader inputStreamReader = new InputStreamReader(file.getInputstream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            setListaEmpleados(new ArrayList<Empleados>());
             while (bufferedReader.ready()) {
                 Integer codDeduccion = null;
                 Integer codEmpleado = null;
@@ -98,13 +98,18 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
                 }
 
                 if (codDeduccion.equals(deduccionPrestacion) && codEmpresa.equals(empresa)) {
-                    //if (planillaSessionBean.existeEnResumen(new ResumenAsistenciaPK(empresa, new Short(anio), new Short(mes), new Short(numeroPlanilla), codEmpleado, tipoPlanilla))) {
-                    listaEmpleados.add(planillaSessionBean.findEmpleadosByID(new EmpleadosPK(empresa, codEmpleado)));
-                    //}
+                    ResumenAsistencia r = planillaSessionBean.existeEnResumen(new ResumenAsistenciaPK(empresa, new Short(anio), new Short(mes), new Short(numeroPlanilla), codEmpleado, tipoPlanilla));
+                    if (r != null) {
+                        r.setValorTemp(valor);
+                        listaResumenAsistencia.add(r);
+                    }
                 }
             }
-
-            addMessage("Carga de Datos", "Datos obtenidos con exito, " + listaEmpleados.size() + " empleados cargados.", TipoMensaje.INFORMACION);
+            Set t = new HashSet();
+            t.addAll(listaResumenAsistencia);
+            listaResumenAsistencia.clear();
+            listaResumenAsistencia.addAll(t);
+            addMessage("Carga de Datos", "Datos obtenidos con exito, " + listaResumenAsistencia.size() + " empleados cargados.", TipoMensaje.INFORMACION);
         } catch (Exception e) {
             addMessage("Carga de Datos", "Ha sido imposible reconocer la estructura del archivo seleccionado.", TipoMensaje.ERROR);
             e.printStackTrace();
@@ -205,20 +210,41 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
         tipoPlanilla = -1;
         deduccionPrestacion = -1;
         planilla = "-1";
-        listaEmpleados=null;
+        listaResumenAsistencia = null;
     }
 
     public String procesar() {
-        // Eliminando los movimientos para ese tipo de planilla
-        // planillaSessionBean.eliminarMovimientosDP(empresa, new Short(anio), new Short(mes), tipoPlanilla, new Short(numeroPlanilla), deduccionPrestacion.shortValue());
-
-        if (listaEmpleados == null || listaEmpleados.size() <= 0) {
+        if (listaResumenAsistencia == null || listaResumenAsistencia.size() <= 0) {
             addMessage("Cargar Datos", "No se han ingresado datos de empleados.", TipoMensaje.ERROR);
             return null;
         }
 
-        addMessage("Cargar Datos", "Datos procesados con exito.", TipoMensaje.INFORMACION);
-        limpiarCampos();
+        List<MovDp> listaMovDp = new ArrayList<MovDp>();
+        for (ResumenAsistencia r : listaResumenAsistencia) {
+            MovDp m = new MovDp();
+            m.setDeducPresta(deduccionPrestacionSeleccionada);
+            m.setDepartamentos(r.getEmpleados().getDepartamentos());
+            m.setFactor(deduccionPrestacionSeleccionada.getFactor());
+            m.setSumaResta(deduccionPrestacionSeleccionada.getSumaResta());
+            m.setStatus("G");
+            m.setValor(r.getValorTemp() != null ? new BigDecimal(r.getValorTemp()) : BigDecimal.ZERO);
+            m.setBaseCalculo(r.getValorTemp() != null ? new BigDecimal(r.getValorTemp()) : BigDecimal.ZERO);
+            m.setSecuencia(1);
+            m.setFechaMovto(new Date());
+            m.setVpr(deduccionPrestacionSeleccionada.getVpr());
+            m.setGenerado("N");
+            m.setResumenAsistencia(r);
+            listaMovDp.add(m);
+        }
+
+        try {
+            planillaSessionBean.cargarDatosResumenAsistencia(listaMovDp, empresa, new Short(anio), new Short(mes), tipoPlanilla, new Short(numeroPlanilla), deduccionPrestacion.shortValue());
+            addMessage("Cargar Datos", "Datos procesados con exito.", TipoMensaje.INFORMACION);
+            limpiarCampos();
+        } catch (Exception e) {
+            addMessage("Cargar Datos", "Ha ocurrido un error al intentar procesar los datos.", TipoMensaje.ERROR);
+            e.printStackTrace();
+        }
         return null;
     }
 }

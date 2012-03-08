@@ -6,6 +6,8 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.MovDp;
 import com.infosgroup.planilla.modelo.entidades.MovDpPK;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -33,9 +35,10 @@ public class MovDpFacade extends AbstractFacade<MovDp, MovDpPK> {
     }
 
     @PermitAll
-    public void eliminarMovimientosDP(Short empresa, Short anio, Short mes, Short tipoPlanilla, Short numeroplanilla, Short deduccionPrestacion) {
-        em.createNativeQuery("delete mov_dp where cod_cia = ? and anio = ? and mes = ? and cod_tipopla = ? and num_planilla = ? and generado = 'N' and cod_presta = ? ").
-                setParameter(1, empresa).setParameter(2, anio).setParameter(3, mes).setParameter(4, tipoPlanilla).setParameter(5, numeroplanilla).setParameter(6, deduccionPrestacion).executeUpdate();
+    public List<MovDp> movimientosEliminarDP(Short empresa, Short anio, Short mes, Short tipoPlanilla, Short numeroplanilla, Short deduccionPrestacion) {
+        List<MovDp> e=em.createNativeQuery("select * from mov_dp where cod_cia = ? and anio = ? and mes = ? and cod_tipopla = ? and num_planilla = ? and generado = 'N' and cod_dp = ? ", MovDp.class).
+                setParameter(1, empresa).setParameter(2, anio).setParameter(3, mes).setParameter(4, tipoPlanilla).setParameter(5, numeroplanilla).setParameter(6, deduccionPrestacion).getResultList();
+        return e!=null?e:new ArrayList<MovDp>();
     }
 
     public Integer max(Short codCia, Short anio, Short mes, Short numPlanilla) {

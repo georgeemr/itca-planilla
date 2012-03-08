@@ -27,20 +27,20 @@
                 <h:outputLabel id="lbl1" value="Empleados que ser&aacute;n incluidos "  style="font-weight: bold;"/>
             </h:panelGrid>
 
-            <p:dataTable id="tableEmpleados" value="#{planilla$CargarDatosBackendBean.listaEmpleados}" var="empleado" 
+            <p:dataTable id="tableEmpleados" value="#{planilla$CargarDatosBackendBean.listaResumenAsistencia}" var="resumen" 
                          paginator="true" rows="10"  emptyMessage="No se han encontrado Empleados." dynamic="true"  
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                          rowsPerPageTemplate="5,10,25,50,100,1000,10000" style="margin-top: 5px;" >
 
                 <p:column headerText="C&oacute;digo" >  
-                    <h:outputLabel value="#{empleado.empleadosPK.codEmp}" />
+                    <h:outputLabel value="#{resumen.empleados.empleadosPK.codEmp}" />
                 </p:column>  
 
-                <p:column headerText="Nombre" filterBy="#{empleado.nombreCompleto}" filterMatchMode="contains" >  
-                    <h:outputLabel value="#{empleado.nombreCompleto}" />
+                <p:column headerText="Nombre" filterBy="#{resumen.empleados.nombreCompleto}" filterMatchMode="contains" >  
+                    <h:outputLabel value="#{resumen.empleados.nombreCompleto}" />
                 </p:column>  
-                <p:column headerText="Puesto" filterBy="#{empleado.puestos.nomPuesto}" filterMatchMode="contains" >  
-                    <h:outputLabel value="#{empleado.puestos.nomPuesto}" />
+                <p:column headerText="Puesto" filterBy="#{resumen.empleados.puestos.nomPuesto}" filterMatchMode="contains" >  
+                    <h:outputLabel value="#{resumen.empleados.puestos.nomPuesto}" />
                 </p:column>  
 
             </p:dataTable>
@@ -49,7 +49,7 @@
     </ui:define>
 
     <ui:define name="acciones">
-        <p:tab id="tabAcciones" title="Acciones" rendered="#{planilla$CargarDatosBackendBean.listaEmpleados ne null}" >
+        <p:tab id="tabAcciones" title="Acciones" rendered="#{planilla$CargarDatosBackendBean.listaResumenAsistencia ne null}" >
             <h:panelGrid columns="1"  >
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes,tableEmpleados"
                                onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" 
@@ -152,7 +152,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <p:commandButton value="Cargar Movimientos" image="ui-icon-circle-check" onclick="#{planilla$CargarDatosBackendBean.listaEmpleados ne null ? 'procesarEmpleados.show();' :''}" update="mensajes,panelContenido,panelAcciones" action="#{planilla$CargarDatosBackendBean.procesar}" />
+                        <p:commandButton value="Cargar Movimientos" image="ui-icon-circle-check" onclick="#{planilla$CargarDatosBackendBean.listaResumenAsistencia ne null ? 'procesarEmpleados.show();' :''}" update="mensajes,panelContenido,panelAcciones" action="#{planilla$CargarDatosBackendBean.procesar}" />
                     </td>
                 </tr>
             </table>

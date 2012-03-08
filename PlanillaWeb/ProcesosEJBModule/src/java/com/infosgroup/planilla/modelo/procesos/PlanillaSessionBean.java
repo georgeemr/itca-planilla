@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 @Stateless(name = "PlanillaSessionBean")
 @LocalBean
 public class PlanillaSessionBean {
-
+    
     @EJB
     private PlanillaFacade planillaFacade;
     @EJB
@@ -65,62 +65,62 @@ public class PlanillaSessionBean {
     private DeduccionesPrestacionesFacade deduccionesPrestacionesFacade;
     @EJB
     private MovDpFacade movDpFacade;
-
+    
     public List<ResumenAsistencia> getResumen(ResumenAsistencia c) {
         return (c != null) ? resumenFacade.findAll() : new ArrayList<ResumenAsistencia>();
     }
-
+    
     public TiposPlanilla findByTipoID(TiposPlanillaPK tipoId) {
         return tipoPlaFacade.find(tipoId);
     }
-
+    
     public List<Planilla> getPlaByTipo(TiposPlanilla tipo) {
         return planillaFacade.findByTipoPLanilla(tipo);
     }
-
+    
     public List<ResumenAsistencia> getAsistencia() {
         return resumenFacade.findAll();
     }
-
+    
     public List<Cias> listarCias() {
         return companiaFacade.findAll();
     }
-
+    
     public List<TiposPlanilla> listarTipos(Cias cia) {
         return tipoPlanillaFacade.findByCompania(cia);
     }
-
+    
     public List<Planilla> listarPlanilla(Cias cia) {
         return planillaFacade.findPlanillaByCias(cia);
     }
-
+    
     public List<Planilla> listarPlanillaByTipoPlanilla(Cias cia, Short tipoPlanilla) {
         return planillaFacade.findPlanillaByTipoPlanilla(cia, tipoPlanilla);
     }
-
+    
     public List<Agencias> listarAgencias(Cias cia) {
         return agenciasFacade.findByCompania(cia);
     }
-
+    
     public List<ResumenAsistencia> listarResumenByPlanillaSucursal(Planilla planilla, Agencias agencia) {
         return resumenFacade.findAsistenciasByPlanillaAgencia(planilla, agencia);
     }
-
+    
     public List<Empleados> listarJefes() {
         return empleadoFacade.findByJefes();
     }
-
+    
     public List<Empleados> listaEmpleados(Cias cia) {
         return empleadoFacade.findEmpleadosByCias(cia);
     }
-
+    
     public TipoAccion buscarTipoAccion(Short empresa, Short tipo) {
         TipoAccionPK pk = new TipoAccionPK();
         pk.setCodCia(empresa);
         pk.setCodTipoaccion(tipo);
         return tipoAccionFacade.find(pk);
     }
-
+    
     public List<AccionPersonal> listaPorAprobar(Empleados empleado) {
         List<AccionPersonal> listaSolicitud = new ArrayList<AccionPersonal>(0);
         //13022012
@@ -133,7 +133,7 @@ public class PlanillaSessionBean {
 //        }
         return listaSolicitud;
     }
-
+    
     public String aprobarSolicitud$action(AccionPersonal accion) {
         if (accion.getStatus().matches("G")) {
             accion.setStatus("J");
@@ -149,29 +149,29 @@ public class PlanillaSessionBean {
         }
         return null;
     }
-
+    
     public String rechazarSolicitud$action(AccionPersonal accion) {
         accion.setStatus("R");
         accionPersonalFacade.edit(accion);
         return null;
     }
-
+    
     @PermitAll
     public String cadenaDiasCalendario(Integer tipo, Empleados empleado, Long anio) {
         GregorianCalendar calendario = null;
         List<FestivosXDepto> listaFestivos = null;
         List<AccionPersonal> listaAccionesPersonal = null;
         List<Date> listaFechas = null;
-
+        
         TipoAccionPK tipoAccionPK = null;
         TipoAccion tipoAccion = null;
-
+        
         listaFestivos = festivosProvinciafacade.listarPorAnio(anio);
         List<String> listaDiasFestivos = new ArrayList<String>(0);
         for (Integer i = 0; i < listaFestivos.size(); i++) {
             listaDiasFestivos.add("" + listaFestivos.get(i).getFestivosXDeptoPK().getMes() + "/" + listaFestivos.get(i).getFestivosXDeptoPK().getDia() + "/" + listaFestivos.get(i).getFestivosXDeptoPK().getAnio());
         }
-
+        
         String fechas = "";
         switch (tipo) {
             case 1: // Dias festivos
@@ -185,14 +185,14 @@ public class PlanillaSessionBean {
                     }
                     calendario.add(Calendar.DAY_OF_YEAR, 1);
                 }
-
+                
                 for (Integer i = 0; i < listaFinesSemana.size(); i++) {
                     fechas += "'" + listaFinesSemana.get(i) + "'";
                     if (i < listaFinesSemana.size() - 1) {
                         fechas += ", ";
                     }
                 }
-
+                
                 if (!listaDiasFestivos.isEmpty()) {
                     fechas += ", ";
                 }
@@ -214,9 +214,9 @@ public class PlanillaSessionBean {
                     }
                     calendario.add(Calendar.DAY_OF_YEAR, 1);
                 }
-
+                
                 listaDiasSemana.removeAll(listaDiasFestivos);
-
+                
                 for (Integer i = 0; i < listaDiasSemana.size(); i++) {
                     fechas += "'" + listaDiasSemana.get(i) + "'";
                     if (i < listaDiasSemana.size() - 1) {
@@ -231,12 +231,12 @@ public class PlanillaSessionBean {
                     AccionPersonal accionPersonal = listaAccionesPersonal.get(i);
                     Date fechaInicial = accionPersonal.getFechaInicial();
                     Date fechaFinal = accionPersonal.getFechaFinal();
-
+                    
                     if ((fechaInicial == null) || ((fechaInicial == null) && (fechaFinal == null))) // en el caso de que por alguna razon la fecha inicial sea nula :(
                     {
                         continue;
                     }
-
+                    
                     calendario = (GregorianCalendar) Calendar.getInstance();
                     calendario.setTime(fechaInicial);
                     do {
@@ -244,7 +244,7 @@ public class PlanillaSessionBean {
                         calendario.add(Calendar.DAY_OF_YEAR, 1);
                     } while ((fechaFinal != null) && (calendario.getTime().before(fechaFinal) || calendario.getTime().equals(fechaFinal)));
                 }
-
+                
                 for (Integer i = 0; i < listaFechas.size(); i++) {
                     calendario.setTime(listaFechas.get(i));
                     fechas += "'" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR) + "'";
@@ -259,18 +259,18 @@ public class PlanillaSessionBean {
                 tipoAccionPK.setCodCia(empleado.getEmpleadosPK().getCodCia());
                 tipoAccionPK.setCodTipoaccion(new Short("5")); // Pemiso sin goce de sueldo
                 tipoAccion = tipoAccionFacade.find(tipoAccionPK);
-
+                
                 listaAccionesPersonal = accionPersonalFacade.findByTipoAccionEmpleadoAnio(empleado, tipoAccion, anio);
                 for (Integer i = 0; i < listaAccionesPersonal.size(); i++) {
                     AccionPersonal accionPersonal = listaAccionesPersonal.get(i);
                     Date fechaInicial = accionPersonal.getFechaInicial();
                     Date fechaFinal = accionPersonal.getFechaFinal();
-
+                    
                     if ((fechaInicial == null) || ((fechaInicial == null) && (fechaFinal == null))) // en el caso de que por alguna razon la fecha inicial sea nula :(
                     {
                         continue;
                     }
-
+                    
                     calendario = (GregorianCalendar) Calendar.getInstance();
                     calendario.setTime(fechaInicial);
                     do {
@@ -278,7 +278,7 @@ public class PlanillaSessionBean {
                         calendario.add(Calendar.DAY_OF_YEAR, 1);
                     } while ((fechaFinal != null) && (calendario.getTime().before(fechaFinal) || calendario.getTime().equals(fechaFinal)));
                 }
-
+                
                 for (Integer i = 0; i < listaFechas.size(); i++) {
                     calendario.setTime(listaFechas.get(i));
                     fechas += "'" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR) + "'";
@@ -293,13 +293,13 @@ public class PlanillaSessionBean {
                 tipoAccionPK.setCodCia(empleado.getEmpleadosPK().getCodCia());
                 tipoAccionPK.setCodTipoaccion(new Short("11")); // Capacitaciones
                 tipoAccion = tipoAccionFacade.find(tipoAccionPK);
-
+                
                 listaAccionesPersonal = accionPersonalFacade.findByTipoAccionEmpleadoAnio(empleado, tipoAccion, anio);
                 for (Integer i = 0; i < listaAccionesPersonal.size(); i++) {
                     AccionPersonal accionPersonal = listaAccionesPersonal.get(i);
                     Date fechaInicial = accionPersonal.getFechaInicial();
                     Date fechaFinal = accionPersonal.getFechaFinal();
-
+                    
                     calendario = (GregorianCalendar) Calendar.getInstance();
                     calendario.setTime(fechaInicial);
                     do {
@@ -307,7 +307,7 @@ public class PlanillaSessionBean {
                         calendario.add(Calendar.DAY_OF_YEAR, 1);
                     } while ((fechaFinal != null) && (calendario.getTime().before(fechaFinal) || calendario.getTime().equals(fechaFinal)));
                 }
-
+                
                 for (Integer i = 0; i < listaFechas.size(); i++) {
                     calendario.setTime(listaFechas.get(i));
                     fechas += "'" + (calendario.get(Calendar.MONTH) + 1) + "/" + calendario.get(Calendar.DAY_OF_MONTH) + "/" + calendario.get(Calendar.YEAR) + "'";
@@ -319,22 +319,22 @@ public class PlanillaSessionBean {
         }
         return fechas;
     }
-
+    
     @PermitAll
     public List<AccionPersonal> listarAccionporTipo(Short cia, Short tipo) {
         return (tipo != null) ? accionPersonalFacade.findByTipo(cia, tipo) : accionPersonalFacade.findByNoAfecta(cia);
     }
-
+    
     @PermitAll
     public List<TipoAccion> listarTiposAcciones(Cias cias) {
         return tipoAccionFacade.listarTipoAccionByCias(cias);
     }
-
+    
     @PermitAll
     public List<TipoAccion> listarTipoAccionActivas(Cias cias) {
         return tipoAccionFacade.listarTipoAccionActivas(cias);
     }
-
+    
     public String editar$action(ResumenAsistencia resumen) {
         try {
             resumenFacade.edit(resumen);
@@ -343,27 +343,27 @@ public class PlanillaSessionBean {
         }
         return null;
     }
-
+    
     @PermitAll
     public Planilla findPlanillaById(PlanillaPK planillaPK) {
         return planillaFacade.find(planillaPK);
     }
-
+    
     @RolesAllowed({"empleados"})
     public List<AccionPersonal> findSolicitudesByEmpleado(Empleados empleado) {
         return accionPersonalFacade.findSolicitudesByEmpleado(empleado);
     }
-
+    
     @RolesAllowed({"rrhh"})
     public List<AccionPersonal> findSolicitudesByRRHH(Empleados empleado) {
         return accionPersonalFacade.findSolicitudesByRRHH(empleado);
     }
-
+    
     @RolesAllowed({"jefes"})
     public List<AccionPersonal> findSolicitudesByJefe(Empleados empleado) {
         return accionPersonalFacade.findSolicitudesByJefe(empleado);
     }
-
+    
     @RolesAllowed({"jefes"})
     public void jefeEditaSolicitud(AccionPersonal a, String estado) {
         a.setAprobadoJefe(estado);
@@ -371,7 +371,7 @@ public class PlanillaSessionBean {
         a.setStatus(estado);
         accionPersonalFacade.edit(a);
     }
-
+    
     @RolesAllowed({"rrhh"})
     public void rrhhEditaSolicitud(AccionPersonal a, String estado) {
         a.setAprobadoRh(estado);
@@ -379,12 +379,12 @@ public class PlanillaSessionBean {
         a.setStatus(estado);
         accionPersonalFacade.edit(a);
     }
-
+    
     @RolesAllowed({"rrhh", "jefes", "empleados"})
     public void editarSolicitud(AccionPersonal a) {
         accionPersonalFacade.edit(a);
     }
-
+    
     @PermitAll
     public List<AccionPersonal> getAccionesByRol(Empleados empleado) {
         if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("rrhh")) {
@@ -397,122 +397,135 @@ public class PlanillaSessionBean {
             return new ArrayList<AccionPersonal>();
         }
     }
-
+    
     @PermitAll
     public List<ProgramacionPla> getProgramacionPlaByTipo(Short empresa, Short tipoPlanilla) {
         return programacionPlaFacade.getProgramacionPlaByTipo(empresa, tipoPlanilla);
     }
-
+    
     public List<Departamentos> findDepartamentos(Cias cias) {
         return departamentoFacade.findDepartamentosByCias(cias);
     }
-
+    
     public List<Puestos> findPuestos(Cias cias) {
         return puestosFacade.findPuestoByEmpresa(cias);
     }
-
+    
     @PermitAll
     public Integer totalAfectadosDepartamentos(Departamentos departamento) {
         return empleadoFacade.totalAfectadosDepartamentos(departamento);
     }
-
+    
     @PermitAll
     public Integer totalAfectadosTipoPlanilla(TiposPlanilla tipoPlanilla) {
         return empleadoFacade.totalAfectadosTipoPlanilla(tipoPlanilla);
     }
-
+    
     @PermitAll
     public Integer totalAfectadosRangoSalarios(Cias cias, BigDecimal s1, BigDecimal s2) {
         return empleadoFacade.totalAfectadosRangosSalario(cias, s1, s2);
     }
-
+    
     @PermitAll
     public List<Empleados> listaAfectadosDepartamentos(Departamentos departamento) {
         return empleadoFacade.afectadosDepartamentos(departamento);
     }
-
+    
     @PermitAll
     public List<Empleados> listaAfectadosTipoPlanilla(TiposPlanilla tipoPlanilla) {
         return empleadoFacade.afectadosTipoPlanilla(tipoPlanilla);
     }
-
+    
     @PermitAll
     public List<Empleados> listarAfectadosRangoSalarios(Cias cias, BigDecimal s1, BigDecimal s2) {
         return empleadoFacade.afectadosRangosSalario(cias, s1, s2);
     }
-
+    
     @PermitAll
     public void registrarAccionPersonalColectiva(List<AccionPersonal> solicitudes) {
         for (AccionPersonal a : solicitudes) {
             accionPersonalFacade.create(a);
         }
     }
-
+    
     @PermitAll
     public List<CausasRenuncia> findCausasRenunciasByCias(Cias cias) {
         return causasRenunciaFacade.findByCias(cias);
     }
-
+    
     @PermitAll
     public List<TipoAccion> listarTipoAccionAfectaPlanilla(Cias cias) {
         return tipoAccionFacade.listarTipoAccionAfectaPlanilla(cias);
     }
-
+    
     @PermitAll
     public List<TipoAccion> listarTipoAccionNoAfectaPlanilla(Cias cias) {
         return tipoAccionFacade.listarTipoAccionNoAfectaPlanilla(cias);
     }
-
+    
     @PermitAll
     public ProgramacionPla findProgramacionPlaByPK(ProgramacionPlaPK pk) {
         return programacionPlaFacade.find(pk);
     }
-
+    
     @PermitAll
     public List<DeducPresta> findDeducPrestaByCias(Cias cias) {
         return deduccionesPrestacionesFacade.findByCias(cias);
     }
-
+    
     @PermitAll
     public DeducPresta findDeducPrestaByPK(DeducPrestaPK pk) {
         return deduccionesPrestacionesFacade.find(pk);
     }
-
+    
     @PermitAll
-    public Boolean existeEnResumen(ResumenAsistenciaPK pk) {
-        ResumenAsistencia r = resumenFacade.find(pk);
-        return r != null ? Boolean.TRUE : Boolean.FALSE;
+    public ResumenAsistencia existeEnResumen(ResumenAsistenciaPK pk) {
+        return resumenFacade.find(pk);
     }
-
+    
     @PermitAll
     public void guardarResumenAsistencia(ResumenAsistencia resumenAsistencia) {
         resumenFacade.create(resumenAsistencia);
     }
-
+    
     @PermitAll
-    public void cargarDatosResumenAsistencia(BufferedReader bufferedReader, Integer deduccionPrestacion) throws Exception {
+    public void cargarDatosResumenAsistencia(List<MovDp> listMovdp, Short empresa, Short anio, Short mes, Short tipoPlanilla, Short numeroplanilla, Short deduccionPrestacion) {
+        // Eliminando movimientos existentes
+        for (MovDp e : movimientosEliminarDP(empresa, anio, mes, tipoPlanilla, numeroplanilla, deduccionPrestacion)) {
+            eliminarMovimientosDP(e);
+        }
+        // Insertando los movimientos
+        for (MovDp m : listMovdp) {
+            m.setMovDpPK(getMovDpPK(new MovDpPK(empresa, anio, mes, numeroplanilla, 0)));
+            guardarMovimientosDP(m);
+        }
     }
-
+    
     @PermitAll
-    public void eliminarMovimientosDP(Short empresa, Short anio, Short mes, Short tipoPlanilla, Short numeroPlanilla, Short deduccionPrestacion) {
-        movDpFacade.eliminarMovimientosDP(empresa, anio, mes, tipoPlanilla, numeroPlanilla, deduccionPrestacion);
+    public List<MovDp> movimientosEliminarDP(Short empresa, Short anio, Short mes, Short tipoPlanilla, Short numeroPlanilla, Short deduccionPrestacion) {
+        return movDpFacade.movimientosEliminarDP(empresa, anio, mes, tipoPlanilla, numeroPlanilla, deduccionPrestacion);
     }
-
+    
     @PermitAll
     public void guardarMovimientosDP(MovDp movDP) {
         movDpFacade.create(movDP);
     }
-
+    
+    @PermitAll
+    public void eliminarMovimientosDP(MovDp movDP) {
+        movDpFacade.remove(movDP);
+    }
+    
     @PermitAll
     public MovDpPK getMovDpPK(MovDpPK movDP) {
         return movDpFacade.getMovDpPK(movDP);
     }
-
+    
     @PermitAll
     public List<ResumenAsistencia> findResumenAsistenciaByTipoPlanilla(short codCia, short anio, short mes, short numPlanilla, short codTipopla) {
         return findResumenAsistenciaByTipoPlanilla(codCia, anio, mes, numPlanilla, codTipopla);
     }
-
+    
     @PermitAll
     public Empleados findEmpleadosByID(EmpleadosPK pk) {
         return empleadoFacade.find(pk);

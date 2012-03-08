@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ResumenAsistencia.findByHorasAusencia", query = "SELECT r FROM ResumenAsistencia r WHERE r.horasAusencia = :horasAusencia"),
     @NamedQuery(name = "ResumenAsistencia.findByDNocturnidad", query = "SELECT r FROM ResumenAsistencia r WHERE r.dNocturnidad = :dNocturnidad")})
 public class ResumenAsistencia implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ResumenAsistenciaPK resumenAsistenciaPK;
@@ -87,7 +88,19 @@ public class ResumenAsistencia implements Serializable {
     private Short dNocturnidad;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "resumenAsistencia")
     private List<MovDp> movDpList;
-    
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA", nullable = false, insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private TiposPlanilla tiposPlanilla;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private Empleados empleados;
+    @Transient
+    private Double valorTemp;
+
     public ResumenAsistencia() {
     }
 
@@ -257,6 +270,30 @@ public class ResumenAsistencia implements Serializable {
         this.movDpList = movDpList;
     }
 
+    public TiposPlanilla getTiposPlanilla() {
+        return tiposPlanilla;
+    }
+
+    public void setTiposPlanilla(TiposPlanilla tiposPlanilla) {
+        this.tiposPlanilla = tiposPlanilla;
+    }
+
+    public Empleados getEmpleados() {
+        return empleados;
+    }
+
+    public void setEmpleados(Empleados empleados) {
+        this.empleados = empleados;
+    }
+
+    public Double getValorTemp() {
+        return valorTemp;
+    }
+
+    public void setValorTemp(Double valorTemp) {
+        this.valorTemp = valorTemp;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -281,5 +318,4 @@ public class ResumenAsistencia implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.ResumenAsistencia[ resumenAsistenciaPK=" + resumenAsistenciaPK + " ]";
     }
-    
 }
