@@ -9,6 +9,7 @@ package com.infosgroup.planilla.controlador.modulos.reportes;
  * @author Soporte
  */
 import com.infosgroup.planilla.modelo.entidades.Indicador;
+import com.infosgroup.planilla.modelo.estructuras.ModelIndicadores;
 import com.infosgroup.planilla.modelo.procesos.IndicadorSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
@@ -24,6 +25,7 @@ public class IndicadorBackendBean extends AbstractJSFPage implements Serializabl
     @EJB
     private IndicadorSessionBean indicadorBean;
     private List<Indicador> indicadores;
+    private List<ModelIndicadores> modelIndicadores;
 
     public List<Indicador> getIndicadores() {
         indicadores = indicadorBean.listarIndicadores(getSessionBeanADM().getCompania());
@@ -32,6 +34,15 @@ public class IndicadorBackendBean extends AbstractJSFPage implements Serializabl
 
     public void setIndicadores(List<Indicador> indicadores) {
         this.indicadores = indicadores;
+    }
+
+    public List<ModelIndicadores> getModelIndicadores() {
+        modelIndicadores = indicadorBean.listaIndicadores(getSessionBeanADM().getCompania());
+        return modelIndicadores;
+    }
+
+    public void setModelIndicadores(List<ModelIndicadores> modelIndicadores) {
+        this.modelIndicadores = modelIndicadores;
     }
 
     @Override

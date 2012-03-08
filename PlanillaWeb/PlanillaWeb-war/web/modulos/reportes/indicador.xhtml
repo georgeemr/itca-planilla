@@ -23,49 +23,41 @@
     </ui:define>
 
     <ui:define name="contenido">
-        <script type="text/javascript">
-            var chartStyle = {
-                padding:20,
-                legend: {
-                    display:"right",
-                    spacing:10
-                }
-            };
-        </script>
+
         <p:spacer height="15" />
 
+        <p:fieldset legend="Indicadores"   >
+            <p:spacer height="15" />
+            <h:panelGroup >
+                <table width="100%" >                                
+                    <ui:repeat value="#{reportes$indicador.modelIndicadores}" var="modelIndicador" >
+                        <tr>
+                            <td colspan="3" width="100%" >
+                                <h:outputLabel value="#{modelIndicador.categoria}" style="width: 150px;font-weight: bold; " />
+                            </td>
+                        </tr>
 
+                        <ui:repeat value="#{modelIndicador.listaIndicadores}" var="indicador" >
+                            <tr>
+                                <td width="3%">
 
-
-        <table width="100%" >
-            <tr>
-                <td valign="top" width="40%" >
-                    <p:fieldset legend="Indicadores"  >
-                        <p:spacer height="15" />
-                        <h:panelGroup >
-                            <table width="100%" >
-                                <tr>
-                                    <td width="70" > <h:outputLabel value="Indicador" style="font-weight: bold" /> </td>
-                                    <td width="20" ></td><td width="10" ><h:outputLabel value="Valor" style="font-weight: bold" /></td>
-                                </tr>
-                                <ui:repeat value="#{reportes$indicador.indicadores}" var="indicador" >
-                                    <tr>
-                                        <td width="70" >
-                                            <h:outputLabel value="#{indicador.nombreIndicador}" style="width: 150px;" />
-                                        </td>
-                                        <td width="20%" ></td>
-                                        <td width="10%" >
-                                            <h:outputLabel value="#{indicador.valorIndicador} %" />
-                                        </td>
-                                    </tr>
-                                </ui:repeat>
-                            </table>
-                        </h:panelGroup>
-                    </p:fieldset>                
-                </td>
-                <td valign="top" width="60%" />
-            </tr>
-        </table>
+                                </td>
+                                <td width="67%" >
+                                    <h:outputLabel value="#{indicador.nombreIndicador}" style="width: 150px;" />
+                                </td>
+                                <td width="10%" ></td>
+                                <td width="20%" >
+                                    <h:outputLabel value="#{indicador.valorIndicador}" />
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                        <tr>
+                            <td colspan="3" ><p:spacer height="10" /></td>
+                        </tr>
+                    </ui:repeat>
+                </table>
+            </h:panelGroup>
+        </p:fieldset>                
 
     </ui:define>
 
