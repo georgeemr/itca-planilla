@@ -205,6 +205,7 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
         tipoPlanilla = -1;
         deduccionPrestacion = -1;
         planilla = "-1";
+        listaEmpleados=null;
     }
 
     public String procesar() {
