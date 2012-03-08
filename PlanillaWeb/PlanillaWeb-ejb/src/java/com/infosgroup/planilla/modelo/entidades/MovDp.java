@@ -4,20 +4,11 @@
  */
 package com.infosgroup.planilla.modelo.entidades;
 
+import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -34,8 +25,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "MovDp.findByMes", query = "SELECT m FROM MovDp m WHERE m.movDpPK.mes = :mes"),
     @NamedQuery(name = "MovDp.findByNumPlanilla", query = "SELECT m FROM MovDp m WHERE m.movDpPK.numPlanilla = :numPlanilla"),
     @NamedQuery(name = "MovDp.findByNoMovto", query = "SELECT m FROM MovDp m WHERE m.movDpPK.noMovto = :noMovto"),
-    @NamedQuery(name = "MovDp.findByCodEmp", query = "SELECT m FROM MovDp m WHERE m.codEmp = :codEmp"),
-    @NamedQuery(name = "MovDp.findByCodDp", query = "SELECT m FROM MovDp m WHERE m.codDp = :codDp"),
     @NamedQuery(name = "MovDp.findByVpr", query = "SELECT m FROM MovDp m WHERE m.vpr = :vpr"),
     @NamedQuery(name = "MovDp.findByFactor", query = "SELECT m FROM MovDp m WHERE m.factor = :factor"),
     @NamedQuery(name = "MovDp.findByValor", query = "SELECT m FROM MovDp m WHERE m.valor = :valor"),
@@ -45,72 +34,65 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "MovDp.findByStatus", query = "SELECT m FROM MovDp m WHERE m.status = :status"),
     @NamedQuery(name = "MovDp.findBySecuencia", query = "SELECT m FROM MovDp m WHERE m.secuencia = :secuencia"),
     @NamedQuery(name = "MovDp.findByNumCheque", query = "SELECT m FROM MovDp m WHERE m.numCheque = :numCheque"),
-    @NamedQuery(name = "MovDp.findByCodDepto", query = "SELECT m FROM MovDp m WHERE m.codDepto = :codDepto"),
     @NamedQuery(name = "MovDp.findByGenerado", query = "SELECT m FROM MovDp m WHERE m.generado = :generado"),
     @NamedQuery(name = "MovDp.findByCodPresta", query = "SELECT m FROM MovDp m WHERE m.codPresta = :codPresta"),
-    @NamedQuery(name = "MovDp.findByCodTipopla", query = "SELECT m FROM MovDp m WHERE m.codTipopla = :codTipopla"),
     @NamedQuery(name = "MovDp.findByConstancia", query = "SELECT m FROM MovDp m WHERE m.constancia = :constancia")})
 public class MovDp implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected MovDpPK movDpPK;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_EMP", nullable = false)
-    private int codEmp;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "COD_DP", nullable = false)
-    private int codDp;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 1)
     @Column(name = "VPR", nullable = false, length = 1)
     private String vpr;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FACTOR", nullable = false, precision = 8, scale = 4)
     private BigDecimal factor;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "VALOR", nullable = false, precision = 16, scale = 2)
     private BigDecimal valor;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "BASE_CALCULO", nullable = false, precision = 16, scale = 2)
     private BigDecimal baseCalculo;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHA_MOVTO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaMovto;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 1)
     @Column(name = "SUMA_RESTA", nullable = false, length = 1)
     private String sumaResta;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 1)
     @Column(name = "STATUS", nullable = false, length = 1)
     private String status;
     @Column(name = "SECUENCIA")
     private Integer secuencia;
     @Column(name = "NUM_CHEQUE")
     private Integer numCheque;
-    @Column(name = "COD_DEPTO")
-    private Short codDepto;
-    @Size(max = 1)
     @Column(name = "GENERADO", length = 1)
     private String generado;
     @Column(name = "COD_PRESTA")
     private Short codPresta;
-    @Column(name = "COD_TIPOPLA")
-    private Short codTipopla;
-    @Size(max = 1)
     @Column(name = "CONSTANCIA", length = 1)
     private String constancia;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ANIO", referencedColumnName = "ANIO", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "MES", referencedColumnName = "MES", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA"),
+        @JoinColumn(name = "NUM_PLANILLA", referencedColumnName = "NUM_PLANILLA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false)})
+    @ManyToOne(optional = false)
+    private ResumenAsistencia resumenAsistencia;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_DEPTO", referencedColumnName = "COD_DEPTO")})
+    @ManyToOne(optional = false)
+    private Departamentos departamentos;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_DP", referencedColumnName = "COD_DP", nullable = false)})
+    @ManyToOne(optional = false)
+    private DeducPresta deducPresta;
 
     public MovDp() {
     }
@@ -119,10 +101,8 @@ public class MovDp implements Serializable {
         this.movDpPK = movDpPK;
     }
 
-    public MovDp(MovDpPK movDpPK, int codEmp, int codDp, String vpr, BigDecimal factor, BigDecimal valor, BigDecimal baseCalculo, Date fechaMovto, String sumaResta, String status) {
+    public MovDp(MovDpPK movDpPK, String vpr, BigDecimal factor, BigDecimal valor, BigDecimal baseCalculo, Date fechaMovto, String sumaResta, String status) {
         this.movDpPK = movDpPK;
-        this.codEmp = codEmp;
-        this.codDp = codDp;
         this.vpr = vpr;
         this.factor = factor;
         this.valor = valor;
@@ -142,22 +122,6 @@ public class MovDp implements Serializable {
 
     public void setMovDpPK(MovDpPK movDpPK) {
         this.movDpPK = movDpPK;
-    }
-
-    public int getCodEmp() {
-        return codEmp;
-    }
-
-    public void setCodEmp(int codEmp) {
-        this.codEmp = codEmp;
-    }
-
-    public int getCodDp() {
-        return codDp;
-    }
-
-    public void setCodDp(int codDp) {
-        this.codDp = codDp;
     }
 
     public String getVpr() {
@@ -232,14 +196,6 @@ public class MovDp implements Serializable {
         this.numCheque = numCheque;
     }
 
-    public Short getCodDepto() {
-        return codDepto;
-    }
-
-    public void setCodDepto(Short codDepto) {
-        this.codDepto = codDepto;
-    }
-
     public String getGenerado() {
         return generado;
     }
@@ -256,20 +212,36 @@ public class MovDp implements Serializable {
         this.codPresta = codPresta;
     }
 
-    public Short getCodTipopla() {
-        return codTipopla;
-    }
-
-    public void setCodTipopla(Short codTipopla) {
-        this.codTipopla = codTipopla;
-    }
-
     public String getConstancia() {
         return constancia;
     }
 
     public void setConstancia(String constancia) {
         this.constancia = constancia;
+    }
+
+    public ResumenAsistencia getResumenAsistencia() {
+        return resumenAsistencia;
+    }
+
+    public void setResumenAsistencia(ResumenAsistencia resumenAsistencia) {
+        this.resumenAsistencia = resumenAsistencia;
+    }
+
+    public Departamentos getDepartamentos() {
+        return departamentos;
+    }
+
+    public void setDepartamentos(Departamentos departamentos) {
+        this.departamentos = departamentos;
+    }
+
+    public DeducPresta getDeducPresta() {
+        return deducPresta;
+    }
+
+    public void setDeducPresta(DeducPresta deducPresta) {
+        this.deducPresta = deducPresta;
     }
 
     @Override

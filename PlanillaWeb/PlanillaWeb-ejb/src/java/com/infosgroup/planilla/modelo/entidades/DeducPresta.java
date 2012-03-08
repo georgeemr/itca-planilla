@@ -7,19 +7,7 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -59,6 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "DeducPresta.findBySeContabiliza", query = "SELECT d FROM DeducPresta d WHERE d.seContabiliza = :seContabiliza"),
     @NamedQuery(name = "DeducPresta.findByConstancia", query = "SELECT d FROM DeducPresta d WHERE d.constancia = :constancia")})
 public class DeducPresta implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected DeducPrestaPK deducPrestaPK;
@@ -148,6 +137,8 @@ public class DeducPresta implements Serializable {
     private BasesCalculo codBase;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deducPresta")
     private List<CtasXDepto> ctasXDeptoList;
+    @Transient
+    private String descripcionSumaResta;
 
     public DeducPresta() {
     }
@@ -398,6 +389,20 @@ public class DeducPresta implements Serializable {
         this.ctasXDeptoList = ctasXDeptoList;
     }
 
+    public String getDescripcionSumaResta() {
+        descripcionSumaResta="-";
+        if (sumaResta!=null){
+            if ( sumaResta.equalsIgnoreCase("S") ) descripcionSumaResta="Suma";
+            if ( sumaResta.equalsIgnoreCase("R") ) descripcionSumaResta="Resta";
+        }
+        
+        return descripcionSumaResta;
+    }
+
+    public void setDescripcionSumaResta(String descripcionSumaResta) {
+        this.descripcionSumaResta = descripcionSumaResta;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -422,5 +427,4 @@ public class DeducPresta implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.DeducPresta[ deducPrestaPK=" + deducPrestaPK + " ]";
     }
-    
 }

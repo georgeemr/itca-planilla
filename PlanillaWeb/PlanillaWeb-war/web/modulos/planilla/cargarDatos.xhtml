@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../plantillas/defaultTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:p="http://primefaces.prime.com.tr/ui" >
+
+    <ui:define name="titulo">
+        Carga de Datos
+    </ui:define>
+
+    <ui:define name="dialogos">
+
+    </ui:define>
+
+    <ui:define name="acciones">
+        acciones
+    </ui:define>
+
+    <ui:define name="contenido">
+
+        <p:panel id="panelCargaDatos" style="border: none;" >
+
+            <table width="100%" >
+                <tr>
+                    <td width="14%" >
+                        <h:outputLabel value="Tipo de planilla" />
+                    </td>
+                    <td>
+                        <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{planilla$CargarDatosBackendBean.tipoPlanilla}" >                       
+                            <f:ajax render="lstPlanilla" event="change" execute="lstTipoPlanilla" />
+                            <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
+                            <f:selectItems value="#{planilla$CargarDatosBackendBean.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h:outputLabel value="Programaci&oacute;n planilla" />
+                    </td>
+                    <td>
+                        <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Planilla" value="#{planilla$CargarDatosBackendBean.planilla}" >
+                            <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE PLANILLA ]" />
+                            <f:selectItems value="#{planilla$CargarDatosBackendBean.listaPlanillas}" var="planilla" 
+                                           itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.anio} ------ #{planilla.mes} ------ #{planilla.numPlanilla}" />
+                            <f:ajax render="panelCargaDatos" event="change" execute="lstPlanilla" />
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <h:panelGrid columns="8" style="padding-left: 0;" rendered="#{(planilla$CargarDatosBackendBean.planilla ne null) and ( planilla$CargarDatosBackendBean.planilla ne '-1' ) }" >
+                            <h:outputLabel value="Año: " style="font-weight: bold;" />
+                            <h:outputLabel value="#{planilla$CargarDatosBackendBean.anio}" />
+                            <h:outputLabel value="" />
+                            <h:outputLabel value="Mes: " style="font-weight: bold;" />
+                            <h:outputLabel value="#{planilla$CargarDatosBackendBean.mes}" />
+                            <h:outputLabel value="" />
+                            <h:outputLabel value="N&uacute;mero de Planilla: " style="font-weight: bold;" />
+                            <h:outputLabel value="#{planilla$CargarDatosBackendBean.numeroPlanilla}" />
+                        </h:panelGrid>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <h:outputLabel value="Deducci&oacute;n/Prestaci&oacute;n" />
+                    </td>
+                    <td>
+
+                        <h:selectOneMenu id="lstDeducPresta" style="height: 25px;padding-top: 3px;width: 300px;" label="Deduccion/Prestacion" value="#{planilla$CargarDatosBackendBean.deduccionPrestacion}" >                       
+                            <f:ajax render="panelCargaDatos" event="change" execute="lstDeducPresta" />
+                            <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE DEDUCCION/PRESTACION ]" />
+                            <f:selectItems value="#{planilla$CargarDatosBackendBean.listaDeduccionPrestacion}" var="deducpresta" itemValue="#{deducpresta.deducPrestaPK.codDp}" itemLabel="#{deducpresta.desDp}"/>
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <h:outputLabel value="Tipo de Deducci&oacute;n: #{planilla$CargarDatosBackendBean.deduccionPrestacionSeleccionada.descripcionSumaResta}" style="font-weight: bold;" rendered="#{(planilla$CargarDatosBackendBean.deduccionPrestacion ne null) and ( planilla$CargarDatosBackendBean.deduccionPrestacion ne '-1' ) }" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><!-- allowTypes="*.txt" -->
+                        <p:fileUpload id="file" sizeLimit="2097152"
+                            label="Seleccionar"  widgetVar="uploader"
+                            image="../../resources/imagenes/64/upload.png"
+                            cancelImage="/resources/iconos/edit-delete.png"
+                            description="Seleccione el archivo"
+                            fileUploadListener="#{planilla$CargarDatosBackendBean.handleFileUpload}" update="mensajes"  > 
+                        </p:fileUpload>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" >
+                        <p:commandButton value="Cargar Movimientos" />
+                    </td>
+                </tr>
+            </table>
+
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

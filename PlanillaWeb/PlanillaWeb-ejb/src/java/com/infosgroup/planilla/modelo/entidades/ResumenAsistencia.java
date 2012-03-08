@@ -7,15 +7,7 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -58,7 +50,6 @@ public class ResumenAsistencia implements Serializable {
     @EmbeddedId
     protected ResumenAsistenciaPK resumenAsistenciaPK;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "D_LABORADOS", nullable = false)
     private short dLaborados;
     @Column(name = "DN_LABORADOS")
@@ -70,7 +61,6 @@ public class ResumenAsistencia implements Serializable {
     private BigDecimal hXdobles;
     @Column(name = "VIATICOS", precision = 8, scale = 2)
     private BigDecimal viaticos;
-    @Size(max = 1)
     @Column(name = "STATUS", length = 1)
     private String status;
     @Column(name = "H_XF250", precision = 6, scale = 2)
@@ -85,21 +75,19 @@ public class ResumenAsistencia implements Serializable {
     private Integer hXf150;
     @Column(name = "COD_DEPTO")
     private Short codDepto;
-    @Size(max = 2)
     @Column(name = "COD_SUCURSAL", length = 2)
     private String codSucursal;
     @Column(name = "OTROS", precision = 12, scale = 2)
     private BigDecimal otros;
-    @Size(max = 1)
     @Column(name = "ESTADO", length = 1)
     private String estado;
     @Column(name = "HORAS_AUSENCIA", precision = 6, scale = 2)
     private BigDecimal horasAusencia;
     @Column(name = "D_NOCTURNIDAD")
     private Short dNocturnidad;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "resumenAsistencia")
-//    private List<Planilla> planillaList;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "resumenAsistencia")
+    private List<MovDp> movDpList;
+    
     public ResumenAsistencia() {
     }
 
@@ -259,15 +247,15 @@ public class ResumenAsistencia implements Serializable {
     public void setDNocturnidad(Short dNocturnidad) {
         this.dNocturnidad = dNocturnidad;
     }
-//
-//    @XmlTransient
-//    public List<Planilla> getPlanillaList() {
-//        return planillaList;
-//    }
-//
-//    public void setPlanillaList(List<Planilla> planillaList) {
-//        this.planillaList = planillaList;
-//    }
+
+    @XmlTransient
+    public List<MovDp> getMovDpList() {
+        return movDpList;
+    }
+
+    public void setMovDpList(List<MovDp> movDpList) {
+        this.movDpList = movDpList;
+    }
 
     @Override
     public int hashCode() {

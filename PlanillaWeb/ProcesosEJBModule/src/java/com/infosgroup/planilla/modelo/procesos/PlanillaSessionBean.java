@@ -6,12 +6,16 @@ package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.facades.*;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
@@ -57,6 +61,10 @@ public class PlanillaSessionBean {
     private PuestoFacade puestosFacade;
     @EJB
     private CausasRenunciaFacade causasRenunciaFacade;
+    @EJB
+    private DeduccionesPrestacionesFacade deduccionesPrestacionesFacade;
+    @EJB
+    private MovDpFacade movDpFacade;
 
     public List<ResumenAsistencia> getResumen(ResumenAsistencia c) {
         return (c != null) ? resumenFacade.findAll() : new ArrayList<ResumenAsistencia>();
@@ -321,16 +329,6 @@ public class PlanillaSessionBean {
     public List<TipoAccion> listarTiposAcciones(Cias cias) {
         return tipoAccionFacade.listarTipoAccionByCias(cias);
     }
-//
-//    @PermitAll
-//    public List<TipoAccion> listarTipoAccionAfecta(Cias cias) {
-//        return tipoAccionFacade.findByAfecta(cias, "S");
-//    }
-//
-//    @PermitAll
-//    public List<TipoAccion> listarTipoAccionNoAfecta(Cias cias) {
-//        return tipoAccionFacade.findByAfecta(cias, "N");
-//    }
 
     @PermitAll
     public List<TipoAccion> listarTipoAccionActivas(Cias cias) {
@@ -463,5 +461,60 @@ public class PlanillaSessionBean {
     @PermitAll
     public List<TipoAccion> listarTipoAccionNoAfectaPlanilla(Cias cias) {
         return tipoAccionFacade.listarTipoAccionNoAfectaPlanilla(cias);
+    }
+
+    @PermitAll
+    public ProgramacionPla findProgramacionPlaByPK(ProgramacionPlaPK pk) {
+        return programacionPlaFacade.find(pk);
+    }
+
+    @PermitAll
+    public List<DeducPresta> findDeducPrestaByCias(Cias cias) {
+        return deduccionesPrestacionesFacade.findByCias(cias);
+    }
+
+    @PermitAll
+    public DeducPresta findDeducPrestaByPK(DeducPrestaPK pk) {
+        return deduccionesPrestacionesFacade.find(pk);
+    }
+
+    @PermitAll
+    public Boolean existeEnResumen(ResumenAsistenciaPK pk) {
+        ResumenAsistencia r = resumenFacade.find(pk);
+        return r != null ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    @PermitAll
+    public void guardarResumenAsistencia(ResumenAsistencia resumenAsistencia) {
+        resumenFacade.create(resumenAsistencia);
+    }
+
+    @PermitAll
+    public void cargarDatosResumenAsistencia(BufferedReader bufferedReader, Integer deduccionPrestacion) throws Exception {
+    }
+
+    @PermitAll
+    public void eliminarMovimientosDP(Short empresa, Short anio, Short mes, Short tipoPlanilla, Short numeroPlanilla, Short deduccionPrestacion) {
+        movDpFacade.eliminarMovimientosDP(empresa, anio, mes, tipoPlanilla, numeroPlanilla, deduccionPrestacion);
+    }
+
+    @PermitAll
+    public void guardarMovimientosDP(MovDp movDP) {
+        movDpFacade.create(movDP);
+    }
+
+    @PermitAll
+    public MovDpPK getMovDpPK(MovDpPK movDP) {
+        return movDpFacade.getMovDpPK(movDP);
+    }
+
+    @PermitAll
+    public List<ResumenAsistencia> findResumenAsistenciaByTipoPlanilla(short codCia, short anio, short mes, short numPlanilla, short codTipopla) {
+        return findResumenAsistenciaByTipoPlanilla(codCia, anio, mes, numPlanilla, codTipopla);
+    }
+
+    @PermitAll
+    public Empleados findEmpleadosByID(EmpleadosPK pk) {
+        return empleadoFacade.find(pk);
     }
 }
