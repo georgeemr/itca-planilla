@@ -270,15 +270,16 @@
             <p:fieldset id="fieldsetEncabezadoVac">
                 <table border="0" width="100%" >
                     <tr>
-                        <td><h:outputLabel value="Fecha de Solicitud"/></td>
-                        <td><h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
+                        <td width="15%;" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;"/></td>
+                        <td width="85%" ><h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy"/>
                             </h:outputLabel>
                         </td>
-                        <td></td>
+                    </tr>
+                    <tr>
                         <td>                            
                             <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Empleado"/>
+                                <h:outputLabel value="Empleado" style="font-weight: bold;"/>
                             </h:panelGrid>
                         </td>
                         <td>
@@ -286,12 +287,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><h:outputLabel value="Jefe" /></td>
-                        <td><h:outputLabel id="txtJefeVac" value="#{planilla$accionesPersonal.nombreJefe}" style="font-weight: bold;" /></td>
+                        <td><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
+                        <td><h:outputLabel id="txtJefeVac" value="#{planilla$accionesPersonal.nombreJefe}" /></td>
                     </tr>
                     <tr>
-                        <td><h:outputLabel value="Observacion"/></td>
-                        <td colspan="3"><p:inputTextarea id="txtobservacionesVac" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                        <td><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
+                        <td><p:inputTextarea id="txtobservacionesVac" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -421,27 +422,24 @@
             <p:fieldset id="fieldsetEncabezadoInc">
                 <table border="0" width="100%" >
                     <tr>
-                        <td><h:outputLabel value="Fecha de Solicitud"/></td>
-                        <td><h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
+                        <td width="16%" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;" /></td>
+                        <td width="84%"><h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy"/>
                             </h:outputLabel>
                         </td>
-                        <td></td>
-                        <td>                            
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Empleado"/>
-                            </h:panelGrid>
-                        </td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="Empleado" style="font-weight: bold;" /></td>
                         <td>
                             <h:outputLabel id="txtEmpInc" value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" />
                         </td>
                     </tr>
                     <tr>
-                        <td><h:outputLabel value="Jefe" /></td>
-                        <td><h:outputLabel id="txtJefeInc" value="#{planilla$accionesPersonal.nombreJefe}" style="font-weight: bold;" /></td>
+                        <td><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
+                        <td><h:outputLabel id="txtJefeInc" value="#{planilla$accionesPersonal.nombreJefe}" /></td>
                     </tr>
                     <tr>
-                        <td><h:outputLabel value="Observacion"/></td>
+                        <td><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
                         <td colspan="3"><p:inputTextarea id="txtobservacionesInc" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
                     </tr>
                 </table>
@@ -454,7 +452,7 @@
                 <table border="0" width="100%" >
                     <tr>
                         <td colspan="5" >
-                            <h:outputLabel value="Periodo de Vacaci&oacute;n a pagar" style="font-weight: bold;" />
+                            <h:outputLabel value="Planilla" style="font-weight: bold;" />
                         </td>
                     </tr>
                     <tr>
@@ -532,11 +530,14 @@
                             </h:panelGrid>  
                         </td>
                         <td>
-                            <h:selectOneMenu id="lstPlanillaInc" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudIncapacidad.planilla}" >
-                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
-                                <f:selectItems value="#{planilla$accionesPersonal.solicitudIncapacidad.listaPlanillas}" var="pla" 
-                                               itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
-                            </h:selectOneMenu>
+                            <h:panelGrid columns="1">
+                                <h:selectOneMenu id="lstPlanillaInc" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudIncapacidad.planilla}" >
+                                    <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
+                                    <f:selectItems value="#{planilla$accionesPersonal.solicitudIncapacidad.listaPlanillas}" var="pla" 
+                                                   itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
+                                </h:selectOneMenu>
+                                <h:outputLabel value="A&Ntilde;O-MES-N&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" />
+                            </h:panelGrid>
                         </td>
                     </tr>
                 </table>
@@ -894,7 +895,7 @@
                 <table border="0" cellpadding="2" >
 
                     <tr>
-                        <td><h:outputLabel value="Forma:" style="font-weight: bold;" /></td>
+                        <td><h:outputLabel value="Criterio:" style="font-weight: bold;" /></td>
                         <td>
                             <h:selectOneRadio id="chkFormaAumento" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.formaAumento}" >
                                 <f:selectItem itemValue="P" itemLabel="Aplicar porcentaje" />
@@ -1059,7 +1060,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="25%" ><h:outputLabel value="Forma:" style="font-weight: bold;" /></td>
+                                        <td width="25%" ><h:outputLabel value="Criterio:" style="font-weight: bold;" /></td>
                                         <td width="75%" colspan="4" >
                                             <h:selectOneRadio id="chkFormaAumentoSalCol" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento}" >
                                                 <f:selectItem itemValue="V" itemLabel="Aplicar valor" />
@@ -1137,7 +1138,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td width="25%" ><h:outputLabel value="Forma:" style="font-weight: bold;" /></td>
+                                        <td width="25%" ><h:outputLabel value="Criterio:" style="font-weight: bold;" /></td>
                                         <td width="75%" colspan="4" >
                                             <h:selectOneRadio id="chkFormaAumentoSalColDep" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento}" >
                                                 <f:selectItem itemValue="V" itemLabel="Aplicar valor" />
