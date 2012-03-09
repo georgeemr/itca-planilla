@@ -45,6 +45,7 @@ private String nombre;
 private String apellido;
 private String apellidoCasada;
 private String sexo;
+private String estadoCivil;
 private String observaciones;
 // ===========================================================================================================
 // = Generales ===============================================================================================
@@ -89,12 +90,12 @@ private String emergencias$conyuge;
 private String emergencias$trabajo;
 private String emergencias$telefono;
 // = o =
-private Integer emergencias$condicionSalud;
+private String emergencias$condicionSalud;
 private Boolean emergencias$actividadLimitada;
 private Boolean emergencias$haSufridoAccidentes;
-private Integer emergencias$tipoAccidente;
+private String emergencias$tipoAccidente;
 private Double emergencias$pesoActual;
-private Integer emergencias$estatura;
+private Double emergencias$estatura;
 // = o =
 private String emergencias$nombreContacto;
 private String emergencias$telefonoContacto;
@@ -171,10 +172,11 @@ private Double puestos$salarioAspirado;
 // ===========================================================================================================
 // = Entrevistas =============================================================================================
 // ===========================================================================================================
-private Date puestos$entrevistas$fecha;
-private String puestos$entrevistas$entrevistador;
-private String puestos$entrevistas$descripcion;
-private String puestos$entrevistas$resultado;
+private Date entrevistas$fecha;
+private String entrevistas$puesto;
+private String entrevistas$entrevistador;
+private String entrevistas$descripcion;
+private String entrevistas$resultado;
 // ===========================================================================================================
 // ===========================================================================================================
 // ===========================================================================================================
@@ -383,7 +385,7 @@ public void init()
     municipiosNacDomicilioSelectItemListModel = new ArrayList<Municipios>();
 
     //deptosExpDUISelectItemListModel = new ArrayList<Deptos>();
-    deptosExpDUISelectItemListModel = sessionBeanParametros.findDepartamentosByPais(sessionBeanParametros.findPaisesByid(new Short("1")));
+    deptosExpDUISelectItemListModel = sessionBeanParametros.findDepartamentosByPais(sessionBeanParametros.findPaisesByid(new Short("4")));
     municipiosExpDUISelectItemListModel = new ArrayList<Municipios>();
 
 //    listaDepartamentos = sessionBeanParametros.getListaDepartamentos();
@@ -403,7 +405,7 @@ public void init()
     empleadosSelectItemListModel = sessionBeanParametros.findAllEmpleados(getSessionBeanADM().getCompania());
     // ===================================================================
     emergencias$pesoActual = 0.00d;
-    emergencias$estatura = 0;
+    emergencias$estatura = 0.00d;
     referencias$rp$tiempoConocerle = 0;
     emergencias$haSufridoAccidentes = Boolean.FALSE;
     // ===================================================================
@@ -419,6 +421,7 @@ public void init()
     beneficiariosCandidato = new ArrayList<String>();
     equiposCandidato = new ArrayList<EquipoCandidato>();
     pruebasCandidato = new ArrayList<PruebaCandidato>();
+    puestosCandidato = new ArrayList<PuestoCandidato>();
     entrevistasCandidato = new ArrayList<EntrevistaCandidato>();
 }
 
@@ -429,10 +432,6 @@ public String preparacionAcademica$agregar$action()
 {
     try
         {
-        String[] deptoPKStr = preparacion$departamento.split(":");
-        String[] nivelAcademicoPKStr = preparacion$nivelAcademico.split(":");
-        String[] profesionPKStr = preparacion$profesion.split(":");
-
         boolean hayError = false;
 
         if ((preparacion$nombreInstitucion == null) || preparacion$nombreInstitucion.trim().isEmpty())
@@ -441,26 +440,42 @@ public String preparacionAcademica$agregar$action()
             hayError = true;
             }
 
+        if (preparacion$pais == null)
+            {
+            addMessage("Preparacion academica", "Seleccione el pais de la instituci&oacute;n", TipoMensaje.INFORMACION);
+            hayError = true;
+            }
+
+        if (preparacion$departamento == null)
+            {
+            addMessage("Preparacion academica", "Selecciones el departamento de la instituci&oacute;n", TipoMensaje.INFORMACION);
+            hayError = true;
+            }
+
         if (preparacion$anioIngreso == null)
             {
-            addMessage("Preparacion academica", "Ingrese el año de ingreso", TipoMensaje.INFORMACION);
+            addMessage("Preparacion academica", "Ingrese el a&ntilde;o de ingreso", TipoMensaje.INFORMACION);
             hayError = true;
             }
 
         if (preparacion$anioEgreso == null)
             {
-            addMessage("Preparacion academica", "Ingrese el año de egreso", TipoMensaje.INFORMACION);
+            addMessage("Preparacion academica", "Ingrese el a&ntilde;o de egreso", TipoMensaje.INFORMACION);
             hayError = true;
             }
 
         if ((preparacion$anioIngreso != null) && (preparacion$anioEgreso != null) && (preparacion$anioIngreso > preparacion$anioEgreso))
             {
-            addMessage("Preparacion academica", "El año de ingreso debe ser menor o igual que el año de egreso", TipoMensaje.INFORMACION);
+            addMessage("Preparacion academica", "El a&ntilde;o de ingreso debe ser menor o igual que el a&ntilde;o de egreso", TipoMensaje.INFORMACION);
             hayError = true;
             }
 
         if (hayError)
             return null;
+
+        String[] deptoPKStr = preparacion$departamento.split(":");
+        String[] nivelAcademicoPKStr = preparacion$nivelAcademico.split(":");
+        String[] profesionPKStr = preparacion$profesion.split(":");
 
         DeptosPK deptoPK = new DeptosPK(new Short(deptoPKStr[0]), new Short(deptoPKStr[1]));
         NivelAcademicoPK nivelAcademicoPK = new NivelAcademicoPK(new Short(nivelAcademicoPKStr[0]), new Short(nivelAcademicoPKStr[1]));
@@ -710,7 +725,7 @@ public String capacitaciones$agregar$action()
 {
     try
         {
-        Boolean hayError = Boolean.TRUE;
+        Boolean hayError = Boolean.FALSE;
 
         if (capacitacion$fecha == null)
             {
@@ -913,28 +928,8 @@ public String pruebas$agregar$action()
     return null;
 }
 
-/* @PermitAll
- public String puestos$agregar$action()
- {
- try
- {
-
-
- PuestoCandidato p = new PuestoCandidato();
- //p.setPuesto();
- p.setSalarioAspirado(puestos$salarioAspirado);
- p.setEntrevistas(new ArrayList<EntrevistaCandidato>());
-
- puestosCandidato.add(p);
- }
- catch (Exception excpt)
- {
- addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.INFORMACION);
- }
- return null;
- } */
 @PermitAll
-public String entrevistas$agregar$action()
+public String puestos$agregar$action()
 {
     try
         {
@@ -946,7 +941,36 @@ public String entrevistas$agregar$action()
             hayError = Boolean.TRUE;
             }
 
-        if (puestos$entrevistas$fecha == null)
+        if (hayError)
+            return null;
+
+        String[] puestoPKStr = puestos$puesto.split(":");
+        PuestosPK puestoPK = new PuestosPK(new Short(puestoPKStr[0]), new Short(puestoPKStr[1]));
+
+        PuestoCandidato p = new PuestoCandidato();
+        p.setPuesto(sessionBeanParametros.findPuestosById(puestoPK));
+        p.setSalarioAspirado(puestos$salarioAspirado);
+        //p.setEntrevistas(new ArrayList<EntrevistaCandidato>());
+
+        puestosCandidato.add(p);
+        
+        puestos$salarioAspirado = null ;
+        }
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.INFORMACION);
+        }
+    return null;
+}
+
+@PermitAll
+public String entrevistas$agregar$action()
+{
+    try
+        {
+        Boolean hayError = Boolean.FALSE;
+
+        if (entrevistas$fecha == null)
             {
             addMessage("Infosweb RRHH", "Ingrese la fecha de la entrevista", TipoMensaje.INFORMACION);
             hayError = Boolean.TRUE;
@@ -958,16 +982,16 @@ public String entrevistas$agregar$action()
         String[] puestoPKStr = puestos$puesto.split(":");
         PuestosPK puestoPK = new PuestosPK(new Short(puestoPKStr[0]), new Short(puestoPKStr[1]));
 
-        String[] empleadoPKStr = puestos$entrevistas$entrevistador.split(":");
+        String[] empleadoPKStr = entrevistas$entrevistador.split(":");
         EmpleadosPK empleadoPK = new EmpleadosPK(new Short(empleadoPKStr[0]), new Integer(empleadoPKStr[1]));
 
         EntrevistaCandidato e = new EntrevistaCandidato();
         e.setPuesto(sessionBeanParametros.findPuestosById(puestoPK));
         e.setSalarioAspirado(puestos$salarioAspirado);
-        e.setFecha(puestos$entrevistas$fecha);
+        e.setFecha(entrevistas$fecha);
         e.setEntrevistador(sessionBeanParametros.findEmpleadoById(empleadoPK));
-        e.setDescripcion(puestos$entrevistas$descripcion);
-        e.setResultado(puestos$entrevistas$resultado);
+        e.setDescripcion(entrevistas$descripcion);
+        e.setResultado(entrevistas$resultado);
 
         entrevistasCandidato.add(e);
         }
@@ -983,6 +1007,65 @@ public String guardar$action()
 {
     try
         {
+        Boolean hayError = Boolean.FALSE;
+
+        if (generales$departamento == null)
+            {
+            addMessage("Infosweb RRHH", "Seleccione el departamento de domicilio", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (generales$municipio == null)
+            {
+            addMessage("Infosweb RRHH", "Seleccione el departamento de domicilio", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (generales$departamentoNacimiento == null)
+            {
+            addMessage("Infosweb RRHH", "Seleccione el departamento de nacimiento", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (generales$municipioNacimiento == null)
+            {
+            addMessage("Infosweb RRHH", "Seleccione el departamento de nacimiento", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (generales$departamentoExpDui == null)
+            {
+            addMessage("Infosweb RRHH", "Seleccione el departamento de expedici&oacute;n del DUI", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (generales$municipioExpDui == null)
+            {
+            addMessage("Infosweb RRHH", "Seleccione el municipio de expedici&oacute;n del DUI", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (fechaSolicitud == null)
+            {
+            addMessage("Infosweb RRHH", "Ingrese la fecha de solicitud", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (generales$fechaNacimiento == null)
+            {
+            addMessage("Infosweb RRHH", "Ingrese la fecha de nacimiento", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (generales$fechaExpDui == null)
+            {
+            addMessage("Infosweb RRHH", "Ingrese la fecha de expedici&oacute;n del DUI", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (hayError)
+            return null;
+
         Short c = getSessionBeanADM().getCompania().getCodCia();
 
         CandidatoPK pkCandidato = new CandidatoPK();
@@ -997,19 +1080,21 @@ public String guardar$action()
         candidato.setNombre(nombre);
         candidato.setApellido(apellido);
         candidato.setApCasada(apellidoCasada);
+        candidato.setEstadoCivil(estadoCivil);
         candidato.setSexo(new Short(sexo));
 
-        //candidato.setCodPaisDomic();
-        //candidato.setCodDepartamentoDomic(null);
-        //candidato.setCodMunicipioDomic(c);
+        candidato.setCodPaisDomic(new Short(generales$pais));
+        candidato.setCodDepartamentoDomic(new Short(generales$departamento.split(":")[1]));
+        candidato.setCodMunicipioDomic(new Short(generales$municipio.split(":")[2]));
         candidato.setTelefono(generales$telefono);
         candidato.setDireccion(generales$direccion);
 
         candidato.setFechaNac(generales$fechaNacimiento);
-        //candidato.setCodPaisNacimiento(c);
-        //candidato.setCodDepartamentoNacim(preparacion$anioEgreso);
-        //candidato.setCodMunicipioNacim(c);
-        //candidato.setCodPaisNacionalidad(preparacion$anioEgreso);
+        candidato.setCodPaisNacimiento(new Short(generales$paisNacimiento));
+        candidato.setCodDepartamentoNacim(new Short(generales$departamentoNacimiento.split(":")[1]));
+        candidato.setCodMunicipioNacim(new Short(generales$municipioNacimiento.split(":")[2]));
+
+        candidato.setCodPaisNacionalidad(new Short(generales$paisNacionalidad));
         TipoSangre tipoSangre = sessionBeanParametros.findTipoSangreById(generales$grupoSanguineo);
 
         candidato.setTipoSangre(tipoSangre);
@@ -1017,8 +1102,14 @@ public String guardar$action()
         candidato.setNumDui(generales$dui);
         candidato.setNumNit(generales$nit);
         candidato.setFechaExpDui(generales$fechaExpDui);
-        //candidato.setExpedicionDui();
-        //candidato.setMuniExpDui();
+
+        String[] deptoExpDUIPKStr = generales$departamentoExpDui.split(":");
+        String[] municipioExpDUIStr = generales$municipioExpDui.split(":");
+        DeptosPK deptoExpDUI = new DeptosPK(new Short(deptoExpDUIPKStr[0]), new Short(deptoExpDUIPKStr[1]));
+        MunicipiosPK municipioExpDUI = new MunicipiosPK(new Short(municipioExpDUIStr[0]), new Short(municipioExpDUIStr[1]), new Short(municipioExpDUIStr[2]));
+
+        candidato.setExpedicionDui(sessionBeanParametros.findDepartamentoById(deptoExpDUI).getNomDepto());
+        candidato.setMuniExpDui(sessionBeanParametros.findMunicipiosById(municipioExpDUI).getNomMuni());
         candidato.setNumLicencia(generales$licenciaConducir);
         candidato.setNomIsss(generales$nombreISSS);
         candidato.setNumPasaporte(generales$pasaporte);
@@ -1026,7 +1117,14 @@ public String guardar$action()
 
         candidato.setNombreConyuge(emergencias$conyuge);
         candidato.setTrabajoConyuge(emergencias$trabajo);
-        candidato.setTelefono(emergencias$telefono);
+        candidato.setTelefonoConyuge(emergencias$telefono);
+
+        candidato.setCondicionSalud(emergencias$condicionSalud);
+        candidato.setActividadLimitada(emergencias$actividadLimitada ? "S" : "N");
+        candidato.setTieneAccidente(emergencias$haSufridoAccidentes ? "S" : "N");
+        candidato.setTipoAccidente(emergencias$haSufridoAccidentes ? emergencias$tipoAccidente : null);
+        candidato.setPeso(emergencias$pesoActual);
+        candidato.setEstatura(emergencias$estatura);
 
         candidato.setObservacion(observaciones);
         candidato.setEstado("A");
@@ -1071,7 +1169,6 @@ public String guardar$action()
 
         for (ExperienciaLaboralCandidato experienciaCandidato : experienciasLaboralesCandidato)
             {
-            experienciaCandidato.toString();
             }
 
         for (ReferenciaLaboralCandidato referenciaLaboral : referenciasLaboralesCandidato)
@@ -1217,6 +1314,23 @@ public String guardar$action()
             tipoPruebaXCandidato.setResultado(tipoPruebaXCandidato.getResultado());
 
             reclutamientoFacade.crearTipoPruebaXCandidatoFacade(tipoPruebaXCandidato);
+            }
+        
+        for (PuestoCandidato puestoCandidato : puestosCandidato)
+            {
+            CandidatoXCargoPK candidatoCargoPK = new CandidatoXCargoPK();
+            candidatoCargoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            candidatoCargoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            candidatoCargoPK.setCodPuesto(puestoCandidato.getPuesto().getPuestosPK().getCodPuesto());
+            
+            CandidatoXCargo candidatoCargo =  new CandidatoXCargo();
+            candidatoCargo.setCandidatoXCargoPK(candidatoCargoPK);
+            candidatoCargo.setCandidato(candidato);
+            candidatoCargo.setPuestos(puestoCandidato.getPuesto());
+            candidatoCargo.setCodTipoPuesto(puestoCandidato.getPuesto().getTipoPuesto().getTipoPuestoPK().getCodTipoPuesto());
+            candidatoCargo.setSalarioAspirado(puestos$salarioAspirado);
+            
+            reclutamientoFacade.crearCandidatoXCargo(candidatoCargo);
             }
 
         for (EntrevistaCandidato entrevistaCandidato : entrevistasCandidato)
@@ -1380,12 +1494,12 @@ public void setEmergencias$actividadLimitada(Boolean emergencias$actividadLimita
     this.emergencias$actividadLimitada = emergencias$actividadLimitada;
 }
 
-public Integer getEmergencias$condicionSalud()
+public String getEmergencias$condicionSalud()
 {
     return emergencias$condicionSalud;
 }
 
-public void setEmergencias$condicionSalud(Integer emergencias$condicionSalud)
+public void setEmergencias$condicionSalud(String emergencias$condicionSalud)
 {
     this.emergencias$condicionSalud = emergencias$condicionSalud;
 }
@@ -1400,12 +1514,12 @@ public void setEmergencias$conyuge(String emergencias$conyuge)
     this.emergencias$conyuge = emergencias$conyuge;
 }
 
-public Integer getEmergencias$estatura()
+public Double getEmergencias$estatura()
 {
     return emergencias$estatura;
 }
 
-public void setEmergencias$estatura(Integer emergencias$estatura)
+public void setEmergencias$estatura(Double emergencias$estatura)
 {
     this.emergencias$estatura = emergencias$estatura;
 }
@@ -1470,12 +1584,12 @@ public void setEmergencias$telefonoContacto(String emergencias$telefonoContacto)
     this.emergencias$telefonoContacto = emergencias$telefonoContacto;
 }
 
-public Integer getEmergencias$tipoAccidente()
+public String getEmergencias$tipoAccidente()
 {
     return emergencias$tipoAccidente;
 }
 
-public void setEmergencias$tipoAccidente(Integer emergencias$tipoAccidente)
+public void setEmergencias$tipoAccidente(String emergencias$tipoAccidente)
 {
     this.emergencias$tipoAccidente = emergencias$tipoAccidente;
 }
@@ -2080,46 +2194,6 @@ public void setPruebas$resultado(String pruebas$resultado)
     this.pruebas$resultado = pruebas$resultado;
 }
 
-public String getPuestos$entrevistas$descripcion()
-{
-    return puestos$entrevistas$descripcion;
-}
-
-public void setPuestos$entrevistas$descripcion(String puestos$entrevistas$descripcion)
-{
-    this.puestos$entrevistas$descripcion = puestos$entrevistas$descripcion;
-}
-
-public String getPuestos$entrevistas$entrevistador()
-{
-    return puestos$entrevistas$entrevistador;
-}
-
-public void setPuestos$entrevistas$entrevistador(String puestos$entrevistas$entrevistador)
-{
-    this.puestos$entrevistas$entrevistador = puestos$entrevistas$entrevistador;
-}
-
-public Date getPuestos$entrevistas$fecha()
-{
-    return puestos$entrevistas$fecha;
-}
-
-public void setPuestos$entrevistas$fecha(Date puestos$entrevistas$fecha)
-{
-    this.puestos$entrevistas$fecha = puestos$entrevistas$fecha;
-}
-
-public String getPuestos$entrevistas$resultado()
-{
-    return puestos$entrevistas$resultado;
-}
-
-public void setPuestos$entrevistas$resultado(String puestos$entrevistas$resultado)
-{
-    this.puestos$entrevistas$resultado = puestos$entrevistas$resultado;
-}
-
 public String getPuestos$puesto()
 {
     return puestos$puesto;
@@ -2150,6 +2224,16 @@ public void setSexo(String sexo)
     this.sexo = sexo;
 }
 
+public String getEstadoCivil()
+{
+    return estadoCivil;
+}
+
+public void setEstadoCivil(String estadoCivil)
+{
+    this.estadoCivil = estadoCivil;
+}
+
 public String getObservaciones()
 {
     return observaciones;
@@ -2159,6 +2243,99 @@ public void setObservaciones(String observaciones)
 {
     this.observaciones = observaciones;
 }
+
+    public String getEntrevistas$descripcion()
+    {
+        return entrevistas$descripcion;
+    }
+
+    public void setEntrevistas$descripcion(String entrevistas$descripcion)
+    {
+        this.entrevistas$descripcion = entrevistas$descripcion;
+    }
+
+    public String getEntrevistas$entrevistador()
+    {
+        return entrevistas$entrevistador;
+    }
+
+    public void setEntrevistas$entrevistador(String entrevistas$entrevistador)
+    {
+        this.entrevistas$entrevistador = entrevistas$entrevistador;
+    }
+
+    public Date getEntrevistas$fecha()
+    {
+        return entrevistas$fecha;
+    }
+
+    public void setEntrevistas$fecha(Date entrevistas$fecha)
+    {
+        this.entrevistas$fecha = entrevistas$fecha;
+    }
+
+    public String getEntrevistas$puesto()
+    {
+        return entrevistas$puesto;
+    }
+
+    public void setEntrevistas$puesto(String entrevistas$puesto)
+    {
+        this.entrevistas$puesto = entrevistas$puesto;
+    }
+
+    public String getEntrevistas$resultado()
+    {
+        return entrevistas$resultado;
+    }
+
+    public void setEntrevistas$resultado(String entrevistas$resultado)
+    {
+        this.entrevistas$resultado = entrevistas$resultado;
+    }
+
+    public Boolean getIsError()
+    {
+        return isError;
+    }
+
+    public void setIsError(Boolean isError)
+    {
+        this.isError = isError;
+    }
+
+    public List<PuestoCandidato> getPuestosCandidato()
+    {
+        return puestosCandidato;
+    }
+
+    public void setPuestosCandidato(List<PuestoCandidato> puestosCandidato)
+    {
+        this.puestosCandidato = puestosCandidato;
+    }
+
+    public ReclutamientoSessionBean getReclutamientoFacade()
+    {
+        return reclutamientoFacade;
+    }
+
+    public void setReclutamientoFacade(ReclutamientoSessionBean reclutamientoFacade)
+    {
+        this.reclutamientoFacade = reclutamientoFacade;
+    }
+
+    public SessionBeanParametros getSessionBeanParametros()
+    {
+        return sessionBeanParametros;
+    }
+
+    public void setSessionBeanParametros(SessionBeanParametros sessionBeanParametros)
+    {
+        this.sessionBeanParametros = sessionBeanParametros;
+    }
+
+
+
 
 // ==================================================================================================================
 // ==================================================================================================================
@@ -2255,6 +2432,7 @@ private List<IdiomaCandidato> idiomasCandidato;
 private List<String> beneficiariosCandidato;
 private List<EquipoCandidato> equiposCandidato;
 private List<PruebaCandidato> pruebasCandidato;
+private List<PuestoCandidato> puestosCandidato;
 private List<EntrevistaCandidato> entrevistasCandidato;
 //=======================================
 public List<PreparacionAcademicaCandidato> getPreparacionesAcademicasCandidato()
