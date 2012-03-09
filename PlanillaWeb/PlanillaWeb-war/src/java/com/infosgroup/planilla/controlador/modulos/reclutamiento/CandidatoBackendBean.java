@@ -1129,6 +1129,8 @@ public String guardar$action()
         candidato.setObservacion(observaciones);
         candidato.setEstado("A");
         reclutamientoFacade.guardarCandidato(candidato);
+        
+        //reclutamientoFacade.flushCandidato();
 
         candidato = reclutamientoFacade.findCandidatoById(pkCandidato);
 
@@ -1316,6 +1318,8 @@ public String guardar$action()
             reclutamientoFacade.crearTipoPruebaXCandidatoFacade(tipoPruebaXCandidato);
             }
         
+        
+        
         for (PuestoCandidato puestoCandidato : puestosCandidato)
             {
             CandidatoXCargoPK candidatoCargoPK = new CandidatoXCargoPK();
@@ -1328,7 +1332,8 @@ public String guardar$action()
             candidatoCargo.setCandidato(candidato);
             candidatoCargo.setPuestos(puestoCandidato.getPuesto());
             candidatoCargo.setCodTipoPuesto(puestoCandidato.getPuesto().getTipoPuesto().getTipoPuestoPK().getCodTipoPuesto());
-            candidatoCargo.setSalarioAspirado(puestos$salarioAspirado);
+            candidatoCargo.setSalarioAspirado(puestoCandidato.getSalarioAspirado());
+            
             
             reclutamientoFacade.crearCandidatoXCargo(candidatoCargo);
             }

@@ -652,4 +652,10 @@ public void crearCandidatoXCargo(CandidatoXCargo c)
 {
     candidatoXCargoFacade.create(c);
 }
+
+@PermitAll
+public void flushCandidato()
+{
+    candidatoFacade.flush();
+}
 }

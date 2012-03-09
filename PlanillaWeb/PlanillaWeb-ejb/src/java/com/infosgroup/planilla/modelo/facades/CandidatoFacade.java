@@ -97,4 +97,6 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         Integer max = (Integer) em.createQuery("SELECT max(c.candidatoPK.codCandidato) FROM Candidato c WHERE c.candidatoPK.codCia = :codCia").setParameter("codCia", empresa.getCodCia()).getSingleResult();
         return max != null ? ( ++max ): 1;
     }
+    
+    
 }

@@ -51,6 +51,12 @@ public void refresh(T entity)
 }
 
 @PermitAll
+public void flush()
+{
+    getEntityManager().flush();
+}
+
+@PermitAll
 public T find(P id)
 {
     return getEntityManager().find(entityClass, id);
