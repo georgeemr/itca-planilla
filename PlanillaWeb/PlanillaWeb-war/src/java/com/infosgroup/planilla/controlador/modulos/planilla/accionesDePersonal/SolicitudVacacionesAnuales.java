@@ -26,7 +26,16 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
     private String planilla;
     private String devengadas;
     private List<ProgramacionPla> listaPlanillas;
+    private String observacion;
 
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+    
     public SolicitudVacacionesAnuales(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
     }
@@ -106,7 +115,7 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
         fechaFinalPeriodoGozar = null;
         tipoPlanilla = null;
         planilla = null;
-        getEncabezadoSolicitud().setObservacion(null);
+        setObservacion("");
     }
 
     @Override
@@ -173,7 +182,7 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
         accionPersonal.setFecha(new Date());
-        accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
+        accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
         accionPersonal.setStatus("G");
         accionPersonal.setDevengadas(devengadas);

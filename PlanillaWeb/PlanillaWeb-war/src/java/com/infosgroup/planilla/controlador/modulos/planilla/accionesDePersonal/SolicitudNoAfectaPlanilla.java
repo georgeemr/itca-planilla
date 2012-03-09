@@ -20,6 +20,15 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
     private java.util.Date fechaInicial;
     private java.util.Date fechaFinal;
     private java.util.List<TipoAccion> listaTipoAccionNoAfecta;
+    private String observacion;
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
     
     public SolicitudNoAfectaPlanilla(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
@@ -68,7 +77,7 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
         accionPersonal.setTipoAccion(tipoAccion);
         accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
         accionPersonal.setFecha(new Date());
-        accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
+        accionPersonal.setObservacion(getObservacion());
         accionPersonal.setStatus("G");
         accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
         accionPersonal.setFechaInicial(fechaInicial);
@@ -114,6 +123,6 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
         setFechaInicial(null);
         setFechaFinal(null);
         setTipoAccionSeleccionada(new Short("-1"));
-        getEncabezadoSolicitud().setObservacion(null);
+        setObservacion("");
     }
 }

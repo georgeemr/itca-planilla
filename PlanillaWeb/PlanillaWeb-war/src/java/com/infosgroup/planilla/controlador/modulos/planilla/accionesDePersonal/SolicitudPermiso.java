@@ -29,6 +29,16 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
     private Double descuento = 0.0;
     private List<ProgramacionPla> listaPlanillas;
 
+    private String observacion;
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+    
     public SolicitudPermiso(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
     }
@@ -110,7 +120,7 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
         accionPersonal.setFecha(new Date());
-        accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
+        accionPersonal.setObservacion(getObservacion());
         accionPersonal.setStatus("G");
         accionPersonal.setFechaFinal(fechaFinal);
         accionPersonal.setFechaInicial(fechaInicial);
@@ -143,7 +153,7 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         dias = new Short("0");;
         horas = 0;
         descuento = 0.0;
-        getEncabezadoSolicitud().setObservacion(null);
+        setObservacion("");
     }
 
     @Override

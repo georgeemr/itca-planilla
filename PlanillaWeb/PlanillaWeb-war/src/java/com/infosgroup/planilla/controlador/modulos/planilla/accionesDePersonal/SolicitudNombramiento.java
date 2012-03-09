@@ -21,7 +21,16 @@ public class SolicitudNombramiento extends SolicitudDePersonal implements java.i
     private Short departamento;
     private Short puesto;
     private java.util.Date fechaInicial;
+    private String observacion;
 
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+    
     public SolicitudNombramiento(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
     }
@@ -77,7 +86,7 @@ public class SolicitudNombramiento extends SolicitudDePersonal implements java.i
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
         accionPersonal.setFecha(new Date());
-        accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
+        accionPersonal.setObservacion(getObservacion());
         accionPersonal.setStatus("G");
         accionPersonal.setDepartamentos(new Departamentos(new DepartamentosPK(getEncabezadoSolicitud().getEmpresa(), departamento)));
         accionPersonal.setFechaInicial(fechaInicial);
@@ -111,9 +120,9 @@ public class SolicitudNombramiento extends SolicitudDePersonal implements java.i
 
     @Override
     protected void limpiarCampos() {
-        setDepartamento(null);
-        setPuesto(null);
+        setDepartamento(new Short("-1"));
+        setPuesto(new Short("-1"));
         setFechaInicial(null);
-        getEncabezadoSolicitud().setObservacion(null);
+        setObservacion("");
     }
 }
