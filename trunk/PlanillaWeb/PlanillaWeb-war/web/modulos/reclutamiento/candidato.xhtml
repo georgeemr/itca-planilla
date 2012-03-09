@@ -48,6 +48,11 @@
                 <f:selectItem itemValue="1" itemLabel="Masculino"/>
                 <f:selectItem itemValue="2" itemLabel="Femenino"/>
             </h:selectOneMenu>
+            <h:outputLabel value="Estado civil:"/>
+            <h:selectOneMenu value="#{reclutamiento$candidato.estadoCivil}" style="width: 175px; height: 24px; padding-top: 3px;" required="true">
+                <f:selectItem itemValue="S" itemLabel="Soltero"/>
+                <f:selectItem itemValue="C" itemLabel="Casado"/>
+            </h:selectOneMenu>
         </h:panelGrid>
         <p:separator />
         <p:accordionPanel>
@@ -94,7 +99,7 @@
                             <f:selectItems var="municipio" value="#{reclutamiento$candidato.municipiosNacDomicilioSelectItemListModel}" itemValue="#{municipio.municipiosPK.codPais}:#{municipio.municipiosPK.codDepto}:#{municipio.municipiosPK.codMuni}" itemLabel="#{municipio.nomMuni}" />
                         </h:selectOneMenu>
                         <h:outputLabel value="Pais nacionalidad:"/>
-                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" >
+                        <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.generales$paisNacionalidad}">
                             <f:selectItems var="pais" value="#{reclutamiento$candidato.paisesSelectItemListModel}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />
                         </h:selectOneMenu>
                         <h:outputLabel value="Grupo sangu&iacute;neo:"/>
@@ -119,7 +124,7 @@
                         </h:selectOneMenu>
                         <h:outputText value="Munic. exped. DUI"/>
                         <h:selectOneMenu id="municExpDUI" style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.generales$municipioExpDui}">
-                            <f:selectItems var="municipio" value="#{reclutamiento$candidato.municipiosExpDUISelectItemListModel}" itemValue="#{municipio.municipiosPK.codMuni}" itemLabel="#{municipio.nomMuni}" />
+                            <f:selectItems var="municipio" value="#{reclutamiento$candidato.municipiosExpDUISelectItemListModel}" itemValue="#{municipio.municipiosPK.codPais}:#{municipio.municipiosPK.codDepto}:#{municipio.municipiosPK.codMuni}" itemLabel="#{municipio.nomMuni}" />
                         </h:selectOneMenu>
                         <h:outputText value="Licencia"/>
                         <p:inputText value="#{reclutamiento$candidato.generales$licenciaConducir}"/>
@@ -196,13 +201,13 @@
                     </h:panelGrid>
                 </p:fieldset>
                 <p:spacer height="10"/>
-                <p:fieldset legend="Condiciones f&iacute;sicas">
+                <p:fieldset legend="Condiciones f&iacute;sicas del solicitante">
                     <h:panelGrid columns="4">
                         <h:outputText value="Condici&oacute;n de salud general"/>
                         <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.emergencias$condicionSalud}">
-                            <f:selectItem itemValue="1" itemLabel="Buena"/>
-                            <f:selectItem itemValue="2" itemLabel="Regular"/>
-                            <f:selectItem itemValue="3" itemLabel="Mala"/>
+                            <f:selectItem itemValue="B" itemLabel="Buena"/>
+                            <f:selectItem itemValue="R" itemLabel="Regular"/>
+                            <f:selectItem itemValue="M" itemLabel="Mala"/>
                         </h:selectOneMenu>
                         <h:outputText value="Tiene actividad limitada"/>
                         <h:selectBooleanCheckbox value="#{reclutamiento$candidato.emergencias$actividadLimitada}"/>
@@ -212,14 +217,14 @@
                         </h:selectBooleanCheckbox>
                         <h:outputText value="Tipo de accidente"/>
                         <h:selectOneRadio id="emergenciaTipoAccidente" value="#{reclutamiento$candidato.emergencias$tipoAccidente}" disabled="#{reclutamiento$candidato.emergencias$haSufridoAccidentes eq false}">
-                            <f:selectItem itemLabel="Com&uacute;n" itemValue="1"/>
-                            <f:selectItem itemLabel="Tr&aacute;nsito" itemValue="2"/>
-                            <f:selectItem itemLabel="Laboral" itemValue="3"/>
+                            <f:selectItem itemValue="C" itemLabel="Com&uacute;n"/>
+                            <f:selectItem itemValue="T" itemLabel="Tr&aacute;nsito"/>
+                            <f:selectItem itemValue="L" itemLabel="Laboral"/>
                         </h:selectOneRadio>
                         <h:outputText value="Peso actual (lb)"/>
                         <p:spinner min="0.00" max="500.00" stepFactor="0.01" value="#{reclutamiento$candidato.emergencias$pesoActual}" style="height: 14px;"/>
-                        <h:outputText value="Estatura (cm)"/>
-                        <p:spinner min="0" max="300" stepFactor="1" value="#{reclutamiento$candidato.emergencias$estatura}" style="height: 14px;"/>
+                        <h:outputText value="Estatura (m)"/>
+                        <p:spinner min="0" max="300.00" stepFactor="0.01" value="#{reclutamiento$candidato.emergencias$estatura}" style="height: 14px;"/>
                     </h:panelGrid>
                 </p:fieldset>
                 <p:spacer height="10"/>
@@ -361,7 +366,7 @@
                                 <h:outputText value="Lugar de trabajo"/>
                                 <p:inputText id="referenciaPersonalLugarTrabajo" value="#{reclutamiento$candidato.referencias$rp$lugarTrabajo}"/>
                                 <h:outputText value="Tiempo de conocerle"/>
-                                <p:spinner id="referenciaPersonalTiempoConocerle" value="#{reclutamiento$candidato.referencias$rp$tiempoConocerle}" min="0" max="999" stepFactor="1"/>
+                                <p:spinner id="referenciaPersonalTiempoConocerle" value="#{reclutamiento$candidato.referencias$rp$tiempoConocerle}" style="height: 14px;" min="0" max="150" stepFactor="1"/>
                                 <h:outputText value="Tel&eacute;fono"/>
                                 <p:inputText id="referenciaPersonalTelefono" value="#{reclutamiento$candidato.referencias$rp$telefono}"/>
                                 <h:outputText value="Correo electr&oacute;nico"/>
@@ -694,12 +699,12 @@
                     </p:column>
                 </p:dataTable>
             </p:tab>
-            <p:tab title="Entrevistas">
-                <p:fieldset legend="Entrevistas">
+            <p:tab title="Puestos/Entrevistas">
+                <p:fieldset legend="Puestos">
                     <table width="100%" border="0" cellpadding="0" cellspacing="2">
                         <tr>
                             <td>
-                                <h:outputText value="Puestos"/>
+                                <h:outputText value="Puesto"/>
                             </td>
                             <td>
                                 <h:selectOneMenu id="puestosPuesto" style="width: 250px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.puestos$puesto}">
@@ -713,18 +718,37 @@
                                 <p:inputText id="puestosSalario" value="#{reclutamiento$candidato.puestos$salarioAspirado}"/>
                             </td>
                         </tr>
+                    </table>
+                </p:fieldset>
+                <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" action="#{reclutamiento$candidato.puestos$agregar$action}" update="mensajes, puestosTable, puestosPuesto, puestosSalario"/>
+                <p:dataTable id="puestosTable" rows="3" paginator="true" paginatorAlwaysVisible="true" pageLinks="5" value="#{reclutamiento$candidato.puestosCandidato}" var="puestoCandidato">
+                    <f:facet name="header">
+                        <h:outputText value="Puestos"/>
+                    </f:facet>
+                    <p:column headerText="Puesto">
+                        <h:outputText value="#{puestoCandidato.puesto.nomPuesto}"/>
+                    </p:column>
+                    <p:column headerText="Salario aspirado">
+                        <h:outputText value="#{puestoCandidato.salarioAspirado}"/>
+                    </p:column>
+                </p:dataTable>
+                <!--/p:tab>
+                <p:tab title="Entrevistas"-->
+                <p:separator/>
+                <p:fieldset legend="Entrevistas">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="2">
                         <tr>
                             <td>
                                 <h:outputText value="Fecha"/>
                             </td>
                             <td>
-                                <p:calendar id="entrevistasFecha" showOn="button" navigator="true" pattern="dd/MM/yyyy" value="#{reclutamiento$candidato.puestos$entrevistas$fecha}"/>
+                                <p:calendar id="entrevistasFecha" showOn="button" navigator="true" pattern="dd/MM/yyyy" value="#{reclutamiento$candidato.entrevistas$fecha}"/>
                             </td>
                             <td>
                                 <h:outputText value="Entrevistador" />
                             </td>
                             <td>
-                                <h:selectOneMenu id="entrevistasEmpleado" style="width: 250px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.puestos$entrevistas$entrevistador}">
+                                <h:selectOneMenu id="entrevistasEmpleado" style="width: 250px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.entrevistas$entrevistador}">
                                     <f:selectItems value="#{reclutamiento$candidato.empleadosSelectItemListModel}" var="empleado" itemValue="#{empleado.empleadosPK.codCia}:#{empleado.empleadosPK.codEmp}" itemLabel="#{empleado.nombreCompleto}"/>
                                 </h:selectOneMenu>
                             </td>
@@ -734,7 +758,7 @@
                                 <h:outputText value="Descripci&oacute;n"/>
                             </td>
                             <td colspan="3">
-                                <p:inputText id="entrevistasDescripcion" size="120" value="#{reclutamiento$candidato.puestos$entrevistas$descripcion}"/>
+                                <p:inputText id="entrevistasDescripcion" size="120" value="#{reclutamiento$candidato.entrevistas$descripcion}"/>
                             </td>
                         </tr>
                         <tr>
@@ -742,12 +766,12 @@
                                 <h:outputText value="Resultado"/>
                             </td>
                             <td colspan="3">
-                                <p:inputText id="entrevistasResultado" size="120" value="#{reclutamiento$candidato.puestos$entrevistas$resultado}"/>
+                                <p:inputText id="entrevistasResultado" size="120" value="#{reclutamiento$candidato.entrevistas$resultado}"/>
                             </td>
                         </tr>
                     </table>                                    
                 </p:fieldset>
-                <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" action="#{reclutamiento$candidato.entrevistas$agregar$action}" update="mensajes, entrevistasTable, entrevistasFecha, entrevistasEmpleado, entrevistasDescripcion, entrevistasResultado"/>
+                <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" action="#{reclutamiento$candidato.entrevistas$agregar$action}" update="mensajes, entrevistasTable, entrevistasPuesto, entrevistasFecha, entrevistasEmpleado, entrevistasDescripcion, entrevistasResultado"/>
                 <p:dataTable id="entrevistasTable" rows="2" paginator="true" paginatorAlwaysVisible="true" pageLinks="5" value="#{reclutamiento$candidato.entrevistasCandidato}" var="entrevistaCandidato">
                     <f:facet name="header">
                         <h:outputText value="Entrevistas"/>

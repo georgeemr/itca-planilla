@@ -82,6 +82,8 @@ private IdiomaXCandidatoFacade idiomaXCandidatoFacade;
 private EntrevistaXCandidatoFacade entrevistaXCandidatoFacade;
 @EJB
 private TipoPruebaXCandidatoFacade tipoPruebaXCandidatoFacade;
+@EJB
+private CandidatoXCargoFacade candidatoXCargoFacade;
 
 @PermitAll
 public List<Concurso> getListaConcursos(Cias empresa, Date fechaInicial, Date fechaFinal)
@@ -643,5 +645,11 @@ public Short getMaxTipoPruebaXCandidato(Candidato c)
 public void crearTipoPruebaXCandidatoFacade(TipoPruebaXCandidato t)
 {
     tipoPruebaXCandidatoFacade.create(t);
+}
+
+@PermitAll
+public void crearCandidatoXCargo(CandidatoXCargo c)
+{
+    candidatoXCargoFacade.create(c);
 }
 }

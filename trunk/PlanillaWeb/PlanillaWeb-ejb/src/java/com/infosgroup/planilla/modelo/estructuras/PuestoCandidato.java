@@ -6,7 +6,6 @@ package com.infosgroup.planilla.modelo.estructuras;
 
 import com.infosgroup.planilla.modelo.entidades.Puestos;
 import java.io.Serializable;
-import java.util.List;
 
 /**
 
@@ -17,7 +16,7 @@ public class PuestoCandidato implements Serializable
 
 private Puestos puesto;
 private Double salarioAspirado;
-private List<EntrevistaCandidato> entrevistas;
+//private List<EntrevistaCandidato> entrevistas;
 
 public Puestos getPuesto()
 {
@@ -38,14 +37,13 @@ public void setSalarioAspirado(Double salarioAspirado)
 {
     this.salarioAspirado = salarioAspirado;
 }
-
-public List<EntrevistaCandidato> getEntrevistas()
-{
-    return entrevistas;
-}
-
-public void setEntrevistas(List<EntrevistaCandidato> entrevistas)
-{
-    this.entrevistas = entrevistas;
-}
+//public List<EntrevistaCandidato> getEntrevistas()
+//{
+//    return entrevistas;
+//}
+//
+//public void setEntrevistas(List<EntrevistaCandidato> entrevistas)
+//{
+//    this.entrevistas = entrevistas;
+//}
 }
