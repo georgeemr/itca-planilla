@@ -22,6 +22,15 @@ public class SolicitudRetiro extends SolicitudDePersonal implements java.io.Seri
     private Short tipoRenuncia;
     private java.util.Date fechaRetiro;
     private Short tipoPlanilla;
+    private String observacion;
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
     
     public SolicitudRetiro(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
@@ -69,7 +78,7 @@ public class SolicitudRetiro extends SolicitudDePersonal implements java.io.Seri
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
         accionPersonal.setFecha(new Date());
-        accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
+        accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
         accionPersonal.setCausasRenuncia(new CausasRenuncia(new CausasRenunciaPK(getEncabezadoSolicitud().getEmpresa(), tipoRenuncia)));
         accionPersonal.setStatus("G");
@@ -109,6 +118,6 @@ public class SolicitudRetiro extends SolicitudDePersonal implements java.io.Seri
         setTipoRenuncia(new Short("-1"));
         setFechaRetiro(null);
         setTipoPlanilla(new Short("-1"));
-        getEncabezadoSolicitud().setObservacion(null);
+        setObservacion("");
     }
 }

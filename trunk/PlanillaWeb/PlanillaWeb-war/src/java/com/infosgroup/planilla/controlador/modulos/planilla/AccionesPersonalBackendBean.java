@@ -41,7 +41,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private Short empresa;
     private Long tipoAccion;
     private DataTable tablaEmpleado;
-    private String observacion;
     private Date fecha;
     private String nombreJefe;
     private String urlPlantilla;
@@ -67,7 +66,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public void setSolicitudNoAfectaPlanilla(SolicitudNoAfectaPlanilla solicitudNoAfectaPlanilla) {
         this.solicitudNoAfectaPlanilla = solicitudNoAfectaPlanilla;
     }
-    
+
     public SolicitudRetiro getSolicitudRetiro() {
         return solicitudRetiro;
     }
@@ -75,7 +74,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public void setSolicitudRetiro(SolicitudRetiro solicitudRetiro) {
         this.solicitudRetiro = solicitudRetiro;
     }
-    
+
     public SolicitudAumentoSueldoColectivo getSolicitudAumentoSueldoColectivo() {
         return solicitudAumentoSueldoColectivo;
     }
@@ -83,7 +82,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public void setSolicitudAumentoSueldoColectivo(SolicitudAumentoSueldoColectivo solicitudAumentoSueldoColectivo) {
         this.solicitudAumentoSueldoColectivo = solicitudAumentoSueldoColectivo;
     }
-            
+
     public SolicitudAumentoSueldo getSolicitudAumentoSueldo() {
         return solicitudAumentoSueldo;
     }
@@ -91,7 +90,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public void setSolicitudAumentoSueldo(SolicitudAumentoSueldo solicitudAumentoSueldo) {
         this.solicitudAumentoSueldo = solicitudAumentoSueldo;
     }
-        
+
     public SolicitudVacacionColectiva getSolicitudVacacionColectiva() {
         return solicitudVacacionColectiva;
     }
@@ -144,6 +143,15 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
             }
         }
         urlPlantilla = accionSeleccionada != null ? accionSeleccionada.getUrlPlantilla() : null;
+        solicitudPermiso = new SolicitudPermiso(this);
+        solicitudVacacionesAnuales = new SolicitudVacacionesAnuales(this);
+        solicitudIncapacidad = new SolicitudIncapacidad(this);
+        solicitudNombramiento = new SolicitudNombramiento(this);
+        solicitudVacacionColectiva = new SolicitudVacacionColectiva(this);
+        solicitudAumentoSueldo = new SolicitudAumentoSueldo(this);
+        solicitudAumentoSueldoColectivo = new SolicitudAumentoSueldoColectivo(this);
+        solicitudRetiro = new SolicitudRetiro(this);
+        solicitudNoAfectaPlanilla = new SolicitudNoAfectaPlanilla(this);
     }
 
     @PostConstruct
@@ -240,14 +248,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.tipoAccion = tipoAccion;
     }
 
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-
     public Short getEmpresa() {
         return empresa;
     }
@@ -315,7 +315,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     @Override
     protected void limpiarCampos() {
         tipoAccion = 0L;
-        observacion = null;
         nombreJefe = "Seleccione un Empleado";
     }
 }

@@ -32,6 +32,16 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
     private Double salarioMinimo;
     private Short departamento;
     private java.util.List<Departamentos> listaDepartamentos;
+    private String observacion;
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+
 
     public SolicitudAumentoSueldoColectivo(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
@@ -137,7 +147,7 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(e);
         accionPersonal.setFecha(new Date());
-        accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
+        accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(e.getDepartamentos());
         accionPersonal.setStatus("G");
         accionPersonal.setFechaInicial(fechaInicial);
@@ -225,6 +235,7 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
         tipoPlanilla = -1;
         planilla = null;
         setSueldoNuevo(0.0);
+        setObservacion("");
     }
 
     public Integer getEmpleadosAfectados() {

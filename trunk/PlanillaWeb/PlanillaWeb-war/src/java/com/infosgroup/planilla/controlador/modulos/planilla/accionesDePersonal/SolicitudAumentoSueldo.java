@@ -26,6 +26,15 @@ public class SolicitudAumentoSueldo extends SolicitudDePersonal implements java.
     private String planilla;
     private Double porcentaje;
     private java.util.List<ProgramacionPla> listaPlanillas;
+    private String observacion;
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
 
     public SolicitudAumentoSueldo(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
@@ -142,7 +151,7 @@ public class SolicitudAumentoSueldo extends SolicitudDePersonal implements java.
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
         accionPersonal.setFecha(new Date());
-        accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
+        accionPersonal.setObservacion(observacion);
         accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
         accionPersonal.setStatus("G");
         accionPersonal.setFechaInicial(fechaInicial);
@@ -175,7 +184,7 @@ public class SolicitudAumentoSueldo extends SolicitudDePersonal implements java.
         setSueldoAnterior(0.0);
         setSueldoNuevo(0.0);
         setFormaAumento("V");
-        getEncabezadoSolicitud().setObservacion("");
+        setObservacion("");
         setTipoPlanilla(new Short("-1"));
         setPlanilla("-1");
         setFechaInicial(null);

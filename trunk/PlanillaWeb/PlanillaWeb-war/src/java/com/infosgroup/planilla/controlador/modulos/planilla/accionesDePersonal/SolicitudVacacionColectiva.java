@@ -27,7 +27,16 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
     private List<Empleados> listaEmpleadosAfectar;
     private Empleados[] empleadosSeleccionados;
     private List<ProgramacionPla> listaPlanillas;
+    private String observacion;
 
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+    
     public SolicitudVacacionColectiva(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
     }
@@ -158,7 +167,7 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(e);
         accionPersonal.setFecha(new java.util.Date());
-        accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
+        accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(e.getDepartamentos());
         accionPersonal.setStatus("G");
         accionPersonal.setPuestos(e.getPuestos());
@@ -252,6 +261,6 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
         valorAfectados = 0;
         empleadosSeleccionados = null;
         listaEmpleadosAfectar = new ArrayList<Empleados>();
-        getEncabezadoSolicitud().setObservacion(null);
+        setObservacion("");
     }
 }

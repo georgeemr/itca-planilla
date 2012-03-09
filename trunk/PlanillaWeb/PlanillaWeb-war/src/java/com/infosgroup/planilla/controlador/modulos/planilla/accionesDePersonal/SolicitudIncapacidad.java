@@ -27,7 +27,16 @@ public class SolicitudIncapacidad extends SolicitudDePersonal implements java.io
     private String planilla;
     private Short dias = 0;
     private List<ProgramacionPla> listaPlanillas;
+    private String observacion;
 
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+    
     public SolicitudIncapacidad(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
     }
@@ -108,7 +117,7 @@ public class SolicitudIncapacidad extends SolicitudDePersonal implements java.io
         tipoPlanilla = null;
         planilla = null;
         dias = new Short("0");
-        getEncabezadoSolicitud().setObservacion(null);
+        setObservacion("");
     }
 
     @Override
@@ -168,7 +177,7 @@ public class SolicitudIncapacidad extends SolicitudDePersonal implements java.io
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
         accionPersonal.setFecha(new Date());
-        accionPersonal.setObservacion(getEncabezadoSolicitud().getObservacion());
+        accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
         accionPersonal.setStatus("G");
         accionPersonal.setDias(dias != null ? dias : 0);

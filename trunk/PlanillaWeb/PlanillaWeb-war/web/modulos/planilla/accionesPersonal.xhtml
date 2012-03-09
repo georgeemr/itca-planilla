@@ -129,12 +129,13 @@
             <p:fieldset id="fieldsetEncabezado">
                 <table border="0" width="100%" >
                     <tr>
-                        <td><h:outputLabel value="Fecha de Solicitud"/></td>
-                        <td><h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
+                        <td width="20%" ><h:outputLabel value="Fecha de Solicitud"/></td>
+                        <td width="80%" ><h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy"/>
                             </h:outputLabel>
                         </td>
-                        <td></td>
+                    </tr>
+                    <tr>
                         <td>                            
                             <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
                                 <h:outputLabel value="Empleado"/>
@@ -150,7 +151,7 @@
                     </tr>
                     <tr>
                         <td><h:outputLabel value="Observacion"/></td>
-                        <td colspan="3"><p:inputTextarea id="txtobservacionesSP" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                        <td colspan="3"><p:inputTextarea id="txtobservacionesSP" style="width:100%;" value="#{planilla$accionesPersonal.solicitudPermiso.observacion}" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -169,7 +170,8 @@
                         </td>
                         <td><p:calendar id="spFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaInicial}" selectListener="#{planilla$accionesPersonal.solicitudPermiso.handleFechaInicial}" onSelectUpdate="txtDias" />
                         </td>
-                        <td></td>
+                    </tr>
+                    <tr>
                         <td>
                             <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
                                 <h:outputLabel value="Fecha fin"/>
@@ -292,7 +294,7 @@
                     </tr>
                     <tr>
                         <td><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
-                        <td><p:inputTextarea id="txtobservacionesVac" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                        <td><p:inputTextarea id="txtobservacionesVac" style="width:100%;" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.observacion}" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -440,7 +442,7 @@
                     </tr>
                     <tr>
                         <td><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
-                        <td colspan="3"><p:inputTextarea id="txtobservacionesInc" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                        <td colspan="3"><p:inputTextarea id="txtobservacionesInc" style="width:100%;" value="#{planilla$accionesPersonal.solicitudIncapacidad.observacion}" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -530,16 +532,14 @@
                             </h:panelGrid>  
                         </td>
                         <td>
-                            <h:panelGrid columns="1">
-                                <h:selectOneMenu id="lstPlanillaInc" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudIncapacidad.planilla}" >
-                                    <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
-                                    <f:selectItems value="#{planilla$accionesPersonal.solicitudIncapacidad.listaPlanillas}" var="pla" 
-                                                   itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
-                                </h:selectOneMenu>
-                                <h:outputLabel value="A&Ntilde;O-MES-N&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" />
-                            </h:panelGrid>
+                            <h:selectOneMenu id="lstPlanillaInc" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudIncapacidad.planilla}" >
+                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
+                                <f:selectItems value="#{planilla$accionesPersonal.solicitudIncapacidad.listaPlanillas}" var="pla" 
+                                               itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
+                            </h:selectOneMenu>
                         </td>
                     </tr>
+                    <tr><td></td><td></td><td></td><td></td><td><h:outputLabel value="A&Ntilde;O-MES-N&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" /></td></tr>
                 </table>
 
             </p:fieldset>
@@ -603,7 +603,7 @@
 
                     <tr>
                         <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
-                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesNom" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesNom" style="width:100%;" value="#{planilla$accionesPersonal.solicitudNombramiento.observacion}" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -697,7 +697,7 @@
                     </tr>
                     <tr>
                         <td width="15%;"><h:outputLabel style="font-weight: bold;" value="Observacion"/></td>
-                        <td width="85%;"><p:inputTextarea id="txtobservacionesVacCol" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                        <td width="85%;"><p:inputTextarea id="txtobservacionesVacCol" style="width:100%;" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.observacion}" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -799,7 +799,7 @@
             </p:fieldset>
             <p:spacer height="15" />
             <h:panelGrid columns="2">
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldVacColectiva,principalForm:txtobservacionesNom"
+                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldVacColectiva,txtobservacionesVacCol"
                                  action="#{planilla$accionesPersonal.solicitudVacacionColectiva.guardarSolicitud$action}" ajax="true" image="ui-icon-circle-check" />
 
                 <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
@@ -883,7 +883,7 @@
 
                     <tr>
                         <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
-                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesAuSal" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesAuSal" style="width:100%;" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.observacion}" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -1005,7 +1005,7 @@
 
                     <tr>
                         <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
-                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesAuSalCol" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesAuSalCol" style="width:100%;" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.observacion}" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -1148,7 +1148,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="25%" ><h:outputLabel id="etiquetaValorSalColDep" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento eq 'V' ? 'Nuevo Sueldo: ': 'Porcentaje: '}" style="font-weight: bold;" /></td>
+                                        <td width="25%" ><h:outputLabel id="etiquetaValorSalColDep" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento eq 'V' ? 'Cantidad: ': 'Porcentaje: '}" style="font-weight: bold;" /></td>
                                         <td width="75%" colspan="4">
                                             <p:inputText value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.sueldoNuevo}" style="width: 80px;" />
                                             <h:outputLabel id="lblPorcentajeDep" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento eq 'P' ? '  %  ' : ''}" style="font-weight: bold;" />
@@ -1260,7 +1260,7 @@
 
                     <tr>
                         <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
-                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesRetiro" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesRetiro" style="width:100%;" value="#{planilla$accionesPersonal.solicitudRetiro.observacion}" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -1374,7 +1374,7 @@
 
                     <tr>
                         <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
-                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesNA" style="width:100%;" value="#{planilla$accionesPersonal.observacion}" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesNA" style="width:100%;" value="#{planilla$accionesPersonal.solicitudNoAfectaPlanilla.observacion}" /></td>
                     </tr>
                 </table>
             </p:fieldset>
