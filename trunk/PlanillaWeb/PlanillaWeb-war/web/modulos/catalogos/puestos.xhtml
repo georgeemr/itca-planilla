@@ -22,15 +22,15 @@
         <p:confirmDialog message="&#191; Esta seguro que desea eliminar el Criterio seleccionado ?"  
                          showEffect="bounce" hideEffect="explode"  modal="true" 
                          header="Eliminar Criterio" severity="alert" widgetVar="criterioDialog">  
-            
+
             <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,principalForm:tablaPuesto,fsConsulta,fsCriterios,tablaCriteriosXPuesto" oncomplete="criterioDialog.hide()"  
                              actionListener="#{puestosBackendBean.eliminarCriterio$crud$action}" />  
             <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
 
         </p:confirmDialog>   
 
-        <p:dialog id="dialogNuevoCriterio" widgetVar="dialogCriterio" header="Agregar Criterio por Puesto" showEffect="fold" hideEffect="fold" width="410" height="488" >
-            <p:spacer height="10px"/>
+        <p:dialog id="dialogNuevoCriterio" widgetVar="dialogCriterio" header="Agregar Criterio por Puesto" showEffect="fold" hideEffect="fold" width="410" height="500" >
+            <!-- p:spacer height="10px"/ -->
             <p:panel id="panelInformacionCriterio" style="border:none;" >
                 <h:panelGrid columns="4" >
                     <p:graphicImage value="../../resources/imagenes/64/info.png" />
@@ -39,7 +39,7 @@
                     <h:outputLabel value=" son requeridos." style="font-style: italic;" />
                 </h:panelGrid>
             </p:panel>
-            <p:spacer height="10px"/>
+            <!-- p:spacer height="10px"/ -->
 
             <p:fieldset id="fieldsetEncabezado">
 
@@ -55,7 +55,7 @@
                              rowUnselectListener="#{puestosBackendBean.onRowUnSelectCriterio}"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
                     <f:facet name="header">
-                        <h:outputText value="Puestos"/>
+                        <h:outputText value="Criterios"/>
                     </f:facet>
 
                     <p:column sortBy="#{criterio.criterioPK.codigo}">
@@ -83,6 +83,8 @@
                     <p:inputText id="txvalori" value="#{puestosBackendBean.valorInicialRango}" rendered="#{puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
                     <h:outputLabel id="lvalorf" value="Valor Final" rendered="#{puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
                     <p:inputText id="txvalorf" value="#{puestosBackendBean.valorFinalRango}" rendered="#{puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
+                    <h:outputLabel value="Etiqueta/Unidad"/>
+                    <p:inputText value="#{puestosBackendBean.etiqueta}" />
                 </h:panelGrid>
 
             </p:fieldset>
@@ -352,7 +354,7 @@
         </p:panel>
 
 
-        <p:spacer height="20" rendered="#{(puestosBackendBean.estadoAccion eq 1)}" />
+        <!-- p:spacer height="20" rendered="# {(puestosBackendBean.estadoAccion eq 1)}" / -->
 
         <p:fieldset legend="Editar Datos - Informacion del Concurso" rendered="#{(puestosBackendBean.estadoAccion eq 1)}" >
             <p:spacer height="20" />
@@ -461,10 +463,15 @@
             </p:toolbarGroup>
         </p:toolbar>
 
-        <p:spacer height="20" rendered="#{(puestosBackendBean.estadoAccion eq 3) }" />
+        <!-- p:spacer height="20" rendered="# {(puestosBackendBean.estadoAccion eq 3) }" /-->
 
         <p:fieldset id="fsCriterios" legend="Criterios Aplicados" rendered="#{(puestosBackendBean.estadoAccion eq 3)}" >
-            <p:spacer height="20" />
+            <p:spacer height="5" />
+            <h:panelGrid columns="2" >
+                <h:outputLabel value="Puesto Seleccionado: " style="font-weight: bold;" />
+                <h:outputLabel value="#{puestosBackendBean.puestoSeleccionado.nomPuesto}"/>
+            </h:panelGrid>
+            <p:spacer height="5" />
             <p:dataTable id="tablaCriteriosXPuesto"
                          var="criteriosXpuesto" rows="5"  paginator="true" 
                          value="#{puestosBackendBean.listaCriteriosXPuestos}"
