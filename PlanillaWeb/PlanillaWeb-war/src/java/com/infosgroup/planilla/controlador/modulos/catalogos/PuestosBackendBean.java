@@ -68,8 +68,17 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     private Puestos puestoSeleccionado;
     private CriteriosXPuesto criterioXPuestoSeleccionado;
     private Integer estadoAccion;
-
+    private String etiqueta;
+    
     public PuestosBackendBean() {
+    }
+
+    public String getEtiqueta() {
+        return etiqueta;
+    }
+
+    public void setEtiqueta(String etiqueta) {
+        this.etiqueta = etiqueta;
     }
 
     public String getValor() {
@@ -434,6 +443,11 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
                 return null;
             }
         }
+        
+        if (etiqueta == null || etiqueta.length() <= 0) {
+            addMessage("Puestos", "Ingrese la etiqueta/unidad (Ej. Si el criterio es edad puede colocar de etiqueta Años.).", TipoMensaje.ERROR);
+            return null;
+        }
 
         CriteriosXPuesto cxp = new CriteriosXPuesto();
         cxp.setCriterio1(getCriterioSeleccionado());
@@ -441,6 +455,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         cxp.setValor(valor);
         cxp.setValorInicialRango(valorInicialRango);
         cxp.setValorFinalRango(valorFinalRango);
+        cxp.setValorTransient(etiqueta);
         try {
             reclutamientoFacade.guardarCriterioXPuesto(cxp);
             addMessage("Mantenimiento de Puestos.", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
