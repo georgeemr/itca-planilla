@@ -51,9 +51,10 @@
     </ui:define>
 
     <ui:define name="contenido">
-        <p:fieldset id="fieldset1">
+        <p:fieldset id="fieldset1" style="border:none;" >
+            <p:spacer height="5" />
             <h:panelGrid columns="2">
-                <h:outputLabel value="Acci&oacute;n de Personal"/>
+                <h:outputLabel value="Acci&oacute;n de Personal" style="font-weight: bold;" />
                 <h:selectOneMenu id="lstAcc" style="height: 25px;padding-top: 3px; width: 250px;" value="#{planilla$accionesPersonal.tipo}">
                     <f:ajax event="change" listener="#{planilla$accionesPersonal.seleccionarAccion}" execute="lstAcc" render="@form" />
                     <f:selectItem  itemValue="-1" itemLabel="[ SELECCIONE UN TIPO DE ACCI&Oacute;N ]" />
@@ -68,7 +69,7 @@
                      value="#{planilla$accionesPersonal.listaSolicitudes}"
                      selection="#{SessionBeanPLA.accionSeleccionada}"
                      selectionMode="single" update="tabAcciones,editarSolicitud"
-                     binding="#{planilla$accionesPersonal.tablaSolicitudes}"
+                     binding="#{planilla$accionesPersonal.tablaSolicitudes}" 
                      rowStyleClass="#{sol.status eq 'G' ? 'solicitudGenerada' : sol.status eq 'J' ? 'solicitudPreAprobada' : sol.status eq 'A' ? 'solicitudAprobada' : sol.status eq 'R' ? 'solicitudRechazada' : null }"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
             <f:facet name="header">
@@ -79,11 +80,11 @@
                 <h:outputText value="#{sol.accionPersonalPK.correlativo}"/>
             </p:column>
 
-            <p:column headerText="Nombre" filterBy="#{sol.empleados.nombreCompleto}" >
+            <p:column headerText="Nombre:" filterBy="#{sol.empleados.nombreCompleto}" >
                 <h:outputText value="#{sol.empleados.nombreCompleto}"/>
             </p:column>
 
-            <p:column headerText="Nombre Acci&oacute;n" filterBy="#{sol.tipoAccion.nomTipoaccion}" >
+            <p:column headerText="Acci&oacute;n: " filterBy="#{sol.tipoAccion.nomTipoaccion}" >
                 <h:outputText value="#{sol.tipoAccion.nomTipoaccion}"/>
             </p:column>
 

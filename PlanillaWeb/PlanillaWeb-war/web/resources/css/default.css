@@ -89,20 +89,27 @@ body {
 }
 
 .solicitudGenerada{
-    background: -moz-linear-gradient(right, #0051FF, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#0051FF),  to(#fff));
+    background: -moz-linear-gradient(bottom, #93BBD1, #fff)!important;
+    background: -webkit-gradient(linear, center bottom, center top, from(#93BBD1), to(#fff))!important; 
+    color: black;
 }
 
 .solicitudPreAprobada{
-    background-color: #009999;
+    background: -moz-linear-gradient(bottom, #9CD128, #fff)!important;
+    background: -webkit-gradient(linear, center bottom, center top, from(#9CD128), to(#fff))!important; 
+    color: black;
 }
 
 .solicitudAprobada{
-    background: -moz-linear-gradient(right, #16FF25, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#16FF25),  to(#fff));
+    background: -moz-linear-gradient(bottom, #9CD128, #fff)!important;
+    background: -webkit-gradient(linear, center bottom, center top, from(#9CD128), to(#fff))!important; 
+    color: black;
 }
 
 .solicitudRechazada{
-    /*background-color: #ff6666*/
-    background: -moz-linear-gradient(right, #FF6F56, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#FF6F56),  to(#fff));
+    background: -moz-linear-gradient(bottom, #D12525, #fff)!important;
+    background: -webkit-gradient(linear, center bottom, center top, from(#D12525), to(#fff))!important; 
+    color: black;
 }
 
 .toolbarUsuario{
@@ -124,4 +131,10 @@ body {
 .afectadosMinimo{
     color: black;
     font-weight: bold;
+}
+
+.ui-datatable .ui-column-filter {
+    display: inline;
+    margin: auto;
+    width: 100px;
 }
