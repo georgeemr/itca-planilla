@@ -95,9 +95,8 @@ public class EditarSolicitud extends AbstractJSFPage implements java.io.Serializ
 
     public String actualizarSolicitud() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
-        if (!validaDatos(a)) {
-            return null;
-        }
+        if ( a==null )return null;
+//        if (!validaDatos(a)) { return null; }
         try {
             planillaSessionBean.editarSolicitud(a);
             addMessage("Acciones de Personal", "Datos Guardados satisfactoriamente.", TipoMensaje.INFORMACION);
