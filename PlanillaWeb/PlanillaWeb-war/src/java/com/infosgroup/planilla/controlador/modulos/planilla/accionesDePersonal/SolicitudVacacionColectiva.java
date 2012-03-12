@@ -147,7 +147,9 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
             }
         }
         try {
+            
             planillaSessionBean().registrarAccionPersonalColectiva(getAccionesPersonal(e));
+            
             addMessage("Solicitud de Vacaciones Colectivas", "Datos guardados exitosamente.", TipoMensaje.INFORMACION);
             getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
             planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());

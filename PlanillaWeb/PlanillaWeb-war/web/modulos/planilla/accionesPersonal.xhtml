@@ -63,6 +63,12 @@
                                 <f:selectItem  itemValue="-1" itemLabel="[ SELECCIONE UN TIPO DE ACCI&Oacute;N ]" />
                                 <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc" itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
                             </h:selectOneMenu>
+                            <h:outputLabel value="Solicitudes a mostrar:" />
+                            <h:selectOneRadio id="chkSolicitudes" value="#{planilla$accionesPersonal.solicitudesMostradas}" valueChangeListener="#{planilla$accionesPersonal.listarSolicitudes}" >
+                                <f:selectItem itemValue="E" itemLabel="Solicitudes de Empleados" />
+                                <f:selectItem itemValue="R" itemLabel="Solicitudes Recursos Humanos" />
+                                <f:ajax event="change" render="tableSolicitud principalForm:mensajes" execute="chkSolicitudes"  />
+                            </h:selectOneRadio>
                         </h:panelGrid>
                     </td>
                     <td align="right" >
