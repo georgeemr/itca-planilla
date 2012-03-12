@@ -11,6 +11,7 @@ import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
+import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -310,6 +311,14 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     public void setTablaSolicitudes(DataTable tablaSolicitudes) {
         this.tablaSolicitudes = tablaSolicitudes;
+    }
+    
+    public String mostrarSolicitud(){
+        if (urlPlantilla.equals(urlPlantillaDefault)){
+            addMessage("Acciones de Personal", "Seleccione un Tipo de Acción", TipoMensaje.INFORMACION);
+            return null;
+        }
+        return null;
     }
 
     @Override
