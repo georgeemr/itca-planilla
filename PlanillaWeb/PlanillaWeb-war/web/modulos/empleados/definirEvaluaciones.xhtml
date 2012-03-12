@@ -96,7 +96,7 @@
                     <f:facet name="header">
                         <h:outputText value="Empleados evaluadores"/>
                     </f:facet>
-                    <p:column headerText="Puesto" filterBy="#{puestoEmpleado1.puestos.nomPuesto}" filterMatchMode="exact" filterOptions="#{empleados$definirEvaluaciones.puestosOptions}">
+                    <p:column headerText="Puesto" filterBy="#{puestoEmpleado1.puestos.nomPuesto}" filterMatchMode="contains">
                         <h:outputText value="#{puestoEmpleado1.puestos.nomPuesto}"/>
                     </p:column>
                     <p:column headerText="Empleado" filterBy="#{puestoEmpleado1.nombreCompleto}" filterMatchMode="contains">
@@ -118,7 +118,7 @@
                     <f:facet name="header">
                         <h:outputText value="Empleados evaluados"/>
                     </f:facet>
-                    <p:column headerText="Puesto" filterBy="#{puestoEmpleado2.puestos.nomPuesto}" filterMatchMode="exact" filterOptions="#{empleados$definirEvaluaciones.puestosOptions}">
+                    <p:column headerText="Puesto" filterBy="#{puestoEmpleado2.puestos.nomPuesto}" filterMatchMode="contains">
                         <h:outputText value="#{puestoEmpleado2.puestos.nomPuesto}"/>
                     </p:column>
                     <p:column headerText="Empleado" filterBy="#{puestoEmpleado2.nombreCompleto}" filterMatchMode="contains">
