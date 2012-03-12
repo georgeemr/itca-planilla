@@ -83,15 +83,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><h:outputLabel value="Aprobaci&oacute;n Jefe" rendered="#{request.isUserInRole('jefes')}" style="font-weight: bold;" /></td>
+                    <td>
+                        <h:outputLabel value="Aprobaci&oacute;n Jefe" rendered="#{request.isUserInRole('jefes')}" style="font-weight: bold;" />
+                        <h:outputLabel value="Aprobaci&oacute;n Recursos Humanos" rendered="#{request.isUserInRole('rrhh')}" style="font-weight: bold;" />
+                    </td>
                     <td colspan="3" >
+                        
                         <h:panelGroup rendered="#{request.isUserInRole('jefes')}"  >
                             <p:commandButton value="Aprobar" image="ui-icon-circle-check" action="#{aprobarSolicitud.aprobarSolicitudJefe}" disabled="#{(SessionBeanPLA.accionSeleccionada.status eq 'A') or (SessionBeanPLA.accionSeleccionada.status eq 'R')}" update="principalForm:mensajes,lblEstado,panelAprobacion" />
                             <p:spacer width="15" />
                             <p:commandButton value="Rechazar" image="ui-icon-closethick" action="#{aprobarSolicitud.rechazarSolicitudJefe}" disabled="#{(SessionBeanPLA.accionSeleccionada.status eq 'A') or (SessionBeanPLA.accionSeleccionada.status eq 'R')}" update="principalForm:mensajes,lblEstado,panelAprobacion" />
                         </h:panelGroup >
 
-                        <h:outputLabel value="Aprobaci&oacute;n Recursos Humanos" rendered="#{request.isUserInRole('rrhh')}" />
+                        
                         <h:panelGroup rendered="#{request.isUserInRole('rrhh')}" >
                             <p:commandButton value="Aprobar" image="ui-icon-circle-check" action="#{aprobarSolicitud.aprobarSolicitudRH}" disabled="#{(SessionBeanPLA.accionSeleccionada.status eq 'A') or (SessionBeanPLA.accionSeleccionada.status eq 'R')}" update="principalForm:mensajes,lblEstado,panelAprobacion" />
                             <p:spacer width="15" />
