@@ -35,6 +35,13 @@ private EmpleadosSessionBean empleadosBean;
 private List<Pregunta> listaPreguntas;
 private DataTable[] wizardTable = new DataTable[15];
 
+private static final Integer ultimoTab = 1000 ;
+
+public Integer getUltimoTab ()
+{
+return ultimoTab;
+}
+
 public EvaluacionEmpleadoBackendBean()
 {
 }
@@ -66,38 +73,36 @@ public String defaultFlowListener(FlowEvent event)
     Integer nuevo = Integer.parseInt(event.getNewStep().replaceAll("tab", "")) - 1;
     List<PreguntaRespuesta> l = new ArrayList<PreguntaRespuesta>();
 
-    if (actual < nuevo)
+    DataTable tabla = wizardTable[actual];
+    Integer filas = tabla.getRowCount();
+    for (int fila = 0; fila < filas; fila++)
         {
-        DataTable tabla = wizardTable[actual];
-        Integer filas = tabla.getRowCount();
-        for (int fila = 0; fila < filas; fila++)
-            {
-            tabla.setRowIndex(fila);
-            Pregunta p = (Pregunta) tabla.getRowData();
-            String respuesta = p.getRespuesta();
+        tabla.setRowIndex(fila);
+        Pregunta p = (Pregunta) tabla.getRowData();
+        String respuesta = p.getRespuesta();
 
-            if (respuesta == null)
-                return event.getOldStep();
+        if (respuesta == null)
+            continue;
 
-            String[] desco = respuesta.split(":");
-            RespuestaPK respuestaPK = new RespuestaPK();
-            respuestaPK.setCodCia(Short.parseShort(desco[0]));
-            respuestaPK.setCodTipoRespuesta(Integer.parseInt(desco[1]));
-            respuestaPK.setCodRespuesta(Integer.parseInt(desco[2]));
+        String[] desco = respuesta.split(":");
+        RespuestaPK respuestaPK = new RespuestaPK();
+        respuestaPK.setCodCia(Short.parseShort(desco[0]));
+        respuestaPK.setCodTipoRespuesta(Integer.parseInt(desco[1]));
+        respuestaPK.setCodRespuesta(Integer.parseInt(desco[2]));
 
-            PreguntaRespuesta pr = new PreguntaRespuesta();
-            pr.setPregunta(p);
-            Respuesta r = empleadosBean.findRespuestaById(respuestaPK);
-            pr.setRespuesta(r);
-            l.add(pr);
-            }
-        sessionBeanEMP.getDetalleEvaluacionTemporal().get(actual).setRespuestas(l);
-        if (nuevo < 999)
-            {
-            DetalleEvaluacion detalle = listaDetalleEvaluacion.get(nuevo);
-            //getSessionBeanEMP().setFactor(getSessionBeanEMP().getListaFactores().get(nuevo));
-            getSessionBeanEMP().setFactorActual(detalle.getFactor());
-            }
+        PreguntaRespuesta pr = new PreguntaRespuesta();
+        pr.setPregunta(p);
+        Respuesta r = empleadosBean.findRespuestaById(respuestaPK);
+        pr.setRespuesta(r);
+        l.add(pr);
+        }
+    sessionBeanEMP.getDetalleEvaluacionTemporal().get(actual).setRespuestas(l);
+    //if (nuevo < 999)
+    if (nuevo < (ultimoTab - 1))
+        {
+        DetalleEvaluacion detalle = listaDetalleEvaluacion.get(nuevo);
+        //getSessionBeanEMP().setFactor(getSessionBeanEMP().getListaFactores().get(nuevo));
+        getSessionBeanEMP().setFactorActual(detalle.getFactor());
         }
 
     listaPreguntas = new ArrayList<Pregunta>();

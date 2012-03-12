@@ -170,8 +170,8 @@
                         <p:spinner value="#{reclutamiento$candidato.preparacion$anioEgreso}" style="height: 14px;" min="1900"/>
                     </h:panelGrid>
                 </p:fieldset>
-                <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" action="#{reclutamiento$candidato.preparacionAcademica$agregar$action}" update="preparacionAcademicaTable, mensajes"/>
-                <p:dataTable id="preparacionAcademicaTable" value="#{reclutamiento$candidato.preparacionesAcademicasCandidato}" var="preparacionCandidato" rows="2" paginator="true">
+                <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" action="#{reclutamiento$candidato.preparacionAcademica$agregar$action}" update="mensajes, preparacionAcademicaTable"/>
+                <p:dataTable id="preparacionAcademicaTable" binding="#{reclutamiento$candidato.preparacionAcademicatable}" value="#{reclutamiento$candidato.preparacionesAcademicasCandidato}" var="preparacionCandidato" rows="2" paginator="true">
                     <f:facet name="header">
                         <h:outputText value="Nivel acad&eacute;mico/Carrera"/>
                     </f:facet>
@@ -186,6 +186,9 @@
                     </p:column>
                     <p:column headerText="A&ntilde;o egreso">
                         <h:outputText value="#{preparacionCandidato.anioEgreso}"/>
+                    </p:column>
+                    <p:column headerText="Acci&oacute;n">
+                        <p:commandButton value="Eliminar" action="#{reclutamiento$candidato.preparacionAcademica$eliminar$action}" update="mensajes, principalForm:preparacionAcademicaTable"/>
                     </p:column>
                 </p:dataTable>
             </p:tab>
