@@ -528,4 +528,10 @@ public class PlanillaSessionBean {
     public Empleados findEmpleadosByID(EmpleadosPK pk) {
         return empleadoFacade.find(pk);
     }
+    
+    @PermitAll
+    public List<TipoAccion> listaTipoAccionRetiro(Cias cias){
+        return tipoAccionFacade.findByTipoAccionRetiro(cias);
+    }
+    
 }

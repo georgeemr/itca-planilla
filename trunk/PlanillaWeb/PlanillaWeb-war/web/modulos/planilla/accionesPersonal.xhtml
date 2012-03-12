@@ -1331,7 +1331,7 @@
                     <tr>
                         <td>
                             <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha Renuncia"/>
+                                <h:outputLabel value="Fecha Retiro"/>
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
@@ -1339,10 +1339,26 @@
                             <p:calendar id="fecRetiro" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudRetiro.fechaRetiro}"  />
                         </td>
                     </tr>
+
                     <tr>
                         <td>
                             <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Motivo Retiro"/>
+                                <h:outputLabel value="Tipo Accion"/>
+                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                            </h:panelGrid>
+                        </td>
+                        <td>                            
+                            <h:selectOneMenu id="lstTipoAccionRenuncia" value="#{planilla$accionesPersonal.solicitudRetiro.tipoRenuncia}" style="height: 25px;padding-top: 3px;width: 250px;" >
+                                <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE UN TIPO ACCION ]" />
+                                <f:selectItems value="#{planilla$accionesPersonal.solicitudRetiro.listaTipoAccion}" var="accion" itemLabel="#{accion.nomTipoaccion}" itemValue="#{accion.tipoAccionPK.codTipoaccion}" />
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                                <h:outputLabel value="Motivo"/>
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>

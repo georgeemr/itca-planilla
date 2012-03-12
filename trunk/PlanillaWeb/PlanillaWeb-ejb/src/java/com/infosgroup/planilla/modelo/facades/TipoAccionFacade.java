@@ -76,4 +76,10 @@ public class TipoAccionFacade extends AbstractFacade<TipoAccion, TipoAccionPK> {
         List<TipoAccion> listaTipo = em.createNativeQuery(query.toString(), TipoAccion.class).setParameter(1, cias.getCodCia()).setParameter(2, rol).getResultList();
         return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
     }
+
+    @PermitAll
+    public List<TipoAccion> findByTipoAccionRetiro(Cias cias) {
+        List<TipoAccion> listaTipo = em.createQuery("SELECT t FROM TipoAccion t WHERE t.tipoAccionPK.codCia = :codCia AND t.afectaSal = 'N' AND t.estado = 'A' and t.tipoAccionPK.codTipoaccion in (10, 15)", TipoAccion.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        return listaTipo != null ? listaTipo : new ArrayList<TipoAccion>();
+    }
 }
