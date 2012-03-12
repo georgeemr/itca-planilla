@@ -8,7 +8,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -17,11 +16,9 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class RolPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_CIA", nullable = false)
     private long codCia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "COD_ROL", nullable = false)
     private long codRol;
 
@@ -75,7 +72,7 @@ public class RolPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.RolPK[ codCia=" + codCia + ", codRol=" + codRol + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.RolPK[ codCia=" + codCia + ", codRol=" + codRol + " ]";
     }
     
 }

@@ -6,14 +6,7 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -33,11 +26,15 @@ public class Rol implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected RolPK rolPK;
-    @Size(max = 100)
     @Column(name = "NOM_ROL", length = 100)
     private String nomRol;
-    @ManyToMany(mappedBy = "rolList")
-    private List<Menu> menuList;
+    @JoinTable(name = "ACCIONES_X_ROL", joinColumns = {
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
+        @JoinColumn(name = "COD_ROL", referencedColumnName = "COD_ROL", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
+        @JoinColumn(name = "COD_TIPOACCION", referencedColumnName = "COD_TIPOACCION", nullable = false)})
+    @ManyToMany
+    private List<TipoAccion> tipoAccionList;
 
     public Rol() {
     }
@@ -67,12 +64,12 @@ public class Rol implements Serializable {
     }
 
     @XmlTransient
-    public List<Menu> getMenuList() {
-        return menuList;
+    public List<TipoAccion> getTipoAccionList() {
+        return tipoAccionList;
     }
 
-    public void setMenuList(List<Menu> menuList) {
-        this.menuList = menuList;
+    public void setTipoAccionList(List<TipoAccion> tipoAccionList) {
+        this.tipoAccionList = tipoAccionList;
     }
 
     @Override
@@ -97,7 +94,7 @@ public class Rol implements Serializable {
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.Rol[ rolPK=" + rolPK + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.planilla.Rol[ rolPK=" + rolPK + " ]";
     }
     
 }

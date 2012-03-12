@@ -7,6 +7,7 @@ package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.view.TipoMensaje;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * @author root
  */
 public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements java.io.Serializable {
-    
+
     private Short tipoAccionSeleccionada;
     private java.util.Date fechaInicial;
     private java.util.Date fechaFinal;
@@ -29,44 +30,52 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
     public void setObservacion(String observacion) {
         this.observacion = observacion;
     }
-    
+
     public SolicitudNoAfectaPlanilla(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
     }
-    
+
     public Short getTipoAccionSeleccionada() {
         return tipoAccionSeleccionada;
     }
-    
+
     public void setTipoAccionSeleccionada(Short tipoAccionSeleccionada) {
         this.tipoAccionSeleccionada = tipoAccionSeleccionada;
     }
-    
+
     public Date getFechaFinal() {
         return fechaFinal;
     }
-    
+
     public void setFechaFinal(Date fechaFinal) {
         this.fechaFinal = fechaFinal;
     }
-    
+
     public Date getFechaInicial() {
         return fechaInicial;
     }
-    
+
     public void setFechaInicial(Date fechaInicial) {
         this.fechaInicial = fechaInicial;
     }
-    
+
     public List<TipoAccion> getListaTipoAccionNoAfecta() {
-        listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania());
+        if (isInRole("rrhh")) {
+            listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), "rrhh");
+        } else if (isInRole("jefes")) {
+            listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), "jefes");
+        } else if (isInRole("empleados")) {
+            listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), "empleados");
+        } else {
+            listaTipoAccionNoAfecta = new ArrayList<TipoAccion>();
+        }
         return listaTipoAccionNoAfecta;
     }
-    
+
     public void setListaTipoAccionNoAfecta(List<TipoAccion> listaTipoAccionNoAfecta) {
         this.listaTipoAccionNoAfecta = listaTipoAccionNoAfecta;
     }
-    
+
     public String guardarSolicitud$action() {
         if (validarSolicitud()) {
             return null;
@@ -90,16 +99,16 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
         limpiarCampos();
         return null;
     }
-    
+
     @Override
     boolean validarSolicitud() {
         Boolean error = Boolean.FALSE;
-        
+
         if (tipoAccionSeleccionada == null || tipoAccionSeleccionada.equals(new Short("-1"))) {
             addMessage("Acciones de Personal", "Seleccione un tipo de Acción.", TipoMensaje.ERROR);
             return Boolean.TRUE;
         }
-        
+
         if (fechaInicial == null) {
             addMessage("Acciones de Personal", "Fecha Inicial es un campo requerido.", TipoMensaje.ERROR);
             error = Boolean.TRUE;
@@ -114,10 +123,10 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
                 error = Boolean.TRUE;
             }
         }
-        
+
         return error;
     }
-    
+
     @Override
     protected void limpiarCampos() {
         setFechaInicial(null);

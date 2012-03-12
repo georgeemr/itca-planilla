@@ -20,6 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.component.datatable.DataTable;
 
@@ -266,7 +267,15 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public List<TipoAccion> getListaTipo() {
-        listaTipo = planillaSessionBean.listarTipoAccionAfectaPlanilla(getSessionBeanADM().getCompania());
+        if (isInRole("rrhh")) {
+            listaTipo = planillaSessionBean.listarTipoAccionAfectaPlanilla(getSessionBeanADM().getCompania(), "rrhh");
+        } else if (isInRole("jefes")) {
+            listaTipo = planillaSessionBean.listarTipoAccionAfectaPlanilla(getSessionBeanADM().getCompania(), "jefes");
+        } else if (isInRole("empleados")) {
+            listaTipo = planillaSessionBean.listarTipoAccionAfectaPlanilla(getSessionBeanADM().getCompania(), "empleados");
+        } else {
+            listaTipo = new ArrayList<TipoAccion>();
+        }
         return listaTipo;
     }
 
@@ -311,14 +320,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     public void setTablaSolicitudes(DataTable tablaSolicitudes) {
         this.tablaSolicitudes = tablaSolicitudes;
-    }
-    
-    public String mostrarSolicitud(){
-        if (urlPlantilla.equals(urlPlantillaDefault)){
-            addMessage("Acciones de Personal", "Seleccione un Tipo de Acción", TipoMensaje.INFORMACION);
-            return null;
-        }
-        return null;
     }
 
     @Override

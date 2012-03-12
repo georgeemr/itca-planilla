@@ -6,15 +6,7 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TipoAccion.findByFirmaJefe", query = "SELECT t FROM TipoAccion t WHERE t.firmaJefe = :firmaJefe"),
     @NamedQuery(name = "TipoAccion.findByFirmaRh", query = "SELECT t FROM TipoAccion t WHERE t.firmaRh = :firmaRh")})
 public class TipoAccion implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected TipoAccionPK tipoAccionPK;
@@ -68,6 +61,8 @@ public class TipoAccion implements Serializable {
     private String firmaRh;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoAccion")
     private List<AccionPersonal> accionPersonalList;
+    @ManyToMany(mappedBy = "tipoAccionList")
+    private List<Rol> rolList;
 
     public TipoAccion() {
     }
@@ -159,6 +154,15 @@ public class TipoAccion implements Serializable {
         this.accionPersonalList = accionPersonalList;
     }
 
+    @XmlTransient
+    public List<Rol> getRolList() {
+        return rolList;
+    }
+
+    public void setRolList(List<Rol> rolList) {
+        this.rolList = rolList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -183,5 +187,4 @@ public class TipoAccion implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.TipoAccion[ tipoAccionPK=" + tipoAccionPK + " ]";
     }
-    
 }

@@ -1008,7 +1008,7 @@
         </p:dialog>
 
 
-        <p:dialog id="dialogSolAumSueldoColectivo" widgetVar="dialogSolAumSueldoColectivo" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
+        <p:dialog id="dialogSolAumSueldoColectivo" widgetVar="dialogSolAumSueldoColectivo" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="575" >
             <p:spacer height="10px"/>
             <p:panel id="panelAumSueldoColectivo" style="border:none;" >
                 <h:panelGrid columns="4" >
@@ -1098,7 +1098,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="25%" ><h:outputLabel id="etiquetaValorSalCol" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento eq 'V' ? 'Nuevo Sueldo: ': 'Porcentaje: '}" style="font-weight: bold;" /></td>
+                                        <td width="25%" ><h:outputLabel id="etiquetaValorSalCol" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento eq 'V' ? 'Cantidad: ': 'Porcentaje: '}" style="font-weight: bold;" /></td>
                                         <td width="75%" colspan="4">
                                             <p:inputText value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.sueldoNuevo}" style="width: 80px;" />
                                             <h:outputLabel id="lblPorcentaje" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.formaAumento eq 'P' ? '  %  ' : ''}" style="font-weight: bold;" />
