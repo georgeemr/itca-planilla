@@ -141,5 +141,6 @@ public class SolicitudRetiro extends SolicitudDePersonal implements java.io.Seri
         setFechaRetiro(null);
         setTipoPlanilla(new Short("-1"));
         setObservacion("");
+        setAccion(new Short("-1"));
     }
 }
