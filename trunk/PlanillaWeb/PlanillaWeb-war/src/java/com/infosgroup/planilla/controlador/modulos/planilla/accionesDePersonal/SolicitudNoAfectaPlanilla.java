@@ -109,18 +109,20 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
             return Boolean.TRUE;
         }
 
-        if (fechaInicial == null) {
-            addMessage("Acciones de Personal", "Fecha Inicial es un campo requerido.", TipoMensaje.ERROR);
-            error = Boolean.TRUE;
-        }
-        if (fechaFinal == null) {
-            addMessage("Acciones de Personal", "Fecha Final es un campo requerido.", TipoMensaje.ERROR);
-            error = Boolean.TRUE;
-        }
-        if (fechaInicial != null && fechaFinal != null) {
-            if (!validaFechas(fechaInicial, fechaFinal)) {
-                addMessage("Acciones de Personal", "Los datos de Fecha inicial y final no son consistentes.", TipoMensaje.ERROR);
+        if (tipoAccionSeleccionada.equals(new Short("8"))) {
+            if (fechaInicial == null) {
+                addMessage("Acciones de Personal", "Fecha Inicial es un campo requerido.", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
+            }
+            if (fechaFinal == null) {
+                addMessage("Acciones de Personal", "Fecha Final es un campo requerido.", TipoMensaje.ERROR);
+                error = Boolean.TRUE;
+            }
+            if (fechaInicial != null && fechaFinal != null) {
+                if (!validaFechas(fechaInicial, fechaFinal)) {
+                    addMessage("Acciones de Personal", "Los datos de Fecha inicial y final no son consistentes.", TipoMensaje.ERROR);
+                    error = Boolean.TRUE;
+                }
             }
         }
 
