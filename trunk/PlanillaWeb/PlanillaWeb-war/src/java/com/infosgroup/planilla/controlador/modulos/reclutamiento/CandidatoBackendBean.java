@@ -23,6 +23,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.validation.constraints.NotNull;
+import org.primefaces.component.datatable.DataTable;
 
 /**
 
@@ -953,8 +954,8 @@ public String puestos$agregar$action()
         //p.setEntrevistas(new ArrayList<EntrevistaCandidato>());
 
         puestosCandidato.add(p);
-        
-        puestos$salarioAspirado = null ;
+
+        puestos$salarioAspirado = null;
         }
     catch (Exception excpt)
         {
@@ -1129,17 +1130,19 @@ public String guardar$action()
         candidato.setObservacion(observaciones);
         candidato.setEstado("A");
         reclutamientoFacade.guardarCandidato(candidato);
-        
+
         //reclutamientoFacade.flushCandidato();
 
         candidato = reclutamientoFacade.findCandidatoById(pkCandidato);
 
+        i = 0;
         for (PreparacionAcademicaCandidato preparacionCandidato : preparacionesAcademicasCandidato)
             {
             NivelesXCandidatoPK nivelCandidatoPK = new NivelesXCandidatoPK();
             nivelCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             nivelCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            nivelCandidatoPK.setCodNivel(reclutamientoFacade.maxNivelXCandidato(candidato));
+            nivelCandidatoPK.setCodNivel(new Short("" + (++i)));
+            //nivelCandidatoPK.setCodNivel(reclutamientoFacade.maxNivelXCandidato(candidato));
 
             NivelesXCandidato nivelCandidato = new NivelesXCandidato();
             nivelCandidato.setNivelesXCandidatoPK(nivelCandidatoPK);
@@ -1153,12 +1156,14 @@ public String guardar$action()
             reclutamientoFacade.crearNivelXCandidato(nivelCandidato);
             }
 
+        i = 0;
         for (ParentescoCandidato parentescoCandidato : parentescosCandidatos)
             {
             EmergenciaXCandidatoPK emergenciaCandidatoPK = new EmergenciaXCandidatoPK();
             emergenciaCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             emergenciaCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            emergenciaCandidatoPK.setCodEmergencia(reclutamientoFacade.getMaxEmergenciaCandidato(candidato));
+            emergenciaCandidatoPK.setCodEmergencia(++i);
+            //emergenciaCandidatoPK.setCodEmergencia(reclutamientoFacade.getMaxEmergenciaCandidato(candidato));
 
             EmergenciaXCandidato emergenciaCandidato = new EmergenciaXCandidato();
             emergenciaCandidato.setEmergenciaXCandidatoPK(emergenciaCandidatoPK);
@@ -1173,12 +1178,14 @@ public String guardar$action()
             {
             }
 
+        i = 0;
         for (ReferenciaLaboralCandidato referenciaLaboral : referenciasLaboralesCandidato)
             {
             ReferenciaPK referenciaPK = new ReferenciaPK();
             referenciaPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             referenciaPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            referenciaPK.setCodReferencia(reclutamientoFacade.maxReferencia(candidato));
+            referenciaPK.setCodReferencia(++i);
+            //referenciaPK.setCodReferencia(reclutamientoFacade.maxReferencia(candidato));
 
             Referencia referencia = new Referencia();
             referencia.setReferenciaPK(referenciaPK);
@@ -1192,12 +1199,14 @@ public String guardar$action()
             reclutamientoFacade.crearRererencia(referencia);
             }
 
+        i = 0;
         for (ReferenciaPersonalCandidato referenciaPersonal : referenciasPersonalesCandidato)
             {
             ReferenciaPK referenciaPK = new ReferenciaPK();
             referenciaPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             referenciaPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            referenciaPK.setCodReferencia(reclutamientoFacade.maxReferencia(candidato));
+            referenciaPK.setCodReferencia(++i);
+            //referenciaPK.setCodReferencia(reclutamientoFacade.maxReferencia(candidato));
 
             Referencia referencia = new Referencia();
             referencia.setReferenciaPK(referenciaPK);
@@ -1212,12 +1221,14 @@ public String guardar$action()
             reclutamientoFacade.crearRererencia(referencia);
             }
 
+        i = 0;
         for (DocumentoCandidato documentoCandidato : documentosCandidato)
             {
             DocumentoPresentadoPK dPK = new DocumentoPresentadoPK();
             dPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             dPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            dPK.setCodDocumentoPres(reclutamientoFacade.getMaxDocumentoPresentado(candidato));
+            dPK.setCodDocumentoPres(++i);
+            //dPK.setCodDocumentoPres(reclutamientoFacade.getMaxDocumentoPresentado(candidato));
 
             DocumentoPresentado d = new DocumentoPresentado();
             d.setDocumentoPresentadoPK(dPK);
@@ -1228,12 +1239,14 @@ public String guardar$action()
             reclutamientoFacade.crearDocumentoPresentado(d);
             }
 
+        i = 0;
         for (CapacitacionCandidato capacitacionCandidato : capacitacionesCandidato)
             {
             CapacitacionXCandidatoPK capacitacionXCandidatoPK = new CapacitacionXCandidatoPK();
             capacitacionXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             capacitacionXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            capacitacionXCandidatoPK.setCodCapacitacion(reclutamientoFacade.getMaxCapacitacionXCandidato(candidato));
+            capacitacionXCandidatoPK.setCodCapacitacion(++i);
+            //capacitacionXCandidatoPK.setCodCapacitacion(reclutamientoFacade.getMaxCapacitacionXCandidato(candidato));
 
             CapacitacionXCandidato capacitacionXCandidato = new CapacitacionXCandidato();
             capacitacionXCandidato.setCapacitacionXCandidatoPK(capacitacionXCandidatoPK);
@@ -1247,12 +1260,14 @@ public String guardar$action()
             reclutamientoFacade.crearCapacitacionXCandidato(capacitacionXCandidato);
             }
 
+        i = 0;
         for (DependienteCandidato dependienteCandidato : dependientesCandidato)
             {
             DependienteXCandidatoPK dependienteXCandidatoPK = new DependienteXCandidatoPK();
             dependienteXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             dependienteXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            dependienteXCandidatoPK.setCodDependiente(reclutamientoFacade.getMaxBeneficiarioXCandidato(candidato));
+            dependienteXCandidatoPK.setCodDependiente(++i);
+            //dependienteXCandidatoPK.setCodDependiente(reclutamientoFacade.getMaxBeneficiarioXCandidato(candidato));
 
             DependienteXCandidato dependienteXCandidato = new DependienteXCandidato();
             dependienteXCandidato.setDependienteXCandidatoPK(dependienteXCandidatoPK);
@@ -1264,12 +1279,14 @@ public String guardar$action()
             reclutamientoFacade.crearDependienteXCandidato(dependienteXCandidato);
             }
 
+        i = 0;
         for (IdiomaCandidato idiomaCandidato : idiomasCandidato)
             {
             IdiomaXCandidatoPK idiomaXCandidatoPK = new IdiomaXCandidatoPK();
             idiomaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             idiomaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            idiomaXCandidatoPK.setCodIdioma(reclutamientoFacade.getMaxIdiomaXCandidato(candidato));
+            idiomaXCandidatoPK.setCodIdioma(++i);
+            //idiomaXCandidatoPK.setCodIdioma(reclutamientoFacade.getMaxIdiomaXCandidato(candidato));
 
             IdiomaXCandidato idiomaXCandidato = new IdiomaXCandidato(idiomaXCandidatoPK);
             idiomaXCandidato.setCandidato(candidato);
@@ -1280,12 +1297,14 @@ public String guardar$action()
             reclutamientoFacade.crearIdiomaXCandidato(idiomaXCandidato);
             }
 
+        i = 0;
         for (String beneficiarioCandidato : beneficiariosCandidato)
             {
             BeneficiarioXCandidatoPK beneficiarioXCandidatoPK = new BeneficiarioXCandidatoPK();
             beneficiarioXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             beneficiarioXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            beneficiarioXCandidatoPK.setCodBeneficiario(reclutamientoFacade.getMaxBeneficiarioXCandidato(candidato));
+            beneficiarioXCandidatoPK.setCodBeneficiario(++i);
+            //beneficiarioXCandidatoPK.setCodBeneficiario(reclutamientoFacade.getMaxBeneficiarioXCandidato(candidato));
 
             BeneficiarioXCandidato beneficiarioXCandidato = new BeneficiarioXCandidato(beneficiarioXCandidatoPK);
             beneficiarioXCandidato.setCandidato(candidato);
@@ -1300,12 +1319,14 @@ public String guardar$action()
             }
         reclutamientoFacade.editarCandidato(candidato);
 
+        i = 0;
         for (PruebaCandidato pruebaCandidato : pruebasCandidato)
             {
             TipoPruebaXCandidatoPK tipoPruebaXCandidatoPK = new TipoPruebaXCandidatoPK();
             tipoPruebaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             tipoPruebaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            tipoPruebaXCandidatoPK.setCodTipoPrueba(reclutamientoFacade.getMaxTipoPruebaXCandidato(candidato));
+            tipoPruebaXCandidatoPK.setCodTipoPrueba(new Short("" + (++i)));
+            //tipoPruebaXCandidatoPK.setCodTipoPrueba(reclutamientoFacade.getMaxTipoPruebaXCandidato(candidato));
 
             TipoPruebaXCandidato tipoPruebaXCandidato = new TipoPruebaXCandidato(tipoPruebaXCandidatoPK);
             tipoPruebaXCandidato.setCandidato(candidato);
@@ -1317,24 +1338,24 @@ public String guardar$action()
 
             reclutamientoFacade.crearTipoPruebaXCandidatoFacade(tipoPruebaXCandidato);
             }
-        
-        
-        
+
+        i = 0;
         for (PuestoCandidato puestoCandidato : puestosCandidato)
             {
             CandidatoXCargoPK candidatoCargoPK = new CandidatoXCargoPK();
             candidatoCargoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             candidatoCargoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            candidatoCargoPK.setCodPuesto(puestoCandidato.getPuesto().getPuestosPK().getCodPuesto());
-            
-            CandidatoXCargo candidatoCargo =  new CandidatoXCargo();
+            candidatoCargoPK.setCodPuesto(new Short("" + (++i)));
+            //candidatoCargoPK.setCodPuesto(puestoCandidato.getPuesto().getPuestosPK().getCodPuesto());
+
+            CandidatoXCargo candidatoCargo = new CandidatoXCargo();
             candidatoCargo.setCandidatoXCargoPK(candidatoCargoPK);
             candidatoCargo.setCandidato(candidato);
             candidatoCargo.setPuestos(puestoCandidato.getPuesto());
             candidatoCargo.setCodTipoPuesto(puestoCandidato.getPuesto().getTipoPuesto().getTipoPuestoPK().getCodTipoPuesto());
             candidatoCargo.setSalarioAspirado(puestoCandidato.getSalarioAspirado());
-            
-            
+
+
             reclutamientoFacade.crearCandidatoXCargo(candidatoCargo);
             }
 
@@ -1345,6 +1366,7 @@ public String guardar$action()
             entrevistaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
             entrevistaXCandidatoPK.setCodPuesto(entrevistaCandidato.getPuesto().getPuestosPK().getCodPuesto());
             entrevistaXCandidatoPK.setCodEntrevista(reclutamientoFacade.getMaxEntrevistaXCandidato(entrevistaCandidato.getPuesto(), candidato));
+            //entrevistaXCandidatoPK.setCodEntrevista(reclutamientoFacade.getMaxEntrevistaXCandidato(entrevistaCandidato.getPuesto(), candidato));
 
             EntrevistaXCandidato entrevistaXCandidato = new EntrevistaXCandidato(entrevistaXCandidatoPK);
             entrevistaXCandidato.setEntrevistaXCandidatoPK(entrevistaXCandidatoPK);
@@ -2249,98 +2271,95 @@ public void setObservaciones(String observaciones)
     this.observaciones = observaciones;
 }
 
-    public String getEntrevistas$descripcion()
-    {
-        return entrevistas$descripcion;
-    }
+public String getEntrevistas$descripcion()
+{
+    return entrevistas$descripcion;
+}
 
-    public void setEntrevistas$descripcion(String entrevistas$descripcion)
-    {
-        this.entrevistas$descripcion = entrevistas$descripcion;
-    }
+public void setEntrevistas$descripcion(String entrevistas$descripcion)
+{
+    this.entrevistas$descripcion = entrevistas$descripcion;
+}
 
-    public String getEntrevistas$entrevistador()
-    {
-        return entrevistas$entrevistador;
-    }
+public String getEntrevistas$entrevistador()
+{
+    return entrevistas$entrevistador;
+}
 
-    public void setEntrevistas$entrevistador(String entrevistas$entrevistador)
-    {
-        this.entrevistas$entrevistador = entrevistas$entrevistador;
-    }
+public void setEntrevistas$entrevistador(String entrevistas$entrevistador)
+{
+    this.entrevistas$entrevistador = entrevistas$entrevistador;
+}
 
-    public Date getEntrevistas$fecha()
-    {
-        return entrevistas$fecha;
-    }
+public Date getEntrevistas$fecha()
+{
+    return entrevistas$fecha;
+}
 
-    public void setEntrevistas$fecha(Date entrevistas$fecha)
-    {
-        this.entrevistas$fecha = entrevistas$fecha;
-    }
+public void setEntrevistas$fecha(Date entrevistas$fecha)
+{
+    this.entrevistas$fecha = entrevistas$fecha;
+}
 
-    public String getEntrevistas$puesto()
-    {
-        return entrevistas$puesto;
-    }
+public String getEntrevistas$puesto()
+{
+    return entrevistas$puesto;
+}
 
-    public void setEntrevistas$puesto(String entrevistas$puesto)
-    {
-        this.entrevistas$puesto = entrevistas$puesto;
-    }
+public void setEntrevistas$puesto(String entrevistas$puesto)
+{
+    this.entrevistas$puesto = entrevistas$puesto;
+}
 
-    public String getEntrevistas$resultado()
-    {
-        return entrevistas$resultado;
-    }
+public String getEntrevistas$resultado()
+{
+    return entrevistas$resultado;
+}
 
-    public void setEntrevistas$resultado(String entrevistas$resultado)
-    {
-        this.entrevistas$resultado = entrevistas$resultado;
-    }
+public void setEntrevistas$resultado(String entrevistas$resultado)
+{
+    this.entrevistas$resultado = entrevistas$resultado;
+}
 
-    public Boolean getIsError()
-    {
-        return isError;
-    }
+public Boolean getIsError()
+{
+    return isError;
+}
 
-    public void setIsError(Boolean isError)
-    {
-        this.isError = isError;
-    }
+public void setIsError(Boolean isError)
+{
+    this.isError = isError;
+}
 
-    public List<PuestoCandidato> getPuestosCandidato()
-    {
-        return puestosCandidato;
-    }
+public List<PuestoCandidato> getPuestosCandidato()
+{
+    return puestosCandidato;
+}
 
-    public void setPuestosCandidato(List<PuestoCandidato> puestosCandidato)
-    {
-        this.puestosCandidato = puestosCandidato;
-    }
+public void setPuestosCandidato(List<PuestoCandidato> puestosCandidato)
+{
+    this.puestosCandidato = puestosCandidato;
+}
 
-    public ReclutamientoSessionBean getReclutamientoFacade()
-    {
-        return reclutamientoFacade;
-    }
+public ReclutamientoSessionBean getReclutamientoFacade()
+{
+    return reclutamientoFacade;
+}
 
-    public void setReclutamientoFacade(ReclutamientoSessionBean reclutamientoFacade)
-    {
-        this.reclutamientoFacade = reclutamientoFacade;
-    }
+public void setReclutamientoFacade(ReclutamientoSessionBean reclutamientoFacade)
+{
+    this.reclutamientoFacade = reclutamientoFacade;
+}
 
-    public SessionBeanParametros getSessionBeanParametros()
-    {
-        return sessionBeanParametros;
-    }
+public SessionBeanParametros getSessionBeanParametros()
+{
+    return sessionBeanParametros;
+}
 
-    public void setSessionBeanParametros(SessionBeanParametros sessionBeanParametros)
-    {
-        this.sessionBeanParametros = sessionBeanParametros;
-    }
-
-
-
+public void setSessionBeanParametros(SessionBeanParametros sessionBeanParametros)
+{
+    this.sessionBeanParametros = sessionBeanParametros;
+}
 
 // ==================================================================================================================
 // ==================================================================================================================
@@ -2616,5 +2635,27 @@ public void paisPrepAcad_ajaxListener(AjaxBehaviorEvent event)
 {
     Paises pais = sessionBeanParametros.findPaisesByid(new Short(preparacion$pais));
     deptosPrepAcadSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
+}
+// ============================================================================================
+// ============================================================================================
+// ============================================================================================
+private DataTable preparacionAcademicatable;
+
+public DataTable getPreparacionAcademicatable()
+{
+    return preparacionAcademicatable;
+}
+
+public void setPreparacionAcademicatable(DataTable preparacionAcademicatable)
+{
+    this.preparacionAcademicatable = preparacionAcademicatable;
+}
+
+public String preparacionAcademica$eliminar$action()
+{
+    int fila = preparacionAcademicatable.getRowIndex();
+    preparacionesAcademicasCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
 }
 }
