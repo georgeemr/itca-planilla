@@ -13,9 +13,9 @@
     <ui:define name="acciones">
         <p:tab id="tabAcciones" title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, lstTipos"
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, lstTipos" 
                                onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" 
-                               onclick="#{planilla$accionesPersonal.urlPlantilla}.show();">
+                               oncomplete="#{planilla$accionesPersonal.urlPlantilla}.show();">
                     <p:graphicImage value="/resources/iconos/new.png"/>
                     <h:outputText value="Nuevo" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -731,30 +731,31 @@
                         <td width="85%" >
                             <p:panel id="panelCriteriosDepartamento" style="border:none;" rendered="#{planilla$accionesPersonal.solicitudVacacionColectiva.criterioSeleccionado eq 'departamentos'}" >
                                 <h:panelGrid columns="3">
-                                    <h:outputLabel value="Departamento:" />
+                                    <h:outputLabel value="Departamento:" style="font-weight: bold;" />
                                     <h:selectOneMenu id="lstDeptosSolVacColDep" style="height: 25px;padding-top: 3px;width: 250px;" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.departamento}" >
                                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE UN DEPARTAMENTO]" />
                                         <f:selectItems value="#{planilla$accionesPersonal.solicitudVacacionColectiva.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
                                         <f:ajax event="change" execute="lstDeptosSolVacColDep" listener="#{planilla$accionesPersonal.solicitudVacacionColectiva.calcularAfectados}" render="afectadosDepartamento selectXDepartamento" />
                                     </h:selectOneMenu>
                                     <h:outputLabel value="" />
-                                    <h:outputLabel value="Tipo Planilla:" />
+                                                                                                           
+                                    <h:outputLabel value="Tipo Planilla:" style="font-weight: bold;" />
                                     <h:selectOneMenu id="lstTipoPlanillaSolVacColDep" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.tipoPlanilla}" >                       
                                         <f:ajax render="lstPlanillaTPDep" event="change" execute="lstTipoPlanillaSolVacColDep" />
                                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
                                         <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                                         <f:ajax event="change" execute="lstTipoPlanillaSolVacColDep" listener="#{planilla$accionesPersonal.solicitudVacacionColectiva.calcularAfectados}" render="afectadosTipoPlanilla lstPlanillaTPDep" />
                                     </h:selectOneMenu>
-
+                                    
                                     <h:panelGroup />
-                                    <h:outputLabel value="Planilla"/>
+                                    <h:outputLabel value="Planilla" style="font-weight: bold;"/>
                                     <h:selectOneMenu id="lstPlanillaTPDep" style="height: 25px;padding-top: 3px;width: 250px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.planilla}" >
                                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
                                         <f:selectItems value="#{planilla$accionesPersonal.solicitudVacacionColectiva.listaPlanillas}" var="pla" 
                                                        itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
                                     </h:selectOneMenu>
                                     <h:panelGroup />
-                                    <h:outputLabel value="Total de afectados:" />
+                                    <h:outputLabel value="Total de afectados:" style="font-weight: bold;" />
                                     <h:panelGroup>
                                         <h:panelGrid columns="2">
                                             <h:outputLabel id="afectadosDepartamento" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.valorAfectados} empleados." styleClass="#{planilla$accionesPersonal.solicitudVacacionColectiva.valorAfectados lt 1 ? 'afectadosMinimo' : 'afectadosMaximo' }" />
@@ -767,22 +768,32 @@
 
                             <p:panel id="panelCriteriosTipoPlanilla" style="border:none;" rendered="#{planilla$accionesPersonal.solicitudVacacionColectiva.criterioSeleccionado eq 'tipoPlanilla'}" >
                                 <h:panelGrid columns="3">
-                                    <h:outputLabel value="Tipo Planilla:" />
-                                    <h:selectOneMenu id="lstTipoPlanillaSolVacCol" style="height: 25px;padding-top: 3px;width: 200px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.tipoPlanilla}" >                       
-                                        <f:ajax render="lstPlanilla" event="change" execute="lstTipoPlanilla" />
+                                    
+                                    <h:outputLabel value="Tipo Planilla:" style="font-weight: bold;" />
+                                    <h:selectOneMenu id="lstTipoPlanillaSolVacCol" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.tipoPlanilla}" >                       
                                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
                                         <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                                         <f:ajax event="change" execute="lstTipoPlanillaSolVacCol" listener="#{planilla$accionesPersonal.solicitudVacacionColectiva.calcularAfectados}" render="afectadosTipoPlanilla selectXTipoPlanilla lstPlanillaTP" />
                                     </h:selectOneMenu>
                                     <h:panelGroup />
-                                    <h:outputLabel value="Planilla"/>
-                                    <h:selectOneMenu id="lstPlanillaTP" style="height: 25px;padding-top: 3px;width: 200px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.planilla}" >
+                                    
+                                    <h:outputLabel value="Tipo Planilla aplicar:" style="font-weight: bold;" />
+                                    <h:selectOneMenu id="lstTipoPlanilla0SolVacCol" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.tipoPlanillaAplicar}" >                       
+                                        <f:ajax render="lstPlanillaTP" event="change" execute="lstTipoPlanilla0SolVacCol" />
+                                        <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
+                                        <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>                                        
+                                    </h:selectOneMenu>
+                                    <h:outputLabel value="" />
+                                    
+                                    <h:outputLabel value="Planilla" style="font-weight: bold;" />
+                                    <h:selectOneMenu id="lstPlanillaTP" style="height: 25px;padding-top: 3px;width: 250px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.planilla}" >
                                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
                                         <f:selectItems value="#{planilla$accionesPersonal.solicitudVacacionColectiva.listaPlanillas}" var="pla" 
                                                        itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
                                     </h:selectOneMenu>
+                                    <h:outputLabel value="" /><h:outputLabel value="" /><h:outputLabel value="A&Ntilde;O-MES-N&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" />
                                     <h:outputLabel value="" />
-                                    <h:outputLabel value="Total de empleados afectados:" />
+                                    <h:outputLabel value="Total de empleados afectados:" style="font-weight: bold;" />
                                     <h:panelGroup>
                                         <h:panelGrid columns="2"> 
                                             <h:outputLabel id="afectadosTipoPlanilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.valorAfectados} empleados." styleClass="#{planilla$accionesPersonal.solicitudVacacionColectiva.valorAfectados lt 1 ? 'afectadosMinimo' : 'afectadosMaximo' }" />
@@ -965,6 +976,10 @@
                             </h:selectOneMenu>
                         </td>
                     </tr>
+                    <tr>
+                        <td></td><td></td><td></td><td></td>
+                        <td><h:outputLabel value="A&Ntilde;O-MES-N&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" /></td>
+                    </tr>
                 </table>
 
             </p:fieldset>
@@ -1107,6 +1122,11 @@
                                             </h:selectOneMenu>
                                         </td>
                                     </tr>
+                                    
+                                    <tr>
+                                        <td></td>
+                                        <td><h:outputLabel value="A&Ntilde;O-MES-N&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" /></td>
+                                    </tr>
 
                                     <tr>
                                         <td colspan="5" >
@@ -1185,7 +1205,10 @@
                                             </h:selectOneMenu>
                                         </td>
                                     </tr>
-
+                                    <tr>
+                                        <td></td>
+                                        <td><h:outputLabel value="A&Ntilde;O-MES-N&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" /></td>
+                                    </tr>
                                     <tr>
                                         <td colspan="5" >
                                             <h:panelGrid columns="2">

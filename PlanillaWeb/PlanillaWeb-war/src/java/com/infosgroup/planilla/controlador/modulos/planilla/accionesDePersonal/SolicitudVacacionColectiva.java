@@ -22,6 +22,7 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
     private java.util.List<Departamentos> listaDepartamentos;
     private Short departamento;
     private Short tipoPlanilla;
+    private Short tipoPlanillaAplicar;
     private String planilla;
     private Integer valorAfectados = 0;
     private List<Empleados> listaEmpleadosAfectar;
@@ -41,9 +42,17 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
         super(encabezadoSolicitud);
     }
 
+    public Short getTipoPlanillaAplicar() {
+        return tipoPlanillaAplicar;
+    }
+
+    public void setTipoPlanillaAplicar(Short tipoPlanillaAplicar) {
+        this.tipoPlanillaAplicar = tipoPlanillaAplicar;
+    }
+
     public List<ProgramacionPla> getListaPlanillas() {
-        if (tipoPlanilla != null && tipoPlanilla != -1) {
-            listaPlanillas = planillaSessionBean().getProgramacionPlaByTipo(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla);
+        if (tipoPlanillaAplicar != null && tipoPlanillaAplicar != -1) {
+            listaPlanillas = planillaSessionBean().getProgramacionPlaByTipo(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), tipoPlanillaAplicar);
         }
         return listaPlanillas != null ? listaPlanillas : new ArrayList<ProgramacionPla>();
     }
@@ -174,7 +183,7 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
         accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));
         accionPersonal.setMes(new Short(planilla.split(":")[2].toString()));
         accionPersonal.setNumPlanilla(new Short(planilla.split(":")[3].toString()));
-        accionPersonal.setCodTipopla(tipoPlanilla);
+        accionPersonal.setCodTipopla(tipoPlanillaAplicar);
         return accionPersonal;
     }
 

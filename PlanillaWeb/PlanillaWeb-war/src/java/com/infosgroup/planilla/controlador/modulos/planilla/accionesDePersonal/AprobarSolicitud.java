@@ -31,9 +31,9 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
 
     public String aprobarSolicitudJefe() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
-        if (!validaDatos(a)) {
-            return null;
-        }
+//        if (!validaDatos(a)) {
+//            return null;
+//        }
         try {
             planillaSessionBean.jefeEditaSolicitud(a, "A");
             getSessionBeanPLA().getAccionSeleccionada().setStatus("A");
@@ -47,9 +47,9 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
 
     public String aprobarSolicitudRH() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
-        if (!validaDatos(a)) {
-            return null;
-        }
+//        if (!validaDatos(a)) {
+//            return null;
+//        }
         try {
             planillaSessionBean.rrhhEditaSolicitud(a, "A");
             getSessionBeanPLA().getAccionSeleccionada().setStatus("A");
