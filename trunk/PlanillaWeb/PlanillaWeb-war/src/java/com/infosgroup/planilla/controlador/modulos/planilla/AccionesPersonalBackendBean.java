@@ -168,7 +168,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         } else {
             listaSolicitudes = new ArrayList<AccionPersonal>();
         }
-        listaSolicitudes = planillaSessionBean.getAccionesByRol(getSessionBeanEMP().getEmpleadoSesion());
+        //listaSolicitudes = planillaSessionBean.getAccionesByRol(getSessionBeanEMP().getEmpleadoSesion());
         empresa = getSessionBeanADM().getCompania().getCodCia();
         solicitudPermiso = new SolicitudPermiso(this);
         solicitudVacacionesAnuales = new SolicitudVacacionesAnuales(this);
