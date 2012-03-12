@@ -63,10 +63,10 @@
                                 <f:selectItem  itemValue="-1" itemLabel="[ SELECCIONE UN TIPO DE ACCI&Oacute;N ]" />
                                 <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc" itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
                             </h:selectOneMenu>
-                            <h:outputLabel value="Solicitudes a mostrar:" />
-                            <h:selectOneRadio id="chkSolicitudes" value="#{planilla$accionesPersonal.solicitudesMostradas}" valueChangeListener="#{planilla$accionesPersonal.listarSolicitudes}" >
+                            <h:outputLabel value="Solicitudes a mostrar:" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}" />
+                            <h:selectOneRadio id="chkSolicitudes" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}" value="#{planilla$accionesPersonal.solicitudesMostradas}" valueChangeListener="#{planilla$accionesPersonal.listarSolicitudes}" >
                                 <f:selectItem itemValue="E" itemLabel="Solicitudes de Empleados" />
-                                <f:selectItem itemValue="R" itemLabel="Solicitudes Recursos Humanos" />
+                                <f:selectItem itemValue="R" itemLabel="Solicitudes #{request.isUserInRole('rrhh') ? 'Recursos Humanos' : 'Jefe'  }" />
                                 <f:ajax event="change" render="tableSolicitud principalForm:mensajes" execute="chkSolicitudes"  />
                             </h:selectOneRadio>
                         </h:panelGrid>

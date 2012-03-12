@@ -337,7 +337,11 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         if (solicitudesMostradas.equals("E")) {
             listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
         } else {
-            listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
+            if (isInRole("rrhh")) {
+                listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
+            } else if (isInRole("jefes")) {
+                listaSolicitudes = planillaSessionBean.findSolicitudesByJefe(getSessionBeanEMP().getEmpleadoSesion());
+            }
         }
     }
 
