@@ -452,13 +452,13 @@ public class PlanillaSessionBean {
     }
     
     @PermitAll
-    public List<TipoAccion> listarTipoAccionAfectaPlanilla(Cias cias) {
-        return tipoAccionFacade.listarTipoAccionAfectaPlanilla(cias);
+    public List<TipoAccion> listarTipoAccionAfectaPlanilla(Cias cias, String rol) {
+        return tipoAccionFacade.listarTipoAccionAfectaPlanilla(cias, rol);
     }
     
     @PermitAll
-    public List<TipoAccion> listarTipoAccionNoAfectaPlanilla(Cias cias) {
-        return tipoAccionFacade.listarTipoAccionNoAfectaPlanilla(cias);
+    public List<TipoAccion> listarTipoAccionNoAfectaPlanilla(Cias cias, String rol) {
+        return tipoAccionFacade.listarTipoAccionNoAfectaPlanilla(cias, rol);
     }
     
     @PermitAll

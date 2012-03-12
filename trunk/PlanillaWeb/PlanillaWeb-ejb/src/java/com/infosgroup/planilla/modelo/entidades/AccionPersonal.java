@@ -161,6 +161,8 @@ public class AccionPersonal implements Serializable {
     @Size(max = 1)
     @Column(name = "APROBADO_RH", length = 1)
     private String aprobadoRh;
+    @Column(name = "MONTO", precision = 11, scale = 2)
+    private BigDecimal monto;
     @Transient
     private String accEstado;
 
@@ -351,13 +353,13 @@ public class AccionPersonal implements Serializable {
         this.fechaCanje = fechaCanje;
     }
 
-//    public Short getCodTiporetiro() {
-//        return codTiporetiro;
-//    }
-//
-//    public void setCodTiporetiro(Short codTiporetiro) {
-//        this.codTiporetiro = codTiporetiro;
-//    }
+    public BigDecimal getMonto() {
+        return monto;
+    }
+
+    public void setMonto(BigDecimal monto) {
+        this.monto = monto;
+    }
 
     public CausasRenuncia getCausasRenuncia() {
         return causasRenuncia;

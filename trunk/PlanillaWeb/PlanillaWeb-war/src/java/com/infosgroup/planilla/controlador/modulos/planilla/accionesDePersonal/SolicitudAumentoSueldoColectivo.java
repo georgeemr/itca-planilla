@@ -8,7 +8,6 @@ import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBack
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -156,8 +155,9 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
         accionPersonal.setNumPlanilla(new Short(planilla.split(":")[3].toString()));
         accionPersonal.setCodTipopla(tipoPlanilla);
         accionPersonal.setSueldoAnterior(e.getSalario());
-        accionPersonal.setCantidad(formaAumento.equals("V") ? new BigDecimal(sueldoNuevo) : new BigDecimal(e.getSalario().doubleValue() + (sueldoNuevo / 100) * e.getSalario().doubleValue()));
+        accionPersonal.setCantidad(formaAumento.equals("V") ? new BigDecimal(sueldoNuevo + e.getSalario().doubleValue()) : new BigDecimal(e.getSalario().doubleValue() + (sueldoNuevo / 100) * e.getSalario().doubleValue()));
         accionPersonal.setPorcentaje(formaAumento.equals("P") ? new BigDecimal(sueldoNuevo) : BigDecimal.ZERO);
+        accionPersonal.setMonto(formaAumento.equals("V") ? new BigDecimal(sueldoNuevo) : BigDecimal.ZERO);
         accionPersonal.setPuestos(e.getPuestos());
         return accionPersonal;
     }
