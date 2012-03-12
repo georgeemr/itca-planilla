@@ -102,15 +102,9 @@
                 <p:commandButton value="No" image="ui-icon ui-icon-circle-close" onclick="cnf1.hide();"/>
             </h:panelGrid>
         </p:dialog>
-        
-        <p:confirmDialog message="&#191;Esta seguro que desea cerrar esta Campa&ntilde;a"  
-                         showEffect="bounce" hideEffect="explode"  modal="true" closable="false"
-                         header="Cerrar Campa&ntilde;a" severity="alert" widgetVar="confirmation">  
-            <p:commandButton id="cmdOk" value="Si, estoy seguro" update="principalForm:mensajes,principalForm:campaniasTable,evaluacionesTable,fieldset1" 
-                             action="#{empleados$seleccionEvaluacion.cerrarCampania}" onclick="confirmation.hide()" />   
-            <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
-
-        </p:confirmDialog> 
-        
+        <p:confirmDialog message="&#191;Esta seguro que desea cerrar esta Campa&ntilde;a" showEffect="bounce" hideEffect="explode"  modal="true" closable="false" header="Cerrar Campa&ntilde;a" severity="alert" widgetVar="confirmation"> 
+            <p:commandButton id="cmdOk" value="Si, estoy seguro" update="principalForm:mensajes,principalForm:campaniasTable,evaluacionesTable,fieldset1" action="#{empleados$seleccionEvaluacion.cerrarCampania}" onclick="confirmation.hide()"/>
+            <p:commandButton value="No" onclick="confirmation.hide()" type="button"/>
+        </p:confirmDialog>
     </ui:define>
 </ui:composition>

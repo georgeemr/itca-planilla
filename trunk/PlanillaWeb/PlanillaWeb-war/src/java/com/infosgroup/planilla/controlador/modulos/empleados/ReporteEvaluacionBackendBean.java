@@ -9,7 +9,6 @@ import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.TipoEvaluacion;
 import com.infosgroup.planilla.modelo.estructuras.reportes.ReporteEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
-import com.infosgroup.planilla.modelo.procesos.MailStatelessBean;
 import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
