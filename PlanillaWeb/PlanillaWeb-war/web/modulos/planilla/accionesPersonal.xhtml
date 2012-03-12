@@ -53,14 +53,30 @@
     <ui:define name="contenido">
         <p:fieldset id="fieldset1" style="border:none;" >
             <p:spacer height="5" />
-            <h:panelGrid columns="2">
-                <h:outputLabel value="Acci&oacute;n de Personal" style="font-weight: bold;" />
-                <h:selectOneMenu id="lstAcc" style="height: 25px;padding-top: 3px; width: 250px;" value="#{planilla$accionesPersonal.tipo}">
-                    <f:ajax event="change" listener="#{planilla$accionesPersonal.seleccionarAccion}" execute="lstAcc" render="@form" />
-                    <f:selectItem  itemValue="-1" itemLabel="[ SELECCIONE UN TIPO DE ACCI&Oacute;N ]" />
-                    <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc" itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
-                </h:selectOneMenu>
-            </h:panelGrid>
+            <table width="100%" >
+                <tr>
+                    <td>
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Acci&oacute;n de Personal" style="font-weight: bold;" />
+                            <h:selectOneMenu id="lstAcc" style="height: 25px;padding-top: 3px; width: 250px;" value="#{planilla$accionesPersonal.tipo}">
+                                <f:ajax event="change" listener="#{planilla$accionesPersonal.seleccionarAccion}" execute="lstAcc" render="@form" />
+                                <f:selectItem  itemValue="-1" itemLabel="[ SELECCIONE UN TIPO DE ACCI&Oacute;N ]" />
+                                <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc" itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
+                            </h:selectOneMenu>
+                        </h:panelGrid>
+                    </td>
+                    <td align="right" >
+                        <h:panelGrid columns="2" >
+                            <p:spacer width="15" style="background-color:#93BBD1;" />
+                            <h:outputLabel value="Solicitud Generada" style="font-weight: bold;" />
+                            <p:spacer width="15" style="background-color:#9CD128;" />
+                            <h:outputLabel value="Solicitud Aprobada" style="font-weight: bold;" />
+                            <p:spacer width="15" style="background-color:#D12525;" />
+                            <h:outputLabel value="Solicitud Rechazada" style="font-weight: bold;" />
+                        </h:panelGrid>
+                    </td>
+                </tr>
+            </table>
         </p:fieldset>
         <p:spacer height="10px"/>
         <p:dataTable id="tableSolicitud" rows="5" paginator="true" paginatorAlwaysVisible="true"
@@ -746,7 +762,7 @@
                                         <f:ajax event="change" execute="lstDeptosSolVacColDep" listener="#{planilla$accionesPersonal.solicitudVacacionColectiva.calcularAfectados}" render="afectadosDepartamento selectXDepartamento" />
                                     </h:selectOneMenu>
                                     <h:outputLabel value="" />
-                                                                                                           
+
                                     <h:outputLabel value="Tipo Planilla:" style="font-weight: bold;" />
                                     <h:selectOneMenu id="lstTipoPlanillaSolVacColDep" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.tipoPlanilla}" >                       
                                         <f:ajax render="lstPlanillaTPDep" event="change" execute="lstTipoPlanillaSolVacColDep" />
@@ -754,7 +770,7 @@
                                         <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                                         <f:ajax event="change" execute="lstTipoPlanillaSolVacColDep" listener="#{planilla$accionesPersonal.solicitudVacacionColectiva.calcularAfectados}" render="afectadosTipoPlanilla lstPlanillaTPDep" />
                                     </h:selectOneMenu>
-                                    
+
                                     <h:panelGroup />
                                     <h:outputLabel value="Planilla" style="font-weight: bold;"/>
                                     <h:selectOneMenu id="lstPlanillaTPDep" style="height: 25px;padding-top: 3px;width: 250px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.planilla}" >
@@ -780,7 +796,7 @@
 
                             <p:panel id="panelCriteriosTipoPlanilla" style="border:none;" rendered="#{planilla$accionesPersonal.solicitudVacacionColectiva.criterioSeleccionado eq 'tipoPlanilla'}" >
                                 <h:panelGrid columns="3">
-                                    
+
                                     <h:outputLabel value="Tipo Planilla:" style="font-weight: bold;" />
                                     <h:selectOneMenu id="lstTipoPlanillaSolVacCol" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.tipoPlanilla}" >                       
                                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
@@ -788,7 +804,7 @@
                                         <f:ajax event="change" execute="lstTipoPlanillaSolVacCol" listener="#{planilla$accionesPersonal.solicitudVacacionColectiva.calcularAfectados}" render="afectadosTipoPlanilla selectXTipoPlanilla lstPlanillaTP" />
                                     </h:selectOneMenu>
                                     <h:panelGroup />
-                                    
+
                                     <h:outputLabel value="Tipo Planilla aplicar:" style="font-weight: bold;" />
                                     <h:selectOneMenu id="lstTipoPlanilla0SolVacCol" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.tipoPlanillaAplicar}" >                       
                                         <f:ajax render="lstPlanillaTP" event="change" execute="lstTipoPlanilla0SolVacCol" />
@@ -796,7 +812,7 @@
                                         <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>                                        
                                     </h:selectOneMenu>
                                     <h:outputLabel value="" />
-                                    
+
                                     <h:outputLabel value="Planilla" style="font-weight: bold;" />
                                     <h:selectOneMenu id="lstPlanillaTP" style="height: 25px;padding-top: 3px;width: 250px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.planilla}" >
                                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
@@ -1134,7 +1150,7 @@
                                             </h:selectOneMenu>
                                         </td>
                                     </tr>
-                                    
+
                                     <tr>
                                         <td></td>
                                         <td><h:outputLabel value="A&Ntilde;O-MES-N&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" /></td>
@@ -1439,8 +1455,7 @@
                     <tr>
                         <td>
                             <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha inicial"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
+                                <h:outputLabel value="Fecha inicial"/>                      
                             </h:panelGrid>
                         </td>
 
@@ -1451,7 +1466,6 @@
                         <td>
                             <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
                                 <h:outputLabel value="Fecha Final"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
 
