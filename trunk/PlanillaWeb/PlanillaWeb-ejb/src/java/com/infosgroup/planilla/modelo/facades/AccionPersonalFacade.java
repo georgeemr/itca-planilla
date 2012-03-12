@@ -117,7 +117,7 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
         return l != null ? l : new ArrayList<AccionPersonal>();
     }
 
-    @RolesAllowed({"empleados"})
+    @RolesAllowed({"empleados", "rrhh", "jefes"})
     public List<AccionPersonal> findSolicitudesByEmpleado(Empleados empleado) {
         List<AccionPersonal> l = new ArrayList<AccionPersonal>();
         TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.accionPersonalPK.codEmp = :idEmpleado", AccionPersonal.class);

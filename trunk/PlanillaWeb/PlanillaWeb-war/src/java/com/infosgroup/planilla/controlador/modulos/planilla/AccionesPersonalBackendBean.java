@@ -22,6 +22,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 import org.primefaces.component.datatable.DataTable;
 
 /**
@@ -48,6 +49,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private String urlPlantilla;
     private String urlPlantillaDefault = "/modulos/planilla/acciones/ninguna.xhtml";
     private TipoAccion accionSeleccionada;
+    private String solicitudesMostradas;
     /*
      * Campos de Detalle de Solicitud
      */
@@ -179,7 +181,16 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         solicitudAumentoSueldoColectivo = new SolicitudAumentoSueldoColectivo(this);
         solicitudRetiro = new SolicitudRetiro(this);
         solicitudNoAfectaPlanilla = new SolicitudNoAfectaPlanilla(this);
+        solicitudesMostradas = "E";
         fecha = new Date();
+    }
+
+    public String getSolicitudesMostradas() {
+        return solicitudesMostradas;
+    }
+
+    public void setSolicitudesMostradas(String solicitudesMostradas) {
+        this.solicitudesMostradas = solicitudesMostradas;
     }
 
     public String getUrlPlantilla() {
@@ -320,6 +331,14 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     public void setTablaSolicitudes(DataTable tablaSolicitudes) {
         this.tablaSolicitudes = tablaSolicitudes;
+    }
+
+    public void listarSolicitudes(ValueChangeEvent event) {
+        if (solicitudesMostradas.equals("E")) {
+            listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+        } else {
+            listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
+        }
     }
 
     @Override

@@ -347,7 +347,7 @@ public class PlanillaSessionBean {
         return planillaFacade.find(planillaPK);
     }
     
-    @RolesAllowed({"empleados"})
+    @RolesAllowed({"empleados", "rrhh", "jefes"})
     public List<AccionPersonal> findSolicitudesByEmpleado(Empleados empleado) {
         return accionPersonalFacade.findSolicitudesByEmpleado(empleado);
     }
