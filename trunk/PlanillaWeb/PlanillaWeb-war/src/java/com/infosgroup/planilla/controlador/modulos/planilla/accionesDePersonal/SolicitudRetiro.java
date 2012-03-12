@@ -113,14 +113,13 @@ public class SolicitudRetiro extends SolicitudDePersonal implements java.io.Seri
     @Override
     boolean validarSolicitud() {
         Boolean error = Boolean.FALSE;
-
-        if (accion == null || accion == -1) {
-            addMessage("Acciones de Personal", "Tipo de Acción campo requerido.", TipoMensaje.ERROR);
-            error = Boolean.TRUE;
-        }
-
         if (fechaRetiro == null) {
             addMessage("Acciones de Personal", "Fecha de retiro es un campo requerido.", TipoMensaje.ERROR);
+            error = Boolean.TRUE;
+        }
+        
+        if (accion == null || accion == -1) {
+            addMessage("Acciones de Personal", "Tipo de Acción campo requerido.", TipoMensaje.ERROR);
             error = Boolean.TRUE;
         }
 
