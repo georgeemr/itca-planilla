@@ -100,6 +100,8 @@ public class ResumenAsistencia implements Serializable {
     private Empleados empleados;
     @Transient
     private Double valorTemp;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "resumenAsistencia")
+    private Planilla planilla;
 
     public ResumenAsistencia() {
     }
@@ -292,6 +294,14 @@ public class ResumenAsistencia implements Serializable {
 
     public void setValorTemp(Double valorTemp) {
         this.valorTemp = valorTemp;
+    }
+    
+    public Planilla getPlanilla() {
+        return planilla;
+    }
+
+    public void setPlanilla(Planilla planilla) {
+        this.planilla = planilla;
     }
 
     @Override

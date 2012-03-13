@@ -11,8 +11,12 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -48,7 +52,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Planilla.findByStatus", query = "SELECT p FROM Planilla p WHERE p.status = :status"),
     @NamedQuery(name = "Planilla.findByVhrNoche", query = "SELECT p FROM Planilla p WHERE p.vhrNoche = :vhrNoche"),
     @NamedQuery(name = "Planilla.findByChrNoche", query = "SELECT p FROM Planilla p WHERE p.chrNoche = :chrNoche"),
-    @NamedQuery(name = "Planilla.findByCodTipopla", query = "SELECT p FROM Planilla p WHERE p.codTipopla = :codTipopla"),
+    @NamedQuery(name = "Planilla.findByCodTipopla", query = "SELECT p FROM Planilla p WHERE p.planillaPK.codTipopla = :codTipopla"),
     @NamedQuery(name = "Planilla.findByChX250", query = "SELECT p FROM Planilla p WHERE p.chX250 = :chX250"),
     @NamedQuery(name = "Planilla.findByVhX250", query = "SELECT p FROM Planilla p WHERE p.vhX250 = :vhX250"),
     @NamedQuery(name = "Planilla.findByChHora", query = "SELECT p FROM Planilla p WHERE p.chHora = :chHora"),
@@ -112,8 +116,8 @@ public class Planilla implements Serializable {
     private BigDecimal vhrNoche;
     @Column(name = "CHR_NOCHE", precision = 8, scale = 2)
     private BigDecimal chrNoche;
-    @Column(name = "COD_TIPOPLA")
-    private Short codTipopla;
+//    @Column(name = "COD_TIPOPLA")
+//    private Short codTipopla;
     @Column(name = "CH_X250", precision = 6, scale = 2)
     private BigDecimal chX250;
     @Column(name = "VH_X250", precision = 16, scale = 2)
@@ -145,8 +149,26 @@ public class Planilla implements Serializable {
     private BigDecimal antipag;
     @Column(name = "COD_SECCION")
     private Short codSeccion;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "ANIO", referencedColumnName = "ANIO", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "MES", referencedColumnName = "MES", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "NUM_PLANILLA", referencedColumnName = "NUM_PLANILLA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
+    @OneToOne(optional = false)
+    private ResumenAsistencia resumenAsistencia;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private Empleados empleados;
+
     @Transient
     private String pkAsString;
+    
+    @Transient
+    private BigDecimal total;
     
     public Planilla() {
     }
@@ -172,8 +194,8 @@ public class Planilla implements Serializable {
         this.status = status;
     }
 
-    public Planilla(short codCia, short anio, short mes, short numPlanilla, int codEmp) {
-        this.planillaPK = new PlanillaPK(codCia, anio, mes, numPlanilla, codEmp);
+    public Planilla(short codCia, short anio, short mes, short numPlanilla, int codEmp, short codTipopla) {
+        this.planillaPK = new PlanillaPK(codCia, anio, mes, numPlanilla, codEmp, codTipopla);
     }
 
     public PlanillaPK getPlanillaPK() {
@@ -304,13 +326,13 @@ public class Planilla implements Serializable {
         this.chrNoche = chrNoche;
     }
 
-    public Short getCodTipopla() {
-        return codTipopla;
-    }
-
-    public void setCodTipopla(Short codTipopla) {
-        this.codTipopla = codTipopla;
-    }
+//    public Short getCodTipopla() {
+//        return codTipopla;
+//    }
+//
+//    public void setCodTipopla(Short codTipopla) {
+//        this.codTipopla = codTipopla;
+//    }
 
     public BigDecimal getChX250() {
         return chX250;
@@ -431,10 +453,37 @@ public class Planilla implements Serializable {
     public void setCodSeccion(Short codSeccion) {
         this.codSeccion = codSeccion;
     }
+    
+    public ResumenAsistencia getResumenAsistencia() {
+        return resumenAsistencia;
+    }
+
+    public void setResumenAsistencia(ResumenAsistencia resumenAsistencia) {
+        this.resumenAsistencia = resumenAsistencia;
+    }
+
+    public Empleados getEmpleados() {
+        return empleados;
+    }
+
+public void setEmpleados(Empleados empleados) {
+        this.empleados = empleados;
+    }
+
 
     public String getPkAsString() {
-        pkAsString = "" + this.planillaPK.getCodCia() + ":" + this.planillaPK.getAnio() + ":" + this.planillaPK.getMes() + ":" + this.planillaPK.getNumPlanilla() + ":" + this.planillaPK.getCodEmp() + ":" + this.getCodTipopla();
+        pkAsString = "" + this.planillaPK.getCodCia() + ":" + this.planillaPK.getAnio() + ":" + this.planillaPK.getMes() + ":" + this.planillaPK.getNumPlanilla() + ":" + this.planillaPK.getCodEmp() + ":" + this.planillaPK.getCodTipopla();
         return pkAsString;
+    }
+
+    public BigDecimal getTotal() {
+        BigDecimal total1 = prestaciones.add(empleados.getPuestos().getSalMinimo());
+        total = total1.subtract(deducciones);
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
     }
 
     @Override

@@ -37,18 +37,23 @@ public class PlanillaPK implements Serializable {
     @NotNull
     @Column(name = "COD_EMP", nullable = false)
     private int codEmp;
+    @Basic(optional = false)
+    @Column(name = "COD_TIPOPLA", nullable = false)
+    private short codTipopla;
+
     @Transient
     private String pkAsString;
     
     public PlanillaPK() {
     }
 
-    public PlanillaPK(short codCia, short anio, short mes, short numPlanilla, int codEmp) {
+    public PlanillaPK(short codCia, short anio, short mes, short numPlanilla, int codEmp, short codTipopla) {
         this.codCia = codCia;
         this.anio = anio;
         this.mes = mes;
         this.numPlanilla = numPlanilla;
         this.codEmp = codEmp;
+	this.codTipopla = codTipopla;
     }
 
     public PlanillaPK(String p, int empleado) {
@@ -57,6 +62,7 @@ public class PlanillaPK implements Serializable {
         this.mes = new Short(p.split(":")[2]);
         this.numPlanilla = new Short(p.split(":")[3]);
         this.codEmp = empleado;
+        this.codTipopla = new Short(p.split(":")[2]);
     }
 
     public short getCodCia() {
@@ -99,8 +105,16 @@ public class PlanillaPK implements Serializable {
         this.codEmp = codEmp;
     }
     
+    public short getCodTipopla() {
+        return codTipopla;
+    }
+
+    public void setCodTipopla(short codTipopla) {
+        this.codTipopla = codTipopla;
+    }
+    
     public String getPkAsString() {
-        pkAsString = "" + codCia + ":" + anio + ":" + mes + ":" + numPlanilla +":"+codEmp;
+        pkAsString = "" + codCia + ":" + anio + ":" + mes + ":" + numPlanilla +":"+codEmp + ": "+codTipopla;
         return pkAsString;
     }
     
@@ -112,6 +126,7 @@ public class PlanillaPK implements Serializable {
         hash += (int) mes;
         hash += (int) numPlanilla;
         hash += (int) codEmp;
+        hash += (int) codTipopla;
         return hash;
     }
 
@@ -137,12 +152,15 @@ public class PlanillaPK implements Serializable {
         if (this.codEmp != other.codEmp) {
             return false;
         }
+        if (this.codTipopla != other.codTipopla) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "com.infosgroup.planilla.modelo.entidades.PlanillaPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", codEmp=" + codEmp + " ]";
+        return "com.infosgroup.planilla.modelo.entidades.PlanillaPK[ codCia=" + codCia + ", anio=" + anio + ", mes=" + mes + ", numPlanilla=" + numPlanilla + ", codEmp=" + codEmp + ", codTipopla=" + codTipopla + " ]";
     }
     
 }

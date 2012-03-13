@@ -136,6 +136,8 @@ public class DeducPresta implements Serializable {
     @ManyToOne(optional = false)
     private BasesCalculo codBase;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deducPresta")
+    private List<MovDp> movDpList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deducPresta")
     private List<CtasXDepto> ctasXDeptoList;
     @Transient
     private String descripcionSumaResta;
@@ -370,6 +372,15 @@ public class DeducPresta implements Serializable {
 
     public void setPorRangosList(List<PorRangos> porRangosList) {
         this.porRangosList = porRangosList;
+    }
+
+    @XmlTransient
+    public List<MovDp> getMovDpList() {
+        return movDpList;
+    }
+
+    public void setMovDpList(List<MovDp> movDpList) {
+        this.movDpList = movDpList;
     }
 
     public BasesCalculo getCodBase() {

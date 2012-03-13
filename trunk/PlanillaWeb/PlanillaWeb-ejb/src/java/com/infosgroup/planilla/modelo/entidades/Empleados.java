@@ -277,6 +277,8 @@ private String correo;
 
 /* @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
  private List<Evaluacion> evaluacionList; */
+@OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
+    private List<Planilla> planillaList;
 @JoinTable(name = "EVALUADOR_EVALUACIONES", joinColumns =
     {
     @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
@@ -1113,6 +1115,15 @@ public void setCorreo(String correo)
 {
     this.correo = correo;
 }
+
+@XmlTransient
+    public List<Planilla> getPlanillaList() {
+        return planillaList;
+    }
+
+    public void setPlanillaList(List<Planilla> planillaList) {
+        this.planillaList = planillaList;
+    }
 
 @XmlTransient
 public List<Evaluacion> getEvaluacionList()
