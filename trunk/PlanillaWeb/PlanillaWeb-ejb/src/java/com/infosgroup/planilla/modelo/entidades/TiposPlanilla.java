@@ -47,7 +47,9 @@ public class TiposPlanilla implements Serializable {
     private List<Departamentos> departamentosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposPlanilla")
     private List<Empleados> empleadosList;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposPlanilla")
+    private List<ProgramacionPla> programacionPlaList;
+    
     public TiposPlanilla() {
     }
 
@@ -112,6 +114,15 @@ public class TiposPlanilla implements Serializable {
 
     public void setEmpleadosList(List<Empleados> empleadosList) {
         this.empleadosList = empleadosList;
+    }
+    
+    @XmlTransient
+    public List<ProgramacionPla> getProgramacionPlaList() {
+        return programacionPlaList;
+    }
+
+    public void setProgramacionPlaList(List<ProgramacionPla> programacionPlaList) {
+        this.programacionPlaList = programacionPlaList;
     }
 
     @Override

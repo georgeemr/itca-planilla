@@ -479,7 +479,7 @@ public void setEmpleados(Empleados empleados) {
     public BigDecimal getTotal() {
         BigDecimal total1 = prestaciones.add(empleados.getPuestos().getSalMinimo());
         total = total1.subtract(deducciones);
-        return total;
+        return total != null ? total: new BigDecimal(0);
     }
 
     public void setTotal(BigDecimal total) {
