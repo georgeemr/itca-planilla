@@ -10,6 +10,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -78,6 +81,11 @@ public class ProgramacionPla implements Serializable {
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_TIPOPLA", referencedColumnName = "COD_TIPOPLA", nullable = false, insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private TiposPlanilla tiposPlanilla;
     @Transient
     private String pkAsString;
 
@@ -193,6 +201,14 @@ public class ProgramacionPla implements Serializable {
 
     public void setPkAsString(String pkAsString) {
         this.pkAsString = pkAsString;
+    }
+    
+    public TiposPlanilla getTiposPlanilla() {
+        return tiposPlanilla;
+    }
+
+    public void setTiposPlanilla(TiposPlanilla tiposPlanilla) {
+        this.tiposPlanilla = tiposPlanilla;
     }
 
     @Override
