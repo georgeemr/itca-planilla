@@ -539,4 +539,8 @@ public class PlanillaSessionBean {
     public void ejecutarAccionSolicitud(AccionSolicitud accionSolicitud, AccionPersonal accionPersonal) {
         accionSolicitud.efectuar(accionPersonal);
     }
+    @PermitAll
+    public List<MovDp> findDeduccionesPresta(Planilla planilla, String sumaResta){
+        return movDpFacade.movimientosByPlanilla(planilla, sumaResta);
+    }
 }
