@@ -127,7 +127,7 @@ private String referencias$rp$correoElectronico;
 // = Documentos ===============================================================================================
 // ===========================================================================================================
 private String documentos$tipo;
-private Integer documentos$numero;
+private String documentos$numero;
 // ===========================================================================================================
 // = Capacitaciones ==========================================================================================
 // ===========================================================================================================
@@ -689,7 +689,7 @@ public String referenciaPersonal$agregar$action()
 
         referencias$rp$nombre = null;
         referencias$rp$lugarTrabajo = null;
-        referencias$rp$tiempoConocerle = 0;
+        //referencias$rp$tiempoConocerle = 0;
         referencias$rp$telefono = null;
         referencias$rp$correoElectronico = null;
         }
@@ -713,6 +713,9 @@ public String documento$agregar$action()
         d.setNumero(documentos$numero);
 
         documentosCandidato.add(d);
+
+        documentos$tipo = null;
+        documentos$numero = null;
         }
     catch (Exception excpt)
         {
@@ -1199,7 +1202,7 @@ public String guardar$action()
             reclutamientoFacade.crearRererencia(referencia);
             }
 
-        i = 0;
+        //i = 0;
         for (ReferenciaPersonalCandidato referenciaPersonal : referenciasPersonalesCandidato)
             {
             ReferenciaPK referenciaPK = new ReferenciaPK();
@@ -1234,7 +1237,7 @@ public String guardar$action()
             d.setDocumentoPresentadoPK(dPK);
             d.setCandidato(candidato);
             d.setTipoDocumento(documentoCandidato.getTipo());
-            d.setObservacion((documentoCandidato.getNumero() != null) ? documentoCandidato.getNumero().toString() : "");
+            d.setObservacion((documentoCandidato.getNumero() != null) ? documentoCandidato.getNumero() : "");
 
             reclutamientoFacade.crearDocumentoPresentado(d);
             }
@@ -1491,12 +1494,12 @@ public void setCapacitacion$institucion(String capacitacion$institucion)
     this.capacitacion$institucion = capacitacion$institucion;
 }
 
-public Integer getDocumentos$numero()
+public String getDocumentos$numero()
 {
     return documentos$numero;
 }
 
-public void setDocumentos$numero(Integer documentos$numero)
+public void setDocumentos$numero(String documentos$numero)
 {
     this.documentos$numero = documentos$numero;
 }
@@ -2640,6 +2643,19 @@ public void paisPrepAcad_ajaxListener(AjaxBehaviorEvent event)
 // ============================================================================================
 // ============================================================================================
 private DataTable preparacionAcademicatable;
+private DataTable parentescosTable;
+private DataTable experienciaLaboralTable;
+private DataTable referenciasLaboralesTable;
+private DataTable referenciasPersonalesTable;
+private DataTable documentosTable;
+private DataTable capacitacionesTable;
+private DataTable dependientesTable;
+private DataTable idiomasTable;
+private DataTable beneficiariosTable;
+private DataTable equiposTable;
+private DataTable pruebasTable;
+private DataTable puestosTable;
+private DataTable entrevistasTable;
 
 public DataTable getPreparacionAcademicatable()
 {
@@ -2651,10 +2667,246 @@ public void setPreparacionAcademicatable(DataTable preparacionAcademicatable)
     this.preparacionAcademicatable = preparacionAcademicatable;
 }
 
+public DataTable getParentescosTable()
+{
+    return parentescosTable;
+}
+
+public void setParentescosTable(DataTable parentescosTable)
+{
+    this.parentescosTable = parentescosTable;
+}
+
+public DataTable getBeneficiariosTable()
+{
+    return beneficiariosTable;
+}
+
+public void setBeneficiariosTable(DataTable beneficiariosTable)
+{
+    this.beneficiariosTable = beneficiariosTable;
+}
+
+public DataTable getCapacitacionesTable()
+{
+    return capacitacionesTable;
+}
+
+public void setCapacitacionesTable(DataTable capacitacionesTable)
+{
+    this.capacitacionesTable = capacitacionesTable;
+}
+
+public DataTable getDependientesTable()
+{
+    return dependientesTable;
+}
+
+public void setDependientesTable(DataTable dependientesTable)
+{
+    this.dependientesTable = dependientesTable;
+}
+
+public DataTable getDocumentosTable()
+{
+    return documentosTable;
+}
+
+public void setDocumentosTable(DataTable documentosTable)
+{
+    this.documentosTable = documentosTable;
+}
+
+public DataTable getEntrevistasTable()
+{
+    return entrevistasTable;
+}
+
+public void setEntrevistasTable(DataTable entrevistasTable)
+{
+    this.entrevistasTable = entrevistasTable;
+}
+
+public DataTable getEquiposTable()
+{
+    return equiposTable;
+}
+
+public void setEquiposTable(DataTable equiposTable)
+{
+    this.equiposTable = equiposTable;
+}
+
+public DataTable getExperienciaLaboralTable()
+{
+    return experienciaLaboralTable;
+}
+
+public void setExperienciaLaboralTable(DataTable experienciaLaboralTable)
+{
+    this.experienciaLaboralTable = experienciaLaboralTable;
+}
+
+public DataTable getIdiomasTable()
+{
+    return idiomasTable;
+}
+
+public void setIdiomasTable(DataTable idiomasTable)
+{
+    this.idiomasTable = idiomasTable;
+}
+
+public DataTable getPruebasTable()
+{
+    return pruebasTable;
+}
+
+public void setPruebasTable(DataTable pruebasTable)
+{
+    this.pruebasTable = pruebasTable;
+}
+
+public DataTable getPuestosTable()
+{
+    return puestosTable;
+}
+
+public void setPuestosTable(DataTable puestosTable)
+{
+    this.puestosTable = puestosTable;
+}
+
+public DataTable getReferenciasLaboralesTable()
+{
+    return referenciasLaboralesTable;
+}
+
+public void setReferenciasLaboralesTable(DataTable referenciasLaboralesTable)
+{
+    this.referenciasLaboralesTable = referenciasLaboralesTable;
+}
+
+public DataTable getReferenciasPersonalesTable()
+{
+    return referenciasPersonalesTable;
+}
+
+public void setReferenciasPersonalesTable(DataTable referenciasPersonalesTable)
+{
+    this.referenciasPersonalesTable = referenciasPersonalesTable;
+}
+
+// ============================================================================================
+// ============================================================================================
 public String preparacionAcademica$eliminar$action()
 {
     int fila = preparacionAcademicatable.getRowIndex();
     preparacionesAcademicasCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String parentescos$eliminar$action()
+{
+    int fila = parentescosTable.getRowIndex();
+    parentescosCandidatos.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String experienciaLaboral$eliminar$action()
+{
+    int fila = experienciaLaboralTable.getRowIndex();
+    experienciasLaboralesCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String referenciaLaboral$eliminar$action()
+{
+    int fila = referenciasLaboralesTable.getRowIndex();
+    referenciasLaboralesCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String referenciaPersonal$eliminar$action()
+{
+    int fila = referenciasPersonalesTable.getRowIndex();
+    referenciasPersonalesCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String documento$eliminar$action()
+{
+    int fila = documentosTable.getRowIndex();
+    documentosCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String capacitacion$eliminar$action()
+{
+    int fila = capacitacionesTable.getRowIndex();
+    capacitacionesCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String dependiente$eliminar$action()
+{
+    int fila = dependientesTable.getRowIndex();
+    dependientesCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String idioma$eliminar$action()
+{
+    int fila = idiomasTable.getRowIndex();
+    idiomasCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String beneficiario$eliminar$action()
+{
+    int fila = beneficiariosTable.getRowIndex();
+    beneficiariosCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String equipo$eliminar$action()
+{
+    int fila = equiposTable.getRowIndex();
+    equiposCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String prueba$eliminar$action()
+{
+    int fila = pruebasTable.getRowIndex();
+    pruebasCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String puesto$eliminar$action()
+{
+    int fila = puestosTable.getRowIndex();
+    puestosCandidato.remove(fila);
+    addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
+    return null;
+}
+
+public String entrevista$eliminar$action()
+{
+    int fila = entrevistasTable.getRowIndex();
+    entrevistasCandidato.remove(fila);
     addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
     return null;
 }

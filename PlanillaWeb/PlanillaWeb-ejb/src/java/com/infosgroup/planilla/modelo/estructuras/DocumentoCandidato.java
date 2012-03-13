@@ -15,7 +15,7 @@ public class DocumentoCandidato implements Serializable
 {
 
 private TipoDocumento tipo;
-private Integer numero;
+private String numero;
 
 public TipoDocumento getTipo()
 {
@@ -27,12 +27,12 @@ public void setTipo(TipoDocumento tipo)
     this.tipo = tipo;
 }
 
-public Integer getNumero()
+public String getNumero()
 {
     return numero;
 }
 
-public void setNumero(Integer numero)
+public void setNumero(String numero)
 {
     this.numero = numero;
 }
