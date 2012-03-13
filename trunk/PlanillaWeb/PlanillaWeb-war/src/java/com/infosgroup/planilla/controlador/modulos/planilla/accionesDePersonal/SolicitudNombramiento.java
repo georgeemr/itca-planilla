@@ -88,9 +88,11 @@ public class SolicitudNombramiento extends SolicitudDePersonal implements java.i
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setStatus("G");
-        accionPersonal.setDepartamentos(new Departamentos(new DepartamentosPK(getEncabezadoSolicitud().getEmpresa(), departamento)));
+        accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
+        accionPersonal.setNuevoDepartamento(new Departamentos(new DepartamentosPK(getEncabezadoSolicitud().getEmpresa(), departamento)));
+        accionPersonal.setPuestos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestos());
+        accionPersonal.setNuevoPuesto(new Puestos(new PuestosPK(getEncabezadoSolicitud().getEmpresa(), puesto)));
         accionPersonal.setFechaInicial(fechaInicial);
-        accionPersonal.setPuestos(new Puestos(new PuestosPK(getEncabezadoSolicitud().getEmpresa(), puesto)));
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
         getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));

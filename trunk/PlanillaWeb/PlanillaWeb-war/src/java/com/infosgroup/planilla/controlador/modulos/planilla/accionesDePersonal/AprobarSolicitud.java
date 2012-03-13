@@ -20,47 +20,43 @@ import org.primefaces.event.DateSelectEvent;
 @ManagedBean(name = "aprobarSolicitud")
 @ViewScoped
 public class AprobarSolicitud extends AbstractJSFPage implements java.io.Serializable {
-
+    
     @EJB
     private PlanillaSessionBean planillaSessionBean;
     public final long MILISEGUNDOS_POR_DIA = 24 * 60 * 60 * 1000;
     enum APRUEBA { JEFE, RECURSOS_HUMANOS };
-
+    
     public AprobarSolicitud() {
     }
-
+    
     public String aprobarSolicitudJefe() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
-//        if (!validaDatos(a)) {
-//            return null;
-//        }
+        
         try {
             planillaSessionBean.jefeEditaSolicitud(a, "A");
             getSessionBeanPLA().getAccionSeleccionada().setStatus("A");
-            addMessage("Aprobar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+            addMessage("Aprobar Solicitud", "Datos Guardados con éxito. \n\n", TipoMensaje.INFORMACION);
             SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.JEFE, a));
         } catch (Exception e) {
             addMessage("Aprobar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
         }
         return null;
     }
-
+    
     public String aprobarSolicitudRH() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
-//        if (!validaDatos(a)) {
-//            return null;
-//        }
+//        if (!validaDatos(a)) { return null; }
         try {
             planillaSessionBean.rrhhEditaSolicitud(a, "A");
             getSessionBeanPLA().getAccionSeleccionada().setStatus("A");
-            addMessage("Aprobar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+            addMessage("Aprobar Solicitud", "Datos Guardados con éxito. \n\n", TipoMensaje.INFORMACION);
             SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.RECURSOS_HUMANOS, a));
         } catch (Exception e) {
             addMessage("Aprobar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
         }
         return null;
     }
-
+    
     public String rechazarSolicitudRH() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
         try {
@@ -69,11 +65,12 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
             addMessage("Aprobar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
             SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.RECURSOS_HUMANOS, a));
         } catch (Exception e) {
+            e.printStackTrace();
             addMessage("Aprobar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
         }
         return null;
     }
-
+    
     public String rechazarSolicitudJefe() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
         try {
@@ -82,11 +79,12 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
             addMessage("Aprobar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
             SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.RECURSOS_HUMANOS, a));
         } catch (Exception e) {
+            e.printStackTrace();
             addMessage("Aprobar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
         }
         return null;
     }
-
+    
     public boolean validaDatos(AccionPersonal a) {
         Boolean error = Boolean.TRUE;
         if (a == null) {
@@ -98,17 +96,17 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
         }
         return error;
     }
-
+    
     public String regresar() {
         limpiarCampos();
         return "./../accionesPersonal.xhtml?faces-redirect=true";
     }
-
+    
     @Override
     protected void limpiarCampos() {
         getSessionBeanPLA().setAccionSeleccionada(null);
     }
-
+    
     public void handleFechaFinal(DateSelectEvent event) {
         AccionPersonal ap = getSessionBeanPLA().getAccionSeleccionada();
         ap.setFechaFinal(event.getDate());
@@ -119,7 +117,7 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
             }
         }
     }
-
+    
     public boolean validaAccionPersonal(java.util.Date f1, java.util.Date f2) {
         Boolean error = Boolean.TRUE;
         if (f1 == null) {
@@ -138,7 +136,7 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
         }
         return error;
     }
-
+    
     public String getManifiestoSolicitudPermiso(APRUEBA eaprueba, AccionPersonal a) {
         StringBuilder mensaje = new StringBuilder();
         mensaje.append("Solicitud Procesada.\n\n");

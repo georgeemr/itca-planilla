@@ -84,6 +84,8 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
 
     public void guardarAccionPersonal(AccionPersonal accionPersonal) {
         try {
+            accionPersonal.setAprobadoRh("N");
+            accionPersonal.setAprobadoJefe("N");
             accionPersonalFacade().create(accionPersonal);
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Se desencadeno la siguiente excepcion: ", e);
