@@ -62,6 +62,18 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private SolicitudAumentoSueldoColectivo solicitudAumentoSueldoColectivo;
     private SolicitudRetiro solicitudRetiro;
     private SolicitudNoAfectaPlanilla solicitudNoAfectaPlanilla;
+    private Empleados empleadoAccionPersonal;
+
+    public Empleados getEmpleadoAccionPersonal() {
+        if (empleadoAccionPersonal == null) {
+            empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
+        }
+        return empleadoAccionPersonal;
+    }
+
+    public void setEmpleadoAccionPersonal(Empleados empleadoAccionPersonal) {
+        this.empleadoAccionPersonal = empleadoAccionPersonal;
+    }
 
     public SolicitudNoAfectaPlanilla getSolicitudNoAfectaPlanilla() {
         return solicitudNoAfectaPlanilla;
@@ -156,6 +168,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         solicitudAumentoSueldoColectivo = new SolicitudAumentoSueldoColectivo(this);
         solicitudRetiro = new SolicitudRetiro(this);
         solicitudNoAfectaPlanilla = new SolicitudNoAfectaPlanilla(this);
+        empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
     }
 
     @PostConstruct
@@ -182,6 +195,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         solicitudRetiro = new SolicitudRetiro(this);
         solicitudNoAfectaPlanilla = new SolicitudNoAfectaPlanilla(this);
         solicitudesMostradas = "E";
+        empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
         fecha = new Date();
     }
 
