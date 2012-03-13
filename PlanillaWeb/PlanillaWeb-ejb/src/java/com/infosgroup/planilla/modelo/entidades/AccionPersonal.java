@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -46,14 +47,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AccionPersonal.findByFechaFinal", query = "SELECT a FROM AccionPersonal a WHERE a.fechaFinal = :fechaFinal"),
     @NamedQuery(name = "AccionPersonal.findByDevengadas", query = "SELECT a FROM AccionPersonal a WHERE a.devengadas = :devengadas"),
     @NamedQuery(name = "AccionPersonal.findByCodTipopla", query = "SELECT a FROM AccionPersonal a WHERE a.codTipopla = :codTipopla"),
-    @NamedQuery(name = "AccionPersonal.findByCodDeptoNuevo", query = "SELECT a FROM AccionPersonal a WHERE a.codDeptoNuevo = :codDeptoNuevo"),
     @NamedQuery(name = "AccionPersonal.findByDias", query = "SELECT a FROM AccionPersonal a WHERE a.dias = :dias"),
     @NamedQuery(name = "AccionPersonal.findByHoras", query = "SELECT a FROM AccionPersonal a WHERE a.horas = :horas"),
     @NamedQuery(name = "AccionPersonal.findByPeriodoFinal", query = "SELECT a FROM AccionPersonal a WHERE a.periodoFinal = :periodoFinal"),
     @NamedQuery(name = "AccionPersonal.findBySueldoAnterior", query = "SELECT a FROM AccionPersonal a WHERE a.sueldoAnterior = :sueldoAnterior"),
     @NamedQuery(name = "AccionPersonal.findByStatus", query = "SELECT a FROM AccionPersonal a WHERE a.status = :status"),
     @NamedQuery(name = "AccionPersonal.findByFechaCanje", query = "SELECT a FROM AccionPersonal a WHERE a.fechaCanje = :fechaCanje"),
-    //@NamedQuery(name = "AccionPersonal.findByCodTiporetiro", query = "SELECT a FROM AccionPersonal a WHERE a.codTiporetiro = :codTiporetiro"),
     @NamedQuery(name = "AccionPersonal.findByTipoIngreso", query = "SELECT a FROM AccionPersonal a WHERE a.tipoIngreso = :tipoIngreso"),
     @NamedQuery(name = "AccionPersonal.findByAprobadoJefe", query = "SELECT a FROM AccionPersonal a WHERE a.aprobadoJefe = :aprobadoJefe"),
     @NamedQuery(name = "AccionPersonal.findByAprobadoRh", query = "SELECT a FROM AccionPersonal a WHERE a.aprobadoRh = :aprobadoRh")})
@@ -93,8 +92,6 @@ public class AccionPersonal implements Serializable {
     private String devengadas;
     @Column(name = "COD_TIPOPLA")
     private Short codTipopla;
-    @Column(name = "COD_DEPTO_NUEVO")
-    private Short codDeptoNuevo;
     @Column(name = "DIAS")
     private Short dias;
     @Column(name = "HORAS")
@@ -110,8 +107,6 @@ public class AccionPersonal implements Serializable {
     @Column(name = "FECHA_CANJE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCanje;
-//    @Column(name = "COD_TIPORETIRO")
-//    private Short codTiporetiro;
     @Column(name = "TIPO_INGRESO")
     private Short tipoIngreso;
     @Column(name = "F_APRUEBA_JEFE")
@@ -132,13 +127,18 @@ public class AccionPersonal implements Serializable {
     private Puestos puestos;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_PUESTO_NUEVO", referencedColumnName = "COD_PUESTO")})
+    @ManyToOne(optional = false)
+    private Puestos nuevoPuesto;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_POSICION", referencedColumnName = "COD_POSICION")})
     @ManyToOne(optional = false)
     private Posicion posicion;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch= FetchType.EAGER)
     private Empleados empleados;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
@@ -150,6 +150,11 @@ public class AccionPersonal implements Serializable {
         @JoinColumn(name = "COD_DEPTO", referencedColumnName = "COD_DEPTO")})
     @ManyToOne(optional = false)
     private Departamentos departamentos;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_DEPTO_NUEVO", referencedColumnName = "COD_DEPTO")})
+    @ManyToOne(optional = false)
+    private Departamentos nuevoDepartamento;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_TIPORETIRO", referencedColumnName = "COD_TIPORENUNCIA")})
@@ -295,14 +300,6 @@ public class AccionPersonal implements Serializable {
 
     public void setCodTipopla(Short codTipopla) {
         this.codTipopla = codTipopla;
-    }
-
-    public Short getCodDeptoNuevo() {
-        return codDeptoNuevo;
-    }
-
-    public void setCodDeptoNuevo(Short codDeptoNuevo) {
-        this.codDeptoNuevo = codDeptoNuevo;
     }
 
     public Short getDias() {
@@ -460,6 +457,22 @@ public class AccionPersonal implements Serializable {
 
     public void setAccEstado(String accEstado) {
         this.accEstado = accEstado;
+    }
+
+    public Puestos getNuevoPuesto() {
+        return nuevoPuesto;
+    }
+
+    public void setNuevoPuesto(Puestos nuevoPuesto) {
+        this.nuevoPuesto = nuevoPuesto;
+    }
+
+    public Departamentos getNuevoDepartamento() {
+        return nuevoDepartamento;
+    }
+
+    public void setNuevoDepartamento(Departamentos nuevoDepartamento) {
+        this.nuevoDepartamento = nuevoDepartamento;
     }
 
     @Override
