@@ -6,11 +6,13 @@ package com.infosgroup.planilla.controlador.modulos.planilla;
 
 import com.infosgroup.planilla.modelo.entidades.MovDp;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
+import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
 import com.infosgroup.planilla.modelo.estructuras.DetallePlanilla;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -29,6 +31,8 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
 
     @EJB
     private PlanillaSessionBean planillaSessionBean;
+    private List<ProgramacionPla> listaProgPla;
+    private List<Planilla> listaPlanillas;
     private List<DetallePlanilla> listaPlaDetalles;
     private List<MovDp> listaPrestaciones;
     private List<MovDp> listaDeducciones;
@@ -37,9 +41,17 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
 
     @PostConstruct
     public void init() {
-        listaPlanillas = planillaSessionBean.listarPlanilla(getSessionBeanADM().getCompania());
+        //listaPlanillas = planillaSessionBean.listarPlanilla(getSessionBeanADM().getCompania());
+        listaProgPla = planillaSessionBean.findProPlaByCia(getSessionBeanADM().getCompania());
     }
-    private List<Planilla> listaPlanillas;
+    
+    public List<ProgramacionPla> getListaProgPla() {
+        return listaProgPla;
+    }
+
+    public void setListaProgPla(List<ProgramacionPla> listaProgPla) {
+        this.listaProgPla = listaProgPla;
+    }
 
     public List<Planilla> getListaPlanillas() {
         return listaPlanillas;
@@ -66,6 +78,7 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
     }
     
     private Planilla planillaSeleccionada;
+    private ProgramacionPla proPlaSeleccionada;
 
     public Planilla getPlanillaSeleccionada() {
         return planillaSeleccionada;
@@ -73,6 +86,14 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
 
     public void setPlanillaSeleccionada(Planilla planillaSeleccionada) {
         this.planillaSeleccionada = planillaSeleccionada;
+    }
+
+    public ProgramacionPla getProPlaSeleccionada() {
+        return proPlaSeleccionada;
+    }
+
+    public void setProPlaSeleccionada(ProgramacionPla proPlaSeleccionada) {
+        this.proPlaSeleccionada = proPlaSeleccionada;
     }
 
     public DataTable getTablaDetalles() {
@@ -117,5 +138,12 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
         setPlanillaSeleccionada((Planilla) event.getObject());
         listaDeducciones = planillaSessionBean.findDeduccionesPresta(planillaSeleccionada, "R");
         listaPrestaciones = planillaSessionBean.findDeduccionesPresta(planillaSeleccionada, "S");
+    }
+    
+    public void onRowSelectProPla(SelectEvent event) {
+        setProPlaSeleccionada((ProgramacionPla) event.getObject());
+        listaPlanillas = planillaSessionBean.findByProPla(proPlaSeleccionada);
+        listaDeducciones = new ArrayList();
+        listaPrestaciones = new ArrayList();
     }
 }
