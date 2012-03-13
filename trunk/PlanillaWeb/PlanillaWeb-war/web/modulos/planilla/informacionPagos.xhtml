@@ -14,10 +14,10 @@
     <ui:define name="acciones">
         <p:tab title="Evaluaci&oacute;n">
             <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
-                <p:commandLink styleClass="opcionMenu" action="#{planilla$informacionPagos.buscarPlanilla$action}" update="principalForm:mensajes, principalForm:tablaDetalle" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                <!--p:commandLink styleClass="opcionMenu" action="# {planilla$informacionPagos.buscarPlanilla$action}" update="principalForm:mensajes, principalForm:tablaDetalle" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/meeting-participant-request-response.png"/>
                     <h:outputText value="Mostrar datos de planilla" styleClass="espacioTexto"/>
-                </p:commandLink>
+                </p:commandLink-->
             </h:panelGrid>
         </p:tab>
         <p:tab title="Otras acciones">
@@ -31,59 +31,58 @@
     </ui:define>
     <!-- ================================================================================================================ -->
     <ui:define name="contenido">
-        <p:fieldset id="fieldset2" legend="Planilla">            
-            <p:dataTable value="#{planilla$informacionPagos.listaPlanillas}" var="planilla" 
-                         selectionMode="single" selection="#{planilla$informacionPagos.planillaSeleccionada}" 
-                         rowSelectListener="#{planilla$informacionPagos.onRowSelectPlanilla}"  
-                         rows="3" paginator="true" paginatorAlwaysVisible="true" update="tbIng tbEgr" 
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">
-                <p:column>
-                    <p:rowToggler/>
-                </p:column>
-                <p:column headerText="Planilla" filterBy="#{planilla.planillaPK.anio}-#{planilla.planillaPK.mes}-#{planilla.planillaPK.numPlanilla}" filterMatchMode="contains" >
+        <p:fieldset id="fieldset2" legend="Planilla">
+            <p:dataTable emptyMessage="No se han encontrado planillas" 
+                         value="#{planilla$informacionPagos.listaProgPla}" var="proPla" id="tbProPla"
+                         selectionMode="single" selection="#{planilla$informacionPagos.proPlaSeleccionada}" 
+                         rowSelectListener="#{planilla$informacionPagos.onRowSelectProPla}"  
+                         rows="3" paginator="true" paginatorAlwaysVisible="true" update="tbPla tbIng tbEgr" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">>
+                <f:facet name="header">
+                    <h:outputText value="Planilla"/>
+                 </f:facet>
+                <p:column headerText="Planilla" filterBy="#{proPla.anio}-#{proPla.mes}-#{proPla.numPlanilla}" filterMatchMode="contains" >
                     <p:graphicImage url="/resources/iconos/view-calendar-journal.png" height="16" width="16"/>
                     <p:spacer width="5"/>
-                    <h:outputText value="Planilla #{planilla.planillaPK.anio}-#{planilla.planillaPK.mes}-#{planilla.planillaPK.numPlanilla}"/>
-                </p:column>
-                <p:column headerText="Tipo de planilla" sortBy="#{planilla.resumenAsistencia.tiposPlanilla.nomTipopla}" filterBy="#{planilla.resumenAsistencia.tiposPlanilla.nomTipopla}" filterMatchMode="contains">
+                    <h:outputText value="Planilla #{proPla.anio}-#{proPla.mes}-#{proPla.numPlanilla}"/>
+                 </p:column>
+                <p:column headerText="Tipo de planilla" sortBy="#{proPla.tiposPlanilla.nomTipopla}" filterBy="#{proPla.tiposPlanilla.nomTipopla}" filterMatchMode="contains">
                     <p:graphicImage url="/resources/iconos/documentinfo.png" height="16" width="16"/>
                     <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.resumenAsistencia.tiposPlanilla.nomTipopla}"/>
+                    <h:outputText value="#{proPla.tiposPlanilla.nomTipopla}"/>
+                 </p:column>
+            </p:dataTable>
+            <p:spacer height="10"/>
+            <p:dataTable emptyMessage="No se han encontrado Empleados en esta Planilla" 
+                         value="#{planilla$informacionPagos.listaPlanillas}" var="planilla" id="tbPla"
+                         selectionMode="single" selection="#{planilla$informacionPagos.planillaSeleccionada}" 
+                         rowSelectListener="#{planilla$informacionPagos.onRowSelectPlanilla}"  
+                         rows="3" paginator="true" paginatorAlwaysVisible="true" update="tbIng tbEgr tbPla" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">
+                <p:column headerText="Cod Emp" filterMatchMode="contains" >
+                    <p:spacer width="5"/>
+                    <h:outputText value="#{planilla.empleados.empleadosPK.codEmp}"/>
                 </p:column>
-                <p:rowExpansion>
-                    <table width="100%" border="0">
-                        <tr valign="top">
-                            <td width="50%">
-                                <p:dataTable emptyMessage="No se han encontrado egresos" value="planilla" var="egreso">
-                                    <f:facet name="header">
-                                        <h:outputText value="Detalle"/>
-                                    </f:facet>
-                                        <p:column headerText="Empleado" filterMatchMode="contains" >
-                                            <p:spacer width="5"/>
-                                            <h:outputText value="#{planilla.empleados.nombreCompleto}"/>
-                                        </p:column>
-                                        <p:column headerText="Sueldo Base" filterMatchMode="contains" >
-                                            <p:spacer width="5"/>
-                                            <h:outputText value="#{planilla.empleados.puestos.salMinimo}"/>
-                                        </p:column>
-                                        <p:column headerText="Prestaciones" filterMatchMode="contains" >
-                                            <p:spacer width="5"/>
-                                            <h:outputText value="#{planilla.prestaciones}"/>
-                                        </p:column>
-                                        <p:column headerText="Deducciones" filterMatchMode="contains" >
-                                            <p:spacer width="5"/>
-                                            <h:outputText value="#{planilla.deducciones}"/>
-                                        </p:column>
-                                        <p:column headerText="Total" filterMatchMode="contains" >
-                                            <p:spacer width="5"/>
-                                            <h:outputText value="#{planilla.total}"/>
-                                        </p:column>
-                                </p:dataTable>
-                            </td>
-                        </tr>
-                    </table>
-                    
-                </p:rowExpansion>
+                <p:column headerText="Empleado" filterMatchMode="contains" >
+                    <p:spacer width="5"/>
+                    <h:outputText value="#{planilla.empleados.nombreCompleto}"/>
+                </p:column>
+                <p:column headerText="Sueldo Base" filterMatchMode="contains" >
+                    <p:spacer width="5"/>
+                    <h:outputText value="#{planilla.empleados.puestos.salMinimo}"/>
+                </p:column>
+                <p:column headerText="Prestaciones" filterMatchMode="contains" >
+                    <p:spacer width="5"/>
+                    <h:outputText value="#{planilla.prestaciones}"/>
+                </p:column>
+                <p:column headerText="Deducciones" filterMatchMode="contains" >
+                    <p:spacer width="5"/>
+                    <h:outputText value="#{planilla.deducciones}"/>
+                </p:column>
+                <p:column headerText="Total" filterMatchMode="contains" >
+                    <p:spacer width="5"/>
+                    <h:outputText value="#{planilla.total}"/>
+                </p:column>
             </p:dataTable>
             <p:spacer height="10"/>
             <table width="100%" border="0">
