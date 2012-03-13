@@ -6,6 +6,7 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.MovDp;
 import com.infosgroup.planilla.modelo.entidades.MovDpPK;
+import com.infosgroup.planilla.modelo.entidades.Planilla;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -13,6 +14,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -49,5 +51,12 @@ public class MovDpFacade extends AbstractFacade<MovDp, MovDpPK> {
     public MovDpPK getMovDpPK(MovDpPK pk) {
         pk.setNoMovto(max(pk.getCodCia(), pk.getAnio(), pk.getMes(), pk.getNumPlanilla()));
         return pk;
+    }
+    
+    public List<MovDp> movimientosByPlanilla(Planilla planilla, String sumaResta) {
+        List<MovDp> listmov = new ArrayList<MovDp>(0);
+        TypedQuery<MovDp> q = em.createQuery("select m from MovDp m where m.resumenAsistencia.planilla = :planilla and m.sumaResta = :sumaResta", MovDp.class).setParameter("planilla", planilla).setParameter("sumaResta", sumaResta);
+        listmov = q.getResultList();
+        return listmov != null ? listmov : new ArrayList<MovDp>();
     }
 }

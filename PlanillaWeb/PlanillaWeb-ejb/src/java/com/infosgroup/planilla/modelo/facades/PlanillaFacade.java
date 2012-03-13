@@ -63,4 +63,12 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
         max = (Long) q.getSingleResult();
         return (max == null) ? 0L : max;
     }
+    
+    public List<Planilla> findPlanillaByUnidad(Cias cia) {
+        List<Planilla> listPla = new ArrayList<Planilla>(0);
+        TypedQuery<Planilla> q = em.createQuery("SELECT p FROM Planilla p WHERE p.planillaPK.codCia = :codCia AND (p.planillaPK.codCia, p.planillaPK.anio, p.planillaPK.mes, p.planillaPK.numPlanilla, p.planillaPK.codEmp,  p.planillaPK.codTipopla)"+
+                                                " IN (SELECT m.movDpPK.codCia, m.movDpPK.anio, m.movDpPK.mes, m.movDpPK.numPlanilla, m.resumenAsistencia.resumenAsistenciaPK.codEmp, m.resumenAsistencia.resumenAsistenciaPK.codTipopla FROM MovDp m)", Planilla.class).setParameter("codCia", cia.getCodCia());
+        listPla = q.getResultList();
+        return listPla != null ? listPla : new ArrayList<Planilla>();
+    }
 }
