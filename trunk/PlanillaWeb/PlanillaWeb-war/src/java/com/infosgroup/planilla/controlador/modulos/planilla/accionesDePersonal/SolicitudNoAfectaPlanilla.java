@@ -33,6 +33,15 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
 
     public SolicitudNoAfectaPlanilla(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
+        if (encabezadoSolicitud.isInRole("rrhh")) {
+            listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), "rrhh");
+        } else if (encabezadoSolicitud.isInRole("jefes")) {
+            listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), "jefes");
+        } else if (encabezadoSolicitud.isInRole("empleados")) {
+            listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), "empleados");
+        } else {
+            listaTipoAccionNoAfecta = new ArrayList<TipoAccion>();
+        }
     }
 
     public Short getTipoAccionSeleccionada() {
@@ -60,15 +69,6 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
     }
 
     public List<TipoAccion> getListaTipoAccionNoAfecta() {
-        if (isInRole("rrhh")) {
-            listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), "rrhh");
-        } else if (isInRole("jefes")) {
-            listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), "jefes");
-        } else if (isInRole("empleados")) {
-            listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), "empleados");
-        } else {
-            listaTipoAccionNoAfecta = new ArrayList<TipoAccion>();
-        }
         return listaTipoAccionNoAfecta;
     }
 
@@ -88,6 +88,7 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setStatus("G");
+        accionPersonal.setUsuarioCreacion(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario());
         accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
         accionPersonal.setFechaInicial(fechaInicial);
         accionPersonal.setFechaFinal(fechaInicial);

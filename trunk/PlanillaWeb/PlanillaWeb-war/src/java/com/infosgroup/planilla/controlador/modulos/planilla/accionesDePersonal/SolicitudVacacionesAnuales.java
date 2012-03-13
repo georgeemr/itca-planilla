@@ -185,6 +185,7 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
         accionPersonal.setStatus("G");
+        accionPersonal.setUsuarioCreacion( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setDevengadas(devengadas);
         accionPersonal.setPeriodo(fechaInicialPeriodoPagar);
         accionPersonal.setPeriodoFinal(fechaFinalPeriodoPagar);
