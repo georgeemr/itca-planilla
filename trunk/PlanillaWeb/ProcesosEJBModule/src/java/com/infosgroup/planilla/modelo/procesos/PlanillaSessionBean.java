@@ -5,8 +5,9 @@
 package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.*;
+import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.facades.*;
-import com.infosgroup.planilla.modelo.procesos.accionesDePersonal.AccionSolicitud;
+import com.infosgroup.planilla.modelo.procesos.accionesDePersonal.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -118,19 +119,6 @@ public class PlanillaSessionBean {
         pk.setCodCia(empresa);
         pk.setCodTipoaccion(tipo);
         return tipoAccionFacade.find(pk);
-    }
-
-    public List<AccionPersonal> listaPorAprobar(Empleados empleado) {
-        List<AccionPersonal> listaSolicitud = new ArrayList<AccionPersonal>(0);
-        //13022012
-//        PuestoEmpleado pueEmp = puestoEmpleadoFacade.findByEmpleado(empleado.getEmpleadosPK().getCodEmp(), empleado.getEmpleadosPK().getCodCia());
-//        if (pueEmp.getPuestos().getPuestosPK().getCodPuesto() == 9) {
-//            setRrhh(false);
-//        } else {
-//            listaSolicitud = accionPersonalFacade.findAprobacionJefe(empleado.getEmpleadosPK().getCodEmp(), empleado.getEmpleadosPK().getCodCia());
-//            setRrhh(true);
-//        }
-        return listaSolicitud;
     }
 
     public String aprobarSolicitud$action(AccionPersonal accion) {
@@ -364,19 +352,21 @@ public class PlanillaSessionBean {
     }
 
     @RolesAllowed({"jefes"})
-    public void jefeEditaSolicitud(AccionPersonal a, String estado) {
+    public void jefeEditaSolicitud(AccionPersonal a, String estado) throws Exception {
         a.setAprobadoJefe(estado);
         a.setfApruebaJefe(new java.util.Date());
         a.setStatus(estado);
         accionPersonalFacade.edit(a);
+        verificarAprobacion(a);
     }
 
     @RolesAllowed({"rrhh"})
-    public void rrhhEditaSolicitud(AccionPersonal a, String estado) {
+    public void rrhhEditaSolicitud(AccionPersonal a, String estado) throws Exception {
         a.setAprobadoRh(estado);
         a.setfApruebaRh(new java.util.Date());
         a.setStatus(estado);
         accionPersonalFacade.edit(a);
+        verificarAprobacion(a);
     }
 
     @RolesAllowed({"rrhh", "jefes", "empleados"})
@@ -443,6 +433,8 @@ public class PlanillaSessionBean {
     @PermitAll
     public void registrarAccionPersonalColectiva(List<AccionPersonal> solicitudes) {
         for (AccionPersonal a : solicitudes) {
+            a.setAprobadoRh("N");
+            a.setAprobadoJefe("N");
             accionPersonalFacade.create(a);
         }
     }
@@ -536,11 +528,58 @@ public class PlanillaSessionBean {
     }
 
     @PermitAll
-    public void ejecutarAccionSolicitud(AccionSolicitud accionSolicitud, AccionPersonal accionPersonal) {
-        accionSolicitud.efectuar(accionPersonal);
+    public String verificarAprobacion(AccionPersonal accionPersonal) throws Exception {
+        String mensaje = "Solicitud Aplicada.";
+        try {
+            if (accionPersonal.getTipoAccion().getFirmaJefe().equals("S") && accionPersonal.getTipoAccion().getFirmaRh().equals("S")) {
+                if (accionPersonal.getAprobadoJefe().equals("A") && accionPersonal.getAprobadoRh().equals("A")) {
+                    ejecutarAccionSolicitud(accionPersonal);
+                    return mensaje;
+                } else {
+                    mensaje = "Aun existe una aprobación pendiente para efectuar esta acción";
+                }
+            } else if (accionPersonal.getTipoAccion().getFirmaJefe().equals("S") && accionPersonal.getTipoAccion().getFirmaRh().equals("N")) {
+                if (accionPersonal.getAprobadoJefe().equals("A")) {
+                    ejecutarAccionSolicitud(accionPersonal);
+                    return mensaje;
+                } else {
+                    mensaje = "";
+                }
+            } else if (accionPersonal.getTipoAccion().getFirmaJefe().equals("N") && accionPersonal.getTipoAccion().getFirmaRh().equals("S")) {
+                if (accionPersonal.getAprobadoRh().equals("A")) {
+                    ejecutarAccionSolicitud(accionPersonal);
+                    return mensaje;
+                } else {
+                    mensaje = "";
+                }
+            }
+        } catch (Exception e) {
+            mensaje = e.getMessage();
+            e.printStackTrace();
+        }
+        return mensaje;
     }
+
     @PermitAll
-    public List<MovDp> findDeduccionesPresta(Planilla planilla, String sumaResta){
+    public void ejecutarAccionSolicitud(AccionPersonal accionPersonal) throws Exception {
+        AccionSolicitud accionSolicitud = null;
+        switch (accionPersonal.getAccionPersonalPK().getCodTipoaccion()) {
+            case 6:// 6	NOMBRAMIENTO INTERNO
+                accionSolicitud = new NombramientoAction(accionPersonal);
+                break;
+            default:
+                break;
+        }
+        accionSolicitud.efectuar();
+    }
+
+    @PermitAll
+    public void actualizarEmpleado(Empleados empleados) {
+        empleadoFacade.edit(empleados);
+    }
+
+    @PermitAll
+    public List<MovDp> findDeduccionesPresta(Planilla planilla, String sumaResta) {
         return movDpFacade.movimientosByPlanilla(planilla, sumaResta);
     }
     
