@@ -32,85 +32,91 @@
     <!-- ================================================================================================================ -->
     <ui:define name="contenido">
         <p:fieldset id="fieldset2" legend="Planilla">            
-            <p:dataTable value="#{planilla$informacionPagos.listaPlanillas}" var="planilla" selectionMode="single" selection="#{planilla$informacionPagos.planillaSeleccionada}" rows="3" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">
+            <p:dataTable value="#{planilla$informacionPagos.listaPlanillas}" var="planilla" 
+                         selectionMode="single" selection="#{planilla$informacionPagos.planillaSeleccionada}" 
+                         rowSelectListener="#{planilla$informacionPagos.onRowSelectPlanilla}"  
+                         rows="3" paginator="true" paginatorAlwaysVisible="true" update="tbIng tbEgr" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">
+                <p:column>
+                    <p:rowToggler/>
+                </p:column>
                 <p:column headerText="Planilla" filterBy="#{planilla.planillaPK.anio}-#{planilla.planillaPK.mes}-#{planilla.planillaPK.numPlanilla}" filterMatchMode="contains" >
                     <p:graphicImage url="/resources/iconos/view-calendar-journal.png" height="16" width="16"/>
                     <p:spacer width="5"/>
                     <h:outputText value="Planilla #{planilla.planillaPK.anio}-#{planilla.planillaPK.mes}-#{planilla.planillaPK.numPlanilla}"/>
                 </p:column>
-                <p:column headerText="Tipo de planilla" sortBy="#{planilla.tiposPlanilla.nomTipopla}" filterBy="#{planilla.tiposPlanilla.nomTipopla}" filterMatchMode="contains">
+                <p:column headerText="Tipo de planilla" sortBy="#{planilla.resumenAsistencia.tiposPlanilla.nomTipopla}" filterBy="#{planilla.resumenAsistencia.tiposPlanilla.nomTipopla}" filterMatchMode="contains">
                     <p:graphicImage url="/resources/iconos/documentinfo.png" height="16" width="16"/>
                     <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.tiposPlanilla.nomTipopla}"/>
-                </p:column>
-            </p:dataTable>
-            <p:spacer height="10"/>
-            <p:dataTable id="tablaDetalle" var="total" value="#{planilla$informacionPagos.listaPlaDetalles}" rows="5" paginator="true" binding="#{planilla$informacionPagos.tablaPrueba}" emptyMessage="No se han encontrado datos." paginatorAlwaysVisible="true" update="panelContenido" onRowSelectUpdate="panelContenido" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
-                <p:column>
-                    <p:rowToggler/>
-                </p:column>
-                <p:column headerText="C&oacute;digo" sortBy="#{total.puestoEmpleado.empleados.empleadosPK.codEmp}">
-                    <h:outputLabel value="#{total.puestoEmpleado.empleados.empleadosPK.codEmp}"/>
-                </p:column>
-                <p:column headerText="Apellidos" filterBy="#{total.puestoEmpleado.empleados.apellidos}" filterMatchMode="contains" sortBy="#{total.puestoEmpleado.empleado.apellidos}">
-                    <h:outputLabel value="#{total.puestoEmpleado.empleados.apellidos}"/>
-                </p:column>
-                <p:column headerText="Nombres" filterBy="#{total.puestoEmpleado.empleados.nombres}" filterMatchMode="contains" sortBy="#{total.puestoEmpleado.empleado.nombres}">
-                    <h:outputLabel value="#{total.puestoEmpleado.empleados.nombres}"/>
-                </p:column>
-                <p:column headerText="Sueldo Base" sortBy="#{total.puestoEmpleado.puestos.salMinimo}" style="text-align: right;">
-                    <h:outputText value="#{total.puestoEmpleado.puestos.salMinimo}">
-                        <f:convertNumber type="currency" currencySymbol="$" pattern="$#.00"/>
-                    </h:outputText>
-                </p:column>
-                <p:column headerText="Prestaciones" sortBy="#{total.prestaciones}" style="text-align: right;">
-                    <h:outputText value="#{total.prestaciones}">
-                        <f:convertNumber type="currency" currencySymbol="$" pattern="$#.00"/>
-                    </h:outputText>
-                </p:column>
-                <p:column headerText="Deducciones" sortBy="#{total.deducciones}" style="text-align: right;">
-                    <h:outputText value="#{total.deducciones}">
-                        <f:convertNumber type="currency" currencySymbol="$" pattern="$#.00"/>
-                    </h:outputText>
-                </p:column>
-                <p:column headerText="Total" sortBy="#{total.total}" style="text-align: right;">
-                    <h:outputText value="#{total.total}">
-                        <f:convertNumber type="currency" currencySymbol="$" pattern="$#.00"/>
-                    </h:outputText>
+                    <h:outputText value="#{planilla.resumenAsistencia.tiposPlanilla.nomTipopla}"/>
                 </p:column>
                 <p:rowExpansion>
                     <table width="100%" border="0">
                         <tr valign="top">
                             <td width="50%">
-                                <p:dataTable emptyMessage="No se han encontrado ingresos" value="#{total.listaIng}" var="ingreso">
+                                <p:dataTable emptyMessage="No se han encontrado egresos" value="planilla" var="egreso">
                                     <f:facet name="header">
-                                        <h:outputText value="Ingresos"/>
+                                        <h:outputText value="Detalle"/>
                                     </f:facet>
-                                    <p:column headerText="Descripcion">
-                                        <h:outputText value="#{ingreso.deduccionesPrestaciones.nomPrestacion}"/>
-                                    </p:column>
-                                    <p:column headerText="Cantidad">
-                                        <h:outputText value="#{ingreso.monto}"/>
-                                    </p:column>
-                                </p:dataTable>
-                            </td>
-                            <td width="50%">
-                                <p:dataTable emptyMessage="No se han encontrado egresos" value="#{total.listaEgr}" var="egreso">
-                                    <f:facet name="header">
-                                        <h:outputText value="Egresos"/>
-                                    </f:facet>
-                                    <p:column headerText="Descripcion">
-                                        <h:outputText value="#{egreso.deduccionesPrestaciones.nomPrestacion}"/>
-                                    </p:column>
-                                    <p:column headerText="Cantidad">
-                                        <h:outputText value="#{egreso.monto}"/>
-                                    </p:column>
+                                        <p:column headerText="Empleado" filterMatchMode="contains" >
+                                            <p:spacer width="5"/>
+                                            <h:outputText value="#{planilla.empleados.nombreCompleto}"/>
+                                        </p:column>
+                                        <p:column headerText="Sueldo Base" filterMatchMode="contains" >
+                                            <p:spacer width="5"/>
+                                            <h:outputText value="#{planilla.empleados.puestos.salMinimo}"/>
+                                        </p:column>
+                                        <p:column headerText="Prestaciones" filterMatchMode="contains" >
+                                            <p:spacer width="5"/>
+                                            <h:outputText value="#{planilla.prestaciones}"/>
+                                        </p:column>
+                                        <p:column headerText="Deducciones" filterMatchMode="contains" >
+                                            <p:spacer width="5"/>
+                                            <h:outputText value="#{planilla.deducciones}"/>
+                                        </p:column>
+                                        <p:column headerText="Total" filterMatchMode="contains" >
+                                            <p:spacer width="5"/>
+                                            <h:outputText value="#{planilla.total}"/>
+                                        </p:column>
                                 </p:dataTable>
                             </td>
                         </tr>
                     </table>
+                    
                 </p:rowExpansion>
             </p:dataTable>
+            <p:spacer height="10"/>
+            <table width="100%" border="0">
+                <tr valign="top">
+                    <td width="50%">
+                        <p:dataTable emptyMessage="No se han encontrado ingresos" value="#{planilla$informacionPagos.listaPrestaciones}" var="ingreso" id="tbIng">
+                            <f:facet name="header">
+                                <h:outputText value="Ingresos"/>
+                            </f:facet>
+                            <p:column headerText="Descripcion">
+                                <h:outputText value="#{ingreso.deducPresta.desDp}"/>
+                            </p:column>
+                            <p:column headerText="Cantidad">
+                                <h:outputText value="#{ingreso.valor}"/>
+                            </p:column>
+                         </p:dataTable>
+                     </td>
+                     <td width="50%">
+                         <p:dataTable emptyMessage="No se han encontrado egresos" value="#{planilla$informacionPagos.listaDeducciones}" var="egreso" id="tbEgr">
+                            <f:facet name="header">
+                                <h:outputText value="Egresos"/>
+                            </f:facet>
+                            <p:column headerText="Descripcion">
+                                <h:outputText value="#{egreso.deducPresta.desDp}"/>
+                            </p:column>
+                            <p:column headerText="Cantidad">
+                                <h:outputText value="#{egreso.valor}"/>
+                            </p:column>
+                        </p:dataTable>
+                      </td>
+                </tr>
+            </table>
+            
         </p:fieldset>
     </ui:define>
     <!-- ================================================================================================================ -->
