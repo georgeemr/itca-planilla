@@ -63,7 +63,7 @@
                                 <f:selectItem  itemValue="-1" itemLabel="[ SELECCIONE UN TIPO DE ACCI&Oacute;N ]" />
                                 <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc" itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
                             </h:selectOneMenu>
-                            <h:outputLabel value="Solicitudes a mostrar:" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}" />
+                            <h:outputLabel value="Solicitudes a mostrar:" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}" style="font-weight: bold;" />
                             <h:selectOneRadio id="chkSolicitudes" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}" value="#{planilla$accionesPersonal.solicitudesMostradas}" valueChangeListener="#{planilla$accionesPersonal.listarSolicitudes}" >
                                 <f:selectItem itemValue="E" itemLabel="Solicitudes de Empleados" />
                                 <f:selectItem itemValue="R" itemLabel="Solicitudes #{request.isUserInRole('rrhh') ? 'Recursos Humanos' : 'Jefe'  }" />
@@ -131,7 +131,8 @@
             </p:column>
 
             <p:column headerText="Observaci&oacute;n">
-                <h:outputText value="#{sol.observacion}"/>
+                <h:outputText id="lbObservaciones" value="#{(sol.observacion!=null and sol.observacion.length() > 10 )? sol.observacion.subSequence(0, 10):sol.observacion} #{(sol.observacion!=null and sol.observacion.length() > 10 )? '.....':''}" title="#{sol.observacion!=null?sol.observacion:'Ninguna'}" />
+                <p:tooltip for="lbObservaciones" showEvent="focus" hideEvent="blur" />  
             </p:column>
         </p:dataTable>
     </ui:define>
@@ -770,7 +771,7 @@
                                     <h:outputLabel value="" />
 
                                     <h:outputLabel value="Tipo Planilla:" style="font-weight: bold;" />
-                                    <h:selectOneMenu id="lstTipoPlanillaSolVacColDep" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.tipoPlanilla}" >                       
+                                    <h:selectOneMenu id="lstTipoPlanillaSolVacColDep" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.tipoPlanillaAplicar}" >                       
                                         <f:ajax render="lstPlanillaTPDep" event="change" execute="lstTipoPlanillaSolVacColDep" />
                                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
                                         <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>

@@ -149,6 +149,7 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(e.getDepartamentos());
         accionPersonal.setStatus("G");
+        accionPersonal.setUsuarioCreacion( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setFechaInicial(fechaInicial);
         accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));
         accionPersonal.setMes(new Short(planilla.split(":")[2].toString()));

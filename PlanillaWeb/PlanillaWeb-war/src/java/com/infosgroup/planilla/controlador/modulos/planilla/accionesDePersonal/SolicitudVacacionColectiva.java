@@ -175,12 +175,13 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
     public AccionPersonal getAccionPersonal(Empleados e) {
         AccionPersonal accionPersonal = new AccionPersonal();
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), e));
-        accionPersonal.setTipoAccion(getTipoAccion());
+        accionPersonal.setTipoAccion(new TipoAccion(new TipoAccionPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), new Short("1")))); /* Solicitud de Vacacion */
         accionPersonal.setEmpleados(e);
         accionPersonal.setFecha(new java.util.Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(e.getDepartamentos());
         accionPersonal.setStatus("G");
+        accionPersonal.setUsuarioCreacion( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setPuestos(e.getPuestos());
         accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));
         accionPersonal.setMes(new Short(planilla.split(":")[2].toString()));
@@ -209,12 +210,12 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
                 }
             }
 
-            if (tipoPlanilla == null || tipoPlanilla == -1) {
+            if (tipoPlanillaAplicar == null || tipoPlanillaAplicar == -1) {
                 addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
             }
 
-            if ((tipoPlanilla != null && tipoPlanilla != -1) && (planilla == null || planilla.equals("-1"))) {
+            if ((tipoPlanillaAplicar != null && tipoPlanillaAplicar != -1) && (planilla == null || planilla.equals("-1"))) {
                 addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
             }
@@ -271,7 +272,9 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
         planilla = null;
         valorAfectados = 0;
         empleadosSeleccionados = null;
+        tipoPlanillaAplicar = -1;
         listaEmpleadosAfectar = new ArrayList<Empleados>();
+        listaPlanillas = new ArrayList<ProgramacionPla>();
         setObservacion("");
     }
 }

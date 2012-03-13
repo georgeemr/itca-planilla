@@ -138,7 +138,7 @@ public class AccionPersonal implements Serializable {
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
-    @ManyToOne(optional = false, fetch= FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Empleados empleados;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
@@ -168,6 +168,9 @@ public class AccionPersonal implements Serializable {
     private String aprobadoRh;
     @Column(name = "MONTO", precision = 11, scale = 2)
     private BigDecimal monto;
+    @Size(max = 50)
+    @Column(name = "USUARIO_CREACION", length = 50)
+    private String usuarioCreacion;
     @Transient
     private String accEstado;
 
@@ -473,6 +476,14 @@ public class AccionPersonal implements Serializable {
 
     public void setNuevoDepartamento(Departamentos nuevoDepartamento) {
         this.nuevoDepartamento = nuevoDepartamento;
+    }
+
+    public String getUsuarioCreacion() {
+        return usuarioCreacion;
+    }
+
+    public void setUsuarioCreacion(String usuarioCreacion) {
+        this.usuarioCreacion = usuarioCreacion;
     }
 
     @Override
