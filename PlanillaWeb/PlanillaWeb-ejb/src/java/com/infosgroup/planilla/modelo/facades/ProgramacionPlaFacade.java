@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
 import com.infosgroup.planilla.modelo.entidades.ProgramacionPlaPK;
 import java.util.ArrayList;
@@ -42,5 +43,13 @@ public class ProgramacionPlaFacade extends AbstractFacade<ProgramacionPla, Progr
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    public List<ProgramacionPla> getProgramacionPlaByCia(Cias cia) {
+        List<ProgramacionPla> l = new ArrayList<ProgramacionPla>();
+        TypedQuery<ProgramacionPla> q = em.createQuery("SELECT p FROM ProgramacionPla p WHERE p.programacionPlaPK.codCia = :codCia", ProgramacionPla.class);
+        q.setParameter("codCia", cia.getCodCia());
+        l=q.getResultList();
+        return l != null ? l: new ArrayList<ProgramacionPla>();
     }
 }
