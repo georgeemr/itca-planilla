@@ -543,4 +543,14 @@ public class PlanillaSessionBean {
     public List<MovDp> findDeduccionesPresta(Planilla planilla, String sumaResta){
         return movDpFacade.movimientosByPlanilla(planilla, sumaResta);
     }
+    
+    @PermitAll
+    public List<ProgramacionPla> findProPlaByCia(Cias cia){
+        return programacionPlaFacade.getProgramacionPlaByCia(cia);
+    }
+    
+    @PermitAll
+    public List<Planilla> findByProPla(ProgramacionPla proPla){
+        return planillaFacade.findPlanillaByUnidad(proPla);
+    }
 }
