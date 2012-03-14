@@ -65,7 +65,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     public Empleados getEmpleadoAccionPersonal() {
         if (empleadoAccionPersonal == null) {
-            empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
+           // empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
         }
         return empleadoAccionPersonal;
     }
@@ -342,7 +342,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public String seleccionarEmpleado() {
-        if (empleadoAccionPersonal == null) return null;
+        setEmpleadoAccionPersonal(empleadoAccionPersonal);
         addMessage("Acciones de Personal", "Empleado seleccionado " + empleadoAccionPersonal.getNombreCompleto(), TipoMensaje.INFORMACION);
         return null;
     }
