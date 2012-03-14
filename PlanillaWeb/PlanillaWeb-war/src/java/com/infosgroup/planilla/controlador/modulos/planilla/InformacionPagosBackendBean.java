@@ -145,5 +145,7 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
         listaPlanillas = planillaSessionBean.findByProPla(proPlaSeleccionada);
         listaDeducciones = new ArrayList();
         listaPrestaciones = new ArrayList();
+        
     }
+    
 }
