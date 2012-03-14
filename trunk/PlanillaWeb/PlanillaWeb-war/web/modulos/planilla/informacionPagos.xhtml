@@ -12,7 +12,7 @@
     </ui:define>
     <!-- ================================================================================================================ -->
     <ui:define name="acciones">
-        <p:tab title="Evaluaci&oacute;n">
+        <p:tab title="Acciones">
             <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
                 <!--p:commandLink styleClass="opcionMenu" action="# {planilla$informacionPagos.buscarPlanilla$action}" update="principalForm:mensajes, principalForm:tablaDetalle" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/meeting-participant-request-response.png"/>
@@ -59,17 +59,17 @@
                          rowSelectListener="#{planilla$informacionPagos.onRowSelectPlanilla}"  
                          rows="3" paginator="true" paginatorAlwaysVisible="true" update="tbIng tbEgr tbPla" 
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">
-                <p:column headerText="Cod Emp" filterMatchMode="contains" >
+                <p:column headerText="Codigo" filterMatchMode="contains" >
                     <p:spacer width="5"/>
                     <h:outputText value="#{planilla.empleados.empleadosPK.codEmp}"/>
                 </p:column>
-                <p:column headerText="Empleado" filterMatchMode="contains" >
+                <p:column headerText="Empleado" filterMatchMode="contains" filterBy="#{planilla.empleados.nombreCompleto}">
                     <p:spacer width="5"/>
                     <h:outputText value="#{planilla.empleados.nombreCompleto}"/>
                 </p:column>
                 <p:column headerText="Sueldo Base" filterMatchMode="contains" >
                     <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.empleados.puestos.salMinimo}"/>
+                    <h:outputText value="#{planilla.sueldoBase}"/>
                 </p:column>
                 <p:column headerText="Prestaciones" filterMatchMode="contains" >
                     <p:spacer width="5"/>
@@ -81,7 +81,7 @@
                 </p:column>
                 <p:column headerText="Total" filterMatchMode="contains" >
                     <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.total}"/>
+                    <h:outputText value="#{planilla.liqRecibir}"/>
                 </p:column>
             </p:dataTable>
             <p:spacer height="10"/>
