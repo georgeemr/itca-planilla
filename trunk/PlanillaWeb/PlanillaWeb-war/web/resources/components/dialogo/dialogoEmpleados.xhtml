@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:composite="http://java.sun.com/jsf/composite" 
+      xmlns:p="http://primefaces.prime.com.tr/ui"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" >
+
+    <composite:interface>
+        <composite:attribute name="name" />
+        <composite:attribute name="update" />
+        <composite:attribute name="title" />
+        <composite:attribute name="information" />
+        <composite:attribute name="image" />
+        <composite:attribute name="selectionMode" />
+        <composite:attribute name="selection" />
+        <composite:attribute name="okAction"  method-signature="java.lang.String action()" />
+        <composite:attribute name="cancelAction"  method-signature="java.lang.String action()" />
+    </composite:interface>
+
+    <composite:implementation>
+        <p:dialog widgetVar="#{cc.attrs.name}" header="#{cc.attrs.title}" showEffect="fold" hideEffect="fold" width="506" height="410" >
+
+            <p:panel style="border:none;">
+                <h:panelGrid columns="2" >
+                    <p:graphicImage value="#{cc.attrs.image}" />   
+                    <h:outputLabel id="lbl1" value="#{cc.attrs.information}"  style="font-weight: bold;"/>
+                </h:panelGrid>
+
+                <p:dataTable id="listadoEmpleados" value="#{planilla$accionesPersonal.listaEmp}" var="empleado" selectionMode="#{cc.attrs.selectionMode}"
+                             paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true" selection="#{cc.attrs.selection}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" 
+                             onRowSelectUpdate="#{cc.attrs.update}"
+                             onRowUnselectUpdate="#{cc.attrs.update}" >
+
+                    <f:facet name="header">
+                        Empleados
+                    </f:facet>
+
+                    <p:column headerText="C&#243;digo" style="width: 8%" >  
+                        <h:outputLabel value="#{empleado.empleadosPK.codEmp}" />
+                    </p:column>  
+
+                    <p:column headerText="Nombre " filterBy="#{empleado.nombreCompleto}" filterMatchMode="contains" >  
+                        <h:outputLabel value="#{empleado.nombreCompleto}" />
+                    </p:column>  
+
+                </p:dataTable>
+                <p:spacer height="15" />
+                <h:panelGrid columns="2">
+                    <p:commandButton value="Aceptar" styleClass="opcionMenu" update="#{cc.attrs.update}" oncomplete="#{cc.attrs.name}.hide();" action="#{cc.attrs.okAction}" image="ui-icon-circle-check" /> 
+                    <p:commandButton value="Cancelar" styleClass="opcionMenu" update="#{cc.attrs.update}" oncomplete="#{cc.attrs.name}.hide();" action="#{cc.attrs.cancelAction}" image="ui-icon-circle-check" /> 
+                </h:panelGrid>
+            </p:panel>
+
+        </p:dialog>
+    </composite:implementation>
+
+</html>
