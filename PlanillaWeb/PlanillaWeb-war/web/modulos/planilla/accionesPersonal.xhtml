@@ -143,7 +143,7 @@
     <ui:define name="dialogos">
         <d:dialogoEmpleados name="dlgEmpSolPermisos" selectionMode="single"
                             title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
-                            update="principalForm:mensajes,principalForm:fieldsetEncabezado" image="/resources/imagenes/64/evaluacion32x32.png"
+                            update="principalForm:mensajes,principalForm:fieldsetEncabezado" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
                             okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
                             cancelAction="#{planilla$accionesPersonal.cancelSeleccionarEmpleado}"/>        
@@ -152,7 +152,7 @@
             <p:spacer height="10px"/>
             <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
             <p:spacer height="10px"/>
-            <p:panel id="fieldsetEncabezado">
+            <p:fieldset id="fieldsetEncabezado">
                 <ap:encabezadoSolicitud dialogoEmpleados="dlgEmpSolPermisos" />
                 <table border="0" width="100%" >
                     <tr>
@@ -160,7 +160,7 @@
                         <td colspan="3" ><p:inputTextarea id="txtobservacionesSP" style="width:100%;" value="#{planilla$accionesPersonal.solicitudPermiso.observacion}" autoResize="false" /></td>
                     </tr>
                 </table>
-            </p:panel>
+            </p:fieldset>
 
             <p:spacer height="10px"/>
 
@@ -240,13 +240,20 @@
 
         </p:dialog>
 
+        <d:dialogoEmpleados name="dlgEmpSolVacaciones" selectionMode="single"
+                            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
+                            update="principalForm:mensajes,principalForm:fieldsetEncabezadoVac" image="/resources/imagenes/64/meeting-participant.png"
+                            information="Seleccione un empleado para la solicitud"
+                            okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
+                            cancelAction="#{planilla$accionesPersonal.cancelSeleccionarEmpleado}"/>    
+                
         <p:dialog id="dialogSolicitudVacaciones" widgetVar="dialogSolicitudVacaciones" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="575" >
             <p:spacer height="10px"/>
             <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
             <p:spacer height="10px"/>
 
             <p:fieldset id="fieldsetEncabezadoVac">
-                <ap:encabezadoSolicitud />
+                <ap:encabezadoSolicitud dialogoEmpleados="dlgEmpSolVacaciones" />
                 <table border="0" width="100%" >
                     <tr>
                         <td width="20%" ><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
@@ -331,13 +338,19 @@
 
         </p:dialog>
 
+        <d:dialogoEmpleados name="dlgEmpSolIncapacidad" selectionMode="single"
+                    title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
+                    update="principalForm:mensajes,principalForm:fieldsetEncabezadoInc" image="/resources/imagenes/64/meeting-participant.png"
+                    information="Seleccione un empleado para la solicitud"
+                    okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
+                    cancelAction="#{planilla$accionesPersonal.cancelSeleccionarEmpleado}"/> 
         <p:dialog id="dialogSolicitudIncapacidad" widgetVar="dialogSolicitudIncapacidad" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
             <p:spacer height="10px"/>
             <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
             <p:spacer height="10px"/>
 
             <p:fieldset id="fieldsetEncabezadoInc">
-                <ap:encabezadoSolicitud />
+                <ap:encabezadoSolicitud dialogoEmpleados="dlgEmpSolIncapacidad" />
                 <table border="0" width="100%" >
                     <tr>
                         <td width="20%" ><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
@@ -412,13 +425,19 @@
 
         </p:dialog>
 
+        <d:dialogoEmpleados name="dlgEmpSolNombramientos" selectionMode="single"
+            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
+            update="principalForm:mensajes,principalForm:fieldsetEncabezadoNom" image="/resources/imagenes/64/meeting-participant.png"
+            information="Seleccione un empleado para la solicitud"
+            okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
+            cancelAction="#{planilla$accionesPersonal.cancelSeleccionarEmpleado}"/> 
         <p:dialog id="dialogSolicitudNombramiento" widgetVar="dialogSolicitudNombramiento" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
             <p:spacer height="10px"/>
             <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
             <p:spacer height="10px"/>
 
             <p:fieldset id="fieldsetEncabezadoNom">
-                <ap:encabezadoSolicitud />
+                <ap:encabezadoSolicitud dialogoEmpleados="dlgEmpSolNombramientos" />
                 <table border="0" width="100%" cellpadding="3" >
                     <tr>
                         <td width="20%;"><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
@@ -629,12 +648,19 @@
         </p:dialog>    
 
         <!-- Aumento de Sueldo -->
+        <d:dialogoEmpleados name="dlgEmpSolAumentoSueldo" selectionMode="single"
+            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
+            update="principalForm:mensajes,principalForm:fieldsetEncabezadoAuSal" image="/resources/imagenes/64/meeting-participant.png"
+            information="Seleccione un empleado para la solicitud"
+            okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
+            cancelAction="#{planilla$accionesPersonal.cancelSeleccionarEmpleado}"/> 
+        
         <p:dialog id="dialogSolicitudAumentoSueldo" widgetVar="dialogSolicitudAumentoSueldo" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
             <p:spacer height="10px"/>
             <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
             <p:spacer height="10px"/>
             <p:fieldset id="fieldsetEncabezadoAuSal">
-                <ap:encabezadoSolicitud />
+                <ap:encabezadoSolicitud dialogoEmpleados="dlgEmpSolAumentoSueldo" />
                 <table border="0" width="100%" cellpadding="3" >
                     <tr>
                         <td width="20%;"><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
@@ -948,13 +974,20 @@
         </p:dialog>
 
         <!-- Solicitud de Retiro  -->
+        <d:dialogoEmpleados name="dlgEmpSolRetiro" selectionMode="single"
+            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
+            update="principalForm:mensajes,principalForm:fieldsetEncabezadoRetiro" image="/resources/imagenes/64/meeting-participant.png"
+            information="Seleccione un empleado para la solicitud"
+            okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
+            cancelAction="#{planilla$accionesPersonal.cancelSeleccionarEmpleado}"/> 
+                
         <p:dialog id="dialogSolicitudRetiro" widgetVar="dialogSolicitudRetiro" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
             <p:spacer height="10px"/>
             <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
             <p:spacer height="10px"/>
 
             <p:fieldset id="fieldsetEncabezadoRetiro">
-                <ap:encabezadoSolicitud />
+                <ap:encabezadoSolicitud dialogoEmpleados="dlgEmpSolRetiro" />
                 <table border="0" width="100%" cellpadding="3" >
                     <tr>
                         <td width="20%;"><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
@@ -1013,13 +1046,20 @@
         </p:dialog>
 
         <!-- Solicitud No Afecta Planilla -->
+        <d:dialogoEmpleados name="dlgEmpSolNoAfecta" selectionMode="single"
+            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
+            update="principalForm:mensajes,principalForm:fieldsetEncabezadoNA" image="/resources/imagenes/64/meeting-participant.png"
+            information="Seleccione un empleado para la solicitud"
+            okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
+            cancelAction="#{planilla$accionesPersonal.cancelSeleccionarEmpleado}"/> 
+        
         <p:dialog id="dialogSolicitudNA" widgetVar="dialogSolicitudNA" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
             <p:spacer height="10px"/>
             <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
             <p:spacer height="10px"/>
 
             <p:fieldset id="fieldsetEncabezadoNA">
-                <ap:encabezadoSolicitud />
+                <ap:encabezadoSolicitud dialogoEmpleados="dlgEmpSolNoAfecta" />
                 <table border="0" width="100%" cellpadding="3" >
                     <tr>
                         <td width="20%;"><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
