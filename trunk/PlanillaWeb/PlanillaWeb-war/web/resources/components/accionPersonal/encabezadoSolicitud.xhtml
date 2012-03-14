@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:composite="http://java.sun.com/jsf/composite" 
+      xmlns:p="http://primefaces.prime.com.tr/ui"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" >
+
+    <composite:interface>
+        <composite:attribute name="dialogoEmpleados" />
+    </composite:interface>
+
+    <composite:implementation>
+
+        <table border="0" width="100%" cellpadding="2" >
+            <tr>
+                <td width="20%;" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;" /></td>
+                <td width="80%;" colspan="2" >
+                    <h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputLabel>
+                </td>
+            </tr>
+
+            <tr>
+                <td width="20%;" >
+                    <h:outputLabel value="Empleado" style="font-weight: bold;" />
+                </td>
+                <td width="55%;">
+                    <h:outputLabel value="#{planilla$accionesPersonal.empleadoAccionPersonal.nombreCompleto}" />
+                </td>
+                <td>
+                    <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, lstTipos" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}"
+                                   onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" 
+                                   oncomplete="#{cc.attrs.dialogoEmpleados}.show();">
+                        <p:graphicImage value="/resources/iconos/personal.png"/>
+                        <h:outputText value="Seleccionar Empleado" styleClass="espacioTexto"/>
+                    </p:commandLink>
+                </td>
+            </tr>
+
+            <tr>
+                <td width="20%;" ><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
+                <td width="80%;" colspan="2"><h:outputLabel  value="#{planilla$accionesPersonal.empleadoAccionPersonal.empleados.nombreCompleto}"  /></td>
+            </tr>
+
+            <tr>
+                <td width="20%;" ><h:outputLabel value="Departamento" style="font-weight: bold;" /></td>
+                <td width="80%;" colspan="2" ><h:outputLabel  value="#{planilla$accionesPersonal.empleadoAccionPersonal.departamentos.nomDepto}" /></td>
+            </tr>
+            <tr>
+                <td width="20%;" ><h:outputLabel value="Puesto" style="font-weight: bold;" /></td>
+                <td width="80%;" colspan="2" ><h:outputLabel  value="#{planilla$accionesPersonal.empleadoAccionPersonal.puestos.nomPuesto}" /></td>
+            </tr>
+        </table>
+
+    </composite:implementation>
+</html>
