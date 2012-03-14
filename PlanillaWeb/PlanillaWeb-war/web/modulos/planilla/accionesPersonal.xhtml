@@ -5,7 +5,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion" >
+                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"
+                xmlns:ap="http://java.sun.com/jsf/composite/components/accionPersonal" >
 
     <ui:define name="titulo">
         <h:outputText value="Acciones de personal"/>
@@ -180,22 +181,12 @@
 
                 <table border="0" width="100%" >
                     <tr>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha inicio"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
+                        <td><i:etiquetaRequerido value="Fecha inicio" styleClass="requerido" /></td>
                         <td><p:calendar id="spFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaInicial}" selectListener="#{planilla$accionesPersonal.solicitudPermiso.handleFechaInicial}" onSelectUpdate="txtDias" />
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha fin"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
+                        <td><i:etiquetaRequerido value="Fecha fin" styleClass="requerido" /></td>
                         <td><p:calendar id="spFecFinal" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaFinal}" selectListener="#{planilla$accionesPersonal.solicitudPermiso.handleFechaFinal}" onSelectUpdate="txtDias"/>
                         </td>
                     </tr>
@@ -231,12 +222,7 @@
                     </tr>
 
                     <tr>                   
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Tipo Planilla"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>    
-                        </td>
+                        <td><i:etiquetaRequerido value="Tipo Planilla" styleClass="requerido" /></td>
                         <td>                
                             <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 200px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudPermiso.tipoPlanilla}" >                       
                                 <f:ajax render="lstPlanilla" event="change" execute="lstTipoPlanilla" />
@@ -245,12 +231,7 @@
                             </h:selectOneMenu>
                         </td>
                         <td></td>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Planilla"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>  
-                        </td>
+                        <td><i:etiquetaRequerido value="Planilla" styleClass="requerido" /></td>
                         <td>
                             <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudPermiso.planilla}" >
                                 <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
@@ -268,14 +249,7 @@
 
             </p:fieldset>
             <p:spacer height="15" />
-            <h:panelGrid columns="2">
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldPermisos,principalForm:txtobservacionesSP"
-                                 action="#{planilla$accionesPersonal.solicitudPermiso.guardarSolicitud$action}"
-                                 ajax="true" image="ui-icon-circle-check" />
-
-                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="mensajes, tablaSol, txtEmp, txtJefe"  action="#{planilla$accionesPersonal.cancelar$action}"
-                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
-            </h:panelGrid>
+            <ap:okCancelAccionPersonal okAction="#{planilla$accionesPersonal.solicitudPermiso.guardarSolicitud$action}" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldPermisos,principalForm:txtobservacionesSP" cancelAction="#{planilla$accionesPersonal.cancelar$action}" onCancelClose="#{planilla$accionesPersonal.urlPlantilla}" />
 
         </p:dialog>
 
@@ -325,21 +299,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha inicial"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
+                        <td><i:etiquetaRequerido value="Fecha inicial" styleClass="requerido" /></td>
                         <td><p:calendar id="vacFecInicialPagar" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.fechaInicialPeriodoPagar}" />
                         </td>
                         <td></td>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha final"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
+                        <td><i:etiquetaRequerido value="Fecha final" styleClass="requerido" /></td>
                         <td><p:calendar id="vacFecFinalPagar" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.fechaFinalPeriodoPagar}" />
                         </td>
                     </tr>
@@ -350,33 +314,17 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha inicial"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
+                        <td><i:etiquetaRequerido value="Fecha inicial" styleClass="requerido" /></td>
                         <td><p:calendar id="vacFecInicialGozar" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.fechaInicialPeriodoGozar}" />
                         </td>
                         <td></td>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha final"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
+                        <td><i:etiquetaRequerido value="Fecha final" styleClass="requerido" /></td>
                         <td><p:calendar id="vacFecFinalGozar" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.fechaFinalPeriodoGozar}" />
                         </td>
-
                     </tr>
 
                     <tr>                   
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Tipo Planilla"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>    
-                        </td>
+                        <td><i:etiquetaRequerido value="Tipo Planilla" styleClass="requerido" /></td>
                         <td>                
                             <h:selectOneMenu id="lstTipoPlanillaVac" style="height: 25px;padding-top: 3px;width: 200px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.tipoPlanilla}" >                       
                                 <f:ajax render="lstPlanillaVac" event="change" execute="lstTipoPlanillaVac" />
@@ -385,12 +333,7 @@
                             </h:selectOneMenu>
                         </td>
                         <td></td>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Planilla"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>  
-                        </td>
+                        <td><i:etiquetaRequerido value="Planilla" styleClass="requerido" /></td>
                         <td>
                             <h:selectOneMenu id="lstPlanillaVac" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.planilla}" >
                                 <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
@@ -417,15 +360,8 @@
 
             </p:fieldset>
             <p:spacer height="15" />
-            <h:panelGrid columns="2">
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldVacaciones,principalForm:txtobservacionesVac"
-                                 action="#{planilla$accionesPersonal.solicitudVacacionesAnuales.guardarSolicitud$action}"
-                                 ajax="true" image="ui-icon-circle-check" />
-
-                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
-                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
-            </h:panelGrid>
-
+            <ap:okCancelAccionPersonal okAction="#{planilla$accionesPersonal.solicitudVacacionesAnuales.guardarSolicitud$action}" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldVacaciones,principalForm:txtobservacionesVac" cancelAction="#{planilla$accionesPersonal.cancelar$action}" onCancelClose="#{planilla$accionesPersonal.urlPlantilla}" />
+            
         </p:dialog>
 
         <p:dialog id="dialogSolicitudIncapacidad" widgetVar="dialogSolicitudIncapacidad" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
@@ -470,65 +406,35 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha Planilla"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
+                        <td><i:etiquetaRequerido value="Fecha Planilla" styleClass="requerido" /></td>
                         <td><p:calendar id="incFecPlanilla" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudIncapacidad.fechaPlanilla}" />
                         </td>
                         <td></td>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha real planilla"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
+                        <td><i:etiquetaRequerido value="Fecha real planilla" styleClass="requerido" /></td>
                         <td><p:calendar id="incFecRealPlanilla" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudIncapacidad.fechaRealPlanilla}" />
                         </td>
                     </tr>
                     <tr><td colspan="5" ><p:spacer height="10" /></td></tr>
 
                     <tr>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha Inicio Inc."/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
+                        <td><i:etiquetaRequerido value="Fecha Inicio Inc." styleClass="requerido" /></td>
                         <td><p:calendar id="incFecInicio" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudIncapacidad.fechaInicial}" selectListener="#{planilla$accionesPersonal.solicitudIncapacidad.handleFechaInicial}" onSelectUpdate="txDiasInc" />
                         </td>
                         <td></td>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha Fin Inc."/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
+                        <td><i:etiquetaRequerido value="Fecha Fin Inc." styleClass="requerido" /></td>
                         <td><p:calendar id="incFecFin" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudIncapacidad.fechaFinal}" selectListener="#{planilla$accionesPersonal.solicitudIncapacidad.handleFechaFinal}" onSelectUpdate="txDiasInc" />
                         </td>
                     </tr>
 
                     <tr>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Dias"/>
-                                <h:outputLabel value="" styleClass="requerido"/>                                
-                            </h:panelGrid>    
-                        </td>
+                        <td><h:outputLabel value="Dias"/></td>
                         <td>
                             <h:outputLabel id="txDiasInc" value="#{planilla$accionesPersonal.solicitudIncapacidad.dias}" />
                         </td>
                     </tr>
 
                     <tr>                   
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Tipo Planilla"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>    
-                        </td>
+                        <td><i:etiquetaRequerido value="Tipo Planilla" styleClass="requerido" /></td>
                         <td>                
                             <h:selectOneMenu id="lstTipoPlanillaInc" style="height: 25px;padding-top: 3px;width: 200px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudIncapacidad.tipoPlanilla}" >                       
                                 <f:ajax render="lstPlanillaInc" event="change" execute="lstTipoPlanillaInc" />
@@ -537,12 +443,7 @@
                             </h:selectOneMenu>
                         </td>
                         <td></td>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Planilla"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>  
-                        </td>
+                        <td><i:etiquetaRequerido value="Planilla" styleClass="requerido" /></td>
                         <td>
                             <h:selectOneMenu id="lstPlanillaInc" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudIncapacidad.planilla}" >
                                 <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
@@ -556,14 +457,7 @@
 
             </p:fieldset>
             <p:spacer height="15" />
-            <h:panelGrid columns="2">
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldIncapacidad,principalForm:txtobservacionesInc"
-                                 action="#{planilla$accionesPersonal.solicitudIncapacidad.guardarSolicitud$action}"
-                                 ajax="true" image="ui-icon-circle-check" />
-
-                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
-                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
-            </h:panelGrid>
+            <ap:okCancelAccionPersonal okAction="#{planilla$accionesPersonal.solicitudIncapacidad.guardarSolicitud$action}" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldIncapacidad,principalForm:txtobservacionesInc" cancelAction="#{planilla$accionesPersonal.cancelar$action}" onCancelClose="#{planilla$accionesPersonal.urlPlantilla}" />
 
         </p:dialog>
 
@@ -619,13 +513,7 @@
 
                 <table border="0"  >
                     <tr>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Departamento"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
-
+                        <td><i:etiquetaRequerido value="Departamento" styleClass="requerido" /></td>
                         <td>                            
                             <h:selectOneMenu style="height: 25px;padding-top: 3px;width: 250px;" value="#{planilla$accionesPersonal.solicitudNombramiento.departamento}" >
                                 <f:selectItem itemValue="-1" itemLabel="[SELECCIONE UN DEPARTAMENTO]" />
@@ -635,13 +523,7 @@
                     </tr>
 
                     <tr>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Puesto"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
-
+                        <td><i:etiquetaRequerido value="Puesto" styleClass="requerido" /></td>
                         <td>                            
                             <h:selectOneMenu style="height: 25px;padding-top: 3px;width: 250px;" value="#{planilla$accionesPersonal.solicitudNombramiento.puesto}" >
                                 <f:selectItem itemValue="-1" itemLabel="[SELECCIONE UN PUESTO]" />
@@ -651,13 +533,7 @@
                     </tr>
 
                     <tr>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Fecha inicial"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
-
+                        <td><i:etiquetaRequerido value="Fecha inicial" styleClass="requerido" /></td>
                         <td>                            
                             <p:calendar id="nomFecFin" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudNombramiento.fechaInicial}"  />
                         </td>
@@ -667,14 +543,7 @@
 
             </p:fieldset>
             <p:spacer height="15" />
-            <h:panelGrid columns="2">
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldNombramiento,principalForm:txtobservacionesNom"
-                                 action="#{planilla$accionesPersonal.solicitudNombramiento.guardarSolicitud$action}"
-                                 ajax="true" image="ui-icon-circle-check" />
-
-                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
-                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
-            </h:panelGrid>
+            <ap:okCancelAccionPersonal okAction="#{planilla$accionesPersonal.solicitudNombramiento.guardarSolicitud$action}" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldNombramiento,principalForm:txtobservacionesNom" cancelAction="#{planilla$accionesPersonal.cancelar$action}" onCancelClose="#{planilla$accionesPersonal.urlPlantilla}" />
 
         </p:dialog>
 
@@ -706,13 +575,7 @@
 
                 <table border="0" width="100%" >
                     <tr>
-                        <td width="15%;" >
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Criterio a Aplicar:" style="font-weight: bold;"/>
-                                <h:outputLabel value="*" styleClass="requerido"/>                                
-                            </h:panelGrid>
-                        </td>
-
+                        <td width="15%;" ><i:etiquetaRequerido value="Criterio a Aplicar" styleClass="requerido" /></td>
                         <td width="85%" >                            
                             <h:selectOneMenu id="lstCriterio" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.criterioSeleccionado}" style="height: 25px;padding-top: 3px;width: 250px;" >
                                 <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE UN CRITERIO ]" />
@@ -811,14 +674,7 @@
 
             </p:fieldset>
             <p:spacer height="15" />
-            <h:panelGrid columns="2">
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldVacColectiva,txtobservacionesVacCol"
-                                 action="#{planilla$accionesPersonal.solicitudVacacionColectiva.guardarSolicitud$action}" ajax="true" image="ui-icon-circle-check" />
-
-                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
-                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
-            </h:panelGrid>
-
+            <ap:okCancelAccionPersonal okAction="#{planilla$accionesPersonal.solicitudVacacionColectiva.guardarSolicitud$action}" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldVacColectiva,txtobservacionesVacCol" cancelAction="#{planilla$accionesPersonal.cancelar$action}" onCancelClose="#{planilla$accionesPersonal.urlPlantilla}" />
         </p:dialog>
 
         <p:dialog id="dialogoEmpleados" widgetVar="dialogoEmpleados" header="Empleados" width="650" height="445"  resizable="true" showEffect="clip" hideEffect="clip" >  
@@ -852,6 +708,7 @@
             </h:panelGrid>
         </p:dialog>    
 
+        <!-- Aumento de Sueldo -->
         <p:dialog id="dialogSolicitudAumentoSueldo" widgetVar="dialogSolicitudAumentoSueldo" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
             <p:spacer height="10px"/>
             <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
@@ -974,15 +831,7 @@
 
             </p:fieldset>
             <p:spacer height="15" />
-            <h:panelGrid columns="2">
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldAumentoSalario,principalForm:txtobservacionesAuSal"
-                                 action="#{planilla$accionesPersonal.solicitudAumentoSueldo.guardarSolicitud$action}"
-                                 ajax="true" image="ui-icon-circle-check" />
-
-                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
-                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
-            </h:panelGrid>
-
+            <ap:okCancelAccionPersonal okAction="#{planilla$accionesPersonal.solicitudAumentoSueldo.guardarSolicitud$action}" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldAumentoSalario,principalForm:txtobservacionesAuSal" cancelAction="#{planilla$accionesPersonal.cancelar$action}" onCancelClose="#{planilla$accionesPersonal.urlPlantilla}" />
         </p:dialog>
 
         <!-- Aumento de Sueldo Colectivo -->
@@ -1200,13 +1049,7 @@
             </p:fieldset>
 
             <p:spacer height="15" />
-            <h:panelGrid columns="2">
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldAumentoSalarioCol,principalForm:txtobservacionesAuSalCol"
-                                 action="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.guardarSolicitud$action}" ajax="true" image="ui-icon-circle-check" />
-
-                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
-                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
-            </h:panelGrid>
+            <ap:okCancelAccionPersonal okAction="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.guardarSolicitud$action}" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldAumentoSalarioCol,principalForm:txtobservacionesAuSalCol" cancelAction="#{planilla$accionesPersonal.cancelar$action}" onCancelClose="#{planilla$accionesPersonal.urlPlantilla}" />
 
         </p:dialog>
 
@@ -1299,15 +1142,7 @@
 
             </p:fieldset>
             <p:spacer height="15" />
-            <h:panelGrid columns="2">
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldRetiro,principalForm:txtobservacionesRetiro"
-                                 action="#{planilla$accionesPersonal.solicitudRetiro.guardarSolicitud$action()}"
-                                 ajax="true" image="ui-icon-circle-check" />
-
-                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
-                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
-            </h:panelGrid>
-
+            <ap:okCancelAccionPersonal okAction="#{planilla$accionesPersonal.solicitudRetiro.guardarSolicitud$action}" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldRetiro,principalForm:txtobservacionesRetiro" cancelAction="#{planilla$accionesPersonal.cancelar$action}" onCancelClose="#{planilla$accionesPersonal.urlPlantilla}" />
         </p:dialog>
 
         <!-- Solicitud No Afecta Planilla -->
@@ -1395,15 +1230,7 @@
 
             </p:fieldset>
             <p:spacer height="15" />
-            <h:panelGrid columns="2">
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldNoAfectaPlanilla,principalForm:txtobservacionesNA"
-                                 action="#{planilla$accionesPersonal.solicitudNoAfectaPlanilla.guardarSolicitud$action}"
-                                 ajax="true" image="ui-icon-circle-check" />
-
-                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"  action="#{planilla$accionesPersonal.cancelar$action}"
-                                 onclick="#{planilla$accionesPersonal.urlPlantilla}.hide()" image="ui-icon-closethick" /> 
-            </h:panelGrid>
-
+            <ap:okCancelAccionPersonal okAction="#{planilla$accionesPersonal.solicitudNoAfectaPlanilla.guardarSolicitud$action}" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldNoAfectaPlanilla,principalForm:txtobservacionesNA" cancelAction="#{planilla$accionesPersonal.cancelar$action}" onCancelClose="#{planilla$accionesPersonal.urlPlantilla}" />
         </p:dialog>
 
     </ui:define>
