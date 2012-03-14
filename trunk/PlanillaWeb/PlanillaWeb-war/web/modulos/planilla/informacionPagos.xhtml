@@ -88,7 +88,7 @@
             <table width="100%" border="0">
                 <tr valign="top">
                     <td width="50%">
-                        <p:dataTable emptyMessage="No se han encontrado ingresos" value="#{planilla$informacionPagos.listaPrestaciones}" var="ingreso" id="tbIng">
+                        <p:dataTable emptyMessage="No se han encontrado Ingresos" value="#{planilla$informacionPagos.listaPrestaciones}" var="ingreso" id="tbIng">
                             <f:facet name="header">
                                 <h:outputText value="Ingresos"/>
                             </f:facet>
@@ -101,7 +101,8 @@
                          </p:dataTable>
                      </td>
                      <td width="50%">
-                         <p:dataTable emptyMessage="No se han encontrado egresos" value="#{planilla$informacionPagos.listaDeducciones}" var="egreso" id="tbEgr">
+                         
+                         <p:dataTable emptyMessage="No se han encontrado Egresos" value="#{planilla$informacionPagos.listaDeducciones}" var="egreso" id="tbEgr">
                             <f:facet name="header">
                                 <h:outputText value="Egresos"/>
                             </f:facet>
