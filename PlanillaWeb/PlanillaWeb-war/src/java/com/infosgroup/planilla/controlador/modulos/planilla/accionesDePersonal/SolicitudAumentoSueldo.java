@@ -143,13 +143,12 @@ public class SolicitudAumentoSueldo extends SolicitudDePersonal implements java.
     }
 
     public String guardarSolicitud$action() {
-        if (validarSolicitud()) {
-            return null;
-        }
+        if (validarSolicitud()) return null;
+        
         AccionPersonal accionPersonal = new AccionPersonal();
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania()));
         accionPersonal.setTipoAccion(getTipoAccion());
-        accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
+        accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());        
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(observacion);
         accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
