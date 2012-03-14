@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Menu.findByNivel", query = "SELECT m FROM Menu m WHERE m.nivel = :nivel"),
     @NamedQuery(name = "Menu.findByEstado", query = "SELECT m FROM Menu m WHERE m.estado = :estado"),
     @NamedQuery(name = "Menu.findByRuta", query = "SELECT m FROM Menu m WHERE m.ruta = :ruta")})
-public class Menu implements Serializable {
+public class Menu implements Serializable, Comparable<Menu> {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected MenuPK menuPK;
@@ -201,6 +201,11 @@ public class Menu implements Serializable {
     @Override
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.Menu[ menuPK=" + menuPK + " ]";
+    }
+
+    @Override
+    public int compareTo(Menu t) {
+        return (this.menuPK.getCodMenu().compareTo(t.menuPK.getCodMenu()));
     }
     
 }

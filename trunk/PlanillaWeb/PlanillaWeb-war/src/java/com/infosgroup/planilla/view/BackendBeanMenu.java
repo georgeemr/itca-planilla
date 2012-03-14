@@ -7,6 +7,7 @@ package com.infosgroup.planilla.view;
 import com.infosgroup.planilla.modelo.entidades.Menu;
 import com.infosgroup.planilla.modelo.facades.MenuFacade;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 import javax.annotation.security.PermitAll;
@@ -60,6 +61,7 @@ public class BackendBeanMenu implements Serializable {
                 /* de lo contrario agregar los items normalmente */
                 Submenu submenu = new Submenu();
                 submenu.setLabel(s.getTitulo());
+                Collections.sort(s.getMenuList()); //gb 12032012
                 for (Menu o : s.getMenuList()) {
                     MenuItem item = new MenuItem();
                     item.setValue(o.getTitulo());

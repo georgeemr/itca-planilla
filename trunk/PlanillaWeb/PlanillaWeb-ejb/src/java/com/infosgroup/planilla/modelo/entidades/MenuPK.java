@@ -54,7 +54,7 @@ public class MenuPK implements Serializable {
         this.codModulo = codModulo;
     }
 
-    public long getCodMenu() {
+    public Long getCodMenu() {
         return codMenu;
     }
 
