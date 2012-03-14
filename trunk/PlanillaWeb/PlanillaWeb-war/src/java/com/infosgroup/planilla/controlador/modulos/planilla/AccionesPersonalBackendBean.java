@@ -45,7 +45,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private Long tipoAccion;
     private DataTable tablaEmpleado;
     private Date fecha;
-    //private String nombreJefe;
     private String urlPlantilla;
     private String urlPlantillaDefault = "/modulos/planilla/acciones/ninguna.xhtml";
     private TipoAccion accionSeleccionada;
@@ -314,24 +313,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         return null;
     }
 
-//    public String getNombreJefe() {
-//        nombreJefe = "Ninguno";
-//        if (getSessionBeanEMP().getEmpleadoSesion() != null) {
-//            if (getSessionBeanEMP().getEmpleadoSesion().getEmpleados()/*
-//                     * getJefe()
-//                     */ != null) {
-//                nombreJefe = getSessionBeanEMP().getEmpleadoSesion().getEmpleados()/*
-//                         * getJefe()
-//                         */.getNombreCompleto();
-//            }
-//        }
-//        return nombreJefe;
-//    }
-//
-//    public void setNombreJefe(String nombreJefe) {
-//        this.nombreJefe = nombreJefe;
-//    }
-
     public String cancelar$action() {
         limpiarCampos();
         if (solicitudPermiso != null) {
@@ -374,6 +355,5 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     @Override
     protected void limpiarCampos() {
         tipoAccion = 0L;
-//        nombreJefe = "Seleccione un Empleado";
     }
 }

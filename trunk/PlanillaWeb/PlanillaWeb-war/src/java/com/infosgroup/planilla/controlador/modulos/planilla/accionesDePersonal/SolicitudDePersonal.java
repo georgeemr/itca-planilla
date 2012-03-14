@@ -144,10 +144,18 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
 
     public Integer calculaDias(java.util.Date f1, java.util.Date f2) {
         if (f1 != null && f2 != null) {
-            Long d = ((f2.getTime() - f1.getTime()) / MILISEGUNDOS_POR_DIA)+1L;
+            Long d = ((f2.getTime() - f1.getTime()) / MILISEGUNDOS_POR_DIA) + 1L;
             return d.intValue();
         } else {
             return 0;
+        }
+    }
+
+    public Empleados getEmpleadosToAccionPersonal() {
+        if (getEncabezadoSolicitud().getEmpleadoAccionPersonal() != null && !getEncabezadoSolicitud().getEmpleadoAccionPersonal().equals(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion())) {
+            return getEncabezadoSolicitud().getEmpleadoAccionPersonal();
+        }else{
+            return getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion();
         }
     }
 
