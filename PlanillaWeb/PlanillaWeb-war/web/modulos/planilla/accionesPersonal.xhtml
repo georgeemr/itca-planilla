@@ -6,7 +6,8 @@
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"
-                xmlns:ap="http://java.sun.com/jsf/composite/components/accionPersonal" >
+                xmlns:ap="http://java.sun.com/jsf/composite/components/accionPersonal" 
+                xmlns:d="http://java.sun.com/jsf/composite/components/dialogo" >
 
     <ui:define name="titulo">
         <h:outputText value="Acciones de personal"/>
@@ -136,24 +137,30 @@
                 <h:outputText id="lbObservaciones" value="#{(sol.observacion!=null and sol.observacion.length() > 10 )? sol.observacion.subSequence(0, 10):sol.observacion} #{(sol.observacion!=null and sol.observacion.length() > 10 )? '.....':''}" title="#{sol.observacion!=null?sol.observacion:'Ninguna'}" />
                 <p:tooltip for="lbObservaciones" showEvent="focus" hideEvent="blur" />  
             </p:column>
-        </p:dataTable>      
+        </p:dataTable>     
     </ui:define>
 
     <ui:define name="dialogos">
-
+        <d:dialogoEmpleados name="dlgEmpSolPermisos" selectionMode="single"
+                            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
+                            update="principalForm:mensajes,principalForm:fieldsetEncabezado" image="/resources/imagenes/64/evaluacion32x32.png"
+                            information="Seleccione un empleado para la solicitud"
+                            okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
+                            cancelAction="#{planilla$accionesPersonal.cancelSeleccionarEmpleado}"/>        
+        
         <p:dialog id="dialogSolicitudPermiso" widgetVar="dialogSolicitudPermiso" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="745" height="550" >
             <p:spacer height="10px"/>
             <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
             <p:spacer height="10px"/>
-            <p:fieldset id="fieldsetEncabezado">
-                <ap:encabezadoSolicitud />
+            <p:panel id="fieldsetEncabezado">
+                <ap:encabezadoSolicitud dialogoEmpleados="dlgEmpSolPermisos" />
                 <table border="0" width="100%" >
                     <tr>
                         <td width="20%;" ><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
                         <td colspan="3" ><p:inputTextarea id="txtobservacionesSP" style="width:100%;" value="#{planilla$accionesPersonal.solicitudPermiso.observacion}" autoResize="false" /></td>
                     </tr>
                 </table>
-            </p:fieldset>
+            </p:panel>
 
             <p:spacer height="10px"/>
 
