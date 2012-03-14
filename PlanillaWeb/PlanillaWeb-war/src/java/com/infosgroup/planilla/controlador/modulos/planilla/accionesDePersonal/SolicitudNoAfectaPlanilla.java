@@ -84,15 +84,15 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
         TipoAccion tipoAccion = new TipoAccion(new TipoAccionPK(getEncabezadoSolicitud().getEmpresa(), tipoAccionSeleccionada));
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), tipoAccion));
         accionPersonal.setTipoAccion(tipoAccion);
-        accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());
+        accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setStatus("G");
         accionPersonal.setUsuarioCreacion(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario());
-        accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
+        accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
         accionPersonal.setFechaInicial(fechaInicial);
         accionPersonal.setFechaFinal(fechaInicial);
-        accionPersonal.setPuestos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestos());
+        accionPersonal.setPuestos(getEmpleadosToAccionPersonal().getPuestos());
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
         getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
