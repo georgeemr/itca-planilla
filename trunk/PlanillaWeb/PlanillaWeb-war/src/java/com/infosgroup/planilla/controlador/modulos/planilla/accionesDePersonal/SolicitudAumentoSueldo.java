@@ -148,10 +148,10 @@ public class SolicitudAumentoSueldo extends SolicitudDePersonal implements java.
         AccionPersonal accionPersonal = new AccionPersonal();
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania()));
         accionPersonal.setTipoAccion(getTipoAccion());
-        accionPersonal.setEmpleados(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion());        
+        accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());        
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(observacion);
-        accionPersonal.setDepartamentos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getDepartamentos());
+        accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
         accionPersonal.setStatus("G");
         accionPersonal.setUsuarioCreacion( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setFechaInicial(fechaInicial);
@@ -162,7 +162,7 @@ public class SolicitudAumentoSueldo extends SolicitudDePersonal implements java.
         accionPersonal.setSueldoAnterior( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getSalario() );
         accionPersonal.setCantidad( formaAumento.equals("V") ? new BigDecimal( sueldoNuevo ): new BigDecimal(porcentaje) ) ;
         accionPersonal.setPorcentaje(formaAumento.equals("P") ? new BigDecimal( sueldoNuevo ): BigDecimal.ZERO );
-        accionPersonal.setPuestos(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestos());
+        accionPersonal.setPuestos(getEmpleadosToAccionPersonal().getPuestos());
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
         getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
