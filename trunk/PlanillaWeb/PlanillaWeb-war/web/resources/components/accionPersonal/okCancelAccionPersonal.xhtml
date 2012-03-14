@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:composite="http://java.sun.com/jsf/composite" 
+      xmlns:p="http://primefaces.prime.com.tr/ui"  
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <composite:interface>
+        <composite:attribute name="update" />
+        <composite:attribute name="onCancelClose" />
+        <composite:attribute name="okAction"  method-signature="java.lang.String action()" />
+        <composite:attribute name="cancelAction"  method-signature="java.lang.String action()" />
+    </composite:interface>
+
+    <composite:implementation>
+        <h:panelGrid columns="2">
+            <p:commandButton value="Aceptar" update="#{cc.attrs.update}"
+                             action="#{cc.attrs.okAction}"
+                             ajax="true" image="ui-icon-circle-check" />
+
+            <p:commandButton value="Cerrar" styleClass="opcionMenu" action="#{cc.attrs.cancelAction}"
+                             onclick="#{cc.attrs.onCancelClose}.hide();" image="ui-icon-closethick" /> 
+        </h:panelGrid>
+    </composite:implementation>
+
+</html>
