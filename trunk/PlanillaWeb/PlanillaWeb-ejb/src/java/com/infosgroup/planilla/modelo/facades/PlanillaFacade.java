@@ -77,7 +77,30 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
                 + "AND p.planillaPK.anio = :anio "
                 + "AND p.planillaPK.mes = :mes "
                 + "AND p.planillaPK.numPlanilla = :numPlanilla "
-                + " AND p.planillaPK.codTipopla = :codTipopla", Planilla.class);
+                + "AND p.planillaPK.codTipopla = :codTipopla", Planilla.class);
+        q.setParameter("codCia", cia);
+        q.setParameter("anio", anio);
+        q.setParameter("mes", mes);
+        q.setParameter("numPlanilla", num);
+        q.setParameter("codTipopla", tipo);
+        l = q.getResultList();
+        return l != null ? l : new ArrayList<Planilla>();
+    }
+    
+    public List<Planilla> findPlanillaByProAndDep(ProgramacionPla proPla, Short depto) {
+        Short cia = proPla.getProgramacionPlaPK().getCodCia();
+        Short anio = proPla.getAnio();
+        Short mes = proPla.getMes();
+        Short num = proPla.getNumPlanilla();
+        Short tipo = proPla.getProgramacionPlaPK().getCodTipopla();
+        List<Planilla> l = new ArrayList<Planilla>();
+        TypedQuery<Planilla> q = em.createQuery("SELECT p FROM Planilla p "
+                + "WHERE p.planillaPK.codCia = :codCia "
+                + "AND p.planillaPK.anio = :anio "
+                + "AND p.planillaPK.mes = :mes "
+                + "AND p.planillaPK.numPlanilla = :numPlanilla "
+                + "AND p.planillaPK.codTipopla = :codTipopla "
+                +" ", Planilla.class);
         q.setParameter("codCia", cia);
         q.setParameter("anio", anio);
         q.setParameter("mes", mes);
