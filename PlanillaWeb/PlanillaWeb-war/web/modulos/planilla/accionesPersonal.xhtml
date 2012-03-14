@@ -136,7 +136,7 @@
                 <h:outputText id="lbObservaciones" value="#{(sol.observacion!=null and sol.observacion.length() > 10 )? sol.observacion.subSequence(0, 10):sol.observacion} #{(sol.observacion!=null and sol.observacion.length() > 10 )? '.....':''}" title="#{sol.observacion!=null?sol.observacion:'Ninguna'}" />
                 <p:tooltip for="lbObservaciones" showEvent="focus" hideEvent="blur" />  
             </p:column>
-        </p:dataTable>
+        </p:dataTable>      
     </ui:define>
 
     <ui:define name="dialogos">
@@ -146,31 +146,11 @@
             <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
             <p:spacer height="10px"/>
             <p:fieldset id="fieldsetEncabezado">
+                <ap:encabezadoSolicitud />
                 <table border="0" width="100%" >
                     <tr>
-                        <td width="20%" ><h:outputLabel value="Fecha de Solicitud"/></td>
-                        <td width="80%" ><h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                            </h:outputLabel>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>                            
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Empleado"/>
-                            </h:panelGrid>
-                        </td>
-                        <td>
-                            <h:outputLabel value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" id="txtEmp" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><h:outputLabel value="Jefe" /></td>
-                        <td><h:outputLabel id="txtJefe" value="#{SessionBeanEMP.empleadoSesion.empleados.nombreCompleto}" style="font-weight: bold;" /></td>
-                    </tr>
-                    <tr>
-                        <td><h:outputLabel value="Observacion"/></td>
-                        <td colspan="3"><p:inputTextarea id="txtobservacionesSP" style="width:100%;" value="#{planilla$accionesPersonal.solicitudPermiso.observacion}" /></td>
+                        <td width="20%;" ><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
+                        <td colspan="3" ><p:inputTextarea id="txtobservacionesSP" style="width:100%;" value="#{planilla$accionesPersonal.solicitudPermiso.observacion}" autoResize="false" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -253,37 +233,17 @@
 
         </p:dialog>
 
-        <p:dialog id="dialogSolicitudVacaciones" widgetVar="dialogSolicitudVacaciones" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
+        <p:dialog id="dialogSolicitudVacaciones" widgetVar="dialogSolicitudVacaciones" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="575" >
             <p:spacer height="10px"/>
             <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
             <p:spacer height="10px"/>
 
             <p:fieldset id="fieldsetEncabezadoVac">
+                <ap:encabezadoSolicitud />
                 <table border="0" width="100%" >
                     <tr>
-                        <td width="15%;" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;"/></td>
-                        <td width="85%" ><h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                            </h:outputLabel>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>                            
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Empleado" style="font-weight: bold;"/>
-                            </h:panelGrid>
-                        </td>
-                        <td>
-                            <h:outputLabel id="txtEmpVac" value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
-                        <td><h:outputLabel id="txtJefeVac" value="#{SessionBeanEMP.empleadoSesion.empleados.nombreCompleto}" /></td>
-                    </tr>
-                    <tr>
-                        <td><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
-                        <td><p:inputTextarea id="txtobservacionesVac" style="width:100%;" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.observacion}" /></td>
+                        <td width="20%" ><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
+                        <td><p:inputTextarea id="txtobservacionesVac" style="width:100%;" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.observacion}" autoResize="false" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -361,7 +321,7 @@
             </p:fieldset>
             <p:spacer height="15" />
             <ap:okCancelAccionPersonal okAction="#{planilla$accionesPersonal.solicitudVacacionesAnuales.guardarSolicitud$action}" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldVacaciones,principalForm:txtobservacionesVac" cancelAction="#{planilla$accionesPersonal.cancelar$action}" onCancelClose="#{planilla$accionesPersonal.urlPlantilla}" />
-            
+
         </p:dialog>
 
         <p:dialog id="dialogSolicitudIncapacidad" widgetVar="dialogSolicitudIncapacidad" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
@@ -370,26 +330,10 @@
             <p:spacer height="10px"/>
 
             <p:fieldset id="fieldsetEncabezadoInc">
+                <ap:encabezadoSolicitud />
                 <table border="0" width="100%" >
                     <tr>
-                        <td width="16%" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;" /></td>
-                        <td width="84%"><h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                            </h:outputLabel>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><h:outputLabel value="Empleado" style="font-weight: bold;" /></td>
-                        <td>
-                            <h:outputLabel id="txtEmpInc" value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
-                        <td><h:outputLabel id="txtJefeInc" value="#{SessionBeanEMP.empleadoSesion.empleados.nombreCompleto}" /></td>
-                    </tr>
-                    <tr>
-                        <td><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
+                        <td width="20%" ><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
                         <td colspan="3"><p:inputTextarea id="txtobservacionesInc" style="width:100%;" value="#{planilla$accionesPersonal.solicitudIncapacidad.observacion}" /></td>
                     </tr>
                 </table>
@@ -467,42 +411,11 @@
             <p:spacer height="10px"/>
 
             <p:fieldset id="fieldsetEncabezadoNom">
+                <ap:encabezadoSolicitud />
                 <table border="0" width="100%" cellpadding="3" >
                     <tr>
-                        <td width="20%;" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;" /></td>
-                        <td width="80%;">
-                            <h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                            </h:outputLabel>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;" >
-                            <h:outputLabel value="Empleado" style="font-weight: bold;" />
-                        </td>
-                        <td width="80%;">
-                            <h:outputLabel id="txtEmpNom" value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" />
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
-                        <td width="80%;"><h:outputLabel id="txtJefeNom" value="#{SessionBeanEMP.empleadoSesion.empleados.nombreCompleto}"  /></td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Departamento" style="font-weight: bold;" /></td>
-                        <td width="80%;"><h:outputLabel id="txtDeptoNom" value="#{SessionBeanEMP.empleadoSesion.departamentos.nomDepto}" /></td>
-                    </tr>
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Puesto" style="font-weight: bold;" /></td>
-                        <td width="80%;"><h:outputLabel id="txtPuestoNom" value="#{SessionBeanEMP.empleadoSesion.puestos.nomPuesto}" /></td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
-                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesNom" style="width:100%;" value="#{planilla$accionesPersonal.solicitudNombramiento.observacion}" /></td>
+                        <td width="20%;"><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesNom" style="width:100%;" value="#{planilla$accionesPersonal.solicitudNombramiento.observacion}" autoResize="false" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -564,7 +477,7 @@
                     </tr>
                     <tr>
                         <td width="15%;"><h:outputLabel style="font-weight: bold;" value="Observacion"/></td>
-                        <td width="85%;"><p:inputTextarea id="txtobservacionesVacCol" style="width:100%;" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.observacion}" /></td>
+                        <td width="85%;"><p:inputTextarea id="txtobservacionesVacCol" style="width:100%;" value="#{planilla$accionesPersonal.solicitudVacacionColectiva.observacion}" autoResize="false" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -714,36 +627,10 @@
             <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
             <p:spacer height="10px"/>
             <p:fieldset id="fieldsetEncabezadoAuSal">
+                <ap:encabezadoSolicitud />
                 <table border="0" width="100%" cellpadding="3" >
                     <tr>
-                        <td width="20%;" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;" /></td>
-                        <td width="80%;" colspan="2" ><h:outputLabel value="#{planilla$accionesPersonal.fecha}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputLabel></td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;">
-                            <h:outputLabel value="Empleado" style="font-weight: bold;" />
-                        </td>
-                        <td width="60%;">
-                            <h:outputLabel id="txtEmpAuSal" value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" />
-                        </td>
-                        <td width="20%;" align="right" >
-                            <p:commandButton image="ui-icon-person" value="Seleccionar" />
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
-                        <td width="80%;" colspan="2" ><h:outputLabel id="txtJefeAuSal" value="#{SessionBeanEMP.empleadoSesion.empleados.nombreCompleto}"  /></td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Departamento" style="font-weight: bold;" /></td>
-                        <td width="80%;" colspan="2" ><h:outputLabel id="txtDeptoAuSal" value="#{SessionBeanEMP.empleadoSesion.departamentos.nomDepto}" /></td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
+                        <td width="20%;"><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
                         <td colspan="2" width="80%;" ><p:inputTextarea id="txtobservacionesAuSal" style="width:100%;" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.observacion}" /></td>
                     </tr>
                 </table>
@@ -1060,38 +947,11 @@
             <p:spacer height="10px"/>
 
             <p:fieldset id="fieldsetEncabezadoRetiro">
+                <ap:encabezadoSolicitud />
                 <table border="0" width="100%" cellpadding="3" >
                     <tr>
-                        <td width="20%;" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;" /></td>
-                        <td width="80%;">
-                            <h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                            </h:outputLabel>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Empleado" style="font-weight: bold;" /></td>
-                        <td width="80%;"><h:outputLabel value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" /></td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
-                        <td width="80%;"><h:outputLabel  value="#{SessionBeanEMP.empleadoSesion.empleados.nombreCompleto}"  /></td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Departamento" style="font-weight: bold;" /></td>
-                        <td width="80%;"><h:outputLabel  value="#{SessionBeanEMP.empleadoSesion.departamentos.nomDepto}" /></td>
-                    </tr>
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Puesto" style="font-weight: bold;" /></td>
-                        <td width="80%;"><h:outputLabel  value="#{SessionBeanEMP.empleadoSesion.puestos.nomPuesto}" /></td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
-                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesRetiro" style="width:100%;" value="#{planilla$accionesPersonal.solicitudRetiro.observacion}" /></td>
+                        <td width="20%;"><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesRetiro" style="width:100%;" value="#{planilla$accionesPersonal.solicitudRetiro.observacion}" autoResize="false" /></td>
                     </tr>
                 </table>
             </p:fieldset>
@@ -1152,40 +1012,11 @@
             <p:spacer height="10px"/>
 
             <p:fieldset id="fieldsetEncabezadoNA">
+                <ap:encabezadoSolicitud />
                 <table border="0" width="100%" cellpadding="3" >
                     <tr>
-                        <td width="20%;" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;" /></td>
-                        <td width="80%;">
-                            <h:outputLabel value="#{planilla$accionesPersonal.fecha}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                            </h:outputLabel>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Empleado" style="font-weight: bold;" /></td>
-                        <td width="80%;">
-                            <h:outputLabel value="#{SessionBeanEMP.empleadoSesion.nombreCompleto}" />
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
-                        <td width="80%;"><h:outputLabel  value="#{SessionBeanEMP.empleadoSesion.empleados.nombreCompleto}"  /></td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Departamento" style="font-weight: bold;" /></td>
-                        <td width="80%;"><h:outputLabel  value="#{SessionBeanEMP.empleadoSesion.departamentos.nomDepto}" /></td>
-                    </tr>
-                    <tr>
-                        <td width="20%;" ><h:outputLabel value="Puesto" style="font-weight: bold;" /></td>
-                        <td width="80%;"><h:outputLabel  value="#{SessionBeanEMP.empleadoSesion.puestos.nomPuesto}" /></td>
-                    </tr>
-
-                    <tr>
-                        <td width="20%;"><h:outputLabel value="Observacion" style="font-weight: bold;" /></td>
-                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesNA" style="width:100%;" value="#{planilla$accionesPersonal.solicitudNoAfectaPlanilla.observacion}" /></td>
+                        <td width="20%;"><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesNA" style="width:100%;" value="#{planilla$accionesPersonal.solicitudNoAfectaPlanilla.observacion}" autoResize="false" /></td>
                     </tr>
                 </table>
             </p:fieldset>

@@ -196,6 +196,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         solicitudNoAfectaPlanilla = new SolicitudNoAfectaPlanilla(this);
         solicitudesMostradas = "E";
         empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
+        getSessionBeanPLA().setAccionSeleccionada(null);
         fecha = new Date();
     }
 
