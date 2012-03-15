@@ -141,7 +141,7 @@
     </ui:define>
 
     <ui:define name="dialogos">
-        <d:dialogoEmpleados name="dlgEmpSolPermisos" selectionMode="single"
+        <d:dialogoEmpleados name="dlgEmpSolPermisos"
                             title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
                             update="principalForm:mensajes,principalForm:fieldsetEncabezado" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
@@ -240,7 +240,7 @@
 
         </p:dialog>
 
-        <d:dialogoEmpleados name="dlgEmpSolVacaciones" selectionMode="single"
+        <d:dialogoEmpleados name="dlgEmpSolVacaciones"
                             title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
                             update="principalForm:mensajes,principalForm:fieldsetEncabezadoVac" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
@@ -338,7 +338,7 @@
 
         </p:dialog>
 
-        <d:dialogoEmpleados name="dlgEmpSolIncapacidad" selectionMode="single"
+        <d:dialogoEmpleados name="dlgEmpSolIncapacidad"
                     title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
                     update="principalForm:mensajes,principalForm:fieldsetEncabezadoInc" image="/resources/imagenes/64/meeting-participant.png"
                     information="Seleccione un empleado para la solicitud"
@@ -425,7 +425,7 @@
 
         </p:dialog>
 
-        <d:dialogoEmpleados name="dlgEmpSolNombramientos" selectionMode="single"
+        <d:dialogoEmpleados name="dlgEmpSolNombramientos"
             title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
             update="principalForm:mensajes,principalForm:fieldsetEncabezadoNom" image="/resources/imagenes/64/meeting-participant.png"
             information="Seleccione un empleado para la solicitud"
@@ -648,9 +648,9 @@
         </p:dialog>    
 
         <!-- Aumento de Sueldo -->
-        <d:dialogoEmpleados name="dlgEmpSolAumentoSueldo" selectionMode="single"
+        <d:dialogoEmpleados name="dlgEmpSolAumentoSueldo" 
             title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
-            update="principalForm:mensajes,principalForm:fieldsetEncabezadoAuSal" image="/resources/imagenes/64/meeting-participant.png"
+            update="principalForm:mensajes,principalForm:fieldsetEncabezadoAuSal,principalForm:lbSalario" image="/resources/imagenes/64/meeting-participant.png"
             information="Seleccione un empleado para la solicitud"
             okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
             cancelAction="#{planilla$accionesPersonal.cancelSeleccionarEmpleado}"/> 
@@ -711,7 +711,7 @@
                         <td><h:outputLabel value="Sueldo Anterior: " style="font-weight: bold;" /></td>
 
                         <td>
-                            <h:outputLabel value="$ #{SessionBeanEMP.empleadoSesion.salario}" style="font-weight: bold;color: red;" >
+                            <h:outputLabel id="lbSalario" value="$ #{planilla$accionesPersonal.empleadoAccionPersonal.salario}" style="font-weight: bold;color: red;" >
                                 <f:convertNumber maxFractionDigits="2" />
                             </h:outputLabel>
                         </td>
@@ -974,7 +974,7 @@
         </p:dialog>
 
         <!-- Solicitud de Retiro  -->
-        <d:dialogoEmpleados name="dlgEmpSolRetiro" selectionMode="single"
+        <d:dialogoEmpleados name="dlgEmpSolRetiro" 
             title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
             update="principalForm:mensajes,principalForm:fieldsetEncabezadoRetiro" image="/resources/imagenes/64/meeting-participant.png"
             information="Seleccione un empleado para la solicitud"
@@ -1046,7 +1046,7 @@
         </p:dialog>
 
         <!-- Solicitud No Afecta Planilla -->
-        <d:dialogoEmpleados name="dlgEmpSolNoAfecta" selectionMode="single"
+        <d:dialogoEmpleados name="dlgEmpSolNoAfecta" 
             title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
             update="principalForm:mensajes,principalForm:fieldsetEncabezadoNA" image="/resources/imagenes/64/meeting-participant.png"
             information="Seleccione un empleado para la solicitud"

@@ -77,12 +77,10 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
     }
 
     public String guardarSolicitud$action() {
-        if (validarSolicitud()) {
-            return null;
-        }
-        AccionPersonal accionPersonal = new AccionPersonal();
+        if (validarSolicitud()) return null;
+        AccionPersonal accionPersonal = new AccionPersonal();       
         TipoAccion tipoAccion = new TipoAccion(new TipoAccionPK(getEncabezadoSolicitud().getEmpresa(), tipoAccionSeleccionada));
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), tipoAccion));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), tipoAccion, getEmpleadosToAccionPersonal()));
         accionPersonal.setTipoAccion(tipoAccion);
         accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());
         accionPersonal.setFecha(new Date());

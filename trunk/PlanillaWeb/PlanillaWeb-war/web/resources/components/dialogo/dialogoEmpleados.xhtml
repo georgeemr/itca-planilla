@@ -16,14 +16,13 @@ and open the template in the editor.
         <composite:attribute name="title" />
         <composite:attribute name="information" />
         <composite:attribute name="image" />
-        <composite:attribute name="selectionMode" />
         <composite:attribute name="selection" />
         <composite:attribute name="okAction"  method-signature="java.lang.String action()" />
         <composite:attribute name="cancelAction"  method-signature="java.lang.String action()" />
     </composite:interface>
 
     <composite:implementation>
-        <p:dialog widgetVar="#{cc.attrs.name}" header="#{cc.attrs.title}" showEffect="fold" hideEffect="fold" width="506" height="410" >
+        <p:dialog widgetVar="#{cc.attrs.name}" header="#{cc.attrs.title}" showEffect="fold" hideEffect="fold" width="506" height="475" >
 
             <p:panel style="border:none;">
                 <h:panelGrid columns="2" >
@@ -31,12 +30,10 @@ and open the template in the editor.
                     <h:outputLabel id="lbl1" value="#{cc.attrs.information}"  style="font-weight: bold;"/>
                 </h:panelGrid>
 
-                <p:dataTable id="listadoEmpleados" value="#{planilla$accionesPersonal.listaEmp}" var="empleado" selectionMode="#{cc.attrs.selectionMode}"
-                             paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true" selection="#{cc.attrs.selection}"
+                <p:dataTable id="listadoEmpleados" value="#{planilla$accionesPersonal.listaEmp}" var="empleado" 
+                             paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true" 
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                             rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" 
-                             onRowSelectUpdate="#{cc.attrs.update}"
-                             onRowUnselectUpdate="#{cc.attrs.update}" >
+                             rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" >
 
                     <f:facet name="header">
                         Empleados
@@ -50,10 +47,16 @@ and open the template in the editor.
                         <h:outputLabel value="#{empleado.nombreCompleto}" />
                     </p:column>  
 
+                    <p:column>
+                        <p:commandButton styleClass="opcionMenu" update="#{cc.attrs.update}" oncomplete="#{cc.attrs.name}.hide();" action="#{cc.attrs.okAction}" image="ui-icon-circle-check" title="Seleccionar empleado" >
+                            <f:setPropertyActionListener value="#{empleado}" target="#{cc.attrs.selection}" /> 
+                        </p:commandButton>
+                    </p:column>
+                    
                 </p:dataTable>
+                
                 <p:spacer height="15" />
                 <h:panelGrid columns="2">
-                    <p:commandButton value="Aceptar" styleClass="opcionMenu" update="#{cc.attrs.update}" oncomplete="#{cc.attrs.name}.hide();" action="#{cc.attrs.okAction}" image="ui-icon-circle-check" /> 
                     <p:commandButton value="Cancelar" styleClass="opcionMenu" update="#{cc.attrs.update}" oncomplete="#{cc.attrs.name}.hide();" action="#{cc.attrs.cancelAction}" image="ui-icon-circle-check" /> 
                 </h:panelGrid>
             </p:panel>

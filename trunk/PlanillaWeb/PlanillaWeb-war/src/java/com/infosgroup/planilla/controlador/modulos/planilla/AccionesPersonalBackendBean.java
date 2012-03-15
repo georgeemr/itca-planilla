@@ -342,7 +342,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public String seleccionarEmpleado() {
-        setEmpleadoAccionPersonal(empleadoAccionPersonal);
         addMessage("Acciones de Personal", "Empleado seleccionado " + empleadoAccionPersonal.getNombreCompleto(), TipoMensaje.INFORMACION);
         return null;
     }
