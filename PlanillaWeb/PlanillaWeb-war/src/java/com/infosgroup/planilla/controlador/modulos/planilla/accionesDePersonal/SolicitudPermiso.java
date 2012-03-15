@@ -111,12 +111,9 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
     }
 
     public String guardarSolicitud$action() {
-        if (!validarSolicitud()) {
-            return null;
-        }
-
+        if (!validarSolicitud()) return null;
         AccionPersonal accionPersonal = new AccionPersonal();
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania()));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), getEmpleadosToAccionPersonal()));
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());
         accionPersonal.setFecha(new Date());

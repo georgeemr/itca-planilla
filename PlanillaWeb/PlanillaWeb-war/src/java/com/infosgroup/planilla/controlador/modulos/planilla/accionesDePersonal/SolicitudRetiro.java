@@ -87,11 +87,9 @@ public class SolicitudRetiro extends SolicitudDePersonal implements java.io.Seri
     }
 
     public String guardarSolicitud$action() {
-        if (validarSolicitud()) {
-            return null;
-        }
+        if (validarSolicitud()) return null;
         AccionPersonal accionPersonal = new AccionPersonal();
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), new TipoAccion(new TipoAccionPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), accion))));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), new TipoAccion(new TipoAccionPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), accion)),getEmpleadosToAccionPersonal()));
         accionPersonal.setTipoAccion(new TipoAccion(new TipoAccionPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), accion)));
         accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());
         accionPersonal.setFecha(new Date());

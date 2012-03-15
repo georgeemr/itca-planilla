@@ -144,9 +144,8 @@ public class SolicitudAumentoSueldo extends SolicitudDePersonal implements java.
 
     public String guardarSolicitud$action() {
         if (validarSolicitud()) return null;
-        
         AccionPersonal accionPersonal = new AccionPersonal();
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania()));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), getEmpleadosToAccionPersonal()));
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());        
         accionPersonal.setFecha(new Date());
@@ -159,7 +158,7 @@ public class SolicitudAumentoSueldo extends SolicitudDePersonal implements java.
         accionPersonal.setMes(new Short(planilla.split(":")[2].toString()));
         accionPersonal.setNumPlanilla(new Short(planilla.split(":")[3].toString()));
         accionPersonal.setCodTipopla(tipoPlanilla);
-        accionPersonal.setSueldoAnterior( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getSalario() );
+        accionPersonal.setSueldoAnterior( getEmpleadosToAccionPersonal().getSalario() );
         accionPersonal.setCantidad( formaAumento.equals("V") ? new BigDecimal( sueldoNuevo ): new BigDecimal(porcentaje) ) ;
         accionPersonal.setPorcentaje(formaAumento.equals("P") ? new BigDecimal( sueldoNuevo ): BigDecimal.ZERO );
         accionPersonal.setPuestos(getEmpleadosToAccionPersonal().getPuestos());
