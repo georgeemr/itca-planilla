@@ -67,21 +67,29 @@
                     <p:spacer width="5"/>
                     <h:outputText value="#{planilla.empleados.nombreCompleto}"/>
                 </p:column>
-                <p:column headerText="Sueldo Base" filterMatchMode="contains" >
+                <p:column headerText="Sueldo Base" filterMatchMode="contains" style="text-align: right">
                     <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.sueldoBase}"/>
+                    <h:outputText value="#{planilla.sueldoBase}">
+                        <f:convertNumber pattern="$#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
+                </h:outputText>
                 </p:column>
-                <p:column headerText="Prestaciones" filterMatchMode="contains" >
+                <p:column headerText="Prestaciones" filterMatchMode="contains" style="text-align: right">
                     <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.prestaciones}"/>
+                    <h:outputText value="#{planilla.prestaciones}">
+                        <f:convertNumber  pattern="$#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
+                    </h:outputText>    
                 </p:column>
-                <p:column headerText="Deducciones" filterMatchMode="contains" >
+                <p:column headerText="Deducciones" filterMatchMode="contains" style="text-align: right">
                     <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.deducciones}"/>
+                    <h:outputText value="#{planilla.deducciones}">
+                        <f:convertNumber pattern="$#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
+                    </h:outputText>
                 </p:column>
-                <p:column headerText="Total" filterMatchMode="contains" >
+                <p:column headerText="Total" filterMatchMode="contains" style="text-align: right" >
                     <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.liqRecibir}"/>
+                    <h:outputText value="#{planilla.liqRecibir}">
+                        <f:convertNumber pattern="$#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
+                    </h:outputText>
                 </p:column>
             </p:dataTable>
             <p:spacer height="10"/>
@@ -95,8 +103,10 @@
                             <p:column headerText="Descripcion">
                                 <h:outputText value="#{ingreso.deducPresta.desDp}"/>
                             </p:column>
-                            <p:column headerText="Cantidad">
-                                <h:outputText value="#{ingreso.valor}"/>
+                            <p:column headerText="Cantidad" style="text-align: right">
+                                <h:outputText value="#{ingreso.valor}">
+                                    <f:convertNumber pattern="$#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
+                                </h:outputText>
                             </p:column>
                          </p:dataTable>
                      </td>
@@ -109,8 +119,10 @@
                             <p:column headerText="Descripcion">
                                 <h:outputText value="#{egreso.deducPresta.desDp}"/>
                             </p:column>
-                            <p:column headerText="Cantidad">
-                                <h:outputText value="#{egreso.valor}"/>
+                             <p:column headerText="Cantidad" style="text-align: right">
+                                <h:outputText value="#{egreso.valor}">
+                                    <f:convertNumber pattern="$#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
+                                </h:outputText>
                             </p:column>
                         </p:dataTable>
                       </td>
