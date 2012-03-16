@@ -131,10 +131,10 @@ private String documentos$numero;
 // ===========================================================================================================
 // = Capacitaciones ==========================================================================================
 // ===========================================================================================================
-private String capacitacion$capacitacion;
+private String capacitacion$tipo;
 private String capacitacion$descripcion;
 private String capacitacion$institucion;
-private Date capacitacion$fecha;
+private String capacitacion$periodo;
 // ===========================================================================================================
 // = Dependientes ============================================================================================
 // ===========================================================================================================
@@ -152,6 +152,7 @@ private Integer idiomas$nivel;
 // = Beneficiarios ===========================================================================================
 // ===========================================================================================================
 private String beneficiarios$nombre;
+private String beneficiarios$parentesco;
 // ===========================================================================================================
 // = Equipos de oficina ======================================================================================
 // ===========================================================================================================
@@ -419,7 +420,7 @@ public void init()
     capacitacionesCandidato = new ArrayList<CapacitacionCandidato>();
     dependientesCandidato = new ArrayList<DependienteCandidato>();
     idiomasCandidato = new ArrayList<IdiomaCandidato>();
-    beneficiariosCandidato = new ArrayList<String>();
+    beneficiariosCandidato = new ArrayList<BeneficiarioCandidato>();
     equiposCandidato = new ArrayList<EquipoCandidato>();
     pruebasCandidato = new ArrayList<PruebaCandidato>();
     puestosCandidato = new ArrayList<PuestoCandidato>();
@@ -441,13 +442,13 @@ public String preparacionAcademica$agregar$action()
             hayError = true;
             }
 
-        if (preparacion$pais == null)
+        if ((preparacion$pais == null) || preparacion$pais.equals("0"))
             {
-            addMessage("Preparacion academica", "Seleccione el pais de la instituci&oacute;n", TipoMensaje.INFORMACION);
+            addMessage("Preparacion academica", "Seleccione el pa&iacute;s de la instituci&oacute;n", TipoMensaje.INFORMACION);
             hayError = true;
             }
 
-        if (preparacion$departamento == null)
+        if ((preparacion$departamento == null) || preparacion$departamento.equals("0:0"))
             {
             addMessage("Preparacion academica", "Selecciones el departamento de la instituci&oacute;n", TipoMensaje.INFORMACION);
             hayError = true;
@@ -468,6 +469,12 @@ public String preparacionAcademica$agregar$action()
         if ((preparacion$anioIngreso != null) && (preparacion$anioEgreso != null) && (preparacion$anioIngreso > preparacion$anioEgreso))
             {
             addMessage("Preparacion academica", "El a&ntilde;o de ingreso debe ser menor o igual que el a&ntilde;o de egreso", TipoMensaje.INFORMACION);
+            hayError = true;
+            }
+
+        if ((preparacion$nivelAcademico == null) || preparacion$nivelAcademico.equals("0:0"))
+            {
+            addMessage("Preparacion academica", "Seleccione el nivel acad&eacute;mico", TipoMensaje.INFORMACION);
             hayError = true;
             }
 
@@ -516,6 +523,12 @@ public String emergencias$agregarParentesco$action()
         hayError = Boolean.TRUE;
         }
 
+    if ((emergencias$parentescoContacto == null) || emergencias$parentescoContacto.equals("0:0"))
+        {
+        addMessage("Emergencias", "Seleccione el parentesco del contacto", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
     if (hayError)
         return null;
 
@@ -536,6 +549,12 @@ public String experienciaLaboral$agregar$action()
     try
         {
         Boolean hayError = Boolean.FALSE;
+
+        if ((experiencia$puesto == null) || experiencia$puesto.equals("0:0"))
+            {
+            addMessage("Infosweb RRHH", "Seleccione el puesto", TipoMensaje.ADVERTENCIA);
+            hayError = Boolean.TRUE;
+            }
 
         if ((experiencia$lugarTrabajo == null) || experiencia$lugarTrabajo.trim().isEmpty())
             {
@@ -705,6 +724,17 @@ public String documento$agregar$action()
 {
     try
         {
+        Boolean hayError = Boolean.FALSE;
+
+        if ((documentos$tipo == null) || documentos$tipo.equals("0:0"))
+            {
+            addMessage("Infosweb RRHH", "Seleccione el tipo de documento", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (hayError)
+            return null;
+
         String[] documentoPKStr = documentos$tipo.split(":");
         TipoDocumentoPK tipoDocumentoPK = new TipoDocumentoPK(new Short(documentoPKStr[0]), new Short(documentoPKStr[1]));
 
@@ -731,33 +761,39 @@ public String capacitaciones$agregar$action()
         {
         Boolean hayError = Boolean.FALSE;
 
-        if (capacitacion$fecha == null)
+        if ((capacitacion$institucion == null) || capacitacion$institucion.trim().isEmpty())
             {
-            addMessage("Infosweb RRHH", "Ingrese la fecha de la capacitaci&oacute;n", TipoMensaje.INFORMACION);
+            addMessage("Infosweb RRHH", "Ingrese el nombre de la instituci&oacute;n", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if ((capacitacion$descripcion == null) || capacitacion$descripcion.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese la descripci&oacute;n de la capacitaci&oacute;n", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if ((capacitacion$periodo == null) || capacitacion$periodo.trim().isEmpty())
+            {
+            addMessage("Infosweb RRHH", "Ingrese el periodo de la capacitaci&oacute;n", TipoMensaje.INFORMACION);
             hayError = Boolean.TRUE;
             }
 
         if (hayError)
             return null;
 
-        String[] capacitacionPKStr = capacitacion$capacitacion.split(":");
-        String[] institucionPKStr = capacitacion$institucion.split(":");
-
-        CapacitacionPK capacitacionPK = new CapacitacionPK(new Short(capacitacionPKStr[0]), new Integer(capacitacionPKStr[1]));
-        InstitucionesPK institucionesPK = new InstitucionesPK(new Short(institucionPKStr[0]), new Short(institucionPKStr[1]));
-
         CapacitacionCandidato c = new CapacitacionCandidato();
-        c.setCapacitacion(sessionBeanParametros.findCapacitacionById(capacitacionPK));
-        c.setInstitucion(sessionBeanParametros.findInstitucionById(institucionesPK));
+        c.setTipo(capacitacion$tipo);
         c.setDescripcion(capacitacion$descripcion);
-        c.setFecha(capacitacion$fecha);
+        c.setInstitucion(capacitacion$institucion);
+        c.setPeriodo(capacitacion$periodo);
 
         capacitacionesCandidato.add(c);
 
-        capacitacion$capacitacion = null;
+        capacitacion$tipo = null;
         capacitacion$descripcion = null;
         capacitacion$institucion = null;
-        capacitacion$fecha = null;
+        capacitacion$periodo = null;
         }
     catch (Exception excpt)
         {
@@ -782,6 +818,12 @@ public String dependientes$agregar$action()
         if ((dependientes$fechaNacimiento == null))
             {
             addMessage("Infosweb RRHH", "Ingrese fecha de nacimiento del dependiente", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if ((dependientes$parentesco == null) || dependientes$parentesco.equals("0:0"))
+            {
+            addMessage("Infosweb RRHH", "Seleccione el parentesco del dependiente", TipoMensaje.INFORMACION);
             hayError = Boolean.TRUE;
             }
 
@@ -812,6 +854,17 @@ public String idiomas$agregar$action()
 {
     try
         {
+        Boolean hayError = Boolean.FALSE;
+
+        if ((idiomas$idioma == null) || idiomas$idioma.equals("0:0"))
+            {
+            addMessage("Infosweb RRHH", "Seleccione el idioma", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (hayError)
+            return null;
+
         String[] idiomaPKStr = idiomas$idioma.split(":");
         IdiomaPK idiomaPK = new IdiomaPK(new Short(idiomaPKStr[0]), new Integer(idiomaPKStr[1]));
         IdiomaCandidato i = new IdiomaCandidato();
@@ -835,6 +888,19 @@ public String beneficiarios$agregar$action()
         {
         Boolean hayError = Boolean.FALSE;
 
+        if ((beneficiarios$parentesco == null) || beneficiarios$parentesco.equals("0:0"))
+            {
+            addMessage("Infosweb RRHH", "Seleccione el parentesco del beneficiario", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (hayError)
+            return null;
+
+        String[] parentescoPKStr = beneficiarios$parentesco.split(":");
+
+        ParentescoPK p = new ParentescoPK(new Short(parentescoPKStr[0]), new Short(parentescoPKStr[1]));
+
         if ((beneficiarios$nombre == null) || beneficiarios$nombre.isEmpty())
             {
             addMessage("Infosweb RRHH", "Ingrese el nombre del beneficiario", TipoMensaje.ADVERTENCIA);
@@ -844,7 +910,12 @@ public String beneficiarios$agregar$action()
         if (hayError)
             return null;
 
-        beneficiariosCandidato.add(beneficiarios$nombre);
+        BeneficiarioCandidato b = new BeneficiarioCandidato();
+
+        b.setNombre(beneficiarios$nombre);
+        b.setParentesco(sessionBeanParametros.findParentescoById(p));
+
+        beneficiariosCandidato.add(b);
         beneficiarios$nombre = null;
         }
     catch (Exception excpt)
@@ -859,11 +930,32 @@ public String equipos$agregar$action()
 {
     try
         {
+        Boolean hayError = Boolean.FALSE;
+
+        if ((equipos$equipo == null) || equipos$equipo.equals("0:0"))
+            {
+            addMessage("Infosweb RRHH", "Seleccione el equipo", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (hayError)
+            return null;
+
         String[] equipoPKStr = equipos$equipo.split(":");
         EquipoPK equipoPK = new EquipoPK(new Short(equipoPKStr[0]), new Short(equipoPKStr[1]));
+        Equipo eq = sessionBeanParametros.findEquipoById(equipoPK);
+
+        for (EquipoCandidato eqc : equiposCandidato)
+            {
+            if (eqc.getEquipo() == eq)
+                {
+                addMessage("Infosweb RRHH", "El equipo seleccionado ya ha sido registrado", TipoMensaje.INFORMACION);
+                return null;
+                }
+            }
 
         EquipoCandidato e = new EquipoCandidato();
-        e.setEquipo(sessionBeanParametros.findEquipoById(equipoPK));
+        e.setEquipo(eq);
         e.setEstado(equipos$estado);
         equiposCandidato.add(e);
         }
@@ -880,6 +972,12 @@ public String pruebas$agregar$action()
     try
         {
         Boolean hayError = Boolean.FALSE;
+
+        if ((pruebas$tipoPrueba == null) || pruebas$tipoPrueba.equals("0:0"))
+            {
+            addMessage("Infosweb RRHH", "Seleccione el tipo de prueba", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
 
         if ((pruebas$resultado == null) || pruebas$resultado.trim().isEmpty())
             {
@@ -939,6 +1037,12 @@ public String puestos$agregar$action()
         {
         Boolean hayError = Boolean.FALSE;
 
+        if ((puestos$puesto == null) || puestos$puesto.equals("0:0"))
+            {
+            addMessage("Infosweb RRHH", "Seleccione el puesto", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
         if (puestos$salarioAspirado == null)
             {
             addMessage("Infosweb RRHH", "Ingrese el salario aspirado", TipoMensaje.INFORMACION);
@@ -974,9 +1078,21 @@ public String entrevistas$agregar$action()
         {
         Boolean hayError = Boolean.FALSE;
 
+        if ((puestos$puesto == null) || puestos$puesto.equals("0:0"))
+            {
+            addMessage("Infosweb RRHH", "Seleccione el puesto", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
         if (entrevistas$fecha == null)
             {
             addMessage("Infosweb RRHH", "Ingrese la fecha de la entrevista", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if ((entrevistas$entrevistador == null) || entrevistas$entrevistador.equals("0:0"))
+            {
+            addMessage("Infosweb RRHH", "Seleccione el entrevistador", TipoMensaje.INFORMACION);
             hayError = Boolean.TRUE;
             }
 
@@ -1013,6 +1129,12 @@ public String guardar$action()
         {
         Boolean hayError = Boolean.FALSE;
 
+        if (generales$pais == null)
+            {
+            addMessage("Infosweb RRHH", "Seleccione el pa&iacute;s de domicilio", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
         if (generales$departamento == null)
             {
             addMessage("Infosweb RRHH", "Seleccione el departamento de domicilio", TipoMensaje.INFORMACION);
@@ -1021,7 +1143,13 @@ public String guardar$action()
 
         if (generales$municipio == null)
             {
-            addMessage("Infosweb RRHH", "Seleccione el departamento de domicilio", TipoMensaje.INFORMACION);
+            addMessage("Infosweb RRHH", "Seleccione el municipio de domicilio", TipoMensaje.INFORMACION);
+            hayError = Boolean.TRUE;
+            }
+
+        if (generales$paisNacimiento == null)
+            {
+            addMessage("Infosweb RRHH", "Seleccione el pa&iacute;s de nacimiento", TipoMensaje.INFORMACION);
             hayError = Boolean.TRUE;
             }
 
@@ -1134,8 +1262,6 @@ public String guardar$action()
         candidato.setEstado("A");
         reclutamientoFacade.guardarCandidato(candidato);
 
-        //reclutamientoFacade.flushCandidato();
-
         candidato = reclutamientoFacade.findCandidatoById(pkCandidato);
 
         i = 0;
@@ -1145,7 +1271,6 @@ public String guardar$action()
             nivelCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             nivelCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
             nivelCandidatoPK.setCodNivel(new Short("" + (++i)));
-            //nivelCandidatoPK.setCodNivel(reclutamientoFacade.maxNivelXCandidato(candidato));
 
             NivelesXCandidato nivelCandidato = new NivelesXCandidato();
             nivelCandidato.setNivelesXCandidatoPK(nivelCandidatoPK);
@@ -1166,7 +1291,6 @@ public String guardar$action()
             emergenciaCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             emergenciaCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
             emergenciaCandidatoPK.setCodEmergencia(++i);
-            //emergenciaCandidatoPK.setCodEmergencia(reclutamientoFacade.getMaxEmergenciaCandidato(candidato));
 
             EmergenciaXCandidato emergenciaCandidato = new EmergenciaXCandidato();
             emergenciaCandidato.setEmergenciaXCandidatoPK(emergenciaCandidatoPK);
@@ -1188,7 +1312,6 @@ public String guardar$action()
             referenciaPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             referenciaPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
             referenciaPK.setCodReferencia(++i);
-            //referenciaPK.setCodReferencia(reclutamientoFacade.maxReferencia(candidato));
 
             Referencia referencia = new Referencia();
             referencia.setReferenciaPK(referenciaPK);
@@ -1209,7 +1332,6 @@ public String guardar$action()
             referenciaPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             referenciaPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
             referenciaPK.setCodReferencia(++i);
-            //referenciaPK.setCodReferencia(reclutamientoFacade.maxReferencia(candidato));
 
             Referencia referencia = new Referencia();
             referencia.setReferenciaPK(referenciaPK);
@@ -1231,7 +1353,6 @@ public String guardar$action()
             dPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             dPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
             dPK.setCodDocumentoPres(++i);
-            //dPK.setCodDocumentoPres(reclutamientoFacade.getMaxDocumentoPresentado(candidato));
 
             DocumentoPresentado d = new DocumentoPresentado();
             d.setDocumentoPresentadoPK(dPK);
@@ -1249,16 +1370,16 @@ public String guardar$action()
             capacitacionXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             capacitacionXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
             capacitacionXCandidatoPK.setCodCapacitacion(++i);
-            //capacitacionXCandidatoPK.setCodCapacitacion(reclutamientoFacade.getMaxCapacitacionXCandidato(candidato));
 
             CapacitacionXCandidato capacitacionXCandidato = new CapacitacionXCandidato();
             capacitacionXCandidato.setCapacitacionXCandidatoPK(capacitacionXCandidatoPK);
             capacitacionXCandidato.setCandidato(candidato);
-            capacitacionXCandidato.setCapacitacion(capacitacionCandidato.getCapacitacion());
-            capacitacionXCandidato.setCodInsti(capacitacionCandidato.getInstitucion().getInstitucionesPK().getCodInsti());
-            capacitacionXCandidato.setFecha(capacitacionCandidato.getFecha().toString());
-            capacitacionXCandidato.setNomInstitucion(capacitacionCandidato.getInstitucion().getDesInsti());
+            //capacitacionXCandidato.setCapacitacion(capacitacionCandidato.getCapacitacion());
+            //capacitacionXCandidato.setCodInsti(capacitacionCandidato.getInstitucion().getInstitucionesPK().getCodInsti());
+            capacitacionXCandidato.setTipo(capacitacionCandidato.getTipo());
             capacitacionXCandidato.setDescripcion(capacitacionCandidato.getDescripcion());
+            capacitacionXCandidato.setNomInstitucion(capacitacionCandidato.getInstitucion());
+            capacitacionXCandidato.setFecha(capacitacionCandidato.getPeriodo());
 
             reclutamientoFacade.crearCapacitacionXCandidato(capacitacionXCandidato);
             }
@@ -1270,7 +1391,6 @@ public String guardar$action()
             dependienteXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             dependienteXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
             dependienteXCandidatoPK.setCodDependiente(++i);
-            //dependienteXCandidatoPK.setCodDependiente(reclutamientoFacade.getMaxBeneficiarioXCandidato(candidato));
 
             DependienteXCandidato dependienteXCandidato = new DependienteXCandidato();
             dependienteXCandidato.setDependienteXCandidatoPK(dependienteXCandidatoPK);
@@ -1289,7 +1409,6 @@ public String guardar$action()
             idiomaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             idiomaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
             idiomaXCandidatoPK.setCodIdioma(++i);
-            //idiomaXCandidatoPK.setCodIdioma(reclutamientoFacade.getMaxIdiomaXCandidato(candidato));
 
             IdiomaXCandidato idiomaXCandidato = new IdiomaXCandidato(idiomaXCandidatoPK);
             idiomaXCandidato.setCandidato(candidato);
@@ -1301,17 +1420,17 @@ public String guardar$action()
             }
 
         i = 0;
-        for (String beneficiarioCandidato : beneficiariosCandidato)
+        for (BeneficiarioCandidato beneficiarioCandidato : beneficiariosCandidato)
             {
             BeneficiarioXCandidatoPK beneficiarioXCandidatoPK = new BeneficiarioXCandidatoPK();
             beneficiarioXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             beneficiarioXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
             beneficiarioXCandidatoPK.setCodBeneficiario(++i);
-            //beneficiarioXCandidatoPK.setCodBeneficiario(reclutamientoFacade.getMaxBeneficiarioXCandidato(candidato));
 
             BeneficiarioXCandidato beneficiarioXCandidato = new BeneficiarioXCandidato(beneficiarioXCandidatoPK);
             beneficiarioXCandidato.setCandidato(candidato);
-            beneficiarioXCandidato.setNombre(beneficiarioCandidato);
+            beneficiarioXCandidato.setNombre(beneficiarioCandidato.getNombre());
+            beneficiarioXCandidato.setParentesco(beneficiarioCandidato.getParentesco());
 
             reclutamientoFacade.crearBeneficiarioXCandidato(beneficiarioXCandidato);
             }
@@ -1329,7 +1448,6 @@ public String guardar$action()
             tipoPruebaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             tipoPruebaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
             tipoPruebaXCandidatoPK.setCodTipoPrueba(new Short("" + (++i)));
-            //tipoPruebaXCandidatoPK.setCodTipoPrueba(reclutamientoFacade.getMaxTipoPruebaXCandidato(candidato));
 
             TipoPruebaXCandidato tipoPruebaXCandidato = new TipoPruebaXCandidato(tipoPruebaXCandidatoPK);
             tipoPruebaXCandidato.setCandidato(candidato);
@@ -1342,14 +1460,14 @@ public String guardar$action()
             reclutamientoFacade.crearTipoPruebaXCandidatoFacade(tipoPruebaXCandidato);
             }
 
-        i = 0;
+//        i = 0;
         for (PuestoCandidato puestoCandidato : puestosCandidato)
             {
             CandidatoXCargoPK candidatoCargoPK = new CandidatoXCargoPK();
             candidatoCargoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
             candidatoCargoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            candidatoCargoPK.setCodPuesto(new Short("" + (++i)));
-            //candidatoCargoPK.setCodPuesto(puestoCandidato.getPuesto().getPuestosPK().getCodPuesto());
+            candidatoCargoPK.setCodPuesto(puestoCandidato.getPuesto().getPuestosPK().getCodPuesto());
+            //candidatoCargoPK.setCodPuesto(new Short("" + (++i)));
 
             CandidatoXCargo candidatoCargo = new CandidatoXCargo();
             candidatoCargo.setCandidatoXCargoPK(candidatoCargoPK);
@@ -1369,7 +1487,6 @@ public String guardar$action()
             entrevistaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
             entrevistaXCandidatoPK.setCodPuesto(entrevistaCandidato.getPuesto().getPuestosPK().getCodPuesto());
             entrevistaXCandidatoPK.setCodEntrevista(reclutamientoFacade.getMaxEntrevistaXCandidato(entrevistaCandidato.getPuesto(), candidato));
-            //entrevistaXCandidatoPK.setCodEntrevista(reclutamientoFacade.getMaxEntrevistaXCandidato(entrevistaCandidato.getPuesto(), candidato));
 
             EntrevistaXCandidato entrevistaXCandidato = new EntrevistaXCandidato(entrevistaXCandidatoPK);
             entrevistaXCandidato.setEntrevistaXCandidatoPK(entrevistaXCandidatoPK);
@@ -1454,16 +1571,6 @@ public void setApellidoCasada(String apellidoCasada)
     this.apellidoCasada = apellidoCasada;
 }
 
-public String getCapacitacion$capacitacion()
-{
-    return capacitacion$capacitacion;
-}
-
-public void setCapacitacion$capacitacion(String capacitacion$capacitacion)
-{
-    this.capacitacion$capacitacion = capacitacion$capacitacion;
-}
-
 public String getCapacitacion$descripcion()
 {
     return capacitacion$descripcion;
@@ -1474,16 +1581,6 @@ public void setCapacitacion$descripcion(String capacitacion$descripcion)
     this.capacitacion$descripcion = capacitacion$descripcion;
 }
 
-public Date getCapacitacion$fecha()
-{
-    return capacitacion$fecha;
-}
-
-public void setCapacitacion$fecha(Date capacitacion$fecha)
-{
-    this.capacitacion$fecha = capacitacion$fecha;
-}
-
 public String getCapacitacion$institucion()
 {
     return capacitacion$institucion;
@@ -1492,6 +1589,26 @@ public String getCapacitacion$institucion()
 public void setCapacitacion$institucion(String capacitacion$institucion)
 {
     this.capacitacion$institucion = capacitacion$institucion;
+}
+
+public String getCapacitacion$periodo()
+{
+    return capacitacion$periodo;
+}
+
+public void setCapacitacion$periodo(String capacitacion$periodo)
+{
+    this.capacitacion$periodo = capacitacion$periodo;
+}
+
+public String getCapacitacion$tipo()
+{
+    return capacitacion$tipo;
+}
+
+public void setCapacitacion$tipo(String capacitacion$tipo)
+{
+    this.capacitacion$tipo = capacitacion$tipo;
 }
 
 public String getDocumentos$numero()
@@ -2154,6 +2271,16 @@ public void setBeneficiarios$nombre(String beneficiarios$nombre)
     this.beneficiarios$nombre = beneficiarios$nombre;
 }
 
+public String getBeneficiarios$parentesco()
+{
+    return beneficiarios$parentesco;
+}
+
+public void setBeneficiarios$parentesco(String beneficiarios$parentesco)
+{
+    this.beneficiarios$parentesco = beneficiarios$parentesco;
+}
+
 public String getEquipos$equipo()
 {
     return equipos$equipo;
@@ -2456,7 +2583,7 @@ private List<DocumentoCandidato> documentosCandidato;
 private List<CapacitacionCandidato> capacitacionesCandidato;
 private List<DependienteCandidato> dependientesCandidato;
 private List<IdiomaCandidato> idiomasCandidato;
-private List<String> beneficiariosCandidato;
+private List<BeneficiarioCandidato> beneficiariosCandidato;
 private List<EquipoCandidato> equiposCandidato;
 private List<PruebaCandidato> pruebasCandidato;
 private List<PuestoCandidato> puestosCandidato;
@@ -2552,12 +2679,12 @@ public void setIdiomasCandidato(List<IdiomaCandidato> idiomasCandidato)
     this.idiomasCandidato = idiomasCandidato;
 }
 
-public List<String> getBeneficiariosCandidato()
+public List<BeneficiarioCandidato> getBeneficiariosCandidato()
 {
     return beneficiariosCandidato;
 }
 
-public void setBeneficiariosCandidato(List<String> beneficiariosCandidato)
+public void setBeneficiariosCandidato(List<BeneficiarioCandidato> beneficiariosCandidato)
 {
     this.beneficiariosCandidato = beneficiariosCandidato;
 }

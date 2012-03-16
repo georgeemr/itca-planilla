@@ -4,39 +4,32 @@
  */
 package com.infosgroup.planilla.modelo.estructuras;
 
-import com.infosgroup.planilla.modelo.entidades.Capacitacion;
-import com.infosgroup.planilla.modelo.entidades.Instituciones;
 import java.io.Serializable;
-import java.util.Date;
 
-/**
-
- @author root
- */
 public class CapacitacionCandidato implements Serializable
 {
 
-private Capacitacion capacitacion;
-private Instituciones institucion;
+private String tipo;
+private String institucion;
 private String descripcion;
-private Date fecha;
+private String periodo;
 
-public Capacitacion getCapacitacion()
+public String getTipo()
 {
-    return capacitacion;
+    return tipo;
 }
 
-public void setCapacitacion(Capacitacion capacitacion)
+public void setTipo(String tipo)
 {
-    this.capacitacion = capacitacion;
+    this.tipo = tipo;
 }
 
-public Instituciones getInstitucion()
+public String getInstitucion()
 {
     return institucion;
 }
 
-public void setInstitucion(Instituciones institucion)
+public void setInstitucion(String institucion)
 {
     this.institucion = institucion;
 }
@@ -51,13 +44,13 @@ public void setDescripcion(String descripcion)
     this.descripcion = descripcion;
 }
 
-public Date getFecha()
+public String getPeriodo()
 {
-    return fecha;
+    return periodo;
 }
 
-public void setFecha(Date fecha)
+public void setPeriodo(String periodo)
 {
-    this.fecha = fecha;
+    this.periodo = periodo;
 }
 }
