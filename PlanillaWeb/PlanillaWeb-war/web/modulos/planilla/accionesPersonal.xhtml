@@ -18,16 +18,16 @@
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, lstTipos" 
                                onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" 
-                               oncomplete="#{planilla$accionesPersonal.urlPlantilla}.show();">
+                               onclick="#{planilla$accionesPersonal.urlPlantilla}.show();">
                     <p:graphicImage value="/resources/iconos/new.png"/>
                     <h:outputText value="Nuevo" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink id="editarSolicitud" styleClass="opcionMenu textoNormal" ajax="true" action="acciones/editarSolicitud?faces-redirect=true" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" rendered="#{SessionBeanPLA.accionSeleccionada ne null}">
+                <p:commandLink id="editarSolicitud" update="principalForm:mensajes" styleClass="opcionMenu textoNormal" ajax="true" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" action="#{planilla$accionesPersonal.navigateEditAction}" >
                     <p:graphicImage value="/resources/iconos/document-edit.png"/>
                     <h:outputText value="Editar Solicitud" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink id="aprobarSolicitud" rendered="#{(SessionBeanPLA.accionSeleccionada ne null) and ( request.isUserInRole('jefes') or request.isUserInRole('rrhh'))}" styleClass="opcionMenu textoNormal" ajax="true" 
-                               action="acciones/aprobarSolicitud?faces-redirect=true" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" >
+                <p:commandLink id="aprobarSolicitud" update="principalForm:mensajes" rendered="#{(request.isUserInRole('jefes') or request.isUserInRole('rrhh'))}" action="#{planilla$accionesPersonal.navigateAprobarAction}" styleClass="opcionMenu textoNormal" ajax="true" 
+                               onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/dialog-ok-apply.png"/>
                     <h:outputText value="Aprobar Solicitud" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -93,7 +93,7 @@
                      var="sol" rendered="true" widgetVar="tableSolicitud"
                      value="#{planilla$accionesPersonal.listaSolicitudes}"
                      selection="#{SessionBeanPLA.accionSeleccionada}"
-                     selectionMode="single" update="tabAcciones,editarSolicitud"
+                     selectionMode="single" update="tabAcciones, editarSolicitud"
                      binding="#{planilla$accionesPersonal.tablaSolicitudes}" 
                      rowStyleClass="#{sol.status eq 'G' ? 'solicitudGenerada' : sol.status eq 'J' ? 'solicitudPreAprobada' : sol.status eq 'A' ? 'solicitudAprobada' : sol.status eq 'R' ? 'solicitudRechazada' : null }"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
@@ -1109,6 +1109,33 @@
             </p:fieldset>
             <p:spacer height="15" />
             <ap:okCancelAccionPersonal okAction="#{planilla$accionesPersonal.solicitudNoAfectaPlanilla.guardarSolicitud$action}" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fldNoAfectaPlanilla,principalForm:txtobservacionesNA" cancelAction="#{planilla$accionesPersonal.cancelar$action}" onCancelClose="#{planilla$accionesPersonal.urlPlantilla}" />
+        </p:dialog>
+        
+        <d:dialogoEmpleados name="dlgSolConstancia" 
+            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
+            update="principalForm:mensajes,principalForm:fieldsetEncabezadoSC" image="/resources/imagenes/64/meeting-participant.png"
+            information="Seleccione un empleado para la solicitud"
+            okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
+            cancelAction="#{planilla$accionesPersonal.cancelSeleccionarEmpleado}"/> 
+        
+        <p:dialog id="dialogSolicitudConstancia" widgetVar="dialogSolicitudConstancia" header="#{planilla$accionesPersonal.accionSeleccionada != null ? planilla$accionesPersonal.accionSeleccionada.nomTipoaccion : 'Ninguna Acción Seleccionada'}" showEffect="fold" hideEffect="fold" width="770" height="550" >
+            <p:spacer height="10px"/>
+            <i:panelInformacion imagen="../../resources/imagenes/64/info.png" />
+            <p:spacer height="10px"/>
+
+            <p:fieldset id="fieldsetEncabezadoSC">
+                <ap:encabezadoSolicitud dialogoEmpleados="dlgSolConstancia" />
+                <table border="0" width="100%" cellpadding="3" >
+                    <tr>
+                        <td width="20%;"><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
+                        <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesSC" style="width:100%;" value="#{planilla$accionesPersonal.solicitudConstanciaSueldo.observacion}" autoResize="false" /></td>
+                    </tr>
+                </table>
+            </p:fieldset>
+
+            <p:spacer height="10px"/>
+
+            <ap:okCancelAccionPersonal okAction="#{planilla$accionesPersonal.solicitudConstanciaSueldo.guardarSolicitud$action}" update="principalForm:mensajes,principalForm:tableSolicitud,principalForm:fieldsetEncabezadoSC,principalForm:txtobservacionesSC" cancelAction="#{planilla$accionesPersonal.cancelar$action}" onCancelClose="#{planilla$accionesPersonal.urlPlantilla}" />
         </p:dialog>
 
     </ui:define>

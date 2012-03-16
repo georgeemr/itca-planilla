@@ -61,17 +61,23 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private SolicitudAumentoSueldoColectivo solicitudAumentoSueldoColectivo;
     private SolicitudRetiro solicitudRetiro;
     private SolicitudNoAfectaPlanilla solicitudNoAfectaPlanilla;
+    private SolicitudConstanciaSueldo solicitudConstanciaSueldo;
     private Empleados empleadoAccionPersonal;
 
     public Empleados getEmpleadoAccionPersonal() {
-        if (empleadoAccionPersonal == null) {
-           // empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
-        }
         return empleadoAccionPersonal;
     }
 
     public void setEmpleadoAccionPersonal(Empleados empleadoAccionPersonal) {
         this.empleadoAccionPersonal = empleadoAccionPersonal;
+    }
+
+    public SolicitudConstanciaSueldo getSolicitudConstanciaSueldo() {
+        return solicitudConstanciaSueldo;
+    }
+
+    public void setSolicitudConstanciaSueldo(SolicitudConstanciaSueldo solicitudConstanciaSueldo) {
+        this.solicitudConstanciaSueldo = solicitudConstanciaSueldo;
     }
 
     public SolicitudNoAfectaPlanilla getSolicitudNoAfectaPlanilla() {
@@ -167,6 +173,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         solicitudAumentoSueldoColectivo = new SolicitudAumentoSueldoColectivo(this);
         solicitudRetiro = new SolicitudRetiro(this);
         solicitudNoAfectaPlanilla = new SolicitudNoAfectaPlanilla(this);
+        solicitudConstanciaSueldo = new SolicitudConstanciaSueldo(this);
         empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
     }
 
@@ -195,6 +202,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         solicitudNoAfectaPlanilla = new SolicitudNoAfectaPlanilla(this);
         solicitudesMostradas = "E";
         empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
+        solicitudConstanciaSueldo = new SolicitudConstanciaSueldo(this);
         getSessionBeanPLA().setAccionSeleccionada(null);
         fecha = new Date();
     }
@@ -349,6 +357,22 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public String cancelSeleccionarEmpleado() {
         setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
         return null;
+    }
+
+    public String navigateAprobarAction() {
+        if (getSessionBeanPLA().getAccionSeleccionada() == null) {
+            addMessage("Acciones de Personal", "Seleccione una Acción para aprobar.", TipoMensaje.ERROR);
+            return null;
+        }
+        return "acciones/aprobarSolicitud?faces-redirect=true";
+    }
+
+    public String navigateEditAction() {
+        if (getSessionBeanPLA().getAccionSeleccionada() == null) {
+            addMessage("Acciones de Personal", "Seleccione una Acción para editar.", TipoMensaje.ERROR);
+            return null;
+        }
+        return "acciones/editarSolicitud?faces-redirect=true";
     }
 
     @Override
