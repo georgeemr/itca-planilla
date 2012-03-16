@@ -60,13 +60,13 @@ private BigDecimal horasRecibidas;
 @Size(max = 100)
 @Column(name = "NOM_INSTITUCION", length = 100)
 private String nomInstitucion;
-@JoinColumns(
-    {
-    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-    @JoinColumn(name = "COD_CAPACITACION", referencedColumnName = "COD_CAPACITACION", nullable = false, insertable = false, updatable = false)
-    })
-@ManyToOne(optional = false)
-private Capacitacion capacitacion;
+//@JoinColumns(
+//    {
+//    @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+//    @JoinColumn(name = "COD_CAPACITACION", referencedColumnName = "COD_CAPACITACION", nullable = false, insertable = false, updatable = false)
+//    })
+//@ManyToOne(optional = false)
+//private Capacitacion capacitacion;
 @JoinColumns(
     {
     @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
@@ -175,15 +175,15 @@ public void setNomInstitucion(String nomInstitucion)
     this.nomInstitucion = nomInstitucion;
 }
 
-public Capacitacion getCapacitacion()
-{
-    return capacitacion;
-}
-
-public void setCapacitacion(Capacitacion capacitacion)
-{
-    this.capacitacion = capacitacion;
-}
+//public Capacitacion getCapacitacion()
+//{
+//    return capacitacion;
+//}
+//
+//public void setCapacitacion(Capacitacion capacitacion)
+//{
+//    this.capacitacion = capacitacion;
+//}
 
 public Candidato getCandidato()
 {

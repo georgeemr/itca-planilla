@@ -111,8 +111,8 @@ public class Capacitacion implements Serializable {
     private List<CapacitacionXEmpleado> capacitacionXEmpleadoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
     private List<GastoXCapacitacion> gastoXCapacitacionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
-    private List<CapacitacionXCandidato> capacitacionXCandidatoList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
+//    private List<CapacitacionXCandidato> capacitacionXCandidatoList;
 @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
     private List<CapacitacionAsistencia> capacitacionAsistenciaList;
 
@@ -292,14 +292,14 @@ public class Capacitacion implements Serializable {
         this.gastoXCapacitacionList = gastoXCapacitacionList;
     }
 
-    @XmlTransient
-    public List<CapacitacionXCandidato> getCapacitacionXCandidatoList() {
-        return capacitacionXCandidatoList;
-    }
-
-    public void setCapacitacionXCandidatoList(List<CapacitacionXCandidato> capacitacionXCandidatoList) {
-        this.capacitacionXCandidatoList = capacitacionXCandidatoList;
-    }
+//    @XmlTransient
+//    public List<CapacitacionXCandidato> getCapacitacionXCandidatoList() {
+//        return capacitacionXCandidatoList;
+//    }
+//
+//    public void setCapacitacionXCandidatoList(List<CapacitacionXCandidato> capacitacionXCandidatoList) {
+//        this.capacitacionXCandidatoList = capacitacionXCandidatoList;
+//    }
 
 //    @XmlTransient
 //    public List<CapacitacionAsistencia> getCapacitacionAsistenciaList() {
