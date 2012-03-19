@@ -162,6 +162,8 @@ private Empleados empleados;
 private String pkAsString;
 @Transient
 private BigDecimal total;
+@Transient
+private String planillaToString;
 
 public Planilla()
 {
@@ -566,6 +568,17 @@ public void setTotal(BigDecimal total)
 {
     this.total = total;
 }
+
+    public String getPlanillaToString() {
+        planillaToString = ""+planillaPK.getAnio()+"---" + planillaPK.getMes()+"---" + planillaPK.getNumPlanilla();
+        return planillaToString;
+    }
+
+    public void setPlanillaToString(String planillaToString) {
+        this.planillaToString = planillaToString;
+    }
+
+
 
 @Override
 public int hashCode()

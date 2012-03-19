@@ -88,6 +88,9 @@ public class ProgramacionPla implements Serializable {
     private TiposPlanilla tiposPlanilla;
     @Transient
     private String pkAsString;
+    
+    @Transient
+    private String stringProgramacionPla;
 
     public ProgramacionPla() {
     }
@@ -231,6 +234,15 @@ public class ProgramacionPla implements Serializable {
         return true;
     }
 
+    public String getStringProgramacionPla() {
+        stringProgramacionPla = ""+anio+"--"+mes+"--"+numPlanilla;
+        return stringProgramacionPla;
+    }
+
+    public void setStringProgramacionPla(String stringProgramacionPla) {
+        this.stringProgramacionPla = stringProgramacionPla;
+    }
+  
     @Override
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.ProgramacionPla[ programacionPlaPK=" + programacionPlaPK + " ]";

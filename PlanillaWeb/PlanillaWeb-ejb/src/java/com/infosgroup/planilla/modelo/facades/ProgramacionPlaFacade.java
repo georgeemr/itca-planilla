@@ -33,7 +33,7 @@ public class ProgramacionPlaFacade extends AbstractFacade<ProgramacionPla, Progr
 
     public List<ProgramacionPla> getProgramacionPlaByTipo(Short empresa, Short tipoPlanilla) {
         List<ProgramacionPla> l = new ArrayList<ProgramacionPla>();
-        TypedQuery<ProgramacionPla> q = em.createQuery("SELECT p FROM ProgramacionPla p WHERE p.programacionPlaPK.codCia = :codCia AND p.programacionPlaPK.codTipopla = :codTipopla", ProgramacionPla.class);
+        TypedQuery<ProgramacionPla> q = em.createQuery("SELECT p FROM ProgramacionPla p WHERE p.programacionPlaPK.codCia = :codCia AND p.programacionPlaPK.codTipopla = :codTipopla AND p.status != 'C'", ProgramacionPla.class);
         q.setParameter("codCia", empresa);
         q.setParameter("codTipopla", tipoPlanilla);
         l=q.getResultList();

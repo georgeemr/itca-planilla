@@ -7,6 +7,7 @@ package com.infosgroup.planilla.controlador.modulos.planilla;
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
+import com.infosgroup.planilla.view.AutocompleteProgramacionPlaConverter;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -35,7 +36,6 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
     private List<DeducPresta> listaDeduccionPrestacion;
     private Short tipoPlanilla = -1;
     private Integer deduccionPrestacion = -1;
-    private String planilla = "-1";
     private String anio;
     private String mes;
     private String numeroPlanilla;
@@ -49,6 +49,40 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
     @PostConstruct
     public void _initPage() {
         empresa = getSessionBeanADM().getCompania().getCodCia();
+        limpiarCampos();
+    }
+    private AutocompleteProgramacionPlaConverter programacionPlaConverter;
+    private ProgramacionPla programacionPlaSeleccionada;
+
+    public ProgramacionPla getProgramacionPlaSeleccionada() {
+        return programacionPlaSeleccionada;
+    }
+
+    public void setProgramacionPlaSeleccionada(ProgramacionPla programacionPlaSeleccionada) {
+        this.programacionPlaSeleccionada = programacionPlaSeleccionada;
+    }
+
+    public List<ProgramacionPla> completeProgramacionPla(String query) {
+        List<ProgramacionPla> suggestions = new ArrayList<ProgramacionPla>();
+        for (ProgramacionPla p : programacionPlaConverter.listaProgramacionPla) {
+            if (p.getStringProgramacionPla().startsWith(query)) {
+                suggestions.add(p);
+            }
+        }
+        return suggestions;
+    }
+
+    public AutocompleteProgramacionPlaConverter getProgramacionPlaConverter() {
+        if (tipoPlanilla != null && tipoPlanilla != -1) {
+            programacionPlaConverter = new AutocompleteProgramacionPlaConverter(planillaSessionBean.getProgramacionPlaByTipo(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla));
+        } else {
+            programacionPlaConverter = new AutocompleteProgramacionPlaConverter(new ArrayList<ProgramacionPla>());
+        }
+        return programacionPlaConverter;
+    }
+
+    public void setProgramacionPlaConverter(AutocompleteProgramacionPlaConverter programacionPlaConverter) {
+        this.programacionPlaConverter = programacionPlaConverter;
     }
 
     public List<ResumenAsistencia> getListaResumenAsistencia() {
@@ -122,14 +156,6 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
         }
     }
 
-    public String getPlanilla() {
-        return planilla;
-    }
-
-    public void setPlanilla(String planilla) {
-        this.planilla = planilla;
-    }
-
     public Short getTipoPlanilla() {
         return tipoPlanilla;
     }
@@ -139,7 +165,7 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
     }
 
     public String getAnio() {
-        anio = planilla != null ? planilla.split(":")[1] : "";
+        anio = programacionPlaSeleccionada != null ? programacionPlaSeleccionada.getAnio().toString() : "";//  split(":")[1] : "";
         return anio;
     }
 
@@ -148,7 +174,7 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
     }
 
     public String getMes() {
-        mes = planilla != null ? planilla.split(":")[2] : "";
+        mes = programacionPlaSeleccionada != null ? programacionPlaSeleccionada.getMes().toString() : "";//planilla != null ? planilla.split(":")[2] : "";
         return mes;
     }
 
@@ -166,7 +192,7 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
     }
 
     public String getNumeroPlanilla() {
-        numeroPlanilla = planilla != null ? planilla.split(":")[3] : "";
+        numeroPlanilla = programacionPlaSeleccionada != null ? programacionPlaSeleccionada.getNumPlanilla().toString() : ""; //planilla != null ? planilla.split(":")[3] : "";
         return numeroPlanilla;
     }
 
@@ -213,15 +239,15 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
 
     @Override
     protected void limpiarCampos() {
-        tipoPlanilla = -1;
-        deduccionPrestacion = -1;
-        planilla = "-1";
+        tipoPlanilla = null;
+        deduccionPrestacion = null;
+        programacionPlaSeleccionada = null;
         listaResumenAsistencia = null;
     }
 
     public String procesar() {
         if (listaResumenAsistencia == null || listaResumenAsistencia.size() <= 0) {
-            addMessage("Cargar Datos", "No se han ingresado datos de empleados.", TipoMensaje.ERROR);
+            addMessage("Cargar Datos", "No se han ingresado datos para procesar.", TipoMensaje.ERROR);
             return null;
         }
 

@@ -80,7 +80,7 @@
                     </td>
                     <td>
                         <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{planilla$CargarDatosBackendBean.tipoPlanilla}" >                       
-                            <f:ajax render="lstPlanilla" event="change" execute="lstTipoPlanilla" />
+                            <f:ajax render="autoCompleteProgramacionPla" event="change" execute="lstTipoPlanilla" />
                             <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
                             <f:selectItems value="#{planilla$CargarDatosBackendBean.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                         </h:selectOneMenu>
@@ -91,18 +91,19 @@
                         <h:outputLabel value="Programaci&oacute;n planilla" />
                     </td>
                     <td>
-                        <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Planilla" value="#{planilla$CargarDatosBackendBean.planilla}" >
-                            <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE PLANILLA ]" />
-                            <f:selectItems value="#{planilla$CargarDatosBackendBean.listaPlanillas}" var="planilla" 
-                                           itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.anio} ------ #{planilla.mes} ------ #{planilla.numPlanilla}" />
-                            <f:ajax render="panelCargaDatos" event="change" execute="lstPlanilla" />
-                        </h:selectOneMenu>
+                        <p:autoComplete id="autoCompleteProgramacionPla" forceSelection="true" var="programacionPla" 
+                                        value="#{planilla$CargarDatosBackendBean.programacionPlaSeleccionada}"
+                                        itemValue="#{programacionPla.pkAsString}" itemLabel="#{programacionPla.stringProgramacionPla}"
+                                        completeMethod="#{planilla$CargarDatosBackendBean.completeProgramacionPla}"
+                                        converter="#{planilla$CargarDatosBackendBean.programacionPlaConverter}" >
+                            <f:ajax render="panelCargaDatos" event="change" execute="autoCompleteProgramacionPla" />
+                        </p:autoComplete>
                     </td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>
-                        <h:panelGrid columns="8" style="padding-left: 0;" rendered="#{(planilla$CargarDatosBackendBean.planilla ne null) and ( planilla$CargarDatosBackendBean.planilla ne '-1' ) }" >
+                        <h:panelGrid columns="8" style="padding-left: 0;" rendered="#{(planilla$CargarDatosBackendBean.programacionPlaSeleccionada ne null ) }" >
                             <h:outputLabel value="Año: " style="font-weight: bold;" />
                             <h:outputLabel value="#{planilla$CargarDatosBackendBean.anio}" />
                             <h:outputLabel value="" />
