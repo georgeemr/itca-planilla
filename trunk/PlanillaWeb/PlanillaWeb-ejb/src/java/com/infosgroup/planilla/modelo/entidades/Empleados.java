@@ -344,6 +344,8 @@ private Empleados representantePatronal;
 //    private Integer representantePatronal;
 @Transient
 private String nombreCompleto;
+@Transient
+private String pkAsString;
 
 public Empleados()
 {
@@ -1258,4 +1260,16 @@ public void setRepresentantePatronal(Empleados representantePatronal)
 {
     this.representantePatronal = representantePatronal;
 }
+
+    public String getPkAsString() {
+        pkAsString = ""+empleadosPK.getCodCia() +","+empleadosPK.getCodEmp();
+        return pkAsString;
+    }
+
+    public void setPkAsString(String pkAsString) {
+        this.pkAsString = pkAsString;
+    }
+
+
+
 }
