@@ -5,12 +5,10 @@
         <param-value>Production</param-value>
         <!--param-value>Development</param-value-->
     </context-param>
-    
     <context-param>
         <param-name>com.sun.faces.enableMissingResourceLibraryDetection</param-name>
         <param-value>true</param-value>    
     </context-param>
-    
     <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>aristo</param-value>
@@ -69,7 +67,6 @@
         <description>Rol de Empleados</description>
         <role-name>empleados</role-name>
     </security-role>
-    
     <filter>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
@@ -81,7 +78,5 @@
     <filter-mapping>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
-    </filter-mapping> 
-
-
+    </filter-mapping>
 </web-app>
