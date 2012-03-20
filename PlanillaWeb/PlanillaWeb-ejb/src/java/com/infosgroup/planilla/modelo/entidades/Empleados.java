@@ -166,7 +166,7 @@ public class Empleados implements Serializable {
     @Column(name = "VAL_ISR", precision = 12, scale = 2)
     private BigDecimal valIsr;
     @Column(name = "SEXO")
-    private Short sexo;
+private Integer sexo;
     @Column(name = "TIPO_CTA", length = 2)
     private String tipoCta;
     @Column(name = "NUP_AFP", length = 20)
@@ -575,11 +575,11 @@ public class Empleados implements Serializable {
         this.valIsr = valIsr;
     }
 
-    public Short getSexo() {
+public Integer getSexo()
         return sexo;
     }
 
-    public void setSexo(Short sexo) {
+public void setSexo(Integer sexo)
         this.sexo = sexo;
     }
 

@@ -143,7 +143,7 @@ private String estadoEstudios;
 @Column(name = "NUM_LICENCIA", length = 20)
 private String numLicencia;
 @Column(name = "SEXO")
-private Short sexo;
+private Integer sexo;
 @Size(max = 200)
 @Column(name = "OBSERVACION", length = 200)
 private String observacion;
@@ -593,12 +593,12 @@ public void setNumLicencia(String numLicencia)
     this.numLicencia = numLicencia;
 }
 
-public Short getSexo()
+public Integer getSexo()
 {
     return sexo;
 }
 
-public void setSexo(Short sexo)
+public void setSexo(Integer sexo)
 {
     this.sexo = sexo;
 }
