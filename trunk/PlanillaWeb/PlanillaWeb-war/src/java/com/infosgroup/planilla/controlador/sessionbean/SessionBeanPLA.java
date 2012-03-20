@@ -20,21 +20,12 @@ public class SessionBeanPLA implements Serializable{
 
     public SessionBeanPLA() {
     }
-    
-//    private DetPlanilla detalleSeleccionado;
+
     private ResumenAsistencia resumenSeleccionado;
     private AccionPersonal accionSeleccionada;
     private Boolean aprobados;
     private Boolean tbEmp = false;
     private Boolean tbJefes;
-
-//    public DetPlanilla getDetalleSeleccionado() {
-//        return detalleSeleccionado;
-//    }
-//
-//    public void setDetalleSeleccionado(DetPlanilla detalleSeleccionado) {
-//        this.detalleSeleccionado = detalleSeleccionado;
-//    }
 
     public ResumenAsistencia getResumenSeleccionado() {
         return resumenSeleccionado;
