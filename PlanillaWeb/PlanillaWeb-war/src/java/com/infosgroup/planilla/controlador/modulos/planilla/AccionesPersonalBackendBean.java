@@ -5,16 +5,16 @@
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
 import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.*;
-import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
-import com.infosgroup.planilla.modelo.entidades.Empleados;
-import com.infosgroup.planilla.modelo.entidades.TipoAccion;
-import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
+import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
+import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -35,6 +35,9 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     @EJB
     private PlanillaSessionBean planillaSessionBean;
+    @EJB
+    private ReportesStatelessBean reportesStatelessBean;
+    
     private DataTable tablaSolicitudes;
     private List<AccionPersonal> listaSolicitudes;
     private Short tipo;
@@ -373,6 +376,15 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
             return null;
         }
         return "acciones/editarSolicitud?faces-redirect=true";
+    }
+    
+    public String imprimirConstancia() {
+        if (getSessionBeanPLA().getAccionSeleccionada() == null) {
+            addMessage("Reclutamiento y Selección", "No ha seleccionado ninguna acción.", TipoMensaje.ERROR);
+            return null;
+        }
+        reportesStatelessBean.generarConstanciaSueldo(getSessionBeanPLA().getAccionSeleccionada().getEmpleados().getEmpleadosPK());
+        return null;
     }
 
     @Override
