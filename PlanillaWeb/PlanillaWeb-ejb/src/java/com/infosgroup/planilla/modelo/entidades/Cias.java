@@ -155,7 +155,7 @@ public class Cias implements Serializable {
     @ManyToOne
     private Cias codCiaMatriz;
     @JoinColumns({
-        @JoinColumn(name = "MONEDA_BASE", referencedColumnName = "COD_MONEDA", nullable = false, insertable = false, updatable = false),})
+        @JoinColumn(name = "MONEDA_BASE", referencedColumnName = "COD_MONEDA", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Monedas monedas;
     public Cias() {
