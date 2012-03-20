@@ -24,6 +24,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.validation.constraints.NotNull;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.SelectEvent;
 
 /**
 
@@ -45,7 +46,7 @@ private Date fechaSolicitud;
 private String nombre;
 private String apellido;
 private String apellidoCasada;
-private String sexo;
+private Integer sexo;
 private String estadoCivil;
 private String observaciones;
 // ===========================================================================================================
@@ -366,7 +367,7 @@ public void setEmpleadosSelectItemListModel(List<Empleados> empleadosSelectItemL
     this.empleadosSelectItemListModel = empleadosSelectItemListModel;
 }
 // ======================================
-private Boolean isError;
+//private Boolean isError;
 // ===========================================================================================================
 // ===========================================================================================================
 // ===========================================================================================================
@@ -425,6 +426,9 @@ public void init()
     pruebasCandidato = new ArrayList<PruebaCandidato>();
     puestosCandidato = new ArrayList<PuestoCandidato>();
     entrevistasCandidato = new ArrayList<EntrevistaCandidato>();
+
+    estadoAccion = NINGUNO;
+    candidatosListModel = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
 }
 
 // == Acciones ======================================================================================================
@@ -1123,6 +1127,39 @@ public String entrevistas$agregar$action()
 }
 
 @PermitAll
+public String nuevo$action()
+{
+    estadoAccion = CREANDO;
+    return null;
+}
+
+@PermitAll
+public void candidatosTableSelectListener(SelectEvent evt)
+{
+    if (candidatoSeleccionado == null)
+        {
+        addMessage("Infosweb RRHH", "Seleccione un candidato para editarlo", TipoMensaje.INFORMACION);
+        return;
+        }
+    Candidato c = reclutamientoFacade.findCandidatoById(candidatoSeleccionado.getCandidatoPK());
+    nombre = c.getNombre();
+    apellido = c.getApellido();
+    apellidoCasada = c.getApCasada();
+    fechaSolicitud = c.getFecSolicitud();
+    sexo = c.getSexo();
+    estadoCivil = c.getEstadoCivil();
+    // ==
+    addMessage("Infosweb RRHH", "Seleccionado el candidato: " + c.getCandidatoPK().getCodCandidato() + " - " + c.getNombreCompleto(), TipoMensaje.INFORMACION);
+}
+
+@PermitAll
+public String editar$action()
+{
+    estadoAccion = EDITANDO;
+    return null;
+}
+
+@PermitAll
 public String guardar$action()
 {
     try
@@ -1213,7 +1250,7 @@ public String guardar$action()
         candidato.setApellido(apellido);
         candidato.setApCasada(apellidoCasada);
         candidato.setEstadoCivil(estadoCivil);
-        candidato.setSexo(new Short(sexo));
+        candidato.setSexo(sexo);
 
         candidato.setCodPaisDomic(new Short(generales$pais));
         candidato.setCodDepartamentoDomic(new Short(generales$departamento.split(":")[1]));
@@ -1509,31 +1546,16 @@ public String guardar$action()
     return null;
 }
 
-public void nuevo$vh$action()
+@PermitAll
+public String cancelar$action()
 {
-    setEstadoAccion(0);
-}
-
-public void consultar$vh$action()
-{
-    setEstadoAccion(2);
-}
-
-public String editar$crud$action()
-{
-    getSessionBeanADM().setEstadoAccion(1);
-    return null;
-}
-
-public void setEstadoAccion(Integer estadoAccion)
-{
-    getSessionBeanADM().setEstadoAccion(estadoAccion);
-    limpiarCampos();
-}
-
-public String guardar$crud$action()
-{
-    isError = Boolean.FALSE;
+    nombre = null;
+    apellido = null;
+    apellidoCasada = null;
+    fechaSolicitud = null;
+    sexo = null;
+    estadoCivil = null;
+    estadoAccion = NINGUNO;
     return null;
 }
 
@@ -1545,7 +1567,7 @@ protected void limpiarCampos()
     apellidoCasada = null;
     generales$fechaNacimiento = null;
     sexo = null;
-    //observaciones = null;
+    observaciones = null;
 }
 
 // ==================================================================================================================
@@ -1569,6 +1591,26 @@ public String getApellidoCasada()
 public void setApellidoCasada(String apellidoCasada)
 {
     this.apellidoCasada = apellidoCasada;
+}
+
+public String getBeneficiarios$nombre()
+{
+    return beneficiarios$nombre;
+}
+
+public void setBeneficiarios$nombre(String beneficiarios$nombre)
+{
+    this.beneficiarios$nombre = beneficiarios$nombre;
+}
+
+public String getBeneficiarios$parentesco()
+{
+    return beneficiarios$parentesco;
+}
+
+public void setBeneficiarios$parentesco(String beneficiarios$parentesco)
+{
+    this.beneficiarios$parentesco = beneficiarios$parentesco;
 }
 
 public String getCapacitacion$descripcion()
@@ -1609,6 +1651,36 @@ public String getCapacitacion$tipo()
 public void setCapacitacion$tipo(String capacitacion$tipo)
 {
     this.capacitacion$tipo = capacitacion$tipo;
+}
+
+public Date getDependientes$fechaNacimiento()
+{
+    return dependientes$fechaNacimiento;
+}
+
+public void setDependientes$fechaNacimiento(Date dependientes$fechaNacimiento)
+{
+    this.dependientes$fechaNacimiento = dependientes$fechaNacimiento;
+}
+
+public String getDependientes$nombre()
+{
+    return dependientes$nombre;
+}
+
+public void setDependientes$nombre(String dependientes$nombre)
+{
+    this.dependientes$nombre = dependientes$nombre;
+}
+
+public String getDependientes$parentesco()
+{
+    return dependientes$parentesco;
+}
+
+public void setDependientes$parentesco(String dependientes$parentesco)
+{
+    this.dependientes$parentesco = dependientes$parentesco;
 }
 
 public String getDocumentos$numero()
@@ -1749,6 +1821,86 @@ public String getEmergencias$trabajo()
 public void setEmergencias$trabajo(String emergencias$trabajo)
 {
     this.emergencias$trabajo = emergencias$trabajo;
+}
+
+public String getEntrevistas$descripcion()
+{
+    return entrevistas$descripcion;
+}
+
+public void setEntrevistas$descripcion(String entrevistas$descripcion)
+{
+    this.entrevistas$descripcion = entrevistas$descripcion;
+}
+
+public String getEntrevistas$entrevistador()
+{
+    return entrevistas$entrevistador;
+}
+
+public void setEntrevistas$entrevistador(String entrevistas$entrevistador)
+{
+    this.entrevistas$entrevistador = entrevistas$entrevistador;
+}
+
+public Date getEntrevistas$fecha()
+{
+    return entrevistas$fecha;
+}
+
+public void setEntrevistas$fecha(Date entrevistas$fecha)
+{
+    this.entrevistas$fecha = entrevistas$fecha;
+}
+
+public String getEntrevistas$puesto()
+{
+    return entrevistas$puesto;
+}
+
+public void setEntrevistas$puesto(String entrevistas$puesto)
+{
+    this.entrevistas$puesto = entrevistas$puesto;
+}
+
+public String getEntrevistas$resultado()
+{
+    return entrevistas$resultado;
+}
+
+public void setEntrevistas$resultado(String entrevistas$resultado)
+{
+    this.entrevistas$resultado = entrevistas$resultado;
+}
+
+public String getEquipos$equipo()
+{
+    return equipos$equipo;
+}
+
+public void setEquipos$equipo(String equipos$equipo)
+{
+    this.equipos$equipo = equipos$equipo;
+}
+
+public Integer getEquipos$estado()
+{
+    return equipos$estado;
+}
+
+public void setEquipos$estado(Integer equipos$estado)
+{
+    this.equipos$estado = equipos$estado;
+}
+
+public String getEstadoCivil()
+{
+    return estadoCivil;
+}
+
+public void setEstadoCivil(String estadoCivil)
+{
+    this.estadoCivil = estadoCivil;
 }
 
 public Date getExperiencia$fechaFin()
@@ -2011,6 +2163,46 @@ public void setGenerales$telefono(String generales$telefono)
     this.generales$telefono = generales$telefono;
 }
 
+public Boolean getIdiomas$escribe()
+{
+    return idiomas$escribe;
+}
+
+public void setIdiomas$escribe(Boolean idiomas$escribe)
+{
+    this.idiomas$escribe = idiomas$escribe;
+}
+
+public String getIdiomas$idioma()
+{
+    return idiomas$idioma;
+}
+
+public void setIdiomas$idioma(String idiomas$idioma)
+{
+    this.idiomas$idioma = idiomas$idioma;
+}
+
+public Boolean getIdiomas$lee()
+{
+    return idiomas$lee;
+}
+
+public void setIdiomas$lee(Boolean idiomas$lee)
+{
+    this.idiomas$lee = idiomas$lee;
+}
+
+public Integer getIdiomas$nivel()
+{
+    return idiomas$nivel;
+}
+
+public void setIdiomas$nivel(Integer idiomas$nivel)
+{
+    this.idiomas$nivel = idiomas$nivel;
+}
+
 public String getNombre()
 {
     return nombre;
@@ -2019,6 +2211,16 @@ public String getNombre()
 public void setNombre(String nombre)
 {
     this.nombre = nombre;
+}
+
+public String getObservaciones()
+{
+    return observaciones;
+}
+
+public void setObservaciones(String observaciones)
+{
+    this.observaciones = observaciones;
 }
 
 public Short getPreparacion$anioEgreso()
@@ -2039,16 +2241,6 @@ public Short getPreparacion$anioIngreso()
 public void setPreparacion$anioIngreso(Short preparacion$anioIngreso)
 {
     this.preparacion$anioIngreso = preparacion$anioIngreso;
-}
-
-public String getPreparacion$pais()
-{
-    return preparacion$pais;
-}
-
-public void setPreparacion$pais(String preparacion$pais)
-{
-    this.preparacion$pais = preparacion$pais;
 }
 
 public String getPreparacion$departamento()
@@ -2081,6 +2273,16 @@ public void setPreparacion$nombreInstitucion(String preparacion$nombreInstitucio
     this.preparacion$nombreInstitucion = preparacion$nombreInstitucion;
 }
 
+public String getPreparacion$pais()
+{
+    return preparacion$pais;
+}
+
+public void setPreparacion$pais(String preparacion$pais)
+{
+    this.preparacion$pais = preparacion$pais;
+}
+
 public String getPreparacion$profesion()
 {
     return preparacion$profesion;
@@ -2089,6 +2291,76 @@ public String getPreparacion$profesion()
 public void setPreparacion$profesion(String preparacion$profesion)
 {
     this.preparacion$profesion = preparacion$profesion;
+}
+
+public Double getPruebas$costo()
+{
+    return pruebas$costo;
+}
+
+public void setPruebas$costo(Double pruebas$costo)
+{
+    this.pruebas$costo = pruebas$costo;
+}
+
+public Date getPruebas$fecha()
+{
+    return pruebas$fecha;
+}
+
+public void setPruebas$fecha(Date pruebas$fecha)
+{
+    this.pruebas$fecha = pruebas$fecha;
+}
+
+public Double getPruebas$nota()
+{
+    return pruebas$nota;
+}
+
+public void setPruebas$nota(Double pruebas$nota)
+{
+    this.pruebas$nota = pruebas$nota;
+}
+
+public String getPruebas$resultado()
+{
+    return pruebas$resultado;
+}
+
+public void setPruebas$resultado(String pruebas$resultado)
+{
+    this.pruebas$resultado = pruebas$resultado;
+}
+
+public String getPruebas$tipoPrueba()
+{
+    return pruebas$tipoPrueba;
+}
+
+public void setPruebas$tipoPrueba(String pruebas$tipoPrueba)
+{
+    this.pruebas$tipoPrueba = pruebas$tipoPrueba;
+}
+
+public String getPuestos$puesto()
+{
+    return puestos$puesto;
+}
+
+public void setPuestos$puesto(String puestos$puesto)
+{
+    this.puestos$puesto = puestos$puesto;
+}
+
+public Double getPuestos$salarioAspirado()
+{
+    return puestos$salarioAspirado;
+}
+
+public void setPuestos$salarioAspirado(Double puestos$salarioAspirado)
+{
+    this.puestos$salarioAspirado = puestos$salarioAspirado;
 }
 
 public String getReferencias$rl$correoElectronico()
@@ -2191,276 +2463,28 @@ public void setReferencias$rp$tiempoConocerle(Integer referencias$rp$tiempoConoc
     this.referencias$rp$tiempoConocerle = referencias$rp$tiempoConocerle;
 }
 
-public Date getDependientes$fechaNacimiento()
-{
-    return dependientes$fechaNacimiento;
-}
-
-public void setDependientes$fechaNacimiento(Date dependientes$fechaNacimiento)
-{
-    this.dependientes$fechaNacimiento = dependientes$fechaNacimiento;
-}
-
-public String getDependientes$nombre()
-{
-    return dependientes$nombre;
-}
-
-public void setDependientes$nombre(String dependientes$nombre)
-{
-    this.dependientes$nombre = dependientes$nombre;
-}
-
-public String getDependientes$parentesco()
-{
-    return dependientes$parentesco;
-}
-
-public void setDependientes$parentesco(String dependientes$parentesco)
-{
-    this.dependientes$parentesco = dependientes$parentesco;
-}
-
-public Boolean getIdiomas$escribe()
-{
-    return idiomas$escribe;
-}
-
-public void setIdiomas$escribe(Boolean idiomas$escribe)
-{
-    this.idiomas$escribe = idiomas$escribe;
-}
-
-public String getIdiomas$idioma()
-{
-    return idiomas$idioma;
-}
-
-public void setIdiomas$idioma(String idiomas$idioma)
-{
-    this.idiomas$idioma = idiomas$idioma;
-}
-
-public Boolean getIdiomas$lee()
-{
-    return idiomas$lee;
-}
-
-public void setIdiomas$lee(Boolean idiomas$lee)
-{
-    this.idiomas$lee = idiomas$lee;
-}
-
-public Integer getIdiomas$nivel()
-{
-    return idiomas$nivel;
-}
-
-public void setIdiomas$nivel(Integer idiomas$nivel)
-{
-    this.idiomas$nivel = idiomas$nivel;
-}
-
-public String getBeneficiarios$nombre()
-{
-    return beneficiarios$nombre;
-}
-
-public void setBeneficiarios$nombre(String beneficiarios$nombre)
-{
-    this.beneficiarios$nombre = beneficiarios$nombre;
-}
-
-public String getBeneficiarios$parentesco()
-{
-    return beneficiarios$parentesco;
-}
-
-public void setBeneficiarios$parentesco(String beneficiarios$parentesco)
-{
-    this.beneficiarios$parentesco = beneficiarios$parentesco;
-}
-
-public String getEquipos$equipo()
-{
-    return equipos$equipo;
-}
-
-public void setEquipos$equipo(String equipos$equipo)
-{
-    this.equipos$equipo = equipos$equipo;
-}
-
-public Integer getEquipos$estado()
-{
-    return equipos$estado;
-}
-
-public void setEquipos$estado(Integer equipos$estado)
-{
-    this.equipos$estado = equipos$estado;
-}
-
-public Double getPruebas$costo()
-{
-    return pruebas$costo;
-}
-
-public void setPruebas$costo(Double pruebas$costo)
-{
-    this.pruebas$costo = pruebas$costo;
-}
-
-public Date getPruebas$fecha()
-{
-    return pruebas$fecha;
-}
-
-public void setPruebas$fecha(Date pruebas$fecha)
-{
-    this.pruebas$fecha = pruebas$fecha;
-}
-
-public Double getPruebas$nota()
-{
-    return pruebas$nota;
-}
-
-public void setPruebas$nota(Double pruebas$nota)
-{
-    this.pruebas$nota = pruebas$nota;
-}
-
-public String getPruebas$tipoPrueba()
-{
-    return pruebas$tipoPrueba;
-}
-
-public void setPruebas$tipoPrueba(String pruebas$tipoPrueba)
-{
-    this.pruebas$tipoPrueba = pruebas$tipoPrueba;
-}
-
-public String getPruebas$resultado()
-{
-    return pruebas$resultado;
-}
-
-public void setPruebas$resultado(String pruebas$resultado)
-{
-    this.pruebas$resultado = pruebas$resultado;
-}
-
-public String getPuestos$puesto()
-{
-    return puestos$puesto;
-}
-
-public void setPuestos$puesto(String puestos$puesto)
-{
-    this.puestos$puesto = puestos$puesto;
-}
-
-public Double getPuestos$salarioAspirado()
-{
-    return puestos$salarioAspirado;
-}
-
-public void setPuestos$salarioAspirado(Double puestos$salarioAspirado)
-{
-    this.puestos$salarioAspirado = puestos$salarioAspirado;
-}
-
-public String getSexo()
+public Integer getSexo()
 {
     return sexo;
 }
 
-public void setSexo(String sexo)
+public void setSexo(Integer sexo)
 {
     this.sexo = sexo;
 }
 
-public String getEstadoCivil()
-{
-    return estadoCivil;
-}
-
-public void setEstadoCivil(String estadoCivil)
-{
-    this.estadoCivil = estadoCivil;
-}
-
-public String getObservaciones()
-{
-    return observaciones;
-}
-
-public void setObservaciones(String observaciones)
-{
-    this.observaciones = observaciones;
-}
-
-public String getEntrevistas$descripcion()
-{
-    return entrevistas$descripcion;
-}
-
-public void setEntrevistas$descripcion(String entrevistas$descripcion)
-{
-    this.entrevistas$descripcion = entrevistas$descripcion;
-}
-
-public String getEntrevistas$entrevistador()
-{
-    return entrevistas$entrevistador;
-}
-
-public void setEntrevistas$entrevistador(String entrevistas$entrevistador)
-{
-    this.entrevistas$entrevistador = entrevistas$entrevistador;
-}
-
-public Date getEntrevistas$fecha()
-{
-    return entrevistas$fecha;
-}
-
-public void setEntrevistas$fecha(Date entrevistas$fecha)
-{
-    this.entrevistas$fecha = entrevistas$fecha;
-}
-
-public String getEntrevistas$puesto()
-{
-    return entrevistas$puesto;
-}
-
-public void setEntrevistas$puesto(String entrevistas$puesto)
-{
-    this.entrevistas$puesto = entrevistas$puesto;
-}
-
-public String getEntrevistas$resultado()
-{
-    return entrevistas$resultado;
-}
-
-public void setEntrevistas$resultado(String entrevistas$resultado)
-{
-    this.entrevistas$resultado = entrevistas$resultado;
-}
-
-public Boolean getIsError()
-{
-    return isError;
-}
-
-public void setIsError(Boolean isError)
-{
-    this.isError = isError;
-}
-
+//public Boolean getIsError()
+//{
+//    return isError;
+//}
+//
+//public void setIsError(Boolean isError)
+//{
+//    this.isError = isError;
+//}
+// ==================================================================================================================
+// ==================================================================================================================
+// ==================================================================================================================
 public List<PuestoCandidato> getPuestosCandidato()
 {
     return puestosCandidato;
@@ -3036,5 +3060,44 @@ public String entrevista$eliminar$action()
     entrevistasCandidato.remove(fila);
     addMessage("Infosweb RRHH", "Elemento eliminado correctamente", TipoMensaje.INFORMACION);
     return null;
+}
+// ==============================================================================================================
+private Integer estadoAccion;
+
+public Integer getEstadoAccion()
+{
+    return estadoAccion;
+}
+
+public void setEstadoAccion(Integer estadoAccion)
+{
+    this.estadoAccion = estadoAccion;
+}
+// ==============================================================================================================
+public static final Integer NINGUNO = 0;
+public static final Integer CREANDO = 1;
+public static final Integer EDITANDO = 2;
+// ==============================================================================================================
+private List<Candidato> candidatosListModel;
+
+public List<Candidato> getCandidatosListModel()
+{
+    return candidatosListModel;
+}
+
+public void setCandidatosListModel(List<Candidato> candidatosListModel)
+{
+    this.candidatosListModel = candidatosListModel;
+}
+private Candidato candidatoSeleccionado;
+
+public Candidato getCandidatoSeleccionado()
+{
+    return candidatoSeleccionado;
+}
+
+public void setCandidatoSeleccionado(Candidato candidatoSeleccionado)
+{
+    this.candidatoSeleccionado = candidatoSeleccionado;
 }
 }
