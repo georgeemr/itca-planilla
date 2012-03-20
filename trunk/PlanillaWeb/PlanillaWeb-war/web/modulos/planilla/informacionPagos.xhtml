@@ -5,21 +5,14 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"                
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.prime.com.tr/ui"
-    xmlns:f="http://java.sun.com/jsf/core">
-    <!-- ================================================================================================================ -->
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"  >
+
     <ui:define name="titulo">
         <h:outputText value="Informaci&oacute;n de Pagos"/>
     </ui:define>
-    <!-- ================================================================================================================ -->
+
     <ui:define name="acciones">
-        <p:tab title="Acciones">
-            <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
-                <!--p:commandLink styleClass="opcionMenu" action="# {planilla$informacionPagos.buscarPlanilla$action}" update="principalForm:mensajes, principalForm:tablaDetalle" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
-                    <p:graphicImage value="/resources/iconos/meeting-participant-request-response.png"/>
-                    <h:outputText value="Mostrar datos de planilla" styleClass="espacioTexto"/>
-                </p:commandLink-->
-            </h:panelGrid>
-        </p:tab>
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{planilla$informacionPagos.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
@@ -29,69 +22,50 @@
             </h:panelGrid>
         </p:tab>
     </ui:define>
-    <!-- ================================================================================================================ -->
+
     <ui:define name="contenido">
-        <p:fieldset id="fieldset2" legend="Planilla">
-            <p:dataTable emptyMessage="No se han encontrado planillas" 
-                         value="#{planilla$informacionPagos.listaProgPla}" var="proPla" id="tbProPla"
-                         selectionMode="single" selection="#{planilla$informacionPagos.proPlaSeleccionada}" 
-                         rowSelectListener="#{planilla$informacionPagos.onRowSelectProPla}"  
-                         rows="3" paginator="true" paginatorAlwaysVisible="true" update="tbPla tbIng tbEgr" 
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">>
-                <f:facet name="header">
-                    <h:outputText value="Planilla"/>
-                 </f:facet>
-                <p:column headerText="Planilla" filterBy="#{proPla.anio}-#{proPla.mes}-#{proPla.numPlanilla}" filterMatchMode="contains" >
-                    <p:graphicImage url="/resources/iconos/view-calendar-journal.png" height="16" width="16"/>
-                    <p:spacer width="5"/>
-                    <h:outputText value="Planilla #{proPla.anio}-#{proPla.mes}-#{proPla.numPlanilla}"/>
-                 </p:column>
-                <p:column headerText="Tipo de planilla" sortBy="#{proPla.tiposPlanilla.nomTipopla}" filterBy="#{proPla.tiposPlanilla.nomTipopla}" filterMatchMode="contains">
-                    <p:graphicImage url="/resources/iconos/documentinfo.png" height="16" width="16"/>
-                    <p:spacer width="5"/>
-                    <h:outputText value="#{proPla.tiposPlanilla.nomTipopla}"/>
-                 </p:column>
-            </p:dataTable>
-            <p:spacer height="10"/>
-            <p:dataTable emptyMessage="No se han encontrado Empleados en esta Planilla" 
-                         value="#{planilla$informacionPagos.listaPlanillas}" var="planilla" id="tbPla"
-                         selectionMode="single" selection="#{planilla$informacionPagos.planillaSeleccionada}" 
-                         rowSelectListener="#{planilla$informacionPagos.onRowSelectPlanilla}"  
-                         rows="3" paginator="true" paginatorAlwaysVisible="true" update="tbIng tbEgr tbPla" 
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">
-                <p:column headerText="Codigo" filterMatchMode="contains" >
-                    <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.empleados.empleadosPK.codEmp}"/>
-                </p:column>
-                <p:column headerText="Empleado" filterMatchMode="contains" filterBy="#{planilla.empleados.nombreCompleto}">
-                    <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.empleados.nombreCompleto}"/>
-                </p:column>
-                <p:column headerText="Sueldo Base" filterMatchMode="contains" style="text-align: right">
-                    <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.sueldoBase}">
-                        <f:convertNumber pattern="$#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
-                </h:outputText>
-                </p:column>
-                <p:column headerText="Prestaciones" filterMatchMode="contains" style="text-align: right">
-                    <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.prestaciones}">
-                        <f:convertNumber  pattern="$#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
-                    </h:outputText>    
-                </p:column>
-                <p:column headerText="Deducciones" filterMatchMode="contains" style="text-align: right">
-                    <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.deducciones}">
-                        <f:convertNumber pattern="$#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
-                    </h:outputText>
-                </p:column>
-                <p:column headerText="Total" filterMatchMode="contains" style="text-align: right" >
-                    <p:spacer width="5"/>
-                    <h:outputText value="#{planilla.liqRecibir}">
-                        <f:convertNumber pattern="$#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
-                    </h:outputText>
-                </p:column>
-            </p:dataTable>
+        <p:spacer height="15" />
+        <p:panel id="panelInformacionPagos" style="border: none;" >
+            <h:panelGrid columns="2" >
+                <i:etiquetaRequerido value="Tipo de planilla" />
+                <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{planilla$informacionPagos.tipoPlanilla}" >                       
+                    <f:ajax render="panelInformacionPagos" event="change" execute="LstTipoPlanilla" listener="#{planilla$informacionPagos.seleccionarTipoPlanilla}" />
+                    <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
+                    <f:selectItems value="#{planilla$informacionPagos.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                </h:selectOneMenu>
+
+                <i:etiquetaRequerido value="Programaci&#243;n planilla" />
+                <h:panelGroup>
+                    <p:autoComplete id="AutCompltProgPla" forceSelection="true" var="programacionPla" 
+                                    value="#{planilla$informacionPagos.proPlaSeleccionada}"
+                                    itemValue="#{programacionPla.pkAsString}" itemLabel="#{programacionPla.stringProgramacionPla}"
+                                    completeMethod="#{planilla$informacionPagos.completeProgramacionPla}"
+                                    converter="#{planilla$informacionPagos.programacionPlaConverter}" 
+                                    onSelectUpdate="panelDescripcion,panelInformacionPagos" >
+                        <f:ajax render="AutCompltEmpleado" event="change" execute="AutCompltProgPla" />
+                    </p:autoComplete>
+                    <h:outputLabel value=" A&Ntilde;O--MES--N&Uacute;MERO DE PLANILLA " style="font-weight: bold;color: red;" />
+                </h:panelGroup>
+                <i:etiquetaRequerido value="Empleado" />
+                <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
+                                value="#{planilla$informacionPagos.planillaSeleccionada}"
+                                itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.empleados.nombreYCodigo}"
+                                completeMethod="#{planilla$informacionPagos.completePlanillaEmpleado}"
+                                converter="#{planilla$informacionPagos.planillaConverter}" 
+                                selectListener="#{planilla$informacionPagos.handleSelectEmpleado}"
+                                onSelectUpdate="tbIng,tbEgr,panelDescripcion"
+                                style="width: 300px;"  >
+                    <f:ajax render="panelContenido" event="change" execute="AutCompltEmpleado" />
+                </p:autoComplete>
+                <h:outputLabel value=""/>
+                <h:panelGrid id="panelDescripcion" columns="4" style="padding-left: 0;" >
+                    <i:etiquetaMoneda label="Sueldo Base: " value="#{planilla$informacionPagos.planillaSeleccionada ne null ? planilla$informacionPagos.planillaSeleccionada.sueldoBase : '0.00'}" />
+                    <i:etiquetaMoneda label="Prestaciones: " value="#{planilla$informacionPagos.planillaSeleccionada ne null ? planilla$informacionPagos.planillaSeleccionada.prestaciones : '0.00'}" />
+                    <i:etiquetaMoneda label="Deducciones: "  value="#{planilla$informacionPagos.planillaSeleccionada ne null ? planilla$informacionPagos.planillaSeleccionada.deducciones : '0.00'}" />
+                    <i:etiquetaMoneda label="Total: " value="#{ planilla$informacionPagos.planillaSeleccionada ne null ? planilla$informacionPagos.planillaSeleccionada.liqRecibir : '0.00'}" />
+                </h:panelGrid>
+
+            </h:panelGrid>
             <p:spacer height="10"/>
             <table width="100%" border="0">
                 <tr valign="top">
@@ -105,31 +79,29 @@
                             </p:column>
                             <p:column headerText="Cantidad" style="text-align: right">
                                 <h:outputText value="#{ingreso.valor}">
-                                    <f:convertNumber pattern="$#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
+                                    <f:convertNumber pattern="#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
                                 </h:outputText>
                             </p:column>
-                         </p:dataTable>
-                     </td>
-                     <td width="50%">
-                         
-                         <p:dataTable emptyMessage="No se han encontrado Egresos" value="#{planilla$informacionPagos.listaDeducciones}" var="egreso" id="tbEgr">
+                        </p:dataTable>
+                    </td>
+                    <td width="50%">
+                        <p:dataTable emptyMessage="No se han encontrado Egresos" value="#{planilla$informacionPagos.listaDeducciones}" var="egreso" id="tbEgr">
                             <f:facet name="header">
                                 <h:outputText value="Egresos"/>
                             </f:facet>
                             <p:column headerText="Descripcion">
                                 <h:outputText value="#{egreso.deducPresta.desDp}"/>
                             </p:column>
-                             <p:column headerText="Cantidad" style="text-align: right">
+                            <p:column headerText="Cantidad" style="text-align: right">
                                 <h:outputText value="#{egreso.valor}">
-                                    <f:convertNumber pattern="$#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
+                                    <f:convertNumber pattern="#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
                                 </h:outputText>
+                                
                             </p:column>
                         </p:dataTable>
-                      </td>
+                    </td>
                 </tr>
             </table>
-            
-        </p:fieldset>
+        </p:panel>
     </ui:define>
-    <!-- ================================================================================================================ -->
 </ui:composition>

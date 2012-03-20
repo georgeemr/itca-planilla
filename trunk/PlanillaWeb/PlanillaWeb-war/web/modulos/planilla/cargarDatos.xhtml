@@ -103,7 +103,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <h:panelGrid columns="8" style="padding-left: 0;" rendered="#{(planilla$CargarDatosBackendBean.programacionPlaSeleccionada ne null ) }" >
+                        <h:panelGrid id="panelDescripcion" columns="8" style="padding-left: 0;" rendered="#{(planilla$CargarDatosBackendBean.programacionPlaSeleccionada ne null ) }" >
                             <h:outputLabel value="Año: " style="font-weight: bold;" />
                             <h:outputLabel value="#{planilla$CargarDatosBackendBean.anio}" />
                             <h:outputLabel value="" />
@@ -158,7 +158,7 @@
                 </tr>
             </table>
 
-        </p:panel>
+        </p:panel>                                         
     </ui:define>
 
 </ui:composition>
