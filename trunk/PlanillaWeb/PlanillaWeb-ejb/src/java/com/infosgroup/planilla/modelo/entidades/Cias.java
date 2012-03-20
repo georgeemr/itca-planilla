@@ -9,18 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -68,7 +57,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cias.findByEnCierre", query = "SELECT c FROM Cias c WHERE c.enCierre = :enCierre"),
     @NamedQuery(name = "Cias.findByAnoProceso", query = "SELECT c FROM Cias c WHERE c.anoProceso = :anoProceso"),
     @NamedQuery(name = "Cias.findByCodPais", query = "SELECT c FROM Cias c WHERE c.codPais = :codPais"),
-    @NamedQuery(name = "Cias.findByMonedaBase", query = "SELECT c FROM Cias c WHERE c.monedaBase = :monedaBase"),
+    //@NamedQuery(name = "Cias.findByMonedaBase", query = "SELECT c FROM Cias c WHERE c.monedaBase = :monedaBase"),
     @NamedQuery(name = "Cias.findByCodAuto", query = "SELECT c FROM Cias c WHERE c.codAuto = :codAuto"),
     @NamedQuery(name = "Cias.findByIvaDl", query = "SELECT c FROM Cias c WHERE c.ivaDl = :ivaDl"),
     @NamedQuery(name = "Cias.findByTasaPercep", query = "SELECT c FROM Cias c WHERE c.tasaPercep = :tasaPercep"),
@@ -150,8 +139,8 @@ public class Cias implements Serializable {
     private Short anoProceso;
     @Column(name = "COD_PAIS")
     private Short codPais;
-    @Column(name = "MONEDA_BASE")
-    private Short monedaBase;
+//    @Column(name = "MONEDA_BASE")
+//    private Short monedaBase;
     @Column(name = "COD_AUTO", length = 1)
     private String codAuto;
     @Column(name = "IVA_DL", length = 5)
@@ -165,8 +154,19 @@ public class Cias implements Serializable {
     @JoinColumn(name = "COD_CIA_MATRIZ", referencedColumnName = "COD_CIA")
     @ManyToOne
     private Cias codCiaMatriz;
-
+    @JoinColumns({
+        @JoinColumn(name = "MONEDA_BASE", referencedColumnName = "COD_MONEDA", nullable = false, insertable = false, updatable = false),})
+    @ManyToOne(optional = false)
+    private Monedas monedas;
     public Cias() {
+    }
+
+    public Monedas getMonedas() {
+        return monedas;
+    }
+
+    public void setMonedas(Monedas monedas) {
+        this.monedas = monedas;
     }
 
     public Cias(Short codCia) {
@@ -452,14 +452,14 @@ public class Cias implements Serializable {
     public void setCodPais(Short codPais) {
         this.codPais = codPais;
     }
-
-    public Short getMonedaBase() {
-        return monedaBase;
-    }
-
-    public void setMonedaBase(Short monedaBase) {
-        this.monedaBase = monedaBase;
-    }
+//
+//    public Short getMonedaBase() {
+//        return monedaBase;
+//    }
+//
+//    public void setMonedaBase(Short monedaBase) {
+//        this.monedaBase = monedaBase;
+//    }
 
     public String getCodAuto() {
         return codAuto;
