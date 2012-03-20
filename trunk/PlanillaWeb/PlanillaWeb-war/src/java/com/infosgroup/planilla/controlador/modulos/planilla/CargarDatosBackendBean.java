@@ -34,7 +34,7 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
     private List<TiposPlanilla> listaTipos;
     private List<ProgramacionPla> listaPlanillas;
     private List<DeducPresta> listaDeduccionPrestacion;
-    private Short tipoPlanilla = -1;
+    private Short tipoPlanilla;
     private Integer deduccionPrestacion = -1;
     private String anio;
     private String mes;
@@ -49,6 +49,7 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
     @PostConstruct
     public void _initPage() {
         empresa = getSessionBeanADM().getCompania().getCodCia();
+        tipoPlanilla = -1;
         limpiarCampos();
     }
     private AutocompleteProgramacionPlaConverter programacionPlaConverter;
@@ -230,6 +231,9 @@ public class CargarDatosBackendBean extends AbstractJSFPage implements java.io.S
 
     public List<TiposPlanilla> getListaTipos() {
         listaTipos = planillaSessionBean.listarTipos(getSessionBeanADM().getCompania());
+//        TiposPlanilla seleccione = new TiposPlanilla(new Short("-1"), new Short("-1"));
+//        seleccione.setNomTipopla(" [ SELECCIONE TIPO PLANILLA ] ");
+//        listaTipos.add(0, seleccione);
         return listaTipos;
     }
 
