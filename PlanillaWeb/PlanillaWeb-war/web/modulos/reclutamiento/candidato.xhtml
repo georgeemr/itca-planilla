@@ -7,7 +7,9 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
     template="/plantillas/defaultTemplate.xhtml">
-    <ui:define name="titulo">Registro de Candidatos</ui:define>
+    <ui:define name="titulo">
+        <h:outputText value="Registro de Candidatos"/>
+    </ui:define>
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
@@ -481,7 +483,6 @@
                     </p:column>
                 </p:dataTable>
             </p:tab>
-
             <p:tab title="Capacitaciones">
                 <p:fieldset legend="Datos de capacitaci&oacute;n">
                     <table>
