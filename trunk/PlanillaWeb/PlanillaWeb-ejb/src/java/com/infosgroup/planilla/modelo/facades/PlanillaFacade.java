@@ -11,6 +11,7 @@ import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
 import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,6 +37,7 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
         super(Planilla.class);
     }
 
+    @PermitAll
     public List<Planilla> findByTipoPLanilla(TiposPlanilla tipo) {
         List<Planilla> listPla = new ArrayList<Planilla>(0);
         TypedQuery<Planilla> q = em.createQuery("select p from planilla p where p.tipoPlanilla = :tipoPla", Planilla.class);
@@ -44,6 +46,7 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
         return listPla != null ? listPla : new ArrayList<Planilla>();
     }
 
+    @PermitAll
     public List<Planilla> findPlanillaByCias(Cias cia) {
         List<Planilla> listPla = new ArrayList<Planilla>(0);
         TypedQuery<Planilla> q = em.createQuery("SELECT p FROM Planilla p WHERE p.planillaPK.codCia = :codCia", Planilla.class).setParameter("codCia", cia.getCodCia());
@@ -51,6 +54,7 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
         return listPla != null ? listPla : new ArrayList<Planilla>();
     }
 
+    @PermitAll
     public List<Planilla> findPlanillaByTipoPlanilla(Cias cia, Short codTipopla) {
         List<Planilla> listPla = new ArrayList<Planilla>(0);
         TypedQuery<Planilla> q = em.createQuery("SELECT p FROM Planilla p WHERE p.planillaPK.codCia = :codCia AND p.codTipopla = :codTipopla", Planilla.class).setParameter("codCia", cia.getCodCia()).setParameter("codTipopla", codTipopla);
@@ -58,6 +62,7 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
         return listPla != null ? listPla : new ArrayList<Planilla>();
     }
 
+    @PermitAll
     public Long max() {
         Long max = null;
         Query q = getEntityManager().createNamedQuery("Planilla.max");
@@ -65,6 +70,7 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
         return (max == null) ? 0L : max;
     }
 
+    @PermitAll
     public List<Planilla> findPlanillaByUnidad(ProgramacionPla proPla) {
         Short cia = proPla.getProgramacionPlaPK().getCodCia();
         Short anio = proPla.getAnio();
@@ -86,7 +92,8 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
         l = q.getResultList();
         return l != null ? l : new ArrayList<Planilla>();
     }
-    
+
+    @PermitAll
     public List<Planilla> findPlanillaByProAndDep(ProgramacionPla proPla, Short depto) {
         Short cia = proPla.getProgramacionPlaPK().getCodCia();
         Short anio = proPla.getAnio();
@@ -100,13 +107,27 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
                 + "AND p.planillaPK.mes = :mes "
                 + "AND p.planillaPK.numPlanilla = :numPlanilla "
                 + "AND p.planillaPK.codTipopla = :codTipopla "
-                +" ", Planilla.class);
+                + " ", Planilla.class);
         q.setParameter("codCia", cia);
         q.setParameter("anio", anio);
         q.setParameter("mes", mes);
         q.setParameter("numPlanilla", num);
         q.setParameter("codTipopla", tipo);
         l = q.getResultList();
+        return l != null ? l : new ArrayList<Planilla>();
+    }
+
+    @PermitAll
+    public List<Planilla> findPlanillaByProgramacion(ProgramacionPla programacionPla) {
+        List<Planilla> l = em.createQuery("SELECT p FROM Planilla p WHERE p.planillaPK.codCia = :codCia "
+                + "AND p.planillaPK.anio = :anio AND p.planillaPK.mes = :mes "
+                + "AND p.planillaPK.numPlanilla = :numPlanilla AND p.planillaPK.codTipopla = :codTipopla ", Planilla.class)
+        .setParameter("codCia", programacionPla.getProgramacionPlaPK().getCodCia())
+        .setParameter("anio", programacionPla.getAnio())
+        .setParameter("mes", programacionPla.getMes())
+        .setParameter("numPlanilla", programacionPla.getNumPlanilla())
+        .setParameter("codTipopla", programacionPla.getTiposPlanilla().getTiposPlanillaPK().getCodTipopla())
+        .getResultList();
         return l != null ? l : new ArrayList<Planilla>();
     }
 }
