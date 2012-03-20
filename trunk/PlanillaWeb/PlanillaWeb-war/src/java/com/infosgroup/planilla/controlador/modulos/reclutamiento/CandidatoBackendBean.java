@@ -12,10 +12,7 @@ import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
@@ -1129,6 +1126,13 @@ public String entrevistas$agregar$action()
 @PermitAll
 public String nuevo$action()
 {
+    nombre = null ;
+    apellido = null;
+    apellidoCasada = null ;
+    fechaSolicitud = GregorianCalendar.getInstance().getTime();
+    sexo = null ;
+    estadoCivil = null ;
+    // ===
     estadoAccion = CREANDO;
     return null;
 }
@@ -1562,12 +1566,6 @@ public String cancelar$action()
 @Override
 protected void limpiarCampos()
 {
-    nombre = null;
-    apellido = null;
-    apellidoCasada = null;
-    generales$fechaNacimiento = null;
-    sexo = null;
-    observaciones = null;
 }
 
 // ==================================================================================================================
