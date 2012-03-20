@@ -11,45 +11,49 @@
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true" action="#{reclutamiento$candidato.nuevo$vh$action()}" update="panelContenido">
+                <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true" action="#{reclutamiento$candidato.nuevo$action}" update="mensajes, panelAcciones, panelContenido" rendered="#{reclutamiento$candidato.estadoAccion eq 0}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/new.png"/>
                     <h:outputText value="Nuevo" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true" action="#{reclutamiento$candidato.consultar$vh$action()}" update="tablaConcursos, panelContenido">
-                    <p:graphicImage value="/resources/iconos/search.png"/>
-                    <h:outputText value="Consultar" styleClass="espacioTexto"/>
-                </p:commandLink>
-                <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true" action="#{reclutamiento$candidato.editar$crud$action()}" update="mensajes, panelContenido">
+                <p:commandLink styleClass="opcionMenu"  ajax="true" immediate="true" onclick="dialogoEditar.show();" rendered="#{reclutamiento$candidato.estadoAccion eq 0}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/edit.png"/>
                     <h:outputText value="Editar" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu" ajax="true" action="#{reclutamiento$candidato.guardar$action}" update="mensajes, panelAcciones, panelContenido" rendered="#{reclutamiento$candidato.estadoAccion ne 0}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                    <p:graphicImage value="/resources/iconos/document-save.png"/>
+                    <h:outputText value="Guardar" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true" update="principalForm:mensajes principalForm:panelAcciones principalForm:panelRegistro principalForm:panelContenido" rendered="#{reclutamiento$candidato.estadoAccion ne 0}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';" action="#{reclutamiento$candidato.cancelar$action}">
+                    <p:graphicImage value="/resources/iconos/edit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
                 </p:commandLink>
             </h:panelGrid>
         </p:tab>  
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" value="Cancelar" ajax="true" action="#{reclutamiento$concursos.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                <p:commandLink styleClass="opcionMenu textoNormal" value="Salir" ajax="true" action="#{reclutamiento$concursos.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';" immediate="true">
                     <p:graphicImage styleClass="ui-icon ui-icon-circle-close" />
                 </p:commandLink>
             </h:panelGrid>
         </p:tab>
     </ui:define>
     <ui:define name="contenido">
-        <h:panelGrid columns="6">
+        <h:panelGrid columns="6" id="panelRegistro">
             <h:outputLabel value="Nombre:"/>
-            <p:inputText value="#{reclutamiento$candidato.nombre}" required="true" requiredMessage="Ingrese el nombre del candidato" />
+            <p:inputText id="nombre" value="#{reclutamiento$candidato.nombre}" required="true" requiredMessage="Ingrese el nombre del candidato" />
             <h:outputLabel value="Apellido:"/>
-            <p:inputText value="#{reclutamiento$candidato.apellido}" required="true" requiredMessage="Ingrese el apellido del candidato"/>
+            <p:inputText id="apellido" value="#{reclutamiento$candidato.apellido}" required="true" requiredMessage="Ingrese el apellido del candidato"/>
             <h:outputLabel value="Apellido de casada:"/>
-            <p:inputText value="#{reclutamiento$candidato.apellidoCasada}" />
+            <p:inputText id="apellidoCasada" value="#{reclutamiento$candidato.apellidoCasada}" />
             <h:outputLabel value="Fecha de solicitud:"/>
-            <p:calendar navigator="true" pattern="dd/MM/yyyy" showOn="button" value="#{reclutamiento$candidato.fechaSolicitud}" selectOtherMonths="true" required="true"/>
+            <p:calendar id="fechaSolicitud" navigator="true" pattern="dd/MM/yyyy" showOn="button" value="#{reclutamiento$candidato.fechaSolicitud}" selectOtherMonths="true" required="true"/>
             <h:outputLabel value="Sexo:"/>
-            <h:selectOneMenu value="#{reclutamiento$candidato.sexo}" style="width: 175px; height: 24px; padding-top: 3px;" required="true">
+            <h:selectOneMenu id="sexo" value="#{reclutamiento$candidato.sexo}" style="width: 175px; height: 24px; padding-top: 3px;" required="true">
                 <f:selectItem itemValue="1" itemLabel="Masculino"/>
                 <f:selectItem itemValue="2" itemLabel="Femenino"/>
             </h:selectOneMenu>
             <h:outputLabel value="Estado civil:"/>
-            <h:selectOneMenu value="#{reclutamiento$candidato.estadoCivil}" style="width: 175px; height: 24px; padding-top: 3px;" required="true">
+            <h:selectOneMenu id="estadoCivil" value="#{reclutamiento$candidato.estadoCivil}" style="width: 175px; height: 24px; padding-top: 3px;" required="true">
                 <f:selectItem itemValue="S" itemLabel="Soltero"/>
                 <f:selectItem itemValue="C" itemLabel="Casado"/>
             </h:selectOneMenu>
@@ -896,7 +900,35 @@
                 </h:panelGrid>
             </p:tab>
         </p:accordionPanel>
-        <p:separator/>
-        <p:commandButton value="Guardar" image="ui-icon ui-icon-disk" action="#{reclutamiento$candidato.guardar$action}" update="mensajes"/>
+    </ui:define>
+    <ui:define name="dialogos">
+        <p:dialog widgetVar="dialogoEditar" header="Editar candidato" modal="true" draggable="true" resizable="false" closable="true" width="650">
+            <p:dataTable value="#{reclutamiento$candidato.candidatosListModel}" var="candidato" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5" selectionMode="single" selection="#{reclutamiento$candidato.candidatoSeleccionado}" rowSelectListener="#{reclutamiento$candidato.candidatosTableSelectListener(evt)}" onRowSelectUpdate="principalForm:mensajes principalForm:panelRegistro principalForm:editarAceptarCommandButton">
+                <f:facet name="header">
+                    <h:outputText value="Candidatos"/>
+                </f:facet>
+                <p:column headerText="ID" filterBy="#{candidato.candidatoPK.codCandidato}" filterMatchMode="contains">
+                    <h:outputText value="#{candidato.candidatoPK.codCandidato}"/>
+                </p:column>
+                <p:column headerText="Nombre del candidato" filterBy="#{candidato.nombreCompleto}" filterMatchMode="contains">
+                    <h:outputText value="#{candidato.nombreCompleto}"/>
+                </p:column>
+            </p:dataTable>
+            <h:panelGrid columns="2">
+                <p:commandButton id="editarAceptarCommandButton" value="Aceptar" image="ui-icon ui-icon-circle-check" onclick="dialogoEditar.hide();" immediate="true" ajax="true" update="principalForm:mensajes, principalForm:panelAcciones" action="#{reclutamiento$candidato.editar$action}" disabled="#{reclutamiento$candidato.candidatoSeleccionado eq null}"/>
+                <p:commandButton id="editarCancelarCommandButton" value="Cancelar" image="ui-icon ui-icon-circle-close" onclick="dialogoEditar.hide();" immediate="true" ajax="true" action="#{reclutamiento$candidato.cancelar$action}" update="principalForm:mensajes principalForm:panelAcciones principalForm:panelRegistro principalForm:editarAceptarCommandButton principalForm:nombre principalForm:apellido principalForm:apellidoCasada"/>
+            </h:panelGrid>       
+        </p:dialog>
+        <p:dialog widgetVar="dialogoCancelar" header="Cancelar crear/editar" modal="true" draggable="true" resizable="false" closable="true" closeOnEscape="true">
+            <h:panelGrid columns="2" width="100%">
+                <p:graphicImage width="64" height="64" url="/resources/imagenes/64/dialog-question.png"/>
+                <h:outputText value="Las modificaciones que no haya guardado se perder&aacute;n ¿Desea continuar?"/>
+            </h:panelGrid>
+            <p:separator/>
+            <h:panelGrid columns="2">
+                <p:commandButton value="S&iacute;" image="ui-icon ui-icon-circle-check" onclick="dialogoCancelar.hide();" action="#{reclutamiento$candidato.cancelar$action}" update="principalForm:mensajes principalForm:panelAcciones principalForm:panelRegistro" immediate="true"/>
+                <p:commandButton value="No" image="ui-icon ui-icon-circle-close" onclick="dialogoCancelar.hide();" immediate="true"/>
+            </h:panelGrid>
+        </p:dialog>
     </ui:define>
 </ui:composition>
