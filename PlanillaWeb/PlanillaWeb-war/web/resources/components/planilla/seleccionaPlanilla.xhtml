@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:composite="http://java.sun.com/jsf/composite" 
+      xmlns:p="http://primefaces.prime.com.tr/ui"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:i="http://java.sun.com/jsf/composite/components/presentacion" >
+
+    <composite:interface>
+        <composite:attribute name="listaTipoPlanillas" required="true" shortDescription="Lista de tipos planillas disponibles" />
+        <composite:attribute name="tipoPlanilla" required="true" type="java.lang.Short" shortDescription="Dato Short en backendbean donde almacena el tipo de planilla seleccionado" />
+        <composite:attribute name="programacionPlanilla" required="true" shortDescription="Dato ProgramacionPla donde almacena la planilla seleccionada" />
+        <composite:attribute name="metodoComplemento" method-signature="java.util.List completeMethod(java.lang.String)" required="true" />
+        <composite:attribute name="converter" required="true" />
+        <composite:attribute name="update" />
+    </composite:interface>
+
+    <composite:implementation>
+        <h:panelGrid columns="2" >
+            <i:etiquetaRequerido value="Tipo de planilla" />
+            <h:selectOneMenu id="_infLstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{cc.attrs.tipoPlanilla}" >                       
+                <f:ajax render="_infAutCompltProgPla" event="change" execute="_infLstTipoPlanilla" />
+                <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
+                <f:selectItems value="#{cc.attrs.listaTipoPlanillas}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+            </h:selectOneMenu>
+
+            <i:etiquetaRequerido value="Programaci&#243;n planilla" />
+            <p:autoComplete id="_infAutCompltProgPla" forceSelection="true" var="programacionPla" 
+                            value="#{cc.attrs.programacionPlanilla}"
+                            itemValue="#{programacionPla.pkAsString}" itemLabel="#{programacionPla.stringProgramacionPla}"
+                            completeMethod="#{cc.attrs.metodoComplemento}"
+                            converter="#{cc.attrs.converter}" 
+                            onSelectUpdate="#{cc.attrs.update}" >
+            </p:autoComplete>
+
+        </h:panelGrid>
+    </composite:implementation>
+</html>

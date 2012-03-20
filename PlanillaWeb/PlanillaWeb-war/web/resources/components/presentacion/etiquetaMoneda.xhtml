@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:composite="http://java.sun.com/jsf/composite" 
+      xmlns:p="http://primefaces.prime.com.tr/ui"  
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+
+    <composite:interface>
+        <composite:attribute name="value" required="true" />
+        <composite:attribute name="label" required="true" />
+    </composite:interface>
+
+    <composite:implementation>
+        <h:panelGrid  columns="2" style="margin:0 0 0 -3px;padding:0;" >
+            <h:outputLabel value="#{cc.attrs.label} #{SessionBeanADM.compania.monedas.signo}" style="font-weight: bold;" />
+            <h:outputLabel value="#{cc.attrs.value}" >
+                <f:convertNumber pattern="#,##0.00" maxFractionDigits="2" />
+            </h:outputLabel>                           
+        </h:panelGrid>
+    </composite:implementation>
+</html>
