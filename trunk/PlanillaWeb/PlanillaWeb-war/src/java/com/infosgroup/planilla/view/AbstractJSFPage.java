@@ -4,11 +4,7 @@
  */
 package com.infosgroup.planilla.view;
 
-import com.infosgroup.planilla.controlador.sessionbean.SessionBeanADM;
-import com.infosgroup.planilla.controlador.sessionbean.SessionBeanCAP;
-import com.infosgroup.planilla.controlador.sessionbean.SessionBeanEMP;
-import com.infosgroup.planilla.controlador.sessionbean.SessionBeanPLA;
-import com.infosgroup.planilla.controlador.sessionbean.SessionBeanREC;
+import com.infosgroup.planilla.controlador.sessionbean.*;
 import java.util.Date;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
@@ -49,7 +45,6 @@ public abstract class AbstractJSFPage {
     protected abstract void limpiarCampos();
 
     protected enum EstadoAccion {
-
         CREANDO,
         MODIFICANDO
     }
