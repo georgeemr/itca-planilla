@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    template="/plantillas/defaultTemplate.xhtml">
+
+    <ui:define name="titulo">
+        <h:outputText value="Prueba"/>
+    </ui:define>
+
+    <ui:define name="dialogos"/>
+
+    <ui:define name="acciones">
+        <p:tab title="Acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink value="Prueba" update="principalForm:nombre" action="#{NewJSFManagedBean.prueba$action}"/>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+
+    <ui:define name="contenido">
+        <h:panelGrid columns="6">
+            <h:outputText value="Nombre"/>
+            <p:inputText id="nombre" value="#{NewJSFManagedBean.texto}" required="true"/>
+        </h:panelGrid>
+    </ui:define>
+
+</ui:composition>

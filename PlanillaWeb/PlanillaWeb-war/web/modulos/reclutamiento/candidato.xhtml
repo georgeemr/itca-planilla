@@ -13,7 +13,7 @@
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true" action="#{reclutamiento$candidato.nuevo$action}" update="principalForm:mensajes principalForm:panelAcciones principalForm:panelRegistro" rendered="#{reclutamiento$candidato.estadoAccion eq 0}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                <p:commandLink styleClass="opcionMenu" action="#{reclutamiento$candidato.nuevo$action()}" rendered="#{reclutamiento$candidato.estadoAccion eq 0}" update="principalForm:panelAcciones principalForm:panelContenido principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/new.png"/>
                     <h:outputText value="Nuevo" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -21,46 +21,39 @@
                     <p:graphicImage value="/resources/iconos/edit.png"/>
                     <h:outputText value="Editar" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu" ajax="true" action="#{reclutamiento$candidato.guardar$action}" update="mensajes, panelAcciones, panelContenido" rendered="#{reclutamiento$candidato.estadoAccion ne 0}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                <p:commandLink styleClass="opcionMenu" ajax="true" action="#{reclutamiento$candidato.guardar$action()}" update="mensajes, panelAcciones, panelContenido" rendered="#{reclutamiento$candidato.estadoAccion ne 0}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/document-save.png"/>
                     <h:outputText value="Guardar" styleClass="espacioTexto"/>
                 </p:commandLink>
                 <p:commandLink styleClass="opcionMenu" ajax="true" immediate="true" update="principalForm:panelAcciones principalForm:nombre principalForm:apellido principalForm:apellidoCasada principalForm:panelRegistro" rendered="#{reclutamiento$candidato.estadoAccion ne 0}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';" action="#{reclutamiento$candidato.cancelar$action}">
                     <p:graphicImage value="/resources/iconos/edit.png"/>
                     <h:outputText value="Cancelar" styleClass="espacioTexto"/>
-                </p:commandLink>
+                </p:commandLink>                
             </h:panelGrid>
         </p:tab>  
-        <p:tab title="Otras acciones">
-            <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" value="Salir" ajax="true" action="#{reclutamiento$concursos.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';" immediate="true">
-                    <p:graphicImage styleClass="ui-icon ui-icon-circle-close" />
-                </p:commandLink>
-            </h:panelGrid>
-        </p:tab>
     </ui:define>
     <ui:define name="contenido">
-        <h:panelGrid columns="6" id="panelRegistro">
+        <h:panelGrid columns="6">
             <h:outputLabel value="Nombre:"/>
-            <p:inputText id="nombre" value="#{reclutamiento$candidato.nombre}" required="true" requiredMessage="Ingrese el nombre del candidato" />
+            <p:inputText id="nombre" value="#{reclutamiento$candidato.nombre}"/>
             <h:outputLabel value="Apellido:"/>
-            <p:inputText id="apellido" value="#{reclutamiento$candidato.apellido}" required="true" requiredMessage="Ingrese el apellido del candidato"/>
+            <p:inputText id="apellido" value="#{reclutamiento$candidato.apellido}"/>
             <h:outputLabel value="Apellido de casada:"/>
-            <p:inputText id="apellidoCasada" value="#{reclutamiento$candidato.apellidoCasada}" />
+            <p:inputText id="apellidoCasada" value="#{reclutamiento$candidato.apellidoCasada}"/>
             <h:outputLabel value="Fecha de solicitud:"/>
-            <p:calendar id="fechaSolicitud" navigator="true" pattern="dd/MM/yyyy" showOn="button" value="#{reclutamiento$candidato.fechaSolicitud}" selectOtherMonths="true" required="true"/>
+            <p:calendar id="fechaSolicitud" navigator="true" pattern="dd/MM/yyyy" showOn="button" value="#{reclutamiento$candidato.fechaSolicitud}" selectOtherMonths="true"/>
             <h:outputLabel value="Sexo:"/>
             <h:selectOneMenu id="sexo" value="#{reclutamiento$candidato.sexo}" style="width: 175px; height: 24px; padding-top: 3px;" required="true">
                 <f:selectItem itemValue="1" itemLabel="Masculino"/>
                 <f:selectItem itemValue="2" itemLabel="Femenino"/>
             </h:selectOneMenu>
             <h:outputLabel value="Estado civil:"/>
-            <h:selectOneMenu id="estadoCivil" value="#{reclutamiento$candidato.estadoCivil}" style="width: 175px; height: 24px; padding-top: 3px;" required="true">
+            <h:selectOneMenu id="estadoCivil" value="#{reclutamiento$candidato.estadoCivil}" style="width: 175px; height: 24px; padding-top: 3px;">
                 <f:selectItem itemValue="S" itemLabel="Soltero"/>
                 <f:selectItem itemValue="C" itemLabel="Casado"/>
             </h:selectOneMenu>
         </h:panelGrid>
-        <p:separator />
+        <p:separator/>
         <p:accordionPanel>
             <p:tab title="Generales">
                 <p:fieldset legend="Domicilio">
@@ -900,11 +893,13 @@
                     <p:inputTextarea cols="120" rows="5" value="#{reclutamiento$candidato.observaciones}"/>
                 </h:panelGrid>
             </p:tab>
-        </p:accordionPanel>
+        </p:accordionPanel>        
+        
     </ui:define>
+    
     <ui:define name="dialogos">
         <p:dialog widgetVar="dialogoEditar" header="Editar candidato" modal="true" draggable="true" resizable="false" closable="true" width="650">
-            <p:dataTable value="#{reclutamiento$candidato.candidatosListModel}" var="candidato" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5" selectionMode="single" selection="#{reclutamiento$candidato.candidatoSeleccionado}" rowSelectListener="#{reclutamiento$candidato.candidatosTableSelectListener(evt)}" onRowSelectUpdate="principalForm:mensajes principalForm:panelRegistro principalForm:editarAceptarCommandButton">
+            <p:dataTable value="#{reclutamiento$candidato.candidatosListModel}" var="candidato" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5" selectionMode="single" selection="#{reclutamiento$candidato.candidatoSeleccionado}" onRowSelectUpdate="principalForm:editarAceptarCommandButton" onRowUnselectUpdate="principalForm:editarAceptarCommandButton">
                 <f:facet name="header">
                     <h:outputText value="Candidatos"/>
                 </f:facet>
@@ -916,9 +911,10 @@
                 </p:column>
             </p:dataTable>
             <h:panelGrid columns="2">
-                <p:commandButton id="editarAceptarCommandButton" value="Aceptar" image="ui-icon ui-icon-circle-check" onclick="dialogoEditar.hide();" immediate="true" ajax="true" update="principalForm:mensajes, principalForm:panelAcciones" action="#{reclutamiento$candidato.editar$action}" disabled="#{reclutamiento$candidato.candidatoSeleccionado eq null}"/>
-                <p:commandButton id="editarCancelarCommandButton" value="Cancelar" image="ui-icon ui-icon-circle-close" onclick="dialogoEditar.hide();" immediate="true" ajax="true" action="#{reclutamiento$candidato.cancelar$action}" update="principalForm:mensajes principalForm:panelAcciones principalForm:panelRegistro principalForm:editarAceptarCommandButton principalForm:nombre principalForm:apellido principalForm:apellidoCasada"/>
+                <p:commandButton id="editarAceptarCommandButton" value="Aceptar" image="ui-icon ui-icon-circle-check" onclick="dialogoEditar.hide();" action="#{reclutamiento$candidato.editar$action}" disabled="#{reclutamiento$candidato.candidatoSeleccionado eq null}" update="principalForm:mensajes principalForm:panelAcciones principalForm:panelContenido"/>
+                <p:commandButton id="editarCancelarCommandButton" value="Cancelar" image="ui-icon ui-icon-circle-close" onclick="dialogoEditar.hide();" action="#{reclutamiento$candidato.cancelar$action}" update="principalForm:mensajes principalForm:panelAcciones principalForm:panelContenido"/>
             </h:panelGrid>       
         </p:dialog>
     </ui:define>
+    
 </ui:composition>
