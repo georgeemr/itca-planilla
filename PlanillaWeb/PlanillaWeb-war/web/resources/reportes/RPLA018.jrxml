@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="RPLA018"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Landscape"
+		 pageWidth="612"
+		 pageHeight="453"
+		 columnWidth="552"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="pEmp" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="pCia" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="pAnio" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="pMes" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="pNumPla" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="pCodPla" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="pCodDepto" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["C:\\Documents and Settings\\Infosgroup\\Escritorio\\HDH\\web\\resources\\reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[select
+    h.nom_comercial,
+    (tot_debenga +vhr_noche) - (vh_xsencilla + vh_xdoble + prestaciones + vh_x250 + vh_x150) - nvl(f.antipag,0) salarioxdias,
+    d_laborados,
+    ch_xsencilla + ch_xdoble + ch_x250 + ch_x150 cantidad_extra,
+    vh_xsencilla + vh_xdoble + vh_x250 + vh_x150 valor_extra,
+    prestaciones,
+    deducciones,
+    vhr_noche valor_noct,
+    chr_noche cantidad_noct,
+    liq_recibir,
+    f.cod_emp cod_emp,
+    d.num_tarjeta,
+    d.cod_empref cod_ref,
+    decode(a.numero_valor,0,'',(a.numero_texto || decode(a.numero_valor,1,' MILLON ',' MILLONES ' )))|| decode(b.numero_valor,0,'',(b.numero_texto || ' MIL ' )) || decode(c.numero_valor,0,'',c.numero_texto)|| decode(substr(to_char(c.numero_valor), length(to_char(c.numero_valor)),1),'1','0','')|| decode(c.numero_valor,0,'', ' ')|| decode(round(((tot_debenga)-trunc((tot_debenga),0))*100,0),0,'EXACTOS', to_char(round(((tot_debenga)- trunc((tot_debenga),0))*100,0),'00')||'/100'|| ' DOLARES') descripcion,
+    e.nom_depto,
+    d.apellidos,
+    d.nombres,
+    f.cod_cia cod_cia,
+    f.anio anio,
+    f.mes mes,
+    f.num_planilla num_planilla,
+    d.cedula,
+    d.apellidos||','||d.nombres nom_emp,
+    g.nom_puesto,
+    g.nom_puesto||', '||e.nom_depto deptopuesto,
+    d.salario_base,
+    f.bonificacion,
+    e.nom_depto depto1,
+    f.cod_tipopla,
+    nvl(f.antipag,0) complemento,
+    f.cod_sucursal,
+    f.cod_seccion,
+    f.cod_depto,
+    d.cod_puesto,
+    p.fecha_inicial,
+    p.fecha_final,
+    p.fecha_pago
+from
+    cias h,
+    planilla f,
+    cardinal a,
+    cardinal b,
+    cardinal c,
+    empleados d,
+    departamentos e,
+    puestos g,
+    programacion_pla p
+ where
+       f.cod_cia = h.cod_cia
+    and a.numero_valor = (floor(((abs(tot_debenga)))/1000000))
+    and b.numero_valor = (floor(((abs(tot_debenga)))/1000)) - ((floor(((abs(tot_debenga)))/1000000))*1000)
+    and c.numero_valor = (trunc((abs(tot_debenga)) - trunc((abs(tot_debenga)),-3),0))
+    and f.cod_cia = $P{pCia}
+    and f.anio = $P{pAnio}
+    and f.mes = $P{pMes}
+    and f.num_planilla = $P{pNumPla}
+    and f.cod_tipopla = $P{pCodPla}
+    and d.cod_cia = f.cod_cia
+    and d.cod_emp = f.cod_emp
+    and e.cod_cia = f.cod_cia
+    and e.cod_depto = f.cod_depto
+    and g.cod_cia = d.cod_cia
+    and g.cod_puesto = d.cod_puesto
+    and d.cod_emp = decode($P{pEmp},999999,d.cod_emp,$P{pEmp})
+    and nvl(e.cod_depto,0) = decode($P{pCodDepto},0,nvl(e.cod_depto,0),$P{pCodDepto})
+    --and nvl(f.cod_sucursal,'0') = decode(:sucursal,'0',nvl(f.cod_sucursal,'0'),:sucursal)
+    --and nvl(f.cod_seccion,0) = decode(:seccion,'0',nvl(f.cod_seccion,0),:seccion)
+    and p.anio = f.anio
+    and p.mes = f.mes
+    and p.cod_cia = f.cod_cia
+    and p.num_planilla = f.num_planilla
+    and p.cod_tipopla = f.cod_tipopla    
+order by
+    f.cod_sucursal,
+    f.cod_depto,
+    f.cod_seccion,
+    d.num_tarjeta,
+    d.cod_emp]]></queryString>
+
+	<field name="NOM_COMERCIAL" class="java.lang.String"/>
+	<field name="SALARIOXDIAS" class="java.math.BigDecimal"/>
+	<field name="D_LABORADOS" class="java.math.BigDecimal"/>
+	<field name="CANTIDAD_EXTRA" class="java.math.BigDecimal"/>
+	<field name="VALOR_EXTRA" class="java.math.BigDecimal"/>
+	<field name="PRESTACIONES" class="java.math.BigDecimal"/>
+	<field name="DEDUCCIONES" class="java.math.BigDecimal"/>
+	<field name="VALOR_NOCT" class="java.math.BigDecimal"/>
+	<field name="CANTIDAD_NOCT" class="java.math.BigDecimal"/>
+	<field name="LIQ_RECIBIR" class="java.math.BigDecimal"/>
+	<field name="COD_EMP" class="java.math.BigDecimal"/>
+	<field name="NUM_TARJETA" class="java.lang.String"/>
+	<field name="COD_REF" class="java.lang.String"/>
+	<field name="DESCRIPCION" class="java.lang.String"/>
+	<field name="NOM_DEPTO" class="java.lang.String"/>
+	<field name="APELLIDOS" class="java.lang.String"/>
+	<field name="NOMBRES" class="java.lang.String"/>
+	<field name="COD_CIA" class="java.math.BigDecimal"/>
+	<field name="ANIO" class="java.math.BigDecimal"/>
+	<field name="MES" class="java.math.BigDecimal"/>
+	<field name="NUM_PLANILLA" class="java.math.BigDecimal"/>
+	<field name="CEDULA" class="java.lang.String"/>
+	<field name="NOM_EMP" class="java.lang.String"/>
+	<field name="NOM_PUESTO" class="java.lang.String"/>
+	<field name="DEPTOPUESTO" class="java.lang.String"/>
+	<field name="SALARIO_BASE" class="java.math.BigDecimal"/>
+	<field name="BONIFICACION" class="java.math.BigDecimal"/>
+	<field name="DEPTO1" class="java.lang.String"/>
+	<field name="COD_TIPOPLA" class="java.math.BigDecimal"/>
+	<field name="COMPLEMENTO" class="java.math.BigDecimal"/>
+	<field name="COD_SUCURSAL" class="java.lang.String"/>
+	<field name="COD_SECCION" class="java.math.BigDecimal"/>
+	<field name="COD_DEPTO" class="java.math.BigDecimal"/>
+	<field name="COD_PUESTO" class="java.math.BigDecimal"/>
+	<field name="FECHA_INICIAL" class="java.sql.Timestamp"/>
+	<field name="FECHA_FINAL" class="java.sql.Timestamp"/>
+	<field name="FECHA_PAGO" class="java.sql.Timestamp"/>
+
+	<variable name="total_devengado" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new java.lang.Double($F{SALARIOXDIAS}.doubleValue()+$F{PRESTACIONES}.doubleValue()+$F{VALOR_EXTRA}.doubleValue()+$F{COMPLEMENTO}.doubleValue()+$F{VALOR_NOCT}.doubleValue())
+]]></variableExpression>
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="false" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="36"  isSplitAllowed="false" >
+				<line direction="TopDown">
+					<reportElement
+						x="2"
+						y="27"
+						width="532"
+						height="0"
+						key="line"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="1"
+						y="0"
+						width="551"
+						height="26"
+						key="staticText-17"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="18"/>
+					</textElement>
+				<text><![CDATA[RECIBO DE SUELDO Y PRESTACIONES]]></text>
+				</staticText>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="353"  isSplitAllowed="true" >
+				<rectangle>
+					<reportElement
+						mode="Transparent"
+						x="258"
+						y="146"
+						width="272"
+						height="153"
+						key="rectangle-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						mode="Transparent"
+						x="7"
+						y="146"
+						width="245"
+						height="153"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="163"
+						y="154"
+						width="86"
+						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{SALARIOXDIAS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="14"
+						y="154"
+						width="149"
+						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Salario base (Dias: " + $F{D_LABORADOS} +")"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="359"
+						y="272"
+						width="140"
+						height="19"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{DEDUCCIONES}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="359"
+						y="304"
+						width="171"
+						height="20"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right">
+						<font size="10" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{LIQ_RECIBIR}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="108"
+						y="73"
+						width="35"
+						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{COD_EMP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="40"
+						y="73"
+						width="64"
+						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NUM_TARJETA}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="78"
+						y="52"
+						width="452"
+						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPCION}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="425"
+						y="29"
+						width="105"
+						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOM_DEPTO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="143"
+						y="73"
+						width="387"
+						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOM_EMP}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="7"
+						y="6"
+						width="61"
+						height="18"
+						key="staticText-1"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Periodo del]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="143"
+						y="6"
+						width="20"
+						height="18"
+						key="staticText-2"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<text><![CDATA[al]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="7"
+						y="29"
+						width="61"
+						height="18"
+						key="staticText-3"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Recibi de:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="68"
+						y="29"
+						width="329"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOM_COMERCIAL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="397"
+						y="29"
+						width="28"
+						height="17"
+						key="staticText-4"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Suc:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="7"
+						y="52"
+						width="71"
+						height="17"
+						key="staticText-5"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[La cantidad de:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="7"
+						y="73"
+						width="33"
+						height="17"
+						key="staticText-6"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Cod.:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="13"
+						y="274"
+						width="118"
+						height="19"
+						key="staticText-9"/>
+					<box></box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+				<text><![CDATA[Total de Ingresos:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="137"
+						y="274"
+						width="104"
+						height="19"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{total_devengado}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="266"
+						y="273"
+						width="87"
+						height="19"
+						key="staticText-10"/>
+					<box></box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+				<text><![CDATA[Deducciones:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="126"
+						width="246"
+						height="15"
+						key="staticText-11"/>
+					<box></box>
+					<textElement>
+						<font isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Ingresos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="258"
+						y="126"
+						width="272"
+						height="15"
+						key="staticText-12"/>
+					<box></box>
+					<textElement>
+						<font isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Deducciones]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="7"
+						y="304"
+						width="66"
+						height="20"
+						key="staticText-13"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[San Salvador,]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="258"
+						y="304"
+						width="95"
+						height="20"
+						key="staticText-15"/>
+					<box></box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+				<text><![CDATA[Total a Pagar:]]></text>
+				</staticText>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="266"
+						y="153"
+						width="253"
+						height="113"
+						key="subreport-1"/>
+					<subreportParameter  name="pCia">
+						<subreportParameterExpression><![CDATA[$P{pCia}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="pAnio">
+						<subreportParameterExpression><![CDATA[$P{pAnio}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="pMes">
+						<subreportParameterExpression><![CDATA[$P{pMes}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="pNumPla">
+						<subreportParameterExpression><![CDATA[$P{pNumPla}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="pCodPla">
+						<subreportParameterExpression><![CDATA[$P{pCodPla}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="pEmp">
+						<subreportParameterExpression><![CDATA[$P{pEmp}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="tipo">
+						<subreportParameterExpression><![CDATA["R"]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "RPLA018_DEDUC.jasper"]]></subreportExpression>
+				</subreport>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="68"
+						y="6"
+						width="75"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.sql.Timestamp"><![CDATA[$F{FECHA_INICIAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="163"
+						y="6"
+						width="78"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.sql.Timestamp"><![CDATA[$F{FECHA_FINAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd 'de' MMMMM 'de' yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="73"
+						y="304"
+						width="179"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.sql.Timestamp"><![CDATA[$F{FECHA_PAGO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="446"
+						y="6"
+						width="30"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="499"
+						y="6"
+						width="32"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="476"
+						y="6"
+						width="23"
+						height="18"
+						key="staticText-18"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<text><![CDATA[/]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="280"
+						y="327"
+						width="251"
+						height="19"
+						key="staticText-19"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[F.: _________________________________________]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="7"
+						y="95"
+						width="33"
+						height="17"
+						key="staticText-20"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Depto:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="39"
+						y="95"
+						width="240"
+						height="17"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOM_DEPTO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="293"
+						y="94"
+						width="41"
+						height="18"
+						key="staticText-21"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Puesto:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="334"
+						y="94"
+						width="196"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOM_PUESTO}]]></textFieldExpression>
+				</textField>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="14"
+						y="171"
+						width="235"
+						height="101"
+						key="subreport-2"/>
+					<subreportParameter  name="pCia">
+						<subreportParameterExpression><![CDATA[$P{pCia}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="pAnio">
+						<subreportParameterExpression><![CDATA[$P{pAnio}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="pMes">
+						<subreportParameterExpression><![CDATA[$P{pMes}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="pNumPla">
+						<subreportParameterExpression><![CDATA[$P{pNumPla}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="pCodPla">
+						<subreportParameterExpression><![CDATA[$P{pCodPla}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="pEmp">
+						<subreportParameterExpression><![CDATA[$P{pEmp}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="tipo">
+						<subreportParameterExpression><![CDATA["S"]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "RPLA018_DEDUC.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="false" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>
