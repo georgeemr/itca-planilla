@@ -21,7 +21,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.validation.constraints.NotNull;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.event.SelectEvent;
 
 /**
 
@@ -1126,40 +1125,122 @@ public String entrevistas$agregar$action()
 @PermitAll
 public String nuevo$action()
 {
-    nombre = null ;
+    nombre = null;
     apellido = null;
-    apellidoCasada = null ;
+    apellidoCasada = null;
     fechaSolicitud = GregorianCalendar.getInstance().getTime();
-    sexo = null ;
-    estadoCivil = null ;
+    sexo = null;
+    estadoCivil = null;
     // ===
     estadoAccion = CREANDO;
     return null;
 }
 
 @PermitAll
-public void candidatosTableSelectListener(SelectEvent evt)
-{
-    if (candidatoSeleccionado == null)
-        {
-        addMessage("Infosweb RRHH", "Seleccione un candidato para editarlo", TipoMensaje.INFORMACION);
-        return;
-        }
-    Candidato c = reclutamientoFacade.findCandidatoById(candidatoSeleccionado.getCandidatoPK());
-    nombre = c.getNombre();
-    apellido = c.getApellido();
-    apellidoCasada = c.getApCasada();
-    fechaSolicitud = c.getFecSolicitud();
-    sexo = c.getSexo();
-    estadoCivil = c.getEstadoCivil();
-    // ==
-    addMessage("Infosweb RRHH", "Seleccionado el candidato: " + c.getCandidatoPK().getCodCandidato() + " - " + c.getNombreCompleto(), TipoMensaje.INFORMACION);
-}
-
-@PermitAll
 public String editar$action()
 {
-    estadoAccion = EDITANDO;
+    try
+        {
+        Paises pais = null;
+        Deptos depto = null;
+        if (candidatoSeleccionado == null)
+            {
+            addMessage("Infosweb RRHH", "Seleccione un candidato para editarlo", TipoMensaje.INFORMACION);
+            return null;
+            }
+        Candidato c = reclutamientoFacade.findCandidatoById(candidatoSeleccionado.getCandidatoPK());
+        nombre = c.getNombre();
+        apellido = c.getApellido();
+        apellidoCasada = c.getApCasada();
+        fechaSolicitud = c.getFecSolicitud();
+        sexo = c.getSexo();
+        estadoCivil = c.getEstadoCivil();
+        // ==
+        generales$pais = "" + c.getCodPaisDomic();
+        pais = sessionBeanParametros.findPaisesByid(c.getCodPaisDomic());
+        deptosDomicilioSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
+        generales$departamento = generales$pais + ":" + c.getCodDepartamentoDomic();
+        depto = sessionBeanParametros.findDepartamentoById(new DeptosPK(c.getCodPaisDomic(), c.getCodDepartamentoDomic()));
+        municipiosDomicilioSelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(depto);
+        generales$municipio = generales$departamento + ":" + c.getCodMunicipioDomic();
+        generales$telefono = c.getTelefono();
+        generales$direccion = c.getDireccion();
+        // ==
+        generales$paisNacimiento = "" + c.getCodPaisNacimiento();
+        pais = sessionBeanParametros.findPaisesByid(c.getCodPaisNacimiento());
+        deptosNacSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
+        generales$departamentoNacimiento = generales$paisNacimiento + ":" + c.getCodDepartamentoNacim();
+        depto = sessionBeanParametros.findDepartamentoById(new DeptosPK(c.getCodPaisNacimiento(), c.getCodDepartamentoNacim()));
+        municipiosNacDomicilioSelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(depto);
+        generales$municipioNacimiento = generales$departamentoNacimiento + ":" + c.getCodMunicipioNacim();
+        generales$fechaNacimiento = c.getFechaNac();
+        generales$paisNacionalidad = c.getCodPaisNacionalidad().toString();
+        generales$grupoSanguineo = c.getTipoSangre().getTipoSangre();
+        // ==
+        generales$dui = c.getNumDui();
+        generales$nit = c.getNumNit();
+        generales$fechaExpDui = c.getFechaExpDui();
+
+        //generales$departamentoExpDui 
+        //depto = sessionBeanParametros.findDepartamentoById(new DeptosPK(preparacion$anioEgreso, c.getCodDepto()));
+        //municipiosExpDUISelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(depto);
+
+        generales$licenciaConducir = c.getNumLicencia();
+        generales$pasaporte = c.getNumPasaporte();
+        generales$nombreISSS = c.getNomIsss();
+        generales$nombreNIT = c.getNomNit();
+        // ==
+        preparacionesAcademicasCandidato = new ArrayList<PreparacionAcademicaCandidato>();
+        List<NivelesXCandidato> ln = c.getNivelesXCandidatoList();
+        for (NivelesXCandidato n : ln)
+            {
+            PreparacionAcademicaCandidato p = new PreparacionAcademicaCandidato();
+            p.setNombreInstitucion(n.getNomInstitucion());
+            p.setNivelAcademico(sessionBeanParametros.findNivelAcademicoById(new NivelAcademicoPK(n.getNivelesXCandidatoPK().getCodCia(), n.getNivelesXCandidatoPK().getCodNivel())));
+            p.setAnioIngreso(n.getAnioIngreso());
+            p.setAnioEgreso(n.getAnioEgreso());
+            p.setDepartamentoInstitucion(sessionBeanParametros.findDepartamentoById(new DeptosPK(n.getCodPais(), n.getCodDepto())));
+            preparacionesAcademicasCandidato.add(p);
+            }
+        // ==
+        emergencias$conyuge = c.getNombreConyuge();
+        emergencias$trabajo = c.getTrabajoConyuge();
+        emergencias$telefono = c.getTelefonoConyuge();
+        emergencias$condicionSalud = c.getCondicionSalud();
+        emergencias$actividadLimitada = c.getActividadLimitada().equals("S");
+        emergencias$haSufridoAccidentes = c.getTieneAccidente().equals("S");
+        emergencias$tipoAccidente = c.getTipoAccidente();
+        emergencias$pesoActual = c.getPeso();
+        emergencias$estatura = c.getEstatura();
+        
+        parentescosCandidatos = new ArrayList<ParentescoCandidato>();
+        List<EmergenciaXCandidato> le = c.getEmergenciaXCandidatoList();
+        for (EmergenciaXCandidato e : le)
+            {
+            ParentescoCandidato p = new ParentescoCandidato();
+            p.setParentesco(sessionBeanParametros.findParentescoById(new ParentescoPK(getSessionBeanADM().getCompania().getCodCia(), e.getCodParentesco())));
+            p.setNombre(e.getNombre());
+            p.setTelefono(e.getTelefono());
+            parentescosCandidatos.add(p);
+            }
+        // ==
+        experienciasLaboralesCandidato = new ArrayList<ExperienciaLaboralCandidato>();
+        // ==
+        // ==
+        // ==
+        // ==
+        // ==
+        observaciones = c.getObservacion();
+        // ==
+        addMessage("Infosweb RRHH", "Editando candidato: " + c.getCandidatoPK().getCodCandidato() + " - " + c.getNombreCompleto(), TipoMensaje.INFORMACION);
+        // ==
+        estadoAccion = EDITANDO;
+        }
+    catch (Exception excpt)
+        {
+        addMessage("Infosweb RRHH", excpt.toString(), TipoMensaje.ERROR_FATAL);
+        excpt.printStackTrace(System.err);
+        }
     return null;
 }
 
