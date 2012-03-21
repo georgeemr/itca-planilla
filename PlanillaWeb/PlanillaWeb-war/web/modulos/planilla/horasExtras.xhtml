@@ -15,7 +15,7 @@
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" action="#{planilla$horasExtras.mostrarResumenAsistencia$action}">
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumenAsistencia" action="#{planilla$horasExtras.mostrarResumenAsistencia$action}">
                     <p:graphicImage value="/resources/iconos/personal.png"/>
                     <h:outputText value="Mostrar Asistencia" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -49,7 +49,7 @@
             <h:panelGrid columns="2" >
                 <i:etiquetaRequerido value="Tipo de planilla" />
                 <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{planilla$horasExtras.tipoPlanilla}" >                       
-                    <f:ajax render="panelHorasExtras" event="change" execute="LstTipoPlanilla" />
+                    <f:ajax render="panelHorasExtras tablaResumenAsistencia" event="change" execute="LstTipoPlanilla" listener="#{planilla$horasExtras.updateByTipoPlanilla}" />
                     <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
                     <f:selectItems value="#{planilla$horasExtras.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                 </h:selectOneMenu>

@@ -4,10 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
-import com.infosgroup.planilla.modelo.entidades.Agencias;
-import com.infosgroup.planilla.modelo.entidades.Planilla;
-import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
-import com.infosgroup.planilla.modelo.entidades.ResumenAsistenciaPK;
+import com.infosgroup.planilla.modelo.entidades.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -44,6 +41,7 @@ public class ResumenAsistenciaFacade extends AbstractFacade<ResumenAsistencia, R
         return tq.getResultList();
     }
 
+    @PermitAll
     public List<ResumenAsistencia> findResumenAsistenciaByTipoPlanilla(short codCia, short anio, short mes, short numPlanilla, short codTipopla) {
         List<ResumenAsistencia> r;
         Query q = em.createQuery("SELECT r FROM ResumenAsistencia r WHERE r.resumenAsistenciaPK.codCia = :codCia AND r.resumenAsistenciaPK.anio = :anio AND r.resumenAsistenciaPK.mes = :mes AND r.resumenAsistenciaPK.numPlanilla = :numPlanilla AND r.resumenAsistenciaPK.codTipopla = :codTipopla", ResumenAsistencia.class);
@@ -53,6 +51,25 @@ public class ResumenAsistenciaFacade extends AbstractFacade<ResumenAsistencia, R
         q.setParameter("numPlanilla", numPlanilla);
         q.setParameter("codTipopla", codTipopla);
         r = q.getResultList();
+        return r != null ? r : new ArrayList<ResumenAsistencia>();
+    }
+
+    @PermitAll
+    public List<ResumenAsistencia> findResumenAsistencia(ProgramacionPla programacionPla, Short departamento, Short sucursal) {
+        StringBuilder query = new StringBuilder();
+        query.append("select r.* from resumen_asistencia r where r.cod_cia = ? ");
+        query.append("and r.anio = ? and r.mes = ? and r.num_planilla = ? and r.cod_tipopla = ? ");
+        query.append("and r.cod_depto = decode(nvl( ? , -1), -1, r.cod_depto, ? ) and r.cod_sucursal = decode(nvl(?, -1), -1, r.cod_sucursal, ? )");
+        List<ResumenAsistencia> r = em.createNativeQuery(query.toString(), ResumenAsistencia.class)
+                .setParameter(1, programacionPla.getProgramacionPlaPK().getCodCia())
+                .setParameter(2, programacionPla.getAnio())
+                .setParameter(3, programacionPla.getMes())
+                .setParameter(4, programacionPla.getNumPlanilla())
+                .setParameter(5, programacionPla.getProgramacionPlaPK().getCodTipopla())
+                .setParameter(6, departamento)
+                .setParameter(7, departamento)
+                .setParameter(8, sucursal)
+                .setParameter(9, sucursal).getResultList();
         return r != null ? r : new ArrayList<ResumenAsistencia>();
     }
 }

@@ -17,6 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -169,9 +170,16 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
         return suggestions;
     }
 
+    public void updateByTipoPlanilla(AjaxBehaviorEvent event) {
+        limpiarCampos();
+    }
+
     @Override
     protected void limpiarCampos() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        setProPlaSeleccionada(null);
+        setAgenciaSeleccionada(new Short("-1"));
+        setDepartamentoSeleccionado(new Short("-1"));
+        setListaResumenAsistencia(new ArrayList<ResumenAsistencia>());
     }
 
     public void rowEditListener(RowEditEvent event) {
@@ -186,6 +194,15 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
     }
 
     public String mostrarResumenAsistencia$action() {
+        if (proPlaSeleccionada == null) {
+            addMessage("Registro de Resumen de Asistencias", "Seleccione una Programación Planilla.", TipoMensaje.ERROR);
+            return null;
+        }
+        listaResumenAsistencia = planillaSessionBean.findResumenAsistencia(proPlaSeleccionada, departamentoSeleccionado, agenciaSeleccionada);
+
+        if (listaResumenAsistencia.size() <= 0) {
+            addMessage("Registro de Resumen de Asistencias", "No se han encontrado datos.", TipoMensaje.ERROR);
+        }
         return null;
     }
 }
