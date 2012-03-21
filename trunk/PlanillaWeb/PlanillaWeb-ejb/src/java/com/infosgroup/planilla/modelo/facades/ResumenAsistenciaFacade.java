@@ -59,7 +59,7 @@ public class ResumenAsistenciaFacade extends AbstractFacade<ResumenAsistencia, R
         StringBuilder query = new StringBuilder();
         query.append("select r.* from resumen_asistencia r where r.cod_cia = ? ");
         query.append("and r.anio = ? and r.mes = ? and r.num_planilla = ? and r.cod_tipopla = ? ");
-        query.append("and r.cod_depto = decode(nvl( ? , -1), -1, r.cod_depto, ? ) and r.cod_sucursal = decode(nvl(?, -1), -1, r.cod_sucursal, ? )");
+        query.append("and nvl(r.cod_depto,-1) = decode(nvl( ? , -1), -1, nvl(r.cod_depto,-1), ? ) and nvl(r.cod_sucursal,-1) = decode(nvl(?, -1), -1, nvl(r.cod_sucursal,-1), ? )");
         List<ResumenAsistencia> r = em.createNativeQuery(query.toString(), ResumenAsistencia.class)
                 .setParameter(1, programacionPla.getProgramacionPlaPK().getCodCia())
                 .setParameter(2, programacionPla.getAnio())

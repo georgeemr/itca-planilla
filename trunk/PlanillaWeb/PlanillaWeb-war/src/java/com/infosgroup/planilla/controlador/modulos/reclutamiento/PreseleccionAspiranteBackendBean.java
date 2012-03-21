@@ -783,7 +783,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     public List<PruebaXPuesto> completePrueba(String query) {
         List<PruebaXPuesto> suggestions = new ArrayList<PruebaXPuesto>();
         for (PruebaXPuesto p : pruebaConverter.listaPruebaXPuesto) {
-            if (p.getNombre().startsWith(query)) {
+            if (p.getNombre().contains(query)) {
                 suggestions.add(p);
             }
         }
