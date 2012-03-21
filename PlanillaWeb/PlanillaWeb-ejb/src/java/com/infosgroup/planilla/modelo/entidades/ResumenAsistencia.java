@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ResumenAsistencia.findByCodDepto", query = "SELECT r FROM ResumenAsistencia r WHERE r.codDepto = :codDepto"),
     @NamedQuery(name = "ResumenAsistencia.findByCodSucursal", query = "SELECT r FROM ResumenAsistencia r WHERE r.codSucursal = :codSucursal"),
     @NamedQuery(name = "ResumenAsistencia.findByOtros", query = "SELECT r FROM ResumenAsistencia r WHERE r.otros = :otros"),
-    @NamedQuery(name = "ResumenAsistencia.findByEstado", query = "SELECT r FROM ResumenAsistencia r WHERE r.estado = :estado"),
+    //@NamedQuery(name = "ResumenAsistencia.findByEstado", query = "SELECT r FROM ResumenAsistencia r WHERE r.estado = :estado"),
     @NamedQuery(name = "ResumenAsistencia.findByHorasAusencia", query = "SELECT r FROM ResumenAsistencia r WHERE r.horasAusencia = :horasAusencia"),
     @NamedQuery(name = "ResumenAsistencia.findByDNocturnidad", query = "SELECT r FROM ResumenAsistencia r WHERE r.dNocturnidad = :dNocturnidad")})
 public class ResumenAsistencia implements Serializable {
@@ -80,8 +80,9 @@ public class ResumenAsistencia implements Serializable {
     private String codSucursal;
     @Column(name = "OTROS", precision = 12, scale = 2)
     private BigDecimal otros;
-    @Column(name = "ESTADO", length = 1)
-    private String estado;
+    @JoinColumn(name = "ESTADO", referencedColumnName = "COD_AUSEN")
+    @ManyToOne
+    private TipoAusent estado;
     @Column(name = "HORAS_AUSENCIA", precision = 6, scale = 2)
     private BigDecimal horasAusencia;
     @Column(name = "D_NOCTURNIDAD")
@@ -239,11 +240,11 @@ public class ResumenAsistencia implements Serializable {
         this.otros = otros;
     }
 
-    public String getEstado() {
+    public TipoAusent getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(TipoAusent estado) {
         this.estado = estado;
     }
 

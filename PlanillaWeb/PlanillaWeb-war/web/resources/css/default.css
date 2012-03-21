@@ -138,3 +138,7 @@ body {
     margin: auto;
     width: 100px;
 }
+
+.txtTableEditCantidad{
+    border-width: 0; margin-left: -5px; margin-right: -5px;width: 40px;
+}

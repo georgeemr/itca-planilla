@@ -14,7 +14,7 @@
     </ui:define>
 
     <ui:define name="acciones">
-        <p:tab id="tabAcciones" title="Otras acciones">
+        <p:tab id="tabAcciones" title="Acciones">
             <h:panelGrid columns="1">
                 <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, lstTipos" 
                                onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" 
@@ -131,7 +131,7 @@
                 <p:graphicImage value="/resources/iconos/edit-delete.png" rendered="#{sol.aprobadoRh eq 'R'}" />
             </p:column>
 
-            <p:column headerText="Fecha Solicitud" sortBy="#{sol.fecha}">
+            <p:column headerText="Fecha" sortBy="#{sol.fecha}">
                 <h:outputText value="#{sol.fecha}" >
                     <f:convertDateTime pattern="dd/MM/yyyy" />
                 </h:outputText>
