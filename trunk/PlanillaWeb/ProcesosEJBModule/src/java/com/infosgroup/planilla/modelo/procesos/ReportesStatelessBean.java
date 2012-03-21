@@ -103,6 +103,28 @@ public class ReportesStatelessBean {
     }
 
     @PermitAll
+    public byte[] generarDatosReporteSQL(FacesContext facesContext, HashMap<String, Object> parametros, String nombreArchivoReporte, FormatoReporte type) {
+        String rutaReporte;
+        try {
+            Connection conexion = planillaJDBCDatasource.getConnection();
+            String r = ((ServletContext) facesContext.getExternalContext().getContext()).getRealPath("/");
+            rutaReporte = r + "resources" + java.io.File.separator + "reportes" + java.io.File.separator + nombreArchivoReporte + ".jasper";
+            parametros.put("SUBREPORT_DIR", r + "resources" + java.io.File.separator + "reportes" + java.io.File.separator);
+            System.out.println("[REPORTE] Ruta:      " + rutaReporte);
+            System.out.println("[REPORTE] Parametros:" + parametros);
+            System.out.println("[REPORTE] Conexion:  " + conexion);
+            JasperPrint jrPrint = JasperFillManager.fillReport(rutaReporte, parametros, conexion);
+            byte[] bytesReporte = JasperExportManager.exportReportToPdf(jrPrint);
+            return bytesReporte;
+        } catch (Exception excpt) {
+            System.out.println(excpt.getClass().getName() + ": " + excpt.getLocalizedMessage());
+            System.out.println(excpt.getMessage());
+            excpt.printStackTrace(System.err);
+            return null;
+        }
+    }
+
+    @PermitAll
     public byte[] generarDatosReporteBean(FacesContext facesContext, HashMap<String, Object> parametros, String nombreArchivoReporte, Collection datos) {
         String rutaReporte;
         try {
