@@ -15,15 +15,19 @@
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" action="#{planilla$horasExtras.mostrarResumenAsistencias$action}">
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" action="#{planilla$horasExtras.mostrarResumenAsistencia$action}">
                     <p:graphicImage value="/resources/iconos/personal.png"/>
+                    <h:outputText value="Mostrar Asistencia" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" >
+                    <p:graphicImage value="/resources/iconos/beneficiarios.png"/>
                     <h:outputText value="Agregar Empleados" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" action="#{planilla$horasExtras.mostrarResumenAsistencias$action}">
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" >
                     <p:graphicImage value="/resources/iconos/edit-delete.png"/>
                     <h:outputText value="Borrar Planilla" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" action="#{planilla$horasExtras.mostrarResumenAsistencias$action}">
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" >
                     <p:graphicImage value="/resources/iconos/search.png"/>
                     <h:outputText value="B&uacute;scar Vacaciones" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -31,7 +35,7 @@
         </p:tab>
         <p:tab title="Otras Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" action="#{planilla$horasExtras.mostrarResumenAsistencias$action}">
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" action="#{planilla$horasExtras.inicio$action}">
                     <!--p:graphicImage value="/resources/iconos/edit-find-user.png"/ -->
                     <h:outputText value="Mostrar resumen" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -218,11 +222,11 @@
                 <p:column>
                     <p:rowEditor/>
                 </p:column>
-                
+
                 <f:facet name="footer">
                     <p:commandButton value="Imprimir Hoja de Asistencia" image="documentPDF" />
                 </f:facet>
-                
+
             </p:dataTable>
 
         </p:panel>

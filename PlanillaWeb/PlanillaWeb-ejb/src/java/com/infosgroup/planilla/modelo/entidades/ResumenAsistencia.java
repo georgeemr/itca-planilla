@@ -26,21 +26,21 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ResumenAsistencia.findByAnio", query = "SELECT r FROM ResumenAsistencia r WHERE r.resumenAsistenciaPK.anio = :anio"),
     @NamedQuery(name = "ResumenAsistencia.findByMes", query = "SELECT r FROM ResumenAsistencia r WHERE r.resumenAsistenciaPK.mes = :mes"),
     @NamedQuery(name = "ResumenAsistencia.findByNumPlanilla", query = "SELECT r FROM ResumenAsistencia r WHERE r.resumenAsistenciaPK.numPlanilla = :numPlanilla"),
-    @NamedQuery(name = "ResumenAsistencia.findByCodEmp", query = "SELECT r FROM ResumenAsistencia r WHERE r.resumenAsistenciaPK.codEmp = :codEmp"),
+    //@NamedQuery(name = "ResumenAsistencia.findByCodEmp", query = "SELECT r FROM ResumenAsistencia r WHERE r.resumenAsistenciaPK.codEmp = :codEmp"),
     @NamedQuery(name = "ResumenAsistencia.findByDLaborados", query = "SELECT r FROM ResumenAsistencia r WHERE r.dLaborados = :dLaborados"),
     @NamedQuery(name = "ResumenAsistencia.findByDnLaborados", query = "SELECT r FROM ResumenAsistencia r WHERE r.dnLaborados = :dnLaborados"),
     @NamedQuery(name = "ResumenAsistencia.findByHXsencillas", query = "SELECT r FROM ResumenAsistencia r WHERE r.hXsencillas = :hXsencillas"),
     @NamedQuery(name = "ResumenAsistencia.findByHXdobles", query = "SELECT r FROM ResumenAsistencia r WHERE r.hXdobles = :hXdobles"),
     @NamedQuery(name = "ResumenAsistencia.findByViaticos", query = "SELECT r FROM ResumenAsistencia r WHERE r.viaticos = :viaticos"),
-    @NamedQuery(name = "ResumenAsistencia.findByStatus", query = "SELECT r FROM ResumenAsistencia r WHERE r.status = :status"),
-    @NamedQuery(name = "ResumenAsistencia.findByCodTipopla", query = "SELECT r FROM ResumenAsistencia r WHERE r.resumenAsistenciaPK.codTipopla = :codTipopla"),
+    //@NamedQuery(name = "ResumenAsistencia.findByStatus", query = "SELECT r FROM ResumenAsistencia r WHERE r.status = :status"),
+    //@NamedQuery(name = "ResumenAsistencia.findByCodTipopla", query = "SELECT r FROM ResumenAsistencia r WHERE r.resumenAsistenciaPK.codTipopla = :codTipopla"),
     @NamedQuery(name = "ResumenAsistencia.findByHXf250", query = "SELECT r FROM ResumenAsistencia r WHERE r.hXf250 = :hXf250"),
     @NamedQuery(name = "ResumenAsistencia.findByHHora", query = "SELECT r FROM ResumenAsistencia r WHERE r.hHora = :hHora"),
     @NamedQuery(name = "ResumenAsistencia.findByDAguinaldo", query = "SELECT r FROM ResumenAsistencia r WHERE r.dAguinaldo = :dAguinaldo"),
     @NamedQuery(name = "ResumenAsistencia.findByVacaciones", query = "SELECT r FROM ResumenAsistencia r WHERE r.vacaciones = :vacaciones"),
     @NamedQuery(name = "ResumenAsistencia.findByHXf150", query = "SELECT r FROM ResumenAsistencia r WHERE r.hXf150 = :hXf150"),
-    @NamedQuery(name = "ResumenAsistencia.findByCodDepto", query = "SELECT r FROM ResumenAsistencia r WHERE r.codDepto = :codDepto"),
-    @NamedQuery(name = "ResumenAsistencia.findByCodSucursal", query = "SELECT r FROM ResumenAsistencia r WHERE r.codSucursal = :codSucursal"),
+    //@NamedQuery(name = "ResumenAsistencia.findByCodDepto", query = "SELECT r FROM ResumenAsistencia r WHERE r.codDepto = :codDepto"),
+    //@NamedQuery(name = "ResumenAsistencia.findByCodSucursal", query = "SELECT r FROM ResumenAsistencia r WHERE r.codSucursal = :codSucursal"),
     @NamedQuery(name = "ResumenAsistencia.findByOtros", query = "SELECT r FROM ResumenAsistencia r WHERE r.otros = :otros"),
     //@NamedQuery(name = "ResumenAsistencia.findByEstado", query = "SELECT r FROM ResumenAsistencia r WHERE r.estado = :estado"),
     @NamedQuery(name = "ResumenAsistencia.findByHorasAusencia", query = "SELECT r FROM ResumenAsistencia r WHERE r.horasAusencia = :horasAusencia"),
@@ -74,10 +74,6 @@ public class ResumenAsistencia implements Serializable {
     private BigDecimal vacaciones;
     @Column(name = "H_XF150")
     private Integer hXf150;
-    @Column(name = "COD_DEPTO")
-    private Short codDepto;
-    @Column(name = "COD_SUCURSAL", length = 2)
-    private String codSucursal;
     @Column(name = "OTROS", precision = 12, scale = 2)
     private BigDecimal otros;
     @JoinColumn(name = "ESTADO", referencedColumnName = "COD_AUSEN")
@@ -87,6 +83,16 @@ public class ResumenAsistencia implements Serializable {
     private BigDecimal horasAusencia;
     @Column(name = "D_NOCTURNIDAD")
     private Short dNocturnidad;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_SUCURSAL", referencedColumnName = "COD_AGENCIA")})
+    @ManyToOne(optional = false)
+    private Agencias agencias;
+    @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_DEPTO", referencedColumnName = "COD_DEPTO")})
+    @ManyToOne(optional = false)
+    private Departamentos departamentos;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "resumenAsistencia")
     private List<MovDp> movDpList;
     @JoinColumns({
@@ -216,20 +222,20 @@ public class ResumenAsistencia implements Serializable {
         this.hXf150 = hXf150;
     }
 
-    public Short getCodDepto() {
-        return codDepto;
+    public Departamentos getDepartamentos() {
+        return departamentos;
     }
 
-    public void setCodDepto(Short codDepto) {
-        this.codDepto = codDepto;
+    public void setDepartamentos(Departamentos departamentos) {
+        this.departamentos = departamentos;
     }
 
-    public String getCodSucursal() {
-        return codSucursal;
+    public Agencias getAgencias() {
+        return agencias;
     }
 
-    public void setCodSucursal(String codSucursal) {
-        this.codSucursal = codSucursal;
+    public void setAgencias(Agencias agencias) {
+        this.agencias = agencias;
     }
 
     public BigDecimal getOtros() {
@@ -296,7 +302,7 @@ public class ResumenAsistencia implements Serializable {
     public void setValorTemp(Double valorTemp) {
         this.valorTemp = valorTemp;
     }
-    
+
     public Planilla getPlanilla() {
         return planilla;
     }
