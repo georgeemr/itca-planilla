@@ -21,7 +21,7 @@ import org.primefaces.event.RowEditEvent;
 
 /**
  *
- * @author infosgroup
+ * @author Gabriel Bran
  */
 @ManagedBean(name = "planilla$horasExtras")
 @ViewScoped
@@ -47,7 +47,6 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
         planillaConverter = new AutocompletePlanillaConverter(new ArrayList<Planilla>());
         listaAgencias = planillaSessionBean.listarAgencias(getSessionBeanADM().getCompania());
         listaDepartamentos = planillaSessionBean.findDepartamentos(getSessionBeanADM().getCompania());
-        listaResumenAsistencia = planillaSessionBean.getAsistencia();
         listaEstados = planillaSessionBean.findListaTipoAusent();
     }
 
@@ -132,7 +131,6 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
         this.tipoPlanilla = tipoPlanilla;
     }
 
-    // M E T O D O S
     public AutocompleteProgramacionPlaConverter getProgramacionPlaConverter() {
         if (tipoPlanilla != null && tipoPlanilla != -1) {
             programacionPlaConverter = new AutocompleteProgramacionPlaConverter(planillaSessionBean.getProgramacionPlaByTipo(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla));
@@ -187,20 +185,7 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
         }
     }
 
-    public String mostrarResumenAsistencias$action() {
-//        Boolean hayError = Boolean.FALSE;
-//        if (planillaSeleccionada == null) {
-//            addMessage("RRHH", "Seleccione la planilla", TipoMensaje.INFORMACION);
-//            hayError = Boolean.TRUE;
-//        }
-//        if (agenciaSeleccionada == null) {
-//            addMessage("RRHH", "Seleccione la sucursal", TipoMensaje.INFORMACION);
-//            hayError = Boolean.TRUE;
-//        }
-//        if (hayError) {
-//            return null;
-//        }
-//        horasExtras = planillaSessionBean.listarResumenByPlanillaSucursal(planillaSeleccionada, agenciaSeleccionada);
+    public String mostrarResumenAsistencia$action() {
         return null;
     }
 }
