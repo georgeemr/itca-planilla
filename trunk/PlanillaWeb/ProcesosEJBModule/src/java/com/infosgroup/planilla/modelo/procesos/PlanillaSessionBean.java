@@ -606,4 +606,10 @@ public class PlanillaSessionBean {
     public List<Planilla> findByProgramacionPla(ProgramacionPla programacionPla) {
         return planillaFacade.findPlanillaByProgramacion(programacionPla);
     }
+    
+    @PermitAll
+    public List<ResumenAsistencia> findResumenAsistencia(ProgramacionPla programacionPla, Short departamento, Short sucursal) {
+        return resumenFacade.findResumenAsistencia(programacionPla, departamento, sucursal);
+    }
+    
 }
