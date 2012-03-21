@@ -611,5 +611,25 @@ public class PlanillaSessionBean {
     public List<ResumenAsistencia> findResumenAsistencia(ProgramacionPla programacionPla, Short departamento, Short sucursal) {
         return resumenFacade.findResumenAsistencia(programacionPla, departamento, sucursal);
     }
+
+@PermitAll
+    public List<Planilla> findByProPlaAndDepto(ProgramacionPla proPla, Short depto) {
+        return planillaFacade.findPlanillaByProAndDep(proPla, depto);
+    }
+
+    @PermitAll
+    public List<Departamentos> findDepByPla(ProgramacionPla proPla) {
+        return departamentoFacade.findDepartamentosByPlanilla(proPla);
+    }
+
+    @PermitAll
+    public List<Empleados> findJefesByDepto(Departamentos depto) {
+        return empleadoFacade.findJefesByDepto(depto);
+    }
+
+    @PermitAll
+    public Departamentos findDeptoById(DepartamentosPK pk) {
+        return departamentoFacade.find(pk);
+    }
     
 }
