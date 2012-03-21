@@ -10,6 +10,7 @@ import com.infosgroup.planilla.modelo.entidades.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +21,7 @@ import javax.persistence.TypedQuery;
  *
  * @author root
  */
+@LocalBean
 @Stateless
 public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
 
@@ -157,6 +159,13 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
     public List<Empleados> findEmpleadosByCias(Cias cias) {
         List<Empleados> l = new ArrayList<Empleados>(0);
         l = em.createQuery("SELECT e FROM Empleados e WHERE e.empleadosPK.codCia = :codCia", Empleados.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        return l != null ? l : new ArrayList<Empleados>();
+    }
+    
+    @PermitAll
+    public List<Empleados> findJefesByDepto(Departamentos depto) {
+        List<Empleados> l = new ArrayList<Empleados>(0);
+        l = em.createQuery("SELECT e FROM Empleados e WHERE e.empleadosPK.codCia = :codCia AND e.departamentos = :departamentos AND e.puestos.jefatura = 'SI'", Empleados.class).setParameter("departamentos", depto).setParameter("codCia", depto.getDepartamentosPK().getCodCia()).getResultList();
         return l != null ? l : new ArrayList<Empleados>();
     }
 }

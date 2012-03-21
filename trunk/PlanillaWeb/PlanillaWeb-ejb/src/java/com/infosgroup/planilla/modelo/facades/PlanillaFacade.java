@@ -107,12 +107,13 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
                 + "AND p.planillaPK.mes = :mes "
                 + "AND p.planillaPK.numPlanilla = :numPlanilla "
                 + "AND p.planillaPK.codTipopla = :codTipopla "
-                + " ", Planilla.class);
+                + "AND p.codDepto = :codDepto  ", Planilla.class);
         q.setParameter("codCia", cia);
         q.setParameter("anio", anio);
         q.setParameter("mes", mes);
         q.setParameter("numPlanilla", num);
         q.setParameter("codTipopla", tipo);
+        q.setParameter("codDepto", depto);
         l = q.getResultList();
         return l != null ? l : new ArrayList<Planilla>();
     }
