@@ -65,6 +65,14 @@ public class PlanillaSessionBean {
     private DeduccionesPrestacionesFacade deduccionesPrestacionesFacade;
     @EJB
     private MovDpFacade movDpFacade;
+    @EJB
+    private TipoAusentFacade tipoAusentFacade;
+    
+    @PermitAll
+    public List<TipoAusent> findListaTipoAusent(){
+        List<TipoAusent> t = tipoAusentFacade.findAll();
+        return t!=null?t:new ArrayList<TipoAusent>();
+    }
 
     public List<ResumenAsistencia> getResumen(ResumenAsistencia c) {
         return (c != null) ? resumenFacade.findAll() : new ArrayList<ResumenAsistencia>();
@@ -98,6 +106,7 @@ public class PlanillaSessionBean {
         return planillaFacade.findPlanillaByTipoPlanilla(cia, tipoPlanilla);
     }
 
+    @PermitAll
     public List<Agencias> listarAgencias(Cias cia) {
         return agenciasFacade.findByCompania(cia);
     }
@@ -322,13 +331,13 @@ public class PlanillaSessionBean {
         return tipoAccionFacade.listarTipoAccionActivas(cias);
     }
 
-    public String editar$action(ResumenAsistencia resumen) {
+    @PermitAll
+    public void editarResumenAsistencia(ResumenAsistencia resumen) {
         try {
             resumenFacade.edit(resumen);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return null;
     }
 
     @PermitAll

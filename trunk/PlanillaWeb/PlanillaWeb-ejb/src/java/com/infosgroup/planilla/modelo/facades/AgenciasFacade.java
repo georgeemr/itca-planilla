@@ -37,9 +37,7 @@ public class AgenciasFacade extends AbstractFacade<Agencias, AgenciasPK> {
 
     @PermitAll
     public List<Agencias> findByCompania(Cias compania) {
-        List<Agencias> lista = null;
-        TypedQuery<Agencias> q = getEntityManager().createQuery("SELECT a FROM Agencias a WHERE a.agenciasPK.codCia = :codCia", Agencias.class).setParameter("codCia", compania.getCodCia());
-        lista = q.getResultList();
+        List<Agencias> lista = getEntityManager().createQuery("SELECT a FROM Agencias a WHERE a.agenciasPK.codCia = :codCia", Agencias.class).setParameter("codCia", compania.getCodCia()).getResultList();
         return lista != null ? lista : new ArrayList<Agencias>(0);
     }
 }
