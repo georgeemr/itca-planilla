@@ -7,10 +7,10 @@ package com.infosgroup.planilla.controlador.modulos.planilla;
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
-import com.infosgroup.planilla.view.AutocompletePlanillaConverter;
 import com.infosgroup.planilla.view.AutocompleteProgramacionPlaConverter;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -34,21 +34,47 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
     private List<TiposPlanilla> listaTipos;
     private ProgramacionPla proPlaSeleccionada;
     private AutocompleteProgramacionPlaConverter programacionPlaConverter;
-    private AutocompletePlanillaConverter planillaConverter;
     private List<Agencias> listaAgencias;
     private Short agenciaSeleccionada;
     private List<Departamentos> listaDepartamentos;
     private Short departamentoSeleccionado;
     private List<ResumenAsistencia> listaResumenAsistencia;
     private List<TipoAusent> listaEstados;
+    private List<Empleados> listaEmpleados;
+    private Empleados empleadoSeleccionado;
+    private String estadoSeleccionado;
 
     @PostConstruct
     public void init() {
         programacionPlaConverter = new AutocompleteProgramacionPlaConverter(new ArrayList<ProgramacionPla>());
-        planillaConverter = new AutocompletePlanillaConverter(new ArrayList<Planilla>());
+        listaEmpleados = planillaSessionBean.listaEmpleados(getSessionBeanADM().getCompania());
         listaAgencias = planillaSessionBean.listarAgencias(getSessionBeanADM().getCompania());
         listaDepartamentos = planillaSessionBean.findDepartamentos(getSessionBeanADM().getCompania());
         listaEstados = planillaSessionBean.findListaTipoAusent();
+    }
+
+    public String getEstadoSeleccionado() {
+        return estadoSeleccionado;
+    }
+
+    public void setEstadoSeleccionado(String estadoSeleccionado) {
+        this.estadoSeleccionado = estadoSeleccionado;
+    }
+
+    public Empleados getEmpleadoSeleccionado() {
+        return empleadoSeleccionado;
+    }
+
+    public void setEmpleadoSeleccionado(Empleados empleadoSeleccionado) {
+        this.empleadoSeleccionado = empleadoSeleccionado;
+    }
+
+    public List<Empleados> getListaEmpleados() {
+        return listaEmpleados;
+    }
+
+    public void setListaEmpleados(List<Empleados> listaEmpleados) {
+        this.listaEmpleados = listaEmpleados;
     }
 
     public List<TipoAusent> getListaEstados() {
@@ -108,10 +134,6 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
         this.listaTipos = listaTipos;
     }
 
-    public void setPlanillaConverter(AutocompletePlanillaConverter planillaConverter) {
-        this.planillaConverter = planillaConverter;
-    }
-
     public ProgramacionPla getProPlaSeleccionada() {
         return proPlaSeleccionada;
     }
@@ -141,29 +163,10 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
         return programacionPlaConverter;
     }
 
-    public AutocompletePlanillaConverter getPlanillaConverter() {
-        if (proPlaSeleccionada != null) {
-            planillaConverter = new AutocompletePlanillaConverter(planillaSessionBean.findByProgramacionPla(proPlaSeleccionada));
-        } else {
-            planillaConverter = new AutocompletePlanillaConverter(new ArrayList<Planilla>());
-        }
-        return planillaConverter;
-    }
-
     public List<ProgramacionPla> completeProgramacionPla(String query) {
         List<ProgramacionPla> suggestions = new ArrayList<ProgramacionPla>();
         for (ProgramacionPla p : programacionPlaConverter.listaProgramacionPla) {
             if (p.getStringProgramacionPla().startsWith(query)) {
-                suggestions.add(p);
-            }
-        }
-        return suggestions;
-    }
-
-    public List<Planilla> completePlanillaEmpleado(String query) {
-        List<Planilla> suggestions = new ArrayList<Planilla>();
-        for (Planilla p : planillaConverter.listaPlanilla) {
-            if (p.getEmpleados().getNombreCompleto().contains(query)) {
                 suggestions.add(p);
             }
         }
@@ -203,6 +206,54 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
         if (listaResumenAsistencia.size() <= 0) {
             addMessage("Registro de Resumen de Asistencias", "No se han encontrado datos.", TipoMensaje.ERROR);
         }
+        return null;
+    }
+
+    public String seleccionarEmpleado() {
+        if (proPlaSeleccionada == null) {
+            addMessage("Registro de Resumen de Asistencias", "Seleccione una Programación Planilla.", TipoMensaje.ERROR);
+            return null;
+        }
+        try {
+            ResumenAsistencia resumen = new ResumenAsistencia();
+            ResumenAsistenciaPK pk = new ResumenAsistenciaPK();
+            pk.setCodCia(proPlaSeleccionada.getProgramacionPlaPK().getCodCia());
+            pk.setCodTipopla(proPlaSeleccionada.getProgramacionPlaPK().getCodTipopla());
+            pk.setAnio(proPlaSeleccionada.getAnio());
+            pk.setMes(proPlaSeleccionada.getMes());
+            pk.setNumPlanilla(proPlaSeleccionada.getNumPlanilla());
+            pk.setCodEmp(empleadoSeleccionado.getEmpleadosPK().getCodEmp());
+            resumen.setEmpleados(empleadoSeleccionado);
+            resumen.setDLaborados(new Short("0"));
+            resumen.setDnLaborados(new Short("0"));
+            resumen.setHXsencillas(BigDecimal.ZERO);
+            resumen.setHXdobles(BigDecimal.ZERO);
+            resumen.setViaticos(BigDecimal.ZERO);
+            resumen.setStatus("G");
+            resumen.setHXf250(BigDecimal.ZERO);
+            resumen.setHHora(BigDecimal.ZERO);
+            resumen.setDAguinaldo(new Integer("0"));
+            resumen.setVacaciones(BigDecimal.ZERO);
+            resumen.setHXf150(new Integer("0"));
+            resumen.setOtros(BigDecimal.ZERO);
+            resumen.setEstado(new TipoAusent(estadoSeleccionado));
+            resumen.setHorasAusencia(BigDecimal.ZERO);
+            resumen.setDNocturnidad(new Short("0"));
+            resumen.setResumenAsistenciaPK(pk);
+            resumen.setAgencias(empleadoSeleccionado.getAgencias());
+            resumen.setDepartamentos(empleadoSeleccionado.getDepartamentos());
+            planillaSessionBean.editarResumenAsistencia(resumen);
+            addMessage("Acciones de Personal", "Empleado seleccionado " + empleadoSeleccionado.getNombreCompleto(), TipoMensaje.INFORMACION);
+            listaResumenAsistencia = planillaSessionBean.findResumenAsistencia(proPlaSeleccionada, departamentoSeleccionado, agenciaSeleccionada);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public String cancelSeleccionarEmpleado() {
+        setEmpleadoSeleccionado(null);
         return null;
     }
 }

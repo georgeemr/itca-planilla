@@ -6,7 +6,8 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.prime.com.tr/ui"
     xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:i="http://java.sun.com/jsf/composite/components/presentacion" >
+    xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"
+    xmlns:d="http://java.sun.com/jsf/composite/components/dialogo" >
 
     <ui:define name="titulo">
         <h:outputText value="Resumen de Asistencia"/>   
@@ -19,7 +20,7 @@
                     <p:graphicImage value="/resources/iconos/personal.png"/>
                     <h:outputText value="Mostrar Asistencia" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" >
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" oncomplete="dlgEmpSolPermisos.show();" >
                     <p:graphicImage value="/resources/iconos/beneficiarios.png"/>
                     <h:outputText value="Agregar Empleados" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -85,7 +86,7 @@
 
             <p:dataTable id="tablaResumenAsistencia" emptyMessage="No se han encontrado Empleados" value="#{planilla$horasExtras.listaResumenAsistencia}" paginator="true"
                          rows="5" var="resumenAsistencia" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  rowsPerPageTemplate="5,10,25,50,100,1000,10000" 
-                         rowEditListener="#{planilla$horasExtras.rowEditListener}" onRowEditUpdate="principalForm:mensajes" >
+                         rowEditListener="#{planilla$horasExtras.rowEditListener}" onRowEditUpdate="principalForm:mensajes,principalForm:tablaResumenAsistencia,lbEstado" >
 
                 <f:facet name="header" >
                     <h:outputLabel value="Asistencia por Empleado" />
@@ -210,11 +211,12 @@
                 <p:column>
                     <p:cellEditor>  
                         <f:facet name="output">  
-                            <h:outputLabel value="#{resumenAsistencia.estado.descripAusen}"/>
+                            <h:outputLabel value="#{resumenAsistencia.estado.codAusen}"/>
                         </f:facet>  
                         <f:facet name="input">  
                             <h:selectOneMenu value="#{resumenAsistencia.estado.codAusen}" style="height: 25px;padding-top: 3px;width: 80px; margin-left: -8px; margin-right: -8px;">
-                                <f:selectItems value="#{planilla$horasExtras.listaEstados}" var="estado" itemValue="#{estado.codAusen}" itemLabel="#{estado.descripAusen}" />
+                                <f:selectItems id="lstEditEstado" value="#{planilla$horasExtras.listaEstados}" var="estado" itemValue="#{estado.codAusen}" itemLabel="#{estado.descripAusen}" />
+                                <f:ajax render="tablaResumenAsistencia" event="change" execute="lstEditEstado" />
                             </h:selectOneMenu>
                         </f:facet>  
                     </p:cellEditor> 
@@ -233,6 +235,49 @@
 
     </ui:define>
 
-    <ui:define name="dialogos"/>
+    <ui:define name="dialogos">
+
+        <p:dialog widgetVar="dlgEmpSolPermisos" header="Listado general de Empleados" showEffect="fold" hideEffect="fold" width="506" height="475" >
+
+            <h:panelGrid columns="2" >
+                <p:graphicImage value="/resources/imagenes/64/meeting-participant.png" />   
+                <h:outputLabel id="lbl1" value="Seleccione un empleado para agregar al resumen."  style="font-weight: bold;"/>
+            </h:panelGrid>
+
+            <p:dataTable id="listadoEmpleados" value="#{planilla$horasExtras.listaEmpleados}" var="empleado" 
+                         paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                         rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" >
+
+                <f:facet name="header">
+                    Empleados
+                </f:facet>
+
+                <p:column headerText="Nombre " filterBy="#{empleado.nombreCompleto}" filterMatchMode="contains"  >  
+                    <h:outputLabel value="#{empleado.nombreYCodigo}" />
+                </p:column>  
+
+                <p:column headerText="Estado " style="width:5%;" >  
+                    <h:selectOneMenu value="#{planilla$horasExtras.estadoSeleccionado}" style="height: 25px;padding-top: 3px;width: 100px; margin-left: -8px; margin-right: -8px;">
+                        <f:selectItems id="lstAddEstado" value="#{planilla$horasExtras.listaEstados}" var="estado" itemValue="#{estado.codAusen}" itemLabel="#{estado.descripAusen}" />
+                    </h:selectOneMenu>
+                </p:column>  
+
+                <p:column style="width: 5%;" >
+                    <p:commandButton styleClass="opcionMenu" update="principalForm:mensajes,principalForm:tablaResumenAsistencia" oncomplete="dlgEmpSolPermisos.hide();" action="#{planilla$horasExtras.seleccionarEmpleado}" image="ui-icon-circle-check" title="Agregar al Resumen" >
+                        <f:setPropertyActionListener value="#{empleado}" target="#{planilla$horasExtras.empleadoSeleccionado}" /> 
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:spacer height="15" />
+            <h:panelGrid columns="2">
+                <p:commandButton value="Cancelar" styleClass="opcionMenu" update="principalForm:mensajes,principalForm:tablaResumenAsistencia}" oncomplete="dlgEmpSolPermisos.hide();" action="#{planilla$horasExtras.cancelSeleccionarEmpleado}" image="ui-icon-circle-check" /> 
+            </h:panelGrid>
+
+        </p:dialog>
+
+    </ui:define>
 
 </ui:composition>
