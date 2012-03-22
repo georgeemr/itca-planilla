@@ -115,6 +115,8 @@ public class ReportesStatelessBean {
             System.out.println("[REPORTE] Conexion:  " + conexion);
             JasperPrint jrPrint = JasperFillManager.fillReport(rutaReporte, parametros, conexion);
             byte[] bytesReporte = JasperExportManager.exportReportToPdf(jrPrint);
+            if((conexion != null) && !conexion.isClosed())
+            conexion.close();
             return bytesReporte;
         } catch (Exception excpt) {
             System.out.println(excpt.getClass().getName() + ": " + excpt.getLocalizedMessage());
