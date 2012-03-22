@@ -24,7 +24,7 @@
                     <p:graphicImage value="/resources/iconos/beneficiarios.png"/>
                     <h:outputText value="Agregar Empleados" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" >
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" oncomplete="dlgEliminarPlanilla.show();" >
                     <p:graphicImage value="/resources/iconos/edit-delete.png"/>
                     <h:outputText value="Borrar Planilla" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -98,6 +98,7 @@
                         <p:column colspan="4" rowspan="1" headerText="Dias" />  
                         <p:column colspan="6" rowspan="1" headerText="Compensaci&oacute;n" />  
                         <p:column colspan="1" rowspan="2" headerText="Editar"/>  
+                        <p:column colspan="1" rowspan="2" headerText="Eliminar" style="width: 5%;"/>  
                     </p:row> 
                     <p:row>  
                         <p:column headerText="Lab." style="width: 6%" />
@@ -211,10 +212,10 @@
                 <p:column>
                     <p:cellEditor>  
                         <f:facet name="output">  
-                            <h:outputLabel value="#{resumenAsistencia.estado.codAusen}"/>
+                            <h:outputLabel value="#{resumenAsistencia.estado.descripAusen}"/>
                         </f:facet>  
                         <f:facet name="input">  
-                            <h:selectOneMenu value="#{resumenAsistencia.estado.codAusen}" style="height: 25px;padding-top: 3px;width: 80px; margin-left: -8px; margin-right: -8px;">
+                            <h:selectOneMenu value="#{planilla$horasExtras.estadoEdit}" style="height: 25px;padding-top: 3px;width: 80px; margin-left: -8px; margin-right: -8px;">
                                 <f:selectItems id="lstEditEstado" value="#{planilla$horasExtras.listaEstados}" var="estado" itemValue="#{estado.codAusen}" itemLabel="#{estado.descripAusen}" />
                                 <f:ajax render="tablaResumenAsistencia" event="change" execute="lstEditEstado" />
                             </h:selectOneMenu>
@@ -222,11 +223,17 @@
                     </p:cellEditor> 
                 </p:column>
                 <p:column>
-                    <p:rowEditor/>
+                    <p:rowEditor rendered="#{planilla$horasExtras.proPlaSeleccionada.status ne 'C'}" />
+                </p:column>
+                
+                <p:column>
+                    <p:commandButton image="ui-icon-circle-minus" title="Eliminar" oncomplete="dlgEliminarResumen.show();" disabled="#{planilla$horasExtras.proPlaSeleccionada.status eq 'C'}" >
+                        <f:setPropertyActionListener value="#{resumenAsistencia}" target="#{planilla$horasExtras.resumenSeleccionado}" /> 
+                    </p:commandButton>
                 </p:column>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Imprimir Hoja de Asistencia" image="documentPDF" />
+                    <p:commandButton value="Imprimir Hoja de Asistencia" image="documentPDF" action="#{planilla$horasExtras.imprimirResumenDeAsistencia}" ajax="false" />
                 </f:facet>
 
             </p:dataTable>
@@ -236,7 +243,23 @@
     </ui:define>
 
     <ui:define name="dialogos">
+        
+        <p:confirmDialog message="&#191; Esta seguro que desea eliminar el resumen seleccionado ?" showEffect="bounce" hideEffect="explode"  
+                         modal="true" header="Eliminar Resumen Asistencia" severity="alert" widgetVar="dlgEliminarResumen">  
+            <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,tablaResumenAsistencia" oncomplete="dlgEliminarResumen.hide()"  
+                             action="#{planilla$horasExtras.eliminarResumen$Action}" />  
+            <p:commandButton value="No" onclick="dlgEliminarResumen.hide()" type="button" />   
 
+        </p:confirmDialog>  
+        
+        <p:confirmDialog message="&#191; Esta seguro que desea la planilla ?" showEffect="bounce" hideEffect="explode"  
+                         modal="true" header="Eliminar Planilla" severity="alert" widgetVar="dlgEliminarPlanilla">  
+            <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,tablaResumenAsistencia" oncomplete="dlgEliminarPlanilla.hide()"  
+                             action="#{planilla$horasExtras.borrarPlanilla}" />  
+            <p:commandButton value="No" onclick="dlgEliminarPlanilla.hide()" type="button" />   
+
+        </p:confirmDialog>  
+        
         <p:dialog widgetVar="dlgEmpSolPermisos" header="Listado general de Empleados" showEffect="fold" hideEffect="fold" width="506" height="475" >
 
             <h:panelGrid columns="2" >

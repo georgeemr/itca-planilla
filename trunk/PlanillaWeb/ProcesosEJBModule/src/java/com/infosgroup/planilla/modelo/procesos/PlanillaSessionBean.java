@@ -67,11 +67,11 @@ public class PlanillaSessionBean {
     private MovDpFacade movDpFacade;
     @EJB
     private TipoAusentFacade tipoAusentFacade;
-    
+
     @PermitAll
-    public List<TipoAusent> findListaTipoAusent(){
+    public List<TipoAusent> findListaTipoAusent() {
         List<TipoAusent> t = tipoAusentFacade.findAll();
-        return t!=null?t:new ArrayList<TipoAusent>();
+        return t != null ? t : new ArrayList<TipoAusent>();
     }
 
     public List<ResumenAsistencia> getResumen(ResumenAsistencia c) {
@@ -401,6 +401,11 @@ public class PlanillaSessionBean {
         return programacionPlaFacade.getProgramacionPlaByTipo(empresa, tipoPlanilla);
     }
 
+    @PermitAll
+    public List<ProgramacionPla> getProgramacionPlaSinEstado(Short empresa, Short tipoPlanilla) {
+        return programacionPlaFacade.getProgramacionPlaSinEstado(empresa, tipoPlanilla);
+    }
+
     public List<Departamentos> findDepartamentos(Cias cias) {
         return departamentoFacade.findDepartamentosByCias(cias);
     }
@@ -606,13 +611,13 @@ public class PlanillaSessionBean {
     public List<Planilla> findByProgramacionPla(ProgramacionPla programacionPla) {
         return planillaFacade.findPlanillaByProgramacion(programacionPla);
     }
-    
+
     @PermitAll
     public List<ResumenAsistencia> findResumenAsistencia(ProgramacionPla programacionPla, Short departamento, Short sucursal) {
         return resumenFacade.findResumenAsistencia(programacionPla, departamento, sucursal);
     }
 
-@PermitAll
+    @PermitAll
     public List<Planilla> findByProPlaAndDepto(ProgramacionPla proPla, Short depto) {
         return planillaFacade.findPlanillaByProAndDep(proPla, depto);
     }
@@ -631,5 +636,14 @@ public class PlanillaSessionBean {
     public Departamentos findDeptoById(DepartamentosPK pk) {
         return departamentoFacade.find(pk);
     }
-    
+
+    @PermitAll
+    public void eliminarResumenAsistencia(ResumenAsistencia resumenAsistencia) {
+        resumenFacade.remove(resumenAsistencia);
+    }
+
+    @PermitAll
+    public void eliminarPlanilla( List<ResumenAsistencia> l ) {
+        resumenFacade.eliminarPlanilla(l);
+    }
 }
