@@ -6,17 +6,20 @@ package com.infosgroup.planilla.controlador.modulos.planilla;
 
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
+import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.AutocompleteProgramacionPlaConverter;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -30,6 +33,8 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
 
     @EJB
     private PlanillaSessionBean planillaSessionBean;
+    @EJB
+    private ReportesStatelessBean reportesStatelessBean;
     private Short tipoPlanilla;
     private List<TiposPlanilla> listaTipos;
     private ProgramacionPla proPlaSeleccionada;
@@ -43,6 +48,8 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
     private List<Empleados> listaEmpleados;
     private Empleados empleadoSeleccionado;
     private String estadoSeleccionado;
+    private String estadoEdit;
+    private ResumenAsistencia resumenSeleccionado;
 
     @PostConstruct
     public void init() {
@@ -51,6 +58,22 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
         listaAgencias = planillaSessionBean.listarAgencias(getSessionBeanADM().getCompania());
         listaDepartamentos = planillaSessionBean.findDepartamentos(getSessionBeanADM().getCompania());
         listaEstados = planillaSessionBean.findListaTipoAusent();
+    }
+
+    public String getEstadoEdit() {
+        return estadoEdit;
+    }
+
+    public void setEstadoEdit(String estadoEdit) {
+        this.estadoEdit = estadoEdit;
+    }
+
+    public ResumenAsistencia getResumenSeleccionado() {
+        return resumenSeleccionado;
+    }
+
+    public void setResumenSeleccionado(ResumenAsistencia resumenSeleccionado) {
+        this.resumenSeleccionado = resumenSeleccionado;
     }
 
     public String getEstadoSeleccionado() {
@@ -156,7 +179,7 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
 
     public AutocompleteProgramacionPlaConverter getProgramacionPlaConverter() {
         if (tipoPlanilla != null && tipoPlanilla != -1) {
-            programacionPlaConverter = new AutocompleteProgramacionPlaConverter(planillaSessionBean.getProgramacionPlaByTipo(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla));
+            programacionPlaConverter = new AutocompleteProgramacionPlaConverter(planillaSessionBean.getProgramacionPlaSinEstado(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla));
         } else {
             programacionPlaConverter = new AutocompleteProgramacionPlaConverter(new ArrayList<ProgramacionPla>());
         }
@@ -188,8 +211,10 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
     public void rowEditListener(RowEditEvent event) {
         ResumenAsistencia resumen = (ResumenAsistencia) event.getObject();
         try {
+            resumen.setEstado(new TipoAusent(estadoEdit));
             planillaSessionBean.editarResumenAsistencia(resumen);
             addMessage("Registro de Resumen de Asistencias", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
+            listaResumenAsistencia = planillaSessionBean.findResumenAsistencia(proPlaSeleccionada, departamentoSeleccionado, agenciaSeleccionada);
         } catch (Exception e) {
             addMessage("Registro de Resumen de Asistencias", "Ha ocurrido un error al intentar guardar los cambios.", TipoMensaje.INFORMACION);
             e.printStackTrace();
@@ -243,7 +268,7 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
             resumen.setAgencias(empleadoSeleccionado.getAgencias());
             resumen.setDepartamentos(empleadoSeleccionado.getDepartamentos());
             planillaSessionBean.editarResumenAsistencia(resumen);
-            addMessage("Acciones de Personal", "Empleado seleccionado " + empleadoSeleccionado.getNombreCompleto(), TipoMensaje.INFORMACION);
+            addMessage("Resumen de Asistencia", "Empleado seleccionado " + empleadoSeleccionado.getNombreCompleto(), TipoMensaje.INFORMACION);
             listaResumenAsistencia = planillaSessionBean.findResumenAsistencia(proPlaSeleccionada, departamentoSeleccionado, agenciaSeleccionada);
         } catch (Exception e) {
             e.printStackTrace();
@@ -254,6 +279,50 @@ public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializa
 
     public String cancelSeleccionarEmpleado() {
         setEmpleadoSeleccionado(null);
+        return null;
+    }
+
+    public String eliminarResumen$Action() {
+        if (resumenSeleccionado == null) {
+            return null;
+        }
+        try {
+            planillaSessionBean.eliminarResumenAsistencia(resumenSeleccionado);
+            addMessage("Resumen de Asistencia", "Datos eliminados con éxito.", TipoMensaje.INFORMACION);
+            listaResumenAsistencia.remove(resumenSeleccionado);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String borrarPlanilla() {
+        if (listaResumenAsistencia == null || listaResumenAsistencia.size() <= 0) {
+            return null;
+        }
+        try {
+            planillaSessionBean.eliminarPlanilla(listaResumenAsistencia);
+            addMessage("Resumen de Asistencia", "Datos eliminados con éxito.", TipoMensaje.INFORMACION);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String imprimirResumenDeAsistencia() {
+        if (proPlaSeleccionada == null) {
+            addMessage("Resumen de Asistencia", "Seleccione una Programación Planilla.", TipoMensaje.ERROR);
+            return null;
+        }
+        HashMap<String, Object> parametros = new HashMap<String, Object>();
+        parametros.put("PCOD_CIA", String.valueOf(proPlaSeleccionada.getProgramacionPlaPK().getCodCia()));
+        parametros.put("PANIO", String.valueOf(proPlaSeleccionada.getAnio()));
+        parametros.put("PMES", String.valueOf(proPlaSeleccionada.getMes()));
+        parametros.put("PNUM_PLANILLA", String.valueOf(proPlaSeleccionada.getNumPlanilla()));
+        parametros.put("PCOD_TIPOPLA", String.valueOf(proPlaSeleccionada.getProgramacionPlaPK().getCodTipopla()));
+        parametros.put("PCOD_DEPTO", String.valueOf(departamentoSeleccionado));
+        parametros.put("PCOD_SUCURSAL", String.valueOf(agenciaSeleccionada));
+        reportesStatelessBean.generarReporteSQL(FacesContext.getCurrentInstance(), parametros, "hojaDeAsistencia");
         return null;
     }
 }

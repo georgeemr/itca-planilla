@@ -72,4 +72,26 @@ public class ResumenAsistenciaFacade extends AbstractFacade<ResumenAsistencia, R
                 .setParameter(9, sucursal).getResultList();
         return r != null ? r : new ArrayList<ResumenAsistencia>();
     }
+    
+    @PermitAll
+    public void eliminarPlanilla( List<ResumenAsistencia> l ){
+        for ( ResumenAsistencia p:l ){
+        em.createNativeQuery("delete from planilla where cod_cia = ? and anio = ? and mes = ? and num_planilla = ? and cod_tipopla = ? and status != 'C' and cod_emp = ?")
+                .setParameter(1, p.getResumenAsistenciaPK().getCodCia())
+                .setParameter(2, p.getResumenAsistenciaPK().getAnio())
+                .setParameter(3, p.getResumenAsistenciaPK().getMes())
+                .setParameter(4, p.getResumenAsistenciaPK().getNumPlanilla())
+                .setParameter(5, p.getResumenAsistenciaPK().getCodTipopla())
+                .setParameter(6, p.getEmpleados().getEmpleadosPK().getCodEmp())
+                .executeUpdate();
+        em.createNativeQuery("delete from mov_dp where cod_cia = ? and anio = ? and mes = ? and num_planilla = ? and cod_tipopla = ? and status != 'C' and cod_emp = ?")
+                .setParameter(1, p.getResumenAsistenciaPK().getCodCia())
+                .setParameter(2, p.getResumenAsistenciaPK().getAnio())
+                .setParameter(3, p.getResumenAsistenciaPK().getMes())
+                .setParameter(4, p.getResumenAsistenciaPK().getNumPlanilla())
+                .setParameter(5, p.getResumenAsistenciaPK().getCodTipopla())
+                .setParameter(6, p.getEmpleados().getEmpleadosPK().getCodEmp())
+                .executeUpdate();
+        }
+    }
 }
