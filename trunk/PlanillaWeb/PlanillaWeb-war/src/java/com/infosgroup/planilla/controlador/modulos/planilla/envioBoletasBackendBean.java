@@ -172,11 +172,9 @@ public class envioBoletasBackendBean extends AbstractJSFPage implements Serializ
             StringBuilder mensaje = new StringBuilder();
             mensaje.append("\n\nBoletas de Pago");
             if (todos) {
-                Integer temp = 0;
                 for (Departamentos deptoPlanilla : listaDeptos) {
                     listaJefesDeptos = planillaSessionBean.findJefesByDepto(deptoPlanilla);
                     envioCorreo$action(listaJefesDeptos, mensaje, deptoPlanilla);
-                    temp++;
                 }
             } else {
                 listaJefesDeptos = planillaSessionBean.findJefesByDepto(deptoSeleccionado);
