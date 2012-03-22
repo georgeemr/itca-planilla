@@ -94,4 +94,9 @@ public class ResumenAsistenciaFacade extends AbstractFacade<ResumenAsistencia, R
                 .executeUpdate();
         }
     }
+    
+    @PermitAll
+    public List<ResumenAsistencia> buscarVacaciones(){
+        return null;
+    }
 }

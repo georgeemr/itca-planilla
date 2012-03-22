@@ -389,6 +389,10 @@
                     <p:graphicImage value="/resources/iconos/personal.png" />
                     <h:outputText value="Filtrar por Empleado" styleClass="espacioTexto"/>
                 </p:commandLink>
+                <p:commandLink styleClass="opcionMenu textoNormal"  ajax="true" action="preseleccionAspirante?faces-redirect=true" update="principalForm:mensajes,criteriosSeleccionados,tableCanSeleccionados,wizarPreseleccion" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                    <p:graphicImage value="/resources/iconos/arrow-left.png" />
+                    <h:outputText value="Volver a concursos" styleClass="espacioTexto"/>
+                </p:commandLink>
             </h:panelGrid>
         </p:tab>
         <p:tab title="Otras acciones">
@@ -404,7 +408,7 @@
         <p:spacer height="20" />
 
         <p:wizard id="wizarPreseleccion" widgetVar="wiz" flowListener="#{reclutamiento$preseleccionAspirante.onFlowListener}" 
-                  showStepStatus="true"
+                  showStepStatus="true" 
                   backLabel="Anterior" nextLabel="Siguiente"  >
             <p:tab id="concursoSeleccionado" title="Concursos"  >
                 <p:spacer height="20" />
@@ -441,7 +445,7 @@
 
                         <p:column filterBy="#{concurso.nombre}" 
                                   filterMatchMode="contains"
-                                  headerText="Nombre del concurso">
+                                  headerText="Nombre del concurso ">
                             <h:outputLabel value="#{concurso.nombre}"/>
                         </p:column> 
 
@@ -544,7 +548,7 @@
 
                                 <p:column sortBy="#{criterio.criterio1.nombre}" 
                                           filterBy="#{criterio.criterio1.nombre}"
-                                          filterMatchMode="contains" >
+                                          filterMatchMode="contains" headerText="Criterio " >
                                     <h:outputLabel value="#{criterio.criterio1.nombre}" />
                                     <h:outputLabel value="#{criterio.descripcionRango}" />
                                 </p:column>
@@ -576,7 +580,7 @@
 
                                 <p:column sortBy="#{candidato.nombreCompleto}" 
                                           filterBy="#{candidato.nombreCompleto}"
-                                          filterMatchMode="contains" >
+                                          filterMatchMode="contains" headerText="Nombre " >
                                     <p:commandLink>  
                                         <p:graphicImage value="/resources/iconos/personal.png" rendered="#{candidato.sexo eq 1}" />   
                                         <p:graphicImage value="/resources/iconos/personal_w.png" rendered="#{candidato.sexo eq 2}" />
