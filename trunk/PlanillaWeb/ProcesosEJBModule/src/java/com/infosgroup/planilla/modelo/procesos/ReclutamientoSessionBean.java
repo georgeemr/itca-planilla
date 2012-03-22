@@ -658,4 +658,65 @@ public void flushCandidato()
 {
     candidatoFacade.flush();
 }
+
+@PermitAll
+public void eliminarNivelCandidato(NivelesXCandidato n)
+{
+nivelesCandidatoFacade.remove(n);
+}
+
+@PermitAll
+public void eliminarEmergenciaCandidato(EmergenciaXCandidato e)
+{
+emergenciaCandidatoFacade.remove(e);
+}
+
+@PermitAll
+public void eliminarReferenciaCandidato(Referencia r)
+{
+referenciaFacade.remove(r);
+}
+
+@PermitAll
+public void eliminarDocumentoCandidato(DocumentoPresentado d)
+{
+documentoPresentadoFacade.remove(d);
+}
+
+@PermitAll
+public void eliminarCapacitacionCandidato(CapacitacionXCandidato c)
+{
+capacitacionXCandidatoFacade.remove(c);
+}
+
+@PermitAll
+public void eliminarDependienteCandidato(DependienteXCandidato d)
+{
+dependienteXCandidatoFacade.remove(d);
+}
+
+@PermitAll
+public void eliminarIdiomaCandidato(IdiomaXCandidato i)
+{
+idiomaXCandidatoFacade.remove(i);
+}
+
+@PermitAll
+public void eliminarPruebaCandidato(TipoPruebaXCandidato p)
+{
+tipoPruebaXCandidatoFacade.remove(p);
+}
+
+@PermitAll
+public void eliminarPuestoCandidato(CandidatoXCargo c)
+{
+candidatoXCargoFacade.remove(c);
+}
+
+@PermitAll
+public void eliminarEntrevistaCandidato(EntrevistaXCandidato e)
+{
+entrevistaXCandidatoFacade.remove(e);
+}
+
 }

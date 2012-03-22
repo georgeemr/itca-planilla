@@ -12,14 +12,16 @@ import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
-import javax.validation.constraints.NotNull;
 import org.primefaces.component.datatable.DataTable;
 
 /**
@@ -54,7 +56,6 @@ private String generales$municipio;
 private String generales$telefono;
 private String generales$direccion;
 // = o =
-@NotNull
 private Date generales$fechaNacimiento;
 private String generales$paisNacimiento;
 private String generales$departamentoNacimiento;
@@ -1125,12 +1126,13 @@ public String entrevistas$agregar$action()
 @PermitAll
 public String nuevo$action()
 {
-    nombre = null;
-    apellido = null;
-    apellidoCasada = null;
-    fechaSolicitud = GregorianCalendar.getInstance().getTime();
-    sexo = null;
-    estadoCivil = null;
+    limpiarCampos();
+//    nombre = null;
+//    apellido = null;
+//    apellidoCasada = null;
+//    fechaSolicitud = GregorianCalendar.getInstance().getTime();
+//    sexo = null;
+//    estadoCivil = null;
     // ===
     estadoAccion = CREANDO;
     return null;
@@ -1212,7 +1214,7 @@ public String editar$action()
         emergencias$tipoAccidente = c.getTipoAccidente();
         emergencias$pesoActual = c.getPeso();
         emergencias$estatura = c.getEstatura();
-        
+
         parentescosCandidatos = new ArrayList<ParentescoCandidato>();
         List<EmergenciaXCandidato> le = c.getEmergenciaXCandidatoList();
         for (EmergenciaXCandidato e : le)
@@ -1226,9 +1228,131 @@ public String editar$action()
         // ==
         experienciasLaboralesCandidato = new ArrayList<ExperienciaLaboralCandidato>();
         // ==
+        referenciasLaboralesCandidato = new ArrayList<ReferenciaLaboralCandidato>();
+        referenciasPersonalesCandidato = new ArrayList<ReferenciaPersonalCandidato>();
+        List<Referencia> lr = c.getReferenciaList();
+        for (Referencia r : lr)
+            {
+            if (r.getTipoReferencia() == 'L')
+                {
+                ReferenciaLaboralCandidato rlc = new ReferenciaLaboralCandidato();
+                rlc.setNombre(r.getNomReferencia());
+                rlc.setLugarTrabajo(r.getLugar());
+                rlc.setTelefono(r.getTelefono());
+                rlc.setCorreoElectronico(r.getEmail());
+                referenciasLaboralesCandidato.add(rlc);
+                }
+            else
+                {
+                ReferenciaPersonalCandidato rpc = new ReferenciaPersonalCandidato();
+                rpc.setNombre(r.getNomReferencia());
+                rpc.setLugarTrabajo(r.getLugar());
+                rpc.setTiempoConocerle(new Integer(r.getTiempo()));
+                rpc.setTelefono(r.getTelefono());
+                rpc.setCorreoElectronico(r.getEmail());
+                referenciasPersonalesCandidato.add(rpc);
+                }
+            }
         // ==
+        documentosCandidato = new ArrayList<DocumentoCandidato>();
+        List<DocumentoPresentado> ld = c.getDocumentoPresentadoList();
+        for (DocumentoPresentado d : ld)
+            {
+            DocumentoCandidato dc = new DocumentoCandidato();
+            dc.setTipo(d.getTipoDocumento());
+            dc.setNumero(d.getObservacion());
+            documentosCandidato.add(dc);
+            }
         // ==
+        capacitacionesCandidato = new ArrayList<CapacitacionCandidato>();
+        List<CapacitacionXCandidato> lc = c.getCapacitacionXCandidatoList();
+        for (CapacitacionXCandidato cxc : lc)
+            {
+            CapacitacionCandidato cc = new CapacitacionCandidato();
+            cc.setInstitucion(cxc.getNomInstitucion());
+            cc.setDescripcion(cxc.getDescripcion());
+            cc.setPeriodo(cxc.getFecha());
+            cc.setTipo(cxc.getTipo());
+            capacitacionesCandidato.add(cc);
+            }
         // ==
+        dependientesCandidato = new ArrayList<DependienteCandidato>();
+        List<DependienteXCandidato> ldeps = c.getDependienteXCandidatoList();
+        for (DependienteXCandidato dxc : ldeps)
+            {
+            DependienteCandidato dc = new DependienteCandidato();
+            dc.setNombre(dxc.getNombre());
+            dc.setParentesco(sessionBeanParametros.findParentescoById(new ParentescoPK(dxc.getDependienteXCandidatoPK().getCodCia(), dxc.getCodParentesco())));
+            dc.setFechaNacimiento(dxc.getFechaNacimiento());
+            dependientesCandidato.add(dc);
+            }
+        // ==
+        idiomasCandidato = new ArrayList<IdiomaCandidato>();
+        List<IdiomaXCandidato> li = c.getIdiomaXCandidatoList();
+        for (IdiomaXCandidato ixc : li)
+            {
+            IdiomaCandidato ic = new IdiomaCandidato();
+            ic.setIdioma(sessionBeanParametros.findIdiomaById(new IdiomaPK(ixc.getIdiomaXCandidatoPK().getCodCia(), ixc.getIdiomaXCandidatoPK().getCodIdioma())));
+            ic.setNivel(new Integer(ixc.getNivel()));
+            ic.setLee(ixc.getLee().equals("S"));
+            ic.setEscribe(ixc.getEscribe().equals("S"));
+            idiomasCandidato.add(ic);
+            }
+        // ==
+        beneficiariosCandidato = new ArrayList<BeneficiarioCandidato>();
+        List<BeneficiarioXCandidato> lb = c.getBeneficiarioXCandidatoList();
+        for (BeneficiarioXCandidato b : lb)
+            {
+            BeneficiarioCandidato bc = new BeneficiarioCandidato();
+            bc.setNombre(b.getNombre());
+            bc.setParentesco(b.getParentesco());
+            beneficiariosCandidato.add(bc);
+            }
+        // ==
+        equiposCandidato = new ArrayList<EquipoCandidato>();
+        List<Equipo> leq = c.getEquipoList();
+        for (Equipo eq : leq)
+            {
+            EquipoCandidato eqc = new EquipoCandidato();
+            eqc.setEquipo(eq);
+            equiposCandidato.add(eqc);
+            }
+        // ==
+        pruebasCandidato = new ArrayList<PruebaCandidato>();
+        List<TipoPruebaXCandidato> ltprueba = c.getTipoPruebaXCandidatoList();
+        for (TipoPruebaXCandidato tp : ltprueba)
+            {
+            PruebaCandidato pc = new PruebaCandidato();
+            pc.setTipoPrueba(tp.getTipoPrueba());
+            pc.setFecha(tp.getFecha());
+            pc.setNota(tp.getNota().doubleValue());
+            pc.setCosto(tp.getCosto().doubleValue());
+            pc.setResultado(tp.getResultado());
+            pruebasCandidato.add(pc);
+            }
+        // ==
+        puestosCandidato = new ArrayList<PuestoCandidato>();
+        List<CandidatoXCargo> lcargo = c.getCandidatoXCargoList();
+        for (CandidatoXCargo cxc : lcargo)
+            {
+            PuestoCandidato pcan = new PuestoCandidato();
+            pcan.setPuesto(cxc.getPuestos());
+            pcan.setSalarioAspirado(cxc.getSalarioAspirado());
+            puestosCandidato.add(pcan);
+            }
+        // ==
+        entrevistasCandidato = new ArrayList<EntrevistaCandidato>();
+        List<EntrevistaXCandidato> lentr = c.getEntrevistaXCandidatoList();
+        for (EntrevistaXCandidato entr : lentr)
+            {
+            EntrevistaCandidato ec = new EntrevistaCandidato();
+            ec.setPuesto(entr.getPuesto());
+            ec.setEntrevistador(entr.getEmpleado());
+            ec.setFecha(entr.getFecha());
+            ec.setDescripcion(entr.getDescripcion());
+            ec.setResultado(entr.getResultado());
+            entrevistasCandidato.add(ec);
+            }
         // ==
         observaciones = c.getObservacion();
         // ==
@@ -1247,386 +1371,19 @@ public String editar$action()
 @PermitAll
 public String guardar$action()
 {
-    try
+    switch (estadoAccion)
         {
-        Boolean hayError = Boolean.FALSE;
-
-        if (generales$pais == null)
-            {
-            addMessage("Infosweb RRHH", "Seleccione el pa&iacute;s de domicilio", TipoMensaje.INFORMACION);
-            hayError = Boolean.TRUE;
-            }
-
-        if (generales$departamento == null)
-            {
-            addMessage("Infosweb RRHH", "Seleccione el departamento de domicilio", TipoMensaje.INFORMACION);
-            hayError = Boolean.TRUE;
-            }
-
-        if (generales$municipio == null)
-            {
-            addMessage("Infosweb RRHH", "Seleccione el municipio de domicilio", TipoMensaje.INFORMACION);
-            hayError = Boolean.TRUE;
-            }
-
-        if (generales$paisNacimiento == null)
-            {
-            addMessage("Infosweb RRHH", "Seleccione el pa&iacute;s de nacimiento", TipoMensaje.INFORMACION);
-            hayError = Boolean.TRUE;
-            }
-
-        if (generales$departamentoNacimiento == null)
-            {
-            addMessage("Infosweb RRHH", "Seleccione el departamento de nacimiento", TipoMensaje.INFORMACION);
-            hayError = Boolean.TRUE;
-            }
-
-        if (generales$municipioNacimiento == null)
-            {
-            addMessage("Infosweb RRHH", "Seleccione el departamento de nacimiento", TipoMensaje.INFORMACION);
-            hayError = Boolean.TRUE;
-            }
-
-        if (generales$departamentoExpDui == null)
-            {
-            addMessage("Infosweb RRHH", "Seleccione el departamento de expedici&oacute;n del DUI", TipoMensaje.INFORMACION);
-            hayError = Boolean.TRUE;
-            }
-
-        if (generales$municipioExpDui == null)
-            {
-            addMessage("Infosweb RRHH", "Seleccione el municipio de expedici&oacute;n del DUI", TipoMensaje.INFORMACION);
-            hayError = Boolean.TRUE;
-            }
-
-        if (fechaSolicitud == null)
-            {
-            addMessage("Infosweb RRHH", "Ingrese la fecha de solicitud", TipoMensaje.INFORMACION);
-            hayError = Boolean.TRUE;
-            }
-
-        if (generales$fechaNacimiento == null)
-            {
-            addMessage("Infosweb RRHH", "Ingrese la fecha de nacimiento", TipoMensaje.INFORMACION);
-            hayError = Boolean.TRUE;
-            }
-
-        if (generales$fechaExpDui == null)
-            {
-            addMessage("Infosweb RRHH", "Ingrese la fecha de expedici&oacute;n del DUI", TipoMensaje.INFORMACION);
-            hayError = Boolean.TRUE;
-            }
-
-        if (hayError)
-            return null;
-
-        Short c = getSessionBeanADM().getCompania().getCodCia();
-
-        CandidatoPK pkCandidato = new CandidatoPK();
-        Candidato candidato = new Candidato();
-
-        pkCandidato.setCodCia(c);
-        Integer i = reclutamientoFacade.getMaxCandidato(getSessionBeanADM().getCompania());
-        pkCandidato.setCodCandidato(i);
-
-        candidato.setCandidatoPK(pkCandidato);
-        candidato.setFecSolicitud(fechaSolicitud);
-        candidato.setNombre(nombre);
-        candidato.setApellido(apellido);
-        candidato.setApCasada(apellidoCasada);
-        candidato.setEstadoCivil(estadoCivil);
-        candidato.setSexo(sexo);
-
-        candidato.setCodPaisDomic(new Short(generales$pais));
-        candidato.setCodDepartamentoDomic(new Short(generales$departamento.split(":")[1]));
-        candidato.setCodMunicipioDomic(new Short(generales$municipio.split(":")[2]));
-        candidato.setTelefono(generales$telefono);
-        candidato.setDireccion(generales$direccion);
-
-        candidato.setFechaNac(generales$fechaNacimiento);
-        candidato.setCodPaisNacimiento(new Short(generales$paisNacimiento));
-        candidato.setCodDepartamentoNacim(new Short(generales$departamentoNacimiento.split(":")[1]));
-        candidato.setCodMunicipioNacim(new Short(generales$municipioNacimiento.split(":")[2]));
-
-        candidato.setCodPaisNacionalidad(new Short(generales$paisNacionalidad));
-        TipoSangre tipoSangre = sessionBeanParametros.findTipoSangreById(generales$grupoSanguineo);
-
-        candidato.setTipoSangre(tipoSangre);
-
-        candidato.setNumDui(generales$dui);
-        candidato.setNumNit(generales$nit);
-        candidato.setFechaExpDui(generales$fechaExpDui);
-
-        String[] deptoExpDUIPKStr = generales$departamentoExpDui.split(":");
-        String[] municipioExpDUIStr = generales$municipioExpDui.split(":");
-        DeptosPK deptoExpDUI = new DeptosPK(new Short(deptoExpDUIPKStr[0]), new Short(deptoExpDUIPKStr[1]));
-        MunicipiosPK municipioExpDUI = new MunicipiosPK(new Short(municipioExpDUIStr[0]), new Short(municipioExpDUIStr[1]), new Short(municipioExpDUIStr[2]));
-
-        candidato.setExpedicionDui(sessionBeanParametros.findDepartamentoById(deptoExpDUI).getNomDepto());
-        candidato.setMuniExpDui(sessionBeanParametros.findMunicipiosById(municipioExpDUI).getNomMuni());
-        candidato.setNumLicencia(generales$licenciaConducir);
-        candidato.setNomIsss(generales$nombreISSS);
-        candidato.setNumPasaporte(generales$pasaporte);
-        candidato.setNomNit(generales$nombreNIT);
-
-        candidato.setNombreConyuge(emergencias$conyuge);
-        candidato.setTrabajoConyuge(emergencias$trabajo);
-        candidato.setTelefonoConyuge(emergencias$telefono);
-
-        candidato.setCondicionSalud(emergencias$condicionSalud);
-        candidato.setActividadLimitada(emergencias$actividadLimitada ? "S" : "N");
-        candidato.setTieneAccidente(emergencias$haSufridoAccidentes ? "S" : "N");
-        candidato.setTipoAccidente(emergencias$haSufridoAccidentes ? emergencias$tipoAccidente : null);
-        candidato.setPeso(emergencias$pesoActual);
-        candidato.setEstatura(emergencias$estatura);
-
-        candidato.setObservacion(observaciones);
-        candidato.setEstado("A");
-        reclutamientoFacade.guardarCandidato(candidato);
-
-        candidato = reclutamientoFacade.findCandidatoById(pkCandidato);
-
-        i = 0;
-        for (PreparacionAcademicaCandidato preparacionCandidato : preparacionesAcademicasCandidato)
-            {
-            NivelesXCandidatoPK nivelCandidatoPK = new NivelesXCandidatoPK();
-            nivelCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-            nivelCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            nivelCandidatoPK.setCodNivel(new Short("" + (++i)));
-
-            NivelesXCandidato nivelCandidato = new NivelesXCandidato();
-            nivelCandidato.setNivelesXCandidatoPK(nivelCandidatoPK);
-            nivelCandidato.setCandidato(candidato);
-            nivelCandidato.setNomInstitucion(preparacionCandidato.getNombreInstitucion());
-            nivelCandidato.setCodPais(preparacionCandidato.getDepartamentoInstitucion().getDeptosPK().getCodPais());
-            nivelCandidato.setCodDepto(preparacionCandidato.getDepartamentoInstitucion().getDeptosPK().getCodDepto());
-            nivelCandidato.setAnioIngreso(preparacionCandidato.getAnioIngreso());
-            nivelCandidato.setAnioEgreso(preparacionCandidato.getAnioEgreso());
-            nivelCandidato.setEstadoNivel("A");
-            reclutamientoFacade.crearNivelXCandidato(nivelCandidato);
-            }
-
-        i = 0;
-        for (ParentescoCandidato parentescoCandidato : parentescosCandidatos)
-            {
-            EmergenciaXCandidatoPK emergenciaCandidatoPK = new EmergenciaXCandidatoPK();
-            emergenciaCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-            emergenciaCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            emergenciaCandidatoPK.setCodEmergencia(++i);
-
-            EmergenciaXCandidato emergenciaCandidato = new EmergenciaXCandidato();
-            emergenciaCandidato.setEmergenciaXCandidatoPK(emergenciaCandidatoPK);
-            emergenciaCandidato.setCandidato(candidato);
-            emergenciaCandidato.setNombre(parentescoCandidato.getNombre());
-            emergenciaCandidato.setTelefono(parentescoCandidato.getTelefono());
-            emergenciaCandidato.setCodParentesco(parentescoCandidato.getParentesco().getParentescoPK().getCodParentesco());
-            reclutamientoFacade.crearEmergenciaCandidato(emergenciaCandidato);
-            }
-
-        for (ExperienciaLaboralCandidato experienciaCandidato : experienciasLaboralesCandidato)
-            {
-            }
-
-        i = 0;
-        for (ReferenciaLaboralCandidato referenciaLaboral : referenciasLaboralesCandidato)
-            {
-            ReferenciaPK referenciaPK = new ReferenciaPK();
-            referenciaPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-            referenciaPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            referenciaPK.setCodReferencia(++i);
-
-            Referencia referencia = new Referencia();
-            referencia.setReferenciaPK(referenciaPK);
-            referencia.setCandidato(candidato);
-            referencia.setTipoReferencia('L');
-            referencia.setNomReferencia(referenciaLaboral.getNombre());
-            referencia.setLugar(referenciaLaboral.getLugarTrabajo());
-            referencia.setEmail(referenciaLaboral.getCorreoElectronico());
-            referencia.setTelefono(referenciaLaboral.getTelefono());
-
-            reclutamientoFacade.crearRererencia(referencia);
-            }
-
-        //i = 0;
-        for (ReferenciaPersonalCandidato referenciaPersonal : referenciasPersonalesCandidato)
-            {
-            ReferenciaPK referenciaPK = new ReferenciaPK();
-            referenciaPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-            referenciaPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            referenciaPK.setCodReferencia(++i);
-
-            Referencia referencia = new Referencia();
-            referencia.setReferenciaPK(referenciaPK);
-            referencia.setCandidato(candidato);
-            referencia.setTipoReferencia('P');
-            referencia.setNomReferencia(referenciaPersonal.getNombre());
-            referencia.setLugar(referenciaPersonal.getLugarTrabajo());
-            referencia.setTiempo(referenciaPersonal.getTiempoConocerle().toString());
-            referencia.setEmail(referenciaPersonal.getCorreoElectronico());
-            referencia.setTelefono(referenciaPersonal.getTelefono());
-
-            reclutamientoFacade.crearRererencia(referencia);
-            }
-
-        i = 0;
-        for (DocumentoCandidato documentoCandidato : documentosCandidato)
-            {
-            DocumentoPresentadoPK dPK = new DocumentoPresentadoPK();
-            dPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-            dPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            dPK.setCodDocumentoPres(++i);
-
-            DocumentoPresentado d = new DocumentoPresentado();
-            d.setDocumentoPresentadoPK(dPK);
-            d.setCandidato(candidato);
-            d.setTipoDocumento(documentoCandidato.getTipo());
-            d.setObservacion((documentoCandidato.getNumero() != null) ? documentoCandidato.getNumero() : "");
-
-            reclutamientoFacade.crearDocumentoPresentado(d);
-            }
-
-        i = 0;
-        for (CapacitacionCandidato capacitacionCandidato : capacitacionesCandidato)
-            {
-            CapacitacionXCandidatoPK capacitacionXCandidatoPK = new CapacitacionXCandidatoPK();
-            capacitacionXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-            capacitacionXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            capacitacionXCandidatoPK.setCodCapacitacion(++i);
-
-            CapacitacionXCandidato capacitacionXCandidato = new CapacitacionXCandidato();
-            capacitacionXCandidato.setCapacitacionXCandidatoPK(capacitacionXCandidatoPK);
-            capacitacionXCandidato.setCandidato(candidato);
-            //capacitacionXCandidato.setCapacitacion(capacitacionCandidato.getCapacitacion());
-            //capacitacionXCandidato.setCodInsti(capacitacionCandidato.getInstitucion().getInstitucionesPK().getCodInsti());
-            capacitacionXCandidato.setTipo(capacitacionCandidato.getTipo());
-            capacitacionXCandidato.setDescripcion(capacitacionCandidato.getDescripcion());
-            capacitacionXCandidato.setNomInstitucion(capacitacionCandidato.getInstitucion());
-            capacitacionXCandidato.setFecha(capacitacionCandidato.getPeriodo());
-
-            reclutamientoFacade.crearCapacitacionXCandidato(capacitacionXCandidato);
-            }
-
-        i = 0;
-        for (DependienteCandidato dependienteCandidato : dependientesCandidato)
-            {
-            DependienteXCandidatoPK dependienteXCandidatoPK = new DependienteXCandidatoPK();
-            dependienteXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-            dependienteXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            dependienteXCandidatoPK.setCodDependiente(++i);
-
-            DependienteXCandidato dependienteXCandidato = new DependienteXCandidato();
-            dependienteXCandidato.setDependienteXCandidatoPK(dependienteXCandidatoPK);
-            dependienteXCandidato.setCandidato(candidato);
-            dependienteXCandidato.setCodParentesco(dependienteCandidato.getParentesco().getParentescoPK().getCodParentesco());
-            dependienteXCandidato.setFechaNacimiento(dependienteCandidato.getFechaNacimiento());
-            dependienteXCandidato.setNombre(dependienteCandidato.getNombre());
-
-            reclutamientoFacade.crearDependienteXCandidato(dependienteXCandidato);
-            }
-
-        i = 0;
-        for (IdiomaCandidato idiomaCandidato : idiomasCandidato)
-            {
-            IdiomaXCandidatoPK idiomaXCandidatoPK = new IdiomaXCandidatoPK();
-            idiomaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-            idiomaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            idiomaXCandidatoPK.setCodIdioma(++i);
-
-            IdiomaXCandidato idiomaXCandidato = new IdiomaXCandidato(idiomaXCandidatoPK);
-            idiomaXCandidato.setCandidato(candidato);
-            idiomaXCandidato.setLee(idiomaCandidato.getLee() ? "S" : "N");
-            idiomaXCandidato.setEscribe(idiomaCandidato.getEscribe() ? "S" : "N");
-            idiomaXCandidato.setNivel(idiomaCandidato.getNivel().toString());
-
-            reclutamientoFacade.crearIdiomaXCandidato(idiomaXCandidato);
-            }
-
-        i = 0;
-        for (BeneficiarioCandidato beneficiarioCandidato : beneficiariosCandidato)
-            {
-            BeneficiarioXCandidatoPK beneficiarioXCandidatoPK = new BeneficiarioXCandidatoPK();
-            beneficiarioXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-            beneficiarioXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            beneficiarioXCandidatoPK.setCodBeneficiario(++i);
-
-            BeneficiarioXCandidato beneficiarioXCandidato = new BeneficiarioXCandidato(beneficiarioXCandidatoPK);
-            beneficiarioXCandidato.setCandidato(candidato);
-            beneficiarioXCandidato.setNombre(beneficiarioCandidato.getNombre());
-            beneficiarioXCandidato.setParentesco(beneficiarioCandidato.getParentesco());
-
-            reclutamientoFacade.crearBeneficiarioXCandidato(beneficiarioXCandidato);
-            }
-
-        for (EquipoCandidato equipoCandidato : equiposCandidato)
-            {
-            candidato.getEquipoList().add(equipoCandidato.getEquipo());
-            }
-        reclutamientoFacade.editarCandidato(candidato);
-
-        i = 0;
-        for (PruebaCandidato pruebaCandidato : pruebasCandidato)
-            {
-            TipoPruebaXCandidatoPK tipoPruebaXCandidatoPK = new TipoPruebaXCandidatoPK();
-            tipoPruebaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-            tipoPruebaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            tipoPruebaXCandidatoPK.setCodTipoPrueba(new Short("" + (++i)));
-
-            TipoPruebaXCandidato tipoPruebaXCandidato = new TipoPruebaXCandidato(tipoPruebaXCandidatoPK);
-            tipoPruebaXCandidato.setCandidato(candidato);
-            tipoPruebaXCandidato.setTipoPrueba(pruebaCandidato.getTipoPrueba());
-            tipoPruebaXCandidato.setFecha(pruebaCandidato.getFecha());
-            tipoPruebaXCandidato.setCosto(new BigDecimal(pruebaCandidato.getCosto()));
-            tipoPruebaXCandidato.setNota(new BigDecimal(pruebaCandidato.getNota()));
-            tipoPruebaXCandidato.setResultado(tipoPruebaXCandidato.getResultado());
-
-            reclutamientoFacade.crearTipoPruebaXCandidatoFacade(tipoPruebaXCandidato);
-            }
-
-//        i = 0;
-        for (PuestoCandidato puestoCandidato : puestosCandidato)
-            {
-            CandidatoXCargoPK candidatoCargoPK = new CandidatoXCargoPK();
-            candidatoCargoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-            candidatoCargoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            candidatoCargoPK.setCodPuesto(puestoCandidato.getPuesto().getPuestosPK().getCodPuesto());
-            //candidatoCargoPK.setCodPuesto(new Short("" + (++i)));
-
-            CandidatoXCargo candidatoCargo = new CandidatoXCargo();
-            candidatoCargo.setCandidatoXCargoPK(candidatoCargoPK);
-            candidatoCargo.setCandidato(candidato);
-            candidatoCargo.setPuestos(puestoCandidato.getPuesto());
-            candidatoCargo.setCodTipoPuesto(puestoCandidato.getPuesto().getTipoPuesto().getTipoPuestoPK().getCodTipoPuesto());
-            candidatoCargo.setSalarioAspirado(puestoCandidato.getSalarioAspirado());
-
-
-            reclutamientoFacade.crearCandidatoXCargo(candidatoCargo);
-            }
-
-        for (EntrevistaCandidato entrevistaCandidato : entrevistasCandidato)
-            {
-            EntrevistaXCandidatoPK entrevistaXCandidatoPK = new EntrevistaXCandidatoPK();
-            entrevistaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
-            entrevistaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
-            entrevistaXCandidatoPK.setCodPuesto(entrevistaCandidato.getPuesto().getPuestosPK().getCodPuesto());
-            entrevistaXCandidatoPK.setCodEntrevista(reclutamientoFacade.getMaxEntrevistaXCandidato(entrevistaCandidato.getPuesto(), candidato));
-
-            EntrevistaXCandidato entrevistaXCandidato = new EntrevistaXCandidato(entrevistaXCandidatoPK);
-            entrevistaXCandidato.setEntrevistaXCandidatoPK(entrevistaXCandidatoPK);
-            entrevistaXCandidato.setCandidato(candidato);
-            entrevistaXCandidato.setPuesto(entrevistaCandidato.getPuesto());
-            entrevistaXCandidato.setEmpleado(entrevistaCandidato.getEntrevistador());
-            entrevistaXCandidato.setDescripcion(entrevistaCandidato.getDescripcion());
-            entrevistaXCandidato.setResultado(entrevistaCandidato.getResultado());
-
-            reclutamientoFacade.crearEntrevistaXCandidato(entrevistaXCandidato);
-            }
-
-        addMessage("Registro de Candidatos", "Datos guardados satisfactoriamente.", TipoMensaje.INFORMACION);
-        }
-    catch (Exception e)
-        {
-        e.printStackTrace(System.err);
-        addMessage("Registro de Candidatos", e.toString(), TipoMensaje.ERROR_FATAL);
+        case CREANDO:
+            if (guardarCandidato())
+                estadoAccion = EDITANDO;
+            break;
+        case EDITANDO:
+            if (candidatoSeleccionado != null)
+                if (editarCandidato(candidatoSeleccionado.getCandidatoPK()))
+                    estadoAccion = EDITANDO;
+            break;
+        case NINGUNO:
+            break;
         }
     return null;
 }
@@ -1634,19 +1391,168 @@ public String guardar$action()
 @PermitAll
 public String cancelar$action()
 {
+    limpiarCampos();
+//    nombre = null;
+//    apellido = null;
+//    apellidoCasada = null;
+//    fechaSolicitud = null;
+//    sexo = null;
+//    estadoCivil = null;
+//    // ==
+//    generales$pais = null;
+//    deptosDomicilioSelectItemListModel = new ArrayList<Deptos>();
+//    generales$departamento = null;
+//    municipiosDomicilioSelectItemListModel = new ArrayList<Municipios>();
+//    generales$municipio = null;
+//    generales$telefono = null;
+//    generales$direccion = null;
+//    // ==
+//    generales$paisNacimiento = null;
+//    deptosNacSelectItemListModel = new ArrayList<Deptos>();
+//    generales$departamentoNacimiento = null;
+//
+//    municipiosNacDomicilioSelectItemListModel = new ArrayList<Municipios>();
+//    generales$municipioNacimiento = null;
+//    generales$fechaNacimiento = null;
+//    generales$paisNacionalidad = null;
+//    generales$grupoSanguineo = null;
+//    // ==
+//    generales$dui = null;
+//    generales$nit = null;
+//    generales$fechaExpDui = null;
+//
+//    generales$departamentoExpDui = null;
+//    municipiosExpDUISelectItemListModel = new ArrayList<Municipios>();
+//
+//    generales$licenciaConducir = null;
+//    generales$pasaporte = null;
+//    generales$nombreISSS = null;
+//    generales$nombreNIT = null;
+//    // ==
+//    preparacionesAcademicasCandidato = new ArrayList<PreparacionAcademicaCandidato>();
+//    // ==
+//    emergencias$conyuge = null;
+//    emergencias$trabajo = null;
+//    emergencias$telefono = null;
+//    emergencias$condicionSalud = null;
+//    emergencias$actividadLimitada = Boolean.FALSE;
+//    emergencias$haSufridoAccidentes = Boolean.FALSE;
+//    emergencias$tipoAccidente = null;
+//    emergencias$pesoActual = 0.00d;
+//    emergencias$estatura = 0.00d;
+//
+//    parentescosCandidatos = new ArrayList<ParentescoCandidato>();
+//    // ==
+//    experienciasLaboralesCandidato = new ArrayList<ExperienciaLaboralCandidato>();
+//    // ==
+//    referenciasLaboralesCandidato = new ArrayList<ReferenciaLaboralCandidato>();
+//    referenciasPersonalesCandidato = new ArrayList<ReferenciaPersonalCandidato>();
+//    // ==
+//    documentosCandidato = new ArrayList<DocumentoCandidato>();
+//    // ==
+//    capacitacionesCandidato = new ArrayList<CapacitacionCandidato>();
+//    // ==
+//    dependientesCandidato = new ArrayList<DependienteCandidato>();
+//    // ==
+//    idiomasCandidato = new ArrayList<IdiomaCandidato>();
+//    // ==
+//    beneficiariosCandidato = new ArrayList<BeneficiarioCandidato>();
+//    // ==
+//    equiposCandidato = new ArrayList<EquipoCandidato>();
+//    // ==
+//    pruebasCandidato = new ArrayList<PruebaCandidato>();
+//    // ==
+//    puestosCandidato = new ArrayList<PuestoCandidato>();
+//    // ==
+//    entrevistasCandidato = new ArrayList<EntrevistaCandidato>();
+//    // ==
+//    observaciones = null;
+
+    // ==================================
+    candidatoSeleccionado = null;
+    estadoAccion = NINGUNO;
+    return null;
+}
+
+@Override
+@PermitAll
+protected void limpiarCampos()
+{
     nombre = null;
     apellido = null;
     apellidoCasada = null;
     fechaSolicitud = null;
     sexo = null;
     estadoCivil = null;
-    estadoAccion = NINGUNO;
-    return null;
-}
+    // ==
+    generales$pais = null;
+    deptosDomicilioSelectItemListModel = new ArrayList<Deptos>();
+    generales$departamento = null;
+    municipiosDomicilioSelectItemListModel = new ArrayList<Municipios>();
+    generales$municipio = null;
+    generales$telefono = null;
+    generales$direccion = null;
+    // ==
+    generales$paisNacimiento = null;
+    deptosNacSelectItemListModel = new ArrayList<Deptos>();
+    generales$departamentoNacimiento = null;
 
-@Override
-protected void limpiarCampos()
-{
+    municipiosNacDomicilioSelectItemListModel = new ArrayList<Municipios>();
+    generales$municipioNacimiento = null;
+    generales$fechaNacimiento = null;
+    generales$paisNacionalidad = null;
+    generales$grupoSanguineo = null;
+    // ==
+    generales$dui = null;
+    generales$nit = null;
+    generales$fechaExpDui = null;
+
+    generales$departamentoExpDui = null;
+    municipiosExpDUISelectItemListModel = new ArrayList<Municipios>();
+
+    generales$licenciaConducir = null;
+    generales$pasaporte = null;
+    generales$nombreISSS = null;
+    generales$nombreNIT = null;
+    // ==
+    preparacionesAcademicasCandidato = new ArrayList<PreparacionAcademicaCandidato>();
+    // ==
+    emergencias$conyuge = null;
+    emergencias$trabajo = null;
+    emergencias$telefono = null;
+    emergencias$condicionSalud = null;
+    emergencias$actividadLimitada = Boolean.FALSE;
+    emergencias$haSufridoAccidentes = Boolean.FALSE;
+    emergencias$tipoAccidente = null;
+    emergencias$pesoActual = 0.00d;
+    emergencias$estatura = 0.00d;
+
+    parentescosCandidatos = new ArrayList<ParentescoCandidato>();
+    // ==
+    experienciasLaboralesCandidato = new ArrayList<ExperienciaLaboralCandidato>();
+    // ==
+    referenciasLaboralesCandidato = new ArrayList<ReferenciaLaboralCandidato>();
+    referenciasPersonalesCandidato = new ArrayList<ReferenciaPersonalCandidato>();
+    // ==
+    documentosCandidato = new ArrayList<DocumentoCandidato>();
+    // ==
+    capacitacionesCandidato = new ArrayList<CapacitacionCandidato>();
+    // ==
+    dependientesCandidato = new ArrayList<DependienteCandidato>();
+    // ==
+    idiomasCandidato = new ArrayList<IdiomaCandidato>();
+    // ==
+    beneficiariosCandidato = new ArrayList<BeneficiarioCandidato>();
+    // ==
+    equiposCandidato = new ArrayList<EquipoCandidato>();
+    // ==
+    pruebasCandidato = new ArrayList<PruebaCandidato>();
+    // ==
+    puestosCandidato = new ArrayList<PuestoCandidato>();
+    // ==
+    entrevistasCandidato = new ArrayList<EntrevistaCandidato>();
+    // ==
+    observaciones = null;
 }
 
 // ==================================================================================================================
@@ -2825,49 +2731,67 @@ public void setEntrevistasCandidato(List<EntrevistaCandidato> entrevistasCandida
 // ============================================================================================
 public void paisDomicilio_ajaxListener(AjaxBehaviorEvent event)
 {
-    Paises pais = sessionBeanParametros.findPaisesByid(new Short(generales$pais));
-    deptosDomicilioSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
-    municipiosDomicilioSelectItemListModel = new ArrayList<Municipios>();
+    if (generales$pais != null)
+        {
+        Paises pais = sessionBeanParametros.findPaisesByid(new Short(generales$pais));
+        deptosDomicilioSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
+        municipiosDomicilioSelectItemListModel = new ArrayList<Municipios>();
+        }
 }
 
 public void deptoDomicilio_ajaxListener(AjaxBehaviorEvent event)
 {
-    String[] deptoDomicilioPKStr = generales$departamento.split(":");
-    DeptosPK departamentoPK = new DeptosPK(new Short(deptoDomicilioPKStr[0]), new Short(deptoDomicilioPKStr[1]));
-    Deptos departamento = sessionBeanParametros.findDepartamentoById(departamentoPK);
-    municipiosDomicilioSelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(departamento);
+    if (generales$departamento != null)
+        {
+        String[] deptoDomicilioPKStr = generales$departamento.split(":");
+        DeptosPK departamentoPK = new DeptosPK(new Short(deptoDomicilioPKStr[0]), new Short(deptoDomicilioPKStr[1]));
+        Deptos departamento = sessionBeanParametros.findDepartamentoById(departamentoPK);
+        municipiosDomicilioSelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(departamento);
+        }
 }
 
 // ============================================================================================
 public void paisNacimiento_ajaxListener(AjaxBehaviorEvent event)
 {
-    Paises pais = sessionBeanParametros.findPaisesByid(new Short(generales$paisNacimiento));
-    deptosNacSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
-    municipiosNacDomicilioSelectItemListModel = new ArrayList<Municipios>();
+    if (generales$paisNacimiento != null)
+        {
+        Paises pais = sessionBeanParametros.findPaisesByid(new Short(generales$paisNacimiento));
+        deptosNacSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
+        municipiosNacDomicilioSelectItemListModel = new ArrayList<Municipios>();
+        }
 }
 
 public void deptoNacimiento_ajaxListener(AjaxBehaviorEvent event)
 {
-    String[] deptoDomicilioPKStr = generales$departamentoNacimiento.split(":");
-    DeptosPK departamentoPK = new DeptosPK(new Short(deptoDomicilioPKStr[0]), new Short(deptoDomicilioPKStr[1]));
-    Deptos departamento = sessionBeanParametros.findDepartamentoById(departamentoPK);
-    municipiosNacDomicilioSelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(departamento);
+    if (generales$departamentoNacimiento != null)
+        {
+        String[] deptoDomicilioPKStr = generales$departamentoNacimiento.split(":");
+        DeptosPK departamentoPK = new DeptosPK(new Short(deptoDomicilioPKStr[0]), new Short(deptoDomicilioPKStr[1]));
+        Deptos departamento = sessionBeanParametros.findDepartamentoById(departamentoPK);
+        municipiosNacDomicilioSelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(departamento);
+        }
 }
 
 // ============================================================================================
 public void deptoExpDUI_ajaxListener(AjaxBehaviorEvent event)
 {
-    String[] deptoDomicilioPKStr = generales$departamentoExpDui.split(":");
-    DeptosPK departamentoPK = new DeptosPK(new Short(deptoDomicilioPKStr[0]), new Short(deptoDomicilioPKStr[1]));
-    Deptos departamento = sessionBeanParametros.findDepartamentoById(departamentoPK);
-    municipiosExpDUISelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(departamento);
+    if (generales$departamentoExpDui != null)
+        {
+        String[] deptoDomicilioPKStr = generales$departamentoExpDui.split(":");
+        DeptosPK departamentoPK = new DeptosPK(new Short(deptoDomicilioPKStr[0]), new Short(deptoDomicilioPKStr[1]));
+        Deptos departamento = sessionBeanParametros.findDepartamentoById(departamentoPK);
+        municipiosExpDUISelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(departamento);
+        }
 }
 // ============================================================================================
 
 public void paisPrepAcad_ajaxListener(AjaxBehaviorEvent event)
 {
-    Paises pais = sessionBeanParametros.findPaisesByid(new Short(preparacion$pais));
-    deptosPrepAcadSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
+    if (preparacion$pais != null)
+        {
+        Paises pais = sessionBeanParametros.findPaisesByid(new Short(preparacion$pais));
+        deptosPrepAcadSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
+        }
 }
 // ============================================================================================
 // ============================================================================================
@@ -3153,9 +3077,9 @@ public void setEstadoAccion(Integer estadoAccion)
     this.estadoAccion = estadoAccion;
 }
 // ==============================================================================================================
-public static final Integer NINGUNO = 0;
-public static final Integer CREANDO = 1;
-public static final Integer EDITANDO = 2;
+public static final int NINGUNO = 0;
+public static final int CREANDO = 1;
+public static final int EDITANDO = 2;
 // ==============================================================================================================
 private List<Candidato> candidatosListModel;
 
@@ -3178,5 +3102,749 @@ public Candidato getCandidatoSeleccionado()
 public void setCandidatoSeleccionado(Candidato candidatoSeleccionado)
 {
     this.candidatoSeleccionado = candidatoSeleccionado;
+}
+
+private Boolean errorValidarCampos()
+{
+    Boolean hayError = Boolean.FALSE;
+    if ((nombre == null) || nombre.trim().isEmpty())
+        {
+        addMessage("Infosweb RRHH", "Ingrese el nombre del candidato", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if ((apellido == null) || apellido.trim().isEmpty())
+        {
+        addMessage("Infosweb RRHH", "Ingrese el apellido del candidato", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if ((generales$pais == null) || generales$pais.equals("0"))
+        {
+        addMessage("Infosweb RRHH", "Seleccione el pa&iacute;s de domicilio", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if ((generales$departamento == null) || generales$departamento.equals("0:0"))
+        {
+        addMessage("Infosweb RRHH", "Seleccione el departamento de domicilio", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if ((generales$municipio == null) || generales$municipio.equals("0:0:0"))
+        {
+        addMessage("Infosweb RRHH", "Seleccione el municipio de domicilio", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if ((generales$paisNacimiento == null) || generales$paisNacimiento.equals("0"))
+        {
+        addMessage("Infosweb RRHH", "Seleccione el pa&iacute;s de nacimiento", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if ((generales$departamentoNacimiento == null) || generales$departamentoNacimiento.equals("0:0"))
+        {
+        addMessage("Infosweb RRHH", "Seleccione el departamento de nacimiento", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if ((generales$municipioNacimiento == null) || generales$municipioNacimiento.equals("0:0:0"))
+        {
+        addMessage("Infosweb RRHH", "Seleccione el departamento de nacimiento", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if ((generales$departamentoExpDui == null) || generales$departamentoExpDui.equals("0:0"))
+        {
+        addMessage("Infosweb RRHH", "Seleccione el departamento de expedici&oacute;n del DUI", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if ((generales$municipioExpDui == null) || generales$municipioExpDui.equals("0:0:0"))
+        {
+        addMessage("Infosweb RRHH", "Seleccione el municipio de expedici&oacute;n del DUI", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if (fechaSolicitud == null)
+        {
+        addMessage("Infosweb RRHH", "Ingrese la fecha de solicitud", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if (generales$fechaNacimiento == null)
+        {
+        addMessage("Infosweb RRHH", "Ingrese la fecha de nacimiento", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if (generales$fechaExpDui == null)
+        {
+        addMessage("Infosweb RRHH", "Ingrese la fecha de expedici&oacute;n del DUI", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+    return hayError;
+}
+
+private boolean guardarCandidato()
+{
+    try
+        {
+        if (errorValidarCampos())
+            return false;
+
+        Short c = getSessionBeanADM().getCompania().getCodCia();
+
+        CandidatoPK pkCandidato = new CandidatoPK();
+        Candidato candidato = new Candidato();
+
+        pkCandidato.setCodCia(c);
+        Integer i = reclutamientoFacade.getMaxCandidato(getSessionBeanADM().getCompania());
+        pkCandidato.setCodCandidato(i);
+
+        candidato.setCandidatoPK(pkCandidato);
+        candidato.setFecSolicitud(fechaSolicitud);
+        candidato.setNombre(nombre);
+        candidato.setApellido(apellido);
+        candidato.setApCasada(apellidoCasada);
+        candidato.setEstadoCivil(estadoCivil);
+        candidato.setSexo(sexo);
+
+        candidato.setCodPaisDomic(new Short(generales$pais));
+        candidato.setCodDepartamentoDomic(new Short(generales$departamento.split(":")[1]));
+        candidato.setCodMunicipioDomic(new Short(generales$municipio.split(":")[2]));
+        candidato.setTelefono(generales$telefono);
+        candidato.setDireccion(generales$direccion);
+
+        candidato.setFechaNac(generales$fechaNacimiento);
+        candidato.setCodPaisNacimiento(new Short(generales$paisNacimiento));
+        candidato.setCodDepartamentoNacim(new Short(generales$departamentoNacimiento.split(":")[1]));
+        candidato.setCodMunicipioNacim(new Short(generales$municipioNacimiento.split(":")[2]));
+
+        candidato.setCodPaisNacionalidad(new Short(generales$paisNacionalidad));
+        TipoSangre tipoSangre = sessionBeanParametros.findTipoSangreById(generales$grupoSanguineo);
+
+        candidato.setTipoSangre(tipoSangre);
+
+        candidato.setNumDui(generales$dui);
+        candidato.setNumNit(generales$nit);
+        candidato.setFechaExpDui(generales$fechaExpDui);
+
+        String[] deptoExpDUIPKStr = generales$departamentoExpDui.split(":");
+        String[] municipioExpDUIStr = generales$municipioExpDui.split(":");
+        DeptosPK deptoExpDUI = new DeptosPK(new Short(deptoExpDUIPKStr[0]), new Short(deptoExpDUIPKStr[1]));
+        MunicipiosPK municipioExpDUI = new MunicipiosPK(new Short(municipioExpDUIStr[0]), new Short(municipioExpDUIStr[1]), new Short(municipioExpDUIStr[2]));
+
+        candidato.setExpedicionDui(sessionBeanParametros.findDepartamentoById(deptoExpDUI).getNomDepto());
+        candidato.setMuniExpDui(sessionBeanParametros.findMunicipiosById(municipioExpDUI).getNomMuni());
+        candidato.setNumLicencia(generales$licenciaConducir);
+        candidato.setNomIsss(generales$nombreISSS);
+        candidato.setNumPasaporte(generales$pasaporte);
+        candidato.setNomNit(generales$nombreNIT);
+
+        candidato.setNombreConyuge(emergencias$conyuge);
+        candidato.setTrabajoConyuge(emergencias$trabajo);
+        candidato.setTelefonoConyuge(emergencias$telefono);
+
+        candidato.setCondicionSalud(emergencias$condicionSalud);
+        candidato.setActividadLimitada(emergencias$actividadLimitada ? "S" : "N");
+        candidato.setTieneAccidente(emergencias$haSufridoAccidentes ? "S" : "N");
+        candidato.setTipoAccidente(emergencias$haSufridoAccidentes ? emergencias$tipoAccidente : null);
+        candidato.setPeso(emergencias$pesoActual);
+        candidato.setEstatura(emergencias$estatura);
+
+        candidato.setObservacion(observaciones);
+        candidato.setEstado("A");
+        reclutamientoFacade.guardarCandidato(candidato);
+
+        candidato = reclutamientoFacade.findCandidatoById(pkCandidato);
+
+        i = 0;
+        for (PreparacionAcademicaCandidato preparacionCandidato : preparacionesAcademicasCandidato)
+            {
+            NivelesXCandidatoPK nivelCandidatoPK = new NivelesXCandidatoPK();
+            nivelCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            nivelCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            nivelCandidatoPK.setCodNivel(new Short("" + (++i)));
+
+            NivelesXCandidato nivelCandidato = new NivelesXCandidato();
+            nivelCandidato.setNivelesXCandidatoPK(nivelCandidatoPK);
+            nivelCandidato.setCandidato(candidato);
+            nivelCandidato.setNomInstitucion(preparacionCandidato.getNombreInstitucion());
+            nivelCandidato.setCodPais(preparacionCandidato.getDepartamentoInstitucion().getDeptosPK().getCodPais());
+            nivelCandidato.setCodDepto(preparacionCandidato.getDepartamentoInstitucion().getDeptosPK().getCodDepto());
+            nivelCandidato.setAnioIngreso(preparacionCandidato.getAnioIngreso());
+            nivelCandidato.setAnioEgreso(preparacionCandidato.getAnioEgreso());
+            nivelCandidato.setEstadoNivel("A");
+            reclutamientoFacade.crearNivelXCandidato(nivelCandidato);
+            }
+
+        i = 0;
+        for (ParentescoCandidato parentescoCandidato : parentescosCandidatos)
+            {
+            EmergenciaXCandidatoPK emergenciaCandidatoPK = new EmergenciaXCandidatoPK();
+            emergenciaCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            emergenciaCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            emergenciaCandidatoPK.setCodEmergencia(++i);
+
+            EmergenciaXCandidato emergenciaCandidato = new EmergenciaXCandidato();
+            emergenciaCandidato.setEmergenciaXCandidatoPK(emergenciaCandidatoPK);
+            emergenciaCandidato.setCandidato(candidato);
+            emergenciaCandidato.setNombre(parentescoCandidato.getNombre());
+            emergenciaCandidato.setTelefono(parentescoCandidato.getTelefono());
+            emergenciaCandidato.setCodParentesco(parentescoCandidato.getParentesco().getParentescoPK().getCodParentesco());
+            reclutamientoFacade.crearEmergenciaCandidato(emergenciaCandidato);
+            }
+
+        for (ExperienciaLaboralCandidato experienciaCandidato : experienciasLaboralesCandidato)
+            {
+            }
+
+        i = 0;
+        for (ReferenciaLaboralCandidato referenciaLaboral : referenciasLaboralesCandidato)
+            {
+            ReferenciaPK referenciaPK = new ReferenciaPK();
+            referenciaPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            referenciaPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            referenciaPK.setCodReferencia(++i);
+
+            Referencia referencia = new Referencia();
+            referencia.setReferenciaPK(referenciaPK);
+            referencia.setCandidato(candidato);
+            referencia.setTipoReferencia('L');
+            referencia.setNomReferencia(referenciaLaboral.getNombre());
+            referencia.setLugar(referenciaLaboral.getLugarTrabajo());
+            referencia.setEmail(referenciaLaboral.getCorreoElectronico());
+            referencia.setTelefono(referenciaLaboral.getTelefono());
+
+            reclutamientoFacade.crearRererencia(referencia);
+            }
+
+        for (ReferenciaPersonalCandidato referenciaPersonal : referenciasPersonalesCandidato)
+            {
+            ReferenciaPK referenciaPK = new ReferenciaPK();
+            referenciaPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            referenciaPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            referenciaPK.setCodReferencia(++i);
+
+            Referencia referencia = new Referencia();
+            referencia.setReferenciaPK(referenciaPK);
+            referencia.setCandidato(candidato);
+            referencia.setTipoReferencia('P');
+            referencia.setNomReferencia(referenciaPersonal.getNombre());
+            referencia.setLugar(referenciaPersonal.getLugarTrabajo());
+            referencia.setTiempo(referenciaPersonal.getTiempoConocerle().toString());
+            referencia.setEmail(referenciaPersonal.getCorreoElectronico());
+            referencia.setTelefono(referenciaPersonal.getTelefono());
+
+            reclutamientoFacade.crearRererencia(referencia);
+            }
+
+        i = 0;
+        for (DocumentoCandidato documentoCandidato : documentosCandidato)
+            {
+            DocumentoPresentadoPK dPK = new DocumentoPresentadoPK();
+            dPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            dPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            dPK.setCodDocumentoPres(++i);
+
+            DocumentoPresentado d = new DocumentoPresentado();
+            d.setDocumentoPresentadoPK(dPK);
+            d.setCandidato(candidato);
+            d.setTipoDocumento(documentoCandidato.getTipo());
+            d.setObservacion((documentoCandidato.getNumero() != null) ? documentoCandidato.getNumero() : "");
+
+            reclutamientoFacade.crearDocumentoPresentado(d);
+            }
+
+        i = 0;
+        for (CapacitacionCandidato capacitacionCandidato : capacitacionesCandidato)
+            {
+            CapacitacionXCandidatoPK capacitacionXCandidatoPK = new CapacitacionXCandidatoPK();
+            capacitacionXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            capacitacionXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            capacitacionXCandidatoPK.setCodCapacitacion(++i);
+
+            CapacitacionXCandidato capacitacionXCandidato = new CapacitacionXCandidato();
+            capacitacionXCandidato.setCapacitacionXCandidatoPK(capacitacionXCandidatoPK);
+            capacitacionXCandidato.setCandidato(candidato);
+            capacitacionXCandidato.setTipo(capacitacionCandidato.getTipo());
+            capacitacionXCandidato.setDescripcion(capacitacionCandidato.getDescripcion());
+            capacitacionXCandidato.setNomInstitucion(capacitacionCandidato.getInstitucion());
+            capacitacionXCandidato.setFecha(capacitacionCandidato.getPeriodo());
+
+            reclutamientoFacade.crearCapacitacionXCandidato(capacitacionXCandidato);
+            }
+
+        i = 0;
+        for (DependienteCandidato dependienteCandidato : dependientesCandidato)
+            {
+            DependienteXCandidatoPK dependienteXCandidatoPK = new DependienteXCandidatoPK();
+            dependienteXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            dependienteXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            dependienteXCandidatoPK.setCodDependiente(++i);
+
+            DependienteXCandidato dependienteXCandidato = new DependienteXCandidato();
+            dependienteXCandidato.setDependienteXCandidatoPK(dependienteXCandidatoPK);
+            dependienteXCandidato.setCandidato(candidato);
+            dependienteXCandidato.setCodParentesco(dependienteCandidato.getParentesco().getParentescoPK().getCodParentesco());
+            dependienteXCandidato.setFechaNacimiento(dependienteCandidato.getFechaNacimiento());
+            dependienteXCandidato.setNombre(dependienteCandidato.getNombre());
+
+            reclutamientoFacade.crearDependienteXCandidato(dependienteXCandidato);
+            }
+
+        i = 0;
+        for (IdiomaCandidato idiomaCandidato : idiomasCandidato)
+            {
+            IdiomaXCandidatoPK idiomaXCandidatoPK = new IdiomaXCandidatoPK();
+            idiomaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            idiomaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            idiomaXCandidatoPK.setCodIdioma(++i);
+
+            IdiomaXCandidato idiomaXCandidato = new IdiomaXCandidato(idiomaXCandidatoPK);
+            idiomaXCandidato.setCandidato(candidato);
+            idiomaXCandidato.setLee(idiomaCandidato.getLee() ? "S" : "N");
+            idiomaXCandidato.setEscribe(idiomaCandidato.getEscribe() ? "S" : "N");
+            idiomaXCandidato.setNivel(idiomaCandidato.getNivel().toString());
+
+            reclutamientoFacade.crearIdiomaXCandidato(idiomaXCandidato);
+            }
+
+        i = 0;
+        for (BeneficiarioCandidato beneficiarioCandidato : beneficiariosCandidato)
+            {
+            BeneficiarioXCandidatoPK beneficiarioXCandidatoPK = new BeneficiarioXCandidatoPK();
+            beneficiarioXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            beneficiarioXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            beneficiarioXCandidatoPK.setCodBeneficiario(++i);
+
+            BeneficiarioXCandidato beneficiarioXCandidato = new BeneficiarioXCandidato(beneficiarioXCandidatoPK);
+            beneficiarioXCandidato.setCandidato(candidato);
+            beneficiarioXCandidato.setNombre(beneficiarioCandidato.getNombre());
+            beneficiarioXCandidato.setParentesco(beneficiarioCandidato.getParentesco());
+
+            reclutamientoFacade.crearBeneficiarioXCandidato(beneficiarioXCandidato);
+            }
+
+        for (EquipoCandidato equipoCandidato : equiposCandidato)
+            {
+            candidato.getEquipoList().add(equipoCandidato.getEquipo());
+            }
+        reclutamientoFacade.editarCandidato(candidato);
+
+        i = 0;
+        for (PruebaCandidato pruebaCandidato : pruebasCandidato)
+            {
+            TipoPruebaXCandidatoPK tipoPruebaXCandidatoPK = new TipoPruebaXCandidatoPK();
+            tipoPruebaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            tipoPruebaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            tipoPruebaXCandidatoPK.setCodTipoPrueba(new Short("" + (++i)));
+
+            TipoPruebaXCandidato tipoPruebaXCandidato = new TipoPruebaXCandidato(tipoPruebaXCandidatoPK);
+            tipoPruebaXCandidato.setCandidato(candidato);
+            tipoPruebaXCandidato.setTipoPrueba(pruebaCandidato.getTipoPrueba());
+            tipoPruebaXCandidato.setFecha(pruebaCandidato.getFecha());
+            tipoPruebaXCandidato.setCosto(new BigDecimal(pruebaCandidato.getCosto()));
+            tipoPruebaXCandidato.setNota(new BigDecimal(pruebaCandidato.getNota()));
+            tipoPruebaXCandidato.setResultado(tipoPruebaXCandidato.getResultado());
+
+            reclutamientoFacade.crearTipoPruebaXCandidatoFacade(tipoPruebaXCandidato);
+            }
+
+        for (PuestoCandidato puestoCandidato : puestosCandidato)
+            {
+            CandidatoXCargoPK candidatoCargoPK = new CandidatoXCargoPK();
+            candidatoCargoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            candidatoCargoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            candidatoCargoPK.setCodPuesto(puestoCandidato.getPuesto().getPuestosPK().getCodPuesto());
+
+            CandidatoXCargo candidatoCargo = new CandidatoXCargo();
+            candidatoCargo.setCandidatoXCargoPK(candidatoCargoPK);
+            candidatoCargo.setCandidato(candidato);
+            candidatoCargo.setPuestos(puestoCandidato.getPuesto());
+            candidatoCargo.setCodTipoPuesto(puestoCandidato.getPuesto().getTipoPuesto().getTipoPuestoPK().getCodTipoPuesto());
+            candidatoCargo.setSalarioAspirado(puestoCandidato.getSalarioAspirado());
+
+            reclutamientoFacade.crearCandidatoXCargo(candidatoCargo);
+            }
+
+        for (EntrevistaCandidato entrevistaCandidato : entrevistasCandidato)
+            {
+            EntrevistaXCandidatoPK entrevistaXCandidatoPK = new EntrevistaXCandidatoPK();
+            entrevistaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            entrevistaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            entrevistaXCandidatoPK.setCodPuesto(entrevistaCandidato.getPuesto().getPuestosPK().getCodPuesto());
+            entrevistaXCandidatoPK.setCodEntrevista(reclutamientoFacade.getMaxEntrevistaXCandidato(entrevistaCandidato.getPuesto(), candidato));
+
+            EntrevistaXCandidato entrevistaXCandidato = new EntrevistaXCandidato(entrevistaXCandidatoPK);
+            entrevistaXCandidato.setEntrevistaXCandidatoPK(entrevistaXCandidatoPK);
+            entrevistaXCandidato.setCandidato(candidato);
+            entrevistaXCandidato.setPuesto(entrevistaCandidato.getPuesto());
+            entrevistaXCandidato.setEmpleado(entrevistaCandidato.getEntrevistador());
+            entrevistaXCandidato.setDescripcion(entrevistaCandidato.getDescripcion());
+            entrevistaXCandidato.setResultado(entrevistaCandidato.getResultado());
+
+            reclutamientoFacade.crearEntrevistaXCandidato(entrevistaXCandidato);
+            }
+
+        candidatoSeleccionado = candidato;
+        addMessage("Registro de Candidatos", "Datos guardados exitosamente.", TipoMensaje.INFORMACION);
+        return true;
+        }
+    catch (Exception e)
+        {
+        e.printStackTrace(System.err);
+        addMessage("Registro de Candidatos", e.toString(), TipoMensaje.ERROR_FATAL);
+        return false;
+        }
+
+}
+
+private boolean editarCandidato(CandidatoPK candidatoPK)
+{
+    Integer i = null;
+    Candidato candidato = null;
+    try
+        {
+        if (errorValidarCampos())
+            return false;
+        
+        candidato = reclutamientoFacade.findCandidatoById(candidatoPK);
+
+        Short c = getSessionBeanADM().getCompania().getCodCia();
+
+        candidato.setFecSolicitud(fechaSolicitud);
+        candidato.setNombre(nombre);
+        candidato.setApellido(apellido);
+        candidato.setApCasada(apellidoCasada);
+        candidato.setEstadoCivil(estadoCivil);
+        candidato.setSexo(sexo);
+
+        candidato.setCodPaisDomic(new Short(generales$pais));
+        candidato.setCodDepartamentoDomic(new Short(generales$departamento.split(":")[1]));
+        candidato.setCodMunicipioDomic(new Short(generales$municipio.split(":")[2]));
+        candidato.setTelefono(generales$telefono);
+        candidato.setDireccion(generales$direccion);
+
+        candidato.setFechaNac(generales$fechaNacimiento);
+        candidato.setCodPaisNacimiento(new Short(generales$paisNacimiento));
+        candidato.setCodDepartamentoNacim(new Short(generales$departamentoNacimiento.split(":")[1]));
+        candidato.setCodMunicipioNacim(new Short(generales$municipioNacimiento.split(":")[2]));
+
+        candidato.setCodPaisNacionalidad(new Short(generales$paisNacionalidad));
+        TipoSangre tipoSangre = sessionBeanParametros.findTipoSangreById(generales$grupoSanguineo);
+
+        candidato.setTipoSangre(tipoSangre);
+
+        candidato.setNumDui(generales$dui);
+        candidato.setNumNit(generales$nit);
+        candidato.setFechaExpDui(generales$fechaExpDui);
+
+        String[] deptoExpDUIPKStr = generales$departamentoExpDui.split(":");
+        String[] municipioExpDUIStr = generales$municipioExpDui.split(":");
+        DeptosPK deptoExpDUI = new DeptosPK(new Short(deptoExpDUIPKStr[0]), new Short(deptoExpDUIPKStr[1]));
+        MunicipiosPK municipioExpDUI = new MunicipiosPK(new Short(municipioExpDUIStr[0]), new Short(municipioExpDUIStr[1]), new Short(municipioExpDUIStr[2]));
+
+        candidato.setExpedicionDui(sessionBeanParametros.findDepartamentoById(deptoExpDUI).getNomDepto());
+        candidato.setMuniExpDui(sessionBeanParametros.findMunicipiosById(municipioExpDUI).getNomMuni());
+        candidato.setNumLicencia(generales$licenciaConducir);
+        candidato.setNomIsss(generales$nombreISSS);
+        candidato.setNumPasaporte(generales$pasaporte);
+        candidato.setNomNit(generales$nombreNIT);
+
+        candidato.setNombreConyuge(emergencias$conyuge);
+        candidato.setTrabajoConyuge(emergencias$trabajo);
+        candidato.setTelefonoConyuge(emergencias$telefono);
+
+        candidato.setCondicionSalud(emergencias$condicionSalud);
+        candidato.setActividadLimitada(emergencias$actividadLimitada ? "S" : "N");
+        candidato.setTieneAccidente(emergencias$haSufridoAccidentes ? "S" : "N");
+        candidato.setTipoAccidente(emergencias$haSufridoAccidentes ? emergencias$tipoAccidente : null);
+        candidato.setPeso(emergencias$pesoActual);
+        candidato.setEstatura(emergencias$estatura);
+
+        candidato.setObservacion(observaciones);
+        candidato.setEstado("A");
+        reclutamientoFacade.editarCandidato(candidato);
+
+        // =======================================================================================================
+
+        for (NivelesXCandidato nivCand : candidato.getNivelesXCandidatoList())
+            reclutamientoFacade.eliminarNivelCandidato(nivCand);
+
+        i = 0;
+        for (PreparacionAcademicaCandidato preparacionCandidato : preparacionesAcademicasCandidato)
+            {
+            NivelesXCandidatoPK nivelCandidatoPK = new NivelesXCandidatoPK();
+            nivelCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            nivelCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            nivelCandidatoPK.setCodNivel(new Short("" + (++i)));
+
+            NivelesXCandidato nivelCandidato = new NivelesXCandidato();
+            nivelCandidato.setNivelesXCandidatoPK(nivelCandidatoPK);
+            nivelCandidato.setCandidato(candidato);
+            nivelCandidato.setNomInstitucion(preparacionCandidato.getNombreInstitucion());
+            nivelCandidato.setCodPais(preparacionCandidato.getDepartamentoInstitucion().getDeptosPK().getCodPais());
+            nivelCandidato.setCodDepto(preparacionCandidato.getDepartamentoInstitucion().getDeptosPK().getCodDepto());
+            nivelCandidato.setAnioIngreso(preparacionCandidato.getAnioIngreso());
+            nivelCandidato.setAnioEgreso(preparacionCandidato.getAnioEgreso());
+            nivelCandidato.setEstadoNivel("A");
+            reclutamientoFacade.crearNivelXCandidato(nivelCandidato);
+            }
+
+        for (EmergenciaXCandidato emergCand : candidato.getEmergenciaXCandidatoList())
+            reclutamientoFacade.eliminarEmergenciaCandidato(emergCand);
+
+        i = 0;
+        for (ParentescoCandidato parentescoCandidato : parentescosCandidatos)
+            {
+            EmergenciaXCandidatoPK emergenciaCandidatoPK = new EmergenciaXCandidatoPK();
+            emergenciaCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            emergenciaCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            emergenciaCandidatoPK.setCodEmergencia(++i);
+
+            EmergenciaXCandidato emergenciaCandidato = new EmergenciaXCandidato();
+            emergenciaCandidato.setEmergenciaXCandidatoPK(emergenciaCandidatoPK);
+            emergenciaCandidato.setCandidato(candidato);
+            emergenciaCandidato.setNombre(parentescoCandidato.getNombre());
+            emergenciaCandidato.setTelefono(parentescoCandidato.getTelefono());
+            emergenciaCandidato.setCodParentesco(parentescoCandidato.getParentesco().getParentescoPK().getCodParentesco());
+            reclutamientoFacade.crearEmergenciaCandidato(emergenciaCandidato);
+            }
+
+//        for (ExperienciaLaboralCandidato experienciaCandidato : experienciasLaboralesCandidato)
+//            {
+//            }
+
+        for (Referencia refCand : candidato.getReferenciaList())
+            reclutamientoFacade.eliminarReferenciaCandidato(refCand);
+
+        i = 0;
+        for (ReferenciaLaboralCandidato referenciaLaboral : referenciasLaboralesCandidato)
+            {
+            ReferenciaPK referenciaPK = new ReferenciaPK();
+            referenciaPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            referenciaPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            referenciaPK.setCodReferencia(++i);
+
+            Referencia referencia = new Referencia();
+            referencia.setReferenciaPK(referenciaPK);
+            referencia.setCandidato(candidato);
+            referencia.setTipoReferencia('L');
+            referencia.setNomReferencia(referenciaLaboral.getNombre());
+            referencia.setLugar(referenciaLaboral.getLugarTrabajo());
+            referencia.setEmail(referenciaLaboral.getCorreoElectronico());
+            referencia.setTelefono(referenciaLaboral.getTelefono());
+
+            reclutamientoFacade.crearRererencia(referencia);
+            }
+
+        for (ReferenciaPersonalCandidato referenciaPersonal : referenciasPersonalesCandidato)
+            {
+            ReferenciaPK referenciaPK = new ReferenciaPK();
+            referenciaPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            referenciaPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            referenciaPK.setCodReferencia(++i);
+
+            Referencia referencia = new Referencia();
+            referencia.setReferenciaPK(referenciaPK);
+            referencia.setCandidato(candidato);
+            referencia.setTipoReferencia('P');
+            referencia.setNomReferencia(referenciaPersonal.getNombre());
+            referencia.setLugar(referenciaPersonal.getLugarTrabajo());
+            referencia.setTiempo(referenciaPersonal.getTiempoConocerle().toString());
+            referencia.setEmail(referenciaPersonal.getCorreoElectronico());
+            referencia.setTelefono(referenciaPersonal.getTelefono());
+
+            reclutamientoFacade.crearRererencia(referencia);
+            }
+
+        for (DocumentoPresentado docCand : candidato.getDocumentoPresentadoList())
+            reclutamientoFacade.eliminarDocumentoCandidato(docCand);
+
+        i = 0;
+        for (DocumentoCandidato documentoCandidato : documentosCandidato)
+            {
+            DocumentoPresentadoPK dPK = new DocumentoPresentadoPK();
+            dPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            dPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            dPK.setCodDocumentoPres(++i);
+
+            DocumentoPresentado d = new DocumentoPresentado();
+            d.setDocumentoPresentadoPK(dPK);
+            d.setCandidato(candidato);
+            d.setTipoDocumento(documentoCandidato.getTipo());
+            d.setObservacion((documentoCandidato.getNumero() != null) ? documentoCandidato.getNumero() : "");
+
+            reclutamientoFacade.crearDocumentoPresentado(d);
+            }
+
+        for (CapacitacionXCandidato capCand : candidato.getCapacitacionXCandidatoList())
+            reclutamientoFacade.eliminarCapacitacionCandidato(capCand);
+
+        i = 0;
+        for (CapacitacionCandidato capacitacionCandidato : capacitacionesCandidato)
+            {
+            CapacitacionXCandidatoPK capacitacionXCandidatoPK = new CapacitacionXCandidatoPK();
+            capacitacionXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            capacitacionXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            capacitacionXCandidatoPK.setCodCapacitacion(++i);
+
+            CapacitacionXCandidato capacitacionXCandidato = new CapacitacionXCandidato();
+            capacitacionXCandidato.setCapacitacionXCandidatoPK(capacitacionXCandidatoPK);
+            capacitacionXCandidato.setCandidato(candidato);
+            capacitacionXCandidato.setTipo(capacitacionCandidato.getTipo());
+            capacitacionXCandidato.setDescripcion(capacitacionCandidato.getDescripcion());
+            capacitacionXCandidato.setNomInstitucion(capacitacionCandidato.getInstitucion());
+            capacitacionXCandidato.setFecha(capacitacionCandidato.getPeriodo());
+
+            reclutamientoFacade.crearCapacitacionXCandidato(capacitacionXCandidato);
+            }
+
+        for (DependienteXCandidato dependCand : candidato.getDependienteXCandidatoList())
+            reclutamientoFacade.eliminarDependienteCandidato(dependCand);
+
+        i = 0;
+        for (DependienteCandidato dependienteCandidato : dependientesCandidato)
+            {
+            DependienteXCandidatoPK dependienteXCandidatoPK = new DependienteXCandidatoPK();
+            dependienteXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            dependienteXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            dependienteXCandidatoPK.setCodDependiente(++i);
+
+            DependienteXCandidato dependienteXCandidato = new DependienteXCandidato();
+            dependienteXCandidato.setDependienteXCandidatoPK(dependienteXCandidatoPK);
+            dependienteXCandidato.setCandidato(candidato);
+            dependienteXCandidato.setCodParentesco(dependienteCandidato.getParentesco().getParentescoPK().getCodParentesco());
+            dependienteXCandidato.setFechaNacimiento(dependienteCandidato.getFechaNacimiento());
+            dependienteXCandidato.setNombre(dependienteCandidato.getNombre());
+
+            reclutamientoFacade.crearDependienteXCandidato(dependienteXCandidato);
+            }
+
+        for (IdiomaXCandidato idiomaCand : candidato.getIdiomaXCandidatoList())
+            reclutamientoFacade.eliminarIdiomaCandidato(idiomaCand);
+
+        i = 0;
+        for (IdiomaCandidato idiomaCandidato : idiomasCandidato)
+            {
+            IdiomaXCandidatoPK idiomaXCandidatoPK = new IdiomaXCandidatoPK();
+            idiomaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            idiomaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            idiomaXCandidatoPK.setCodIdioma(++i);
+
+            IdiomaXCandidato idiomaXCandidato = new IdiomaXCandidato(idiomaXCandidatoPK);
+            idiomaXCandidato.setCandidato(candidato);
+            idiomaXCandidato.setLee(idiomaCandidato.getLee() ? "S" : "N");
+            idiomaXCandidato.setEscribe(idiomaCandidato.getEscribe() ? "S" : "N");
+            idiomaXCandidato.setNivel(idiomaCandidato.getNivel().toString());
+
+            reclutamientoFacade.crearIdiomaXCandidato(idiomaXCandidato);
+            }
+
+        for (BeneficiarioXCandidato benefCand : candidato.getBeneficiarioXCandidatoList())
+            reclutamientoFacade.eliminarBeneficiarioCandidato(benefCand);
+
+        i = 0;
+        for (BeneficiarioCandidato beneficiarioCandidato : beneficiariosCandidato)
+            {
+            BeneficiarioXCandidatoPK beneficiarioXCandidatoPK = new BeneficiarioXCandidatoPK();
+            beneficiarioXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            beneficiarioXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            beneficiarioXCandidatoPK.setCodBeneficiario(++i);
+
+            BeneficiarioXCandidato beneficiarioXCandidato = new BeneficiarioXCandidato(beneficiarioXCandidatoPK);
+            beneficiarioXCandidato.setCandidato(candidato);
+            beneficiarioXCandidato.setNombre(beneficiarioCandidato.getNombre());
+            beneficiarioXCandidato.setParentesco(beneficiarioCandidato.getParentesco());
+
+            reclutamientoFacade.crearBeneficiarioXCandidato(beneficiarioXCandidato);
+            }
+
+        if (candidato.getEquipoList() != null)
+            candidato.getEquipoList().clear();
+
+        for (EquipoCandidato equipoCandidato : equiposCandidato)
+            {
+            candidato.getEquipoList().add(equipoCandidato.getEquipo());
+            }
+        reclutamientoFacade.editarCandidato(candidato);
+
+        for (TipoPruebaXCandidato pruebaCand : candidato.getTipoPruebaXCandidatoList())
+            reclutamientoFacade.eliminarPruebaCandidato(pruebaCand);
+
+        i = 0;
+        for (PruebaCandidato pruebaCandidato : pruebasCandidato)
+            {
+            TipoPruebaXCandidatoPK tipoPruebaXCandidatoPK = new TipoPruebaXCandidatoPK();
+            tipoPruebaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            tipoPruebaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            tipoPruebaXCandidatoPK.setCodTipoPrueba(new Short("" + (++i)));
+
+            TipoPruebaXCandidato tipoPruebaXCandidato = new TipoPruebaXCandidato(tipoPruebaXCandidatoPK);
+            tipoPruebaXCandidato.setCandidato(candidato);
+            tipoPruebaXCandidato.setTipoPrueba(pruebaCandidato.getTipoPrueba());
+            tipoPruebaXCandidato.setFecha(pruebaCandidato.getFecha());
+            tipoPruebaXCandidato.setCosto(new BigDecimal(pruebaCandidato.getCosto()));
+            tipoPruebaXCandidato.setNota(new BigDecimal(pruebaCandidato.getNota()));
+            tipoPruebaXCandidato.setResultado(tipoPruebaXCandidato.getResultado());
+
+            reclutamientoFacade.crearTipoPruebaXCandidatoFacade(tipoPruebaXCandidato);
+            }
+
+        for (CandidatoXCargo puestoCand : candidato.getCandidatoXCargoList())
+            reclutamientoFacade.eliminarPuestoCandidato(puestoCand);
+
+        for (PuestoCandidato puestoCandidato : puestosCandidato)
+            {
+            CandidatoXCargoPK candidatoCargoPK = new CandidatoXCargoPK();
+            candidatoCargoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            candidatoCargoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            candidatoCargoPK.setCodPuesto(puestoCandidato.getPuesto().getPuestosPK().getCodPuesto());
+
+            CandidatoXCargo candidatoCargo = new CandidatoXCargo();
+            candidatoCargo.setCandidatoXCargoPK(candidatoCargoPK);
+            candidatoCargo.setCandidato(candidato);
+            candidatoCargo.setPuestos(puestoCandidato.getPuesto());
+            candidatoCargo.setCodTipoPuesto(puestoCandidato.getPuesto().getTipoPuesto().getTipoPuestoPK().getCodTipoPuesto());
+            candidatoCargo.setSalarioAspirado(puestoCandidato.getSalarioAspirado());
+
+            reclutamientoFacade.crearCandidatoXCargo(candidatoCargo);
+            }
+
+        for (EntrevistaXCandidato entrevCand : candidato.getEntrevistaXCandidatoList())
+            reclutamientoFacade.eliminarEntrevistaCandidato(entrevCand);
+
+        for (EntrevistaCandidato entrevistaCandidato : entrevistasCandidato)
+            {
+            EntrevistaXCandidatoPK entrevistaXCandidatoPK = new EntrevistaXCandidatoPK();
+            entrevistaXCandidatoPK.setCodCia(candidato.getCandidatoPK().getCodCia());
+            entrevistaXCandidatoPK.setCodCandidato(candidato.getCandidatoPK().getCodCandidato());
+            entrevistaXCandidatoPK.setCodPuesto(entrevistaCandidato.getPuesto().getPuestosPK().getCodPuesto());
+            entrevistaXCandidatoPK.setCodEntrevista(reclutamientoFacade.getMaxEntrevistaXCandidato(entrevistaCandidato.getPuesto(), candidato));
+
+            EntrevistaXCandidato entrevistaXCandidato = new EntrevistaXCandidato(entrevistaXCandidatoPK);
+            entrevistaXCandidato.setEntrevistaXCandidatoPK(entrevistaXCandidatoPK);
+            entrevistaXCandidato.setCandidato(candidato);
+            entrevistaXCandidato.setPuesto(entrevistaCandidato.getPuesto());
+            entrevistaXCandidato.setEmpleado(entrevistaCandidato.getEntrevistador());
+            entrevistaXCandidato.setDescripcion(entrevistaCandidato.getDescripcion());
+            entrevistaXCandidato.setResultado(entrevistaCandidato.getResultado());
+
+            reclutamientoFacade.crearEntrevistaXCandidato(entrevistaXCandidato);
+            }
+
+        addMessage("Registro de Candidatos", "Datos guardados exitosamente.", TipoMensaje.INFORMACION);
+        return true;
+        }
+    catch (Exception e)
+        {
+        e.printStackTrace(System.err);
+        addMessage("Registro de Candidatos", e.toString(), TipoMensaje.ERROR_FATAL);
+        return false;
+        }
+
 }
 }
