@@ -209,6 +209,7 @@ public void editarCandidatoConcurso(CandidatoConcurso c)
 public void removerCandidatoConcurso(CandidatoConcurso c)
 {
     candidatoConcursoFacade.remove(c);
+    candidatoConcursoFacade.flush();
 }
 
 @PermitAll
@@ -495,6 +496,7 @@ public void eliminarPruebaXPuesto(PruebaXPuesto pruebaXPuesto)
 public void eliminarEvaluacionCandidato(EvaluacionCandidato evaluacionCandidato)
 {
     evaluacionCandidatoFacade.remove(evaluacionCandidato);
+    evaluacionCandidatoFacade.flush();
 }
 
 @PermitAll
