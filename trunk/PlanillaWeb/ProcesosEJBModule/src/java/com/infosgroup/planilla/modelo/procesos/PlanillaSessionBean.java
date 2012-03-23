@@ -646,4 +646,9 @@ public class PlanillaSessionBean {
     public void eliminarPlanilla( List<ResumenAsistencia> l ) {
         resumenFacade.eliminarPlanilla(l);
     }
+    
+    @PermitAll
+    public List<Planilla> findPlaByEmp(Empleados emp) {
+        return planillaFacade.findByEmpleado(emp);
+    }
 }
