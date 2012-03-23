@@ -5,7 +5,11 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -235,7 +239,11 @@ public class ProgramacionPla implements Serializable {
     }
 
     public String getStringProgramacionPla() {
-        stringProgramacionPla = ""+anio+"--"+mes+"--"+numPlanilla;
+        try {
+            stringProgramacionPla = ""+anio+"--"+new SimpleDateFormat("MMMM").format(new SimpleDateFormat("MM").parse(String.valueOf(mes))).toString().toUpperCase()+"--"+numPlanilla;
+        } catch (ParseException ex) {
+            Logger.getLogger(ProgramacionPla.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return stringProgramacionPla;
     }
 
