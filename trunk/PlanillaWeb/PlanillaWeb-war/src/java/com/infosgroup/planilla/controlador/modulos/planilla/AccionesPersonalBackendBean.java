@@ -65,6 +65,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private SolicitudRetiro solicitudRetiro;
     private SolicitudNoAfectaPlanilla solicitudNoAfectaPlanilla;
     private SolicitudConstanciaSueldo solicitudConstanciaSueldo;
+    private SolicitudDiaDeVacacion solicitudDiaDeVacacion;
     private Empleados empleadoAccionPersonal;
 
     public Empleados getEmpleadoAccionPersonal() {
@@ -73,6 +74,14 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     public void setEmpleadoAccionPersonal(Empleados empleadoAccionPersonal) {
         this.empleadoAccionPersonal = empleadoAccionPersonal;
+    }
+
+    public SolicitudDiaDeVacacion getSolicitudDiaDeVacacion() {
+        return solicitudDiaDeVacacion;
+    }
+
+    public void setSolicitudDiaDeVacacion(SolicitudDiaDeVacacion solicitudDiaDeVacacion) {
+        this.solicitudDiaDeVacacion = solicitudDiaDeVacacion;
     }
 
     public SolicitudConstanciaSueldo getSolicitudConstanciaSueldo() {
@@ -177,6 +186,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         solicitudRetiro = new SolicitudRetiro(this);
         solicitudNoAfectaPlanilla = new SolicitudNoAfectaPlanilla(this);
         solicitudConstanciaSueldo = new SolicitudConstanciaSueldo(this);
+        solicitudDiaDeVacacion = new SolicitudDiaDeVacacion(this);
         empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
     }
 
@@ -206,6 +216,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         solicitudesMostradas = "E";
         empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
         solicitudConstanciaSueldo = new SolicitudConstanciaSueldo(this);
+        solicitudDiaDeVacacion = new SolicitudDiaDeVacacion(this);
         getSessionBeanPLA().setAccionSeleccionada(null);
         fecha = new Date();
     }
