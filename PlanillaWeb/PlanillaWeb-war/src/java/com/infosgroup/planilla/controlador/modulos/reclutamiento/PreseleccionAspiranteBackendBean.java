@@ -54,7 +54,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private List<CandidatoConcurso> candidatosGuardados;
     private List<CandidatoConcurso> candidatosContratar;
     private List<CriteriosXPuesto> criteriosDisponibles;
-    
     //  Criterios adicionales
     private List<CriteriosXPuesto> criteriosPrincipales;
     private String actaOAcuerdo;
@@ -90,7 +89,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private Short parentescoEdit;
     private String accionSeleccion = "A";
     private Candidato preCandidatoSeleccionado;
-    
+
     public PreseleccionAspiranteBackendBean() {
     }
 
@@ -444,7 +443,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         }
         reclutamientoSessionBean.editarEvaluacionCandidato(c);
         if (evaluacionCandidatos != null && evaluacionCandidatos.size() > 0) {
-            reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos);
+            reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos,candidatoSeleccionado);
         }
         actualizaListas();
         addMessage("Evaluacion de Candidato", "Datos Guardados", TipoMensaje.INFORMACION);
@@ -630,9 +629,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     }
 
     public void handleCloseEvaluacionCandidato(CloseEvent event) {
-        if (evaluacionCandidatos != null && evaluacionCandidatos.size() > 0) {
-            reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos);
-        }
+        reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos,candidatoSeleccionado);
         setCandidatoSeleccionado(null);
     }
 
@@ -824,6 +821,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         reclutamientoSessionBean.eliminarEvaluacionCandidato(pruebaEliminar);
         addMessage("Reclutamiento y Selección", "Datos eliminados con éxito.", TipoMensaje.INFORMACION);
         setEvaluacionCandidatos(reclutamientoSessionBean.getListEvaluacionCandidato(candidatoSeleccionado));
+        reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos,candidatoSeleccionado);
         return null;
     }
 
@@ -992,7 +990,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
             for (EvaluacionCandidato e : candidatoSeleccionado.getEvaluacionCandidatoList()) {
                 reclutamientoSessionBean.eliminarEvaluacionCandidato(e);
             }
-            candidatoSeleccionado.getCandidato1().getConcursoList().remove(concursoSeleccionado); 
+            candidatoSeleccionado.getCandidato1().getConcursoList().remove(concursoSeleccionado);
             reclutamientoSessionBean.editarCandidato(candidatoSeleccionado.getCandidato1());
             reclutamientoSessionBean.removerCandidatoConcurso(candidatoSeleccionado);
             addMessage("Reclutamiento y Selección", "Datos Eliminados con exito.", TipoMensaje.INFORMACION);

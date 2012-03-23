@@ -45,7 +45,7 @@ public class EvaluacionCandidatoFacade extends AbstractFacade<EvaluacionCandidat
     public List<EvaluacionCandidato> getListEvaluacionCandidato(CandidatoConcurso c) {
         List<EvaluacionCandidato> ec = new ArrayList<EvaluacionCandidato>();
         ec.addAll(em.createQuery("SELECT e FROM EvaluacionCandidato e WHERE e.candidatoConcurso = :cc", EvaluacionCandidato.class).setParameter("cc", c).getResultList());
-        return ec;
+        return ec!=null?ec:new ArrayList<EvaluacionCandidato>();
     }
 
 //    @PermitAll
@@ -72,14 +72,17 @@ public class EvaluacionCandidatoFacade extends AbstractFacade<EvaluacionCandidat
 //    }
 
     @PermitAll
-    public void actualizarNotaCandidato(List<EvaluacionCandidato> lc) {
+    public void actualizarNotaCandidato(List<EvaluacionCandidato> lc, CandidatoConcurso x) {
         Double total = 0D;
-        CandidatoConcurso n;
         for (int i = 0; i < lc.size(); i++) {
             total +=  lc.get(i).getNota() != null ? lc.get(i).getNota().doubleValue() : 0D;
         }
-        n = lc.get(0).getCandidatoConcurso();
-        n.setNotaEvaluacion( new BigDecimal(  total / lc.size() ));
-        candidatoConcursoFacade.edit(n);
+        if (lc.size()>0){
+        x.setNotaEvaluacion( new BigDecimal(  total / lc.size() ));
+        candidatoConcursoFacade.edit(x);
+        }else{
+        x.setNotaEvaluacion(BigDecimal.ZERO);
+        candidatoConcursoFacade.edit(x);
+        }
     }
 }
