@@ -54,9 +54,8 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private List<CandidatoConcurso> candidatosGuardados;
     private List<CandidatoConcurso> candidatosContratar;
     private List<CriteriosXPuesto> criteriosDisponibles;
-    /*
-     * Criterios adicionales
-     */
+    
+    //  Criterios adicionales
     private List<CriteriosXPuesto> criteriosPrincipales;
     private String actaOAcuerdo;
     private Date dia;
@@ -83,15 +82,15 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private PruebaXPuesto pruebaXPuestoSeleccionada;
     private AutocompletePruebaConverter pruebaConverter;
     private EvaluacionCandidato pruebaEliminar;
-    //private Boolean optFitrar = Boolean.TRUE;
     private List<BeneficiarioXCandidato> listaBeneficiarios;
     private List<Parentesco> listaParentesco;
     private String nombreBeneficiario;
     private Short parentesco;
     private BeneficiarioXCandidato beneficiarioSeleccionado;
     private Short parentescoEdit;
-    private String accionSeleccion = "A"; // M mostrar, C filtrar por Criterios, A filtrar x Candidato, E filtrar x Empleado
-
+    private String accionSeleccion = "A";
+    private Candidato preCandidatoSeleccionado;
+    
     public PreseleccionAspiranteBackendBean() {
     }
 
@@ -100,6 +99,14 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         setDia(new Date());
         pruebaConverter = new AutocompletePruebaConverter(reclutamientoSessionBean.finPruebaXPuestosByCias(getSessionBeanADM().getCompania()));
         listaParentesco = reclutamientoSessionBean.findParentescoByCias(getSessionBeanADM().getCompania());
+    }
+
+    public Candidato getPreCandidatoSeleccionado() {
+        return preCandidatoSeleccionado;
+    }
+
+    public void setPreCandidatoSeleccionado(Candidato preCandidatoSeleccionado) {
+        this.preCandidatoSeleccionado = preCandidatoSeleccionado;
     }
 
     public String getAccionSeleccion() {
@@ -450,6 +457,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
 
     public String onFlowListener(FlowEvent event) {
         if (getConcursoSeleccionado() == null) {
+            addMessage("Contratar Candidato", "No ha seleccionado ningún concurso", TipoMensaje.INFORMACION);
             return "concursoSeleccionado";
         }
         if (event.getOldStep().equals("concursoSeleccionado")) {
@@ -648,6 +656,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
 
     public void actualizaListas() {
         if (getConcursoSeleccionado() != null) {
+            listaCandidatos = reclutamientoSessionBean.getCandidatosByConcurso(getConcursoSeleccionado());
             setCandidatosGuardados(reclutamientoSessionBean.getListaCandidatoConcurso(getConcursoSeleccionado(), "P"));
             setCandidatosContratar(reclutamientoSessionBean.getListaCandidatoSeleccionado(getConcursoSeleccionado(), Arrays.asList("S", "C")));
         }
@@ -674,6 +683,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
             return null;
         }
         setAccionSeleccion("C");
+        setCandidatosSeleccionados(null);
         listaCandidatos = reclutamientoSessionBean.getCandidatoConCriteriosPuesto(concursoSeleccionado, getSessionBeanEMP().getEmpleadoSesion().getUsuario(), maxResultados);
         return null;
     }
@@ -684,6 +694,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
             return null;
         }
         setAccionSeleccion("M");
+        setCandidatosSeleccionados(null);
         listaCandidatos = reclutamientoSessionBean.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
         return null;
     }
@@ -694,24 +705,17 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
             return null;
         }
         setAccionSeleccion("M");
+        setCandidatosSeleccionados(null);
         listaCandidatos = reclutamientoSessionBean.findCandidatosLikeEmpleados(getSessionBeanADM().getCompania());
         return null;
     }
 
     public String mostrarCandidatos() {
         setAccionSeleccion("A");
-        listaCandidatos = reclutamientoSessionBean.getCandidatosByConcurso(getConcursoSeleccionado());
-        //listaCandidatos = reclutamientoSessionBean.findCandidatosLikeEmpleados(getSessionBeanADM().getCompania());
+        actualizaListas();
+        setCandidatosSeleccionados(null);
         return null;
     }
-//    
-//    public Boolean getOptFitrar() {
-//        return optFitrar;
-//    }
-//    
-//    public void setOptFitrar(Boolean optFitrar) {
-//        this.optFitrar = optFitrar;
-//    }
 
     public EvaluacionCandidato getPruebaEliminar() {
         return pruebaEliminar;
@@ -840,7 +844,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         nuevaEvaluacion.setObservacion("Ninguna");
         nuevaEvaluacion.setPruebaXPuesto(pruebaXPuestoSeleccionada);
         pk.setCodCia(pruebaXPuestoSeleccionada.getPruebaXPuestoPK().getCodCia());
-        //pk.setPuesto(getConcursoSeleccionado().getPuestos().getPuestosPK().getCodPuesto());
         pk.setPrueba(pruebaXPuestoSeleccionada.getPruebaXPuestoPK().getCodigo());
         pk.setCandidato(candidatoSeleccionado.getCandidato1().getCandidatoPK().getCodCandidato());
         pk.setConcurso(getConcursoSeleccionado().getConcursoPK().getCodConcurso());
@@ -989,6 +992,8 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
             for (EvaluacionCandidato e : candidatoSeleccionado.getEvaluacionCandidatoList()) {
                 reclutamientoSessionBean.eliminarEvaluacionCandidato(e);
             }
+            candidatoSeleccionado.getCandidato1().getConcursoList().remove(concursoSeleccionado); 
+            reclutamientoSessionBean.editarCandidato(candidatoSeleccionado.getCandidato1());
             reclutamientoSessionBean.removerCandidatoConcurso(candidatoSeleccionado);
             addMessage("Reclutamiento y Selección", "Datos Eliminados con exito.", TipoMensaje.INFORMACION);
             actualizaListas();
