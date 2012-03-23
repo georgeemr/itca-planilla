@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.Cias;
+import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.PlanillaPK;
 import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
@@ -130,5 +131,14 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
         .setParameter("codTipopla", programacionPla.getTiposPlanilla().getTiposPlanillaPK().getCodTipopla())
         .getResultList();
         return l != null ? l : new ArrayList<Planilla>();
+    }
+    
+    @PermitAll
+    public List<Planilla> findByEmpleado(Empleados emp) {
+        List<Planilla> listPla = new ArrayList<Planilla>(0);
+        TypedQuery<Planilla> q = em.createNamedQuery("Planilla.findByCodEmp", Planilla.class);
+        q.setParameter("codEmp", emp.getEmpleadosPK().getCodEmp());
+        listPla = q.getResultList();
+        return listPla != null ? listPla : new ArrayList<Planilla>();        
     }
 }
