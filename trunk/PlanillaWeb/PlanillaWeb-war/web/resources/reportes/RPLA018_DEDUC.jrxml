@@ -1,53 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"  ?>
-<!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport
-		 name="RPLA018_DEDUC"
-		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="612"
-		 pageHeight="792"
-		 columnWidth="602"
-		 columnSpacing="0"
-		 leftMargin="5"
-		 rightMargin="5"
-		 topMargin="5"
-		 bottomMargin="5"
-		 whenNoDataType="NoPages"
-		 isTitleNewPage="false"
-		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
-
-	<parameter name="pCia" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RPLA018_DEDUC" pageWidth="612" pageHeight="792" columnWidth="602" leftMargin="5" rightMargin="5" topMargin="5" bottomMargin="5">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="pCia" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="pAnio" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	<parameter name="pAnio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="pMes" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	<parameter name="pMes" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="pNumPla" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	<parameter name="pNumPla" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="pCodPla" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	<parameter name="pCodPla" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="pEmp" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	<parameter name="pEmp" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="tipo" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["R"]]></defaultValueExpression>
+	<parameter name="tipo" class="java.lang.String">
+		<defaultValueExpression><![CDATA["R"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[select cod_emp,
+	<queryString>
+		<![CDATA[select cod_emp,
           mov_dp.cod_dp,
           valor deduccion,
-          mov_dp.cod_cia 
+          mov_dp.cod_cia
           cod_cia,
           anio,
           mes,
@@ -63,8 +49,8 @@ and mov_dp.cod_cia=$P{pCia}
   and mov_dp.anio=$P{pAnio}
   and mov_dp.mes =$P{pMes}
   and mov_dp.num_planilla = $P{pNumPla}
-  and mov_dp.cod_tipopla = $P{pCodPla}]]></queryString>
-
+  and mov_dp.cod_tipopla = $P{pCodPla}]]>
+	</queryString>
 	<field name="COD_EMP" class="java.math.BigDecimal"/>
 	<field name="COD_DP" class="java.math.BigDecimal"/>
 	<field name="DEDUCCION" class="java.math.BigDecimal"/>
@@ -74,63 +60,43 @@ and mov_dp.cod_cia=$P{pCia}
 	<field name="NUM_PLANILLA" class="java.math.BigDecimal"/>
 	<field name="DES_DEDUC" class="java.lang.String"/>
 	<field name="COD_TIPOPLA" class="java.math.BigDecimal"/>
-
-		<background>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</background>
-		<title>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</title>
-		<pageHeader>
-			<band height="0"  isSplitAllowed="false" >
-			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="0"  isSplitAllowed="false" >
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="20"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="1"
-						y="1"
-						width="201"
-						height="18"
-						key="textField"/>
-					<box></box>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DES_DEDUC}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="205"
-						y="1"
-						width="68"
-						height="18"
-						key="textField"/>
-					<box></box>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{DEDUCCION}]]></textFieldExpression>
-				</textField>
-			</band>
-		</detail>
-		<columnFooter>
-			<band height="0"  isSplitAllowed="false" >
-			</band>
-		</columnFooter>
-		<pageFooter>
-			<band height="0"  isSplitAllowed="false" >
-			</band>
-		</pageFooter>
-		<summary>
-			<band height="0"  isSplitAllowed="false" >
-			</band>
-		</summary>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Prevent"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Prevent"/>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="1" y="1" width="201" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DES_DEDUC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="205" y="1" width="68" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DEDUCCION}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Prevent"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Prevent"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Prevent"/>
+	</summary>
 </jasperReport>
