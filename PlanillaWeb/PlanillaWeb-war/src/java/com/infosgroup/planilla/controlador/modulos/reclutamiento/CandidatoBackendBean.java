@@ -424,7 +424,7 @@ public void init()
     puestosCandidato = new ArrayList<PuestoCandidato>();
     entrevistasCandidato = new ArrayList<EntrevistaCandidato>();
 
-    estadoAccion = NINGUNO;
+    estadoAccion = CREANDO;
     candidatosListModel = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
 }
 
@@ -1392,83 +1392,6 @@ public String guardar$action()
 public String cancelar$action()
 {
     limpiarCampos();
-//    nombre = null;
-//    apellido = null;
-//    apellidoCasada = null;
-//    fechaSolicitud = null;
-//    sexo = null;
-//    estadoCivil = null;
-//    // ==
-//    generales$pais = null;
-//    deptosDomicilioSelectItemListModel = new ArrayList<Deptos>();
-//    generales$departamento = null;
-//    municipiosDomicilioSelectItemListModel = new ArrayList<Municipios>();
-//    generales$municipio = null;
-//    generales$telefono = null;
-//    generales$direccion = null;
-//    // ==
-//    generales$paisNacimiento = null;
-//    deptosNacSelectItemListModel = new ArrayList<Deptos>();
-//    generales$departamentoNacimiento = null;
-//
-//    municipiosNacDomicilioSelectItemListModel = new ArrayList<Municipios>();
-//    generales$municipioNacimiento = null;
-//    generales$fechaNacimiento = null;
-//    generales$paisNacionalidad = null;
-//    generales$grupoSanguineo = null;
-//    // ==
-//    generales$dui = null;
-//    generales$nit = null;
-//    generales$fechaExpDui = null;
-//
-//    generales$departamentoExpDui = null;
-//    municipiosExpDUISelectItemListModel = new ArrayList<Municipios>();
-//
-//    generales$licenciaConducir = null;
-//    generales$pasaporte = null;
-//    generales$nombreISSS = null;
-//    generales$nombreNIT = null;
-//    // ==
-//    preparacionesAcademicasCandidato = new ArrayList<PreparacionAcademicaCandidato>();
-//    // ==
-//    emergencias$conyuge = null;
-//    emergencias$trabajo = null;
-//    emergencias$telefono = null;
-//    emergencias$condicionSalud = null;
-//    emergencias$actividadLimitada = Boolean.FALSE;
-//    emergencias$haSufridoAccidentes = Boolean.FALSE;
-//    emergencias$tipoAccidente = null;
-//    emergencias$pesoActual = 0.00d;
-//    emergencias$estatura = 0.00d;
-//
-//    parentescosCandidatos = new ArrayList<ParentescoCandidato>();
-//    // ==
-//    experienciasLaboralesCandidato = new ArrayList<ExperienciaLaboralCandidato>();
-//    // ==
-//    referenciasLaboralesCandidato = new ArrayList<ReferenciaLaboralCandidato>();
-//    referenciasPersonalesCandidato = new ArrayList<ReferenciaPersonalCandidato>();
-//    // ==
-//    documentosCandidato = new ArrayList<DocumentoCandidato>();
-//    // ==
-//    capacitacionesCandidato = new ArrayList<CapacitacionCandidato>();
-//    // ==
-//    dependientesCandidato = new ArrayList<DependienteCandidato>();
-//    // ==
-//    idiomasCandidato = new ArrayList<IdiomaCandidato>();
-//    // ==
-//    beneficiariosCandidato = new ArrayList<BeneficiarioCandidato>();
-//    // ==
-//    equiposCandidato = new ArrayList<EquipoCandidato>();
-//    // ==
-//    pruebasCandidato = new ArrayList<PruebaCandidato>();
-//    // ==
-//    puestosCandidato = new ArrayList<PuestoCandidato>();
-//    // ==
-//    entrevistasCandidato = new ArrayList<EntrevistaCandidato>();
-//    // ==
-//    observaciones = null;
-
-    // ==================================
     candidatoSeleccionado = null;
     estadoAccion = NINGUNO;
     return null;
@@ -3136,12 +3059,18 @@ private Boolean errorValidarCampos()
         addMessage("Infosweb RRHH", "Seleccione el municipio de domicilio", TipoMensaje.INFORMACION);
         hayError = Boolean.TRUE;
         }
+    
+    if ((generales$paisNacionalidad == null) || generales$paisNacionalidad.equals("0"))
+        {
+        addMessage("Infosweb RRHH", "Seleccione el pa&iacute;s de nacionalidad", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }    
 
     if ((generales$paisNacimiento == null) || generales$paisNacimiento.equals("0"))
         {
         addMessage("Infosweb RRHH", "Seleccione el pa&iacute;s de nacimiento", TipoMensaje.INFORMACION);
         hayError = Boolean.TRUE;
-        }
+        }    
 
     if ((generales$departamentoNacimiento == null) || generales$departamentoNacimiento.equals("0:0"))
         {
@@ -3499,7 +3428,6 @@ private boolean guardarCandidato()
         addMessage("Registro de Candidatos", e.toString(), TipoMensaje.ERROR_FATAL);
         return false;
         }
-
 }
 
 private boolean editarCandidato(CandidatoPK candidatoPK)
@@ -3836,6 +3764,7 @@ private boolean editarCandidato(CandidatoPK candidatoPK)
             reclutamientoFacade.crearEntrevistaXCandidato(entrevistaXCandidato);
             }
 
+        candidatoSeleccionado = candidato;
         addMessage("Registro de Candidatos", "Datos guardados exitosamente.", TipoMensaje.INFORMACION);
         return true;
         }
@@ -3845,6 +3774,5 @@ private boolean editarCandidato(CandidatoPK candidatoPK)
         addMessage("Registro de Candidatos", e.toString(), TipoMensaje.ERROR_FATAL);
         return false;
         }
-
 }
 }
