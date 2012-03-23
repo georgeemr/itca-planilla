@@ -48,29 +48,6 @@ public class EvaluacionCandidatoFacade extends AbstractFacade<EvaluacionCandidat
         return ec!=null?ec:new ArrayList<EvaluacionCandidato>();
     }
 
-//    @PermitAll
-//    public void registraPruebasPorCandidato(CandidatoConcurso c) {
-//        for (PruebaXPuesto pxp : c.getConcurso1().getPuestos().getPruebaXPuestoList()) {
-//            EvaluacionCandidato avc = new EvaluacionCandidato();
-//            EvaluacionCandidatoPK pk = new EvaluacionCandidatoPK(
-//                    c.getCandidato1().getCandidatoPK().getCodCia(),
-//                    c.getConcurso1().getPuestos().getPuestosPK().getCodPuesto(),
-//                    pxp.getPruebaXPuestoPK().getCodigo(),
-//                    c.getCandidato1().getCandidatoPK().getCodCandidato(),
-//                    c.getConcurso1().getConcursoPK().getCodConcurso());
-//            avc.setEvaluacionCandidatoPK(pk);
-//            avc.setCandidatoConcurso(c);
-//            avc.setPruebaXPuesto(pxp);
-//            avc.setNota(BigDecimal.ZERO);
-//            avc.setFecha(new Date());
-//            try {
-//                if (find(pk) == null) {create(avc);};
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
     @PermitAll
     public void actualizarNotaCandidato(List<EvaluacionCandidato> lc, CandidatoConcurso x) {
         Double total = 0D;
