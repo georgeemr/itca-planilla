@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:composite="http://java.sun.com/jsf/composite" 
+      xmlns:p="http://primefaces.prime.com.tr/ui"  
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <composite:interface>
+        <composite:attribute name="label" required="true" />
+        <composite:attribute name="action" required="true"  method-signature="java.lang.String action()" />
+        <composite:attribute name="update" />
+        <composite:attribute name="ajax" default="true" />
+        <composite:attribute name="image" required="true" />
+    </composite:interface>
+
+    <composite:implementation>
+        <p:commandLink styleClass="opcionMenu" ajax="#{cc.attrs.ajax}" immediate="true"
+                       action="#{cc.attrs.action}" update="#{cc.attrs.update}">
+            <p:graphicImage value="#{cc.attrs.image}"/>
+            <h:outputText value="#{cc.attrs.label}" styleClass="espacioTexto"/>
+        </p:commandLink>
+    </composite:implementation>
+</html>
