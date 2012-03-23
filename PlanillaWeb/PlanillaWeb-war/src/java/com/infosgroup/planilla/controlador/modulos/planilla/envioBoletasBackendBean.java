@@ -16,6 +16,7 @@ import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
+import java.io.OutputStream;
 import java.util.List;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletResponse;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -174,6 +177,7 @@ public class envioBoletasBackendBean extends AbstractJSFPage implements Serializ
             if (todos) {
                 for (Departamentos deptoPlanilla : listaDeptos) {
                     listaJefesDeptos = planillaSessionBean.findJefesByDepto(deptoPlanilla);
+                    listaPlanillas = planillaSessionBean.findByProPlaAndDepto(proPlaSeleccionada, deptoPlanilla.getDepartamentosPK().getCodDepto());
                     envioCorreo$action(listaJefesDeptos, mensaje, deptoPlanilla);
                 }
             } else {
@@ -194,26 +198,31 @@ public class envioBoletasBackendBean extends AbstractJSFPage implements Serializ
         Short cia = proPlaSeleccionada.getProgramacionPlaPK().getCodCia();
         Short depto = dep.getDepartamentosPK().getCodDepto();
         Short tipo = proPlaSeleccionada.getProgramacionPlaPK().getCodTipopla();
-        Integer codEmp = 999999;
         Short mes = proPlaSeleccionada.getMes();
         Short numPla = proPlaSeleccionada.getNumPlanilla();
-
-        HashMap<String, Object> parametros = new HashMap<String, Object>();
-        parametros.put("pAnio", anio.toString());
-        parametros.put("pCia", cia.toString());
-        parametros.put("pCodDepto", depto.toString());
-        parametros.put("pCodPla", tipo.toString());
-        parametros.put("pEmp", codEmp.toString());
-        parametros.put("pMes", mes.toString());
-        parametros.put("pNumPla", numPla.toString());
-        String nombreBoleta = "Boletas";
-        byte[] reporteBoleta = new byte[0];
-        reporteBoleta = reportesBean.generarDatosReporteSQL(FacesContext.getCurrentInstance(), parametros, "RPLA018", FormatoReporte.PDF);
-        DetalleAdjuntoCorreo detalleAdjunto = new DetalleAdjuntoCorreo(nombreBoleta, "application/pdf", reporteBoleta);
-        adjunto.add(detalleAdjunto);
-        //mensaje.append("\n\nDepartamento: ").append(dep.getNomDepto());
-        for (Empleados jefe : listaJefesDeptos) {
-            mailStatelessBean.enviarCorreoElectronicoAdjuntos("Boletas De Pago", mensaje.toString() + "\n\nDepartamento: " + dep.getNomDepto(), jefe.getCorreo(), adjunto);
+        try {
+            HashMap<String, Object> parametros = new HashMap<String, Object>();
+            parametros.put("pAnio", anio.toString());
+            parametros.put("pCia", cia.toString());
+            parametros.put("pCodDepto", depto.toString());
+            parametros.put("pCodPla", tipo.toString());
+            parametros.put("pMes", mes.toString());
+            parametros.put("pNumPla", numPla.toString());
+            //String nombreBoleta = "Boletas";
+            for (Planilla planilla : listaPlanillas) {
+                Integer codEmp = planilla.getPlanillaPK().getCodEmp();
+                parametros.put("pEmp", codEmp.toString());
+                String nombreBoleta = "Boletas_" + codEmp.toString();
+                byte[] reporteBoleta = new byte[0];
+                reporteBoleta = reportesBean.generarDatosReporteSQL(FacesContext.getCurrentInstance(), parametros, "RPLA018", FormatoReporte.PDF);
+                DetalleAdjuntoCorreo detalleAdjunto = new DetalleAdjuntoCorreo(nombreBoleta, "application/pdf", reporteBoleta);
+                adjunto.add(detalleAdjunto);
+            }
+            for (Empleados jefe : listaJefesDeptos) {
+                mailStatelessBean.enviarCorreoElectronicoAdjuntos("Boletas De Pago", mensaje.toString() + "\n\nDepartamento: " + dep.getNomDepto(), jefe.getCorreo(), adjunto);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }
