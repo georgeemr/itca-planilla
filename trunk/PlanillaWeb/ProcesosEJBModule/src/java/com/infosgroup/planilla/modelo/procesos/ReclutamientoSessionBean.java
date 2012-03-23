@@ -273,9 +273,9 @@ public List<EvaluacionCandidato> getListEvaluacionCandidato(CandidatoConcurso c)
 }
 
 @PermitAll
-public void actualizarNotaCandidato(List<EvaluacionCandidato> lc)
+public void actualizarNotaCandidato(List<EvaluacionCandidato> lc,CandidatoConcurso x)
 {
-    evaluacionCandidatoFacade.actualizarNotaCandidato(lc);
+    evaluacionCandidatoFacade.actualizarNotaCandidato(lc,x);
 }
 
 @PermitAll
