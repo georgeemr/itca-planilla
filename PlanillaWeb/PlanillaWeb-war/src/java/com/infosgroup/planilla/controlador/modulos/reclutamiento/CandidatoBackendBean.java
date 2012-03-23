@@ -1183,9 +1183,10 @@ public String editar$action()
         generales$nit = c.getNumNit();
         generales$fechaExpDui = c.getFechaExpDui();
 
-        //generales$departamentoExpDui 
-        //depto = sessionBeanParametros.findDepartamentoById(new DeptosPK(preparacion$anioEgreso, c.getCodDepto()));
-        //municipiosExpDUISelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(depto);
+        generales$departamentoExpDui = "4:" + c.getExpedicionDui();
+        depto = sessionBeanParametros.findDepartamentoById(new DeptosPK(new Short("4"), new Short(c.getExpedicionDui())));
+        municipiosExpDUISelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(depto);
+        generales$municipioExpDui = generales$departamentoExpDui + ":" + c.getMuniExpDui();
 
         generales$licenciaConducir = c.getNumLicencia();
         generales$pasaporte = c.getNumPasaporte();
@@ -3059,18 +3060,18 @@ private Boolean errorValidarCampos()
         addMessage("Infosweb RRHH", "Seleccione el municipio de domicilio", TipoMensaje.INFORMACION);
         hayError = Boolean.TRUE;
         }
-    
+
     if ((generales$paisNacionalidad == null) || generales$paisNacionalidad.equals("0"))
         {
         addMessage("Infosweb RRHH", "Seleccione el pa&iacute;s de nacionalidad", TipoMensaje.INFORMACION);
         hayError = Boolean.TRUE;
-        }    
+        }
 
     if ((generales$paisNacimiento == null) || generales$paisNacimiento.equals("0"))
         {
         addMessage("Infosweb RRHH", "Seleccione el pa&iacute;s de nacimiento", TipoMensaje.INFORMACION);
         hayError = Boolean.TRUE;
-        }    
+        }
 
     if ((generales$departamentoNacimiento == null) || generales$departamentoNacimiento.equals("0:0"))
         {
@@ -3165,8 +3166,10 @@ private boolean guardarCandidato()
         DeptosPK deptoExpDUI = new DeptosPK(new Short(deptoExpDUIPKStr[0]), new Short(deptoExpDUIPKStr[1]));
         MunicipiosPK municipioExpDUI = new MunicipiosPK(new Short(municipioExpDUIStr[0]), new Short(municipioExpDUIStr[1]), new Short(municipioExpDUIStr[2]));
 
-        candidato.setExpedicionDui(sessionBeanParametros.findDepartamentoById(deptoExpDUI).getNomDepto());
-        candidato.setMuniExpDui(sessionBeanParametros.findMunicipiosById(municipioExpDUI).getNomMuni());
+        candidato.setExpedicionDui("" + deptoExpDUI.getCodDepto());
+        candidato.setMuniExpDui("" + municipioExpDUI.getCodMuni());
+//        candidato.setExpedicionDui(sessionBeanParametros.findDepartamentoById(deptoExpDUI).getNomDepto());
+//        candidato.setMuniExpDui(sessionBeanParametros.findMunicipiosById(municipioExpDUI).getNomMuni());
         candidato.setNumLicencia(generales$licenciaConducir);
         candidato.setNomIsss(generales$nombreISSS);
         candidato.setNumPasaporte(generales$pasaporte);
@@ -3438,7 +3441,7 @@ private boolean editarCandidato(CandidatoPK candidatoPK)
         {
         if (errorValidarCampos())
             return false;
-        
+
         candidato = reclutamientoFacade.findCandidatoById(candidatoPK);
 
         Short c = getSessionBeanADM().getCompania().getCodCia();
@@ -3475,8 +3478,10 @@ private boolean editarCandidato(CandidatoPK candidatoPK)
         DeptosPK deptoExpDUI = new DeptosPK(new Short(deptoExpDUIPKStr[0]), new Short(deptoExpDUIPKStr[1]));
         MunicipiosPK municipioExpDUI = new MunicipiosPK(new Short(municipioExpDUIStr[0]), new Short(municipioExpDUIStr[1]), new Short(municipioExpDUIStr[2]));
 
-        candidato.setExpedicionDui(sessionBeanParametros.findDepartamentoById(deptoExpDUI).getNomDepto());
-        candidato.setMuniExpDui(sessionBeanParametros.findMunicipiosById(municipioExpDUI).getNomMuni());
+        candidato.setExpedicionDui("" + deptoExpDUI.getCodDepto());
+        candidato.setMuniExpDui("" + municipioExpDUI.getCodMuni());
+//        candidato.setExpedicionDui(sessionBeanParametros.findDepartamentoById(deptoExpDUI).getNomDepto());
+//        candidato.setMuniExpDui(sessionBeanParametros.findMunicipiosById(municipioExpDUI).getNomMuni());
         candidato.setNumLicencia(generales$licenciaConducir);
         candidato.setNomIsss(generales$nombreISSS);
         candidato.setNumPasaporte(generales$pasaporte);
