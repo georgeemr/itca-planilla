@@ -51,6 +51,9 @@
             <h:selectOneMenu id="estadoCivil" value="#{reclutamiento$candidato.estadoCivil}" style="width: 175px; height: 24px; padding-top: 3px;">
                 <f:selectItem itemValue="S" itemLabel="Soltero"/>
                 <f:selectItem itemValue="C" itemLabel="Casado"/>
+                <f:selectItem itemValue="V" itemLabel="Viudo"/>
+                <f:selectItem itemValue="D" itemLabel="Divorciado"/>
+                <f:selectItem itemValue="A" itemLabel="Acompañado"/>
             </h:selectOneMenu>
         </h:panelGrid>
         <p:separator/>
@@ -109,7 +112,7 @@
                 <p:fieldset legend="Datos nacimiento">
                     <h:panelGrid columns="6">
                         <h:outputLabel value="Pa&iacute;s:"/>
-                        <h:selectOneMenu id="paisNacimiento" style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.generales$paisNacimiento}" requiredMessage="Seleccione el pais de nacimiento">
+                        <h:selectOneMenu id="paisNacimiento" style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.generales$paisNacimiento}">
                             <f:ajax event="change" render="deptoNacimiento municipioNacimiento" listener="#{reclutamiento$candidato.paisNacimiento_ajaxListener(event)}"/>
                             <f:selectItem itemLabel="-- Seleccione --" itemValue="0" />
                             <f:selectItems var="pais" value="#{reclutamiento$candidato.paisesSelectItemListModel}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />
