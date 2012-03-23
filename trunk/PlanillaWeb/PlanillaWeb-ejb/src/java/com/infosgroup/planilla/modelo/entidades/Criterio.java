@@ -57,6 +57,9 @@ public class Criterio implements Serializable {
         @JoinColumn(name = "TIPO", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private TipoCriterio tipoCriterio;
+    @Basic(optional = false)
+    @Column(name = "DESCRIPCION", nullable = false, length = 200)
+    private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "criterio1")
     private List<CriteriosXPuesto> criteriosXPuestoList;
 
@@ -116,6 +119,14 @@ public class Criterio implements Serializable {
 
     public void setTipoCriterio(TipoCriterio tipoCriterio) {
         this.tipoCriterio = tipoCriterio;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @XmlTransient

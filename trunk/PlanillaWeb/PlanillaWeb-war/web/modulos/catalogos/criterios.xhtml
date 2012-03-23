@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../plantillas/defaultTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion" >
+
+    <ui:define name="titulo">Criterios</ui:define>
+
+    <ui:define name="dialogos">
+    </ui:define>
+
+    <ui:define name="acciones">
+        <p:tab title="Acciones">
+            <h:panelGrid columns="1">                
+                <i:menuAccionItem label="Nuevo" action="#{criteriosBackendBean.nuevo$action()}" image="/resources/iconos/new.png" update="principalForm:panelContenido" />
+                <i:menuAccionItem label="Consultar" action="#{criteriosBackendBean.consultar$action()}" image="/resources/iconos/search.png" update="principalForm:panelContenido" />
+                <i:menuAccionItem label="Editar" action="#{criteriosBackendBean.editar$action()}" image="/resources/iconos/edit.png" update="principalForm:panelContenido" />
+            </h:panelGrid>
+        </p:tab>
+
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" value="Cancelar" ajax="true" action="#{puestosBackendBean.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                    <p:graphicImage styleClass="ui-icon ui-icon-circle-close" />
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+
+    <ui:define name="contenido">
+
+        <i:panelInformacion imagen="../../resources/imagenes/64/info.png" rendered="#{criteriosBackendBean.accion ne 'consultar'}" />
+        <p:panel rendered="#{criteriosBackendBean.accion eq 'nuevo'}" style="border: none;"  >
+            <h:panelGrid columns="2" >
+                <i:etiquetaRequerido value="Nombre" />
+                <p:inputText style="width: 250px;" />
+                <i:etiquetaRequerido value="Tipo Criterio" />
+                <p:inputText style="width: 250px;" />
+                <i:etiquetaRequerido value="Comparar con" />
+                <p:inputText style="width: 250px;" />
+                <i:etiquetaRequerido value="Tipo de Dato" />
+                <p:inputText style="width: 250px;" />
+                <i:etiquetaRequerido value="Descripci&oacute;n" />
+                <p:inputTextarea style="width: 250px;" autoResize="false" />
+            </h:panelGrid>
+        </p:panel>
+
+        <p:panel rendered="#{criteriosBackendBean.accion eq 'consultar'}" style="border: none;" >
+            <h:outputLabel value="#{criteriosBackendBean.accion}" />
+        </p:panel>
+
+        <p:panel rendered="#{criteriosBackendBean.accion eq 'editar'}" style="border: none;" >
+            <h:outputLabel value="#{criteriosBackendBean.accion}" />
+        </p:panel>
+
+    </ui:define>
+
+</ui:composition>
