@@ -475,6 +475,13 @@ public NivelesXCandidato findNivelCandidatoById(NivelesXCandidatoPK nivelCandida
 }
 
 @PermitAll
+public List<NivelesXCandidato> findNivelCandidatoByCandidato(Candidato c)
+{
+    return nivelesCandidatoFacade.findByCandidato(c);
+}
+
+
+@PermitAll
 public void crearNivelXCandidato(NivelesXCandidato nivelCandidato)
 {
     nivelesCandidatoFacade.create(nivelCandidato);
