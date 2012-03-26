@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+    template="/plantillas/defaultTemplate.xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"                
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"  >
+
+    <ui:define name="titulo">
+        <h:outputText value="Seleccion de Planilla"/>
+    </ui:define>
+
+    <ui:define name="acciones">
+        <p:tab title="Acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu" ajax="false"
+                               action="#{planilla$seleccionPlanilla.cargarPlanilla$action}" update="principalForm:mensajes">
+                    <p:graphicImage value="/resources/iconos/task-delegate.png"/>
+                    <h:outputText value="Cargar Planilla en sistema" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{planilla$seleccionPlanilla.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+
+    <ui:define name="contenido">
+        <p:spacer height="15" />
+        <p:panel id="panelInformacionPagos" style="border: none;" >
+            <h:panelGrid columns="2" >
+                <i:etiquetaRequerido value="Tipo de planilla" />
+                <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{planilla$seleccionPlanilla.tipoPlanilla}" >                       
+                    <f:ajax render="panelInformacionPagos" event="change" execute="LstTipoPlanilla" listener="#{planilla$seleccionPlanilla.seleccionarTipoPlanilla}" />
+                    <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
+                    <f:selectItems value="#{planilla$seleccionPlanilla.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                </h:selectOneMenu>
+
+                <i:etiquetaRequerido value="Programaci&#243;n planilla" />
+                <h:panelGroup>
+                    <p:autoComplete id="AutCompltProgPla" forceSelection="true" var="programacionPla" 
+                                    value="#{planilla$seleccionPlanilla.proPlaSeleccionada}"
+                                    itemValue="#{programacionPla.pkAsString}" itemLabel="#{programacionPla.stringProgramacionPla}"
+                                    completeMethod="#{planilla$seleccionPlanilla.completeProgramacionPla}"
+                                    converter="#{planilla$seleccionPlanilla.programacionPlaConverter}" 
+                                    onSelectUpdate="panelDescripcion,panelInformacionPagos" >
+                        <f:ajax event="change" execute="AutCompltProgPla" />
+                    </p:autoComplete>
+                    <h:outputLabel value=" A&Ntilde;O--MES--N&Uacute;MERO DE PLANILLA " style="font-weight: bold;color: red;" />
+                </h:panelGroup>
+                </h:panelGrid>
+        </p:panel>
+    </ui:define>
+</ui:composition>
