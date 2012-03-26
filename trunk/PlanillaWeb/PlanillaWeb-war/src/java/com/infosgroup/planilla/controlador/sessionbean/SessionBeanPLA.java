@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.controlador.sessionbean;
 
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
+import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
 import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
@@ -23,6 +24,7 @@ public class SessionBeanPLA implements Serializable{
 
     private ResumenAsistencia resumenSeleccionado;
     private AccionPersonal accionSeleccionada;
+    private ProgramacionPla programacionPlaSeleccionado;
     private Boolean aprobados;
     private Boolean tbEmp = false;
     private Boolean tbJefes;
@@ -41,6 +43,14 @@ public class SessionBeanPLA implements Serializable{
 
     public void setAccionSeleccionada(AccionPersonal accionSeleccionada) {
         this.accionSeleccionada = accionSeleccionada;
+    }
+
+    public ProgramacionPla getProgramacionPlaSeleccionado() {
+        return programacionPlaSeleccionado;
+    }
+
+    public void setProgramacionPlaSeleccionado(ProgramacionPla programacionPlaSeleccionado) {
+        this.programacionPlaSeleccionado = programacionPlaSeleccionado;
     }
 
     public Boolean getAprobados() {
