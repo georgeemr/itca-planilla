@@ -98,6 +98,10 @@ public class PlanillaSessionBean {
         return tipoPlanillaFacade.findByCompania(cia);
     }
 
+    public List<TiposPlanilla> listarTiposByEmpleado(Empleados empleado) {
+        return tipoPlanillaFacade.findByEmpleados(empleado);
+    }
+
     public List<Planilla> listarPlanilla(Cias cia) {
         return planillaFacade.findPlanillaByCias(cia);
     }
@@ -643,12 +647,12 @@ public class PlanillaSessionBean {
     }
 
     @PermitAll
-    public void eliminarPlanilla( List<ResumenAsistencia> l ) {
+    public void eliminarPlanilla(List<ResumenAsistencia> l) {
         resumenFacade.eliminarPlanilla(l);
     }
-    
+
     @PermitAll
-    public List<Planilla> findPlaByEmp(Empleados emp) {
-        return planillaFacade.findByEmpleado(emp);
+    public List<Planilla> findPlaByEmp(Empleados emp, Short tipoPlanilla) {
+        return planillaFacade.findByEmpleado(emp, tipoPlanilla);
     }
 }
