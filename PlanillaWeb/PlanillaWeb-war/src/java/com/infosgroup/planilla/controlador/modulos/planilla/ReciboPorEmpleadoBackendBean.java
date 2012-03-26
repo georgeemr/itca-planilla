@@ -4,10 +4,7 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
-import com.infosgroup.planilla.modelo.entidades.Empleados;
-import com.infosgroup.planilla.modelo.entidades.EmpleadosPK;
-import com.infosgroup.planilla.modelo.entidades.MovDp;
-import com.infosgroup.planilla.modelo.entidades.Planilla;
+import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.estructuras.FormatoReporte;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
@@ -24,6 +21,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -37,29 +35,47 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
     @EJB
     private PlanillaSessionBean planillaSessionBean;
     @EJB
-    private EmpleadosSessionBean empleadoSession;
-    @EJB
     private ReportesStatelessBean reportesBean;
-    
-    @Override
-    protected void limpiarCampos() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @PostConstruct
-    public void init() {
-        empleado = getSessionBeanEMP().getEmpleadoSesion();
-        /*EmpleadosPK pk = new EmpleadosPK();
-        pk.setCodCia(getSessionBeanADM().getCompania().getCodCia());
-        pk.setCodEmp(169);
-        empleado = empleadoSession.buscarEmpleadoPorPK(pk);*/
-    }
-    //Variables-----------------------------------------------------------------
     private Empleados empleado;
     private Planilla planillaSeleccionada;
     private AutocompletePlanillaConverter planillaConverter;
     private List<MovDp> listaPrestaciones;
     private List<MovDp> listaDeducciones;
+    private Short tipoPlanilla;
+    private List<TiposPlanilla> listaTipos;
+
+    @Override
+    protected void limpiarCampos() {
+        setListaPrestaciones(new ArrayList<MovDp>());
+        setListaDeducciones(new ArrayList<MovDp>());
+        setPlanillaSeleccionada(null);
+    }
+
+    @PostConstruct
+    public void init() {
+        empleado = getSessionBeanEMP().getEmpleadoSesion();
+    }
+
+    public void updateByTipoPlanilla(AjaxBehaviorEvent event) {
+        limpiarCampos();
+    }
+
+    public List<TiposPlanilla> getListaTipos() {
+        listaTipos = planillaSessionBean.listarTiposByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+        return listaTipos;
+    }
+
+    public void setListaTipos(List<TiposPlanilla> listaTipos) {
+        this.listaTipos = listaTipos;
+    }
+
+    public Short getTipoPlanilla() {
+        return tipoPlanilla;
+    }
+
+    public void setTipoPlanilla(Short tipoPlanilla) {
+        this.tipoPlanilla = tipoPlanilla;
+    }
 
     public Empleados getEmpleado() {
         return empleado;
@@ -78,7 +94,11 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
     }
 
     public AutocompletePlanillaConverter getPlanillaConverter() {
-        planillaConverter = new AutocompletePlanillaConverter(planillaSessionBean.findPlaByEmp(empleado));
+        if (tipoPlanilla != null && tipoPlanilla != -1) {
+            planillaConverter = new AutocompletePlanillaConverter(planillaSessionBean.findPlaByEmp(empleado, tipoPlanilla));
+        } else {
+            planillaConverter = new AutocompletePlanillaConverter(new ArrayList<Planilla>());
+        }
         return planillaConverter;
     }
 
@@ -123,22 +143,14 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
             addMessage("Reporte por Empleado", "No ha elegido ninguna planilla", TipoMensaje.INFORMACION);
             return null;
         } else {
-            Short anio = planillaSeleccionada.getPlanillaPK().getAnio();
-            Short cia = planillaSeleccionada.getPlanillaPK().getCodCia();
-            Short depto = planillaSeleccionada.getCodDepto();
-            Short tipo = planillaSeleccionada.getPlanillaPK().getCodTipopla();
-            Short mes = planillaSeleccionada.getPlanillaPK().getMes();
-            Short numPla = planillaSeleccionada.getPlanillaPK().getNumPlanilla();
-            Integer codEmp = planillaSeleccionada.getPlanillaPK().getCodEmp();
-
             HashMap<String, Object> parametros = new HashMap<String, Object>();
-            parametros.put("pAnio", anio.toString());
-            parametros.put("pCia", cia.toString());
-            parametros.put("pCodDepto", depto.toString());
-            parametros.put("pCodPla", tipo.toString());
-            parametros.put("pMes", mes.toString());
-            parametros.put("pNumPla", numPla.toString());
-            parametros.put("pEmp", codEmp.toString());
+            parametros.put("pAnio", String.valueOf(planillaSeleccionada.getPlanillaPK().getAnio()));
+            parametros.put("pCia", String.valueOf(planillaSeleccionada.getPlanillaPK().getCodCia()));
+            parametros.put("pCodDepto", String.valueOf(planillaSeleccionada.getCodDepto()));
+            parametros.put("pCodPla", String.valueOf(planillaSeleccionada.getPlanillaPK().getCodTipopla()) );
+            parametros.put("pMes", String.valueOf(planillaSeleccionada.getPlanillaPK().getMes()));
+            parametros.put("pNumPla", String.valueOf( planillaSeleccionada.getPlanillaPK().getNumPlanilla() ));
+            parametros.put("pEmp", String.valueOf( planillaSeleccionada.getPlanillaPK().getCodEmp()) );
             reportesBean.generarReporteSQL(FacesContext.getCurrentInstance(), parametros, "RPLA018", FormatoReporte.PDF);
         }
         return null;

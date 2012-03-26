@@ -134,11 +134,12 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
     }
     
     @PermitAll
-    public List<Planilla> findByEmpleado(Empleados emp) {
-        List<Planilla> listPla = new ArrayList<Planilla>(0);
-        TypedQuery<Planilla> q = em.createNamedQuery("Planilla.findByCodEmp", Planilla.class);
-        q.setParameter("codEmp", emp.getEmpleadosPK().getCodEmp());
-        listPla = q.getResultList();
+    public List<Planilla> findByEmpleado(Empleados emp, Short tipoPlanilla) {
+        List<Planilla> listPla = em.createQuery("SELECT p FROM Planilla p WHERE p.planillaPK.codCia = :codCia AND p.planillaPK.codEmp = :codEmp AND p.planillaPK.codTipopla = :codTipopla", Planilla.class)
+        .setParameter("codCia", emp.getEmpleadosPK().getCodCia())
+        .setParameter("codEmp", emp.getEmpleadosPK().getCodEmp())
+        .setParameter("codTipopla", tipoPlanilla)
+        .getResultList();
         return listPla != null ? listPla : new ArrayList<Planilla>();        
     }
 }

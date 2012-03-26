@@ -35,31 +35,47 @@
     <ui:define name="contenido">
         <p:spacer height="15" />
         <p:panel id="panelInformacionPagos" style="border: none;" >
-            <h:panelGrid columns="2" >
-                <h:outputLabel value="Empleado: " />
-                <h:outputLabel value="#{planilla$reciboPorEmpleado.empleado.nombreCompleto}" style=" font-weight: bold"/>
-                
-                <i:etiquetaRequerido value="Planilla" />
-                <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
-                                value="#{planilla$reciboPorEmpleado.planillaSeleccionada}"
-                                itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.planillaToString}"
-                                completeMethod="#{planilla$reciboPorEmpleado.completePlanillaEmpleado}"
-                                converter="#{planilla$reciboPorEmpleado.planillaConverter}" 
-                                selectListener="#{planilla$reciboPorEmpleado.handleSelectPlanilla}"
-                                onSelectUpdate="tbIng,tbEgr,panelDescripcion"
-                                style="width: 300px;"  >
-                    <f:ajax render="panelContenido" event="change" execute="AutCompltEmpleado" />
-                </p:autoComplete>
-                <h:outputLabel value=""/>
-                <h:panelGrid id="panelDescripcion" columns="4" style="padding-left: 0;" >
-                    <i:etiquetaMoneda label="Sueldo Base: " value="#{planilla$reciboPorEmpleado.planillaSeleccionada ne null ? planilla$reciboPorEmpleado.planillaSeleccionada.sueldoBase : '0.00'}" />
-                    <i:etiquetaMoneda label="Prestaciones: " value="#{planilla$reciboPorEmpleado.planillaSeleccionada ne null ? planilla$reciboPorEmpleado.planillaSeleccionada.prestaciones : '0.00'}" />
-                    <i:etiquetaMoneda label="Deducciones: "  value="#{planilla$reciboPorEmpleado.planillaSeleccionada ne null ? planilla$reciboPorEmpleado.planillaSeleccionada.deducciones : '0.00'}" />
-                    <i:etiquetaMoneda label="Total: " value="#{ planilla$reciboPorEmpleado.planillaSeleccionada ne null ? planilla$reciboPorEmpleado.planillaSeleccionada.liqRecibir : '0.00'}" />
-                </h:panelGrid>
+            <table width="100%">
+                <tr>
+                    <td>
+                        <h:panelGrid columns="2" >
+                            <h:outputLabel value="Empleado " style="font-weight: bold;" />
+                            <h:outputLabel value="#{planilla$reciboPorEmpleado.empleado.nombreCompleto}" style=" font-weight: bold"/>
+                            <i:etiquetaRequerido value="Tipo de planilla" />
+                            <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{planilla$reciboPorEmpleado.tipoPlanilla}" >                       
+                                <f:ajax render="AutCompltEmpleado panelInformacionPagos" event="change" execute="LstTipoPlanilla" listener="#{planilla$reciboPorEmpleado.updateByTipoPlanilla}" />
+                                <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
+                                <f:selectItems value="#{planilla$reciboPorEmpleado.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                            </h:selectOneMenu>
+                            <i:etiquetaRequerido value="Planilla" />
+                            <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
+                                            value="#{planilla$reciboPorEmpleado.planillaSeleccionada}"
+                                            itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.planillaToString}"
+                                            completeMethod="#{planilla$reciboPorEmpleado.completePlanillaEmpleado}"
+                                            converter="#{planilla$reciboPorEmpleado.planillaConverter}" 
+                                            selectListener="#{planilla$reciboPorEmpleado.handleSelectPlanilla}"
+                                            onSelectUpdate="tbIng,tbEgr,panelDescripcion"
+                                            style="width: 300px;"  >
+                                <f:ajax render="panelContenido" event="change" execute="AutCompltEmpleado" />
+                            </p:autoComplete>
+                            <h:outputLabel value=""/>
 
-            </h:panelGrid>
-            <p:spacer height="10"/>
+
+                        </h:panelGrid>
+                    </td>
+                    <td>
+                        <p:panel>
+                            <h:panelGrid id="panelDescripcion" columns="2" style="padding-left: 0;" >
+                                <i:etiquetaMoneda label="Sueldo Base: " value="#{planilla$reciboPorEmpleado.planillaSeleccionada ne null ? planilla$reciboPorEmpleado.planillaSeleccionada.sueldoBase : '0.00'}" />
+                                <i:etiquetaMoneda label="Prestaciones: " value="#{planilla$reciboPorEmpleado.planillaSeleccionada ne null ? planilla$reciboPorEmpleado.planillaSeleccionada.prestaciones : '0.00'}" />
+                                <i:etiquetaMoneda label="Deducciones: "  value="#{planilla$reciboPorEmpleado.planillaSeleccionada ne null ? planilla$reciboPorEmpleado.planillaSeleccionada.deducciones : '0.00'}" />
+                                <i:etiquetaMoneda label="Total: " value="#{ planilla$reciboPorEmpleado.planillaSeleccionada ne null ? planilla$reciboPorEmpleado.planillaSeleccionada.liqRecibir : '0.00'}" />
+                            </h:panelGrid>
+                        </p:panel>
+                    </td>
+                </tr>
+            </table>
+            <!--p:spacer height="10"/ -->
             <table width="100%" border="0">
                 <tr valign="top">
                     <td width="50%">
@@ -89,7 +105,6 @@
                                 <h:outputText value="#{egreso.valor}">
                                     <f:convertNumber pattern="#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
                                 </h:outputText>
-                                
                             </p:column>
                         </p:dataTable>
                     </td>

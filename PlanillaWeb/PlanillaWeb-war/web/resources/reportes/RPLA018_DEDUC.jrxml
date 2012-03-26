@@ -75,15 +75,15 @@ and mov_dp.cod_cia=$P{pCia}
 	<detail>
 		<band height="16" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="1" y="1" width="201" height="15"/>
+				<reportElement key="textField" x="1" y="1" width="171" height="15"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DES_DEDUC}]]></textFieldExpression>
 			</textField>
-			<textField pattern="##0.00" isBlankWhenNull="false">
-				<reportElement key="textField" x="205" y="1" width="68" height="15"/>
-				<textElement>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="180" y="1" width="68" height="15"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DEDUCCION}]]></textFieldExpression>

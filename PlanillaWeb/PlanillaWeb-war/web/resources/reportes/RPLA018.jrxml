@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RPLA018" pageWidth="612" pageHeight="453" orientation="Landscape" columnWidth="552" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.2100000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="33"/>
+	<property name="ireport.y" value="53"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -16,7 +16,7 @@
 	<parameter name="pCodPla" class="java.lang.String"/>
 	<parameter name="pCodDepto" class="java.lang.String"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\Documents and Settings\\Infosgroup\\Escritorio\\HDH\\web\\resources\\reportes\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select
@@ -42,7 +42,7 @@
     f.mes mes,
     f.num_planilla num_planilla,
     d.cedula,
-    d.apellidos||','||d.nombres nom_emp,
+    d.apellidos||', '||d.nombres nom_emp,
     g.nom_puesto,
     g.nom_puesto||', '||e.nom_depto deptopuesto,
     d.salario_base,
@@ -56,7 +56,10 @@
     d.cod_puesto,
     p.fecha_inicial,
     p.fecha_final,
-    p.fecha_pago
+    p.fecha_pago,
+    nomb_pais || ' ' || to_char(sysdate, 'DD') || ' de '|| replace(to_char(sysdate, 'Month'), ' ', '') || ' de ' || to_char(sysdate, 'YYYY') as nomb_pais,
+    j.nom_agencia,
+    k.signo
 from
     cias h,
     planilla f,
@@ -66,7 +69,10 @@ from
     empleados d,
     departamentos e,
     puestos g,
-    programacion_pla p
+    programacion_pla p,
+    paises i,
+    agencias j,
+    monedas k
  where
        f.cod_cia = h.cod_cia
     and a.numero_valor = (floor(((abs(tot_debenga)))/1000000))
@@ -85,13 +91,16 @@ from
     and g.cod_puesto = d.cod_puesto
     and d.cod_emp = decode($P{pEmp},999999,d.cod_emp,$P{pEmp})
     and nvl(e.cod_depto,0) = decode($P{pCodDepto},0,nvl(e.cod_depto,0),$P{pCodDepto})
-    --and nvl(f.cod_sucursal,'0') = decode(:sucursal,'0',nvl(f.cod_sucursal,'0'),:sucursal)
-    --and nvl(f.cod_seccion,0) = decode(:seccion,'0',nvl(f.cod_seccion,0),:seccion)
     and p.anio = f.anio
     and p.mes = f.mes
     and p.cod_cia = f.cod_cia
     and p.num_planilla = f.num_planilla
     and p.cod_tipopla = f.cod_tipopla
+    and i.cod_pais = h.cod_pais
+    and j.cod_agencia = d.cod_sucursal
+    and j.cod_cia = d.cod_cia
+    and k.cod_moneda = h.moneda_base
+
 order by
     f.cod_sucursal,
     f.cod_depto,
@@ -111,7 +120,7 @@ order by
 	<field name="LIQ_RECIBIR" class="java.math.BigDecimal"/>
 	<field name="COD_EMP" class="java.math.BigDecimal"/>
 	<field name="NUM_TARJETA" class="java.lang.String"/>
-	<field name="COD_REF" class="java.lang.String"/>
+	<field name="COD_REF" class="java.math.BigDecimal"/>
 	<field name="DESCRIPCION" class="java.lang.String"/>
 	<field name="NOM_DEPTO" class="java.lang.String"/>
 	<field name="APELLIDOS" class="java.lang.String"/>
@@ -136,6 +145,9 @@ order by
 	<field name="FECHA_INICIAL" class="java.sql.Timestamp"/>
 	<field name="FECHA_FINAL" class="java.sql.Timestamp"/>
 	<field name="FECHA_PAGO" class="java.sql.Timestamp"/>
+	<field name="NOMB_PAIS" class="java.lang.String"/>
+	<field name="NOM_AGENCIA" class="java.lang.String"/>
+	<field name="SIGNO" class="java.lang.String"/>
 	<variable name="total_devengado" class="java.lang.Double">
 		<variableExpression><![CDATA[new java.lang.Double($F{SALARIOXDIAS}.doubleValue()+$F{PRESTACIONES}.doubleValue()+$F{VALOR_EXTRA}.doubleValue()+$F{COMPLEMENTO}.doubleValue()+$F{VALOR_NOCT}.doubleValue())]]></variableExpression>
 	</variable>
@@ -148,14 +160,14 @@ order by
 	<pageHeader>
 		<band height="30" splitType="Prevent">
 			<line>
-				<reportElement key="line" x="2" y="27" width="532" height="1"/>
+				<reportElement key="line" x="0" y="27" width="552" height="1"/>
 			</line>
 			<staticText>
 				<reportElement key="staticText-17" x="1" y="0" width="551" height="26"/>
-				<textElement textAlignment="Center">
-					<font size="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[RECIBO DE SUELDO Y PRESTACIONES]]></text>
+				<text><![CDATA[Recibo de Sueldo y Prestaciones]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -196,177 +208,145 @@ order by
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Salario base (Dias: " + $F{D_LABORADOS} +")"]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="false">
-				<reportElement key="textField" x="379" y="283" width="140" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DEDUCCIONES}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="false">
-				<reportElement key="textField" x="348" y="307" width="171" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{LIQ_RECIBIR}]]></textFieldExpression>
-			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField" x="108" y="73" width="35" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" x="104" y="73" width="35" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COD_EMP}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField" x="40" y="73" width="64" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NUM_TARJETA}]]></textFieldExpression>
-			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField" x="78" y="52" width="452" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" x="104" y="52" width="448" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRIPCION}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField" x="425" y="29" width="105" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" x="393" y="29" width="159" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
-					<font size="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOM_DEPTO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOM_AGENCIA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField" x="143" y="73" width="387" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" x="143" y="73" width="409" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOM_EMP}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-1" x="7" y="6" width="61" height="18"/>
-				<textElement/>
+				<reportElement key="staticText-1" x="7" y="6" width="97" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[Periodo del]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-2" x="143" y="6" width="20" height="18"/>
-				<textElement textAlignment="Center"/>
+				<reportElement key="staticText-2" x="179" y="6" width="20" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[al]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-3" x="7" y="29" width="61" height="18"/>
-				<textElement/>
+				<reportElement key="staticText-3" x="7" y="29" width="97" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[Recibi de:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="68" y="29" width="329" height="18"/>
-				<textElement>
-					<font size="10" isBold="true"/>
+				<reportElement key="textField" x="104" y="29" width="230" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOM_COMERCIAL}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-4" x="397" y="29" width="28" height="17"/>
-				<textElement/>
-				<text><![CDATA[Suc:]]></text>
+				<reportElement key="staticText-4" x="337" y="29" width="56" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sucursal:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-5" x="7" y="52" width="71" height="17"/>
-				<textElement/>
+				<reportElement key="staticText-5" x="7" y="52" width="97" height="17"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[La cantidad de:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-6" x="7" y="73" width="33" height="17"/>
-				<textElement/>
-				<text><![CDATA[Cod.:]]></text>
+				<reportElement key="staticText-6" x="7" y="73" width="97" height="17"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Empleado:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-9" x="13" y="283" width="118" height="19"/>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total de Ingresos:]]></text>
 			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
 				<reportElement key="textField" x="145" y="283" width="104" height="19"/>
-				<textElement textAlignment="Right">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$V{total_devengado}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIGNO} +" "+ NumberFormat.getCurrencyInstance().getCurrencyInstance(Locale.ENGLISH).format($V{total_devengado}).replace("¤", "")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-10" x="268" y="283" width="87" height="19"/>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Deducciones:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-11" x="6" y="115" width="246" height="15"/>
-				<textElement>
-					<font isBold="true" isUnderline="true"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Ingresos]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-12" x="258" y="115" width="272" height="15"/>
-				<textElement>
-					<font isBold="true" isUnderline="true"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Deducciones]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-13" x="7" y="307" width="66" height="20"/>
-				<textElement/>
-				<text><![CDATA[San Salvador,]]></text>
-			</staticText>
-			<staticText>
 				<reportElement key="staticText-15" x="258" y="307" width="95" height="20"/>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total a Pagar:]]></text>
@@ -398,33 +378,33 @@ order by
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "RPLA018_DEDUC.jasper"]]></subreportExpression>
 			</subreport>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement key="textField" x="68" y="6" width="75" height="18"/>
-				<textElement textAlignment="Left"/>
+				<reportElement key="textField" x="104" y="6" width="75" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{FECHA_INICIAL}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement key="textField" x="163" y="6" width="78" height="18"/>
-				<textElement textAlignment="Right"/>
+				<reportElement key="textField" x="199" y="6" width="78" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{FECHA_FINAL}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd &apos;de&apos; MMMMM &apos;de&apos; yyyy" isBlankWhenNull="false">
-				<reportElement key="textField" x="73" y="307" width="179" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{FECHA_PAGO}]]></textFieldExpression>
+				<reportElement key="textField" x="6" y="307" width="246" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMB_PAIS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField" x="446" y="6" width="30" height="18"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
 				<reportElement key="textField" x="499" y="6" width="32" height="18"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-18" x="476" y="6" width="23" height="18"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[/]]></text>
 			</staticText>
 			<staticText>
@@ -433,23 +413,27 @@ order by
 				<text><![CDATA[F.: _________________________________________]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-20" x="7" y="95" width="33" height="17"/>
-				<textElement/>
-				<text><![CDATA[Depto:]]></text>
+				<reportElement key="staticText-20" x="7" y="95" width="97" height="17"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Departamento:]]></text>
 			</staticText>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="39" y="95" width="240" height="17"/>
-				<textElement/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="104" y="95" width="204" height="17"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOM_DEPTO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-21" x="293" y="94" width="41" height="18"/>
-				<textElement/>
+				<reportElement key="staticText-21" x="310" y="95" width="44" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[Puesto:]]></text>
 			</staticText>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="334" y="94" width="196" height="18"/>
-				<textElement/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="356" y="95" width="196" height="18"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOM_PUESTO}]]></textFieldExpression>
 			</textField>
 			<subreport isUsingCache="true">
@@ -478,6 +462,20 @@ order by
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "RPLA018_DEDUC.jasper"]]></subreportExpression>
 			</subreport>
+			<textField>
+				<reportElement x="353" y="306" width="166" height="21"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIGNO} +" "+ NumberFormat.getCurrencyInstance().getCurrencyInstance(Locale.ENGLISH).format($F{LIQ_RECIBIR}).replace("¤", "")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="356" y="283" width="163" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIGNO} +" "+ NumberFormat.getCurrencyInstance().getCurrencyInstance(Locale.ENGLISH).format($F{DEDUCCIONES}).replace("¤", "")]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
