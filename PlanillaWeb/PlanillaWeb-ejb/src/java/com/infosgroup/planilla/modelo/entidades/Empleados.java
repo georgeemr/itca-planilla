@@ -65,7 +65,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findByConocidoPor", query = "SELECT e FROM Empleados e WHERE e.conocidoPor = :conocidoPor"),
     @NamedQuery(name = "Empleados.findByTitulo", query = "SELECT e FROM Empleados e WHERE e.titulo = :titulo"),
     @NamedQuery(name = "Empleados.findByDomicilio", query = "SELECT e FROM Empleados e WHERE e.domicilio = :domicilio"),
-    @NamedQuery(name = "Empleados.findByDepartamento", query = "SELECT e FROM Empleados e WHERE e.departamento = :departamento"),
+    //@NamedQuery(name = "Empleados.findByDepartamento", query = "SELECT e FROM Empleados e WHERE e.departamento = :departamento"),
     @NamedQuery(name = "Empleados.findByLiquidacion", query = "SELECT e FROM Empleados e WHERE e.liquidacion = :liquidacion"),
     @NamedQuery(name = "Empleados.findByNombreRenta", query = "SELECT e FROM Empleados e WHERE e.nombreRenta = :nombreRenta"),
     @NamedQuery(name = "Empleados.findByHorario", query = "SELECT e FROM Empleados e WHERE e.horario = :horario"),
@@ -187,8 +187,8 @@ public class Empleados implements Serializable {
     private String titulo;
     @Column(name = "DOMICILIO", length = 100)
     private String domicilio;
-    @Column(name = "DEPARTAMENTO", length = 100)
-    private String departamento;
+//    @Column(name = "DEPARTAMENTO", length = 100)
+//    private String departamento;
     @Column(name = "LIQUIDACION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date liquidacion;
@@ -665,13 +665,13 @@ public class Empleados implements Serializable {
         this.domicilio = domicilio;
     }
 
-    public String getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(String departamento) {
-        this.departamento = departamento;
-    }
+//    public String getDepartamento() {
+//        return departamento;
+//    }
+//
+//    public void setDepartamento(String departamento) {
+//        this.departamento = departamento;
+//    }
 
     public Date getLiquidacion() {
         return liquidacion;

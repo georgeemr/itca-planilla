@@ -7,37 +7,32 @@ package com.infosgroup.planilla.controlador.modulos.planilla;
 import com.infosgroup.planilla.modelo.entidades.Departamentos;
 import com.infosgroup.planilla.modelo.entidades.DepartamentosPK;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
-import com.infosgroup.planilla.modelo.entidades.Planilla;
 import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
+import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
 import com.infosgroup.planilla.modelo.estructuras.DetalleAdjuntoCorreo;
 import com.infosgroup.planilla.modelo.estructuras.FormatoReporte;
 import com.infosgroup.planilla.modelo.procesos.MailStatelessBean;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
+import com.infosgroup.planilla.view.AutocompleteProgramacionPlaConverter;
 import com.infosgroup.planilla.view.TipoMensaje;
-import java.io.OutputStream;
 import java.util.List;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.annotation.PostConstruct;
-import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletResponse;
-import org.primefaces.event.SelectEvent;
 
 /**
  *
- * @author Elicia Chopin
+ * @author Root
  */
-@ManagedBean(name = "planilla$envioBoletas")
 @ViewScoped
+@ManagedBean(name = "planilla$envioBoletas")
 public class envioBoletasBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
@@ -47,19 +42,34 @@ public class envioBoletasBackendBean extends AbstractJSFPage implements Serializ
     @EJB
     private ReportesStatelessBean reportesBean;
     private List<ProgramacionPla> listaProgPla;
-    private List<Planilla> listaPlanillas;
     private List<Empleados> listaJefesDeptos;
     private List<Departamentos> listaDeptos;
-    private Planilla planillaSeleccionada;
     private ProgramacionPla proPlaSeleccionada;
     private Short codDepto;
-    private Departamentos deptoSeleccionado;
-    private Boolean todos = true;
+    private List<TiposPlanilla> listaTiposPlanilla;
+    private Short tipoPlanilla;
+    private AutocompleteProgramacionPlaConverter planillaConverter;
 
     @PostConstruct
     public void init() {
-        listaProgPla = planillaSessionBean.findProPlaByCia(getSessionBeanADM().getCompania());
+        listaTiposPlanilla = planillaSessionBean.listarTipos(getSessionBeanADM().getCompania());
         listaDeptos = planillaSessionBean.findDepartamentos(getSessionBeanADM().getCompania());
+    }
+
+    public Short getTipoPlanilla() {
+        return tipoPlanilla;
+    }
+
+    public void setTipoPlanilla(Short tipoPlanilla) {
+        this.tipoPlanilla = tipoPlanilla;
+    }
+
+    public List<TiposPlanilla> getListaTiposPlanilla() {
+        return listaTiposPlanilla;
+    }
+
+    public void setListaTiposPlanilla(List<TiposPlanilla> listaTiposPlanilla) {
+        this.listaTiposPlanilla = listaTiposPlanilla;
     }
 
     public List<Departamentos> getListaDeptos() {
@@ -78,28 +88,12 @@ public class envioBoletasBackendBean extends AbstractJSFPage implements Serializ
         this.listaJefesDeptos = listaJefesDeptos;
     }
 
-    public List<Planilla> getListaPlanillas() {
-        return listaPlanillas;
-    }
-
-    public void setListaPlanillas(List<Planilla> listaPlanillas) {
-        this.listaPlanillas = listaPlanillas;
-    }
-
     public List<ProgramacionPla> getListaProgPla() {
         return listaProgPla;
     }
 
     public void setListaProgPla(List<ProgramacionPla> listaProgPla) {
         this.listaProgPla = listaProgPla;
-    }
-
-    public Planilla getPlanillaSeleccionada() {
-        return planillaSeleccionada;
-    }
-
-    public void setPlanillaSeleccionada(Planilla planillaSeleccionada) {
-        this.planillaSeleccionada = planillaSeleccionada;
     }
 
     public ProgramacionPla getProPlaSeleccionada() {
@@ -118,73 +112,62 @@ public class envioBoletasBackendBean extends AbstractJSFPage implements Serializ
         this.codDepto = codDepto;
     }
 
-    public Departamentos getDeptoSeleccionado() {
-        return deptoSeleccionado;
-    }
-
-    public void setDeptoSeleccionado(Departamentos deptoSeleccionado) {
-        this.deptoSeleccionado = deptoSeleccionado;
-    }
-
-    public Boolean getTodos() {
-        return todos;
-    }
-
-    public void setTodos(Boolean todos) {
-        this.todos = todos;
-    }
-
     @Override
     protected void limpiarCampos() {
-        return;
+        setTipoPlanilla(new Short("-1"));
+        setProPlaSeleccionada(null);
+        setCodDepto(new Short("-1"));
     }
 
-    @PermitAll
-    public void onRowSelectProPla(SelectEvent event) {
-        setProPlaSeleccionada((ProgramacionPla) event.getObject());
-        listaPlanillas = planillaSessionBean.findByProPla(proPlaSeleccionada);
-        listaDeptos = planillaSessionBean.findDepByPla(proPlaSeleccionada);
-        deptoSeleccionado = null;
-    }
-
-    @PermitAll
-    public void depto_change(ValueChangeEvent Event) {
-        Short valor = (Short) Event.getNewValue();
-        todos = false;
-        if (valor != null) {
-            DepartamentosPK pk = new DepartamentosPK();
-            pk.setCodCia(getSessionBeanADM().getCompania().getCodCia());
-            pk.setCodDepto(valor);
-            deptoSeleccionado = planillaSessionBean.findDeptoById(pk);
-            listaPlanillas = planillaSessionBean.findByProPlaAndDepto(proPlaSeleccionada, deptoSeleccionado.getDepartamentosPK().getCodDepto());
-            todos = false;
+    public AutocompleteProgramacionPlaConverter getPlanillaConverter() {
+        if (tipoPlanilla != null && tipoPlanilla != -1) {
+            planillaConverter = new AutocompleteProgramacionPlaConverter(planillaSessionBean.getProgramacionPlaByTipo(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla));
         } else {
-            todos = true;
-            deptoSeleccionado = null;
-            listaPlanillas = planillaSessionBean.findByProPla(proPlaSeleccionada);
+            planillaConverter = new AutocompleteProgramacionPlaConverter(new ArrayList<ProgramacionPla>());
         }
+        return planillaConverter;
+    }
+
+    public void setPlanillaConverter(AutocompleteProgramacionPlaConverter planillaConverter) {
+        this.planillaConverter = planillaConverter;
+    }
+
+    public List<ProgramacionPla> completePlanillaEmpleado(String query) {
+        List<ProgramacionPla> suggestions = new ArrayList<ProgramacionPla>();
+        for (ProgramacionPla p : planillaConverter.listaProgramacionPla) {
+            if (p.getPkAsString().contains(query)) {
+                suggestions.add(p);
+            }
+        }
+        return suggestions;
     }
 
     public String enviar$correo$action() {
-        ProgramacionPla ev = proPlaSeleccionada;
-        if (ev == null) {
-            addMessage("Envio de Boletas", "No ha seleccionado ninguna planilla", TipoMensaje.ERROR);
+
+        if (proPlaSeleccionada == null) {
+            addMessage("Envio de Boletas", "Seleccione una planilla.", TipoMensaje.ERROR);
             return null;
         }
+        if (codDepto != null && codDepto.equals(new Short("-1"))) {
+            addMessage("Envio de Boletas", "Seleccione un departamento.", TipoMensaje.ERROR);
+            return null;
+        }
+
         try {
             StringBuilder mensaje = new StringBuilder();
             mensaje.append("\n\nBoletas de Pago");
-            if (todos) {
-                for (Departamentos deptoPlanilla : listaDeptos) {
-                    listaJefesDeptos = planillaSessionBean.findJefesByDepto(deptoPlanilla);
-                    listaPlanillas = planillaSessionBean.findByProPlaAndDepto(proPlaSeleccionada, deptoPlanilla.getDepartamentosPK().getCodDepto());
-                    envioCorreo$action(listaJefesDeptos, mensaje, deptoPlanilla);
+            if (codDepto.equals(new Short("0"))) {
+                for (Departamentos departamento : listaDeptos) {
+                    listaJefesDeptos = planillaSessionBean.findJefesByDepto(departamento);
+                    envioCorreo$action(listaJefesDeptos, mensaje, departamento);
                 }
             } else {
-                listaJefesDeptos = planillaSessionBean.findJefesByDepto(deptoSeleccionado);
-                envioCorreo$action(listaJefesDeptos, mensaje, deptoSeleccionado);
+                Departamentos d = planillaSessionBean.findDeptoById(new DepartamentosPK(getSessionBeanADM().getCompania().getCodCia(), codDepto));
+                listaJefesDeptos = planillaSessionBean.findJefesByDepto(d);
+                envioCorreo$action(listaJefesDeptos, mensaje, d);
             }
-            addMessage("Envio Boletas", "las Boletas han sido enviadas a los jefes", TipoMensaje.INFORMACION);
+            addMessage("Envio Boletas", "Las Boletas han sido enviadas a los jefes", TipoMensaje.INFORMACION);
+            limpiarCampos();
         } catch (Exception e) {
             addMessage("Envio de Boletas.", "Ha ocurrido un error al enviar correos con Boletas.", TipoMensaje.ERROR);
             System.out.println(e.getMessage());
@@ -192,34 +175,23 @@ public class envioBoletasBackendBean extends AbstractJSFPage implements Serializ
         return null;
     }
 
-    public void envioCorreo$action(List<Empleados> listaJefes, StringBuilder mensaje, Departamentos dep) {
+    public void envioCorreo$action(List<Empleados> listaJefes, StringBuilder mensaje, Departamentos departamento) {
         List<DetalleAdjuntoCorreo> adjunto = new ArrayList<DetalleAdjuntoCorreo>(0);
-        Short anio = proPlaSeleccionada.getAnio();
-        Short cia = proPlaSeleccionada.getProgramacionPlaPK().getCodCia();
-        Short depto = dep.getDepartamentosPK().getCodDepto();
-        Short tipo = proPlaSeleccionada.getProgramacionPlaPK().getCodTipopla();
-        Short mes = proPlaSeleccionada.getMes();
-        Short numPla = proPlaSeleccionada.getNumPlanilla();
         try {
             HashMap<String, Object> parametros = new HashMap<String, Object>();
-            parametros.put("pAnio", anio.toString());
-            parametros.put("pCia", cia.toString());
-            parametros.put("pCodDepto", depto.toString());
-            parametros.put("pCodPla", tipo.toString());
-            parametros.put("pMes", mes.toString());
-            parametros.put("pNumPla", numPla.toString());
-            //String nombreBoleta = "Boletas";
-            for (Planilla planilla : listaPlanillas) {
-                Integer codEmp = planilla.getPlanillaPK().getCodEmp();
-                parametros.put("pEmp", codEmp.toString());
-                String nombreBoleta = "Boletas_" + codEmp.toString();
-                byte[] reporteBoleta = new byte[0];
-                reporteBoleta = reportesBean.generarDatosReporteSQL(FacesContext.getCurrentInstance(), parametros, "RPLA018", FormatoReporte.PDF);
-                DetalleAdjuntoCorreo detalleAdjunto = new DetalleAdjuntoCorreo(nombreBoleta, "application/pdf", reporteBoleta);
-                adjunto.add(detalleAdjunto);
-            }
-            for (Empleados jefe : listaJefesDeptos) {
-                mailStatelessBean.enviarCorreoElectronicoAdjuntos("Boletas De Pago", mensaje.toString() + "\n\nDepartamento: " + dep.getNomDepto(), jefe.getCorreo(), adjunto);
+            parametros.put("pAnio", String.valueOf(proPlaSeleccionada.getAnio()));
+            parametros.put("pCia", String.valueOf(proPlaSeleccionada.getProgramacionPlaPK().getCodCia()));
+            parametros.put("pCodDepto", String.valueOf(departamento.getDepartamentosPK().getCodDepto()));
+            parametros.put("pCodPla", String.valueOf(proPlaSeleccionada.getProgramacionPlaPK().getCodTipopla()));
+            parametros.put("pMes", String.valueOf(proPlaSeleccionada.getMes()));
+            parametros.put("pNumPla", String.valueOf(proPlaSeleccionada.getNumPlanilla()));
+            parametros.put("pEmp", "-1");
+            byte[] reporteBoleta = new byte[0];
+            reporteBoleta = reportesBean.generarDatosReporteSQL(FacesContext.getCurrentInstance(), parametros, "RPLA019", FormatoReporte.PDF);
+            DetalleAdjuntoCorreo detalleAdjunto = new DetalleAdjuntoCorreo("Boletas_" + departamento.getNomDepto(), "application/pdf", reporteBoleta);
+            adjunto.add(detalleAdjunto);
+            for (Empleados jefe : listaJefes) {
+                mailStatelessBean.enviarCorreoElectronicoAdjuntos("Boletas De Pago", mensaje.toString() + "\n\nDepartamento: " + departamento.getNomDepto(), jefe.getCorreo(), adjunto);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

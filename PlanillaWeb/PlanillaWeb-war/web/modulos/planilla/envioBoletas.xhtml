@@ -1,13 +1,14 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition
-                xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
                 template="/plantillas/defaultTemplate.xhtml"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion">
+
     <ui:define name="titulo">
-        <h:outputText value="Envio Boletas de Pago"/>
+        <h:outputText value="Enviar boletas de Pago"/>
     </ui:define>
     <ui:define name="dialogos">
     </ui:define>
@@ -30,36 +31,36 @@
         </p:tab>
     </ui:define>
     <ui:define name="contenido">
-        <h:panelGrid columns="2" width="100%">
-            <p:dataTable emptyMessage="No se han encontrado planillas" 
-                         value="#{planilla$envioBoletas.listaProgPla}" var="proPla" id="tbProPla"
-                         selectionMode="single" selection="#{planilla$envioBoletas.proPlaSeleccionada}" 
-                         rowSelectListener="#{planilla$envioBoletas.onRowSelectProPla}"  
-                         rows="3" paginator="true" paginatorAlwaysVisible="true" update="tbPla lstDepto" 
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="3,5,10,25">>
-                <!--f:facet name="header">
-                    <h:outputText value="Planilla"/>
-                 </f:facet-->
-                <p:column headerText="Planilla" filterBy="#{proPla.anio}-#{proPla.mes}-#{proPla.numPlanilla}" filterMatchMode="contains" >
-                    <p:graphicImage url="/resources/iconos/view-calendar-journal.png" height="16" width="16"/>
-                    <p:spacer width="5"/>
-                    <h:outputText value="Planilla #{proPla.anio}-#{proPla.mes}-#{proPla.numPlanilla}"/>
-                 </p:column>
-                <p:column headerText="Tipo de planilla" sortBy="#{proPla.tiposPlanilla.nomTipopla}" filterBy="#{proPla.tiposPlanilla.nomTipopla}" filterMatchMode="contains">
-                    <p:graphicImage url="/resources/iconos/documentinfo.png" height="16" width="16"/>
-                    <p:spacer width="5"/>
-                    <h:outputText value="#{proPla.tiposPlanilla.nomTipopla}"/>
-                 </p:column>
-            </p:dataTable>
-            <p:spacer height="10"/>
-            <h:outputText value="Departamento"/>
-            <p:spacer height="10"/>
-            <h:selectOneMenu id="lstDepto" value="#{planilla$envioBoletas.codDepto}"
-                             style="height: 25px;padding-top: 3px; width: 300px;" valueChangeListener="#{planilla$envioBoletas.depto_change}"  >
-                    <f:ajax event="change" execute="lstDepto" />
-                    <f:selectItem itemLabel="[Todos]" itemValue=""/>
+        <p:panel id="panelEnvioBoleta" style="border:none;" >
+            <h:panelGrid columns="2" >
+
+                <i:etiquetaRequerido value="Tipo de planilla" />
+                <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{planilla$envioBoletas.tipoPlanilla}" >                       
+                    <f:ajax render="AutCompltEmpleado panelEnvioBoleta" event="change" execute="LstTipoPlanilla" listener="#{planilla$reciboPorEmpleado.updateByTipoPlanilla}" />
+                    <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
+                    <f:selectItems value="#{planilla$envioBoletas.listaTiposPlanilla}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                </h:selectOneMenu>
+
+                <i:etiquetaRequerido value="Planilla" />
+                <h:panelGroup>
+                    <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
+                                    value="#{planilla$envioBoletas.proPlaSeleccionada}"
+                                    itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.stringProgramacionPla}"
+                                    completeMethod="#{planilla$envioBoletas.completePlanillaEmpleado}"
+                                    converter="#{planilla$envioBoletas.planillaConverter}" 
+                                    onSelectUpdate="panelEnvioBoleta"
+                                    style="width: 300px;"  >
+                    </p:autoComplete>
+                    <h:outputLabel value="A&Ntilde;O-MES-N&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" />
+                </h:panelGroup>
+                <i:etiquetaRequerido value="Departamento" />
+                <h:selectOneMenu id="lstDepto" value="#{planilla$envioBoletas.codDepto}" style="height: 25px;padding-top: 3px; width: 300px;" >
+                    <f:selectItem itemLabel="[ SELECCIONE UN DEPARTAMENTO ]" itemValue="-1"/>
+                    <f:selectItem itemLabel="[ TODOS LOS DEPARTAMENTOS ]"    itemValue="0"/>
                     <f:selectItems value="#{planilla$envioBoletas.listaDeptos}" var="depto" itemValue="#{depto.departamentosPK.codDepto}"  itemLabel="#{depto.nomDepto}"/>
-             </h:selectOneMenu>
-        </h:panelGrid>
+                </h:selectOneMenu>
+
+            </h:panelGrid>
+        </p:panel>        
     </ui:define>
 </ui:composition>
