@@ -1388,7 +1388,7 @@ public String guardar$action()
                     {
                     estadoAccion = EDITANDO;
                     reclutamientoFacade.flushCandidato();
-                    }                
+                    }
                 }
             else
                 {
@@ -3055,6 +3055,18 @@ private Boolean errorValidarCampos()
         hayError = Boolean.TRUE;
         }
 
+    if ((sexo == null) || sexo == 0)
+        {
+        addMessage("Infosweb RRHH", "Seleccione el sexo del candidato", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
+    if ((estadoCivil == null) || estadoCivil.equals("0"))
+        {
+        addMessage("Infosweb RRHH", "Seleccione el estado civil del candidato", TipoMensaje.INFORMACION);
+        hayError = Boolean.TRUE;
+        }
+
     if ((generales$pais == null) || generales$pais.equals("0"))
         {
         addMessage("Infosweb RRHH", "Seleccione el pa&iacute;s de domicilio", TipoMensaje.INFORMACION);
@@ -3639,9 +3651,7 @@ private boolean guardarCandidato()
             candidato.getEquipoList().clear();
 
         for (EquipoCandidato equipoCandidato : equiposCandidato)
-            {
             candidato.getEquipoList().add(equipoCandidato.getEquipo());
-            }
         reclutamientoFacade.editarCandidato(candidato);
 
         List<TipoPruebaXCandidato> listaPruebas = candidato.getTipoPruebaXCandidatoList();
@@ -3711,6 +3721,8 @@ private boolean guardarCandidato()
             reclutamientoFacade.crearEntrevistaXCandidato(entrevistaXCandidato);
             }
 
+        reclutamientoFacade.editarCandidato(candidato);
+        candidato = reclutamientoFacade.findCandidatoById(pkCandidato);
         candidatoSeleccionado = candidato;
         addMessage("Registro de Candidatos", "Datos guardados exitosamente.", TipoMensaje.INFORMACION);
         return true;
@@ -4085,8 +4097,10 @@ private boolean editarCandidato(CandidatoPK candidatoPK)
             reclutamientoFacade.crearEntrevistaXCandidato(entrevistaXCandidato);
             }
 
-        candidatoSeleccionado = candidato;        
-        addMessage("Registro de Candidatos", "Datos guardados exitosamente.", TipoMensaje.INFORMACION);        
+        reclutamientoFacade.editarCandidato(candidato);
+        candidato = reclutamientoFacade.findCandidatoById(candidato.getCandidatoPK());
+        candidatoSeleccionado = candidato;
+        addMessage("Registro de Candidatos", "Datos guardados exitosamente.", TipoMensaje.INFORMACION);
         return true;
         }
     catch (Exception e)
