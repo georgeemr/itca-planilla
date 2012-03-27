@@ -48,6 +48,7 @@
                                 <f:selectItems value="#{planilla$reciboPorEmpleado.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                             </h:selectOneMenu>
                             <i:etiquetaRequerido value="Planilla" />
+                            <h:panelGroup>
                                 <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
                                                 value="#{planilla$reciboPorEmpleado.planillaSeleccionada}"
                                                 itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.planillaToString}"
@@ -58,9 +59,8 @@
                                                 style="width: 300px;"  >
                                     <f:ajax render="panelContenido" event="change" execute="AutCompltEmpleado" />
                                 </p:autoComplete>
-                            <h:outputLabel value=""/>
-
-
+                                <h:outputLabel value="A&Ntilde;O-MES-N&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" />
+                            </h:panelGroup>
                         </h:panelGrid>
                     </td>
                     <td>
