@@ -7,17 +7,13 @@ package com.infosgroup.planilla.view;
 import com.infosgroup.planilla.modelo.entidades.Menu;
 import com.infosgroup.planilla.modelo.facades.MenuFacade;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Stack;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
-import javax.el.ExpressionFactory;
-import javax.el.MethodExpression;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.submenu.Submenu;
 import org.primefaces.model.DefaultMenuModel;
@@ -29,44 +25,47 @@ import org.primefaces.model.MenuModel;
  */
 @ManagedBean(name = "menu")
 @ViewScoped
-public class BackendBeanMenu implements Serializable {
+public class BackendBeanMenu extends AbstractJSFPage implements Serializable {
 
     @EJB
     private MenuFacade menuFacade;
     private MenuModel menuModel;
-    ExpressionFactory expFact = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
-    MethodExpression methodExpression = expFact.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), "#{menu.seleccionMenu}", null, new Class<?>[0]);
-    MenuActionListener mal = new MenuActionListener();
 
     @PermitAll
     public MenuModel getMenuModel() {
+        List<Menu> n = new ArrayList<Menu>(),m = new ArrayList<Menu>();
         menuModel = new DefaultMenuModel();
-        return construyeArbol(menuFacade.findAllEnOrden());
+        if (isInRole("rrhh")) {
+            n = menuFacade.findAllEnOrden(getSessionBeanADM().getCompania(), "2");
+            m = menuFacade.findAllSubMenu(getSessionBeanADM().getCompania(), "2");
+        } else if (isInRole("empleados")) {
+            n = menuFacade.findAllEnOrden(getSessionBeanADM().getCompania(), "1");
+            m = menuFacade.findAllSubMenu(getSessionBeanADM().getCompania(), "1");
+        } else if (isInRole("jefes")) {
+            n = menuFacade.findAllEnOrden(getSessionBeanADM().getCompania(), "3");
+            m = menuFacade.findAllSubMenu(getSessionBeanADM().getCompania(), "3");
+        }
+        return construyeArbol(n,m);
     }
 
     public void setMenuModel(MenuModel menuModel) {
         this.menuModel = menuModel;
     }
-    Integer subMenu = 0;
-    Integer menu = 0;
 
-    public MenuModel construyeArbol(List<Menu> e) {
-        /* Para cada uno de los elementos que vienen en la lista */
-        for (Menu s : e) {
-            /* Ordenar todos los que son padres */
+    public MenuModel construyeArbol(List<Menu> e, List<Menu> f) {
+        
+        for (Menu s : e) {                              //Para cada uno de los elementos que vienen en la lista 
             if (s.getMenu() != null) {
-                /* Si es padre iterar cada uno de sus hijos */
-                construyeArbol(s.getMenuList());
+                construyeArbol(s.getMenuList(), f);     //Si es padre iterar cada uno de sus hijos
             } else {
-                /* de lo contrario agregar los items normalmente */
-                Submenu submenu = new Submenu();
+                Submenu submenu = new Submenu();        //de lo contrario agregar los items normalmente                 
                 submenu.setLabel(s.getTitulo());
-                Collections.sort(s.getMenuList()); //gb 12032012
+                Collections.sort(s.getMenuList());      //gb 12032012 ordenar los nodos hijos.
                 for (Menu o : s.getMenuList()) {
+                    if ( !f.contains(o) ) continue;
                     MenuItem item = new MenuItem();
                     item.setValue(o.getTitulo());
                     item.setUrl(o.getRuta());
-                    item.addActionListener(mal);
                     submenu.getChildren().add(item);
                 }
                 menuModel.addSubmenu(submenu);
@@ -74,54 +73,9 @@ public class BackendBeanMenu implements Serializable {
         }
         return menuModel;
     }
-// ==============================================================================================
-    private MenuModel modeloBreadCrumbs;
 
-    public MenuModel getModeloBreadCrumbs() {
-        modeloBreadCrumbs = new DefaultMenuModel();
-
-        MenuItem homeItem = new MenuItem();
-        homeItem.setValue("Home");
-        homeItem.setUrl("/faces/modulos/inicio.xhtml");
-        MenuItem i = new MenuItem();
-        i.setValue("Prueba");
-        i.setActionExpression(methodExpression);
-        i.addActionListener(mal);
-        pilaBreadcrumb.push(i);
-
-        modeloBreadCrumbs.addMenuItem(homeItem);
-        for (MenuItem m : pilaBreadcrumb) {
-            modeloBreadCrumbs.addMenuItem(m);
-        }
-        return modeloBreadCrumbs;
-    }
-
-    public void setModeloBreadCrumbs(MenuModel modeloBreadCrumbs) {
-        this.modeloBreadCrumbs = modeloBreadCrumbs;
-    }
-    private Stack<MenuItem> pilaBreadcrumb = new Stack<MenuItem>();
-
-    public Stack<MenuItem> getPilaBreadcrumb() {
-        return pilaBreadcrumb;
-    }
-
-    public void setPilaBreadcrumb(Stack<MenuItem> pilaBreadcrumb) {
-        this.pilaBreadcrumb = pilaBreadcrumb;
-    }
-
-    public void MenuActionListener(ActionEvent evt) {
-        System.err.println(evt.getSource());
+    @Override
+    protected void limpiarCampos() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
-/*
-if (s.getMenu() == null ){
-Submenu submenu = new Submenu();
-submenu.setLabel(s.getTitulo());
-for (Menu o : s.getMenuList()) {
-MenuItem item = new MenuItem();
-item.setValue(o.getTitulo());                
-item.setUrl(o.getRuta());
-submenu.getChildren().add(item);
-}     
-menuModel.addSubmenu(submenu);
-}  */

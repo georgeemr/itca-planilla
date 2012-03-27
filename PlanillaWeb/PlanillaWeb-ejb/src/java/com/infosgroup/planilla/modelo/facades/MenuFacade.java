@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Menu;
 import com.infosgroup.planilla.modelo.entidades.MenuPK;
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 /**
  *
@@ -33,14 +33,20 @@ public class MenuFacade extends AbstractFacade<Menu, MenuPK> {
         super(Menu.class);
     }
 
-    public List<Menu> getListaMenus() {
-        List<Menu> m = em.createQuery("select m from Menu m where m.menu is null", Menu.class).getResultList();
-        return m != null ? m : new ArrayList<Menu>(0);
+    @PermitAll
+    public List<Menu> findAllEnOrden(Cias c, String rol) {
+        //TypedQuery<Menu> tq = em.createQuery("SELECT m FROM Menu m WHERE m.nivel = 1 AND m.estado = 1 ORDER BY m.menuPK.codMenu", Menu.class);
+        List<Menu> l = em.createNativeQuery("select a.* from menu a, menu_rol b where a.cod_cia = ? and a.estado=1 and a.nivel=1 "
+                + " and b.cod_cia = a.cod_cia and b.cod_modulo=a.cod_modulo "
+                + " and b.cod_menu=a.cod_menu and b.cod_rol = ? order by a.cod_menu asc", Menu.class).setParameter(1, c.getCodCia()).setParameter(2, rol).getResultList();
+        return l != null ? l : new ArrayList<Menu>();
     }
 
     @PermitAll
-    public List<Menu> findAllEnOrden() {
-        TypedQuery<Menu> tq = em.createQuery("SELECT m FROM Menu m WHERE m.nivel = 1 AND m.estado = 1 ORDER BY m.menuPK.codMenu", Menu.class);
-        return tq.getResultList();
+    public List<Menu> findAllSubMenu(Cias c, String rol) {
+        List<Menu> l = em.createNativeQuery("select a.* from menu a, menu_rol b where a.cod_cia = ? and a.estado=1 and a.nivel!=1 "
+                + " and b.cod_cia = a.cod_cia and b.cod_modulo=a.cod_modulo and b.cod_menu=a.cod_menu and b.cod_rol = ? "
+                + " order by a.cod_menu asc", Menu.class).setParameter(1, c.getCodCia()).setParameter(2, rol).getResultList();
+        return l != null ? l : new ArrayList<Menu>();
     }
 }

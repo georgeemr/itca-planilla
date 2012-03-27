@@ -77,7 +77,7 @@ public class Menu implements Serializable, Comparable<Menu> {
     @ManyToOne(optional = false)
     private Modulo modulo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "menu")
-    private List<Menu> menuList;
+    private List<Menu> menuList;    
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_MODULO", referencedColumnName = "COD_MODULO", nullable = false, insertable = false, updatable = false),
