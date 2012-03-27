@@ -48,16 +48,16 @@
                                 <f:selectItems value="#{planilla$reciboPorEmpleado.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                             </h:selectOneMenu>
                             <i:etiquetaRequerido value="Planilla" />
-                            <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
-                                            value="#{planilla$reciboPorEmpleado.planillaSeleccionada}"
-                                            itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.planillaToString}"
-                                            completeMethod="#{planilla$reciboPorEmpleado.completePlanillaEmpleado}"
-                                            converter="#{planilla$reciboPorEmpleado.planillaConverter}" 
-                                            selectListener="#{planilla$reciboPorEmpleado.handleSelectPlanilla}"
-                                            onSelectUpdate="tbIng,tbEgr,panelDescripcion"
-                                            style="width: 300px;"  >
-                                <f:ajax render="panelContenido" event="change" execute="AutCompltEmpleado" />
-                            </p:autoComplete>
+                                <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
+                                                value="#{planilla$reciboPorEmpleado.planillaSeleccionada}"
+                                                itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.planillaToString}"
+                                                completeMethod="#{planilla$reciboPorEmpleado.completePlanillaEmpleado}"
+                                                converter="#{planilla$reciboPorEmpleado.planillaConverter}" 
+                                                selectListener="#{planilla$reciboPorEmpleado.handleSelectPlanilla}"
+                                                onSelectUpdate="tbIng,tbEgr,panelDescripcion"
+                                                style="width: 300px;"  >
+                                    <f:ajax render="panelContenido" event="change" execute="AutCompltEmpleado" />
+                                </p:autoComplete>
                             <h:outputLabel value=""/>
 
 
