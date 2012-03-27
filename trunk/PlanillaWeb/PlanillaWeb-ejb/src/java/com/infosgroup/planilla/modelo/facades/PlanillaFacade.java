@@ -40,10 +40,10 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
 
     @PermitAll
     public List<Planilla> findByTipoPLanilla(TiposPlanilla tipo) {
-        List<Planilla> listPla = new ArrayList<Planilla>(0);
-        TypedQuery<Planilla> q = em.createQuery("select p from planilla p where p.tipoPlanilla = :tipoPla", Planilla.class);
-        q.setParameter("tipoPla", tipo);
-        listPla = q.getResultList();
+        List<Planilla> listPla = em.createQuery("SELECT p FROM Planilla p WHERE p.planillaPK.codCia = :codCia AND p.planillaPK.codTipopla = :codTipopla", Planilla.class)
+        .setParameter("codCia", tipo.getTiposPlanillaPK().getCodCia())
+        .setParameter("codTipopla", tipo.getTiposPlanillaPK().getCodTipopla())
+        .getResultList();
         return listPla != null ? listPla : new ArrayList<Planilla>();
     }
 
@@ -96,26 +96,18 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
 
     @PermitAll
     public List<Planilla> findPlanillaByProAndDep(ProgramacionPla proPla, Short depto) {
-        Short cia = proPla.getProgramacionPlaPK().getCodCia();
-        Short anio = proPla.getAnio();
-        Short mes = proPla.getMes();
-        Short num = proPla.getNumPlanilla();
-        Short tipo = proPla.getProgramacionPlaPK().getCodTipopla();
-        List<Planilla> l = new ArrayList<Planilla>();
-        TypedQuery<Planilla> q = em.createQuery("SELECT p FROM Planilla p "
-                + "WHERE p.planillaPK.codCia = :codCia "
-                + "AND p.planillaPK.anio = :anio "
-                + "AND p.planillaPK.mes = :mes "
+        List<Planilla> l = em.createQuery("SELECT p FROM Planilla p WHERE p.planillaPK.codCia = :codCia "
+                + "AND p.planillaPK.anio = :anio AND p.planillaPK.mes = :mes "
                 + "AND p.planillaPK.numPlanilla = :numPlanilla "
                 + "AND p.planillaPK.codTipopla = :codTipopla "
-                + "AND p.codDepto = :codDepto  ", Planilla.class);
-        q.setParameter("codCia", cia);
-        q.setParameter("anio", anio);
-        q.setParameter("mes", mes);
-        q.setParameter("numPlanilla", num);
-        q.setParameter("codTipopla", tipo);
-        q.setParameter("codDepto", depto);
-        l = q.getResultList();
+                + "AND p.codDepto = :codDepto ", Planilla.class)
+        .setParameter("codCia", proPla.getProgramacionPlaPK().getCodCia())
+        .setParameter("anio", proPla.getAnio())
+        .setParameter("mes", proPla.getMes())
+        .setParameter("numPlanilla", proPla.getNumPlanilla())
+        .setParameter("codTipopla", proPla.getProgramacionPlaPK().getCodTipopla())
+        .setParameter("codDepto", depto)
+        .getResultList();
         return l != null ? l : new ArrayList<Planilla>();
     }
 
