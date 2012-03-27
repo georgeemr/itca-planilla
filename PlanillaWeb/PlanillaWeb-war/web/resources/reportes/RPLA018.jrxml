@@ -33,7 +33,7 @@
     f.cod_emp cod_emp,
     d.num_tarjeta,
     d.cod_empref cod_ref,
-    decode(a.numero_valor,0,'',(a.numero_texto || decode(a.numero_valor,1,' MILLON ',' MILLONES ' )))|| decode(b.numero_valor,0,'',(b.numero_texto || ' MIL ' )) || decode(c.numero_valor,0,'',c.numero_texto)|| decode(substr(to_char(c.numero_valor), length(to_char(c.numero_valor)),1),'1','0','')|| decode(c.numero_valor,0,'', ' ')|| decode(round(((tot_debenga)-trunc((tot_debenga),0))*100,0),0,'EXACTOS', to_char(round(((tot_debenga)- trunc((tot_debenga),0))*100,0),'00')||'/100'|| ' DOLARES') descripcion,
+    decode(a.numero_valor,0,'',(a.numero_texto || decode(a.numero_valor,1,' MILLON ',' MILLONES ' )))|| decode(b.numero_valor,0,'',(b.numero_texto || ' MIL ' )) || decode(c.numero_valor,0,'',c.numero_texto)|| decode(substr(to_char(c.numero_valor), length(to_char(c.numero_valor)),1),'1','0','')|| decode(c.numero_valor,0,'', ' ')|| decode(round(((tot_debenga)-trunc((tot_debenga),0))*100,0),0,'EXACTOS', to_char(round(((tot_debenga)- trunc((tot_debenga),0))*100,0),'00')||'/100 '|| k.NOM_MONEDA) descripcion,
     e.nom_depto,
     d.apellidos,
     d.nombres,
