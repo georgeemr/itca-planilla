@@ -6,6 +6,7 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.Campania;
 import com.infosgroup.planilla.modelo.entidades.CampaniaPK;
+import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
 
@@ -78,5 +80,17 @@ public List<Campania> findAllByCia(Short empresa)
 {
     List<Campania> l = em.createQuery("SELECT c FROM Campania c WHERE c.campaniaPK.codCia = :codCia AND c.estado = 'G'", Campania.class).setParameter("codCia", empresa).getResultList();
     return l != null ? l : new ArrayList<Campania>();
+}
+
+@PermitAll
+public Integer max(Cias cia)
+{
+    //String consultaJPQL = "SELECT max(c.campaniaPK.codCampania) FROM Campania c WHERE c.campaniaPK.codCia = :cia AND c.campaniaPK.periodo = :periodo";
+    String consultaJPQL = "SELECT max(c.campaniaPK.codCampania) FROM Campania c WHERE c.campaniaPK.codCia = :cia";
+    Query q = getEntityManager().createQuery(consultaJPQL);
+    q.setParameter("cia", cia.getCodCia());
+    //q.setParameter("periodo", periodo);
+    Short i = (Short) q.getSingleResult();
+    return (i == null) ? 1 : (i.intValue() + 1);
 }
 }

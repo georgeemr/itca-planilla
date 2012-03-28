@@ -65,6 +65,8 @@ private Long codArea;
 private BigDecimal nota;
 @OneToMany(cascade = CascadeType.ALL, mappedBy = "campania")
 private List<Evaluacion> evaluacionList;
+@OneToMany(cascade = CascadeType.ALL, mappedBy = "campania")
+private List<PreEvaluacion> preEvaluacionList;
 @Transient
 private String descripcionEstado;
 @Transient
@@ -172,6 +174,17 @@ public List<Evaluacion> getEvaluacionList()
 public void setEvaluacionList(List<Evaluacion> evaluacionList)
 {
     this.evaluacionList = evaluacionList;
+}
+
+@XmlTransient
+public List<PreEvaluacion> getPreEvaluacionList()
+{
+    return preEvaluacionList;
+}
+
+public void setPreEvaluacionList(List<PreEvaluacion> preEvaluacionList)
+{
+    this.preEvaluacionList = preEvaluacionList;
 }
 
 @Override
