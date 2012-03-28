@@ -45,12 +45,21 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
     private List<Puestos> listaPuestos;
     private Short departamento;
     private Short puesto;
-
+    private String fase = "1";
+    
     @PostConstruct
     public void init() {
         listaCampanias = empleadosBean.listarCampanias(getSessionBeanADM().getCompania());
         listaDepartamentos = planillaSessionBean.findDepartamentos(getSessionBeanADM().getCompania());
         listaPuestos = planillaSessionBean.findPuestos(getSessionBeanADM().getCompania());
+    }
+
+    public String getFase() {
+        return fase;
+    }
+
+    public void setFase(String fase) {
+        this.fase = fase;
     }
 
     public List<Empleados> getEvaluados() {

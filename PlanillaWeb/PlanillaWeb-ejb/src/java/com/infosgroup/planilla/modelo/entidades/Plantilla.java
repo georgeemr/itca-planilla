@@ -61,6 +61,8 @@ private List<Evaluacion> evaluacionList;
     })
 @ManyToOne(optional = false)
 private TipoEvaluacion tipoEvaluacion;
+@OneToMany(cascade = CascadeType.ALL, mappedBy = "plantilla1")
+private List<PreEvaluacion> preEvaluacionList;
 
 public Plantilla()
 {
@@ -146,6 +148,17 @@ public TipoEvaluacion getTipoEvaluacion()
 public void setTipoEvaluacion(TipoEvaluacion tipoEvaluacion)
 {
     this.tipoEvaluacion = tipoEvaluacion;
+}
+
+@XmlTransient
+public List<PreEvaluacion> getPreEvaluacionList()
+{
+    return preEvaluacionList;
+}
+
+public void setPreEvaluacionList(List<PreEvaluacion> preEvaluacionList)
+{
+    this.preEvaluacionList = preEvaluacionList;
 }
 
 @Override

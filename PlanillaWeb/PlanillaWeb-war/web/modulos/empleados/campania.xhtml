@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/plantillas/defaultTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <!-- ======================================================================================================= -->
+    <ui:define name="titulo">
+        <h:outputText value="Campania"/>
+    </ui:define>
+    <!-- ======================================================================================================= -->
+    <ui:define name="acciones">
+        <p:tab title="Campa&ntilde;a">
+            <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <p:commandLink action="#{empleados$campania.guardarCampania$action()}" update="principalForm:panelAcciones principalForm:panelContenido principalForm:mensajes" styleClass="opcionMenu textoNormal" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                    <p:graphicImage value="/resources/iconos/document-save.png"/>
+                    <h:outputText value="Guardar campa&ntilde;a" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+
+            <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <p:commandLink styleClass="opcionMenu textoNormal" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';" onclick="dialogoEditar.show();" rendered="#{empleados$campania.accion eq 1}">
+                    <p:graphicImage value="/resources/iconos/document-edit.png"/>
+                    <h:outputText value="Editar campa&ntilde;a" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+
+            <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0" rendered="#{empleados$campania.accion eq 2}">
+                <p:commandLink action="#{empleados$campania.cancelar$action()}" update="principalForm:panelAcciones principalForm:panelContenido principalForm:mensajes" styleClass="opcionMenu textoNormal" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                    <p:graphicImage value="/resources/iconos/dialog-cancel.png"/>
+                    <h:outputText value="Cancelar edici&oacute;n" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+
+        </p:tab>
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink action="#{empleados$campania.inicio$action}" ajax="true" styleClass="opcionMenu textoNormal" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Salir" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+    <!-- ======================================================================================================= -->
+    <ui:define name="contenido">
+        <p:wizard showNavBar="true" showStepStatus="true" backLabel="Anterior" nextLabel="Siguiente">
+            <p:tab id="tab0" title="Campa&ntilde;a">
+                <p:panel header="Datos de la campa&ntilde;a">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td><h:outputText value="Nombre"/></td>
+                            <td colspan="3"><p:inputText id="campaniaNombre" value="#{empleados$campania.nombre}" size="120"/></td>
+                        </tr>
+                        <tr>
+                            <td><h:outputText value="Fecha inicial"/></td>
+                            <td><p:calendar id="campaniaFechaInicial" value="#{empleados$campania.fechaInicial}" pattern="dd/MM/yyyy" showOn="button"/></td>
+                            <td><h:outputText value="Fecha final"/></td>
+                            <td><p:calendar id="campaniaFechaFinal" value="#{empleados$campania.fechaFinal}" pattern="dd/MM/yyyy" showOn="button"/></td>
+                        </tr>
+                        <tr>
+                            <td><h:outputText value="Periodo"/></td>
+                            <td><p:inputText id="campaniaPeriodo" value="#{empleados$campania.periodo}"/></td>
+                            <td><h:outputText value="Nota"/></td>
+                            <td><p:inputText id="campaniaNota" value="#{empleados$campania.nota}"/></td>
+                        </tr>
+                    </table>
+                </p:panel>
+            </p:tab>
+            <p:tab id="tab1" title="Tipo de evaluaci&oacute;n">
+                <p:dataTable rows="7" value="#{empleados$campania.tipoEvaluacionTableModel}" var="tipoEvaluacion">
+                    <f:facet name="header">
+                        <h:outputText value="Tipos de evaluaci&oacute;n"/>
+                    </f:facet>
+                    <p:column headerText="ID">
+                        <h:outputText value="#{tipoEvaluacion.tipoEvaluacionPK.codTipoEvaluacion}"/>
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{tipoEvaluacion.nomTipoEvaluacion}"/>
+                    </p:column>
+                    <p:column headerText="Seleccionar">  
+                        <p:commandButton image="ui-icon ui-icon-circle-check" update="principalForm:mensajes" title="Seleccionar">
+                            <f:setPropertyActionListener value="#{tipoEvaluacion}" target="#{empleados$campania.tipoEvaluacionSeleccionada}" />  
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
+            <p:tab id="tab2" title="Plantilla">
+                <p:dataTable rows="7" value="#{empleados$campania.plantillaTableModel}" var="plantilla">
+                    <f:facet name="header">
+                        <h:outputText value="Plantillas"/>
+                    </f:facet>
+                    <p:column headerText="ID">
+                        <h:outputText value="#{plantilla.plantillaPK.codPlantilla}"/>
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{plantilla.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Seleccionar">
+                        <p:commandButton image="ui-icon ui-icon-circle-check" update="principalForm:mensajes" title="Seleccionar">
+                            <f:setPropertyActionListener value="#{plantilla}" target="#{empleados$campania.plantillaSeleccionada}" />  
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
+        </p:wizard>
+    </ui:define>
+    <!-- ======================================================================================================= -->
+    <ui:define name="dialogos">
+        <p:dialog widgetVar="dialogoEditar" header="Editar campa&ntilde;a" draggable="true" resizable="false" modal="true" width="900">
+            <p:dataTable value="#{empleados$campania.listaCampanias}" var="campania" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5">
+                <f:facet name="header">
+                    <h:outputText value="Campa&ntilde;as"/>
+                </f:facet>
+                <p:column headerText="ID">
+                    <h:outputText value="#{campania.campaniaPK.codCampania}"/>
+                </p:column>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{campania.nomCampania}"/>
+                </p:column>
+                <p:column headerText="Fecha inicio">
+                    <h:outputText value="#{campania.fechaInicial}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" type="date"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Fecha fin">
+                    <h:outputText value="#{campania.fechaFinal}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" type="date"/>
+                    </h:outputText>
+                </p:column>
+                    <p:column headerText="Seleccionar">
+                        <p:commandButton image="ui-icon ui-icon-circle-check" update="principalForm:mensajes" title="Seleccionar">
+                            <f:setPropertyActionListener value="#{campania}" target="#{empleados$campania.campaniaSeleccionada}"/>
+                        </p:commandButton>
+                    </p:column>
+            </p:dataTable>
+                <h:panelGroup>
+                    <p:commandButton value="Editar" image="ui-icon ui-icon-pencil" action="#{empleados$campania.editarCampania$action()}" update="principalForm:panelAcciones principalForm:panelContenido principalForm:mensajes" onclick="dialogoEditar.hide();"/>
+                    <p:commandButton value="Cancelar" image="ui-icon ui-icon-closethick" onclick="dialogoEditar.hide();"/>
+                </h:panelGroup>
+        </p:dialog>
+    </ui:define>
+    <!-- ======================================================================================================= -->
+</ui:composition>

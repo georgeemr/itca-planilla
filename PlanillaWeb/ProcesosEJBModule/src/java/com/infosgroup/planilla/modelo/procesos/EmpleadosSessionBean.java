@@ -49,6 +49,9 @@ private PreguntaFacade preguntaFacade;
 @EJB
 private PlantillaFacade plantillaFacade;
 
+@EJB
+private PreEvaluacionFacade preEvaluacionFacade;
+
 @PermitAll
 public List<Campania> listarCampanias(Cias cia)
 {
@@ -106,16 +109,16 @@ public boolean cerrarEvaluacion(Evaluacion ev, List<DetalleEvaluacion> det)
             for (PreguntaRespuesta pr : preguntasRespuestasList)
                 {
                 DetEvaluacionPK detEvaluacionPK = new DetEvaluacionPK();
-                detEvaluacionPK.setCodCia(ev.getEvaluacionPK().getCodCia());                
+                detEvaluacionPK.setCodCia(ev.getEvaluacionPK().getCodCia());
                 detEvaluacionPK.setCodCampania(ev.getEvaluacionPK().getCodCampania());
                 detEvaluacionPK.setTipoEvaluacion(new Short("" + ev.getEvaluacionPK().getTipoEvaluacion()));
                 detEvaluacionPK.setCodEmp(ev.getEmpleados().getEmpleadosPK().getCodEmp());
-                detEvaluacionPK.setPeriodo(new Short("" +ev.getCampania().getCampaniaPK().getPeriodo()));
+                detEvaluacionPK.setPeriodo(new Short("" + ev.getCampania().getCampaniaPK().getPeriodo()));
                 detEvaluacionPK.setCodDetEvaluacion(i++);
 
                 DetEvaluacion detEvaluacion = new DetEvaluacion();
                 detEvaluacion.setEvaluacion(ev);
-                detEvaluacion.setDetEvaluacionPK(detEvaluacionPK);                
+                detEvaluacion.setDetEvaluacionPK(detEvaluacionPK);
                 detEvaluacion.setPregunta(preguntaFacade.find(pr.getPregunta().getPreguntaPK()));
                 detEvaluacion.setRespuesta(pr.getRespuesta());
 
@@ -170,9 +173,9 @@ public List<Puestos> listarPuestos()
 }
 
 @PermitAll
-public List<TipoEvaluacion> listarTiposEvaluacion()
+public List<TipoEvaluacion> listarTiposEvaluacion(Cias c)
 {
-    return tipoEvaluacionFacade.findAll();
+    return tipoEvaluacionFacade.findByCompania(c);
 }
 
 @PermitAll
@@ -265,15 +268,38 @@ public void editarCampania(Campania c)
 }
 
 @PermitAll
+public Campania findCampaniaByPK(CampaniaPK campaniaPK)
+{
+    return campaniasFacade.find(campaniaPK);
+}
+
+@PermitAll
 public List<Campania> findAllByCia(Short empresa)
 {
     return campaniasFacade.findAllByCia(empresa);
-    
-    
 }
 
-  @PermitAll
-    public List<Empleados> findEmpleadosByCias(Cias empresa) {
-        return empleadosFacade.findEmpleadosByCias(empresa);
-    }  
+@PermitAll
+public List<Empleados> findEmpleadosByCias(Cias empresa)
+{
+    return empleadosFacade.findEmpleadosByCias(empresa);
+}
+
+@PermitAll
+public Integer maxCampania(Cias cia)
+{
+    return campaniasFacade.max(cia);
+}
+
+@PermitAll
+public void crearCampania(Campania c)
+{
+    campaniasFacade.create(c);
+}
+
+@PermitAll
+public void crearPreEvaluacion(PreEvaluacion p)
+{
+preEvaluacionFacade.create(p);
+}
 }
