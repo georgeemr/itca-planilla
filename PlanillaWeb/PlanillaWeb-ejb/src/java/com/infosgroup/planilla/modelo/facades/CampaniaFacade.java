@@ -76,8 +76,7 @@ public Integer calcularEmpleadosEvaluados(Campania c)
 @PermitAll
 public List<Campania> findAllByCia(Short empresa)
 {
-    List<Campania> l = new ArrayList<Campania>();
-    l = em.createQuery("SELECT c FROM Campania c WHERE c.campaniaPK.codCia = :codCia", Campania.class).setParameter("codCia", empresa).getResultList();
+    List<Campania> l = em.createQuery("SELECT c FROM Campania c WHERE c.campaniaPK.codCia = :codCia AND c.estado = :estado", Campania.class).setParameter("codCia", empresa).getResultList();
     return l != null ? l : new ArrayList<Campania>();
 }
 }
