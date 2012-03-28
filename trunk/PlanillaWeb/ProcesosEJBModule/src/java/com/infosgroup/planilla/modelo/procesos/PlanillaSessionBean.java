@@ -439,6 +439,16 @@ public class PlanillaSessionBean {
     }
 
     @PermitAll
+    public List<Empleados> findEmpleadosByDepartamentos(Departamentos departamento) {
+        return empleadoFacade.findByDepartamentos(departamento);
+    }
+
+    @PermitAll
+    public List<Empleados> findEmpleadosByPuestos(Puestos puesto) {
+        return empleadoFacade.findByPuestos(puesto);
+    }
+
+    @PermitAll
     public List<Empleados> listaAfectadosTipoPlanilla(TiposPlanilla tipoPlanilla) {
         return empleadoFacade.afectadosTipoPlanilla(tipoPlanilla);
     }

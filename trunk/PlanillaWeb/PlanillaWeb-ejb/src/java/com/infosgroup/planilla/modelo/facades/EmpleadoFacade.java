@@ -150,6 +150,18 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
     }
 
     @PermitAll
+    public List<Empleados> findByDepartamentos(Departamentos departamento) {
+        List<Empleados> l = em.createQuery("SELECT e FROM Empleados e where e.empleadosPK.codCia = :codCia AND e.departamentos = :departamentos AND e.status = 'A'").setParameter("codCia", departamento.getDepartamentosPK().getCodCia()).setParameter("departamentos", departamento).getResultList();
+        return l != null ? l : new ArrayList<Empleados>();
+    }
+
+    @PermitAll
+    public List<Empleados> findByPuestos(Puestos puesto) {
+        List<Empleados> l = em.createQuery("SELECT e FROM Empleados e where e.empleadosPK.codCia = :codCia AND e.puestos = :puestos AND e.status = 'A'").setParameter("codCia", puesto.getPuestosPK().getCodCia()).setParameter("puestos", puesto).getResultList();
+        return l != null ? l : new ArrayList<Empleados>();
+    }
+
+    @PermitAll
     public List<Empleados> afectadosTipoPlanilla(TiposPlanilla tipoPlanilla) {
         List<Empleados> l = em.createQuery("SELECT e FROM Empleados e where e.empleadosPK.codCia = :codCia AND e.tiposPlanilla = :tiposPlanilla AND e.status = 'A'").setParameter("codCia", tipoPlanilla.getTiposPlanillaPK().getCodCia()).setParameter("tiposPlanilla", tipoPlanilla).getResultList();
         return l != null ? l : new ArrayList<Empleados>();
@@ -161,7 +173,7 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
         l = em.createQuery("SELECT e FROM Empleados e WHERE e.empleadosPK.codCia = :codCia", Empleados.class).setParameter("codCia", cias.getCodCia()).getResultList();
         return l != null ? l : new ArrayList<Empleados>();
     }
-    
+
     @PermitAll
     public List<Empleados> findJefesByDepto(Departamentos depto) {
         List<Empleados> l = em.createQuery("SELECT e FROM Empleados e WHERE e.empleadosPK.codCia = :codCia AND e.departamentos = :departamentos AND e.puestos.jefatura = 'SI'", Empleados.class).setParameter("departamentos", depto).setParameter("codCia", depto.getDepartamentosPK().getCodCia()).getResultList();

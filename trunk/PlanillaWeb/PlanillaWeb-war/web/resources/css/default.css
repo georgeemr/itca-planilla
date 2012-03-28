@@ -142,3 +142,10 @@ body {
 .txtTableEditCantidad{
     border-width: 0; margin-left: -5px; margin-right: -5px;width: 40px;
 }
+
+.columnCriteriosEvaluacionLabel{
+    width: 20%;
+}
+.columnCriteriosEvaluacionSelector{
+    width: 80%;
+}

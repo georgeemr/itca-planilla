@@ -20,7 +20,7 @@ and open the template in the editor.
 
     <composite:implementation>
         <p:commandLink styleClass="opcionMenu" ajax="#{cc.attrs.ajax}" immediate="true"
-                       action="#{cc.attrs.action}" update="#{cc.attrs.update}">
+                       action="#{cc.attrs.action}" update="#{cc.attrs.update}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" >
             <p:graphicImage value="#{cc.attrs.image}"/>
             <h:outputText value="#{cc.attrs.label}" styleClass="espacioTexto"/>
         </p:commandLink>
