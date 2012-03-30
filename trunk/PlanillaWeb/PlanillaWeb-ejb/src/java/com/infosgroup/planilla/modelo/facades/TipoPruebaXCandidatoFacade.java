@@ -8,11 +8,13 @@ import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Puestos;
 import com.infosgroup.planilla.modelo.entidades.TipoPruebaXCandidato;
 import com.infosgroup.planilla.modelo.entidades.TipoPruebaXCandidatoPK;
+import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
 
@@ -44,5 +46,12 @@ public Short max(Candidato c)
     q.setParameter("codCandidato", c.getCandidatoPK().getCodCandidato());
     Short max = (Short) q.getSingleResult();
     return (max == null) ? 1 : ++max;
+}
+
+public List<TipoPruebaXCandidato> findByCandidato(Candidato c)
+{
+    TypedQuery<TipoPruebaXCandidato> tq = getEntityManager().createQuery("SELECT t FROM TipoPruebaXCandidato t WHERE t.candidato = :candidato", TipoPruebaXCandidato.class);
+    tq.setParameter("candidato", c);
+    return tq.getResultList();
 }
 }

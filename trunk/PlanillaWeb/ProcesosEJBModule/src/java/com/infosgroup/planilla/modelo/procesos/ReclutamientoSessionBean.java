@@ -273,9 +273,9 @@ public List<EvaluacionCandidato> getListEvaluacionCandidato(CandidatoConcurso c)
 }
 
 @PermitAll
-public void actualizarNotaCandidato(List<EvaluacionCandidato> lc,CandidatoConcurso x)
+public void actualizarNotaCandidato(List<EvaluacionCandidato> lc, CandidatoConcurso x)
 {
-    evaluacionCandidatoFacade.actualizarNotaCandidato(lc,x);
+    evaluacionCandidatoFacade.actualizarNotaCandidato(lc, x);
 }
 
 @PermitAll
@@ -480,7 +480,6 @@ public List<NivelesXCandidato> findNivelCandidatoByCandidato(Candidato c)
     return nivelesCandidatoFacade.findByCandidato(c);
 }
 
-
 @PermitAll
 public void crearNivelXCandidato(NivelesXCandidato nivelCandidato)
 {
@@ -671,61 +670,114 @@ public void flushCandidato()
 @PermitAll
 public void eliminarNivelCandidato(NivelesXCandidato n)
 {
-nivelesCandidatoFacade.remove(n);
+    nivelesCandidatoFacade.remove(n);
 }
 
 @PermitAll
 public void eliminarEmergenciaCandidato(EmergenciaXCandidato e)
 {
-emergenciaCandidatoFacade.remove(e);
+    emergenciaCandidatoFacade.remove(e);
 }
 
 @PermitAll
 public void eliminarReferenciaCandidato(Referencia r)
 {
-referenciaFacade.remove(r);
+    referenciaFacade.remove(r);
 }
 
 @PermitAll
 public void eliminarDocumentoCandidato(DocumentoPresentado d)
 {
-documentoPresentadoFacade.remove(d);
+    documentoPresentadoFacade.remove(d);
 }
 
 @PermitAll
 public void eliminarCapacitacionCandidato(CapacitacionXCandidato c)
 {
-capacitacionXCandidatoFacade.remove(c);
+    capacitacionXCandidatoFacade.remove(c);
 }
 
 @PermitAll
 public void eliminarDependienteCandidato(DependienteXCandidato d)
 {
-dependienteXCandidatoFacade.remove(d);
+    dependienteXCandidatoFacade.remove(d);
 }
 
 @PermitAll
 public void eliminarIdiomaCandidato(IdiomaXCandidato i)
 {
-idiomaXCandidatoFacade.remove(i);
+    idiomaXCandidatoFacade.remove(i);
 }
 
 @PermitAll
 public void eliminarPruebaCandidato(TipoPruebaXCandidato p)
 {
-tipoPruebaXCandidatoFacade.remove(p);
+    tipoPruebaXCandidatoFacade.remove(p);
 }
 
 @PermitAll
 public void eliminarPuestoCandidato(CandidatoXCargo c)
 {
-candidatoXCargoFacade.remove(c);
+    candidatoXCargoFacade.remove(c);
 }
 
 @PermitAll
 public void eliminarEntrevistaCandidato(EntrevistaXCandidato e)
 {
-entrevistaXCandidatoFacade.remove(e);
+    entrevistaXCandidatoFacade.remove(e);
 }
 
+@PermitAll
+public List<CandidatoXCargo> findCargosByCandidato(Candidato c)
+{
+    return candidatoXCargoFacade.findByCandidato(c);
+}
+
+@PermitAll
+public List<EntrevistaXCandidato> findEntrevistasByCandidato(Candidato c)
+{
+    return entrevistaXCandidatoFacade.findByCandidato(c);
+}
+
+@PermitAll
+public List<TipoPruebaXCandidato> findTiposPruebasByCandidato(Candidato c)
+{
+    return tipoPruebaXCandidatoFacade.findByCandidato(c);
+}
+
+@PermitAll
+public List<IdiomaXCandidato> findIdiomasByCandidato(Candidato c)
+{
+    return idiomaXCandidatoFacade.findByCandidato(c);
+}
+
+@PermitAll
+public List<DependienteXCandidato> findDependientesByCandidato(Candidato c)
+{
+    return dependienteXCandidatoFacade.findByCandidato(c);
+}
+
+@PermitAll
+public List<CapacitacionXCandidato> findCapacitacionesByCandidato(Candidato c)
+{
+    return capacitacionXCandidatoFacade.findByCandidato(c);
+}
+
+@PermitAll
+public List<DocumentoPresentado> findDocumentosByCandidato(Candidato candidato)
+{
+    return documentoPresentadoFacade.findByCandidato(candidato);
+}
+
+@PermitAll
+public List<Referencia> findReferenciasByCandidato(Candidato candidato)
+{
+    return referenciaFacade.findByCandidato(candidato);
+}
+
+@PermitAll
+public List<EmergenciaXCandidato> findEmergenciasByCandidato(Candidato candidato)
+{
+    return emergenciaCandidatoFacade.findByCandidato(candidato);
+}
 }

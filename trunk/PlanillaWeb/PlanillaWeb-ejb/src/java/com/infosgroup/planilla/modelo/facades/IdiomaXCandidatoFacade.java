@@ -7,11 +7,13 @@ package com.infosgroup.planilla.modelo.facades;
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.IdiomaXCandidato;
 import com.infosgroup.planilla.modelo.entidades.IdiomaXCandidatoPK;
+import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
 
@@ -43,5 +45,12 @@ public Integer max(Candidato c)
     q.setParameter("codCandidato", c.getCandidatoPK().getCodCandidato());
     Integer max = (Integer) q.getSingleResult();
     return (max == null) ? 1 : ++max;
+}
+
+public List<IdiomaXCandidato> findByCandidato(Candidato c)
+{
+    TypedQuery<IdiomaXCandidato> tq = getEntityManager().createQuery("SELECT i FROM IdiomaXCandidato i WHERE i.candidato = :candidato", IdiomaXCandidato.class);
+    tq.setParameter("candidato", c);
+    return tq.getResultList();
 }
 }

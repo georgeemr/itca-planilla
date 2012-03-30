@@ -8,11 +8,13 @@ import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.EntrevistaXCandidato;
 import com.infosgroup.planilla.modelo.entidades.EntrevistaXCandidatoPK;
 import com.infosgroup.planilla.modelo.entidades.Puestos;
+import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
 
@@ -46,4 +48,12 @@ public Short max(Puestos p, Candidato c)
     Short max = (Short) q.getSingleResult();
     return (max == null) ? 1 : ++max;
 }
+
+public List<EntrevistaXCandidato> findByCandidato(Candidato c)
+{
+TypedQuery tq = getEntityManager().createQuery("SELECT e FROM EntrevistaXCandidato e WHERE e.candidato = :candidato", EntrevistaXCandidato.class);
+tq.setParameter("candidato", c);
+return tq.getResultList();
+}
+        
 }
