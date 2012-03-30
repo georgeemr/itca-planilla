@@ -102,7 +102,7 @@ public String guardarCampania$action()
             accion = CREANDO;
             break;
         case EDITANDO:
-            editarCampania(campaniaSeleccionada);
+            editarCampania(preevaluacionSeleccionada);
             accion = CREANDO;
             break;
         }
@@ -111,14 +111,16 @@ public String guardarCampania$action()
 
 public String editarCampania$action()
 {
-    if (campaniaSeleccionada != null)
+    if (preevaluacionSeleccionada != null)
         {
-        Campania campania = empleadosBean.findCampaniaByPK(campaniaSeleccionada.getCampaniaPK());
+        Campania campania = preevaluacionSeleccionada.getCampania();
         nombre = campania.getNomCampania();
         fechaInicial = campania.getFechaInicial();
         fechaFinal = campania.getFechaFinal();
         periodo = campania.getCampaniaPK().getPeriodo();
         nota = campania.getNota().doubleValue();
+        tipoEvaluacionSeleccionada = preevaluacionSeleccionada.getTipoEvaluacion1();
+        plantillaSeleccionada = preevaluacionSeleccionada.getPlantilla1();
         accion = EDITANDO;
         }
     else
@@ -136,7 +138,7 @@ public String cancelar$action()
     periodo = null;
     nota = null;
     accion = CREANDO;
-    campaniaSeleccionada = null;
+    preevaluacionSeleccionada = null;
     tipoEvaluacionSeleccionada = null;
     plantillaSeleccionada = null;
     return null;
@@ -208,10 +210,10 @@ private void guardarCampania()
         campania.setEstado("G");
         campania.setNota(new BigDecimal(nota));
 
-        empleadosBean.crearCampania(campania);        
-        
-        campania = empleadosBean.findCampaniaByPK(campaniaPK);        
-        
+        empleadosBean.crearCampania(campania);
+
+        campania = empleadosBean.findCampaniaByPK(campaniaPK);
+
         PreEvaluacionPK preevaluacionPK = new PreEvaluacionPK();
         preevaluacionPK.setCodCia(campania.getCampaniaPK().getCodCia());
         preevaluacionPK.setCodCampania(campania.getCampaniaPK().getCodCampania());
@@ -219,13 +221,13 @@ private void guardarCampania()
         preevaluacionPK.setTipoEvaluacion(tipoEvaluacionSeleccionada.getTipoEvaluacionPK().getCodTipoEvaluacion());
         preevaluacionPK.setPlantilla(plantillaSeleccionada.getPlantillaPK().getCodPlantilla());
         PreEvaluacion preEvaluacion = new PreEvaluacion(preevaluacionPK);
-        
+
         preEvaluacion.setCampania(campania);
         preEvaluacion.setTipoEvaluacion1(tipoEvaluacionSeleccionada);
         preEvaluacion.setPlantilla1(plantillaSeleccionada);
-        
+
         empleadosBean.crearPreEvaluacion(preEvaluacion);
-        
+
         addMessage("Infosweb RRHH", "Campa&ntilde;a creada exitosamente", TipoMensaje.INFORMACION);
 
         nombre = null;
@@ -233,6 +235,7 @@ private void guardarCampania()
         fechaInicial = null;
         fechaFinal = null;
         nota = null;
+        preevaluacionSeleccionada = null;
         tipoEvaluacionSeleccionada = null;
         plantillaSeleccionada = null;
         }
@@ -243,11 +246,16 @@ private void guardarCampania()
         }
 }
 
-private void editarCampania(Campania c)
+private void editarCampania(PreEvaluacion p)
 {
+    if (p == null)
+        {
+        addMessage("Infosweb RRHH", "Seleccione la campa&tilde;a", TipoMensaje.ADVERTENCIA);
+        return;
+        }
     try
         {
-        Campania campania = empleadosBean.findCampaniaByPK(c.getCampaniaPK());
+        Campania campania = empleadosBean.findCampaniaByPK(p.getCampania().getCampaniaPK());
         campania.setNomCampania(nombre);
         campania.setFechaInicial(fechaInicial);
         campania.setFechaFinal(fechaFinal);
@@ -255,16 +263,22 @@ private void editarCampania(Campania c)
         campania.setNota(new BigDecimal(nota));
 
         empleadosBean.editarCampania(campania);
-        addMessage("Infosweb RRHH", "Campa&ntilde;a editada exitosamente", TipoMensaje.INFORMACION);        
+
+        p.setCampania(campania);
+        p.setTipoEvaluacion1(tipoEvaluacionSeleccionada);
+        p.setPlantilla1(plantillaSeleccionada);
+        empleadosBean.editarPreEvaluacion(p);
+
+        addMessage("Infosweb RRHH", "Campa&ntilde;a editada exitosamente", TipoMensaje.INFORMACION);
 
         nombre = null;
         periodo = null;
         fechaInicial = null;
         fechaFinal = null;
         nota = null;
-        campaniaSeleccionada = null;
+        preevaluacionSeleccionada = null;
         tipoEvaluacionSeleccionada = null;
-        plantillaSeleccionada = null;        
+        plantillaSeleccionada = null;
         }
     catch (Exception e)
         {
@@ -353,29 +367,28 @@ public void setAccion(int accion)
 {
     this.accion = accion;
 }
-// =================================================================================
-private Campania campaniaSeleccionada;
+// ============================================================================================================
+private List<PreEvaluacion> listaPreevaluaciones;
 
-public Campania getCampaniaSeleccionada()
+public List<PreEvaluacion> getListaPreevaluaciones()
 {
-    return campaniaSeleccionada;
+    listaPreevaluaciones = empleadosBean.findPreevaluacionByCias(getSessionBeanADM().getCompania());
+    return listaPreevaluaciones;
 }
 
-public void setCampaniaSeleccionada(Campania campaniaSeleccionada)
+public void setListaPreevaluaciones(List<PreEvaluacion> listaPreevaluaciones)
 {
-    this.campaniaSeleccionada = campaniaSeleccionada;
+    this.listaPreevaluaciones = listaPreevaluaciones;
 }
-// ==
-private List<Campania> listaCampanias;
+private PreEvaluacion preevaluacionSeleccionada;
 
-public List<Campania> getListaCampanias()
+public PreEvaluacion getPreevaluacionSeleccionada()
 {
-    listaCampanias = empleadosBean.listarCampanias(getSessionBeanADM().getCompania());
-    return listaCampanias;
+    return preevaluacionSeleccionada;
 }
 
-public void setListaCampanias(List<Campania> listaCampanias)
+public void setPreevaluacionSeleccionada(PreEvaluacion preevaluacionSeleccionada)
 {
-    this.listaCampanias = listaCampanias;
+    this.preevaluacionSeleccionada = preevaluacionSeleccionada;
 }
 }
