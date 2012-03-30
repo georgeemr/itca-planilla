@@ -17,7 +17,7 @@ import javax.persistence.criteria.CriteriaQuery;
 public abstract class AbstractFacade<T, P>
 {
 
-private Class<T> entityClass;
+protected Class<T> entityClass;
 
 public AbstractFacade(Class<T> entityClass)
 {

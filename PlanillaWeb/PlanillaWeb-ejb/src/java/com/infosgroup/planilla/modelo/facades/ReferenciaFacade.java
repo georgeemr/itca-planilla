@@ -4,8 +4,9 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
-import com.infosgroup.planilla.modelo.entidades.*;
-import java.util.ArrayList;
+import com.infosgroup.planilla.modelo.entidades.Candidato;
+import com.infosgroup.planilla.modelo.entidades.Referencia;
+import com.infosgroup.planilla.modelo.entidades.ReferenciaPK;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
@@ -45,5 +46,14 @@ public Integer max(Candidato c)
     q.setParameter("candidato", c);
     Integer max = (Integer) q.getSingleResult();
     return (max == null) ? 1 : ++max;
+}
+
+@PermitAll
+public List<Referencia> findByCandidato(Candidato candidato)
+{
+    String jpql = "SELECT r FROM Referencia r WHERE r.candidato = :candidato";
+    TypedQuery<Referencia> tq = getEntityManager().createQuery(jpql, Referencia.class);
+    tq.setParameter("candidato", candidato);
+    return tq.getResultList();
 }
 }

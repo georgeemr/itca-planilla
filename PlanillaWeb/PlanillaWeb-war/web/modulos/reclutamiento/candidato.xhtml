@@ -13,21 +13,17 @@
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" action="#{reclutamiento$candidato.nuevo$action()}" rendered="#{reclutamiento$candidato.estadoAccion eq 0}" update="principalForm:panelAcciones principalForm:panelContenido principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
-                    <p:graphicImage value="/resources/iconos/new.png"/>
-                    <h:outputText value="Nuevo" styleClass="espacioTexto"/>
-                </p:commandLink>
-                <p:commandLink styleClass="opcionMenu"  ajax="true" onclick="dialogoEditar.show();" rendered="#{reclutamiento$candidato.estadoAccion eq 0}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
-                    <p:graphicImage value="/resources/iconos/edit.png"/>
-                    <h:outputText value="Editar" styleClass="espacioTexto"/>
-                </p:commandLink>
                 <p:commandLink styleClass="opcionMenu" ajax="true" action="#{reclutamiento$candidato.guardar$action()}" update="mensajes, panelAcciones, panelContenido" rendered="#{reclutamiento$candidato.estadoAccion ne 0}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/document-save.png"/>
-                    <h:outputText value="Guardar" styleClass="espacioTexto"/>
+                    <h:outputText value="Guardar candidato" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu" ajax="true" update="principalForm:panelAcciones principalForm:panelContenido principalForm:mensajes" rendered="#{reclutamiento$candidato.estadoAccion ne 0}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';" action="#{reclutamiento$candidato.cancelar$action}">
+                <p:commandLink styleClass="opcionMenu"  ajax="true" onclick="dialogoEditar.show();" rendered="#{reclutamiento$candidato.estadoAccion eq 1}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/edit.png"/>
-                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
+                    <h:outputText value="Editar candidato" styleClass="espacioTexto"/>
+                </p:commandLink>
+                <p:commandLink styleClass="opcionMenu" ajax="true" update="principalForm:panelAcciones principalForm:panelContenido principalForm:mensajes" rendered="#{reclutamiento$candidato.estadoAccion eq 2}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';" action="#{reclutamiento$candidato.cancelar$action}">
+                    <p:graphicImage value="/resources/iconos/edit.png"/>
+                    <h:outputText value="Cancelar edici&oacute;n" styleClass="espacioTexto"/>
                 </p:commandLink>                
             </h:panelGrid>
         </p:tab>  
