@@ -35,36 +35,36 @@
             <p:tab id="tab0" title="Evaluaci&oacute;n">
                 <p:spacer height="15" />
                 <p:dataTable id="tablaCampanias" paginator="true" emptyMessage="No se han encontrado Campa&ntilde;as." rowsPerPageTemplate="5,10,25,50,100"
-                             var="campania" rows="5"  selection="#{empleados$definirEvaluaciones.campaniaSeleccionada}"
-                             value="#{empleados$definirEvaluaciones.listaCampanias}" paginatorAlwaysVisible="true" selectionMode="single"
+                             var="preEvaluacion" rows="5"  selection="#{empleados$definirEvaluaciones.preEvaluacionSeleccionada}"
+                             value="#{empleados$definirEvaluaciones.listaPreEvaluacion}" paginatorAlwaysVisible="true" selectionMode="single"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >
 
                     <f:facet name="header">
                         <h:outputText value="Campa&ntilde;as"/>
                     </f:facet>
 
-                    <p:column sortBy="#{campania.campaniaPK.codCampania}" headerText="C&oacute;digo" style="width: 10%">
-                        <h:outputLabel value="#{campania.campaniaPK.codCampania}"/>
+                    <p:column sortBy="#{preEvaluacion.campania.campaniaPK.codCampania}" headerText="C&oacute;digo" style="width: 10%">
+                        <h:outputLabel value="#{preEvaluacion.campania.campaniaPK.codCampania}"/>
                     </p:column>
 
-                    <p:column filterBy="#{campania.nomCampania}" filterMatchMode="contains" headerText="Nombre de Campa&ntilde;a ">
-                        <h:outputLabel value="#{campania.nomCampania}"/>
+                    <p:column filterBy="#{preEvaluacion.campania.nomCampania}" filterMatchMode="contains" headerText="Nombre de Campa&ntilde;a ">
+                        <h:outputLabel value="#{preEvaluacion.campania.nomCampania}"/>
                     </p:column> 
 
-                    <p:column sortBy="#{campania.fechaInicial}" headerText="Fecha inicial" style="width: 12%">
-                        <h:outputLabel value="#{campania.fechaInicial}" >
+                    <p:column sortBy="#{preEvaluacion.campania.fechaInicial}" headerText="Fecha inicial" style="width: 12%">
+                        <h:outputLabel value="#{preEvaluacion.campania.fechaInicial}" >
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputLabel>
                     </p:column>    
 
-                    <p:column sortBy="#{campania.fechaFinal}" headerText="Fecha final" style="width: 12%">
-                        <h:outputLabel value="#{campania.fechaFinal}" >
+                    <p:column sortBy="#{preEvaluacion.campania.fechaFinal}" headerText="Fecha final" style="width: 12%">
+                        <h:outputLabel value="#{preEvaluacion.campania.fechaFinal}" >
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputLabel>
                     </p:column>         
 
-                    <p:column sortBy="#{campania.campaniaPK.periodo}" headerText="Periodo" style="width: 8%" >
-                        <h:outputLabel value="#{campania.campaniaPK.periodo}" />
+                    <p:column sortBy="#{preEvaluacion.campania.campaniaPK.periodo}" headerText="Periodo" style="width: 8%" >
+                        <h:outputLabel value="#{preEvaluacion.campania.campaniaPK.periodo}" />
                     </p:column> 
 
                 </p:dataTable>
@@ -74,7 +74,7 @@
                 <p:spacer height="7" />
                 <h:panelGrid columns="2" >
                     <h:outputLabel value="Evaluaci&oacute;n Seleccionada: " style="font-weight: bold" />
-                    <h:outputLabel value="${empleados$definirEvaluaciones.campaniaSeleccionada.nomCampania}" />    
+                    <h:outputLabel value="${empleados$definirEvaluaciones.preEvaluacionSeleccionada.campania.nomCampania}" />    
                 </h:panelGrid>
                 <p:spacer height="7" />
                 <p:panel id="panelSeleccionEvaluadores" style="border:none;" >
