@@ -110,29 +110,29 @@
     <!-- ======================================================================================================= -->
     <ui:define name="dialogos">
         <p:dialog widgetVar="dialogoEditar" header="Editar campa&ntilde;a" draggable="true" resizable="false" modal="true" width="900">
-            <p:dataTable value="#{empleados$campania.listaCampanias}" var="campania" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5">
+            <p:dataTable value="#{empleados$campania.listaPreevaluaciones}" var="preevaluacion" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5">
                 <f:facet name="header">
                     <h:outputText value="Campa&ntilde;as"/>
                 </f:facet>
                 <p:column headerText="ID">
-                    <h:outputText value="#{campania.campaniaPK.codCampania}"/>
+                    <h:outputText value="#{preevaluacion.campania.campaniaPK.codCampania}"/>
                 </p:column>
                 <p:column headerText="Nombre">
-                    <h:outputText value="#{campania.nomCampania}"/>
+                    <h:outputText value="#{preevaluacion.campania.nomCampania}"/>
                 </p:column>
                 <p:column headerText="Fecha inicio">
-                    <h:outputText value="#{campania.fechaInicial}">
+                    <h:outputText value="#{preevaluacion.campania.fechaInicial}">
                         <f:convertDateTime pattern="dd/MM/yyyy" type="date"/>
                     </h:outputText>
                 </p:column>
                 <p:column headerText="Fecha fin">
-                    <h:outputText value="#{campania.fechaFinal}">
+                    <h:outputText value="#{preevaluacion.campania.fechaFinal}">
                         <f:convertDateTime pattern="dd/MM/yyyy" type="date"/>
                     </h:outputText>
                 </p:column>
                     <p:column headerText="Seleccionar">
                         <p:commandButton image="ui-icon ui-icon-circle-check" update="principalForm:mensajes" title="Seleccionar">
-                            <f:setPropertyActionListener value="#{campania}" target="#{empleados$campania.campaniaSeleccionada}"/>
+                            <f:setPropertyActionListener value="#{preevaluacion}" target="#{empleados$campania.preevaluacionSeleccionada}"/>
                         </p:commandButton>
                     </p:column>
             </p:dataTable>
