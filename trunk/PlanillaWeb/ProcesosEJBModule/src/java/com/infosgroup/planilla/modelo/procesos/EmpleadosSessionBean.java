@@ -307,4 +307,10 @@ public void crearPreEvaluacion(PreEvaluacion p)
 {
 preEvaluacionFacade.create(p);
 }
+
+@PermitAll
+public void editarPreEvaluacion(PreEvaluacion p)
+{
+preEvaluacionFacade.edit(p);
+}
 }
