@@ -48,7 +48,6 @@ private GerenciaFacade gerenciaFacade;
 private PreguntaFacade preguntaFacade;
 @EJB
 private PlantillaFacade plantillaFacade;
-
 @EJB
 private PreEvaluacionFacade preEvaluacionFacade;
 
