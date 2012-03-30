@@ -59,6 +59,12 @@ public List<Campania> listarCampanias(Cias cia)
 }
 
 @PermitAll
+public List<PreEvaluacion> findPreevaluacionByCias(Cias cias)
+{
+    return preEvaluacionFacade.findPreevaluacionByCias(cias);
+}
+
+@PermitAll
 public List<Campania> listarCampaniasPorEmpleado(Empleados empleado)
 {
     return campaniasFacade.findByEmpleadoEvaluador(empleado);

@@ -32,8 +32,8 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
     private EmpleadosSessionBean empleadosBean;
     @EJB
     private PlanillaSessionBean planillaSessionBean;
-    private List<Campania> listaCampanias;
-    private Campania campaniaSeleccionada;
+    private List<PreEvaluacion> listaPreEvaluacion;
+    private PreEvaluacion preEvaluacionSeleccionada;
     private List<Empleados> evaluadores;
     private Empleados evaluadorSeleccionado;
     private List<Empleados> evaluados;
@@ -49,7 +49,7 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
     
     @PostConstruct
     public void init() {
-        listaCampanias = empleadosBean.listarCampanias(getSessionBeanADM().getCompania());
+        listaPreEvaluacion = empleadosBean.findPreevaluacionByCias(getSessionBeanADM().getCompania());
         listaDepartamentos = planillaSessionBean.findDepartamentos(getSessionBeanADM().getCompania());
         listaPuestos = planillaSessionBean.findPuestos(getSessionBeanADM().getCompania());
     }
@@ -126,20 +126,20 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
         this.evaluadorSeleccionado = evaluadorSeleccionado;
     }
 
-    public List<Campania> getListaCampanias() {
-        return listaCampanias;
+    public List<PreEvaluacion> getListaPreEvaluacion() {
+        return listaPreEvaluacion;
     }
 
-    public void setListaCampanias(List<Campania> listaCampanias) {
-        this.listaCampanias = listaCampanias;
+    public void setListaPreEvaluacion(List<PreEvaluacion> listaPreEvaluacion) {
+        this.listaPreEvaluacion = listaPreEvaluacion;
     }
 
-    public Campania getCampaniaSeleccionada() {
-        return campaniaSeleccionada;
+    public PreEvaluacion getPreEvaluacionSeleccionada() {
+        return preEvaluacionSeleccionada;
     }
 
-    public void setCampaniaSeleccionada(Campania campaniaSeleccionada) {
-        this.campaniaSeleccionada = campaniaSeleccionada;
+    public void setPreEvaluacionSeleccionada(PreEvaluacion preEvaluacionSeleccionada) {
+        this.preEvaluacionSeleccionada = preEvaluacionSeleccionada;
     }
 
     public List<Empleados> getEvaluadores() {
@@ -159,63 +159,63 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
     }
 
     public String definirEvaluaciones$action() {
-        Integer excepciones = 0;
-        Boolean HayError = Boolean.FALSE;
-        String mensaje = null;
-        if (campaniaSeleccionada == null) {
-            addMessage("PlanillaWeb", "Seleccione la campa&ntilde;a", TipoMensaje.ADVERTENCIA);
-            HayError = Boolean.TRUE;
-        }
-
-        if ((sessionBeanEMP.getPuestosEmpleadosEvaluadores() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluadores().length == 0)) {
-            addMessage("PlanillaWeb", "Seleccione al menos un empleado como evaluador", TipoMensaje.ADVERTENCIA);
-            HayError = Boolean.TRUE;
-        }
-        if ((sessionBeanEMP.getPuestosEmpleadosEvaluados() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluados().length == 0)) {
-            addMessage("PlanillaWeb", "Seleccione al menos un empleado a evaluar", TipoMensaje.ADVERTENCIA);
-            HayError = Boolean.TRUE;
-        }
-
-        if (HayError) {
-            return null;
-        }
-
-        List<Evaluacion> evaluaciones = null;
-
-        if (empleadosBean.tieneEvaluaciones(campaniaSeleccionada)) {
-            addMessage("PlanillaWeb", "La campa&ntilde;a seleccionada ya tiene definidos tipo de evaluaci&oacute;n y plantilla", TipoMensaje.ADVERTENCIA);
-            evaluaciones = campaniaSeleccionada.getEvaluacionList();
-        } else {
-            evaluaciones = new ArrayList<Evaluacion>(0);
-            for (Empleados puestoEmpleado : sessionBeanEMP.getPuestosEmpleadosEvaluados()) {
-                EvaluacionPK evaluacionPK = new EvaluacionPK();
-                evaluacionPK.setCodCia(campaniaSeleccionada.getCampaniaPK().getCodCia());
-                evaluacionPK.setPeriodo(campaniaSeleccionada.getCampaniaPK().getPeriodo());
-                evaluacionPK.setCodCampania(campaniaSeleccionada.getCampaniaPK().getCodCampania());
-//                evaluacionPK.setTipoEvaluacion(plantillaSeleccionada.getPlantillaPK().getCodTipoEvaluacion());
-//                evaluacionPK.setPlantilla(plantillaSeleccionada.getPlantillaPK().getCodPlantilla());
-                evaluacionPK.setCodEmp(puestoEmpleado.getEmpleadosPK().getCodEmp());
-
-                Evaluacion evaluacion = new Evaluacion();
-                evaluacion.setEvaluacionPK(evaluacionPK);
-                evaluacion.setCampania(campaniaSeleccionada);
-//                evaluacion.setPlantilla1(plantillaSeleccionada);
-                evaluacion.setEmpleados(puestoEmpleado);
-                evaluacion.setFecha(Calendar.getInstance().getTime());
-                evaluacion.setFinalizada(0L);
-                evaluaciones.add(evaluacion);
-            }
-            excepciones = empleadosBean.crearEvaluaciones(evaluaciones);
-            mensaje = (excepciones == 0) ? "Todas las evaluaciones han sido creadas exitosamente" : "Ya se han definido " + excepciones + " de " + evaluaciones.size() + " evaluaciones para la campa&ntilde;a, plantilla y empleados seleccionados";
-            addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
-
-            excepciones = 0;
-            for (Empleados puestoEmpleadoEvaluador : sessionBeanEMP.getPuestosEmpleadosEvaluadores()) {
-                excepciones += empleadosBean.asignarEvaluaciones(evaluaciones, puestoEmpleadoEvaluador);
-            }
-            mensaje = (excepciones == 0) ? "Todas las asignaciones de evaluaciones han sido creadas y/o modificadas exitosamente" : "Ya se habian definido " + excepciones + " de " + evaluaciones.size() + " asignaciones a evaluadores para la campa&ntilde;a y plantilla seleccionados";
-            addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
-        }
+//        Integer excepciones = 0;
+//        Boolean HayError = Boolean.FALSE;
+//        String mensaje = null;
+//        if (preEvaluacionSeleccionada == null) {
+//            addMessage("PlanillaWeb", "Seleccione la campa&ntilde;a", TipoMensaje.ADVERTENCIA);
+//            HayError = Boolean.TRUE;
+//        }
+//
+//        if ((sessionBeanEMP.getPuestosEmpleadosEvaluadores() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluadores().length == 0)) {
+//            addMessage("PlanillaWeb", "Seleccione al menos un empleado como evaluador", TipoMensaje.ADVERTENCIA);
+//            HayError = Boolean.TRUE;
+//        }
+//        if ((sessionBeanEMP.getPuestosEmpleadosEvaluados() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluados().length == 0)) {
+//            addMessage("PlanillaWeb", "Seleccione al menos un empleado a evaluar", TipoMensaje.ADVERTENCIA);
+//            HayError = Boolean.TRUE;
+//        }
+//
+//        if (HayError) {
+//            return null;
+//        }
+//
+//        List<Evaluacion> evaluaciones = null;
+//
+//        if (empleadosBean.tieneEvaluaciones(preEvaluacionSeleccionada)) {
+//            addMessage("PlanillaWeb", "La campa&ntilde;a seleccionada ya tiene definidos tipo de evaluaci&oacute;n y plantilla", TipoMensaje.ADVERTENCIA);
+//            evaluaciones = campaniaSeleccionada.getEvaluacionList();
+//        } else {
+//            evaluaciones = new ArrayList<Evaluacion>(0);
+//            for (Empleados puestoEmpleado : sessionBeanEMP.getPuestosEmpleadosEvaluados()) {
+//                EvaluacionPK evaluacionPK = new EvaluacionPK();
+//                evaluacionPK.setCodCia(campaniaSeleccionada.getCampaniaPK().getCodCia());
+//                evaluacionPK.setPeriodo(campaniaSeleccionada.getCampaniaPK().getPeriodo());
+//                evaluacionPK.setCodCampania(campaniaSeleccionada.getCampaniaPK().getCodCampania());
+////                evaluacionPK.setTipoEvaluacion(plantillaSeleccionada.getPlantillaPK().getCodTipoEvaluacion());
+////                evaluacionPK.setPlantilla(plantillaSeleccionada.getPlantillaPK().getCodPlantilla());
+//                evaluacionPK.setCodEmp(puestoEmpleado.getEmpleadosPK().getCodEmp());
+//
+//                Evaluacion evaluacion = new Evaluacion();
+//                evaluacion.setEvaluacionPK(evaluacionPK);
+//                evaluacion.setCampania(campaniaSeleccionada);
+////                evaluacion.setPlantilla1(plantillaSeleccionada);
+//                evaluacion.setEmpleados(puestoEmpleado);
+//                evaluacion.setFecha(Calendar.getInstance().getTime());
+//                evaluacion.setFinalizada(0L);
+//                evaluaciones.add(evaluacion);
+//            }
+//            excepciones = empleadosBean.crearEvaluaciones(evaluaciones);
+//            mensaje = (excepciones == 0) ? "Todas las evaluaciones han sido creadas exitosamente" : "Ya se han definido " + excepciones + " de " + evaluaciones.size() + " evaluaciones para la campa&ntilde;a, plantilla y empleados seleccionados";
+//            addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
+//
+//            excepciones = 0;
+//            for (Empleados puestoEmpleadoEvaluador : sessionBeanEMP.getPuestosEmpleadosEvaluadores()) {
+//                excepciones += empleadosBean.asignarEvaluaciones(evaluaciones, puestoEmpleadoEvaluador);
+//            }
+//            mensaje = (excepciones == 0) ? "Todas las asignaciones de evaluaciones han sido creadas y/o modificadas exitosamente" : "Ya se habian definido " + excepciones + " de " + evaluaciones.size() + " asignaciones a evaluadores para la campa&ntilde;a y plantilla seleccionados";
+//            addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
+//        }
         return null;
     }
 
@@ -291,7 +291,7 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
         Integer a = Integer.parseInt(anterior.replaceAll("tab", ""));
         switch (a) {
             case 0:
-                hayError = (campaniaSeleccionada == null);
+                hayError = (preEvaluacionSeleccionada == null);
                 break;
             case 1:
                 hayError = ((evaluadores == null) || (evaluadores.isEmpty()));
