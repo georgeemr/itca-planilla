@@ -208,8 +208,7 @@ private void guardarCampania()
         campania.setEstado("G");
         campania.setNota(new BigDecimal(nota));
 
-        empleadosBean.crearCampania(campania);
-        addMessage("Infosweb RRHH", "Campa&ntilde;a creada exitosamente", TipoMensaje.INFORMACION);
+        empleadosBean.crearCampania(campania);        
         
         campania = empleadosBean.findCampaniaByPK(campaniaPK);        
         
@@ -226,6 +225,8 @@ private void guardarCampania()
         preEvaluacion.setPlantilla1(plantillaSeleccionada);
         
         empleadosBean.crearPreEvaluacion(preEvaluacion);
+        
+        addMessage("Infosweb RRHH", "Campa&ntilde;a creada exitosamente", TipoMensaje.INFORMACION);
 
         nombre = null;
         periodo = null;
@@ -254,7 +255,7 @@ private void editarCampania(Campania c)
         campania.setNota(new BigDecimal(nota));
 
         empleadosBean.editarCampania(campania);
-        addMessage("Infosweb RRHH", "Campa&ntilde;a editada exitosamente", TipoMensaje.INFORMACION);
+        addMessage("Infosweb RRHH", "Campa&ntilde;a editada exitosamente", TipoMensaje.INFORMACION);        
 
         nombre = null;
         periodo = null;
@@ -263,7 +264,7 @@ private void editarCampania(Campania c)
         nota = null;
         campaniaSeleccionada = null;
         tipoEvaluacionSeleccionada = null;
-        plantillaSeleccionada = null;
+        plantillaSeleccionada = null;        
         }
     catch (Exception e)
         {
