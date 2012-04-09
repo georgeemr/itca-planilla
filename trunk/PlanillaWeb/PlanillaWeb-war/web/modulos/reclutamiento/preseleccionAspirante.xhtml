@@ -415,8 +415,14 @@
                   showStepStatus="true" 
                   backLabel="Anterior" nextLabel="Siguiente"  >
             <p:tab id="concursoSeleccionado" title="Concursos"  >
-                <p:spacer height="20" />
+                <p:spacer height="5" />
                 <p:panel header="Paso 1 de 5" style="border:none;" >
+                    <p:spacer width="8" />
+                    <h:panelGrid columns="1"  >
+                    <h:outputLabel value="Complete los rangos de fecha para encontrar un concurso especifico, o presione el boton buscar sin ingresar fechas para mostrar TODOS los concursos Activos." />
+                    <h:outputLabel value="No podrá avanzar al paso 2 sin haber seleccionado un concurso." />
+                    </h:panelGrid>
+                    <p:spacer width="8" />
                     <h:panelGrid columns="8"  >
                         <h:outputLabel value=""/>
                         <h:outputLabel value="Fecha inicial"/>
@@ -427,7 +433,7 @@
                         <p:commandButton value="Buscar" image="buscar" action="#{reclutamiento$preseleccionAspirante.buscarConcurso$action()}"
                                          update="mensajes,calFechaInicial,calFechaFinal,tablaConcursos,principalForm:criteriosDisponibles,panelAcciones" />
                     </h:panelGrid>
-                    <p:spacer width="20" />
+                    <p:spacer width="4" />
                     <p:dataTable id="tablaConcursos" paginator="true" emptyMessage="No se han encontrado concursos."
                                  var="concurso" rows="5"  onRowSelectUpdate="panelAcciones,panelProceso" onRowUnselectUpdate="panelAcciones,panelProceso"
                                  value="#{reclutamiento$preseleccionAspirante.listaConcurso}"
