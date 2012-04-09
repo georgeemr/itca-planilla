@@ -308,9 +308,16 @@ public void crearPreEvaluacion(PreEvaluacion p)
 preEvaluacionFacade.create(p);
 }
 
+
+@PermitAll    
+public List<Empleados> findEmpleadosByJefe(Empleados jefe) {
+return empleadosFacade.findEmpleadosByJefe(jefe);
+}
+
 @PermitAll
 public void editarPreEvaluacion(PreEvaluacion p)
 {
 preEvaluacionFacade.edit(p);
 }
+
 }
