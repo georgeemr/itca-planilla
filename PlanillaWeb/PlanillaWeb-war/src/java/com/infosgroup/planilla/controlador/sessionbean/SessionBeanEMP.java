@@ -9,7 +9,6 @@ import com.infosgroup.planilla.modelo.entidades.Evaluacion;
 import com.infosgroup.planilla.modelo.entidades.Factor;
 import com.infosgroup.planilla.modelo.entidades.PreEvaluacion;
 import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
-import com.infosgroup.planilla.modelo.facades.EmpleadoFacade;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -26,8 +25,6 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 public class SessionBeanEMP implements java.io.Serializable {
 
-    @EJB
-    private EmpleadoFacade empleadoFacade;
     @EJB
     private EmpleadosSessionBean empleadosBean;
     private Empleados empleadoSesion;
