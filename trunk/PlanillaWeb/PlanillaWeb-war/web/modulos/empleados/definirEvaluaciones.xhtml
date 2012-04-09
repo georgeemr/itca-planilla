@@ -36,7 +36,9 @@
                 <p:spacer height="15" />
 
                 <p:dataTable id="tablaCampanias" paginator="true" emptyMessage="No se han encontrado Campa&ntilde;as." rowsPerPageTemplate="5,10,25,50,100"
-                             var="preEvaluacion" rows="5"  selection="#{SessionBeanEMP.preEvaluacionSeleccionada}"
+                             var="preEvaluacion" rows="5"  selection="#{empleados$definirEvaluaciones.preEvaluacionSeleccionada}"
+                             rowSelectListener="#{empleados$definirEvaluaciones.rowSelectListener}"
+                             rowUnselectListener="#{empleados$definirEvaluaciones.rowUnSelectListener}"
                              value="#{empleados$definirEvaluaciones.listaPreEvaluacion}" paginatorAlwaysVisible="true" selectionMode="single"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >
 
@@ -195,8 +197,26 @@
 
                 <p:panel id="panelSeleccionEvaluados" style="border:none;" >
                     <p:spacer height="7" />
-                    <h:panelGrid columns="1" >
-                        <h:outputLabel value="Informacion adicional" />
+                    <h:panelGrid columns="2" >
+                        <h:outputLabel value="Evaluaci&oacute;n: " style="font-weight: bold" />
+                        <h:outputLabel value="${SessionBeanEMP.preEvaluacionSeleccionada.campania.nomCampania}" />    
+                        <h:outputLabel value="Fecha Inicial: " style="font-weight: bold" />
+                        <h:panelGroup>
+                            <h:panelGrid columns="4" >
+                                <h:outputLabel value="#{SessionBeanEMP.preEvaluacionSeleccionada.campania.fechaInicial}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputLabel>
+                                <p:spacer width="5" />
+                                <h:outputLabel value="Fecha Final: " style="font-weight: bold" />
+                                <h:outputLabel value="#{SessionBeanEMP.preEvaluacionSeleccionada.campania.fechaFinal}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputLabel>
+                            </h:panelGrid>
+                        </h:panelGroup>
+                        <h:outputLabel value="Tipo de Evaluaci&oacute;n: " style="font-weight: bold" />
+                        <h:outputLabel value="${SessionBeanEMP.preEvaluacionSeleccionada.tipoEvaluacion1.nomTipoEvaluacion}" />    
+                        <h:outputLabel value="Plantilla: " style="font-weight: bold" />
+                        <h:outputLabel value="${SessionBeanEMP.preEvaluacionSeleccionada.plantilla1.nombre}" />    
                     </h:panelGrid>
                     <p:spacer height="10" />
 
@@ -245,7 +265,7 @@
                         </p:column>
 
                         <p:column headerText="Total" style="width: 5%;" >
-                            <h:outputLabel id="lblTotal" value="#{evaluado.cantidad}" />
+                            <h:outputLabel id="lblTotal" value="#{evaluado.cantidad}" styleClass="#{evaluado.cantidad lt 1 ? 'afectadosMinimo' : 'afectadosMaximo' }" />
                         </p:column> 
 
                         <p:column headerText="Remover" style="width: 5%;" >
