@@ -5,13 +5,15 @@
 package com.infosgroup.planilla.controlador.modulos.empleados;
 
 import com.infosgroup.planilla.modelo.entidades.*;
+import com.infosgroup.planilla.modelo.estructuras.ModelEvaluadorEvaluado;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -33,10 +35,11 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
     @EJB
     private PlanillaSessionBean planillaSessionBean;
     private List<PreEvaluacion> listaPreEvaluacion;
-    private PreEvaluacion preEvaluacionSeleccionada;
+    //private PreEvaluacion preEvaluacionSeleccionada;
     private List<Empleados> evaluadores;
     private Empleados evaluadorSeleccionado;
-    private List<Empleados> evaluados;
+    private List<ModelEvaluadorEvaluado> evaluados;
+    private ModelEvaluadorEvaluado evaluadoSeleccionado;
     private List<Empleados> listaEmpleados;
     private String tituloMensajes = "Definir Evaluaciones";
     private Boolean modoBusqueda = Boolean.FALSE;
@@ -44,9 +47,10 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
     private List<Departamentos> listaDepartamentos;
     private List<Puestos> listaPuestos;
     private Short departamento;
+    private Short departamentoEvaluado;
     private Short puesto;
-    private String fase = "1";
-    
+    private Empleados[] empleadosSeleccionados;
+
     @PostConstruct
     public void init() {
         listaPreEvaluacion = empleadosBean.findPreevaluacionByCias(getSessionBeanADM().getCompania());
@@ -54,19 +58,35 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
         listaPuestos = planillaSessionBean.findPuestos(getSessionBeanADM().getCompania());
     }
 
-    public String getFase() {
-        return fase;
+    public Empleados[] getEmpleadosSeleccionados() {
+        return empleadosSeleccionados;
     }
 
-    public void setFase(String fase) {
-        this.fase = fase;
+    public void setEmpleadosSeleccionados(Empleados[] empleadosSeleccionados) {
+        this.empleadosSeleccionados = empleadosSeleccionados;
     }
 
-    public List<Empleados> getEvaluados() {
+    public Short getDepartamentoEvaluado() {
+        return departamentoEvaluado;
+    }
+
+    public void setDepartamentoEvaluado(Short departamentoEvaluado) {
+        this.departamentoEvaluado = departamentoEvaluado;
+    }
+
+    public ModelEvaluadorEvaluado getEvaluadoSeleccionado() {
+        return evaluadoSeleccionado;
+    }
+
+    public void setEvaluadoSeleccionado(ModelEvaluadorEvaluado evaluadoSeleccionado) {
+        this.evaluadoSeleccionado = evaluadoSeleccionado;
+    }
+
+    public List<ModelEvaluadorEvaluado> getEvaluados() {
         return evaluados;
     }
 
-    public void setEvaluados(List<Empleados> evaluados) {
+    public void setEvaluados(List<ModelEvaluadorEvaluado> evaluados) {
         this.evaluados = evaluados;
     }
 
@@ -134,13 +154,13 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
         this.listaPreEvaluacion = listaPreEvaluacion;
     }
 
-    public PreEvaluacion getPreEvaluacionSeleccionada() {
-        return preEvaluacionSeleccionada;
-    }
-
-    public void setPreEvaluacionSeleccionada(PreEvaluacion preEvaluacionSeleccionada) {
-        this.preEvaluacionSeleccionada = preEvaluacionSeleccionada;
-    }
+//    public PreEvaluacion getPreEvaluacionSeleccionada() {
+//        return preEvaluacionSeleccionada;
+//    }
+//
+//    public void setPreEvaluacionSeleccionada(PreEvaluacion preEvaluacionSeleccionada) {
+//        this.preEvaluacionSeleccionada = preEvaluacionSeleccionada;
+//    }
 
     public List<Empleados> getEvaluadores() {
         return evaluadores;
@@ -159,63 +179,57 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
     }
 
     public String definirEvaluaciones$action() {
-//        Integer excepciones = 0;
-//        Boolean HayError = Boolean.FALSE;
-//        String mensaje = null;
-//        if (preEvaluacionSeleccionada == null) {
-//            addMessage("PlanillaWeb", "Seleccione la campa&ntilde;a", TipoMensaje.ADVERTENCIA);
-//            HayError = Boolean.TRUE;
-//        }
-//
-//        if ((sessionBeanEMP.getPuestosEmpleadosEvaluadores() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluadores().length == 0)) {
-//            addMessage("PlanillaWeb", "Seleccione al menos un empleado como evaluador", TipoMensaje.ADVERTENCIA);
-//            HayError = Boolean.TRUE;
-//        }
-//        if ((sessionBeanEMP.getPuestosEmpleadosEvaluados() == null) || (sessionBeanEMP.getPuestosEmpleadosEvaluados().length == 0)) {
-//            addMessage("PlanillaWeb", "Seleccione al menos un empleado a evaluar", TipoMensaje.ADVERTENCIA);
-//            HayError = Boolean.TRUE;
-//        }
-//
-//        if (HayError) {
-//            return null;
-//        }
-//
-//        List<Evaluacion> evaluaciones = null;
-//
-//        if (empleadosBean.tieneEvaluaciones(preEvaluacionSeleccionada)) {
-//            addMessage("PlanillaWeb", "La campa&ntilde;a seleccionada ya tiene definidos tipo de evaluaci&oacute;n y plantilla", TipoMensaje.ADVERTENCIA);
-//            evaluaciones = campaniaSeleccionada.getEvaluacionList();
-//        } else {
-//            evaluaciones = new ArrayList<Evaluacion>(0);
-//            for (Empleados puestoEmpleado : sessionBeanEMP.getPuestosEmpleadosEvaluados()) {
-//                EvaluacionPK evaluacionPK = new EvaluacionPK();
-//                evaluacionPK.setCodCia(campaniaSeleccionada.getCampaniaPK().getCodCia());
-//                evaluacionPK.setPeriodo(campaniaSeleccionada.getCampaniaPK().getPeriodo());
-//                evaluacionPK.setCodCampania(campaniaSeleccionada.getCampaniaPK().getCodCampania());
-////                evaluacionPK.setTipoEvaluacion(plantillaSeleccionada.getPlantillaPK().getCodTipoEvaluacion());
-////                evaluacionPK.setPlantilla(plantillaSeleccionada.getPlantillaPK().getCodPlantilla());
-//                evaluacionPK.setCodEmp(puestoEmpleado.getEmpleadosPK().getCodEmp());
-//
-//                Evaluacion evaluacion = new Evaluacion();
-//                evaluacion.setEvaluacionPK(evaluacionPK);
-//                evaluacion.setCampania(campaniaSeleccionada);
-////                evaluacion.setPlantilla1(plantillaSeleccionada);
-//                evaluacion.setEmpleados(puestoEmpleado);
-//                evaluacion.setFecha(Calendar.getInstance().getTime());
-//                evaluacion.setFinalizada(0L);
-//                evaluaciones.add(evaluacion);
-//            }
-//            excepciones = empleadosBean.crearEvaluaciones(evaluaciones);
-//            mensaje = (excepciones == 0) ? "Todas las evaluaciones han sido creadas exitosamente" : "Ya se han definido " + excepciones + " de " + evaluaciones.size() + " evaluaciones para la campa&ntilde;a, plantilla y empleados seleccionados";
-//            addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
-//
-//            excepciones = 0;
-//            for (Empleados puestoEmpleadoEvaluador : sessionBeanEMP.getPuestosEmpleadosEvaluadores()) {
-//                excepciones += empleadosBean.asignarEvaluaciones(evaluaciones, puestoEmpleadoEvaluador);
-//            }
-//            mensaje = (excepciones == 0) ? "Todas las asignaciones de evaluaciones han sido creadas y/o modificadas exitosamente" : "Ya se habian definido " + excepciones + " de " + evaluaciones.size() + " asignaciones a evaluadores para la campa&ntilde;a y plantilla seleccionados";
-//            addMessage("PlanillaWeb", mensaje, TipoMensaje.INFORMACION);
-//        }
+        if (evaluados == null && evaluados.isEmpty()) {
+            addMessage(tituloMensajes, "No hay datos que guardar.", TipoMensaje.INFORMACION);
+            return null;
+        }
+        for (ModelEvaluadorEvaluado e : evaluados) {
+            if (e.getCantidad().equals(0)) {
+                addMessage(tituloMensajes, e.getEvaluador().getNombreCompleto() + " no tiene personal a evaluar.", TipoMensaje.INFORMACION);
+                break;
+            }
+        }
+
+        try {
+
+            for (ModelEvaluadorEvaluado e : evaluados) {
+                List<Evaluacion> evaluacion = new ArrayList<Evaluacion>();
+                for (Empleados z : e.getListaEvaluados()) {
+                    Evaluacion v = new Evaluacion();
+                    EvaluacionPK pk = new EvaluacionPK();
+                    pk.setCodCia( getSessionBeanEMP().getPreEvaluacionSeleccionada().getPreEvaluacionPK().getCodCia());
+                    pk.setCodCampania(getSessionBeanEMP().getPreEvaluacionSeleccionada().getPreEvaluacionPK().getCodCampania());
+                    pk.setCodEmp(z.getEmpleadosPK().getCodEmp());
+                    pk.setPeriodo(getSessionBeanEMP().getPreEvaluacionSeleccionada().getPreEvaluacionPK().getPeriodo());
+                    pk.setPlantilla(getSessionBeanEMP().getPreEvaluacionSeleccionada().getPreEvaluacionPK().getPlantilla());
+                    pk.setTipoEvaluacion(getSessionBeanEMP().getPreEvaluacionSeleccionada().getPreEvaluacionPK().getTipoEvaluacion());
+                    v.setEvaluacionPK(pk);
+                    v.setFecha(new Date());
+                    v.setFinalizada(0L);
+                    evaluacion.add(v);
+                }
+
+                if (e.getEvaluador().getEvaluacionList() != null) {
+                    for ( Evaluacion n: evaluacion ) {
+                        for ( Evaluacion m : e.getEvaluador().getEvaluacionList() ){
+                            if ( n.getEvaluacionPK().equals( m.getEvaluacionPK() )){
+                                continue;
+                            }else{
+                                e.getEvaluador().getEvaluacionList().add(m);
+                            }
+                        }
+                    }
+                }else{
+                    e.getEvaluador().setEvaluacionList( new ArrayList<Evaluacion>() );
+                    e.getEvaluador().getEvaluacionList().addAll(evaluacion);
+                }   
+                planillaSessionBean.actualizarEmpleado(e.getEvaluador());
+            }
+            addMessage(tituloMensajes, "Datos guardados.", TipoMensaje.INFORMACION);
+        } catch (Exception e) {
+            addMessage(tituloMensajes, "Ocurrio un error al intentar guardar.", TipoMensaje.INFORMACION);
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -285,22 +299,82 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
         return null;
     }
 
+    public String calcularEvaluados() {
+        if (evaluadoSeleccionado == null) {
+            return null;
+        }
+        ModelEvaluadorEvaluado m = evaluadoSeleccionado;
+        if (evaluadoSeleccionado.getFiltroEvaluados().equals("D")) {
+            if (departamentoEvaluado == null || departamentoEvaluado.equals(new Short("-1"))) {
+                addMessage(tituloMensajes, "Seleccione un departamento.", TipoMensaje.ERROR);
+                return null;
+            }
+            m.setListaEvaluados(planillaSessionBean.findEmpleadosByDepartamentos(new Departamentos(new DepartamentosPK(getSessionBeanADM().getCompania().getCodCia(), departamentoEvaluado))));
+            evaluados.set(evaluados.indexOf(evaluadoSeleccionado), m);
+        } else if (evaluadoSeleccionado.getFiltroEvaluados().equals("C")) {
+            m.setListaEvaluados(empleadosBean.findEmpleadosByJefe(evaluadoSeleccionado.getEvaluador()));
+            evaluados.set(evaluados.indexOf(evaluadoSeleccionado), m);
+        }
+        return null;
+    }
+
     public String wizardFlowListener(FlowEvent flowEvt) {
         Boolean hayError = Boolean.FALSE;
         String anterior = flowEvt.getOldStep();
         Integer a = Integer.parseInt(anterior.replaceAll("tab", ""));
         switch (a) {
             case 0:
-                hayError = (preEvaluacionSeleccionada == null);
+                hayError = (getSessionBeanEMP().getPreEvaluacionSeleccionada() == null);
                 break;
             case 1:
-                hayError = ((evaluadores == null) || (evaluadores.isEmpty()));
+                if ((evaluadores == null) || (evaluadores.isEmpty())) {
+                    hayError = Boolean.TRUE;
+                } else {
+                    setEvaluados(new ArrayList<ModelEvaluadorEvaluado>());
+                    if (evaluadores != null && !evaluadores.isEmpty()) {
+                        for (Empleados e : evaluadores) {
+                            evaluados.add(new ModelEvaluadorEvaluado(e, new ArrayList<Empleados>()));
+                        }
+                    }
+                }
+                setListaEmpleados(planillaSessionBean.listaEmpleados(getSessionBeanADM().getCompania()));
                 break;
             case 2:
                 hayError = ((evaluados == null) || (evaluados.isEmpty()));
                 break;
         }
         return hayError ? flowEvt.getOldStep() : flowEvt.getNewStep();
+    }
+
+    public String aceptarSeleccion() {
+        if (evaluadoSeleccionado == null) {
+            return null;
+        }
+        ModelEvaluadorEvaluado m = evaluadoSeleccionado;
+        List<Empleados> e = Arrays.asList(empleadosSeleccionados);
+        if (e != null) {
+            m.setListaEvaluados(e);
+            evaluados.set(evaluados.indexOf(evaluadoSeleccionado), m);
+        }
+        return null;
+    }
+
+    public String removerEvaluado() {
+        if (evaluadoSeleccionado == null) {
+            return null;
+        }
+        if (evaluados != null && !evaluados.isEmpty()) {
+            if (evaluados.contains(evaluadoSeleccionado)) {
+                evaluados.remove(evaluadoSeleccionado);
+                addMessage(tituloMensajes, "Evaluado Eliminado", TipoMensaje.INFORMACION);
+            }
+        }
+        return null;
+    }
+
+    public String limpiarSeleccion() {
+        setEmpleadosSeleccionados(null);
+        return null;
     }
 
     @Override
