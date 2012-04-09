@@ -175,6 +175,12 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
     }
 
     @PermitAll
+    public List<Empleados> findEmpleadosByJefe(Empleados jefe) {
+        List<Empleados> l = em.createQuery("SELECT e FROM Empleados e WHERE e.empleados = :jefe", Empleados.class).setParameter("jefe",jefe).getResultList();
+        return l != null ? l : new ArrayList<Empleados>();
+    }
+
+    @PermitAll
     public List<Empleados> findJefesByDepto(Departamentos depto) {
         List<Empleados> l = em.createQuery("SELECT e FROM Empleados e WHERE e.empleadosPK.codCia = :codCia AND e.departamentos = :departamentos AND e.puestos.jefatura = 'SI'", Empleados.class).setParameter("departamentos", depto).setParameter("codCia", depto.getDepartamentosPK().getCodCia()).getResultList();
         return l != null ? l : new ArrayList<Empleados>();
