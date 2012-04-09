@@ -19,7 +19,7 @@
                 <g:menuAccionItem label="Filtrar por Nombre" action="#{empleados$definirEvaluaciones.buscarEvaluadoresPorNombre}" image="/resources/iconos/candidato-criterio.png" update="principalForm:mensajes,principalForm:panelSeleccionEvaluadores,tablaEvaluadoresDisponibles,tablaEvaluadores" />
                 <g:menuAccionItem label="Filtrar por Puestos" action="#{empleados$definirEvaluaciones.buscarEvaluadoresPorPuesto}" image="/resources/iconos/personal.png" update="principalForm:mensajes,principalForm:panelSeleccionEvaluadores,tablaEvaluadoresDisponibles,tablaEvaluadores" />
                 <g:menuAccionItem label="Filtrar por Departamentos" action="#{empleados$definirEvaluaciones.buscarEvaluadoresPorDepartamento}" image="/resources/iconos/groups-departaments.png" update="principalForm:mensajes,principalForm:panelSeleccionEvaluadores,tablaEvaluadoresDisponibles,tablaEvaluadores" />
-                <g:menuAccionItem label="Volver a Campa&ntilde;as" action="#{empleados$definirEvaluaciones.volverACampanias}" image="/resources/iconos/arrow-left.png" update="principalForm:mensajes" />
+                <g:menuAccionItem label="Volver a Evaluaciones" action="#{empleados$definirEvaluaciones.volverACampanias}" image="/resources/iconos/arrow-left.png" update="principalForm:mensajes" />
             </h:panelGrid>
         </p:tab>
         <p:tab title="Otras acciones">
@@ -34,8 +34,9 @@
         <p:wizard flowListener="#{empleados$definirEvaluaciones.wizardFlowListener}" showNavBar="true" showStepStatus="true" backLabel="Anterior" nextLabel="Siguiente">
             <p:tab id="tab0" title="Evaluaci&oacute;n">
                 <p:spacer height="15" />
+
                 <p:dataTable id="tablaCampanias" paginator="true" emptyMessage="No se han encontrado Campa&ntilde;as." rowsPerPageTemplate="5,10,25,50,100"
-                             var="preEvaluacion" rows="5"  selection="#{empleados$definirEvaluaciones.preEvaluacionSeleccionada}"
+                             var="preEvaluacion" rows="5"  selection="#{SessionBeanEMP.preEvaluacionSeleccionada}"
                              value="#{empleados$definirEvaluaciones.listaPreEvaluacion}" paginatorAlwaysVisible="true" selectionMode="single"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >
 
@@ -43,27 +44,45 @@
                         <h:outputText value="Campa&ntilde;as"/>
                     </f:facet>
 
-                    <p:column sortBy="#{preEvaluacion.campania.campaniaPK.codCampania}" headerText="C&oacute;digo" style="width: 10%">
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" headerText="C&oacute;digo" />
+                            <p:column rowspan="2" headerText="Nombre de Campa&ntilde;a" filterBy="#{preEvaluacion.campania.nomCampania}" filterMatchMode="contains"/>
+                            <p:column rowspan="2" headerText="Tipo" />
+                            <p:column rowspan="1" colspan="2" headerText="Fecha" />
+                            <p:column rowspan="2" headerText="Periodo" sortBy="#{preEvaluacion.campania.campaniaPK.periodo}" />
+                        </p:row>
+                        <p:row>
+                            <p:column rowspan="1" headerText="Inicial" sortBy="#{preEvaluacion.campania.fechaInicial}" />
+                            <p:column rowspan="1" headerText="Final" sortBy="#{preEvaluacion.campania.fechaFinal}" />
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column style="width: 6%">
                         <h:outputLabel value="#{preEvaluacion.campania.campaniaPK.codCampania}"/>
                     </p:column>
 
-                    <p:column filterBy="#{preEvaluacion.campania.nomCampania}" filterMatchMode="contains" headerText="Nombre de Campa&ntilde;a ">
+                    <p:column>
                         <h:outputLabel value="#{preEvaluacion.campania.nomCampania}"/>
                     </p:column> 
 
-                    <p:column sortBy="#{preEvaluacion.campania.fechaInicial}" headerText="Fecha inicial" style="width: 12%">
+                    <p:column>
+                        <h:outputLabel value="#{preEvaluacion.tipoEvaluacion1.nomTipoEvaluacion}"/>
+                    </p:column> 
+
+                    <p:column style="width: 8%">
                         <h:outputLabel value="#{preEvaluacion.campania.fechaInicial}" >
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputLabel>
                     </p:column>    
 
-                    <p:column sortBy="#{preEvaluacion.campania.fechaFinal}" headerText="Fecha final" style="width: 12%">
+                    <p:column style="width: 8%">
                         <h:outputLabel value="#{preEvaluacion.campania.fechaFinal}" >
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputLabel>
                     </p:column>         
 
-                    <p:column sortBy="#{preEvaluacion.campania.campaniaPK.periodo}" headerText="Periodo" style="width: 8%" >
+                    <p:column style="width: 8%" >
                         <h:outputLabel value="#{preEvaluacion.campania.campaniaPK.periodo}" />
                     </p:column> 
 
@@ -71,11 +90,32 @@
             </p:tab>
 
             <p:tab id="tab1" title="Evaluadores">
-                <p:spacer height="7" />
-                <h:panelGrid columns="2" >
-                    <h:outputLabel value="Evaluaci&oacute;n Seleccionada: " style="font-weight: bold" />
-                    <h:outputLabel value="${empleados$definirEvaluaciones.preEvaluacionSeleccionada.campania.nomCampania}" />    
-                </h:panelGrid>
+
+                <p:panel style="border: none;" >
+                    <p:spacer height="7" />
+                    <h:panelGrid columns="2" >
+                        <h:outputLabel value="Evaluaci&oacute;n: " style="font-weight: bold" />
+                        <h:outputLabel value="${SessionBeanEMP.preEvaluacionSeleccionada.campania.nomCampania}" />    
+                        <h:outputLabel value="Fecha Inicial: " style="font-weight: bold" />
+                        <h:panelGroup>
+                            <h:panelGrid columns="4" >
+                                <h:outputLabel value="#{SessionBeanEMP.preEvaluacionSeleccionada.campania.fechaInicial}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputLabel>
+                                <p:spacer width="5" />
+                                <h:outputLabel value="Fecha Final: " style="font-weight: bold" />
+                                <h:outputLabel value="#{SessionBeanEMP.preEvaluacionSeleccionada.campania.fechaFinal}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputLabel>
+                            </h:panelGrid>
+                        </h:panelGroup>
+                        <h:outputLabel value="Tipo de Evaluaci&oacute;n: " style="font-weight: bold" />
+                        <h:outputLabel value="${SessionBeanEMP.preEvaluacionSeleccionada.tipoEvaluacion1.nomTipoEvaluacion}" />    
+                        <h:outputLabel value="Plantilla: " style="font-weight: bold" />
+                        <h:outputLabel value="${SessionBeanEMP.preEvaluacionSeleccionada.plantilla1.nombre}" />    
+                    </h:panelGrid>
+                </p:panel>
+
                 <p:spacer height="7" />
                 <p:panel id="panelSeleccionEvaluadores" style="border:none;" >
                     <p:dataTable id="tablaEvaluadores" paginator="true" emptyMessage="No se ha Seleccionado Evaluadores." rowsPerPageTemplate="5,10,25,50,100"
@@ -152,39 +192,71 @@
             </p:tab>
 
             <p:tab id="tab2" title="Evaluados">
-                <p:spacer height="7" />
-                <h:panelGrid columns="2" >
-                    <h:outputLabel value="Evaluaci&oacute;n Seleccionada: " style="font-weight: bold" />
-                    <h:outputLabel value="${empleados$definirEvaluaciones.campaniaSeleccionada.nomCampania}" />    
-                </h:panelGrid>
-                <p:spacer height="7" />
+
                 <p:panel id="panelSeleccionEvaluados" style="border:none;" >
+                    <p:spacer height="7" />
+                    <h:panelGrid columns="1" >
+                        <h:outputLabel value="Informacion adicional" />
+                    </h:panelGrid>
+                    <p:spacer height="10" />
+
                     <p:dataTable id="tablaSeleccionEvaluados" paginator="true" emptyMessage="No se ha Seleccionado Evaluadores." rowsPerPageTemplate="5,10,25,50,100"
-                                 rendered="#{!empleados$definirEvaluaciones.modoBusqueda}" value="#{empleados$definirEvaluaciones.evaluadores}" var="evaluador" rows="5" paginatorAlwaysVisible="true"
+                                 value="#{empleados$definirEvaluaciones.evaluados}" var="evaluado" rows="5" paginatorAlwaysVisible="true"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >
 
                         <f:facet name="header">
-                            <h:outputText value="Evaluadores Seleccionados"/>
+                            <h:outputText value="Evaluados Seleccionados"/>
                         </f:facet>
 
-                        <p:column sortBy="#{evaluador.empleadosPK.codEmp}" headerText="C&oacute;digo" style="width: 10%">
-                            <h:outputLabel value="#{evaluador.empleadosPK.codEmp}"/>
+                        <p:column headerText="C&oacute;digo" style="width: 5%">
+                            <h:outputLabel value="#{evaluado.evaluador.empleadosPK.codEmp}"/>
                         </p:column>
 
-                        <p:column filterBy="#{evaluador.nombreCompleto}" filterMatchMode="contains" headerText="Nombre ">
-                            <h:outputLabel value="#{evaluador.nombreCompleto}"/>
+                        <p:column sortBy="#{evaluado.evaluador.nombreCompleto}" style="width: 20%" headerText="Evaluador">
+                            <h:outputLabel value="#{evaluado.evaluador.nombreCompleto}"/>
                         </p:column> 
 
-                        <p:column headerText="Puesto ">
-                            <h:outputLabel value="#{evaluador.puestos.nomPuesto}"/>
+                        <p:column headerText="Criterio" style="width: 5%">
+                            <h:selectOneMenu  id="lstSeleccionaCriterio" value="#{evaluado.filtroEvaluados}" style="height: 25px;padding-top: 3px;width: 200px;" >
+                                <f:ajax event="change" execute="lstSeleccionaCriterio" render="tablaSeleccionEvaluados panel lblTotal" />
+                                <f:selectItem itemValue="S" itemLabel="[ SELECCIONE UN CRITERIO ]" />
+                                <f:selectItem itemValue="C" itemLabel="EVALUAR COLABORADORES" />
+                                <f:selectItem itemValue="D" itemLabel="EVALUAR DEPARTAMENTO" />
+                                <f:selectItem itemValue="E" itemLabel="SELECCIONAR EMPLEADOS" />
+                            </h:selectOneMenu>
+                        </p:column> 
+
+                        <p:column headerText="Filtrar por" style="width: 15%;" >
+
+                            <h:panelGroup id="panel" style="padding: 0;" >
+                                <h:selectOneMenu id="listaDepartamentos" value="#{empleados$definirEvaluaciones.departamentoEvaluado}" rendered="#{evaluado.filtroEvaluados eq 'D' }" style="height: 25px;padding-top: 3px;width: 225px;" >
+                                    <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE UN DEPARTAMENTO ]" />
+                                    <f:selectItems value="#{empleados$definirEvaluaciones.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                                </h:selectOneMenu>
+                                <p:commandLink styleClass="opcionMenu" action="#{empleados$definirEvaluaciones.limpiarSeleccion}" update="principalForm:listadoEmpleados" style="color:blue" oncomplete="dlgEmpleados.show();" rendered="#{evaluado.filtroEvaluados eq 'E' }">
+                                    <p:graphicImage value="/resources/iconos/personal.png"/>
+                                    <h:outputText value="Seleccionar" styleClass="espacioTexto" />
+                                    <f:setPropertyActionListener value="#{evaluado}" target="#{empleados$definirEvaluaciones.evaluadoSeleccionado}" />  
+                                </p:commandLink>
+                                <p:commandButton  id="cmdAplicar" update="principalForm:mensajes,principalForm:tablaSeleccionEvaluados" action="#{empleados$definirEvaluaciones.calcularEvaluados}" rendered="#{evaluado.filtroEvaluados eq 'D' or evaluado.filtroEvaluados eq 'C' }" image="button-ok" title="Aplicar criterio." >
+                                    <f:setPropertyActionListener value="#{evaluado}" target="#{empleados$definirEvaluaciones.evaluadoSeleccionado}" />  
+                                </p:commandButton>                                
+                            </h:panelGroup>
+                        </p:column>
+
+                        <p:column headerText="Total" style="width: 5%;" >
+                            <h:outputLabel id="lblTotal" value="#{evaluado.cantidad}" />
                         </p:column> 
 
                         <p:column headerText="Remover" style="width: 5%;" >
-                            <p:commandButton  id="cmdEliminarEvaluador"  image="ui-icon-circle-minus" oncomplete="dlgEliminarEvaluador.show();" title="Remover Evaluador." >
-                                <f:setPropertyActionListener value="#{evaluador}" target="#{empleados$definirEvaluaciones.evaluadorSeleccionado}" />  
+                            <p:commandButton  id="cmdEliminarEvaluador"  image="ui-icon-circle-minus" oncomplete="dlgEliminarEvaluado.show();" title="Remover Evaluado." >
+                                <f:setPropertyActionListener value="#{evaluado}" target="#{empleados$definirEvaluaciones.evaluadoSeleccionado}" />  
                             </p:commandButton>
                         </p:column>
-
+                        
+                        <f:facet name="footer" >
+                            <p:commandButton value="Guardar Evaluación" image="ui-icon-disk" action="#{empleados$definirEvaluaciones.definirEvaluaciones$action}" update="principalForm:mensajes" />
+                        </f:facet>
                     </p:dataTable>
                 </p:panel>
             </p:tab>
@@ -199,6 +271,52 @@
             <p:commandButton value="No" onclick="dlgEliminarEvaluador.hide()" type="button" />   
 
         </p:confirmDialog>  
+
+        <p:confirmDialog message="&#191; Esta seguro que desea eliminar este evaluado ?" showEffect="bounce" hideEffect="explode"  
+                         modal="true" header="Eliminar Evaluado" severity="alert" widgetVar="dlgEliminarEvaluado">  
+            <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,tablaSeleccionEvaluados" oncomplete="dlgEliminarEvaluado.hide()"  
+                             action="#{empleados$definirEvaluaciones.removerEvaluado}" />  
+            <p:commandButton value="No" onclick="dlgEliminarEvaluado.hide()" type="button" />   
+
+        </p:confirmDialog> 
+
+        <p:dialog widgetVar="dlgEmpleados" header="Lista de Empleados" showEffect="fold" hideEffect="fold" width="506" height="475" >
+
+            <p:panel style="border:none;">
+                <h:panelGrid columns="2" >
+                    <p:graphicImage value="/resources/imagenes/64/evaluacion32x32.png" />   
+                    <h:outputLabel id="lbl1" value="Listado general de empleados."  style="font-weight: bold;"/>
+                </h:panelGrid>
+
+                <p:dataTable id="listadoEmpleados" value="#{empleados$definirEvaluaciones.listaEmpleados}" var="empleado" 
+                             paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             selection="#{empleados$definirEvaluaciones.empleadosSeleccionados}" rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" >
+
+                    <f:facet name="header">
+                        Empleados
+                    </f:facet>
+
+                    <p:column selectionMode="multiple" style="width:18px" />  
+
+                    <p:column headerText="C&#243;digo" style="width: 8%" >  
+                        <h:outputLabel value="#{empleado.empleadosPK.codEmp}" />
+                    </p:column>  
+
+                    <p:column headerText="Nombre " filterBy="#{empleado.nombreCompleto}" filterMatchMode="contains" >  
+                        <h:outputLabel value="#{empleado.nombreCompleto}" />
+                    </p:column>  
+
+                </p:dataTable>
+
+                <p:spacer height="15" />
+                <h:panelGrid columns="2">
+                    <p:commandButton value="Aceptar" styleClass="opcionMenu" update="tablaSeleccionEvaluados" action="#{empleados$definirEvaluaciones.aceptarSeleccion}" oncomplete="dlgEmpleados.hide();" image="ui-icon-circle-check" /> 
+                </h:panelGrid>
+            </p:panel>
+
+        </p:dialog>
+
     </ui:define>
 
 </ui:composition>
