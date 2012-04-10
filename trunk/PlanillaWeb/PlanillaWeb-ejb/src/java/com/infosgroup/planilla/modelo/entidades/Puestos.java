@@ -57,8 +57,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Puestos.findByJefatura", query = "SELECT p FROM Puestos p WHERE p.jefatura = :jefatura")})
 public class Puestos implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-    private List<CriteriosXPuesto> criteriosXPuestoList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
+//    private List<CriteriosXPuesto> criteriosXPuestoList;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PuestosPK puestosPK;
@@ -379,14 +379,14 @@ public class Puestos implements Serializable {
         return "com.infosgroup.planilla.modelo.entidades.planilla.Puestos[ puestosPK=" + puestosPK + " ]";
     }
 
-    @XmlTransient
-    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
-        return criteriosXPuestoList;
-    }
-
-    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
-        this.criteriosXPuestoList = criteriosXPuestoList;
-    }
+//    @XmlTransient
+//    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
+//        return criteriosXPuestoList;
+//    }
+//
+//    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
+//        this.criteriosXPuestoList = criteriosXPuestoList;
+//    }
 
     public TipoPuesto getTipoPuesto() {
         return tipoPuesto;

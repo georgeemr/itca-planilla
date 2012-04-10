@@ -4,10 +4,7 @@
  */
 package com.infosgroup.planilla.modelo.facades;
 
-import com.infosgroup.planilla.modelo.entidades.Candidato;
-import com.infosgroup.planilla.modelo.entidades.CandidatoPK;
-import com.infosgroup.planilla.modelo.entidades.Cias;
-import com.infosgroup.planilla.modelo.entidades.Concurso;
+import com.infosgroup.planilla.modelo.entidades.*;
 import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -77,7 +74,7 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         query.append(", ").append(" ? ").append(" ) = 1 ").append(" and rownum <= ").append( maxRegistros != null ? maxRegistros:10 ).append(" order by nombre,apellido");
         listaCandidatos = em.createNativeQuery(query.toString(),Candidato.class)
                 .setParameter(1, c.getConcursoPK().getCodCia())
-                .setParameter(2, c.getConcursoPK().getCodCia())
+                .setParameter(2, c.getPuestos().getPuestosPK().getCodPuesto())
                 .setParameter(3, c.getConcursoPK().getCodConcurso())
                 .setParameter(4, usuario)
                 .getResultList();
@@ -98,5 +95,32 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
         return max != null ? ( ++max ): 1;
     }
     
+    @PermitAll
+    public List<Candidato> findCandidatosMatchCriteria(List<CriterioGb> listaCriterio) {
+        List<Candidato> l = getEntityManager().createNativeQuery(getQuery(listaCriterio), Candidato.class).getResultList();
+        return l != null ? l : new ArrayList<Candidato>();
+    }
     
+    @PermitAll
+    public String getQuery(List<CriterioGb> listaCriterio){
+        StringBuilder stringBuilder = new StringBuilder("select * from candidato");
+        if ( listaCriterio.isEmpty() ) {
+            System.out.println( "Query obtenido:" + stringBuilder.toString());        
+            return stringBuilder.toString();
+        }
+        stringBuilder.append(" where ");
+        for (CriterioGb criterio : listaCriterio) {
+            try {
+                stringBuilder.append( criterio.getPartialQuery() );
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            if (   listaCriterio.indexOf(criterio) != (listaCriterio.size()-1) ){
+                stringBuilder.append(" and ");
+            }
+        }
+        System.out.println( "Query obtenido:" + stringBuilder.toString());        
+        
+        return !listaCriterio.isEmpty()?stringBuilder.toString():"" ;
+    }
 }
