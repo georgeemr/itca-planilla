@@ -51,10 +51,10 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private List<EvaluacionCandidato> evaluacionCandidatos;
     private List<CandidatoConcurso> candidatosGuardados;
     private List<CandidatoConcurso> candidatosContratar;
-    private List<CriterioGb> criteriosDisponibles;
+    private List<Criterio> criteriosDisponibles;
     //  Criterios adicionales
-    private CriterioGb criterio;
-    private List<CriterioGb> criteriosPrincipales;
+    private Criterio criterio;
+    private List<Criterio> criteriosPrincipales;
     private String actaOAcuerdo;
     private Date dia;
     private Date fechaInicio;
@@ -74,7 +74,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private List<Candidato> listaCandidatos;
     private Concurso concursoSeleccionado;
     private Candidato[] candidatosSeleccionados;
-    private CriterioGb[] criteriosAdicionales;
+    private Criterio[] criteriosAdicionales;
     private PruebaXPuesto pruebaXPuestoSeleccionada;
     private AutocompletePruebaConverter pruebaConverter;
     private EvaluacionCandidato pruebaEliminar;
@@ -90,17 +90,17 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     public PreseleccionAspiranteBackendBean() {
     }
 
-    public CriterioGb getCriterio() {
+    public Criterio getCriterio() {
         return criterio;
     }
 
-    public void setCriterio(CriterioGb criterio) {
+    public void setCriterio(Criterio criterio) {
         this.criterio = criterio;
     }
 
     public String agregarCriterio(){
         if (criteriosPrincipales == null) {
-            criteriosPrincipales = new ArrayList<CriterioGb>();
+            criteriosPrincipales = new ArrayList<Criterio>();
         }
         if (!criteriosPrincipales.contains(criterio)) {
             criteriosPrincipales.add(criterio);
@@ -292,11 +292,11 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         this.dia = dia;
     }
 
-    public List<CriterioGb> getCriteriosDisponibles() {
+    public List<Criterio> getCriteriosDisponibles() {
         return criteriosDisponibles;
     }
 
-    public void setCriteriosDisponibles(List<CriterioGb> criteriosDisponibles) {
+    public void setCriteriosDisponibles(List<Criterio> criteriosDisponibles) {
         this.criteriosDisponibles = criteriosDisponibles;
     }
 
@@ -372,11 +372,11 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         this.observaciones = observaciones;
     }
 
-    public List<CriterioGb> getCriteriosPrincipales() {
+    public List<Criterio> getCriteriosPrincipales() {
         return criteriosPrincipales;
     }
 
-    public void setCriteriosPrincipales(List<CriterioGb> criteriosPrincipales) {
+    public void setCriteriosPrincipales(List<Criterio> criteriosPrincipales) {
         this.criteriosPrincipales = criteriosPrincipales;
     }
 
@@ -463,7 +463,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         if (event.getOldStep().equals("concursoSeleccionado")) {
             if (getConcursoSeleccionado() != null) {
                 setCriteriosPrincipales( reclutamientoSessionBean.getListaCriteriosPorPuesto(getConcursoSeleccionado().getPuestos().getPuestosPK()));            
-                setCriteriosDisponibles( reclutamientoSessionBean.getListaCriteriosAdicionales(concursoSeleccionado.getPuestos().getPuestosPK()));
+                setCriteriosDisponibles( reclutamientoSessionBean.getListaCriteriosByCias(concursoSeleccionado.getConcursoPK().getCodCia()));
             }
         }
         actualizaListas();
@@ -637,9 +637,9 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
 
     public void handleCloseCriterioAdicional(CloseEvent event) {
         if (getCriteriosAdicionales() != null && getCriteriosAdicionales().length > 0) {
-            for (CriterioGb criterio : getCriteriosAdicionales()) {
+            for (Criterio criterio : getCriteriosAdicionales()) {
                 if (getCriteriosPrincipales() == null) {
-                    setCriteriosPrincipales(new ArrayList<CriterioGb>());
+                    setCriteriosPrincipales(new ArrayList<Criterio>());
                 }
                 if (!getCriteriosPrincipales().contains(criterio)) {
                     getCriteriosPrincipales().add(criterio);
@@ -669,7 +669,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         tableCandidatos.setSelection(null);
         setComentarioFinal(null);
         setConcursoSeleccionado(null);
-        setCriteriosAdicionales(new CriterioGb[0]);
+        setCriteriosAdicionales(new Criterio[0]);
         setAccionSeleccion("A");
     }
 
@@ -758,11 +758,11 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         setConcursoSeleccionado(null);
     }
 
-    public CriterioGb[] getCriteriosAdicionales() {
+    public Criterio[] getCriteriosAdicionales() {
         return criteriosAdicionales;
     }
 
-    public void setCriteriosAdicionales(CriterioGb[] criteriosAdicionales) {
+    public void setCriteriosAdicionales(Criterio[] criteriosAdicionales) {
         this.criteriosAdicionales = criteriosAdicionales;
     }
 
