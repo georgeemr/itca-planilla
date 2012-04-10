@@ -50,19 +50,4 @@ public class CriterioFacade extends AbstractFacade<Criterio, CriterioPK> {
         return l != null ? l : new ArrayList<Criterio>();
     }
     
-//    @PermitAll
-//    public List<Criterio> getListaCriteriosAdicionales(PuestosPK puesto) {
-//        List<Criterio> l = em.createNativeQuery(
-//                "select a.* from criterio a where a.cod_cia = ? "/*+
-//                "union select a.* from criterio_gb a where a.cod_cia = ? "+
-//                "and ( a.cod_cia, a.codigo) not in (select cod_cia, criterio from criterios_x_puesto_gb b where b.cod_puesto = ? and cod_cia = ? )"*/
-//                ,Criterio.class)
-//                .setParameter(1, puesto.getCodCia())
-//                /*.setParameter(2, puesto.getCodCia())
-//                .setParameter(3, puesto.getCodPuesto())
-//                .setParameter(4, puesto.getCodCia())*/
-//                .getResultList();
-//        return l != null ? l : new ArrayList<Criterio>();
-//    }
-    
 }

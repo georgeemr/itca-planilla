@@ -32,5 +32,18 @@ public class CriteriosXPuestoFacade extends AbstractFacade<CriteriosXPuesto, Cri
     protected EntityManager getEntityManager() {
         return em;
     }
+    
+    @PermitAll
+    public List<CriteriosXPuesto> getListaCriteriosXPuesto(PuestosPK puesto) {
+        List<CriteriosXPuesto> l = em.createNativeQuery(
+                "select b.* from criterio a, criterios_x_puesto b where a.cod_cia = ? and b.cod_cia = a.cod_cia and b.criterio = a.codigo and b.cod_puesto = ?"
+                ,CriteriosXPuesto.class)
+                .setParameter(1, puesto.getCodCia())
+                .setParameter(2, puesto.getCodPuesto())
+                .getResultList();
+        return l != null ? l : new ArrayList<CriteriosXPuesto>();
+    }
+    
+
 
 }
