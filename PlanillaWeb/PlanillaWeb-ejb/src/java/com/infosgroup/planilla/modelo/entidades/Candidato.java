@@ -366,8 +366,8 @@ private List<Referencia> referenciaList;
 private List<CandidatoConcurso> candidatoConcursoList;
 @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato")
 private List<TipoPruebaXCandidato> tipoPruebaXCandidatoList;
-@OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
-private List<CriteriosXCandidato> criteriosXCandidatoList;
+//@OneToMany(cascade = CascadeType.ALL, mappedBy = "candidato1")
+//private List<CriteriosXCandidato> criteriosXCandidatoList;
 @Transient
 private String nombreCompleto;
 
@@ -1203,16 +1203,16 @@ public void setTipoPruebaXCandidatoList(List<TipoPruebaXCandidato> tipoPruebaXCa
     this.tipoPruebaXCandidatoList = tipoPruebaXCandidatoList;
 }
 
-@XmlTransient
-public List<CriteriosXCandidato> getCriteriosXCandidatoList()
-{
-    return criteriosXCandidatoList;
-}
-
-public void setCriteriosXCandidatoList(List<CriteriosXCandidato> criteriosXCandidatoList)
-{
-    this.criteriosXCandidatoList = criteriosXCandidatoList;
-}
+//@XmlTransient
+//public List<CriteriosXCandidato> getCriteriosXCandidatoList()
+//{
+//    return criteriosXCandidatoList;
+//}
+//
+//public void setCriteriosXCandidatoList(List<CriteriosXCandidato> criteriosXCandidatoList)
+//{
+//    this.criteriosXCandidatoList = criteriosXCandidatoList;
+//}
 
 public String getNombreCompleto()
 {
