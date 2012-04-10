@@ -30,8 +30,8 @@ private AgenciasFacade agenciasFacade;
 private EvaluacionCandidatoFacade evaluacionCandidatoFacade;
 @EJB
 private CandidatoConcursoFacade candidatoConcursoFacade;
-@EJB
-private CriterioSeleccionadoFacade criterioSeleccionadoFacade;
+//@EJB
+//private CriterioSeleccionadoFacade criterioSeleccionadoFacade;
 @EJB
 private EstadoConcursoFacade estadoConcursoFacade;
 @EJB
@@ -46,8 +46,8 @@ private ConcursoFacade concursoFacade;
 private EmpleadoFacade empleadoFacade;
 @EJB
 private ContratoFacade contratoFacade;
-@EJB
-private CriteriosXPuestoFacade criteriosXPuestoFacade;
+//@EJB
+//private CriteriosXPuestoFacade criteriosXPuestoFacade;
 @EJB
 private TipoDocumentoFacade tipoDocumentoFacade;
 @EJB
@@ -60,8 +60,8 @@ private LocacionesFacade locacionesFacade;
 private EmergenciaXCandidatoFacade emergenciaCandidatoFacade;
 @EJB
 private NivelesXCandidatoFacade nivelesCandidatoFacade;
-@EJB
-private CriterioFacade criterioFacade;
+//@EJB
+//private CriterioFacade criterioFacade;
 @EJB
 private PruebaXPuestoFacade pruebaXPuestoFacade;
 @EJB
@@ -84,6 +84,26 @@ private EntrevistaXCandidatoFacade entrevistaXCandidatoFacade;
 private TipoPruebaXCandidatoFacade tipoPruebaXCandidatoFacade;
 @EJB
 private CandidatoXCargoFacade candidatoXCargoFacade;
+@EJB
+private CriterioGbFacade CriterioGbFacade;
+
+/**
+ * Criterios adicinales. (No estan asociados con el puesto en la base de datos. )
+ * @param puesto
+ * @return 
+ */
+
+@PermitAll
+public List<CriterioGb> getListaCriteriosAdicionales(PuestosPK puesto)
+{
+    return CriterioGbFacade.getListaCriteriosAdicionales(puesto);
+}
+
+@PermitAll
+public List<CriterioGb> getListaCriteriosPorPuesto(PuestosPK puesto)
+{
+    return CriterioGbFacade.getListaCriteriosByPuestos(puesto);
+}
 
 @PermitAll
 public List<Concurso> getListaConcursos(Cias empresa, Date fechaInicial, Date fechaFinal)
@@ -249,22 +269,28 @@ public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String emplead
 }
 
 @PermitAll
-public void eliminarCriteriosSeleccionados(Cias empresa, String usuario)
+public List<Candidato> findCandidatosMatchCriteria(List<CriterioGb> listaCriterios)
 {
-    criterioSeleccionadoFacade.eliminarCriteriosSeleccionados(empresa, usuario);
+    return candidatoFacade.findCandidatosMatchCriteria(listaCriterios);
 }
 
-@PermitAll
-public void guardarCriterioSeleccionado(CriteriosXPuesto c, String usuario)
-{
-    criterioSeleccionadoFacade.guardarCriterio(c, usuario);
-}
+//@PermitAll
+//public void eliminarCriteriosSeleccionados(Cias empresa, String usuario)
+//{
+//    criterioSeleccionadoFacade.eliminarCriteriosSeleccionados(empresa, usuario);
+//}
 
-@PermitAll
-public void eliminarCriterioSeleccionado(CriteriosXPuesto c, String usuario)
-{
-    criterioSeleccionadoFacade.eliminarCriterio(c, usuario);
-}
+//@PermitAll
+//public void guardarCriterioSeleccionado(CriteriosXPuesto c, String usuario)
+//{
+//    criterioSeleccionadoFacade.guardarCriterio(c, usuario);
+//}
+//
+//@PermitAll
+//public void eliminarCriterioSeleccionado(CriteriosXPuesto c, String usuario)
+//{
+//    criterioSeleccionadoFacade.eliminarCriterio(c, usuario);
+//}
 
 @PermitAll
 public List<EvaluacionCandidato> getListEvaluacionCandidato(CandidatoConcurso c)
@@ -340,17 +366,17 @@ public void contratarCandidato(CandidatoConcurso c, Contrato contrato, String us
     editarEmpleado(e);
 }
 
-@PermitAll
-public List<CriteriosXPuesto> criteriosDisponibles(Cias empresa)
-{
-    return criteriosXPuestoFacade.getListaCriteriosByEmpresa(empresa);
-}
-
-@PermitAll
-public List<CriteriosXPuesto> criteriosPorPuesto(PuestosPK puestos)
-{
-    return criteriosXPuestoFacade.getListaCriteriosByPuestos(puestos);
-}
+//@PermitAll
+//public List<CriteriosXPuesto> criteriosDisponibles(Cias empresa)
+//{
+//    return criteriosXPuestoFacade.getListaCriteriosByEmpresa(empresa);
+//}
+//
+//@PermitAll
+//public List<CriteriosXPuesto> criteriosPorPuesto(PuestosPK puestos)
+//{
+//    return criteriosXPuestoFacade.getListaCriteriosByPuestos(puestos);
+//}
 
 @PermitAll
 public List<Empleados> findByUsuario(String usuario)
@@ -420,23 +446,23 @@ public void eliminarPuesto(Puestos puestos)
     puestoFacade.remove(puestos);
 }
 
-@PermitAll
-public void eliminarCriterioXPuesto(CriteriosXPuesto criterio)
-{
-    criteriosXPuestoFacade.remove(criterio);
-}
-
-@PermitAll
-public List<Criterio> findListaCriteriosByCias(Cias cias)
-{
-    return criterioFacade.findCriteriosByCias(cias);
-}
-
-@PermitAll
-public void guardarCriterioXPuesto(CriteriosXPuesto criterioXPuesto)
-{
-    criteriosXPuestoFacade.create(criteriosXPuestoFacade.getWithId(criterioXPuesto));
-}
+//@PermitAll
+//public void eliminarCriterioXPuesto(CriteriosXPuesto criterio)
+//{
+//    criteriosXPuestoFacade.remove(criterio);
+//}
+//
+//@PermitAll
+//public List<Criterio> findListaCriteriosByCias(Cias cias)
+//{
+//    return criterioFacade.findCriteriosByCias(cias);
+//}
+//
+//@PermitAll
+//public void guardarCriterioXPuesto(CriteriosXPuesto criterioXPuesto)
+//{
+//    criteriosXPuestoFacade.create(criteriosXPuestoFacade.getWithId(criterioXPuesto));
+//}
 
 @PermitAll
 public void guardarCandidato(Candidato c)
