@@ -96,19 +96,19 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
     }
     
     @PermitAll
-    public List<Candidato> findCandidatosMatchCriteria(List<Criterio> listaCriterio) {
-        List<Candidato> l = getEntityManager().createNativeQuery(getQuery(listaCriterio), Candidato.class).getResultList();
+    public List<Candidato> findCandidatosMatchCriteria(List<Criterio> listaCriterio, Short cod_cia) {
+        List<Candidato> l = getEntityManager().createNativeQuery(getQuery(listaCriterio, cod_cia), Candidato.class).getResultList();
         return l != null ? l : new ArrayList<Candidato>();
     }
     
     @PermitAll
-    public String getQuery(List<Criterio> listaCriterio){
-        StringBuilder stringBuilder = new StringBuilder("select * from candidato");
+    public String getQuery(List<Criterio> listaCriterio, Short cod_cia){
+        StringBuilder stringBuilder = new StringBuilder("select * from candidato where cod_cia = " + cod_cia);
         if ( listaCriterio.isEmpty() ) {
             System.out.println( "Query obtenido:" + stringBuilder.toString());        
             return stringBuilder.toString();
         }
-        stringBuilder.append(" where ");
+        stringBuilder.append(" and ");
         for (Criterio criterio : listaCriterio) {
             try {
                 stringBuilder.append( criterio.getPartialQuery() );

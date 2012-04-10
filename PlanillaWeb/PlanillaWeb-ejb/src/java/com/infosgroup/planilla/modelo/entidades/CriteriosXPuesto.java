@@ -33,7 +33,7 @@ public class CriteriosXPuesto implements Serializable {
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_PUESTO", referencedColumnName = "COD_PUESTO", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)  
-    private Puestos puesto;
+    private Puestos puestos;
     
     public CriteriosXPuesto() {
     }
@@ -62,12 +62,12 @@ public class CriteriosXPuesto implements Serializable {
         this.criterio = criterio;
     }
 
-    public Puestos getPuesto() {
-        return puesto;
+    public Puestos getPuestos() {
+        return puestos;
     }
 
-    public void setPuesto(Puestos puesto) {
-        this.puesto = puesto;
+    public void setPuestos(Puestos puestos) {
+        this.puestos = puestos;
     }
 
     @Override

@@ -73,11 +73,11 @@ public class Criterio implements Serializable {
         this.criterioPK = new CriterioPK(codCia, codigo);
     }
 
-    public CriterioPK getCriterioGbPK() {
+    public CriterioPK getCriterioPK() {
         return criterioPK;
     }
 
-    public void setCriterioGbPK(CriterioPK criterioPK) {
+    public void setCriterioPK(CriterioPK criterioPK) {
         this.criterioPK = criterioPK;
     }
 
