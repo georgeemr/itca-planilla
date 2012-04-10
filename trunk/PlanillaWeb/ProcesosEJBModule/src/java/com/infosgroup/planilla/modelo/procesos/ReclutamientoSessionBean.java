@@ -46,8 +46,8 @@ private ConcursoFacade concursoFacade;
 private EmpleadoFacade empleadoFacade;
 @EJB
 private ContratoFacade contratoFacade;
-//@EJB
-//private CriteriosXPuestoFacade criteriosXPuestoFacade;
+@EJB
+private CriteriosXPuestoFacade criteriosXPuestoFacade;
 @EJB
 private TipoDocumentoFacade tipoDocumentoFacade;
 @EJB
@@ -263,9 +263,9 @@ public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String emplead
 }
 
 @PermitAll
-public List<Candidato> findCandidatosMatchCriteria(List<Criterio> listaCriterios)
+public List<Candidato> findCandidatosMatchCriteria(List<Criterio> listaCriterios, Short cod_cia)
 {
-    return candidatoFacade.findCandidatosMatchCriteria(listaCriterios);
+    return candidatoFacade.findCandidatosMatchCriteria(listaCriterios, cod_cia);
 }
 
 //@PermitAll
@@ -366,11 +366,11 @@ public void contratarCandidato(CandidatoConcurso c, Contrato contrato, String us
 //    return criteriosXPuestoFacade.getListaCriteriosByEmpresa(empresa);
 //}
 //
-//@PermitAll
-//public List<CriteriosXPuesto> criteriosPorPuesto(PuestosPK puestos)
-//{
-//    return criteriosXPuestoFacade.getListaCriteriosByPuestos(puestos);
-//}
+@PermitAll
+public List<CriteriosXPuesto> criteriosPorPuesto(PuestosPK puestos)
+{
+    return criteriosXPuestoFacade.getListaCriteriosXPuesto(puestos);
+}
 
 @PermitAll
 public List<Empleados> findByUsuario(String usuario)
@@ -440,11 +440,11 @@ public void eliminarPuesto(Puestos puestos)
     puestoFacade.remove(puestos);
 }
 
-//@PermitAll
-//public void eliminarCriterioXPuesto(CriteriosXPuesto criterio)
-//{
-//    criteriosXPuestoFacade.remove(criterio);
-//}
+@PermitAll
+public void eliminarCriterioXPuesto(CriteriosXPuesto criterio)
+{
+    criteriosXPuestoFacade.remove(criterio);
+}
 //
 //@PermitAll
 //public List<Criterio> findListaCriteriosByCias(Cias cias)
@@ -452,11 +452,11 @@ public void eliminarPuesto(Puestos puestos)
 //    return criterioFacade.findCriteriosByCias(cias);
 //}
 //
-//@PermitAll
-//public void guardarCriterioXPuesto(CriteriosXPuesto criterioXPuesto)
-//{
-//    criteriosXPuestoFacade.create(criteriosXPuestoFacade.getWithId(criterioXPuesto));
-//}
+@PermitAll
+public void guardarCriterioXPuesto(CriteriosXPuesto criterioXPuesto)
+{
+    criteriosXPuestoFacade.create(criterioXPuesto);
+}
 
 @PermitAll
 public void guardarCandidato(Candidato c)
