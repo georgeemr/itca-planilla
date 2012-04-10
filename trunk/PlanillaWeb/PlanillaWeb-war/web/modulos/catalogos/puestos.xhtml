@@ -30,75 +30,70 @@
 
         </p:confirmDialog>   
 
-        <p:dialog id="dialogNuevoCriterio" widgetVar="dialogCriterio" header="Agregar Criterio por Puesto" showEffect="fold" hideEffect="fold" width="410" height="500" >
+        <p:dialog id="dialogNuevoCriterio" widgetVar="dialogCriterio" header="Agregar Criterio por Puesto" showEffect="fold" hideEffect="fold" width="417" height="422" >
             <!-- p:spacer height="10px"/ -->
             <p:panel id="panelInformacionCriterio" style="border:none;" >
-                <h:panelGrid columns="4" >
-                    <p:graphicImage value="../../resources/imagenes/64/info.png" />
-                    <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
-                    <h:outputLabel value="*" styleClass="requerido"/>                                
-                    <h:outputLabel value=" son requeridos." style="font-style: italic;" />
+                <h:panelGrid columns="1" >
+                    <h:outputLabel value="Seleccione los criterios que desea aplicar." />
                 </h:panelGrid>
             </p:panel>
             <!-- p:spacer height="10px"/ -->
 
-            <p:fieldset id="fieldsetEncabezado">
+            <p:fieldset id="fieldsetEncabezado" style="border:none;">
 
                 <p:dataTable id="tablaSelectCriterio"
                              var="criterio" rows="5"  paginator="true" 
                              value="#{puestosBackendBean.listaCriterios}"
                              emptyMessage="No se han encontrado Criterios."
-                             paginatorAlwaysVisible="true" selectionMode="single"
+                             paginatorAlwaysVisible="true"
                              update="fieldsetEncabezado"
                              onRowSelectUpdate="fieldsetEncabezado"
-                             selection="#{puestosBackendBean.criterioSeleccionado}"
-                             rowSelectListener="#{puestosBackendBean.onRowSelectCriterio}"  
-                             rowUnselectListener="#{puestosBackendBean.onRowUnSelectCriterio}"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
-                    <f:facet name="header">
-                        <h:outputText value="Criterios"/>
-                    </f:facet>
 
-                    <p:column sortBy="#{criterio.criterioPK.codigo}">
-                        <f:facet name="header">
-                            C&oacute;digo
-                        </f:facet>
+                    <p:column headerText="C&oacute;digo" sortBy="#{criterio.criterioPK.codigo}">
                         <h:outputLabel value="#{criterio.criterioPK.codigo}"/>
                     </p:column>
 
                     <p:column filterBy="#{criterio.nombre}" 
                               filterMatchMode="contains"
                               headerText="Nombre">
-                        <f:facet name="header">
-                            Nombre
-                        </f:facet>
                         <h:outputLabel value="#{criterio.nombre}"/>
                     </p:column>
 
+                    <p:column>
+                        <p:commandButton image="ui-icon ui-icon-document" ajax="true" action="#{puestosBackendBean.guardarCriterio$crud$action}" update="principalForm:mensajes,principalForm:fsCriterios,principalForm:tablaCriteriosXPuesto" >
+                            <f:setPropertyActionListener value="#{criterio}" target="#{puestosBackendBean.criterioSeleccionado}" /> 
+                        </p:commandButton>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"
+                                         onclick="dialogCriterio.hide()" action="#{puestosBackendBean.limpiarCriterio}" image="ui-icon-closethick" /> 
+                    </f:facet>
+
                 </p:dataTable>
                 <p:spacer height="15" />
-                <h:panelGrid columns="2" >
-                    <h:outputLabel id="lvalor" value="Valor" rendered="#{puestosBackendBean.criterioSeleccionado.operador eq 'equal'}" />
-                    <p:inputText  id="txvalor" value="#{puestosBackendBean.valor}" rendered="#{puestosBackendBean.criterioSeleccionado.operador eq 'equal'}" />
-                    <h:outputLabel id="lvalori" value="Valor Inicial" rendered="#{puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
-                    <p:inputText id="txvalori" value="#{puestosBackendBean.valorInicialRango}" rendered="#{puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
-                    <h:outputLabel id="lvalorf" value="Valor Final" rendered="#{puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
-                    <p:inputText id="txvalorf" value="#{puestosBackendBean.valorFinalRango}" rendered="#{puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
-                    <h:outputLabel value="Etiqueta/Unidad"/>
-                    <p:inputText value="#{puestosBackendBean.etiqueta}" />
-                </h:panelGrid>
+                <!-- h:panelGrid columns="2" >
+                    <h:outputLabel id="lvalor" value="Valor" rendered="# {puestosBackendBean.criterioSeleccionado.operador eq 'equal'}" />
+                    <p:inputText  id="txvalor" value="# {puestosBackendBean.valor}" rendered="# {puestosBackendBean.criterioSeleccionado.operador eq 'equal'}" />
+                    <h:outputLabel id="lvalori" value="Valor Inicial" rendered="# {puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
+                    <p:inputText id="txvalori" value="# {puestosBackendBean.valorInicialRango}" rendered="# {puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
+                    <h:outputLabel id="lvalorf" value="Valor Final" rendered="# {puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
+                    <p:inputText id="txvalorf" value="# {puestosBackendBean.valorFinalRango}" rendered="# {puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
+                    <h:outputLabel value="Nombre"/>
+                    <p:inputText value="# {puestosBackendBean.etiqueta}" />
+                </h:panelGrid -->
 
             </p:fieldset>
 
-            <p:spacer height="15" />
-            <h:panelGrid columns="2"  >
-                <p:commandButton value="Aceptar" update="principalForm:mensajes,fsCriterios,tablaCriteriosXPuesto"
-                                 action="#{puestosBackendBean.guardarCriterio$crud$action}"
-                                 ajax="true" image="ui-icon-circle-check" />
+            <!-- p:spacer height="15" / -->
+            <!-- h:panelGrid columns="2"  -->
+            <!--p:commandButton value="Aceptar" update="principalForm:mensajes,fsCriterios,tablaCriteriosXPuesto"
+                             action="# {puestosBackendBean.guardarCriterio$crud$action}"
+                             ajax="true" image="ui-icon-circle-check" / -->
 
-                <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"
-                                 onclick="dialogCriterio.hide()" action="#{puestosBackendBean.limpiarCriterio}" image="ui-icon-closethick" /> 
-            </h:panelGrid>
+
+            <!-- /h:panelGrid -->
 
         </p:dialog>
 
@@ -457,13 +452,6 @@
             <p:spacer height="20" />
         </p:fieldset>
 
-        <p:toolbar rendered="#{(puestosBackendBean.estadoAccion eq 3)}" styleClass="toolbarUsuario" >
-            <p:toolbarGroup align="right" >
-                <p:commandButton value="Nuevo"    image="ui-icon ui-icon-document" ajax="true" onclick="dialogCriterio.show()"/>
-                <p:commandButton value="Eliminar" image="ui-icon ui-icon-circle-minus" ajax="true" onclick="criterioDialog.show()"/>
-            </p:toolbarGroup>
-        </p:toolbar>
-
         <!-- p:spacer height="20" rendered="# {(puestosBackendBean.estadoAccion eq 3) }" /-->
 
         <p:fieldset id="fsCriterios" legend="Criterios Aplicados" rendered="#{(puestosBackendBean.estadoAccion eq 3)}" >
@@ -473,65 +461,36 @@
                 <h:outputLabel value="#{puestosBackendBean.puestoSeleccionado.nomPuesto}"/>
             </h:panelGrid>
             <p:spacer height="5" />
-            <p:dataTable id="tablaCriteriosXPuesto"
+            <p:dataTable id="tablaCriteriosXPuesto" paginatorAlwaysVisible="true"
                          var="criteriosXpuesto" rows="5"  paginator="true" 
                          value="#{puestosBackendBean.listaCriteriosXPuestos}"
                          emptyMessage="No se han registrado Criterios para este puesto."
-                         paginatorAlwaysVisible="true" selectionMode="single" 
-                         selection="#{puestosBackendBean.criterioXPuestoSeleccionado}"
-                         rowSelectListener="#{puestosBackendBean.onRowSelectCriterioPuesto}"  
-                         rowUnselectListener="#{puestosBackendBean.onRowUnSelectCriterioPuesto}"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
+
                 <f:facet name="header">
                     <h:outputText value="Criterios por Puesto"/>
                 </f:facet>
 
-                <p:column sortBy="#{criteriosXpuesto.criterio1.criterioPK.codigo}">
-                    <f:facet name="header">
-                        C&oacute;digo
-                    </f:facet>
-                    <h:outputLabel value="#{criteriosXpuesto.criterio1.criterioPK.codigo}"/>
+                <p:column headerText="C&oacute;digo" sortBy="#{criteriosXpuesto.criterio.criterioPK.codigo}" style="width: 8%;">
+                    <h:outputLabel value="#{criteriosXpuesto.criterio.criterioPK.codigo}"/>
                 </p:column>
 
-                <p:column sortBy="#{criteriosXpuesto.criterio1.tipoCriterio.nombre}">
-                    <f:facet name="header">
-                        Tipo Criterio
-                    </f:facet>
-                    <h:outputLabel value="#{criteriosXpuesto.criterio1.tipoCriterio.nombre}"/>
+                <p:column headerText="Nombre" sortBy="#{criteriosXpuesto.criterio.nombre}">
+                    <h:outputLabel value="#{criteriosXpuesto.criterio.nombre}"/>
                 </p:column>
 
-                <p:column sortBy="#{criteriosXpuesto.criterio1.nombre}">
-                    <f:facet name="header">
-                        Nombre
-                    </f:facet>
-                    <h:outputLabel value="#{criteriosXpuesto.criterio1.nombre}"/>
+                <p:column headerText="Remover" style="width: 8%;">
+                    <p:commandButton image="ui-icon ui-icon-circle-minus" ajax="true" oncomplete="criterioDialog.show()">
+                        <f:setPropertyActionListener value="#{criteriosXpuesto}" target="#{puestosBackendBean.criterioXPuestoSeleccionado}" /> 
+                    </p:commandButton>
                 </p:column>
 
-                <p:column >
+                <f:facet name="footer">
+                    <p:commandButton value="Agregar criterios" image="ui-icon ui-icon-document" ajax="true" oncomplete="dialogCriterio.show()">
+                        <f:setPropertyActionListener value="#{criteriosXpuesto}" target="#{puestosBackendBean.criterioXPuestoSeleccionado}" /> 
+                    </p:commandButton>
+                </f:facet>
 
-                    <f:facet name="header">
-                        Valor
-                    </f:facet>
-                    <p:cellEditor  >  
-                        <f:facet name="output">  
-                            <h:outputLabel value="Igual a: #{criteriosXpuesto.valor}" rendered="#{criteriosXpuesto.criterio1.operador eq 'equal'}" />
-                            <h:outputLabel value="Entre: #{criteriosXpuesto.valorInicialRango} y #{criteriosXpuesto.valorFinalRango}" rendered="#{criteriosXpuesto.criterio1.operador eq 'between'}" />
-                        </f:facet>  
-                        <f:facet name="input">  
-                            <h:outputLabel value="Valor: " rendered="#{criteriosXpuesto.criterio1.operador ne 'between'}" />
-                            <p:inputText value="#{criteriosXpuesto.valor}"  rendered="#{criteriosXpuesto.criterio1.operador ne 'between'}" />
-                            <h:outputLabel value="Entre: " rendered="#{criteriosXpuesto.criterio1.operador eq 'between'}"  />
-                            <p:inputText value="#{criteriosXpuesto.valorInicialRango}" rendered="#{criteriosXpuesto.criterio1.operador eq 'between'}" />
-                            <h:outputLabel value=" Y " rendered="#{criteriosXpuesto.criterio1.operador eq 'between'}" />
-                            <p:inputText value="#{criteriosXpuesto.valorFinalRango}" rendered="#{criteriosXpuesto.criterio1.operador eq 'between'}" />
-                        </f:facet>  
-                    </p:cellEditor>  
-
-                </p:column>
-
-                <p:column headerText="Options" style="width:50px">  
-                    <p:rowEditor />  
-                </p:column> 
             </p:dataTable>
 
             <p:spacer height="20" />    

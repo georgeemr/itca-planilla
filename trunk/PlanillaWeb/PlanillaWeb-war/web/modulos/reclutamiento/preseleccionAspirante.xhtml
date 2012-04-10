@@ -173,7 +173,7 @@
 
         </p:dialog>    
 
-        <p:dialog id="dialogoCriterio" widgetVar="botonMostrarCriterios" header="Seleccionar Criterio" width="425" height="300"  
+        <p:dialog id="dialogoCriterio" widgetVar="botonMostrarCriterios" header="Seleccionar Criterio" width="425" height="335"  
                   onCloseUpdate="principalForm:criteriosSeleccionados,principalForm:mensajes" resizable="false" showEffect="clip" hideEffect="clip"
                   closeListener="#{reclutamiento$preseleccionAspirante.handleCloseCriterioAdicional}" >
 
@@ -183,7 +183,7 @@
             -->
             <p:spacer height="15" />
                 <p:dataTable id="criteriosDisponibles" var="criterio" value="#{reclutamiento$preseleccionAspirante.criteriosDisponibles}" emptyMessage="No se han encontrado mas Criterios" 
-                             paginator="true" rows="10" onRowSelectUpdate="principalForm:criteriosDisponibles,principalForm:criteriosSeleccionados"
+                             paginator="true" rows="5" onRowSelectUpdate="principalForm:criteriosDisponibles,principalForm:criteriosSeleccionados"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                              rowsPerPageTemplate="5,10,25,50,100" >  
 

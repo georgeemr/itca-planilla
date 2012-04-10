@@ -681,7 +681,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         setAccionSeleccion("C");
         setCandidatosSeleccionados(null);
         if (criteriosPrincipales!= null && !criteriosPrincipales.isEmpty()){
-            listaCandidatos = reclutamientoSessionBean.findCandidatosMatchCriteria( /*Arrays.asList(*/criteriosPrincipales/*criteriosSeleccionados) */);
+            listaCandidatos = reclutamientoSessionBean.findCandidatosMatchCriteria( /*Arrays.asList(*/criteriosPrincipales, getSessionBeanADM().getCompania().getCodCia()/*criteriosSeleccionados) */);
         }else{
             listaCandidatos= new ArrayList<Candidato>();
         }
