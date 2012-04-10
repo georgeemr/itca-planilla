@@ -96,20 +96,20 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
     }
     
     @PermitAll
-    public List<Candidato> findCandidatosMatchCriteria(List<CriterioGb> listaCriterio) {
+    public List<Candidato> findCandidatosMatchCriteria(List<Criterio> listaCriterio) {
         List<Candidato> l = getEntityManager().createNativeQuery(getQuery(listaCriterio), Candidato.class).getResultList();
         return l != null ? l : new ArrayList<Candidato>();
     }
     
     @PermitAll
-    public String getQuery(List<CriterioGb> listaCriterio){
+    public String getQuery(List<Criterio> listaCriterio){
         StringBuilder stringBuilder = new StringBuilder("select * from candidato");
         if ( listaCriterio.isEmpty() ) {
             System.out.println( "Query obtenido:" + stringBuilder.toString());        
             return stringBuilder.toString();
         }
         stringBuilder.append(" where ");
-        for (CriterioGb criterio : listaCriterio) {
+        for (Criterio criterio : listaCriterio) {
             try {
                 stringBuilder.append( criterio.getPartialQuery() );
             } catch (Exception ex) {
