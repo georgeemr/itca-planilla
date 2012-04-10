@@ -44,18 +44,17 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private Date fechaFinal;
     private List<Concurso> listaConcurso;
     private DataTable tableConcursos;
-    private DataTable tableCriterios;
     private DataTable tableCandidatos;
     private DataTable tableSeleccion;
     private DataTable tableContratacion;
-    private DataTable tableCriteriosAdicionales;
     private CandidatoConcurso candidatoSeleccionado;
     private List<EvaluacionCandidato> evaluacionCandidatos;
     private List<CandidatoConcurso> candidatosGuardados;
     private List<CandidatoConcurso> candidatosContratar;
-    private List<CriteriosXPuesto> criteriosDisponibles;
+    private List<CriterioGb> criteriosDisponibles;
     //  Criterios adicionales
-    private List<CriteriosXPuesto> criteriosPrincipales;
+    private CriterioGb criterio;
+    private List<CriterioGb> criteriosPrincipales;
     private String actaOAcuerdo;
     private Date dia;
     private Date fechaInicio;
@@ -74,10 +73,8 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private Short tipoPlanilla;
     private List<Candidato> listaCandidatos;
     private Concurso concursoSeleccionado;
-    private Integer maxResultados = 10;
     private Candidato[] candidatosSeleccionados;
-    private CriteriosXPuesto[] criteriosSeleccionados;
-    private CriteriosXPuesto[] criteriosAdicionales;
+    private CriterioGb[] criteriosAdicionales;
     private PruebaXPuesto pruebaXPuestoSeleccionada;
     private AutocompletePruebaConverter pruebaConverter;
     private EvaluacionCandidato pruebaEliminar;
@@ -91,6 +88,35 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private Candidato preCandidatoSeleccionado;
 
     public PreseleccionAspiranteBackendBean() {
+    }
+
+    public CriterioGb getCriterio() {
+        return criterio;
+    }
+
+    public void setCriterio(CriterioGb criterio) {
+        this.criterio = criterio;
+    }
+
+    public String agregarCriterio(){
+        if (criteriosPrincipales == null) {
+            criteriosPrincipales = new ArrayList<CriterioGb>();
+        }
+        if (!criteriosPrincipales.contains(criterio)) {
+            criteriosPrincipales.add(criterio);
+        } else {
+            addMessage("Agregar criterio", "Este criterio ya ha sido seleccionado.", TipoMensaje.INFORMACION);
+        }
+        return null;
+    }
+    
+    public String eliminarCriterio() {
+        if (criteriosPrincipales != null && !criteriosPrincipales.isEmpty()) {
+            if (criteriosPrincipales.contains(criterio)) {
+                criteriosPrincipales.remove(criterio);
+            }
+        }
+        return null;
     }
 
     @PostConstruct
@@ -184,14 +210,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         this.tableCandidatos = tableCandidatos;
     }
 
-    public DataTable getTableCriterios() {
-        return tableCriterios;
-    }
-
-    public void setTableCriterios(DataTable tableCriterios) {
-        this.tableCriterios = tableCriterios;
-    }
-
     public DataTable getTableContratacion() {
         return tableContratacion;
     }
@@ -274,12 +292,11 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         this.dia = dia;
     }
 
-    public List<CriteriosXPuesto> getCriteriosDisponibles() {
-        criteriosDisponibles = reclutamientoSessionBean.criteriosDisponibles(getSessionBeanADM().getCompania());
+    public List<CriterioGb> getCriteriosDisponibles() {
         return criteriosDisponibles;
     }
 
-    public void setCriteriosDisponibles(List<CriteriosXPuesto> criteriosDisponibles) {
+    public void setCriteriosDisponibles(List<CriterioGb> criteriosDisponibles) {
         this.criteriosDisponibles = criteriosDisponibles;
     }
 
@@ -355,20 +372,12 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         this.observaciones = observaciones;
     }
 
-    public List<CriteriosXPuesto> getCriteriosPrincipales() {
+    public List<CriterioGb> getCriteriosPrincipales() {
         return criteriosPrincipales;
     }
 
-    public void setCriteriosPrincipales(List<CriteriosXPuesto> criteriosPrincipales) {
+    public void setCriteriosPrincipales(List<CriterioGb> criteriosPrincipales) {
         this.criteriosPrincipales = criteriosPrincipales;
-    }
-
-    public DataTable getTableCriteriosAdicionales() {
-        return tableCriteriosAdicionales;
-    }
-
-    public void setTableCriteriosAdicionales(DataTable tableCriteriosAdicionales) {
-        this.tableCriteriosAdicionales = tableCriteriosAdicionales;
     }
 
     public String getUsuario() {
@@ -423,14 +432,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         }
     }
 
-    public void onRowSelectCriterio(SelectEvent event) {
-        reclutamientoSessionBean.guardarCriterioSeleccionado((CriteriosXPuesto) event.getObject(), getSessionBeanEMP().getEmpleadoSesion().getUsuario());
-    }
-
-    public void onRowUnSelectCriterio(UnselectEvent event) {
-        reclutamientoSessionBean.eliminarCriterioSeleccionado((CriteriosXPuesto) event.getObject(), getSessionBeanEMP().getEmpleadoSesion().getUsuario());
-    }
-
     public void onEditCandidato(RowEditEvent event) {
         reclutamientoSessionBean.editarCandidatoConcurso((CandidatoConcurso) event.getObject());
         actualizaListas();
@@ -461,7 +462,8 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         }
         if (event.getOldStep().equals("concursoSeleccionado")) {
             if (getConcursoSeleccionado() != null) {
-                setCriteriosPrincipales(getConcursoSeleccionado().getPuestos().getCriteriosXPuestoList());
+                setCriteriosPrincipales( reclutamientoSessionBean.getListaCriteriosPorPuesto(getConcursoSeleccionado().getPuestos().getPuestosPK()));            
+                setCriteriosDisponibles( reclutamientoSessionBean.getListaCriteriosAdicionales(concursoSeleccionado.getPuestos().getPuestosPK()));
             }
         }
         actualizaListas();
@@ -635,9 +637,9 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
 
     public void handleCloseCriterioAdicional(CloseEvent event) {
         if (getCriteriosAdicionales() != null && getCriteriosAdicionales().length > 0) {
-            for (CriteriosXPuesto criterio : getCriteriosAdicionales()) {
+            for (CriterioGb criterio : getCriteriosAdicionales()) {
                 if (getCriteriosPrincipales() == null) {
-                    setCriteriosPrincipales(new ArrayList<CriteriosXPuesto>());
+                    setCriteriosPrincipales(new ArrayList<CriterioGb>());
                 }
                 if (!getCriteriosPrincipales().contains(criterio)) {
                     getCriteriosPrincipales().add(criterio);
@@ -664,13 +666,10 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         setFechaInicial(null);
         setFechaFinal(null);
         tableConcursos.setSelection(null);
-        tableCriterios.setSelection(null);
         tableCandidatos.setSelection(null);
-        tableCriteriosAdicionales.setSelection(null);
         setComentarioFinal(null);
-        reclutamientoSessionBean.eliminarCriteriosSeleccionados(getSessionBeanADM().getCompania(), getSessionBeanEMP().getEmpleadoSesion().getUsuario());
         setConcursoSeleccionado(null);
-        setCriteriosAdicionales(new CriteriosXPuesto[0]);
+        setCriteriosAdicionales(new CriterioGb[0]);
         setAccionSeleccion("A");
     }
 
@@ -681,7 +680,12 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         }
         setAccionSeleccion("C");
         setCandidatosSeleccionados(null);
-        listaCandidatos = reclutamientoSessionBean.getCandidatoConCriteriosPuesto(concursoSeleccionado, getSessionBeanEMP().getEmpleadoSesion().getUsuario(), maxResultados);
+        if (criteriosPrincipales!= null && !criteriosPrincipales.isEmpty()){
+            listaCandidatos = reclutamientoSessionBean.findCandidatosMatchCriteria( /*Arrays.asList(*/criteriosPrincipales/*criteriosSeleccionados) */);
+        }else{
+            listaCandidatos= new ArrayList<Candidato>();
+        }
+        
         return null;
     }
 
@@ -754,28 +758,12 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         setConcursoSeleccionado(null);
     }
 
-    public CriteriosXPuesto[] getCriteriosSeleccionados() {
-        return criteriosSeleccionados;
-    }
-
-    public void setCriteriosSeleccionados(CriteriosXPuesto[] criteriosSeleccionados) {
-        this.criteriosSeleccionados = criteriosSeleccionados;
-    }
-
-    public CriteriosXPuesto[] getCriteriosAdicionales() {
+    public CriterioGb[] getCriteriosAdicionales() {
         return criteriosAdicionales;
     }
 
-    public void setCriteriosAdicionales(CriteriosXPuesto[] criteriosAdicionales) {
+    public void setCriteriosAdicionales(CriterioGb[] criteriosAdicionales) {
         this.criteriosAdicionales = criteriosAdicionales;
-    }
-
-    public Integer getMaxResultados() {
-        return maxResultados;
-    }
-
-    public void setMaxResultados(Integer maxResultados) {
-        this.maxResultados = maxResultados;
     }
 
     public AutocompletePruebaConverter getPruebaConverter() {

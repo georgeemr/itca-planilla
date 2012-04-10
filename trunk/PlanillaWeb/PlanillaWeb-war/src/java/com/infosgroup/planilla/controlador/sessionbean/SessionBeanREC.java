@@ -6,7 +6,7 @@ package com.infosgroup.planilla.controlador.sessionbean;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
-import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
+//import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -28,8 +28,8 @@ public class SessionBeanREC implements Serializable {
     @EJB
     private ReclutamientoSessionBean reclutamientoSessionBean;
     private Concurso concursoSeleccionado;
-    private CriteriosXPuesto[] criteriosSeleccionados;
-    private CriteriosXPuesto[] criteriosAdicionales;
+//    private CriteriosXPuesto[] criteriosSeleccionados;
+//    private CriteriosXPuesto[] criteriosAdicionales;
     private Candidato[] candidatosSeleccionados;
     private List<Candidato> listaCandidatos;
     @ManagedProperty(value="#{SessionBeanEMP}")
@@ -54,20 +54,20 @@ public class SessionBeanREC implements Serializable {
         this.candidatosSeleccionados = candidatosSeleccionados;
     }
 
-    public CriteriosXPuesto[] getCriteriosSeleccionados() {
-        return criteriosSeleccionados;
-    }
-
-    public void setCriteriosSeleccionados(CriteriosXPuesto[] criteriosSeleccionados) {
-        this.criteriosSeleccionados = criteriosSeleccionados;
-    }
+//    public CriteriosXPuesto[] getCriteriosSeleccionados() {
+//        return criteriosSeleccionados;
+//    }
+//
+//    public void setCriteriosSeleccionados(CriteriosXPuesto[] criteriosSeleccionados) {
+//        this.criteriosSeleccionados = criteriosSeleccionados;
+//    }
 
     public List<Candidato> getListaCandidatos() {
-        if (criteriosSeleccionados == null || criteriosSeleccionados.length <= 0) {
-            listaCandidatos = new java.util.ArrayList<Candidato>()/*reclutamientoSessionBean.findCandidatosAPreseleccionar(concursoSeleccionado)*/;
-        } else {
-            listaCandidatos = reclutamientoSessionBean.getCandidatoConCriteriosPuesto(concursoSeleccionado, getSessionBeanEMP().getEmpleadoSesion().getUsuario(), maxResultados);
-        }
+//        if (criteriosSeleccionados == null || criteriosSeleccionados.length <= 0) {
+//            listaCandidatos = new java.util.ArrayList<Candidato>()/*reclutamientoSessionBean.findCandidatosAPreseleccionar(concursoSeleccionado)*/;
+//        } else {
+//            listaCandidatos = reclutamientoSessionBean.getCandidatoConCriteriosPuesto(concursoSeleccionado, getSessionBeanEMP().getEmpleadoSesion().getUsuario(), maxResultados);
+//        }
         return listaCandidatos;
     }
 
@@ -91,12 +91,12 @@ public class SessionBeanREC implements Serializable {
         this.sessionBeanEMP = sessionBeanEMP;
     }
 
-    public CriteriosXPuesto[] getCriteriosAdicionales() {
-        return criteriosAdicionales;
-    }
-
-    public void setCriteriosAdicionales(CriteriosXPuesto[] criteriosAdicionales) {
-        this.criteriosAdicionales = criteriosAdicionales;
-    }
+//    public CriteriosXPuesto[] getCriteriosAdicionales() {
+//        return criteriosAdicionales;
+//    }
+//
+//    public void setCriteriosAdicionales(CriteriosXPuesto[] criteriosAdicionales) {
+//        this.criteriosAdicionales = criteriosAdicionales;
+//    }
     
 }
