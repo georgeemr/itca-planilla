@@ -85,24 +85,18 @@ private TipoPruebaXCandidatoFacade tipoPruebaXCandidatoFacade;
 @EJB
 private CandidatoXCargoFacade candidatoXCargoFacade;
 @EJB
-private CriterioGbFacade CriterioGbFacade;
-
-/**
- * Criterios adicinales. (No estan asociados con el puesto en la base de datos. )
- * @param puesto
- * @return 
- */
+private CriterioFacade CriterioFacade;
 
 @PermitAll
-public List<CriterioGb> getListaCriteriosAdicionales(PuestosPK puesto)
+public List<Criterio> getListaCriteriosByCias(Short cod_cia)
 {
-    return CriterioGbFacade.getListaCriteriosAdicionales(puesto);
+    return CriterioFacade.findByCias(cod_cia);
 }
 
 @PermitAll
-public List<CriterioGb> getListaCriteriosPorPuesto(PuestosPK puesto)
+public List<Criterio> getListaCriteriosPorPuesto(PuestosPK puesto)
 {
-    return CriterioGbFacade.getListaCriteriosByPuestos(puesto);
+    return CriterioFacade.getListaCriteriosByPuestos(puesto);
 }
 
 @PermitAll
@@ -269,7 +263,7 @@ public List<Candidato> getCandidatoConCriteriosPuesto(Concurso c, String emplead
 }
 
 @PermitAll
-public List<Candidato> findCandidatosMatchCriteria(List<CriterioGb> listaCriterios)
+public List<Candidato> findCandidatosMatchCriteria(List<Criterio> listaCriterios)
 {
     return candidatoFacade.findCandidatosMatchCriteria(listaCriterios);
 }
