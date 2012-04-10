@@ -177,23 +177,30 @@
                   onCloseUpdate="principalForm:criteriosSeleccionados,principalForm:mensajes" resizable="false" showEffect="clip" hideEffect="clip"
                   closeListener="#{reclutamiento$preseleccionAspirante.handleCloseCriterioAdicional}" >
 
-            <p:fieldset legend="Criterios diponibles">
-
+            <!-- p:fieldset legend="Criterios diponibles" 
+            selection="# {reclutamiento$preseleccionAspirante.criteriosAdicionales}" 
+            selectionMode="multiple"
+            -->
+            <p:spacer height="15" />
                 <p:dataTable id="criteriosDisponibles" var="criterio" value="#{reclutamiento$preseleccionAspirante.criteriosDisponibles}" emptyMessage="No se han encontrado mas Criterios" 
-                             paginator="true" rows="10" selectionMode="multiple" onRowSelectUpdate="principalForm:criteriosDisponibles,principalForm:criteriosSeleccionados"
-                             selection="#{reclutamiento$preseleccionAspirante.criteriosAdicionales}" binding="#{reclutamiento$preseleccionAspirante.tableCriteriosAdicionales}"
+                             paginator="true" rows="10" onRowSelectUpdate="principalForm:criteriosDisponibles,principalForm:criteriosSeleccionados"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                              rowsPerPageTemplate="5,10,25,50,100" >  
 
                     <p:column headerText="Criterio" filterMatchMode="contains"
-                              filterBy="#{criterio.criterio1.nombre}" >  
-                        <h:outputLabel value="#{criterio.criterio1.nombre}" />  
-                        <h:outputLabel value="#{criterio.descripcionRango}" />
+                              filterBy="#{criterio.nombre}" >  
+                        <h:outputLabel value="#{criterio.nombre}" />  
                     </p:column>  
 
+                    <p:column headerText="A&ntilde;adir" style="width: 5%;" >
+                        <p:commandButton  id="cmdAgregarCriterio"  image="ui-icon-circle-plus" title="Agregar este Evaluador." update="principalForm:mensajes,principalForm:criteriosSeleccionados" action="#{reclutamiento$preseleccionAspirante.agregarCriterio}" >
+                            <f:setPropertyActionListener value="#{criterio}" target="#{reclutamiento$preseleccionAspirante.criterio}" />  
+                        </p:commandButton>
+                    </p:column>
+                    
                 </p:dataTable>  
 
-            </p:fieldset>
+            <!-- /p:fieldset -->
 
         </p:dialog> 
 
@@ -283,7 +290,7 @@
                         <td></td>
                         <td>
                             <h:panelGrid columns="2">
-                                <h:outputLabel value="Salario $" style="font-weight: bold;"/>
+                                <h:outputLabel value="Salario #{SessionBeanADM.compania.monedas.signo}" style="font-weight: bold;"/>
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
@@ -419,8 +426,8 @@
                 <p:panel header="Paso 1 de 5" style="border:none;" >
                     <p:spacer width="8" />
                     <h:panelGrid columns="1"  >
-                    <h:outputLabel value="Complete los rangos de fecha para encontrar un concurso especifico, o presione el boton buscar sin ingresar fechas para mostrar TODOS los concursos Activos." />
-                    <h:outputLabel value="No podrá avanzar al paso 2 sin haber seleccionado un concurso." />
+                        <h:outputLabel value="Complete los rangos de fecha para encontrar un concurso especifico, o presione el boton buscar sin ingresar fechas para mostrar TODOS los concursos Activos." />
+                        <h:outputLabel value="No podrá avanzar al paso 2 sin haber seleccionado un concurso." />
                     </h:panelGrid>
                     <p:spacer width="8" />
                     <h:panelGrid columns="8"  >
@@ -524,10 +531,8 @@
                         <h:outputLabel value="Plazas necesarias: " style="font-weight: bold;" />
                         <h:outputLabel value="${reclutamiento$preseleccionAspirante.concursoSeleccionado.numeroPlazas}" />
 
-                        <h:outputLabel value="N&uacute;mero de Precandidatos a mostrar: " style="font-weight: bold;" rendered="#{reclutamiento$preseleccionAspirante.accionSeleccion ne 'A'}" />
-                        <p:inputText  id="txResultados" style="width: 30px;" value="#{reclutamiento$preseleccionAspirante.maxResultados}" maxlength="3"  rendered="#{reclutamiento$preseleccionAspirante.accionSeleccion ne 'A'}" >
-                            <p:ajax event="keyup" update="txResultados" />  
-                        </p:inputText>
+                        <h:outputLabel value=""/>
+                        <h:outputLabel value=""/>
 
                     </h:panelGrid>
                 </p:panel>
@@ -598,28 +603,28 @@
                         <td valign="top">
                             <p:dataTable id="criteriosSeleccionados" var="criterio" rows="5" paginator="true"
                                          value="#{reclutamiento$preseleccionAspirante.criteriosPrincipales}"
-                                         selection="#{reclutamiento$preseleccionAspirante.criteriosSeleccionados}"
-                                         emptyMessage="No se han encontrado Criterios." selectionMode="multiple"
-                                         binding="#{reclutamiento$preseleccionAspirante.tableCriterios}"
+                                         emptyMessage="No se han encontrado Criterios para el puesto." 
                                          paginatorAlwaysVisible="true" rendered="#{reclutamiento$preseleccionAspirante.accionSeleccion eq 'C'}"
-                                         rowSelectListener="#{reclutamiento$preseleccionAspirante.onRowSelectCriterio}"
-                                         rowUnselectListener="#{reclutamiento$preseleccionAspirante.onRowUnSelectCriterio}"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
 
                                 <f:facet name="header">  
                                     Criterios por puesto
                                 </f:facet>  
 
-                                <p:column sortBy="#{criterio.criterio1.nombre}" 
-                                          filterBy="#{criterio.criterio1.nombre}"
+                                <p:column sortBy="#{criterio.nombre}" filterBy="#{criterio.nombre}"
                                           filterMatchMode="contains" headerText="Criterio " >
-                                    <h:outputLabel value="#{criterio.criterio1.nombre}" />
-                                    <h:outputLabel value="#{criterio.descripcionRango}" />
+                                    <h:outputLabel value="#{criterio.nombre}" />
+                                </p:column>
+                                
+                                <p:column headerText="Remover" style="width: 5%;" >
+                                    <p:commandButton  id="cmdEliminarCriterio"  image="ui-icon-circle-minus" update="principalForm:criteriosSeleccionados" action="#{reclutamiento$preseleccionAspirante.eliminarCriterio}" >
+                                        <f:setPropertyActionListener value="#{criterio}" target="#{reclutamiento$preseleccionAspirante.criterio}" />  
+                                    </p:commandButton>
                                 </p:column>
 
                                 <f:facet name="footer">  
                                     <h:panelGrid columns="2">
-                                        <p:commandButton oncomplete="botonMostrarCriterios.show()" value="Mostrar mas criterios" image="ui-icon-plusthick" />
+                                        <p:commandButton oncomplete="botonMostrarCriterios.show()" value="A&ntilde;adir criterios" update="principalForm:criteriosDisponibles" image="ui-icon-plusthick" />
                                     </h:panelGrid>
                                 </f:facet>  
 
