@@ -383,7 +383,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
 
     public String editar$crud$action() {
         if (getPuestoSeleccionado() == null) {
-            addMessage("Mantenimiento de Puestos.", "No ha seleccionado ningún puesto para editar.", TipoMensaje.ERROR);
+            addMessage("Mantenimiento de Puestos.", "No ha seleccionado ningún puesto para editar. Consulte uno primero.", TipoMensaje.ERROR);
             return null;
         }
         setNombre(getPuestoSeleccionado().getNomPuesto());
@@ -406,7 +406,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
 
     public String criterios$crud$action() {
         if (getPuestoSeleccionado() == null) {
-            addMessage("Mantenimiento de Puestos.", "No ha seleccionado ningún puesto para ver Criterios.", TipoMensaje.ERROR);
+            addMessage("Mantenimiento de Puestos.", "No ha seleccionado ningún puesto para ver Criterios. Consulte uno primero.", TipoMensaje.ERROR);
             return null;
         }
         listaCriteriosXPuestos = reclutamientoFacade.criteriosPorPuesto(getPuestoSeleccionado().getPuestosPK());

@@ -61,7 +61,11 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
     }
 
     public List<TiposPlanilla> getListaTipos() {
+        if ( isInRole("rrhh") ){
+        listaTipos = planillaSessionBean.listarTipos(getSessionBeanADM().getCompania());
+        }else{
         listaTipos = planillaSessionBean.listarTiposByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+        }
         return listaTipos;
     }
 

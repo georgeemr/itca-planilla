@@ -26,7 +26,7 @@
 
             <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,principalForm:tablaPuesto,fsConsulta,fsCriterios,tablaCriteriosXPuesto" oncomplete="criterioDialog.hide()"  
                              actionListener="#{puestosBackendBean.eliminarCriterio$crud$action}" />  
-            <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+            <p:commandButton value="No" onclick="criterioDialog.hide()" type="button" />   
 
         </p:confirmDialog>   
 
@@ -61,14 +61,14 @@
                     </p:column>
 
                     <p:column>
-                        <p:commandButton image="ui-icon ui-icon-document" ajax="true" action="#{puestosBackendBean.guardarCriterio$crud$action}" update="principalForm:mensajes,principalForm:fsCriterios,principalForm:tablaCriteriosXPuesto" >
+                        <p:commandButton image="ui-icon-circle-plus" ajax="true" action="#{puestosBackendBean.guardarCriterio$crud$action}" update="principalForm:mensajes,principalForm:fsCriterios,principalForm:tablaCriteriosXPuesto" >
                             <f:setPropertyActionListener value="#{criterio}" target="#{puestosBackendBean.criterioSeleccionado}" /> 
                         </p:commandButton>
                     </p:column>
 
                     <f:facet name="footer">
-                        <p:commandButton value="Cerrar" styleClass="opcionMenu" update="principalForm:mensajes"
-                                         onclick="dialogCriterio.hide()" action="#{puestosBackendBean.limpiarCriterio}" image="ui-icon-closethick" /> 
+                        <p:commandButton value="Cerrar" styleClass="opcionMenu"
+                                         oncomplete="dialogCriterio.hide()" action="#{puestosBackendBean.limpiarCriterio}" image="ui-icon-closethick" /> 
                     </f:facet>
 
                 </p:dataTable>
@@ -480,13 +480,13 @@
                 </p:column>
 
                 <p:column headerText="Remover" style="width: 8%;">
-                    <p:commandButton image="ui-icon ui-icon-circle-minus" ajax="true" oncomplete="criterioDialog.show()">
+                    <p:commandButton image="ui-icon ui-icon-circle-minus" ajax="true" oncomplete="criterioDialog.show()" title="Remover criterio" >
                         <f:setPropertyActionListener value="#{criteriosXpuesto}" target="#{puestosBackendBean.criterioXPuestoSeleccionado}" /> 
                     </p:commandButton>
                 </p:column>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Agregar criterios" image="ui-icon ui-icon-document" ajax="true" oncomplete="dialogCriterio.show()">
+                    <p:commandButton value="Agregar criterios" image="ui-icon-circle-plus" ajax="true" oncomplete="dialogCriterio.show()">
                         <f:setPropertyActionListener value="#{criteriosXpuesto}" target="#{puestosBackendBean.criterioXPuestoSeleccionado}" /> 
                     </p:commandButton>
                 </f:facet>
