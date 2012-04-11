@@ -80,7 +80,7 @@
             <p:spacer height="20" />
             <h:panelGrid columns="2">
                 <i:etiquetaRequerido value="Nombre" />
-                <p:inputText id="Nombre" value="#{reclutamiento$concursos.nombreConcurso}" maxlength="100" required="true" 
+                <p:inputText id="Nombre" value="#{reclutamiento$concursos.nombreConcurso}" maxlength="100" required="true" style="width: 350px;"
                              requiredMessage="El Nombre del Concurso es un campo obligatorio" />
                 
                 <i:etiquetaRequerido value="Fecha Inicial" />
@@ -99,7 +99,7 @@
                 </p:inputText>
 
                 <i:etiquetaRequerido value="Puesto" />
-                <h:selectOneMenu id="lstPuesto" value="#{reclutamiento$concursos.puesto}"  style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
+                <h:selectOneMenu id="lstPuesto" value="#{reclutamiento$concursos.puesto}"  style="height: 25px;padding-top: 3px;width: 350px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
                     <f:selectItems value="#{reclutamiento$concursos.listaPuestos}" var="puesto" itemValue="#{puesto.puestosPK.codPuesto}"  itemLabel="#{puesto.nomPuesto}"/>
                 </h:selectOneMenu>
 
@@ -228,7 +228,7 @@
             <h:panelGrid columns="2">
                 <i:etiquetaRequerido value="Nombre" />
                 <p:inputText id="NombreMod" value="#{reclutamiento$concursos.nombreConcurso}" maxlength="100" required="true" 
-                             requiredMessage="El Nombre del Concurso es un campo obligatorio" />
+                             requiredMessage="El Nombre del Concurso es un campo obligatorio" style="width: 350px;"/>
                 
                 <i:etiquetaRequerido value="Fecha Inicial" />
                 <p:calendar id="calFecIniMod" value="#{reclutamiento$concursos.fechaInicial}" showOn="button" required="true" 
@@ -246,7 +246,7 @@
                 </p:inputText>
 
                 <i:etiquetaRequerido value="Puesto" />
-                <h:selectOneMenu id="lstPuestoMod" value="#{reclutamiento$concursos.puesto}" style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
+                <h:selectOneMenu id="lstPuestoMod" value="#{reclutamiento$concursos.puesto}" style="height: 25px;width: 350px;padding-top: 3px;" required="true" requiredMessage="El Puesto del Concurso es un campo obligatorio"  >
                     <f:selectItems value="#{reclutamiento$concursos.listaPuestos}" var="puesto" itemValue="#{puesto.puestosPK.codPuesto}"  itemLabel="#{puesto.nomPuesto}"/>
                 </h:selectOneMenu>
 
