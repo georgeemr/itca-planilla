@@ -44,18 +44,19 @@
                                     onSelectUpdate="panelDescripcion,panelInformacionPagos" >
                         <f:ajax render="AutCompltEmpleado" event="change" execute="AutCompltProgPla" />
                     </p:autoComplete>
-                    <h:outputLabel value=" A&Ntilde;O--MES--N&Uacute;MERO DE PLANILLA " style="font-weight: bold;color: red;" />
+                    <!-- h:outputLabel value=" A&Ntilde;OMESN&Uacute;MERO DE PLANILLA " style="font-weight: bold;color: red;" / -->
+                    <i:etiquetaPlanilla />
                 </h:panelGroup>
                 <i:etiquetaRequerido value="Empleado" />
                 <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
                                 value="#{planilla$informacionPagos.planillaSeleccionada}"
-                                itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.empleados.nombreYCodigo}"
+                                itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.empleados.nombreCompleto}"
                                 completeMethod="#{planilla$informacionPagos.completePlanillaEmpleado}"
                                 converter="#{planilla$informacionPagos.planillaConverter}" 
                                 selectListener="#{planilla$informacionPagos.handleSelectEmpleado}"
                                 onSelectUpdate="tbIng,tbEgr,panelDescripcion"
                                 style="width: 300px;"  >
-                    <f:ajax render="panelContenido" event="change" execute="AutCompltEmpleado" />
+                    <!-- f:ajax render="panelContenido" event="change" execute="AutCompltEmpleado" / -->
                 </p:autoComplete>
                 <h:outputLabel value=""/>
                 <h:panelGrid id="panelDescripcion" columns="4" style="padding-left: 0;" >

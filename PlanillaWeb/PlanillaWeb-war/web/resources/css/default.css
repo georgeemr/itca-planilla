@@ -149,3 +149,8 @@ body {
 .columnCriteriosEvaluacionSelector{
     width: 80%;
 }
+
+.etiquetaPlanilla{
+    font-weight: bold;
+    color: darkblue;
+}
