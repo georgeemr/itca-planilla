@@ -680,6 +680,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         }
         setAccionSeleccion("C");
         setCandidatosSeleccionados(null);
+        setTableCandidatos(new DataTable());
         if (criteriosPrincipales!= null && !criteriosPrincipales.isEmpty()){
             listaCandidatos = reclutamientoSessionBean.findCandidatosMatchCriteria( /*Arrays.asList(*/criteriosPrincipales, getSessionBeanADM().getCompania().getCodCia()/*criteriosSeleccionados) */);
         }else{
@@ -696,6 +697,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         }
         setAccionSeleccion("M");
         setCandidatosSeleccionados(null);
+        setTableCandidatos(new DataTable());
         listaCandidatos = reclutamientoSessionBean.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
         return null;
     }
@@ -707,6 +709,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         }
         setAccionSeleccion("M");
         setCandidatosSeleccionados(null);
+        setTableCandidatos(new DataTable());
         listaCandidatos = reclutamientoSessionBean.findCandidatosLikeEmpleados(getSessionBeanADM().getCompania());
         return null;
     }

@@ -384,23 +384,23 @@
     <ui:define name="acciones">
         <p:tab id="accionesCandidato" title="Candidatos" rendered="#{reclutamiento$preseleccionAspirante.concursoSeleccionado ne null}" >
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{reclutamiento$preseleccionAspirante.mostrarCandidatos}" update="principalForm:mensajes,criteriosSeleccionados,tableCanSeleccionados,wizarPreseleccion,seCandidatoLst" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{reclutamiento$preseleccionAspirante.mostrarCandidatos}" update="principalForm:mensajes,principalForm:criteriosSeleccionados,principalForm:tableCanSeleccionados,wizarPreseleccion,principalForm:seCandidatoLst" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
                     <p:graphicImage value="/resources/iconos/preseleccion.png" />
                     <h:outputText value="Mostrar Preselecci&oacute;n" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{reclutamiento$preseleccionAspirante.buscarCandidatosXCriterios}" update="principalForm:mensajes,criteriosSeleccionados,tableCanSeleccionados,wizarPreseleccion,seCandidatoLst" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{reclutamiento$preseleccionAspirante.buscarCandidatosXCriterios}" update="principalForm:mensajes,criteriosSeleccionados,principalForm:tableCanSeleccionados,wizarPreseleccion,principalForm:seCandidatoLst" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
                     <p:graphicImage value="/resources/iconos/candidato-criterio.png" />
                     <h:outputText value="Filtrar por Criterios" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{reclutamiento$preseleccionAspirante.buscarAllCandidatos}" update="principalForm:mensajes,criteriosSeleccionados,tableCanSeleccionados,wizarPreseleccion,seCandidatoLst" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{reclutamiento$preseleccionAspirante.buscarAllCandidatos}" update="principalForm:mensajes,criteriosSeleccionados,principalForm:tableCanSeleccionados,wizarPreseleccion,principalForm:seCandidatoLst" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
                     <p:graphicImage value="/resources/iconos/candidato.png" />
                     <h:outputText value="Filtrar por Candidato" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu textoNormal"  ajax="true" action="#{reclutamiento$preseleccionAspirante.buscarAllEmpleados}" update="principalForm:mensajes,criteriosSeleccionados,tableCanSeleccionados,wizarPreseleccion,seCandidatoLst" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                <p:commandLink styleClass="opcionMenu textoNormal"  ajax="true" action="#{reclutamiento$preseleccionAspirante.buscarAllEmpleados}" update="principalForm:mensajes,criteriosSeleccionados,principalForm:tableCanSeleccionados,wizarPreseleccion,principalForm:seCandidatoLst" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
                     <p:graphicImage value="/resources/iconos/personal.png" />
                     <h:outputText value="Filtrar por Empleado" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu textoNormal"  ajax="true" action="preseleccionAspirante?faces-redirect=true" update="principalForm:mensajes,criteriosSeleccionados,tableCanSeleccionados,wizarPreseleccion,seCandidatoLst" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
+                <p:commandLink styleClass="opcionMenu textoNormal"  ajax="true" action="preseleccionAspirante?faces-redirect=true" update="principalForm:mensajes,criteriosSeleccionados,principalForm:tableCanSeleccionados,wizarPreseleccion,principalForm:seCandidatoLst" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
                     <p:graphicImage value="/resources/iconos/arrow-left.png" />
                     <h:outputText value="Volver a concursos" styleClass="espacioTexto"/>
                 </p:commandLink>
