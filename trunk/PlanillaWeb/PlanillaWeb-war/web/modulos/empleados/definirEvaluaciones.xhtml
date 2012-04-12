@@ -15,10 +15,10 @@
     <ui:define name="acciones" >
         <p:tab title="Evaluaci&oacute;n"  >          
             <h:panelGrid columns="1" >
-                <g:menuAccionItem label="Mostrar Evaluadores" action="#{empleados$definirEvaluaciones.mostrarEvaluadores}" image="/resources/iconos/preseleccion.png" update="principalForm:mensajes,principalForm:panelSeleccionEvaluadores,tablaEvaluadoresDisponibles,tablaEvaluadores" />
-                <g:menuAccionItem label="Filtrar por Nombre" action="#{empleados$definirEvaluaciones.buscarEvaluadoresPorNombre}" image="/resources/iconos/candidato-criterio.png" update="principalForm:mensajes,principalForm:panelSeleccionEvaluadores,tablaEvaluadoresDisponibles,tablaEvaluadores" />
-                <g:menuAccionItem label="Filtrar por Puestos" action="#{empleados$definirEvaluaciones.buscarEvaluadoresPorPuesto}" image="/resources/iconos/personal.png" update="principalForm:mensajes,principalForm:panelSeleccionEvaluadores,tablaEvaluadoresDisponibles,tablaEvaluadores" />
-                <g:menuAccionItem label="Filtrar por Departamentos" action="#{empleados$definirEvaluaciones.buscarEvaluadoresPorDepartamento}" image="/resources/iconos/groups-departaments.png" update="principalForm:mensajes,principalForm:panelSeleccionEvaluadores,tablaEvaluadoresDisponibles,tablaEvaluadores" />
+                <g:menuAccionItem label="Mostrar Evaluadores" action="#{empleados$definirEvaluaciones.mostrarEvaluadores}" image="/resources/iconos/preseleccion.png" update="principalForm:mensajes,principalForm:panelSeleccionEvaluadores,principalForm:tablaEvaluadoresDisponibles,principalForm:tablaEvaluadores" />
+                <g:menuAccionItem label="Filtrar por Nombre" action="#{empleados$definirEvaluaciones.buscarEvaluadoresPorNombre}" image="/resources/iconos/candidato-criterio.png" update="principalForm:mensajes,principalForm:panelSeleccionEvaluadores,principalForm:tablaEvaluadoresDisponibles,principalForm:tablaEvaluadores" />
+                <g:menuAccionItem label="Filtrar por Puestos" action="#{empleados$definirEvaluaciones.buscarEvaluadoresPorPuesto}" image="/resources/iconos/personal.png" update="principalForm:mensajes,principalForm:panelSeleccionEvaluadores,principalForm:tablaEvaluadoresDisponibles,principalForm:tablaEvaluadores" />
+                <g:menuAccionItem label="Filtrar por Departamentos" action="#{empleados$definirEvaluaciones.buscarEvaluadoresPorDepartamento}" image="/resources/iconos/groups-departaments.png" update="principalForm:mensajes,principalForm:panelSeleccionEvaluadores,principalForm:tablaEvaluadoresDisponibles,principalForm:tablaEvaluadores" />
                 <g:menuAccionItem label="Volver a Evaluaciones" action="#{empleados$definirEvaluaciones.volverACampanias}" image="/resources/iconos/arrow-left.png" update="principalForm:mensajes" />
             </h:panelGrid>
         </p:tab>
@@ -128,22 +128,20 @@
                             <h:outputText value="Evaluadores Seleccionados"/>
                         </f:facet>
 
-                        <p:column sortBy="#{evaluador.empleadosPK.codEmp}" headerText="C&oacute;digo" style="width: 10%">
-                            <h:outputLabel value="#{evaluador.empleadosPK.codEmp}"/>
+                        <p:column sortBy="#{evaluador.empleados.empleadosPK.codEmp}" headerText="C&oacute;digo" style="width: 10%">
+                            <h:outputLabel value="#{evaluador.empleados.empleadosPK.codEmp}"/>
                         </p:column>
 
-                        <p:column filterBy="#{evaluador.nombreCompleto}" filterMatchMode="contains" headerText="Nombre ">
-                            <h:outputLabel value="#{evaluador.nombreCompleto}"/>
+                        <p:column filterBy="#{evaluador.empleados.nombreCompleto}" filterMatchMode="contains" headerText="Nombre ">
+                            <h:outputLabel value="#{evaluador.empleados.nombreCompleto}"/>
                         </p:column> 
 
                         <p:column headerText="Puesto ">
-                            <h:outputLabel value="#{evaluador.puestos.nomPuesto}"/>
+                            <h:outputLabel value="#{evaluador.empleados.puestos.nomPuesto}"/>
                         </p:column> 
 
                         <p:column headerText="Remover" style="width: 5%;" >
-                            <p:commandButton  id="cmdEliminarEvaluador"  image="ui-icon-circle-minus" oncomplete="dlgEliminarEvaluador.show();" title="Remover Evaluador." >
-                                <f:setPropertyActionListener value="#{evaluador}" target="#{empleados$definirEvaluaciones.evaluadorSeleccionado}" />  
-                            </p:commandButton>
+                            <p:commandButton  id="cmdEliminarEvaluador"  image="ui-icon-circle-minus" />
                         </p:column>
 
                     </p:dataTable>
@@ -175,12 +173,12 @@
                             </table>
                         </f:facet>
 
-                        <p:column sortBy="#{evaluador.empleadosPK.codEmp}" headerText="C&oacute;digo" style="width: 10%">
-                            <h:outputLabel value="#{evaluador.empleadosPK.codEmp}"/>
+                        <p:column sortBy="#{evaluador.empleados.empleadosPK.codEmp}" headerText="C&oacute;digo" style="width: 10%">
+                            <h:outputLabel value="#{evaluador.empleados.empleadosPK.codEmp}"/>
                         </p:column>
 
-                        <p:column filterBy="#{evaluador.nombreCompleto}" filterMatchMode="contains" headerText="Nombre ">
-                            <h:outputLabel value="#{evaluador.nombreCompleto}"/>
+                        <p:column filterBy="#{evaluador.empleados.nombreCompleto}" filterMatchMode="contains" headerText="Nombre ">
+                            <h:outputLabel value="#{evaluador.empleados.nombreCompleto}"/>
                         </p:column> 
 
                         <p:column headerText="A&ntilde;adir" style="width: 5%;" >
@@ -229,11 +227,11 @@
                         </f:facet>
 
                         <p:column headerText="C&oacute;digo" style="width: 5%">
-                            <h:outputLabel value="#{evaluado.evaluador.empleadosPK.codEmp}"/>
+                            <h:outputLabel value="#{evaluado.evaluador.empleados.empleadosPK.codEmp}"/>
                         </p:column>
 
-                        <p:column sortBy="#{evaluado.evaluador.nombreCompleto}" style="width: 20%" headerText="Evaluador">
-                            <h:outputLabel value="#{evaluado.evaluador.nombreCompleto}"/>
+                        <p:column sortBy="#{evaluado.evaluador.empleados.nombreCompleto}" style="width: 20%" headerText="Evaluador">
+                            <h:outputLabel value="#{evaluado.evaluador.empleados.nombreCompleto}"/>
                         </p:column> 
 
                         <p:column headerText="Criterio" style="width: 5%">
@@ -292,13 +290,13 @@
 
         </p:confirmDialog>  
 
-        <p:confirmDialog message="&#191; Esta seguro que desea eliminar este evaluado ?" showEffect="bounce" hideEffect="explode"  
+        <!-- p:confirmDialog message="&#191; Esta seguro que desea eliminar este evaluado ?" showEffect="bounce" hideEffect="explode"  
                          modal="true" header="Eliminar Evaluado" severity="alert" widgetVar="dlgEliminarEvaluado">  
             <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,tablaSeleccionEvaluados" oncomplete="dlgEliminarEvaluado.hide()"  
-                             action="#{empleados$definirEvaluaciones.removerEvaluado}" />  
+                             action="# {empleados$definirEvaluaciones.removerEvaluado}" />  
             <p:commandButton value="No" onclick="dlgEliminarEvaluado.hide()" type="button" />   
 
-        </p:confirmDialog> 
+        </p:confirmDialog --> 
 
         <p:dialog widgetVar="dlgEmpleados" header="Lista de Empleados" showEffect="fold" hideEffect="fold" width="506" height="475" >
 
@@ -308,7 +306,7 @@
                     <h:outputLabel id="lbl1" value="Listado general de empleados."  style="font-weight: bold;"/>
                 </h:panelGrid>
 
-                <p:dataTable id="listadoEmpleados" value="#{empleados$definirEvaluaciones.listaEmpleados}" var="empleado" 
+                <p:dataTable id="listadoEmpleados" value="#{empleados$definirEvaluaciones.empleados}" var="empleado" 
                              paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                              selection="#{empleados$definirEvaluaciones.empleadosSeleccionados}" rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" >

@@ -50,6 +50,26 @@ private PreguntaFacade preguntaFacade;
 private PlantillaFacade plantillaFacade;
 @EJB
 private PreEvaluacionFacade preEvaluacionFacade;
+@EJB
+private EvaluadorFacade evaluadorFacade;
+
+@PermitAll
+public List<Evaluador> findEvaluadoresByPreEvaluacion(PreEvaluacion preEvaluacion)
+{
+    return evaluadorFacade.findByPreEvaluacion(preEvaluacion);
+}
+
+@PermitAll
+public void guardarEvaluador(Evaluador evaluador)
+{
+    evaluadorFacade.create(evaluador);
+}
+
+@PermitAll
+public void eliminarEvaluador(Evaluador evaluador)
+{
+    evaluadorFacade.remove(evaluador);
+}
 
 @PermitAll
 public List<Campania> listarCampanias(Cias cia)
