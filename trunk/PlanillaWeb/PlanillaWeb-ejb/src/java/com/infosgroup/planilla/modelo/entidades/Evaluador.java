@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Evaluador.findByTipoEvaluacion", query = "SELECT e FROM Evaluador e WHERE e.evaluadorPK.tipoEvaluacion = :tipoEvaluacion"),
     @NamedQuery(name = "Evaluador.findByPlantilla", query = "SELECT e FROM Evaluador e WHERE e.evaluadorPK.plantilla = :plantilla")})
 public class Evaluador implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected EvaluadorPK evaluadorPK;
@@ -40,6 +41,8 @@ public class Evaluador implements Serializable {
         @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Empleados empleados;
+    @Column(name = "ESTADO", length = 1)
+    private String estado;
 
     public Evaluador() {
     }
@@ -47,8 +50,8 @@ public class Evaluador implements Serializable {
     public Evaluador(EvaluadorPK evaluadorPK) {
         this.evaluadorPK = evaluadorPK;
     }
-    
-    public Evaluador( PreEvaluacion preEvaluacion, Empleados e ){
+
+    public Evaluador(PreEvaluacion preEvaluacion, Empleados e) {
         this.evaluadorPK = new EvaluadorPK(preEvaluacion, e);
         this.empleados = e;
         this.preEvaluacion = preEvaluacion;
@@ -82,6 +85,14 @@ public class Evaluador implements Serializable {
         this.empleados = empleados;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -106,5 +117,4 @@ public class Evaluador implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.planilla.Evaluador[ evaluadorPK=" + evaluadorPK + " ]";
     }
-    
 }
