@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.modelo.estructuras;
 
 import com.infosgroup.planilla.modelo.entidades.Empleados;
+import com.infosgroup.planilla.modelo.entidades.Evaluador;
 import java.util.List;
 
 /**
@@ -13,12 +14,12 @@ import java.util.List;
  */
 public class ModelEvaluadorEvaluado implements java.io.Serializable {
 
-    private Empleados evaluador;
+    private Evaluador evaluador;
     private List<Empleados> listaEvaluados;
     private String filtroEvaluados = "S";
     private Integer cantidad = 0;
 
-    public ModelEvaluadorEvaluado(Empleados evaluador, List<Empleados> evaluados, String filtroEvaluados) {
+    public ModelEvaluadorEvaluado(Evaluador evaluador, List<Empleados> evaluados, String filtroEvaluados) {
         this.evaluador = evaluador;
         this.listaEvaluados = evaluados;
         this.filtroEvaluados = filtroEvaluados;
@@ -36,7 +37,7 @@ public class ModelEvaluadorEvaluado implements java.io.Serializable {
         this.cantidad = cantidad;
     }
 
-    public ModelEvaluadorEvaluado(Empleados evaluador, List<Empleados> evaluados) {
+    public ModelEvaluadorEvaluado(Evaluador evaluador, List<Empleados> evaluados) {
         this.evaluador = evaluador;
         this.listaEvaluados = evaluados;
     }
@@ -52,11 +53,11 @@ public class ModelEvaluadorEvaluado implements java.io.Serializable {
     public ModelEvaluadorEvaluado() {
     }
 
-    public Empleados getEvaluador() {
+    public Evaluador getEvaluador() {
         return evaluador;
     }
 
-    public void setEvaluador(Empleados evaluador) {
+    public void setEvaluador(Evaluador evaluador) {
         this.evaluador = evaluador;
     }
 
