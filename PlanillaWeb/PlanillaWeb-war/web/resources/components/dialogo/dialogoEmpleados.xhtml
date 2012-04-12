@@ -47,7 +47,7 @@ and open the template in the editor.
                         <h:outputLabel value="#{empleado.nombreCompleto}" />
                     </p:column>  
 
-                    <p:column>
+                    <p:column style="width: 5%;" >
                         <p:commandButton styleClass="opcionMenu" update="#{cc.attrs.update}" oncomplete="#{cc.attrs.name}.hide();" action="#{cc.attrs.okAction}" image="ui-icon-circle-check" title="Seleccionar empleado" >
                             <f:setPropertyActionListener value="#{empleado}" target="#{cc.attrs.selection}" /> 
                         </p:commandButton>

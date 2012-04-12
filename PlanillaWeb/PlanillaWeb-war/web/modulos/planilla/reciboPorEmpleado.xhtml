@@ -6,7 +6,8 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.prime.com.tr/ui"
     xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"  >
+    xmlns:i="http://java.sun.com/jsf/composite/components/presentacion" 
+    xmlns:d="http://java.sun.com/jsf/composite/components/dialogo" >
 
     <ui:define name="titulo">
         <h:outputText value="Recibos Por Empleado"/>
@@ -15,8 +16,7 @@
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" ajax="false"
-                               action="#{planilla$reciboPorEmpleado.mostrar$reporte$action}" update="principalForm:mensajes">
+                <p:commandLink styleClass="opcionMenu" ajax="false" action="#{planilla$reciboPorEmpleado.mostrar$reporte$action}" update="principalForm:mensajes">
                     <p:graphicImage value="/resources/iconos/document-pdf.png"/>
                     <h:outputText value="Mostrar boleta" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -39,17 +39,33 @@
                 <tr>
                     <td>
                         <h:panelGrid columns="2" >
+
                             <h:outputLabel value="Empleado " style="font-weight: bold;" />
-                            <h:outputLabel value="#{planilla$reciboPorEmpleado.empleado.nombreCompleto}" style=" font-weight: bold"/>
+                            <h:panelGroup>
+                                <h:outputLabel id="lblNombreEmpleado" value="#{planilla$reciboPorEmpleado.empleado.nombreCompleto}" style=" font-weight: bold"/>
+                                <p:spacer width="15" rendered="#{request.isUserInRole('rrhh')}" />
+                                
+                                <p:commandLink styleClass="opcionMenu" oncomplete="dlgReciboEmpleados.show();" style="color:blue" rendered="#{request.isUserInRole('rrhh')}">
+                                    <p:graphicImage value="/resources/iconos/personal.png"/>
+                                    <h:outputText value="Seleccionar otro empleado" styleClass="espacioTexto" />
+                                </p:commandLink>
+                                
+                                <d:dialogoEmpleados name="dlgReciboEmpleados" title="Listado general de Empleados" information="Seleccione un empleado."
+                                                    selection="#{planilla$reciboPorEmpleado.empleado}" image="/resources/imagenes/64/meeting-participant.png"
+                                                    update="principalForm:mensajes,principalForm:lblNombreEmpleado,principalForm:AutCompltEmpleado,principalForm:panelInformacionPagos" 
+                                                    okAction="#{planilla$reciboPorEmpleado.okActionDialogEmpleado}"
+                                                    cancelAction="#{planilla$reciboPorEmpleado.cancelActionDialogEmpleado}"/>
+                            </h:panelGroup>
+                            
                             <i:etiquetaRequerido value="Tipo de planilla" />
                             <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{planilla$reciboPorEmpleado.tipoPlanilla}" >                       
-                                <f:ajax render="AutCompltEmpleado panelInformacionPagos" event="change" execute="LstTipoPlanilla" listener="#{planilla$reciboPorEmpleado.updateByTipoPlanilla}" />
+                                <f:ajax render="AutCompltEmpleado panelInformacionPagos principalForm:mensajes" event="change" execute="LstTipoPlanilla" listener="#{planilla$reciboPorEmpleado.updateByTipoPlanilla}" />
                                 <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
                                 <f:selectItems value="#{planilla$reciboPorEmpleado.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                             </h:selectOneMenu>
                             <i:etiquetaRequerido value="Planilla" />
                             <h:panelGroup>
-                                <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
+                                <p:autoComplete id="AutCompltEmpleado" var="planilla" 
                                                 value="#{planilla$reciboPorEmpleado.planillaSeleccionada}"
                                                 itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.planillaToString}"
                                                 completeMethod="#{planilla$reciboPorEmpleado.completePlanillaEmpleado}"
@@ -57,10 +73,9 @@
                                                 selectListener="#{planilla$reciboPorEmpleado.handleSelectPlanilla}"
                                                 onSelectUpdate="tbIng,tbEgr,panelDescripcion"
                                                 style="width: 300px;"  >
-                                    <f:ajax render="panelContenido" event="change" execute="AutCompltEmpleado" />
                                 </p:autoComplete>
                                 <i:etiquetaPlanilla/>
-                                <!-- h:outputLabel value="A&Ntilde;O-MES-N&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" / -->
+
                             </h:panelGroup>
                         </h:panelGrid>
                     </td>
@@ -76,7 +91,7 @@
                     </td>
                 </tr>
             </table>
-            <!--p:spacer height="10"/ -->
+
             <table width="100%" border="0">
                 <tr valign="top">
                     <td width="50%">

@@ -6,7 +6,6 @@ package com.infosgroup.planilla.controlador.modulos.planilla;
 
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.estructuras.FormatoReporte;
-import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
@@ -38,7 +37,7 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
     private ReportesStatelessBean reportesBean;
     private Empleados empleado;
     private Planilla planillaSeleccionada;
-    private AutocompletePlanillaConverter planillaConverter;
+    private AutocompletePlanillaConverter planillaConverter = new AutocompletePlanillaConverter(new ArrayList<Planilla>());
     private List<MovDp> listaPrestaciones;
     private List<MovDp> listaDeducciones;
     private Short tipoPlanilla;
@@ -53,7 +52,7 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
 
     @PostConstruct
     public void init() {
-        empleado = getSessionBeanEMP().getEmpleadoSesion();
+        setEmpleado( getSessionBeanEMP().getEmpleadoSesion() );
     }
 
     public void updateByTipoPlanilla(AjaxBehaviorEvent event) {
@@ -61,10 +60,10 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
     }
 
     public List<TiposPlanilla> getListaTipos() {
-        if ( isInRole("rrhh") ){
-        listaTipos = planillaSessionBean.listarTipos(getSessionBeanADM().getCompania());
-        }else{
-        listaTipos = planillaSessionBean.listarTiposByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+        if (isInRole("rrhh")) {
+            setListaTipos ( planillaSessionBean.listarTipos(getSessionBeanADM().getCompania()) );
+        } else {
+            setListaTipos (planillaSessionBean.listarTiposByEmpleado(getEmpleado()));
         }
         return listaTipos;
     }
@@ -99,9 +98,9 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
 
     public AutocompletePlanillaConverter getPlanillaConverter() {
         if (tipoPlanilla != null && tipoPlanilla != -1) {
-            planillaConverter = new AutocompletePlanillaConverter(planillaSessionBean.findPlaByEmp(empleado, tipoPlanilla));
+            setPlanillaConverter( new AutocompletePlanillaConverter(planillaSessionBean.findPlaByEmp(getEmpleado(), getTipoPlanilla())));
         } else {
-            planillaConverter = new AutocompletePlanillaConverter(new ArrayList<Planilla>());
+            setPlanillaConverter( new AutocompletePlanillaConverter(new ArrayList<Planilla>()));
         }
         return planillaConverter;
     }
@@ -128,33 +127,42 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
 
     public List<Planilla> completePlanillaEmpleado(String query) {
         List<Planilla> suggestions = new ArrayList<Planilla>();
-        for (Planilla p : planillaConverter.listaPlanilla) {
+        for (Planilla p : getPlanillaConverter().listaPlanilla) {
             if (p.getPlanillaToString().contains(query)) {
                 suggestions.add(p);
             }
         }
         return suggestions;
     }
-    //Acciones------------------------------------------------------------------
 
     public void handleSelectPlanilla(SelectEvent event) {
-        listaDeducciones = planillaSessionBean.findDeduccionesPresta(planillaSeleccionada, "R");
-        listaPrestaciones = planillaSessionBean.findDeduccionesPresta(planillaSeleccionada, "S");
+        setListaDeducciones ( planillaSessionBean.findDeduccionesPresta(getPlanillaSeleccionada(), "R"));
+        setListaPrestaciones( planillaSessionBean.findDeduccionesPresta(getPlanillaSeleccionada(), "S"));
     }
 
+    public String okActionDialogEmpleado(){
+        return null;
+    }
+    
+    public String cancelActionDialogEmpleado(){
+        setEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+        limpiarCampos();
+        return null;
+    }
+    
     public String mostrar$reporte$action() {
-        if (planillaSeleccionada == null) {
+        if (getPlanillaSeleccionada() == null) {
             addMessage("Reporte por Empleado", "No ha elegido ninguna planilla", TipoMensaje.INFORMACION);
             return null;
         } else {
             HashMap<String, Object> parametros = new HashMap<String, Object>();
-            parametros.put("pAnio", String.valueOf(planillaSeleccionada.getPlanillaPK().getAnio()));
-            parametros.put("pCia", String.valueOf(planillaSeleccionada.getPlanillaPK().getCodCia()));
-            parametros.put("pCodDepto", String.valueOf(planillaSeleccionada.getCodDepto()));
-            parametros.put("pCodPla", String.valueOf(planillaSeleccionada.getPlanillaPK().getCodTipopla()) );
-            parametros.put("pMes", String.valueOf(planillaSeleccionada.getPlanillaPK().getMes()));
-            parametros.put("pNumPla", String.valueOf( planillaSeleccionada.getPlanillaPK().getNumPlanilla() ));
-            parametros.put("pEmp", String.valueOf( planillaSeleccionada.getPlanillaPK().getCodEmp()) );
+            parametros.put("pAnio", String.valueOf(getPlanillaSeleccionada().getPlanillaPK().getAnio()));
+            parametros.put("pCia", String.valueOf(getPlanillaSeleccionada().getPlanillaPK().getCodCia()));
+            parametros.put("pCodDepto", String.valueOf(getPlanillaSeleccionada().getCodDepto()));
+            parametros.put("pCodPla", String.valueOf(getPlanillaSeleccionada().getPlanillaPK().getCodTipopla()));
+            parametros.put("pMes", String.valueOf(getPlanillaSeleccionada().getPlanillaPK().getMes()));
+            parametros.put("pNumPla", String.valueOf(getPlanillaSeleccionada().getPlanillaPK().getNumPlanilla()));
+            parametros.put("pEmp", String.valueOf(getPlanillaSeleccionada().getPlanillaPK().getCodEmp()));
             reportesBean.generarReporteSQL(FacesContext.getCurrentInstance(), parametros, "RPLA018", FormatoReporte.PDF);
         }
         return null;
