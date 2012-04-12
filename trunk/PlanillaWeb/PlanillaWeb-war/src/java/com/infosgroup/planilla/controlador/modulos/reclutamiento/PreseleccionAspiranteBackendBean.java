@@ -62,7 +62,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private String dui;
     private String tipoContratoSeleccionado;
     private String comentarioFinal;
-    private String estadoContrato;
+    //private String estadoContrato;
     private Double salario;
     private Boolean error;
     private String observaciones;
@@ -348,13 +348,13 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         this.dui = dui;
     }
 
-    public String getEstadoContrato() {
-        return estadoContrato;
-    }
-
-    public void setEstadoContrato(String estadoContrato) {
-        this.estadoContrato = estadoContrato;
-    }
+//    public String getEstadoContrato() {
+//        return estadoContrato;
+//    }
+//
+//    public void setEstadoContrato(String estadoContrato) {
+//        this.estadoContrato = estadoContrato;
+//    }
 
     public Double getSalario() {
         return salario;
@@ -577,7 +577,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
                 return null;
             }
             contrato.setNumActa(getActaOAcuerdo());
-            contrato.setEstado(estadoContrato);
+            contrato.setEstado("G");
             contrato.setTipo(tipoContratoSeleccionado);
             contrato.setFechaAcuerdo(getDia());
             contrato.setFechaInicio(getFechaInicio());
@@ -602,7 +602,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         setDui(null);
         setTipoContratoSeleccionado(null);
         setComentarioFinal(null);
-        setEstadoContrato(null);
+        //setEstadoContrato(null);
         setSalario(null);
         setObservaciones(null);
         error = Boolean.FALSE;
@@ -785,7 +785,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     public List<PruebaXPuesto> completePrueba(String query) {
         List<PruebaXPuesto> suggestions = new ArrayList<PruebaXPuesto>();
         for (PruebaXPuesto p : pruebaConverter.listaPruebaXPuesto) {
-            if (p.getNombre().contains(query)) {
+            if (p.getNombre().toLowerCase().contains(query.toLowerCase())) {
                 suggestions.add(p);
             }
         }
