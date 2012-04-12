@@ -326,10 +326,10 @@
                                 <h:outputLabel value="*" styleClass="requerido"/>                                
                             </h:panelGrid>
                         </td>
-                        <td><h:selectOneMenu id="lst_estadoContrato" style="height: 25px;padding-top: 3px;width: 200px;" value="#{reclutamiento$preseleccionAspirante.estadoContrato}" >
+                        <td><!--h:selectOneMenu id="lst_estadoContrato" style="height: 25px;padding-top: 3px;width: 200px;" value="# {reclutamiento$preseleccionAspirante.estadoContrato}" >
                                 <f:selectItem itemValue="G" itemLabel="GUARDADO" />
                                 <f:selectItem itemValue="E" itemLabel="EMITIDO" />
-                            </h:selectOneMenu></td>
+                            </h:selectOneMenu--></td>
                     </tr>
                     <tr>
                         <td>
@@ -370,7 +370,7 @@
                 <h:panelGrid columns="2">
                     <f:facet name="footer" >
                         <h:panelGrid columns="2">
-                            <p:commandButton value="Contratar" image="ui-icon-circle-check" action="#{reclutamiento$preseleccionAspirante.contratarCandidato}" update="principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtDUI,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" />
+                            <p:commandButton value="Contratar" image="ui-icon-circle-check" oncomplete="botonMostrarContrato.hide()" action="#{reclutamiento$preseleccionAspirante.contratarCandidato}" update="principalForm:mensajes,principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtDUI,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" />
                             <p:commandButton value="Cancelar"  image="ui-icon-circle-close" onclick="botonMostrarContrato.hide()" update="principalForm:mensajesContrato,principalForm:txObservaciones,principalForm:txAreaOAcuerdo,principalForm:calFecFinalCon,principalForm:calFecInicialCon,principalForm:txSalarioCan,principalForm:txtDUI,principalForm:lst_tipoContrato,principalForm:lst_estadoContrato,principalForm:lst_sucursal,principalForm:lst_tipoPlanilla" />
                         </h:panelGrid>
                     </f:facet>

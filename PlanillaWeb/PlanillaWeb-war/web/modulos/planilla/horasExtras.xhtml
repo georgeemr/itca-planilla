@@ -61,7 +61,7 @@
                                     value="#{planilla$horasExtras.proPlaSeleccionada}"
                                     itemValue="#{programacionPla.pkAsString}" itemLabel="#{programacionPla.stringProgramacionPla}"
                                     completeMethod="#{planilla$horasExtras.completeProgramacionPla}"
-                                    converter="#{planilla$horasExtras.programacionPlaConverter}" >
+                                    converter="#{planilla$horasExtras.programacionPlaConverter}" title="Seleccione la planilla" >
                         <!-- f:ajax render="AutCompltEmpleado" event="change" execute="AutCompltProgPla" / -->
                     </p:autoComplete>
                     <!-- h:outputLabel value=" A&Ntilde;OMESN&Uacute;MERO DE PLANILLA " style="font-weight: bold;color: red;" / -->
@@ -95,7 +95,7 @@
 
                 <p:columnGroup type="header" >
                     <p:row>  
-                        <p:column colspan="1" rowspan="2" headerText="Empleado " filterBy="#{resumenAsistencia.empleados.nombreCompleto}" filterMatchMode="contains" />  
+                        <p:column colspan="1" rowspan="2" headerText="Empleado " filterBy="#{resumenAsistencia.empleados.nombreCompleto}" filterMatchMode="contains" />                          
                         <p:column colspan="4" rowspan="1" headerText="Dias" />  
                         <p:column colspan="6" rowspan="1" headerText="Compensaci&oacute;n" />  
                         <p:column colspan="1" rowspan="2" headerText="Editar"/>  
@@ -117,35 +117,35 @@
                 </p:columnGroup>
 
                 <p:column>  
-                    <h:outputLabel value="#{resumenAsistencia.empleados.nombreYCodigo}"/>
+                    <h:outputLabel value="#{resumenAsistencia.empleados.nombreCompleto}" title="#{resumenAsistencia.empleados.nombreYCodigo}" />
                 </p:column>  
                 <p:column>
                     <p:cellEditor>  
                         <f:facet name="output">  
-                            <h:outputLabel value="#{resumenAsistencia.DLaborados}"/>
+                            <h:outputLabel value="#{resumenAsistencia.DLaborados}" title="Laborados" />
                         </f:facet>  
                         <f:facet name="input">  
-                            <p:inputText value="#{resumenAsistencia.DLaborados}" styleClass="txtTableEditCantidad" />
+                            <p:inputText value="#{resumenAsistencia.DLaborados}" styleClass="txtTableEditCantidad" title="Laborados" />
                         </f:facet>  
                     </p:cellEditor> 
                 </p:column>
                 <p:column>
                     <p:cellEditor>  
                         <f:facet name="output">  
-                            <h:outputLabel value="#{resumenAsistencia.dnLaborados}"/>
+                            <h:outputLabel value="#{resumenAsistencia.dnLaborados}" title="No Laborados" />
                         </f:facet>  
                         <f:facet name="input">  
-                            <p:inputText value="#{resumenAsistencia.dnLaborados}" styleClass="txtTableEditCantidad" />
+                            <p:inputText value="#{resumenAsistencia.dnLaborados}" title="No Laborados" styleClass="txtTableEditCantidad" />
                         </f:facet>  
                     </p:cellEditor> 
                 </p:column>
                 <p:column>
                     <p:cellEditor>  
                         <f:facet name="output">  
-                            <h:outputLabel value="#{resumenAsistencia.DNocturnidad}"/>
+                            <h:outputLabel value="#{resumenAsistencia.DNocturnidad}" title="Nocturnas" />
                         </f:facet>  
                         <f:facet name="input">  
-                            <p:inputText value="#{resumenAsistencia.DNocturnidad}" styleClass="txtTableEditCantidad" />
+                            <p:inputText value="#{resumenAsistencia.DNocturnidad}" title="Nocturnas" styleClass="txtTableEditCantidad" />
                         </f:facet>  
                     </p:cellEditor> 
                 </p:column>
@@ -153,60 +153,60 @@
                 <p:column>
                     <p:cellEditor>  
                         <f:facet name="output">  
-                            <h:outputLabel value="#{resumenAsistencia.viaticos}"/>
+                            <h:outputLabel value="#{resumenAsistencia.viaticos}" title="Horas a Descontar" />
                         </f:facet>  
                         <f:facet name="input">  
-                            <p:inputText value="#{resumenAsistencia.viaticos}" styleClass="txtTableEditCantidad" />
+                            <p:inputText value="#{resumenAsistencia.viaticos}" title="Horas a Descontar" styleClass="txtTableEditCantidad" />
                         </f:facet>  
                     </p:cellEditor> 
                 </p:column>
                 <p:column>
                     <p:cellEditor>  
                         <f:facet name="output">  
-                            <h:outputLabel value="#{resumenAsistencia.HXsencillas}"/>
+                            <h:outputLabel value="#{resumenAsistencia.HXsencillas}" title="Diurnas" />
                         </f:facet>  
                         <f:facet name="input">  
-                            <p:inputText value="#{resumenAsistencia.HXsencillas}" styleClass="txtTableEditCantidad" />
+                            <p:inputText value="#{resumenAsistencia.HXsencillas}" title="Diurnas" styleClass="txtTableEditCantidad" />
                         </f:facet>  
                     </p:cellEditor> 
                 </p:column>
                 <p:column>
                     <p:cellEditor>  
                         <f:facet name="output">  
-                            <h:outputText value="#{resumenAsistencia.HXdobles}"/>
+                            <h:outputText value="#{resumenAsistencia.HXdobles}" title="Nocturnas" />
                         </f:facet>  
                         <f:facet name="input">  
-                            <p:inputText value="#{resumenAsistencia.HXdobles}" styleClass="txtTableEditCantidad" />
+                            <p:inputText value="#{resumenAsistencia.HXdobles}" title="Nocturnas" styleClass="txtTableEditCantidad" />
                         </f:facet>  
                     </p:cellEditor> 
                 </p:column>
                 <p:column>
                     <p:cellEditor>  
                         <f:facet name="output">  
-                            <h:outputText value="#{resumenAsistencia.HXf150}"/>
+                            <h:outputText value="#{resumenAsistencia.HXf150}" title="Feriados" />
                         </f:facet>  
                         <f:facet name="input">  
-                            <p:inputText value="#{resumenAsistencia.HXf150}" styleClass="txtTableEditCantidad" />
+                            <p:inputText value="#{resumenAsistencia.HXf150}" title="Feriados" styleClass="txtTableEditCantidad" />
                         </f:facet>  
                     </p:cellEditor> 
                 </p:column>
                 <p:column>
                     <p:cellEditor>  
                         <f:facet name="output">  
-                            <h:outputText value="#{resumenAsistencia.HXf250}"/>
+                            <h:outputText value="#{resumenAsistencia.HXf250}" title="No Feriados"/>
                         </f:facet>  
                         <f:facet name="input">  
-                            <p:inputText value="#{resumenAsistencia.HXf250}" styleClass="txtTableEditCantidad" />
+                            <p:inputText value="#{resumenAsistencia.HXf250}" title="No Feriados" styleClass="txtTableEditCantidad" />
                         </f:facet>  
                     </p:cellEditor> 
                 </p:column>
                 <p:column>
                     <p:cellEditor>  
                         <f:facet name="output">  
-                            <h:outputLabel value="#{resumenAsistencia.vacaciones}"/>
+                            <h:outputLabel value="#{resumenAsistencia.vacaciones}" title="D&iacute;as de Vacaci&oacute;n" />
                         </f:facet>  
                         <f:facet name="input">  
-                            <p:inputText value="#{resumenAsistencia.vacaciones}" styleClass="txtTableEditCantidad" />
+                            <p:inputText value="#{resumenAsistencia.vacaciones}" title="D&iacute;as de Vacaci&oacute;n" styleClass="txtTableEditCantidad" />
                         </f:facet>  
                     </p:cellEditor> 
                 </p:column>
@@ -253,7 +253,7 @@
 
         </p:confirmDialog>  
         
-        <p:confirmDialog message="&#191; Esta seguro que desea la planilla ?" showEffect="bounce" hideEffect="explode"  
+        <p:confirmDialog message="&#191; Esta seguro que desea eliminar la planilla ?" showEffect="bounce" hideEffect="explode"  
                          modal="true" header="Eliminar Planilla" severity="alert" widgetVar="dlgEliminarPlanilla">  
             <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,tablaResumenAsistencia" oncomplete="dlgEliminarPlanilla.hide()"  
                              action="#{planilla$horasExtras.borrarPlanilla}" />  
@@ -278,7 +278,7 @@
                 </f:facet>
 
                 <p:column headerText="Nombre " filterBy="#{empleado.nombreCompleto}" filterMatchMode="contains"  >  
-                    <h:outputLabel value="#{empleado.nombreYCodigo}" />
+                    <h:outputLabel value="#{empleado.nombreCompleto}" title="#{empleado.nombreYCodigo}" />
                 </p:column>  
 
                 <p:column headerText="Estado " style="width:5%;" >  

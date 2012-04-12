@@ -105,28 +105,28 @@
                 Acciones de personal
             </f:facet>
 
-            <p:column headerText="C&oacute;digo">
+            <p:column headerText="C&oacute;digo" style="width: 5%;">
                 <h:outputText value="#{sol.accionPersonalPK.correlativo}"/>
             </p:column>
 
             <p:column headerText="Nombre:" filterBy="#{sol.empleados.nombreCompleto}" >
-                <h:outputText value="#{sol.empleados.nombreCompleto}"/>
+                <h:outputText value="#{sol.empleados.nombreCompleto}" title="#{sol.empleados.nombreCompleto}"/>
             </p:column>
 
             <p:column headerText="Acci&oacute;n: " filterBy="#{sol.tipoAccion.nomTipoaccion}" >
-                <h:outputText value="#{sol.tipoAccion.nomTipoaccion}"/>
+                <h:outputText value="#{sol.tipoAccion.nomTipoaccion}" title="#{sol.tipoAccion.nomTipoaccion}"/>
             </p:column>
 
-            <p:column headerText="Estado">
+            <p:column headerText="Estado" style="width: 8%;">
                 <h:outputText value="#{sol.accEstado}"/>
             </p:column>
 
-            <p:column headerText="Aprobado Jefe">
+            <p:column headerText="Ap. Jefe" style="width: 5%;" >
                 <p:graphicImage value="/resources/iconos/dialog-ok-apply.png" rendered="#{sol.aprobadoJefe eq 'A'}" />
                 <p:graphicImage value="/resources/iconos/edit-delete.png" rendered="#{sol.aprobadoJefe eq 'R'}" />
             </p:column>
 
-            <p:column headerText="Aprobado RH">
+            <p:column headerText="Ap. RH" style="width: 5%;" >
                 <p:graphicImage value="/resources/iconos/dialog-ok-apply.png" rendered="#{sol.aprobadoRh eq 'A'}" />
                 <p:graphicImage value="/resources/iconos/edit-delete.png" rendered="#{sol.aprobadoRh eq 'R'}" />
             </p:column>
@@ -722,9 +722,7 @@
                         <td><h:outputLabel value="Sueldo Anterior: " style="font-weight: bold;" /></td>
 
                         <td>
-                            <h:outputLabel id="lbSalario" value="$ #{planilla$accionesPersonal.empleadoAccionPersonal.salario}" style="font-weight: bold;color: red;" >
-                                <f:convertNumber maxFractionDigits="2" />
-                            </h:outputLabel>
+                            <i:etiquetaMoneda label="" value="#{planilla$accionesPersonal.empleadoAccionPersonal.salario}" />
                         </td>
                     </tr>
 
@@ -817,14 +815,14 @@
                             <p:panel id="panelRangos" style="border:none;" rendered="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.criterioSeleccionado eq 'rangoSalario' }" >
                                 <table width="100%" border="0" >
                                     <tr>
-                                        <td width="20%" ><i:etiquetaRequerido value="Valor Inicial $ " styleClass="requerido" /></td>
+                                        <td width="20%" ><i:etiquetaRequerido value="Valor Inicial #{SessionBeanADM.compania.monedas.signo} " styleClass="requerido" /></td>
                                         <td width="20%">
                                             <p:inputText style="width: 80px;" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.salarioMinimo}"  >    
                                                 <p:ajax event="blur" update="totalEmpleadosAfectadosSalCol,totalEmpleadosAfectadosSalColV" listener="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.calcularEmpleados}" />  
                                             </p:inputText>
                                         </td>
                                         <td></td>
-                                        <td width="20%"><i:etiquetaRequerido value="Valor Final $ " styleClass="requerido" /></td>
+                                        <td width="20%"><i:etiquetaRequerido value="Valor Final #{SessionBeanADM.compania.monedas.signo} " styleClass="requerido" /></td>
                                         <td  width="40%" >
                                             <p:inputText style="width: 80px;" value="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.salarioMaximo}" >
                                                 <p:ajax event="blur" update="totalEmpleadosAfectadosSalCol,,totalEmpleadosAfectadosSalColV" listener="#{planilla$accionesPersonal.solicitudAumentoSueldoColectivo.calcularEmpleados}" />  

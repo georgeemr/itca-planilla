@@ -35,7 +35,7 @@ public class ProgramacionPlaFacade extends AbstractFacade<ProgramacionPla, Progr
     @PermitAll
     public List<ProgramacionPla> getProgramacionPlaByTipo(Short empresa, Short tipoPlanilla) {
         List<ProgramacionPla> l = new ArrayList<ProgramacionPla>();
-        TypedQuery<ProgramacionPla> q = em.createQuery("SELECT p FROM ProgramacionPla p WHERE p.programacionPlaPK.codCia = :codCia AND p.programacionPlaPK.codTipopla = :codTipopla AND p.status != 'C'", ProgramacionPla.class);
+        TypedQuery<ProgramacionPla> q = em.createQuery("SELECT p FROM ProgramacionPla p WHERE p.programacionPlaPK.codCia = :codCia AND p.programacionPlaPK.codTipopla = :codTipopla AND p.status != 'C' ORDER BY p.anio DESC, p.mes DESC, p.programacionPlaPK.secuencia DESC", ProgramacionPla.class);
         q.setParameter("codCia", empresa);
         q.setParameter("codTipopla", tipoPlanilla);
         l = q.getResultList();
@@ -45,7 +45,7 @@ public class ProgramacionPlaFacade extends AbstractFacade<ProgramacionPla, Progr
     @PermitAll
     public List<ProgramacionPla> getProgramacionPlaSinEstado(Short empresa, Short tipoPlanilla) {
         List<ProgramacionPla> l = new ArrayList<ProgramacionPla>();
-        TypedQuery<ProgramacionPla> q = em.createQuery("SELECT p FROM ProgramacionPla p WHERE p.programacionPlaPK.codCia = :codCia AND p.programacionPlaPK.codTipopla = :codTipopla", ProgramacionPla.class);
+        TypedQuery<ProgramacionPla> q = em.createQuery("SELECT p FROM ProgramacionPla p WHERE p.programacionPlaPK.codCia = :codCia AND p.programacionPlaPK.codTipopla = :codTipopla ORDER BY p.anio DESC, p.mes DESC, p.programacionPlaPK.secuencia DESC", ProgramacionPla.class);
         q.setParameter("codCia", empresa);
         q.setParameter("codTipopla", tipoPlanilla);
         l = q.getResultList();
@@ -59,7 +59,7 @@ public class ProgramacionPlaFacade extends AbstractFacade<ProgramacionPla, Progr
 
     public List<ProgramacionPla> getProgramacionPlaByCia(Cias cia) {
         List<ProgramacionPla> l = new ArrayList<ProgramacionPla>();
-        TypedQuery<ProgramacionPla> q = em.createQuery("SELECT p FROM ProgramacionPla p WHERE p.programacionPlaPK.codCia = :codCia", ProgramacionPla.class);
+        TypedQuery<ProgramacionPla> q = em.createQuery("SELECT p FROM ProgramacionPla p WHERE p.programacionPlaPK.codCia = :codCia ORDER BY p.anio DESC, p.mes DESC, p.programacionPlaPK.secuencia DESC", ProgramacionPla.class);
         q.setParameter("codCia", cia.getCodCia());
         l = q.getResultList();
         return l != null ? l : new ArrayList<ProgramacionPla>();
