@@ -23,6 +23,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import org.primefaces.component.datatable.DataTable;
 
 /**
@@ -67,9 +68,18 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private SolicitudConstanciaSueldo solicitudConstanciaSueldo;
     private SolicitudDiaDeVacacion solicitudDiaDeVacacion;
     private Empleados empleadoAccionPersonal;
-
+    private SelectItem[] estados = {new SelectItem("G", "Solicitada"), new SelectItem("A", "Aprobada"), new SelectItem("R", "Rechazada")};
+    
     public Empleados getEmpleadoAccionPersonal() {
         return empleadoAccionPersonal;
+    }
+
+    public SelectItem[] getEstados() {
+        return estados;
+    }
+
+    public void setEstados(SelectItem[] estados) {
+        this.estados = estados;
     }
 
     public void setEmpleadoAccionPersonal(Empleados empleadoAccionPersonal) {
