@@ -72,6 +72,12 @@ public void eliminarEvaluador(Evaluador evaluador)
 }
 
 @PermitAll
+public void editarEvaluador(Evaluador evaluador)
+{
+    evaluadorFacade.edit(evaluador);
+}
+
+@PermitAll
 public List<Campania> listarCampanias(Cias cia)
 {
     return campaniasFacade.findAllByCia(cia.getCodCia());

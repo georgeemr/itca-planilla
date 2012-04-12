@@ -141,7 +141,9 @@
                         </p:column> 
 
                         <p:column headerText="Remover" style="width: 5%;" >
-                            <p:commandButton  id="cmdEliminarEvaluador"  image="ui-icon-circle-minus" />
+                            <p:commandButton  id="cmdEliminarEvaluador" disabled="#{evaluador.estado ne 'G' }" image="ui-icon-circle-minus" oncomplete="dlgEliminarEvaluador.show();" title="Remover Evaluador." >
+                                <f:setPropertyActionListener value="#{evaluador}" target="#{empleados$definirEvaluaciones.evaluadorSeleccionado}" />  
+                            </p:commandButton>
                         </p:column>
 
                     </p:dataTable>
@@ -226,15 +228,15 @@
                             <h:outputText value="Evaluados Seleccionados"/>
                         </f:facet>
 
-                        <p:column headerText="C&oacute;digo" style="width: 5%">
-                            <h:outputLabel value="#{evaluado.evaluador.empleados.empleadosPK.codEmp}"/>
-                        </p:column>
+                        <!--  p:column headerText="C&oacute;digo" style="width: 5%">
+                            <h:outputLabel value="# {evaluado.evaluador.empleados.empleadosPK.codEmp}"/>
+                        </p:column-->
 
-                        <p:column sortBy="#{evaluado.evaluador.empleados.nombreCompleto}" style="width: 20%" headerText="Evaluador">
-                            <h:outputLabel value="#{evaluado.evaluador.empleados.nombreCompleto}"/>
+                        <p:column sortBy="#{evaluado.evaluador.empleados.nombreCompleto}" style="width: 15%" headerText="Evaluador">
+                            <h:outputLabel value="#{evaluado.evaluador.empleados.nombreCompleto}" title="#{evaluado.evaluador.empleados.nombreYCodigo}" />
                         </p:column> 
 
-                        <p:column headerText="Criterio" style="width: 5%">
+                        <p:column headerText="Criterio" style="width: 4%">
                             <h:selectOneMenu  id="lstSeleccionaCriterio" value="#{evaluado.filtroEvaluados}" style="height: 25px;padding-top: 3px;width: 200px;" >
                                 <f:ajax event="change" execute="lstSeleccionaCriterio" render="tablaSeleccionEvaluados panel lblTotal" />
                                 <f:selectItem itemValue="S" itemLabel="[ SELECCIONE UN CRITERIO ]" />
@@ -262,12 +264,12 @@
                             </h:panelGroup>
                         </p:column>
 
-                        <p:column headerText="Total" style="width: 5%;" >
+                        <p:column headerText="Total" style="width: 2%;" >
                             <h:outputLabel id="lblTotal" value="#{evaluado.cantidad}" styleClass="#{evaluado.cantidad lt 1 ? 'afectadosMinimo' : 'afectadosMaximo' }" />
                         </p:column> 
 
-                        <p:column headerText="Remover" style="width: 5%;" >
-                            <p:commandButton  id="cmdEliminarEvaluador"  image="ui-icon-circle-minus" oncomplete="dlgEliminarEvaluado.show();" title="Remover Evaluado." >
+                        <p:column headerText="Selección" style="width: 2%;" >
+                            <p:commandButton  image="ui-icon-search" oncomplete="dlgEmpleados.show();" title="Remover Evaluado." update="principalForm:listadoEmpleados" action="#{empleados$definirEvaluaciones.actualizarEvaluados}" >
                                 <f:setPropertyActionListener value="#{evaluado}" target="#{empleados$definirEvaluaciones.evaluadoSeleccionado}" />  
                             </p:commandButton>
                         </p:column>
@@ -298,16 +300,16 @@
 
         </p:confirmDialog --> 
 
-        <p:dialog widgetVar="dlgEmpleados" header="Lista de Empleados" showEffect="fold" hideEffect="fold" width="506" height="475" >
+        <p:dialog widgetVar="dlgEmpleados" header="Lista de Empleados" showEffect="fold" hideEffect="fold" width="620" height="545" >
 
-            <p:panel style="border:none;">
+            <!--p:panel style="border:none;" -->
                 <h:panelGrid columns="2" >
                     <p:graphicImage value="/resources/imagenes/64/evaluacion32x32.png" />   
-                    <h:outputLabel id="lbl1" value="Listado general de empleados."  style="font-weight: bold;"/>
+                    <h:outputLabel id="lbl1" value="Listado de empleados."  style="font-weight: bold;"/>
                 </h:panelGrid>
 
                 <p:dataTable id="listadoEmpleados" value="#{empleados$definirEvaluaciones.empleados}" var="empleado" 
-                             paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true"
+                             paginator="true" rows="10"  emptyMessage="No se han encontrado Empleados." dynamic="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                              selection="#{empleados$definirEvaluaciones.empleadosSeleccionados}" rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" >
 
@@ -327,11 +329,11 @@
 
                 </p:dataTable>
 
-                <p:spacer height="15" />
+                <p:spacer height="5" />
                 <h:panelGrid columns="2">
                     <p:commandButton value="Aceptar" styleClass="opcionMenu" update="tablaSeleccionEvaluados" action="#{empleados$definirEvaluaciones.aceptarSeleccion}" oncomplete="dlgEmpleados.hide();" image="ui-icon-circle-check" /> 
                 </h:panelGrid>
-            </p:panel>
+            <!-- /p:panel -->
 
         </p:dialog>
 
