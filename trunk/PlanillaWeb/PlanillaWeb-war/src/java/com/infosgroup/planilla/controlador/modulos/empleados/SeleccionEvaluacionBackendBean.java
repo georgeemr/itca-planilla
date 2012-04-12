@@ -88,7 +88,7 @@ public String evaluarEmpleado$action()
 
     if (getSessionBeanEMP().getEvaluacionSeleccionada() == null)
         {
-        addMessage("Seleccion de evaluacion", "Seleccione el empleado a evaluar", TipoMensaje.ADVERTENCIA);
+        addMessage("Seleccion de evaluación", "Seleccione el empleado a evaluar", TipoMensaje.ADVERTENCIA);
         hayError = true;
         }
 
@@ -105,6 +105,11 @@ public String evaluarEmpleado$action()
             d.setRespuestas(null);
             listaDetalleTemporal.add(d);
             }
+        
+        if ( primerFactor==null ){
+            addMessage("Seleccion de evaluación", "La evaluación no tiene factores asociados.", TipoMensaje.ERROR);
+            return null;
+        }
         sessionBeanEMP.setDetalleEvaluacionTemporal(listaDetalleTemporal);
         sessionBeanEMP.setListaFactores(listaFactores);
         sessionBeanEMP.setFactorActual(primerFactor);
