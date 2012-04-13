@@ -396,7 +396,8 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
             addMessage("Acciones de Personal", "Seleccione una Acción para editar.", TipoMensaje.ERROR);
             return null;
         }
-        return "acciones/editarSolicitud?faces-redirect=true";
+        //return "acciones/editarSolicitud?faces-redirect=true";
+        return "acciones/permisos?faces-redirect=true";
     }
     
     public String imprimirConstancia() {

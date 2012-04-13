@@ -73,7 +73,13 @@ public class PlanillaSessionBean {
         List<TipoAusent> t = tipoAusentFacade.findAll();
         return t != null ? t : new ArrayList<TipoAusent>();
     }
+    
+    @PermitAll
+    public void actualizarAccionPersonal(AccionPersonal accionPersonal ) {
+        accionPersonalFacade.edit(accionPersonal);
+    }
 
+    @PermitAll
     public List<ResumenAsistencia> getResumen(ResumenAsistencia c) {
         return (c != null) ? resumenFacade.findAll() : new ArrayList<ResumenAsistencia>();
     }

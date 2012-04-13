@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:composite="http://java.sun.com/jsf/composite" 
+      xmlns:p="http://primefaces.prime.com.tr/ui"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" >
+
+    <composite:interface>
+    </composite:interface>
+
+    <composite:implementation>
+            <p:spacer height="10" />
+            <table border="0" width="100%" cellpadding="2" >
+                <tr>
+                    <td width="12%;" >
+                        <h:outputLabel value="Empleado" style="font-weight: bold;" />
+                    </td>
+                    <td width="53%;">
+                        <h:outputLabel value="#{SessionBeanPLA.accionSeleccionada.empleados.nombreCompleto}" />
+                    </td>
+                    <td width="12%;" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;" /></td>
+                    <td colspan="2" >
+                        <h:outputLabel value="#{SessionBeanPLA.accionSeleccionada.fecha}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputLabel>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="12%;" ><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
+                    <td width="88%;" colspan="4"><h:outputLabel  value="#{SessionBeanPLA.accionSeleccionada.empleados1.nombreCompleto}"  /></td>
+                </tr>
+
+                <tr>
+                    <td width="12%;" ><h:outputLabel value="Departamento" style="font-weight: bold;" /></td>
+                    <td width="88%;" colspan="4" ><h:outputLabel  value="#{SessionBeanPLA.accionSeleccionada.departamentos.nomDepto}" /></td>
+                </tr>
+                <tr>
+                    <td width="12%;" ><h:outputLabel value="Puesto" style="font-weight: bold;" /></td>
+                    <td width="88%;" colspan="4" ><h:outputLabel  value="#{SessionBeanPLA.accionSeleccionada.puestos.nomPuesto}" /></td>
+                </tr>
+            </table>
+    </composite:implementation>
+</html>

@@ -122,6 +122,7 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         accionPersonal.setUsuarioCreacion( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setFechaFinal(fechaFinal);
         accionPersonal.setFechaInicial(fechaInicial);
+        accionPersonal.setEmpleados1( getEmpleadosToAccionPersonal().getEmpleados() );
         accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
         accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));
         accionPersonal.setMes(new Short(planilla.split(":")[2].toString()));

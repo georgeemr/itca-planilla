@@ -83,6 +83,7 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), tipoAccion, getEmpleadosToAccionPersonal()));
         accionPersonal.setTipoAccion(tipoAccion);
         accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());
+        accionPersonal.setEmpleados1( getEmpleadosToAccionPersonal().getEmpleados() );
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setStatus("G");
