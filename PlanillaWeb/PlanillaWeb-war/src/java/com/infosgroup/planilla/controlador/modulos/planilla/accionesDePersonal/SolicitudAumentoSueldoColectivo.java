@@ -145,6 +145,7 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), e));
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(e);
+        accionPersonal.setEmpleados1( e.getEmpleados() );
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(e.getDepartamentos());

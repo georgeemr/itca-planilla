@@ -173,7 +173,18 @@ public class AccionPersonal implements Serializable {
     private String usuarioCreacion;
     @Transient
     private String accEstado;
+    @Transient
+    private String planillaToString;
+    
+    public String getPlanillaToString() {
+        planillaToString = "" + accionPersonalPK.getCodCia() + ":" + anio + ":" + mes + ":" + numPlanilla + ":" + codTipopla;
+        return planillaToString;
+    }
 
+    public void setPlanillaToString(String planillaToString) {
+        this.planillaToString = planillaToString;
+    }
+    
     public AccionPersonal() {
     }
 

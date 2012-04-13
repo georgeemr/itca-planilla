@@ -4,6 +4,7 @@
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ap="http://java.sun.com/jsf/composite/components/accionPersonal" 
                 template="./../../../plantillas/defaultTemplate.xhtml">
 
     <ui:define name="titulo">Editar Solicitud</ui:define>
@@ -11,14 +12,7 @@
     <ui:define name="dialogos" />
 
     <ui:define name="acciones">
-        <p:tab title="Otras acciones">
-            <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" action="#{editarSolicitud.regresar}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
-                    <p:graphicImage value="/resources/iconos/arrow-left.png"/>
-                    <h:outputText value="Acciones de personal" styleClass="espacioTexto"/>
-                </p:commandLink>
-            </h:panelGrid>
-        </p:tab>
+        <ui:insert name="panelAccionesSolicitud" />
     </ui:define>
 
     <ui:define name="titulo">
@@ -26,66 +20,12 @@
     </ui:define>
 
     <ui:define name="contenido">
-        <p:spacer height="5" />
-        <p:panel style="border: none;">
-            <table width="80%" cellpadding="5" >
-                <tr>
-                    <td width="10%" ><h:outputLabel value="Nombre " style="font-weight: bold;" /></td>
-                    <td width="30%" ><h:outputLabel value="#{SessionBeanPLA.accionSeleccionada.empleados.nombreCompleto}" /></td>
-                    <td width="15%" align="right" ><h:outputLabel value="Fecha de Solicitud" style="font-weight: bold;"/></td>
-                    <td><h:outputLabel value="#{SessionBeanPLA.accionSeleccionada.fecha}" >
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputLabel></td>
-                </tr>
-                <tr>
-                    <td>
-                        <h:outputLabel value="Estado" style="font-weight: bold;"  />
-                    </td>
-                    <td colspan="3">
-                        <h:outputLabel value="#{SessionBeanPLA.accionSeleccionada.accEstado}" />
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top" ><h:outputLabel value="Tipo" style="font-weight: bold;" /></td>
-                    <td colspan="3" ><h:outputLabel value="#{SessionBeanPLA.accionSeleccionada.tipoAccion.nomTipoaccion}" style="width: 100%;" /></td>
-                </tr>
-                <tr>
-                    <td valign="top" ><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
-                    <td colspan="3" ><p:inputTextarea value="#{SessionBeanPLA.accionSeleccionada.observacion}" autoResize="false" style="width: 100%;"  /></td>
-                </tr>
-                <tr>
-                    <td colspan="4" > 
-                        <h:panelGroup rendered="#{editarSolicitud.usuarioAutorizado and SessionBeanPLA.accionSeleccionada.status ne 'G'}" >
-                            <p:graphicImage value="/resources/iconos/window-close.png"/>
-                            <h:outputLabel value="La solicitud ya ha sido procesada y no se puede editar." styleClass="opcionMenu textoNormal" style="font-weight: bold; color: #DF0000;" />
-                        </h:panelGroup>
-                    </td>
-                </tr>
-            </table>
-            <h:panelGroup rendered="#{!editarSolicitud.usuarioAutorizado}" >
-                <p:graphicImage value="/resources/iconos/window-close.png"/>
-                <h:outputLabel value="Usuario no autorizado para realizar cambios." styleClass="opcionMenu textoNormal" style="font-weight: bold; color: #DF0000;" />
-            </h:panelGroup>
 
-            <h:panelGroup rendered="#{editarSolicitud.usuarioAutorizado}" >
-                <p:commandButton value="Guardar Cambios" image="ui-icon-disk" update="principalForm:mensajes"
-                                 disabled="#{SessionBeanPLA.accionSeleccionada.status ne 'G'}"
-                                 action="#{editarSolicitud.actualizarSolicitud}"  />
-                <p:spacer width="15" />
-            </h:panelGroup>
+        <p:panel id="contenedorEdicionSolicitud" style="border: none;width: 100%;">
+            <ap:encabezadoSolicitudEdicion />
+            <ui:insert name="detalleSolicitud" />
         </p:panel>
-        <p:spacer height="15" />
+        
     </ui:define>
+    
 </ui:composition>
-<!--
-            <h:outputLabel value="Fecha Inicial" />
-            <p:calendar value="# {SessionBeanPLA.accionSeleccionada.fechaInicial}" pattern="dd/MM/yyyy" showOn="button" /><h:panelGroup />
-            <h:outputLabel value="Fecha Final" />
-            <p:calendar value="# {SessionBeanPLA.accionSeleccionada.fechaFinal}" pattern="dd/MM/yyyy" showOn="button" onSelectUpdate="txtEditDias,principalForm:mensajes" selectListener="# {editarSolicitud.handleFechaFinal}" />
-            <h:outputLabel value="Dias" /><p:inputText id="txtEditDias" value="# {SessionBeanPLA.accionSeleccionada.dias}" disabled="true" /><h:panelGroup />
-            <h:outputLabel value="Horas" /><p:inputText value="# {SessionBeanPLA.accionSeleccionada.horas}"  />
-            
-            <h:outputLabel value="Valor descuento" /><p:inputText value="# {SessionBeanPLA.accionSeleccionada.cantidad}"  />
-
-
--->
