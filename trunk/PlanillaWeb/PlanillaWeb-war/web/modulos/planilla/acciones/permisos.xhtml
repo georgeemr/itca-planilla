@@ -22,29 +22,29 @@
         <table border="0" width="100%" cellpadding="2"  >
             <tr>
                 <td width="12%" ><i:etiquetaRequerido value="Fecha inicio" styleClass="requerido" /></td>
-                <td width="22%" ><p:calendar id="spFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{SessionBeanPLA.accionSeleccionada.fechaInicial}" selectListener="#{solicitudPermisoEdit.handleFechaInicial}" onSelectUpdate="principalForm:txtDias" /></td>
+                <td width="22%" ><p:calendar id="spFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudPermisoEdit.fechaInicial}" selectListener="#{solicitudPermisoEdit.handleFechaInicial}" onSelectUpdate="principalForm:txtDias" /></td>
                 <td></td>
                 <td width="12%" ><i:etiquetaRequerido value="Fecha fin" styleClass="requerido" /></td>
-                <td><p:calendar id="spFecFinal" showOn="button" pattern="dd/MM/yyyy" value="#{SessionBeanPLA.accionSeleccionada.fechaFinal}" selectListener="#{solicitudPermisoEdit.handleFechaFinal}" onSelectUpdate="principalForm:txtDias"/></td>
+                <td><p:calendar id="spFecFinal" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudPermisoEdit.fechaFinal}" selectListener="#{solicitudPermisoEdit.handleFechaFinal}" onSelectUpdate="principalForm:txtDias"/></td>
             </tr>
             
             <tr>
-                <td width="12%" ><h:outputLabel value="Dias"/></td>
-                <td><h:outputLabel id="txtDias"  value="#{SessionBeanPLA.accionSeleccionada.dias}" /></td>
+                <td width="12%" ><h:outputLabel value="Dias" /></td>
+                <td><h:outputLabel id="txtDias"  value="#{solicitudPermisoEdit.dias}" /></td>
                 <td></td>
                 <td width="12%" ><h:outputLabel value="Horas"/></td>
-                <td><p:inputText id="txtHoras"  value="#{SessionBeanPLA.accionSeleccionada.horas}" /></td>
+                <td><p:inputText id="txtHoras"  value="#{solicitudPermisoEdit.horas}" maxlength="5" /></td>
             </tr>
             <tr>
-                <td width="10%" ><h:outputLabel value="Valor del Descuento"/></td>
-                <td><p:inputText id="txtDescuento" value="#{SessionBeanPLA.accionSeleccionada.cantidad}" /></td>
+                <td width="10%" ><h:outputLabel value="Valor del Descuento" /></td>
+                <td><p:inputText id="txtDescuento" value="#{solicitudPermisoEdit.valorDescuento}" /></td>
                 <td colspan="3" />
             </tr>
 
             <tr>                   
                 <td><i:etiquetaRequerido value="Tipo Planilla" styleClass="requerido" /></td>
                 <td>                
-                    <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{SessionBeanPLA.accionSeleccionada.codTipopla}" >                       
+                    <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{solicitudPermisoEdit.tipoPlanilla}" >                       
                         <f:ajax render="lstPlanilla" event="change" execute="lstTipoPlanilla" />
                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
                         <f:selectItems value="#{solicitudPermisoEdit.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
@@ -53,7 +53,7 @@
                 <td></td>
                 <td width="12%" ><i:etiquetaRequerido value="Planilla" styleClass="requerido" /></td>
                 <td>
-                    <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;width: 250px;" label="Planilla" value="#{SessionBeanPLA.accionSeleccionada.planillaToString}" >
+                    <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;width: 250px;" label="Planilla" value="#{solicitudPermisoEdit.planilla}" >
                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
                         <f:selectItems value="#{solicitudPermisoEdit.listaPlanillas}" var="pla" 
                                        itemValue="#{pla.pkAsString}"
@@ -67,7 +67,7 @@
             </tr>
             <tr>
                 <td valign="top" ><h:outputLabel value="Observaci&oacute;n" /></td>
-                <td colspan="3" ><p:inputTextarea id="txtobservacionesSP" style="width:100%;" value="#{SessionBeanPLA.accionSeleccionada.observacion}" autoResize="false" /></td>
+                <td colspan="3" ><p:inputTextarea id="txtobservacionesSP" style="width:100%;" value="#{solicitudPermisoEdit.observacion}" autoResize="false" /></td>
             </tr>
             <tr>
                 <td></td>
