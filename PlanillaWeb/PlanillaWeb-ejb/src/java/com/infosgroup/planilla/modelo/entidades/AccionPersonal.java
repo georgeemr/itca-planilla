@@ -175,7 +175,10 @@ public class AccionPersonal implements Serializable {
     private String accEstado;
     @Transient
     private String planillaToString;
-    
+    @Size(max = 1)
+    @Column(name = "FORMA_AUMENTO", length = 1)
+    private String formaAumento;
+        
     public String getPlanillaToString() {
         planillaToString = "" + accionPersonalPK.getCodCia() + ":" + anio + ":" + mes + ":" + numPlanilla + ":" + codTipopla;
         return planillaToString;
@@ -495,6 +498,14 @@ public class AccionPersonal implements Serializable {
 
     public void setUsuarioCreacion(String usuarioCreacion) {
         this.usuarioCreacion = usuarioCreacion;
+    }
+
+    public String getFormaAumento() {
+        return formaAumento;
+    }
+
+    public void setFormaAumento(String formaAumento) {
+        this.formaAumento = formaAumento;
     }
 
     @Override

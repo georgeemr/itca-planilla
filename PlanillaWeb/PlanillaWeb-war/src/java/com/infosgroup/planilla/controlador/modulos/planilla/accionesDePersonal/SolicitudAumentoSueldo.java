@@ -153,6 +153,7 @@ public class SolicitudAumentoSueldo extends SolicitudDePersonal implements java.
         accionPersonal.setObservacion(observacion);
         accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
         accionPersonal.setStatus("G");
+        accionPersonal.setFormaAumento(formaAumento);
         accionPersonal.setUsuarioCreacion( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setFechaInicial(fechaInicial);
         accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));
@@ -172,8 +173,8 @@ public class SolicitudAumentoSueldo extends SolicitudDePersonal implements java.
     }
 
     public void calculoSueldo() {
-        if (sueldoNuevo != null && getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getSalario() != null) {
-            porcentaje = getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getSalario().doubleValue() + ((sueldoNuevo / 100) * getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getSalario().doubleValue());
+        if (sueldoNuevo != null && getEmpleadosToAccionPersonal().getSalario() != null) {
+            porcentaje = getEmpleadosToAccionPersonal().getSalario().doubleValue() + ((sueldoNuevo / 100) * getEmpleadosToAccionPersonal().getSalario().doubleValue());
         } else {
             porcentaje = 0.0;
         }

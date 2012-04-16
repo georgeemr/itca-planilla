@@ -584,7 +584,7 @@
         <!-- Aumento de Sueldo -->
         <d:dialogoEmpleados name="dlgEmpSolAumentoSueldo" 
                             title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
-                            update="principalForm:mensajes,principalForm:fieldsetEncabezadoAuSal,principalForm:lbSalario" image="/resources/imagenes/64/meeting-participant.png"
+                            update="principalForm:mensajes,principalForm:fieldsetEncabezadoAuSal,principalForm:lbSalario,principalForm:etiquetaSalario" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
                             okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
                             cancelAction="#{planilla$accionesPersonal.cancelSeleccionarEmpleado}"/> 
@@ -633,7 +633,7 @@
                             </p:inputText>
                         </td>
                         <td></td>
-                        <td><h:outputLabel id="lbValorCalculado" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.formaAumento eq 'P' ? 'Nuevo Valor: ': '' }" style="font-weight: bold;" /></td>
+                        <td><h:outputLabel id="lbValorCalculado" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.formaAumento eq 'P' ? 'Nuevo Valor ': '' }" style="font-weight: bold;" /></td>
                         <td>
                             <h:outputLabel id="txValorCalculado" value="#{planilla$accionesPersonal.solicitudAumentoSueldo.formaAumento eq 'P' ? planilla$accionesPersonal.solicitudAumentoSueldo.porcentaje : '' }" >
                                 <f:convertNumber maxFractionDigits="2"/>
@@ -642,10 +642,10 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td><h:outputLabel value="Sueldo Anterior: " style="font-weight: bold;" /></td>
+                        <td><h:outputLabel value="Sueldo Anterior " style="font-weight: bold;" /></td>
 
                         <td>
-                            <i:etiquetaMoneda label="" value="#{planilla$accionesPersonal.empleadoAccionPersonal.salario}" />
+                            <h:outputLabel id="etiquetaSalario" value="#{SessionBeanADM.compania.monedas.signo} #{planilla$accionesPersonal.solicitudAumentoSueldo.empleadosToAccionPersonal.salario}" />
                         </td>
                     </tr>
 
