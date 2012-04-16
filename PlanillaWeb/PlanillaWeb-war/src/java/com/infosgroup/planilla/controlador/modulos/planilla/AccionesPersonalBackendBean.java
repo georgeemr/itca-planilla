@@ -393,13 +393,15 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
             return null;
         }
         switch (getSessionBeanPLA().getAccionSeleccionada().getAccionPersonalPK().getCodTipoaccion()) {
-            case 5:
-                return "acciones/permisos?faces-redirect=true";
+            case 1:
+                return "acciones/vacacionesAnuales?faces-redirect=true";
             case 2:
                 return "acciones/diaDeVacacion?faces-redirect=true";
+            case 5:
+                return "acciones/permisos?faces-redirect=true";
             default:
                 return null;
-        }   
+        }
     }
 
     public String imprimirConstancia() {

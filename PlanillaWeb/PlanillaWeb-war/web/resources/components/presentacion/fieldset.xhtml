@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite" >
+    
+    <composite:interface>
+        <composite:attribute name="leyenda" />
+        <composite:facet name="contenido" />
+    </composite:interface>
+
+    <composite:implementation>
+        <fieldset style="border:none;border-top:1px solid #333;border-color: #CFCFCF;" >
+            <legend style="margin-left: -10px;font-weight: bold;color: #26589A;" >#{cc.attrs.leyenda}</legend>
+            <composite:renderFacet name="contenido" />
+        </fieldset>
+    </composite:implementation>
+
+</html>
