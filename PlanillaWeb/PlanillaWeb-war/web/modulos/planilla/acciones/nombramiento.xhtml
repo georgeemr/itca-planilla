@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                template="./editarSolicitud.xhtml"
+                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="panelAccionesSolicitud">
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" action="#{solicitudNombramientoEdit.regresar}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/arrow-left.png"/>
+                    <h:outputText value="Acciones de personal" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+
+    </ui:define>
+
+    <ui:define name="detalleSolicitud">
+        <table border="0" width="100%" cellpadding="2" >
+            <tr>
+                <td><i:etiquetaRequerido value="Departamento" styleClass="requerido" /></td>
+                <td>                            
+                    <h:selectOneMenu style="height: 25px;padding-top: 3px;width: 250px;" value="#{solicitudNombramientoEdit.departamento}" >
+                        <f:selectItem itemValue="-1" itemLabel="[SELECCIONE UN DEPARTAMENTO]" />
+                        <f:selectItems value="#{solicitudNombramientoEdit.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
+                    </h:selectOneMenu>
+                </td>        
+            </tr>
+
+            <tr>
+                <td><i:etiquetaRequerido value="Puesto" styleClass="requerido" /></td>
+                <td>                            
+                    <h:selectOneMenu style="height: 25px;padding-top: 3px;width: 250px;" value="#{solicitudNombramientoEdit.puesto}" >
+                        <f:selectItem itemValue="-1" itemLabel="[SELECCIONE UN PUESTO]" />
+                        <f:selectItems value="#{solicitudNombramientoEdit.listaPuestos}" var="puesto" itemValue="#{puesto.puestosPK.codPuesto}" itemLabel="#{puesto.nomPuesto}" />
+                    </h:selectOneMenu>
+                </td>
+            </tr>
+
+            <tr>
+                <td><i:etiquetaRequerido value="Fecha inicial" styleClass="requerido" /></td>
+                <td>                            
+                    <p:calendar id="nomFecFin" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudNombramientoEdit.fechaInicial}"  />
+                </td>
+            </tr>
+            <tr>
+                <td width="12%;" valign="top" ><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
+                <td colspan="3" width="80%;" ><p:inputTextarea style="width:90%;" value="#{solicitudNombramientoEdit.observacion}" autoResize="false" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="6" > <p:commandButton image="ui-icon-disk" value="Guardar Cambios" action="#{solicitudNombramientoEdit.guardarCambios}" update="principalForm:mensajes" disabled="#{SessionBeanPLA.accionSeleccionada.status ne 'G'}" /></td>
+            </tr>
+        </table>
+    </ui:define>
+
+</ui:composition>
