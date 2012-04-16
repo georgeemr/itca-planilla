@@ -16,7 +16,7 @@
     <ui:define name="acciones">
         <p:tab id="tabAcciones" title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, lstTipos" 
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, principalForm:lstTipos" 
                                onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" 
                                onclick="#{planilla$accionesPersonal.urlPlantilla}.show();">
                     <p:graphicImage value="/resources/iconos/new.png"/>

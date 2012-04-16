@@ -14,7 +14,7 @@
     </jdbc-resource>    
 
     <mail-resource debug="false" enabled="true" from="infosgces@gmail.com" host="smtp.gmail.com" jndi-name="mail/gmailSession" object-type="user" store-protocol="imaps" store-protocol-class="com.sun.mail.imap.IMAPStore" transport-protocol="smtps" transport-protocol-class="com.sun.mail.smtp.SMTPTransport" user="infosgces@gmail.com">
-        <description>Cuenta de correo configurada en glassfish v3.1 XD</description>
+        <description>Cuenta de correo configurada en glassfish v3.1</description>
         <property name="mail.smtps.host" value="smtp.gmail.com"/>
         <property name="mail.smtps.port" value="465"/>
         <property name="mail.smtps.user" value="infosgces@gmail.com"/>

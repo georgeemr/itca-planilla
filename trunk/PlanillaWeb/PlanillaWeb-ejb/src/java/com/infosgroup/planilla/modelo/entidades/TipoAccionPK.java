@@ -23,7 +23,7 @@ public class TipoAccionPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "COD_TIPOACCION", nullable = false)
-    private short codTipoaccion;
+    private Short codTipoaccion;
 
     public TipoAccionPK() {
     }
@@ -33,7 +33,7 @@ public class TipoAccionPK implements Serializable {
         this.codTipoaccion = codTipoaccion;
     }
 
-    public short getCodCia() {
+    public Short getCodCia() {
         return codCia;
     }
 
@@ -41,7 +41,7 @@ public class TipoAccionPK implements Serializable {
         this.codCia = codCia;
     }
 
-    public short getCodTipoaccion() {
+    public Short getCodTipoaccion() {
         return codTipoaccion;
     }
 
