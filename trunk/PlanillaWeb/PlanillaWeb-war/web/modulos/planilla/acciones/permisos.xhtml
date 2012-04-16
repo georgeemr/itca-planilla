@@ -44,7 +44,7 @@
             <tr>                   
                 <td><i:etiquetaRequerido value="Tipo Planilla" styleClass="requerido" /></td>
                 <td>                
-                    <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{solicitudPermisoEdit.tipoPlanilla}" >                       
+                    <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 250px;" disabled="#{!request.isUserInRole('rrhh')}" label="Tipo Planilla" value="#{solicitudPermisoEdit.tipoPlanilla}" >                       
                         <f:ajax render="lstPlanilla" event="change" execute="lstTipoPlanilla" />
                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
                         <f:selectItems value="#{solicitudPermisoEdit.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
@@ -53,7 +53,7 @@
                 <td></td>
                 <td width="12%" ><i:etiquetaRequerido value="Planilla" styleClass="requerido" /></td>
                 <td>
-                    <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;width: 250px;" label="Planilla" value="#{solicitudPermisoEdit.planilla}" >
+                    <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;width: 250px;" disabled="#{!request.isUserInRole('rrhh')}" label="Planilla" value="#{solicitudPermisoEdit.planilla}" >
                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
                         <f:selectItems value="#{solicitudPermisoEdit.listaPlanillas}" var="pla" 
                                        itemValue="#{pla.pkAsString}"
@@ -71,7 +71,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td colspan="4" > <p:commandButton image="ui-icon-disk" value="Guardar Cambios" action="#{solicitudPermisoEdit.guardarCambios}" update="principalForm:mensajes" /></td>
+                <td colspan="4" > <p:commandButton image="ui-icon-disk" value="Guardar Cambios" action="#{solicitudPermisoEdit.guardarCambios}" update="principalForm:mensajes" disabled="#{SessionBeanPLA.accionSeleccionada.status ne 'G'}" /></td>
             </tr>
             
         </table>

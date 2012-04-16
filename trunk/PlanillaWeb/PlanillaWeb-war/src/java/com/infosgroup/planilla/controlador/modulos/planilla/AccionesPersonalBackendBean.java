@@ -11,16 +11,13 @@ import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -38,7 +35,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private PlanillaSessionBean planillaSessionBean;
     @EJB
     private ReportesStatelessBean reportesStatelessBean;
-    
     private DataTable tablaSolicitudes;
     private List<AccionPersonal> listaSolicitudes;
     private Short tipo;
@@ -69,7 +65,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private SolicitudDiaDeVacacion solicitudDiaDeVacacion;
     private Empleados empleadoAccionPersonal;
     private SelectItem[] estados = {new SelectItem("G", "Solicitada"), new SelectItem("A", "Aprobada"), new SelectItem("R", "Rechazada")};
-    
+
     public Empleados getEmpleadoAccionPersonal() {
         return empleadoAccionPersonal;
     }
@@ -396,10 +392,16 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
             addMessage("Acciones de Personal", "Seleccione una Acción para editar.", TipoMensaje.ERROR);
             return null;
         }
-        //return "acciones/editarSolicitud?faces-redirect=true";
-        return "acciones/permisos?faces-redirect=true";
+        switch (getSessionBeanPLA().getAccionSeleccionada().getAccionPersonalPK().getCodTipoaccion()) {
+            case 5:
+                return "acciones/permisos?faces-redirect=true";
+            case 2:
+                return "acciones/diaDeVacacion?faces-redirect=true";
+            default:
+                return null;
+        }   
     }
-    
+
     public String imprimirConstancia() {
         if (getSessionBeanPLA().getAccionSeleccionada() == null) {
             addMessage("Reclutamiento y Selección", "No ha seleccionado ninguna acción.", TipoMensaje.ERROR);
