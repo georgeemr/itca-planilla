@@ -399,6 +399,8 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
                 return "acciones/diaDeVacacion?faces-redirect=true";
             case 5:
                 return "acciones/permisos?faces-redirect=true";
+            case 20:
+                return "acciones/constanciaDeSueldo?faces-redirect=true";
             default:
                 return null;
         }
