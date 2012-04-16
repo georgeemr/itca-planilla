@@ -84,6 +84,7 @@ public class SolicitudVacacionesAnualesEdit extends AbstractEditAccionPersonal i
         this.fechaInicialPeriodo = fechaInicialPeriodo;
     }
 
+    @Override
     public String guardarCambios() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
         if (a == null || !validarSolicitud()) return null;

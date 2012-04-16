@@ -78,6 +78,7 @@ public class SolicitudDiaVacacionEdit extends AbstractEditAccionPersonal impleme
         this.dias = dias;
     }
 
+    @Override
     public String guardarCambios() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
         if (a == null || !validarSolicitud()) return null;
