@@ -42,6 +42,7 @@ public class SolicitudConstaciaSueldoEdit extends AbstractEditAccionPersonal imp
         this.empresa = empresa;
     }
 
+    @Override
     public String guardarCambios() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
         if (a == null || !validarSolicitud()) {
