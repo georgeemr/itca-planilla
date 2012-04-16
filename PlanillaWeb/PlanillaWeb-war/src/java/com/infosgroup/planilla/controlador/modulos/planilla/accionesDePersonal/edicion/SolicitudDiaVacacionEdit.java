@@ -8,7 +8,6 @@ import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.TipoMensaje;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
@@ -21,22 +20,20 @@ import org.primefaces.event.DateSelectEvent;
  *
  * @author root
  */
-@ManagedBean(name = "solicitudPermisoEdit")
+@ManagedBean(name = "solicitudDiaVacacionEdit")
 @ViewScoped
-public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements java.io.Serializable {
+public class SolicitudDiaVacacionEdit extends AbstractEditAccionPersonal implements java.io.Serializable {
 
     @EJB
     private PlanillaSessionBean planillaSessionBean;
     private Date fechaInicial;
     private Date fechaFinal;
     private String observacion;
-    private Short dias;
-    private Short horas;
-    private Double valorDescuento;
+    private Short dias = 0;
 
-    public SolicitudPermisoEdit() {
+    public SolicitudDiaVacacionEdit() {
     }
-
+    
     @PostConstruct
     public void _init() {
         if (getSessionBeanPLA().getAccionSeleccionada() != null) {
@@ -45,22 +42,8 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
             setFechaInicial(getSessionBeanPLA().getAccionSeleccionada().getFechaInicial());
             setFechaFinal(getSessionBeanPLA().getAccionSeleccionada().getFechaFinal());
             setDias(getSessionBeanPLA().getAccionSeleccionada().getDias());
-            setHoras(getSessionBeanPLA().getAccionSeleccionada().getHoras());
-            if (getSessionBeanPLA().getAccionSeleccionada().getCantidad() != null) {
-                setValorDescuento(getSessionBeanPLA().getAccionSeleccionada().getCantidad().doubleValue());
-            } else {
-                setValorDescuento(new Double("0"));
-            }
             setObservacion(getSessionBeanPLA().getAccionSeleccionada().getObservacion());
         }
-    }
-
-    public Short getDias() {
-        return dias;
-    }
-
-    public void setDias(Short dias) {
-        this.dias = dias;
     }
 
     public Date getFechaFinal() {
@@ -79,22 +62,6 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
         this.fechaInicial = fechaInicial;
     }
 
-    public Short getHoras() {
-        return horas;
-    }
-
-    public void setHoras(Short horas) {
-        this.horas = horas;
-    }
-
-    public Double getValorDescuento() {
-        return valorDescuento;
-    }
-
-    public void setValorDescuento(Double valorDescuento) {
-        this.valorDescuento = valorDescuento;
-    }
-
     public String getObservacion() {
         return observacion;
     }
@@ -103,21 +70,17 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
         this.observacion = observacion;
     }
 
-    public void handleFechaInicial(DateSelectEvent event) {
-        setFechaInicial(event.getDate());
-        setDias(calculaDias(getFechaInicial(), getFechaFinal()).shortValue());
+    public Short getDias() {
+        return dias;
     }
 
-    public void handleFechaFinal(DateSelectEvent event) {
-        setFechaFinal(event.getDate());
-        setDias(calculaDias(getFechaInicial(), getFechaFinal()).shortValue());
+    public void setDias(Short dias) {
+        this.dias = dias;
     }
 
     public String guardarCambios() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
-        if (a == null || !validarSolicitud()) {
-            return null;
-        }
+        if (a == null || !validarSolicitud()) return null;
         try {
             if (isInRole("rrhh")) {
                 a.setAnio(new Short(getPlanilla().split(":")[1].toString()));
@@ -128,8 +91,6 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
             a.setFechaInicial(getFechaInicial());
             a.setFechaFinal(getFechaFinal());
             a.setDias(getDias());
-            a.setHoras(getHoras());
-            a.setCantidad(new BigDecimal(getValorDescuento()));
             a.setObservacion(getObservacion());
             actualizarSolicitud(a);
             addMessage("Acciones de Personal", "Datos Guardados satisfactoriamente.", TipoMensaje.INFORMACION);
@@ -139,31 +100,23 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
         }
         return null;
     }
-
+    
     @Override
     public boolean validarSolicitud() {
         Boolean error = Boolean.TRUE;
-
-        if (getFechaInicial() == null) {
-            addMessage("Acciones de Personal", "Fecha inicio es un campo requerido.", TipoMensaje.ERROR);
+        if (fechaInicial == null) {
+            addMessage("Acciones de Personal", "Fecha inicial es un campo requerido.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
 
-        if (getFechaFinal() == null) {
+        if (fechaFinal == null) {
             addMessage("Acciones de Personal", "Fecha final es un campo requerido.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }
 
-        if (getFechaInicial() != null && getFechaFinal() != null) {
-            if (!validaFechas(getFechaInicial(), getFechaFinal())) {
-                addMessage("Acciones de Personal", "Los datos de Fecha inicia y Fecha fin no son consistentes.", TipoMensaje.ERROR);
-                error = Boolean.FALSE;
-            }
-        }
-
-        if (getHoras() != null) {
-            if (getHoras() < 0 || getHoras() > 23) {
-                addMessage("Acciones de Personal", "La cantidad de horas no es valida.", TipoMensaje.ERROR);
+        if (fechaInicial != null && fechaFinal != null) {
+            if (!validaFechas(fechaInicial, fechaFinal)) {
+                addMessage("Acciones de Personal", "Los datos de Fecha inicial y final de periodo de goce no son consistentes.", TipoMensaje.ERROR);
                 error = Boolean.FALSE;
             }
         }
@@ -181,18 +134,28 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
         return error;
     }
 
-    @Override
-    public PlanillaSessionBean getPlanillaSessionBean() {
-        return planillaSessionBean;
+    public void handleFechaInicial(DateSelectEvent event) {
+        setFechaInicial(event.getDate());
+        setDias(calculaDias(getFechaInicial(), getFechaFinal()).shortValue());
     }
 
+    public void handleFechaFinal(DateSelectEvent event) {
+        setFechaFinal(event.getDate());
+        setDias(calculaDias(getFechaInicial(), getFechaFinal()).shortValue());
+    }
+    
     @Override
     protected void limpiarCampos() {
         getSessionBeanPLA().setAccionSeleccionada(null);
     }
-    
+
+    @Override
+    protected PlanillaSessionBean getPlanillaSessionBean() {
+        return planillaSessionBean;
+    }
+
     @Override
     public Cias getEmpresa() {
-        return  getSessionBeanADM().getCompania();
+        return getSessionBeanADM().getCompania();
     }
 }

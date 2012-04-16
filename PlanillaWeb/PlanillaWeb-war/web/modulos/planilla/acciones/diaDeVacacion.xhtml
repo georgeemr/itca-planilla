@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./editarSolicitud.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion" 
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="panelAccionesSolicitud">
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" action="#{solicitudDiaVacacionEdit.regresar}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/arrow-left.png"/>
+                    <h:outputText value="Acciones de personal" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+
+    <ui:define name="detalleSolicitud">
+        <table border="0" width="100%" cellpadding="2"  >
+            <tr>
+                <td width="12%" ><i:etiquetaRequerido value="Fecha inicio" styleClass="requerido" /></td>
+                <td width="22%" ><p:calendar id="spFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudDiaVacacionEdit.fechaInicial}" selectListener="#{solicitudDiaVacacionEdit.handleFechaInicial}" onSelectUpdate="principalForm:txtDias" /></td>
+                <td></td>
+                <td width="12%" ><i:etiquetaRequerido value="Fecha fin" styleClass="requerido" /></td>
+                <td><p:calendar id="spFecFinal" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudDiaVacacionEdit.fechaFinal}" selectListener="#{solicitudDiaVacacionEdit.handleFechaFinal}" onSelectUpdate="principalForm:txtDias"/></td>
+            </tr>
+
+            <tr>
+                <td width="12%" ><h:outputLabel value="Dias" /></td>
+                <td><h:outputLabel id="txtDias"  value="#{solicitudDiaVacacionEdit.dias}" /></td>
+                <td colspan="3" ></td>
+            </tr>
+            <tr>                   
+                <td><i:etiquetaRequerido value="Tipo Planilla" styleClass="requerido" /></td>
+                <td>                
+                    <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 250px;" disabled="#{!request.isUserInRole('rrhh')}" label="Tipo Planilla" value="#{solicitudDiaVacacionEdit.tipoPlanilla}" >                       
+                        <f:ajax render="lstPlanilla" event="change" execute="lstTipoPlanilla" />
+                        <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
+                        <f:selectItems value="#{solicitudDiaVacacionEdit.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                    </h:selectOneMenu>
+                </td>
+                <td></td>
+                <td width="12%" ><i:etiquetaRequerido value="Planilla" styleClass="requerido" /></td>
+                <td>
+                    <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;width: 250px;" disabled="#{!request.isUserInRole('rrhh')}" label="Planilla" value="#{solicitudDiaVacacionEdit.planilla}" >
+                        <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
+                        <f:selectItems value="#{solicitudDiaVacacionEdit.listaPlanillas}" var="pla" 
+                                       itemValue="#{pla.pkAsString}"
+                                       itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
+                    </h:selectOneMenu>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" ></td>
+                <td><i:etiquetaPlanilla /></td>
+            </tr>
+            <tr>
+                <td valign="top" ><h:outputLabel value="Observaci&oacute;n" /></td>
+                <td colspan="3" ><p:inputTextarea id="txtobservacionesSP" style="width:100%;" value="#{solicitudDiaVacacionEdit.observacion}" autoResize="false" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="4" > <p:commandButton image="ui-icon-disk" value="Guardar Cambios" action="#{solicitudDiaVacacionEdit.guardarCambios}" update="principalForm:mensajes" disabled="#{SessionBeanPLA.accionSeleccionada.status ne 'G'}" /></td>
+            </tr>
+        </table>
+    </ui:define>
+
+</ui:composition>

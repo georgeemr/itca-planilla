@@ -6,11 +6,7 @@ package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
 import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
-import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
-import java.util.List;
 import com.infosgroup.planilla.view.TipoMensaje;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import org.primefaces.event.DateSelectEvent;
 
@@ -22,12 +18,8 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
 
     private java.util.Date fechaInicial;
     private java.util.Date fechaFinal;
-    private Short tipoPlanilla;
-    private String planilla;
     private Short dias = 0;
     private Short horas = 0;
-    private Double descuento = 0.0;
-    private List<ProgramacionPla> listaPlanillas;
 
     private String observacion;
 
@@ -41,25 +33,6 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
     
     public SolicitudPermiso(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
-    }
-
-    public List<ProgramacionPla> getListaPlanillas() {
-        if (tipoPlanilla != null && tipoPlanilla != -1) {
-            listaPlanillas = planillaSessionBean().getProgramacionPlaByTipo(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla);
-        }
-        return listaPlanillas != null ? listaPlanillas : new ArrayList<ProgramacionPla>();
-    }
-
-    public void setListaPlanillas(List<ProgramacionPla> listaPlanillas) {
-        this.listaPlanillas = listaPlanillas;
-    }
-
-    public double getDescuento() {
-        return descuento;
-    }
-
-    public void setDescuento(double descuento) {
-        this.descuento = descuento;
     }
 
     public Short getDias() {
@@ -94,22 +67,6 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         this.horas = horas;
     }
 
-    public String getPlanilla() {
-        return planilla;
-    }
-
-    public void setPlanilla(String planilla) {
-        this.planilla = planilla;
-    }
-
-    public Short getTipoPlanilla() {
-        return tipoPlanilla;
-    }
-
-    public void setTipoPlanilla(Short tipoPlanilla) {
-        this.tipoPlanilla = tipoPlanilla;
-    }
-
     public String guardarSolicitud$action() {
         if (!validarSolicitud()) return null;
         AccionPersonal accionPersonal = new AccionPersonal();
@@ -124,13 +81,8 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         accionPersonal.setFechaInicial(fechaInicial);
         accionPersonal.setEmpleados1( getEmpleadosToAccionPersonal().getEmpleados() );
         accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
-        accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));
-        accionPersonal.setMes(new Short(planilla.split(":")[2].toString()));
-        accionPersonal.setNumPlanilla(new Short(planilla.split(":")[3].toString()));
-        accionPersonal.setCodTipopla(tipoPlanilla);
-        accionPersonal.setDias(dias.shortValue());
-        accionPersonal.setCantidad(descuento != null ? new BigDecimal(descuento) : BigDecimal.ZERO);
-        accionPersonal.setHoras(horas != null ? horas.shortValue() : null);
+        accionPersonal.setDias( dias );
+        accionPersonal.setHoras(horas != null ? horas: null);
         accionPersonal.setPuestos(getEmpleadosToAccionPersonal().getPuestos());
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
@@ -147,11 +99,8 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
     public void limpiarCampos() {
         fechaInicial = null;
         fechaFinal = null;
-        tipoPlanilla = null;
-        planilla = null;
         dias = new Short("0");;
         horas = 0;
-        descuento = 0.0;
         setObservacion("");
     }
 
@@ -185,16 +134,6 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
                 addMessage("Acciones de Personal", "La cantidad de horas no es valida.", TipoMensaje.ERROR);
                 error = Boolean.FALSE;
             }
-        }
-
-        if (tipoPlanilla == null || tipoPlanilla == -1) {
-            addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
-            error = Boolean.FALSE;
-        }
-
-        if ((tipoPlanilla != null && tipoPlanilla != -1) && (planilla == null || planilla.equals("-1"))) {
-            addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
-            error = Boolean.FALSE;
         }
 
         if (getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestos() == null) {

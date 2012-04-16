@@ -174,70 +174,20 @@
                 <table border="0" width="100%" >
                     <tr>
                         <td><i:etiquetaRequerido value="Fecha inicio" styleClass="requerido" /></td>
-                        <td><p:calendar id="spFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaInicial}" selectListener="#{planilla$accionesPersonal.solicitudPermiso.handleFechaInicial}" onSelectUpdate="txtDias" />
-                        </td>
+                        <td><p:calendar id="spFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaInicial}" selectListener="#{planilla$accionesPersonal.solicitudPermiso.handleFechaInicial}" onSelectUpdate="txtDias" /></td>
+                        <td colspan="3" ></td>
                     </tr>
                     <tr>
                         <td><i:etiquetaRequerido value="Fecha fin" styleClass="requerido" /></td>
-                        <td><p:calendar id="spFecFinal" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaFinal}" selectListener="#{planilla$accionesPersonal.solicitudPermiso.handleFechaFinal}" onSelectUpdate="txtDias"/>
-                        </td>
+                        <td><p:calendar id="spFecFinal" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudPermiso.fechaFinal}" selectListener="#{planilla$accionesPersonal.solicitudPermiso.handleFechaFinal}" onSelectUpdate="txtDias"/></td>
+                        <td colspan="3" ></td>
                     </tr>
                     <tr>
-                        <td>                            
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Dias"/>
-                            </h:panelGrid>
-                        </td>
-                        <td>
-                            <h:outputLabel id="txtDias"  value="#{planilla$accionesPersonal.solicitudPermiso.dias}" />
-                        </td>
+                        <td><h:outputLabel value="Dias"  /></td>
+                        <td><h:outputLabel id="txtDias"  value="#{planilla$accionesPersonal.solicitudPermiso.dias}" /></td>
                         <td></td>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Horas"/>
-                            </h:panelGrid>    
-                        </td>
-                        <td>                
-                            <p:inputText id="txtHoras"  value="#{planilla$accionesPersonal.solicitudPermiso.horas}" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Valor del Descuento"/>
-                            </h:panelGrid> 
-                        </td>
-                        <td>
-                            <p:inputText id="txtDescuento"  value="#{planilla$accionesPersonal.solicitudPermiso.descuento}" />
-                        </td>
-                        <td colspan="3" />
-                    </tr>
-
-                    <tr>                   
-                        <td><i:etiquetaRequerido value="Tipo Planilla" styleClass="requerido" /></td>
-                        <td>                
-                            <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 200px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudPermiso.tipoPlanilla}" >                       
-                                <f:ajax render="lstPlanilla" event="change" execute="lstTipoPlanilla" />
-                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
-                                <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
-                            </h:selectOneMenu>
-                        </td>
-                        <td></td>
-                        <td><i:etiquetaRequerido value="Planilla" styleClass="requerido" /></td>
-                        <td>
-                            <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudPermiso.planilla}" >
-                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
-                                <f:selectItems value="#{planilla$accionesPersonal.solicitudPermiso.listaPlanillas}" var="pla" 
-                                               itemValue="#{pla.pkAsString}"
-                                               itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
-                            </h:selectOneMenu>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td><td></td><td></td><td></td>
-                        <td>
-                            <i:etiquetaPlanilla />
-                        </td>
+                        <td><h:outputLabel value="Horas" /></td>
+                        <td><p:inputText id="txtHoras"  value="#{planilla$accionesPersonal.solicitudPermiso.horas}" /></td>
                     </tr>
                 </table>
 
@@ -303,36 +253,9 @@
                         <td><p:calendar id="vacFecFinalGozar" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.fechaFinalPeriodoGozar}" />
                         </td>
                     </tr>
-
-                    <tr>                   
-                        <td><i:etiquetaRequerido value="Tipo Planilla" styleClass="requerido" /></td>
-                        <td>                
-                            <h:selectOneMenu id="lstTipoPlanillaVac" style="height: 25px;padding-top: 3px;width: 200px;" label="Tipo Planilla" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.tipoPlanilla}" >                       
-                                <f:ajax render="lstPlanillaVac" event="change" execute="lstTipoPlanillaVac" />
-                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
-                                <f:selectItems value="#{planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
-                            </h:selectOneMenu>
-                        </td>
-                        <td></td>
-                        <td><i:etiquetaRequerido value="Planilla" styleClass="requerido" /></td>
-                        <td>
-                            <h:selectOneMenu id="lstPlanillaVac" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.planilla}" >
-                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
-                                <f:selectItems value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.listaPlanillas}" var="pla" 
-                                               itemValue="#{pla.pkAsString}"
-                                               itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
-                            </h:selectOneMenu>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td><td></td><td></td><td></td>
-                        <td>
-                            <i:etiquetaPlanilla />
-                        </td>
-                    </tr>
                     <tr>
                         <td>Devengadas</td>
-                        <td>
+                        <td colspan="4" >
                             <h:selectOneMenu id="lstDevengadoVac" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{planilla$accionesPersonal.solicitudVacacionesAnuales.devengadas}" >
                                 <f:selectItem itemValue="S" itemLabel="SI" />
                                 <f:selectItem itemValue="N" itemLabel="NO" />
@@ -1177,8 +1100,7 @@
                 <table border="0" width="100%" >
                     <tr>
                         <td><i:etiquetaRequerido value="Fecha inicio" styleClass="requerido" /></td>
-                        <td><p:calendar id="dvFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudDiaDeVacacion.fechaInicial}" selectListener="#{planilla$accionesPersonal.solicitudDiaDeVacacion.handleFechaInicial}" onSelectUpdate="dvtxtDias" />
-                        </td>
+                        <td><p:calendar id="dvFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{planilla$accionesPersonal.solicitudDiaDeVacacion.fechaInicial}" selectListener="#{planilla$accionesPersonal.solicitudDiaDeVacacion.handleFechaInicial}" onSelectUpdate="dvtxtDias" /></td>
                     </tr>
                     <tr>
                         <td><i:etiquetaRequerido value="Fecha fin" styleClass="requerido" /></td>
@@ -1186,60 +1108,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>                            
-                            <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Dias"/>
-                            </h:panelGrid>
-                        </td>
-                        <td>
-                            <h:outputLabel id="dvtxtDias"  value="#{planilla$accionesPersonal.solicitudDiaDeVacacion.dias}" />
-                        </td>
-                        <td></td>
-                        <td>
-                            <!--h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Horas"/>
-                            </h:panelGrid-->    
-                        </td>
-                        <td>                
-                            <!-- p:inputText id="txtHoras"  value="# {planilla$accionesPersonal.solicitudPermiso.horas}" / -->
-                        </td>
+                        <td><h:outputLabel value="Dias"/></td>
+                        <td><h:outputLabel id="dvtxtDias"  value="#{planilla$accionesPersonal.solicitudDiaDeVacacion.dias}" /></td>
                     </tr>
-                    <tr>
-                        <td>
-                            <!-- h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
-                                <h:outputLabel value="Valor del Descuento"/>
-                            </h:panelGrid --> 
-                        </td>
-                        <td>
-                            <!-- p:inputText id="txtDescuento"  value="# {planilla$accionesPersonal.solicitudPermiso.descuento}" / -->
-                        </td>
-                        <td colspan="3" />
-                    </tr>
-
-                    <!--tr>                   
-                        <td><i:etiquetaRequerido value="Tipo Planilla" styleClass="requerido" /></td>
-                        <td>                
-                            <h:selectOneMenu id="lstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 200px;" label="Tipo Planilla" value="# {planilla$accionesPersonal.solicitudPermiso.tipoPlanilla}" >                       
-                                <f:ajax render="lstPlanilla" event="change" execute="lstTipoPlanilla" />
-                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
-                                <f:selectItems value="# {planilla$accionesPersonal.listaTipos}" var="tipo" itemValue="# {tipo.tiposPlanillaPK.codTipopla}" itemLabel="# {tipo.nomTipopla}"/>
-                            </h:selectOneMenu>
-                        </td>
-                        <td></td>
-                        <td><i:etiquetaRequerido value="Planilla" styleClass="requerido" /></td>
-                        <td>
-                            <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;" label="Planilla" value="# {planilla$accionesPersonal.solicitudPermiso.planilla}" >
-                                <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
-                                <f:selectItems value="# {planilla$accionesPersonal.solicitudPermiso.listaPlanillas}" var="pla" 
-                                               itemValue="# {pla.pkAsString}"
-                                               itemLabel="# {pla.anio}  # {pla.mes} # {pla.numPlanilla}" />
-                            </h:selectOneMenu>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td><td></td><td></td><td></td>
-                        <td><h:outputLabel value="A&Ntilde;O-MES-N&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" /></td>
-                    </tr-->
                 </table>
 
             </p:fieldset>

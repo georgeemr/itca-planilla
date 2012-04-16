@@ -6,11 +6,8 @@ package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
 import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
-import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
 import com.infosgroup.planilla.view.TipoMensaje;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  *
@@ -22,10 +19,7 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
     private Date fechaFinalPeriodoPagar;
     private Date fechaInicialPeriodoGozar;
     private Date fechaFinalPeriodoGozar;
-    private Short tipoPlanilla;
-    private String planilla;
     private String devengadas;
-    private List<ProgramacionPla> listaPlanillas;
     private String observacion;
 
     public String getObservacion() {
@@ -38,17 +32,6 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
     
     public SolicitudVacacionesAnuales(AccionesPersonalBackendBean encabezadoSolicitud) {
         super(encabezadoSolicitud);
-    }
-
-    public List<ProgramacionPla> getListaPlanillas() {
-        if (tipoPlanilla != null && tipoPlanilla != -1) {
-            listaPlanillas = planillaSessionBean().getProgramacionPlaByTipo(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla);
-        }
-        return listaPlanillas != null ? listaPlanillas : new ArrayList<ProgramacionPla>();
-    }
-
-    public void setListaPlanillas(List<ProgramacionPla> listaPlanillas) {
-        this.listaPlanillas = listaPlanillas;
     }
 
     public Date getFechaFinalPeriodoPagar() {
@@ -65,22 +48,6 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
 
     public void setFechaInicialPeriodoPagar(Date fechaInicialPeriodoPagar) {
         this.fechaInicialPeriodoPagar = fechaInicialPeriodoPagar;
-    }
-
-    public String getPlanilla() {
-        return planilla;
-    }
-
-    public void setPlanilla(String planilla) {
-        this.planilla = planilla;
-    }
-
-    public Short getTipoPlanilla() {
-        return tipoPlanilla;
-    }
-
-    public void setTipoPlanilla(Short tipoPlanilla) {
-        this.tipoPlanilla = tipoPlanilla;
     }
 
     public String getDevengadas() {
@@ -113,8 +80,6 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
         fechaFinalPeriodoPagar = null;
         fechaInicialPeriodoGozar = null;
         fechaFinalPeriodoGozar = null;
-        tipoPlanilla = null;
-        planilla = null;
         setObservacion("");
     }
 
@@ -159,17 +124,6 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
                 error = Boolean.FALSE;
             }
         }
-
-        if (tipoPlanilla == null || tipoPlanilla == -1) {
-            addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
-            error = Boolean.FALSE;
-        }
-
-        if ((tipoPlanilla != null && tipoPlanilla != -1) && (planilla == null || planilla.equals("-1"))) {
-            addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
-            error = Boolean.FALSE;
-        }
-
         return error;
     }
 
@@ -190,10 +144,6 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
         accionPersonal.setPeriodoFinal(fechaFinalPeriodoPagar);
         accionPersonal.setFechaFinal(fechaFinalPeriodoGozar);
         accionPersonal.setFechaInicial(fechaInicialPeriodoGozar);
-        accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));
-        accionPersonal.setMes(new Short(planilla.split(":")[2].toString()));
-        accionPersonal.setNumPlanilla(new Short(planilla.split(":")[3].toString()));
-        accionPersonal.setCodTipopla(tipoPlanilla);
         accionPersonal.setPuestos(getEmpleadosToAccionPersonal().getPuestos());
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
