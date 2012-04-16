@@ -113,6 +113,7 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
         setDias(calculaDias(getFechaInicial(), getFechaFinal()).shortValue());
     }
 
+    @Override
     public String guardarCambios() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
         if (a == null || !validarSolicitud()) {
