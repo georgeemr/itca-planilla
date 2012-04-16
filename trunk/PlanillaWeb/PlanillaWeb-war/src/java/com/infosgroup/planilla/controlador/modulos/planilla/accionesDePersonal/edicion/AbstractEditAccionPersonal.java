@@ -90,4 +90,6 @@ public abstract class AbstractEditAccionPersonal extends AbstractJSFPage impleme
     public abstract boolean validarSolicitud();
     protected abstract PlanillaSessionBean getPlanillaSessionBean();
     public abstract Cias getEmpresa();
+    public abstract String guardarCambios();
+    
 }
