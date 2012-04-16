@@ -20,9 +20,9 @@ import org.primefaces.event.DateSelectEvent;
  *
  * @author root
  */
-@ManagedBean(name = "solicitudIncapacidad")
+@ManagedBean(name = "SolicitudIncapacidadEdit")
 @ViewScoped
-public class SolicitudIncapacidad extends AbstractEditAccionPersonal implements java.io.Serializable {
+public class SolicitudIncapacidadEdit extends AbstractEditAccionPersonal implements java.io.Serializable {
 
     @EJB
     private PlanillaSessionBean planillaSessionBean;
@@ -78,7 +78,7 @@ public class SolicitudIncapacidad extends AbstractEditAccionPersonal implements 
         this.fechaRealPlanilla = fechaRealPlanilla;
     }
 
-    public SolicitudIncapacidad() {
+    public SolicitudIncapacidadEdit() {
     }
 
     public String getObservacion() {
@@ -164,7 +164,7 @@ public class SolicitudIncapacidad extends AbstractEditAccionPersonal implements 
             error = Boolean.FALSE;
         }
 
-        if ((getTipoPlanilla() != null && getTipoPlanilla() != -1) && (getTipoPlanilla() == null || getTipoPlanilla().equals(new Short("-1")))) {
+        if ((getTipoPlanilla() != null && getTipoPlanilla() != -1) && (getPlanilla() == null || getPlanilla().equals("-1"))) {
             addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }

@@ -10,7 +10,7 @@
     <ui:define name="panelAccionesSolicitud">
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" action="#{solicitudIncapacidad.regresar}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                <p:commandLink styleClass="opcionMenu textoNormal" action="#{SolicitudIncapacidadEdit.regresar}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/arrow-left.png"/>
                     <h:outputText value="Acciones de personal" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -22,47 +22,47 @@
         <table border="0" width="100%" >
             <tr>
                 <td width="12%" ><i:etiquetaRequerido value="Fecha Planilla" styleClass="requerido" /></td>
-                <td><p:calendar id="incFecPlanilla" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudIncapacidad.fechaPlanilla}" />
+                <td><p:calendar id="incFecPlanilla" showOn="button" pattern="dd/MM/yyyy" value="#{SolicitudIncapacidadEdit.fechaPlanilla}" />
                 </td>
                 <td></td>
                 <td><i:etiquetaRequerido value="Fecha real planilla" styleClass="requerido" /></td>
-                <td><p:calendar id="incFecRealPlanilla" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudIncapacidad.fechaRealPlanilla}" />
+                <td><p:calendar id="incFecRealPlanilla" showOn="button" pattern="dd/MM/yyyy" value="#{SolicitudIncapacidadEdit.fechaRealPlanilla}" />
                 </td>
             </tr>
             <tr><td colspan="5" ><p:spacer height="10" /></td></tr>
 
             <tr>
                 <td><i:etiquetaRequerido value="Fecha Inicio Inc." styleClass="requerido" /></td>
-                <td><p:calendar id="incFecInicio" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudIncapacidad.fechaInicioIncapacidad}" selectListener="#{solicitudIncapacidad.handleFechaInicial}" onSelectUpdate="txDiasInc" />
+                <td><p:calendar id="incFecInicio" showOn="button" pattern="dd/MM/yyyy" value="#{SolicitudIncapacidadEdit.fechaInicioIncapacidad}" selectListener="#{SolicitudIncapacidadEdit.handleFechaInicial}" onSelectUpdate="txDiasInc" />
                 </td>
                 <td></td>
                 <td><i:etiquetaRequerido value="Fecha Fin Inc." styleClass="requerido" /></td>
-                <td><p:calendar id="incFecFin" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudIncapacidad.fechaFinIncapacidad}" selectListener="#{solicitudIncapacidad.handleFechaFinal}" onSelectUpdate="txDiasInc" />
+                <td><p:calendar id="incFecFin" showOn="button" pattern="dd/MM/yyyy" value="#{SolicitudIncapacidadEdit.fechaFinIncapacidad}" selectListener="#{SolicitudIncapacidadEdit.handleFechaFinal}" onSelectUpdate="txDiasInc" />
                 </td>
             </tr>
 
             <tr>
                 <td><h:outputLabel value="Dias"/></td>
                 <td>
-                    <h:outputLabel id="txDiasInc" value="#{solicitudIncapacidad.dias}" />
+                    <h:outputLabel id="txDiasInc" value="#{SolicitudIncapacidadEdit.dias}" />
                 </td>
             </tr>
 
             <tr>                   
                 <td><i:etiquetaRequerido value="Tipo Planilla" styleClass="requerido" /></td>
                 <td>                
-                    <h:selectOneMenu id="lstTipoPlanillaInc" style="height: 25px;padding-top: 3px;width: 200px;" label="Tipo Planilla" value="#{solicitudIncapacidad.tipoPlanilla}" >                       
+                    <h:selectOneMenu id="lstTipoPlanillaInc" style="height: 25px;padding-top: 3px;width: 200px;" label="Tipo Planilla" value="#{SolicitudIncapacidadEdit.tipoPlanilla}" >                       
                         <f:ajax render="lstPlanillaInc" event="change" execute="lstTipoPlanillaInc" />
                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
-                        <f:selectItems value="#{solicitudIncapacidad.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                        <f:selectItems value="#{SolicitudIncapacidadEdit.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                     </h:selectOneMenu>
                 </td>
                 <td></td>
                 <td><i:etiquetaRequerido value="Planilla" styleClass="requerido" /></td>
                 <td>
-                    <h:selectOneMenu id="lstPlanillaInc" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{solicitudIncapacidad.planilla}" >
+                    <h:selectOneMenu id="lstPlanillaInc" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{SolicitudIncapacidadEdit.planilla}" >
                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
-                        <f:selectItems value="#{solicitudIncapacidad.listaPlanillas}" var="pla" 
+                        <f:selectItems value="#{SolicitudIncapacidadEdit.listaPlanillas}" var="pla" 
                                        itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
                     </h:selectOneMenu>
                 </td>
@@ -72,11 +72,11 @@
                 </td></tr>
             <tr>
                 <td valign="top" ><h:outputLabel value="Observaci&oacute;n" /></td>
-                <td colspan="3" ><p:inputTextarea id="txtobservacionesSP" style="width:100%;" value="#{solicitudIncapacidad.observacion}" autoResize="false" /></td>
+                <td colspan="3" ><p:inputTextarea id="txtobservacionesSP" style="width:100%;" value="#{SolicitudIncapacidadEdit.observacion}" autoResize="false" /></td>
             </tr>
             <tr>
                 <td></td>
-                <td colspan="4" > <p:commandButton image="ui-icon-disk" value="Guardar Cambios" action="#{solicitudIncapacidad.guardarCambios}" update="principalForm:mensajes" disabled="#{SessionBeanPLA.accionSeleccionada.status ne 'G'}" /></td>
+                <td colspan="4" > <p:commandButton image="ui-icon-disk" value="Guardar Cambios" action="#{SolicitudIncapacidadEdit.guardarCambios}" update="principalForm:mensajes" disabled="#{SessionBeanPLA.accionSeleccionada.status ne 'G'}" /></td>
             </tr>
 
         </table>

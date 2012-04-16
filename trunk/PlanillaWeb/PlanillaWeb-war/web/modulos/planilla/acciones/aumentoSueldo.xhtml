@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./editarSolicitud.xhtml" >
+
+    <ui:define name="panelAccionesSolicitud">
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" action="#{solicitudAumentoSueldoEdit.regresar}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/arrow-left.png"/>
+                    <h:outputText value="Acciones de personal" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+
+    <ui:define name="detalleSolicitud">
+        <table border="0" cellpadding="2" width="100%" >
+
+            <tr>
+                <td width="12%" ><h:outputLabel value="Criterio:" style="font-weight: bold;" /></td>
+                <td colspan="5" >
+                    <h:selectOneRadio id="chkFormaAumento" value="#{solicitudAumentoSueldoEdit.formaAumento}" >
+                        <f:selectItem itemValue="P" itemLabel="Aplicar porcentaje" />
+                        <f:selectItem itemValue="V" itemLabel="Aplicar valor" />
+                        <f:ajax event="change" render="etiquetaValor txValorCalculado lbValorCalculado" execute="chkFormaAumento"  />
+                    </h:selectOneRadio>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                        <h:outputLabel id="etiquetaValor" value="#{solicitudAumentoSueldoEdit.formaAumento eq 'V' ? 'Nuevo Sueldo: ': 'Porcentaje: '}" style="font-weight: bold;" />
+                        <h:outputLabel value="*" styleClass="requerido"/>                                
+                    </h:panelGrid>
+                </td>
+                <td width="12%">
+                    <p:inputText value="#{solicitudAumentoSueldoEdit.sueldoNuevo}" >
+                        <p:ajax event="keyup" update="txValorCalculado" listener="#{solicitudAumentoSueldoEdit.calculoSueldo}" /> 
+                    </p:inputText>
+                </td>
+                <td></td>
+                <td><h:outputLabel id="lbValorCalculado" value="#{solicitudAumentoSueldoEdit.formaAumento eq 'P' ? 'Nuevo Valor ': '' }" style="font-weight: bold;" /></td>
+                <td>
+                    <h:outputLabel id="txValorCalculado" value="#{solicitudAumentoSueldoEdit.formaAumento eq 'P' ? solicitudAumentoSueldoEdit.porcentaje : '' }" >
+                        <f:convertNumber maxFractionDigits="2"/>
+                    </h:outputLabel>    
+                </td>                        
+                <td></td>
+            </tr>
+            <tr>
+                <td><h:outputLabel value="Sueldo Anterior " style="font-weight: bold;" /></td>
+
+                <td colspan="5" >
+                    <i:etiquetaMoneda label="" value="#{SessionBeanADM.compania.monedas.signo} #{SessionBeanPLA.accionSeleccionada.empleados.salario}" />
+                </td>
+            </tr>
+
+            <tr>
+                <td><i:etiquetaRequerido value="Fecha Inicial" styleClass="requerido" /></td>
+                <td colspan="5" >                            
+                    <p:calendar id="auSalFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudAumentoSueldoEdit.fechaInicial}"  />
+                </td>
+            </tr>
+
+            <tr>
+                <td><i:etiquetaRequerido value="Tipo Planilla" styleClass="requerido" /></td>
+                <td>
+                    <h:selectOneMenu id="lstTipoPlanillaAuSal" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{solicitudAumentoSueldoEdit.tipoPlanilla}" >                       
+                        <f:ajax render="lstPlanillaAuSal" event="change" execute="lstTipoPlanillaAuSal" />
+                        <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
+                        <f:selectItems value="#{solicitudAumentoSueldoEdit.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                    </h:selectOneMenu>
+                </td>
+                <td></td>
+                <td><i:etiquetaRequerido value="Planilla" styleClass="requerido" /></td>
+                <td colspan="2">
+                    <h:selectOneMenu id="lstPlanillaAuSal" style="height: 25px;padding-top: 3px;width: 250px;" label="Planilla" value="#{solicitudAumentoSueldoEdit.planilla}" >
+                        <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
+                        <f:selectItems value="#{solicitudAumentoSueldoEdit.listaPlanillas}" var="pla" 
+                                       itemValue="#{pla.pkAsString}" itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
+                    </h:selectOneMenu>
+                </td>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td>
+                <td colspan="2">
+                    <i:etiquetaPlanilla />
+                </td>
+            </tr>
+            <tr>
+                <td width="12%;" valign="top" ><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
+                <td colspan="2" width="80%;" ><p:inputTextarea id="txtobservacionesAuSal" style="width:90%;" value="#{solicitudAumentoSueldoEdit.observacion}" autoResize="false" /></td>
+                <td colspan="3" ></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="5" > <p:commandButton image="ui-icon-disk" value="Guardar Cambios" action="#{solicitudAumentoSueldoEdit.guardarCambios}" update="principalForm:mensajes" disabled="#{SessionBeanPLA.accionSeleccionada.status ne 'G'}" /></td>
+            </tr>
+        </table>
+    </ui:define>
+
+</ui:composition>
