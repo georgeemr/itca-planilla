@@ -176,9 +176,9 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public void seleccionarAccion(AjaxBehaviorEvent event) {
         accionSeleccionada = null;
         for (TipoAccion a : listaTipo) {
-            if (a.getTipoAccionPK().getCodCia() == empresa && a.getTipoAccionPK().getCodTipoaccion() == tipo) {
+            if (a.getTipoAccionPK().getCodCia().equals(new Short( empresa)) && a.getTipoAccionPK().getCodTipoaccion().equals(tipo)) {
                 accionSeleccionada = a;
-                continue;
+                break;
             }
         }
         urlPlantilla = accionSeleccionada != null ? accionSeleccionada.getUrlPlantilla() : null;
@@ -402,7 +402,11 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
             case 5:
                 return "acciones/permisos?faces-redirect=true";
             case 7:
-                return "acciones/aumentoSueldo?faces-redirect=true";
+                return "acciones/aumentoSueldo?faces-redirect=true";    
+            case 8:
+                return "acciones/noAfectaPlanilla?faces-redirect=true";
+            case 9:
+                return "acciones/noAfectaPlanilla?faces-redirect=true";
             case 20:
                 return "acciones/constanciaDeSueldo?faces-redirect=true";
             default:

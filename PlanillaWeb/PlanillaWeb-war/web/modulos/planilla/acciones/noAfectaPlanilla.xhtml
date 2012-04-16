@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"
+                template="./editarSolicitud.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="panelAccionesSolicitud">
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" action="#{solicitudNoAfectaPlanillaEdit.regresar}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                    <p:graphicImage value="/resources/iconos/arrow-left.png"/>
+                    <h:outputText value="Acciones de personal" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+
+    <ui:define name="detalleSolicitud">
+        <table border="0"  width="100%" cellpadding="2" >
+            <tr>
+                <td width="12%" ><i:etiquetaRequerido value="Tipo de Acci&oacute;n" styleClass="requerido" /></td>
+                <td colspan="4" >                            
+                    <h:outputLabel value="#{solicitudNoAfectaPlanillaEdit.tipoAccion.nomTipoaccion}" />
+                </td>        
+            </tr>
+
+            <tr>
+                <td>
+                    <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                        <h:outputLabel value="Fecha inicial"/>                      
+                    </h:panelGrid>
+                </td>
+
+                <td>                            
+                    <p:calendar id="fecInicialNA" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudNoAfectaPlanillaEdit.fechaInicial}"  />
+                </td>
+
+                <td>
+                    <h:panelGrid columns="2" style="margin:0 0 0 -3px;padding:0;" >
+                        <h:outputLabel value="Fecha Final"/>
+                    </h:panelGrid>
+                </td>
+
+                <td colspan="2">                            
+                    <p:calendar id="fecFinalNA" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudNoAfectaPlanillaEdit.fechaFinal}"  />
+                </td>
+            </tr>
+            <tr>
+                <td width="12%;" valign="top" ><h:outputLabel value="Observaci&oacute;n" style="font-weight: bold;" /></td>
+                <td colspan="3" width="80%;" ><p:inputTextarea id="txtobservacionesAuSal" style="width:90%;" value="#{solicitudNoAfectaPlanillaEdit.observacion}" autoResize="false" /></td>
+                <td colspan="3" ></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="6" > <p:commandButton image="ui-icon-disk" value="Guardar Cambios" action="#{solicitudNoAfectaPlanillaEdit.guardarCambios}" update="principalForm:mensajes" disabled="#{SessionBeanPLA.accionSeleccionada.status ne 'G'}" /></td>
+            </tr>
+        </table>
+
+    </ui:define>
+
+</ui:composition>
