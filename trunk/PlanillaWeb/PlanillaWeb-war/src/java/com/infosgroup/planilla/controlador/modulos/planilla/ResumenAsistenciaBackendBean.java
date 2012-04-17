@@ -27,9 +27,9 @@ import org.primefaces.event.RowEditEvent;
  *
  * @author Gabriel Bran
  */
-@ManagedBean(name = "planilla$horasExtras")
+@ManagedBean(name = "resumenAsistenciaBackendBean")
 @ViewScoped
-public class HorasExtrasBackendBean extends AbstractJSFPage implements Serializable {
+public class ResumenAsistenciaBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
     private PlanillaSessionBean planillaSessionBean;
