@@ -33,9 +33,11 @@ public class EvaluacionEmpleadoBackendBean extends AbstractJSFPage implements Se
 @EJB
 private EmpleadosSessionBean empleadosBean;
 private List<Pregunta> listaPreguntas;
-private DataTable[] wizardTable = new DataTable[15];
+private DataTable[] wizardTable ;
 
-private static final Integer ultimoTab = 1000 ;
+private static Integer ultimoTab ;
+
+
 
 public Integer getUltimoTab ()
 {
@@ -72,7 +74,12 @@ public String defaultFlowListener(FlowEvent event)
     Integer actual = Integer.parseInt(event.getOldStep().replaceAll("tab", "")) - 1;
     Integer nuevo = Integer.parseInt(event.getNewStep().replaceAll("tab", "")) - 1;
     List<PreguntaRespuesta> l = new ArrayList<PreguntaRespuesta>();
-
+    
+    
+    
+    if ( (actual > nuevo) && (actual >= wizardTable.length))
+        actual = wizardTable.length -1;
+    
     DataTable tabla = wizardTable[actual];
     Integer filas = tabla.getRowCount();
     for (int fila = 0; fila < filas; fila++)
@@ -132,6 +139,9 @@ protected void limpiarCampos()
 @PostConstruct
 public void init()
 {
+    ultimoTab = getSessionBeanEMP().getListaFactores().size()+1;
+    wizardTable = new DataTable[getSessionBeanEMP().getListaFactores().size()];
+    
     listaPreguntas = new ArrayList<Pregunta>();
     List<com.infosgroup.planilla.modelo.entidades.Pregunta> lPregs = empleadosBean.listarPreguntasPorFactor(getSessionBeanEMP().getFactorActual());
     for (com.infosgroup.planilla.modelo.entidades.Pregunta p : lPregs)

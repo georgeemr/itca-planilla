@@ -47,8 +47,8 @@ private String incluyeCompetencias;
     }, inverseJoinColumns =
     {
     @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-    @JoinColumn(name = "FACTOR", referencedColumnName = "COD_FACTOR", nullable = false),
-    @JoinColumn(name = "PREGUNTA", referencedColumnName = "COD_PREGUNTA", nullable = false)
+    @JoinColumn(name = "COD_FACTOR", referencedColumnName = "COD_FACTOR", nullable = false),
+    @JoinColumn(name = "COD_PREGUNTA", referencedColumnName = "COD_PREGUNTA", nullable = false)
     })
 @ManyToMany
 private List<Pregunta> preguntaList;

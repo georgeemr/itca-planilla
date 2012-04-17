@@ -33,46 +33,42 @@
                 <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.plantilla1.nombre}"/>
                 <h:outputText value="Empleado" styleClass="negrita"/>
                 <h:panelGrid columns="3" cellspacing="0" cellpadding="0">
-                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleados.nombres}"/>
-                    <p:spacer width="4"/>
-                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleados.apellidos}"/>
-                    <p:spacer width="4"/>
-                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleados.apCasada}" rendered="#{SessionBeanEMP.evaluacionSeleccionada.empleados.apCasada ne null}"/>
+                    <h:outputText value="#{SessionBeanEMP.evaluacionSeleccionada.empleados.nombreCompleto}"/>
                 </h:panelGrid>
             </h:panelGrid>
-            <p:separator/>
-            <p:wizard id="wizard1" backLabel="Anterior" flowListener="#{empleados$evaluacionEmpleado.defaultFlowListener}" nextLabel="Siguiente" showStepStatus="true" showNavBar="true">
-                <c:forEach items="#{SessionBeanEMP.listaFactores}" var="factor" varStatus="status">
-                    <p:tab title="#{factor.nomFactor}" id="tab#{status.count}">
-                        <p:dataTable binding="#{empleados$evaluacionEmpleado.wizardTable[status.count-1]}" value="#{empleados$evaluacionEmpleado.listaPreguntas}" var="pregunta">
-                            <f:facet name="header">
-                                
-                            </f:facet>
-                            <p:column headerText="ID">
-                                <h:outputText value="#{pregunta.preguntaPK.codPregunta}"/>
-                            </p:column>
-                            <p:column headerText="Pregunta">
-                                <h:outputText value="#{pregunta.descripcion}"/>
-                            </p:column>
-                            <p:column headerText="Respuesta">
-                                <h:selectOneMenu value="#{pregunta.respuesta}">
-                                    <f:selectItems value="#{pregunta.respuestaList}" var="respuesta" itemValue="#{respuesta.respuestaPK.codCia}:#{respuesta.respuestaPK.codTipoRespuesta}:#{respuesta.respuestaPK.codRespuesta}" itemLabel="#{respuesta.nivel}" itemDescription="#{respuesta.texto}"/>                                    
-                                </h:selectOneMenu>
-                            </p:column>
-                        </p:dataTable>
-                    </p:tab>
-                </c:forEach>
+            <p:spacer height="10" />
+            <p:wizard id="wizard1" backLabel="Anterior" flowListener="#{empleados$evaluacionEmpleado.defaultFlowListener}" nextLabel="Siguiente" showStepStatus="true" showNavBar="true" >
+
+                    <c:forEach items="#{SessionBeanEMP.listaFactores}" var="factor" varStatus="status">
+                        <p:tab title="#{factor.nomFactor}" id="tab#{status.count}">
+                            <p:dataTable binding="#{empleados$evaluacionEmpleado.wizardTable[status.count-1]}" value="#{empleados$evaluacionEmpleado.listaPreguntas}" var="pregunta">
+                                <p:column headerText="ID">
+                                    <h:outputText value="#{pregunta.preguntaPK.codPregunta}"/>
+                                </p:column>
+                                <p:column headerText="Pregunta">
+                                    <h:outputText value="#{pregunta.descripcion}"/>
+                                </p:column>
+                                <p:column headerText="Respuesta">
+                                    <h:selectOneMenu value="#{pregunta.respuesta}">
+                                        <f:selectItems value="#{pregunta.respuestaList}" var="respuesta" itemValue="#{respuesta.respuestaPK.codCia}:#{respuesta.respuestaPK.codTipoRespuesta}:#{respuesta.respuestaPK.codRespuesta}" itemLabel="#{respuesta.nivel}" itemDescription="#{respuesta.texto}"/>                                    
+                                    </h:selectOneMenu>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </c:forEach>
+                <p:spacer height="10" />
                 <p:tab title="Fin" id="tab#{empleados$evaluacionEmpleado.ultimoTab}">
                     <p:panel header="Fin de evaluaci&oacute;n" style="text-align: center;">
                         <h:panelGrid columns="2" style="text-align: center;">
                             <p:graphicImage width="64" height="64" url="/resources/imagenes/64/applications-education-university.png"/>
                             <h:outputText value="Ha llegado al final de la evaluaci&oacute;n, puede modificar sus respuestas o cerrar esta evaluaci&oacute;n para finalizarla."/>
                         </h:panelGrid>
-                        <f:facet name="footer">
-                            <p:commandButton value="Cerrar evaluaci&oacute;n" image="ui-icon ui-icon-circle-check" onclick="cnf1.show();"/>
-                        </f:facet>
+                        <h:panelGrid>
+                            <p:commandButton value="Cerrar evaluaci&oacute;n" image="ui-icon ui-icon-circle-check" onclick="cnf1.show();"/>                            
+                        </h:panelGrid>
                     </p:panel>
                 </p:tab>
+
             </p:wizard>
         </p:fieldset>
     </ui:define>
