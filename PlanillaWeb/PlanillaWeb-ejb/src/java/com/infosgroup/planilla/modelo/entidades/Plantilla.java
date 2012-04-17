@@ -33,7 +33,7 @@ public class Plantilla implements Serializable
 private static final long serialVersionUID = 1L;
 @EmbeddedId
 protected PlantillaPK plantillaPK;
-@Column(name = "NOMBRE", length = 200)
+@Column(name = "NOM_PLANTILLA", length = 200)
 private String nombre;
 @Column(name = "INCLUYE_OBJETIVOS", length = 200)
 private String incluyeObjetivos;

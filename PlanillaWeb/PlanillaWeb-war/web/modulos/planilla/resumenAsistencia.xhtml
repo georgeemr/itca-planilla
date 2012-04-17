@@ -16,7 +16,7 @@
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumenAsistencia" action="#{planilla$horasExtras.mostrarResumenAsistencia$action}">
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumenAsistencia" action="#{resumenAsistenciaBackendBean.mostrarResumenAsistencia$action}">
                     <p:graphicImage value="/resources/iconos/personal.png"/>
                     <h:outputText value="Mostrar Asistencia" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -36,7 +36,7 @@
         </p:tab>
         <p:tab title="Otras Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" action="#{planilla$horasExtras.inicio$action}">
+                <p:commandLink styleClass="opcionMenu" update="mensajes, tablaResumen" action="#{resumenAsistenciaBackendBean.inicio$action}">
                     <!--p:graphicImage value="/resources/iconos/edit-find-user.png"/ -->
                     <h:outputText value="Mostrar resumen" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -49,19 +49,19 @@
         <p:panel id="panelHorasExtras" style="border: none;" >
             <h:panelGrid columns="2" >
                 <i:etiquetaRequerido value="Tipo de planilla" />
-                <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{planilla$horasExtras.tipoPlanilla}" >                       
-                    <f:ajax render="panelHorasExtras tablaResumenAsistencia" event="change" execute="LstTipoPlanilla" listener="#{planilla$horasExtras.updateByTipoPlanilla}" />
+                <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{resumenAsistenciaBackendBean.tipoPlanilla}" >                       
+                    <f:ajax render="panelHorasExtras tablaResumenAsistencia" event="change" execute="LstTipoPlanilla" listener="#{resumenAsistenciaBackendBean.updateByTipoPlanilla}" />
                     <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
-                    <f:selectItems value="#{planilla$horasExtras.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                    <f:selectItems value="#{resumenAsistenciaBackendBean.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                 </h:selectOneMenu>
 
                 <i:etiquetaRequerido value="Programaci&#243;n planilla" />
                 <h:panelGroup>
                     <p:autoComplete id="AutCompltProgPla" forceSelection="true" var="programacionPla" 
-                                    value="#{planilla$horasExtras.proPlaSeleccionada}"
+                                    value="#{resumenAsistenciaBackendBean.proPlaSeleccionada}"
                                     itemValue="#{programacionPla.pkAsString}" itemLabel="#{programacionPla.stringProgramacionPla}"
-                                    completeMethod="#{planilla$horasExtras.completeProgramacionPla}"
-                                    converter="#{planilla$horasExtras.programacionPlaConverter}" title="Seleccione la planilla" >
+                                    completeMethod="#{resumenAsistenciaBackendBean.completeProgramacionPla}"
+                                    converter="#{resumenAsistenciaBackendBean.programacionPlaConverter}" title="Seleccione la planilla" >
                         <!-- f:ajax render="AutCompltEmpleado" event="change" execute="AutCompltProgPla" / -->
                     </p:autoComplete>
                     <!-- h:outputLabel value=" A&Ntilde;OMESN&Uacute;MERO DE PLANILLA " style="font-weight: bold;color: red;" / -->
@@ -70,24 +70,24 @@
 
                 <h:outputLabel value="Sucursal" style="font-weight: bold;" />
                 <h:panelGrid columns="3" style="margin-left: -4px;" >
-                    <h:selectOneMenu id="LstSucursales" style="height: 25px;padding-top: 3px;width: 300px;" label="Sucursales" value="#{planilla$horasExtras.agenciaSeleccionada}" >                       
+                    <h:selectOneMenu id="LstSucursales" style="height: 25px;padding-top: 3px;width: 300px;" label="Sucursales" value="#{resumenAsistenciaBackendBean.agenciaSeleccionada}" >                       
                         <f:selectItem itemValue="-1" itemLabel="[ TODAS LAS SUCURSALES ]" />
-                        <f:selectItems value="#{planilla$horasExtras.listaAgencias}" var="sucursal" itemValue="#{sucursal.agenciasPK.codAgencia}" itemLabel="#{sucursal.nomAgencia}"/>
+                        <f:selectItems value="#{resumenAsistenciaBackendBean.listaAgencias}" var="sucursal" itemValue="#{sucursal.agenciasPK.codAgencia}" itemLabel="#{sucursal.nomAgencia}"/>
                     </h:selectOneMenu>
 
                     <h:outputLabel value="Departamento" style="font-weight: bold;" />
-                    <h:selectOneMenu id="LstDepartamentos" style="height: 25px;padding-top: 3px;width: 300px;" label="Departamentos" value="#{planilla$horasExtras.departamentoSeleccionado}" >                       
+                    <h:selectOneMenu id="LstDepartamentos" style="height: 25px;padding-top: 3px;width: 300px;" label="Departamentos" value="#{resumenAsistenciaBackendBean.departamentoSeleccionado}" >                       
                         <f:selectItem itemValue="-1" itemLabel="[ TODOS LOS DEPARTAMENTOS ]" />
-                        <f:selectItems value="#{planilla$horasExtras.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}"/>
+                        <f:selectItems value="#{resumenAsistenciaBackendBean.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}"/>
                     </h:selectOneMenu>
                 </h:panelGrid>
 
             </h:panelGrid>
             <p:spacer height="15" />
 
-            <p:dataTable id="tablaResumenAsistencia" emptyMessage="No se han encontrado Empleados" value="#{planilla$horasExtras.listaResumenAsistencia}" paginator="true"
+            <p:dataTable id="tablaResumenAsistencia" emptyMessage="No se han encontrado Empleados" value="#{resumenAsistenciaBackendBean.listaResumenAsistencia}" paginator="true"
                          rows="5" var="resumenAsistencia" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  rowsPerPageTemplate="5,10,25,50,100,1000,10000" 
-                         rowEditListener="#{planilla$horasExtras.rowEditListener}" onRowEditUpdate="principalForm:mensajes,principalForm:tablaResumenAsistencia,lbEstado" >
+                         rowEditListener="#{resumenAsistenciaBackendBean.rowEditListener}" onRowEditUpdate="principalForm:mensajes,principalForm:tablaResumenAsistencia,lbEstado" >
 
                 <f:facet name="header" >
                     <h:outputLabel value="Asistencia por Empleado" />
@@ -216,25 +216,25 @@
                             <h:outputLabel value="#{resumenAsistencia.estado.descripAusen}"/>
                         </f:facet>  
                         <f:facet name="input">  
-                            <h:selectOneMenu value="#{planilla$horasExtras.estadoEdit}" style="height: 25px;padding-top: 3px;width: 80px; margin-left: -8px; margin-right: -8px;">
-                                <f:selectItems id="lstEditEstado" value="#{planilla$horasExtras.listaEstados}" var="estado" itemValue="#{estado.codAusen}" itemLabel="#{estado.descripAusen}" />
+                            <h:selectOneMenu value="#{resumenAsistenciaBackendBean.estadoEdit}" style="height: 25px;padding-top: 3px;width: 80px; margin-left: -8px; margin-right: -8px;">
+                                <f:selectItems id="lstEditEstado" value="#{resumenAsistenciaBackendBean.listaEstados}" var="estado" itemValue="#{estado.codAusen}" itemLabel="#{estado.descripAusen}" />
                                 <f:ajax render="tablaResumenAsistencia" event="change" execute="lstEditEstado" />
                             </h:selectOneMenu>
                         </f:facet>  
                     </p:cellEditor> 
                 </p:column>
                 <p:column>
-                    <p:rowEditor rendered="#{planilla$horasExtras.proPlaSeleccionada.status ne 'C'}" />
+                    <p:rowEditor rendered="#{resumenAsistenciaBackendBean.proPlaSeleccionada.status ne 'C'}" />
                 </p:column>
                 
                 <p:column>
-                    <p:commandButton image="ui-icon-circle-minus" title="Eliminar" oncomplete="dlgEliminarResumen.show();" disabled="#{planilla$horasExtras.proPlaSeleccionada.status eq 'C'}" >
-                        <f:setPropertyActionListener value="#{resumenAsistencia}" target="#{planilla$horasExtras.resumenSeleccionado}" /> 
+                    <p:commandButton image="ui-icon-circle-minus" title="Eliminar" oncomplete="dlgEliminarResumen.show();" disabled="#{resumenAsistenciaBackendBean.proPlaSeleccionada.status eq 'C'}" >
+                        <f:setPropertyActionListener value="#{resumenAsistencia}" target="#{resumenAsistenciaBackendBean.resumenSeleccionado}" /> 
                     </p:commandButton>
                 </p:column>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Imprimir Hoja de Asistencia" image="documentPDF" action="#{planilla$horasExtras.imprimirResumenDeAsistencia}" ajax="false" />
+                    <p:commandButton value="Imprimir Hoja de Asistencia" image="documentPDF" action="#{resumenAsistenciaBackendBean.imprimirResumenDeAsistencia}" ajax="false" />
                 </f:facet>
 
             </p:dataTable>
@@ -248,7 +248,7 @@
         <p:confirmDialog message="&#191; Esta seguro que desea eliminar el resumen seleccionado ?" showEffect="bounce" hideEffect="explode"  
                          modal="true" header="Eliminar Resumen Asistencia" severity="alert" widgetVar="dlgEliminarResumen">  
             <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,tablaResumenAsistencia" oncomplete="dlgEliminarResumen.hide()"  
-                             action="#{planilla$horasExtras.eliminarResumen$Action}" />  
+                             action="#{resumenAsistenciaBackendBean.eliminarResumen$Action}" />  
             <p:commandButton value="No" onclick="dlgEliminarResumen.hide()" type="button" />   
 
         </p:confirmDialog>  
@@ -256,7 +256,7 @@
         <p:confirmDialog message="&#191; Esta seguro que desea eliminar la planilla ?" showEffect="bounce" hideEffect="explode"  
                          modal="true" header="Eliminar Planilla" severity="alert" widgetVar="dlgEliminarPlanilla">  
             <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,tablaResumenAsistencia" oncomplete="dlgEliminarPlanilla.hide()"  
-                             action="#{planilla$horasExtras.borrarPlanilla}" />  
+                             action="#{resumenAsistenciaBackendBean.borrarPlanilla}" />  
             <p:commandButton value="No" onclick="dlgEliminarPlanilla.hide()" type="button" />   
 
         </p:confirmDialog>  
@@ -268,7 +268,7 @@
                 <h:outputLabel id="lbl1" value="Seleccione un empleado para agregar al resumen."  style="font-weight: bold;"/>
             </h:panelGrid>
 
-            <p:dataTable id="listadoEmpleados" value="#{planilla$horasExtras.listaEmpleados}" var="empleado" 
+            <p:dataTable id="listadoEmpleados" value="#{resumenAsistenciaBackendBean.listaEmpleados}" var="empleado" 
                          paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true" 
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                          rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" >
@@ -282,14 +282,14 @@
                 </p:column>  
 
                 <p:column headerText="Estado " style="width:5%;" >  
-                    <h:selectOneMenu value="#{planilla$horasExtras.estadoSeleccionado}" style="height: 25px;padding-top: 3px;width: 100px; margin-left: -8px; margin-right: -8px;">
-                        <f:selectItems id="lstAddEstado" value="#{planilla$horasExtras.listaEstados}" var="estado" itemValue="#{estado.codAusen}" itemLabel="#{estado.descripAusen}" />
+                    <h:selectOneMenu value="#{resumenAsistenciaBackendBean.estadoSeleccionado}" style="height: 25px;padding-top: 3px;width: 100px; margin-left: -8px; margin-right: -8px;">
+                        <f:selectItems id="lstAddEstado" value="#{resumenAsistenciaBackendBean.listaEstados}" var="estado" itemValue="#{estado.codAusen}" itemLabel="#{estado.descripAusen}" />
                     </h:selectOneMenu>
                 </p:column>  
 
                 <p:column style="width: 5%;" >
-                    <p:commandButton styleClass="opcionMenu" update="principalForm:mensajes,principalForm:tablaResumenAsistencia" oncomplete="dlgEmpSolPermisos.hide();" action="#{planilla$horasExtras.seleccionarEmpleado}" image="ui-icon-circle-check" title="Agregar al Resumen" >
-                        <f:setPropertyActionListener value="#{empleado}" target="#{planilla$horasExtras.empleadoSeleccionado}" /> 
+                    <p:commandButton styleClass="opcionMenu" update="principalForm:mensajes,principalForm:tablaResumenAsistencia" oncomplete="dlgEmpSolPermisos.hide();" action="#{resumenAsistenciaBackendBean.seleccionarEmpleado}" image="ui-icon-circle-check" title="Agregar al Resumen" >
+                        <f:setPropertyActionListener value="#{empleado}" target="#{resumenAsistenciaBackendBean.empleadoSeleccionado}" /> 
                     </p:commandButton>
                 </p:column>
 
@@ -297,7 +297,7 @@
 
             <p:spacer height="15" />
             <h:panelGrid columns="2">
-                <p:commandButton value="Cancelar" styleClass="opcionMenu" update="principalForm:mensajes,principalForm:tablaResumenAsistencia}" oncomplete="dlgEmpSolPermisos.hide();" action="#{planilla$horasExtras.cancelSeleccionarEmpleado}" image="ui-icon-circle-check" /> 
+                <p:commandButton value="Cancelar" styleClass="opcionMenu" update="principalForm:mensajes,principalForm:tablaResumenAsistencia}" oncomplete="dlgEmpSolPermisos.hide();" action="#{resumenAsistenciaBackendBean.cancelSeleccionarEmpleado}" image="ui-icon-circle-check" /> 
             </h:panelGrid>
 
         </p:dialog>
