@@ -409,6 +409,10 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
                 return "acciones/noAfectaPlanilla?faces-redirect=true";
             case 9:
                 return "acciones/noAfectaPlanilla?faces-redirect=true";
+            case 10:
+                return "acciones/retiro?faces-redirect=true";
+            case 15:
+                return "acciones/retiro?faces-redirect=true";
             case 20:
                 return "acciones/constanciaDeSueldo?faces-redirect=true";
             default:
