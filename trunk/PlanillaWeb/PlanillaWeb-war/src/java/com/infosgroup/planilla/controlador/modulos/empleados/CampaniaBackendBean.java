@@ -311,4 +311,14 @@ public class CampaniaBackendBean extends AbstractJSFPage implements Serializable
     public void setPreevaluacionSeleccionada(PreEvaluacion preevaluacionSeleccionada) {
         this.preevaluacionSeleccionada = preevaluacionSeleccionada;
     }
+    
+    public String seleccionarAction(){
+        Integer index = tipoEvaluacionTableModel.indexOf(tipoEvaluacionSeleccionada);
+        for (TipoEvaluacion e: tipoEvaluacionTableModel){
+            e.setSeleccionado("N");
+        }
+        tipoEvaluacionSeleccionada.setSeleccionado("S");
+        tipoEvaluacionTableModel.set(index, tipoEvaluacionSeleccionada);
+        return null;
+    }
 }

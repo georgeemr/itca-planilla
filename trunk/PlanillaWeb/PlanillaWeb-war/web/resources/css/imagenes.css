@@ -93,3 +93,8 @@
 {
     background-image: url('../iconos/beneficiarios.png') !important;
 }
+
+.star
+{
+    background-image: url('../iconos/rating.png') !important;
+}
