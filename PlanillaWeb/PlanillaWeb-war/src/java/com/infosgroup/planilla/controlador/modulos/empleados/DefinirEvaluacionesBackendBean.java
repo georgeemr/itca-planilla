@@ -433,13 +433,14 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
             empleadosBean.eliminarEvaluado(evaluado);
             m.getEvaluadoList().remove(evaluado);
             evaluadores.set(evaluadores.indexOf(evaluadorSeleccionado), m);
-            evaluadorSeleccionado = m;
             setEmpleados(new ArrayList<Empleados>());
             for (Evaluado a : evaluadorSeleccionado.getEvaluadoList()) {
                 getEmpleados().add(a.getEmpleados());
             }
+            evaluadorSeleccionado = m;
             addMessage(tituloMensajes, "Datos Eliminados con éxito.", TipoMensaje.INFORMACION);
         }
+        
         return null;
     }
 
