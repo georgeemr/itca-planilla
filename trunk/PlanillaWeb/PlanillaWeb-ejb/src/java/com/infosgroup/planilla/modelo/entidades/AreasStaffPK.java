@@ -30,7 +30,7 @@ public class AreasStaffPK implements Serializable {
         this.codCia = codCia;
     }
 
-    public int getCodArea() {
+    public Integer getCodArea() {
         return codArea;
     }
 

@@ -36,6 +36,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     private Boolean viaticos;
     private Boolean comision;
     private Boolean informacionConfidencial;
+    private Boolean jefatura;
     private Double salarioMinimo;
     private Double salarioMaximo;
     private Short tipoPuesto;
@@ -71,6 +72,14 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
 
     public void setEtiqueta(String etiqueta) {
         this.etiqueta = etiqueta;
+    }
+
+    public Boolean getJefatura() {
+        return jefatura;
+    }
+
+    public void setJefatura(Boolean jefatura) {
+        this.jefatura = jefatura;
     }
 
 //    public String getValor() {
@@ -311,6 +320,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         nuevoPuesto.setNomPuesto(nombre);
         nuevoPuesto.setHorasExt(horasExtras == true ? "S" : "N");
         nuevoPuesto.setHorasDob(horasDobles == true ? "S" : "N");
+        nuevoPuesto.setJefatura(jefatura == true ? "SI" : "NO");
         nuevoPuesto.setViaticos(viaticos == true ? "S" : "N");
         nuevoPuesto.setComision(comision == true ? "S" : "N");
         nuevoPuesto.setInfConf(informacionConfidencial == true ? "S" : "N");
@@ -391,13 +401,14 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         setHorasDobles((getPuestoSeleccionado().getHorasDob() != null && getPuestoSeleccionado().getHorasDob().equals("S")) ? Boolean.TRUE : Boolean.FALSE);
         setViaticos((getPuestoSeleccionado().getViaticos() != null && getPuestoSeleccionado().getViaticos().equals("S")) ? Boolean.TRUE : Boolean.FALSE);
         setComision((getPuestoSeleccionado().getComision() != null && getPuestoSeleccionado().getComision().equals("S")) ? Boolean.TRUE : Boolean.FALSE);
+        setJefatura((getPuestoSeleccionado().getJefatura() != null && getPuestoSeleccionado().getJefatura().equals("SI")) ? Boolean.TRUE : Boolean.FALSE);
         setInformacionConfidencial((getPuestoSeleccionado().getInfConf() != null && getPuestoSeleccionado().getInfConf().equals("S")) ? Boolean.TRUE : Boolean.FALSE);
-        setSalarioMinimo(getPuestoSeleccionado().getSalMinimo() != null ? new Double(getPuestoSeleccionado().getSalMaximo().toString()) : 0);
+        setSalarioMinimo(getPuestoSeleccionado().getSalMinimo() != null ? new Double(getPuestoSeleccionado().getSalMinimo().toString()) : 0);
         setSalarioMaximo(getPuestoSeleccionado().getSalMaximo() != null ? new Double(getPuestoSeleccionado().getSalMaximo().toString()) : 0);
         setTipoPuesto(getPuestoSeleccionado().getTipoPuesto() != null ? getPuestoSeleccionado().getTipoPuesto().getTipoPuestoPK().getCodTipoPuesto() : new Short("-1"));
         setEstado(getPuestoSeleccionado().getStatus() != null ? getPuestoSeleccionado().getStatus() : "-1");
         setDepartamento(getPuestoSeleccionado().getDepartamentos() != null ? getPuestoSeleccionado().getDepartamentos().getDepartamentosPK().getCodDepto() : new Short("-1"));
-        setArea(getPuestoSeleccionado().getAreasStaff() != null ? getPuestoSeleccionado().getPuestosPK().getCodPuesto() : new Short("-1"));
+        setArea(getPuestoSeleccionado().getAreasStaff() != null ? getPuestoSeleccionado().getAreasStaff().getAreasStaffPK().getCodArea().shortValue()/*getPuestoSeleccionado().getPuestosPK().getCodPuesto()*/ : new Short("-1"));
         setDescripcion(getPuestoSeleccionado().getDescPuesto());
         setObjetivo(getPuestoSeleccionado().getObjetivo());
         setEstadoAccion(1);
@@ -480,6 +491,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         setHorasDobles(Boolean.FALSE);
         setViaticos(Boolean.FALSE);
         setComision(Boolean.FALSE);
+        setJefatura(Boolean.FALSE);
         setInformacionConfidencial(Boolean.FALSE);
         setSalarioMinimo(0.0);
         setSalarioMaximo(0.0);
