@@ -74,20 +74,20 @@
 
             <p:tab id="tab1" title="Tipo de evaluaci&oacute;n">
                 <p:spacer height="10" />
-                <p:dataTable rows="7" value="#{empleados$campania.tipoEvaluacionTableModel}" var="tipoEvaluacion" rowsPerPageTemplate="5,10,25,50,100"
-                             paginator="true" emptyMessage="No se han encontrado Tipos de Evaluaci&oacute;n." paginatorAlwaysVisible="true"
-                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
+                <p:dataTable id="tablaTipoEvaluacion" rows="7" value="#{empleados$campania.tipoEvaluacionTableModel}" var="tipoEvaluacion" 
+                             paginator="true" emptyMessage="No se han encontrado Tipos de Evaluaci&oacute;n." 
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" paginatorAlwaysVisible="true" rowsPerPageTemplate="5,10,25,50,100">
                     <f:facet name="header">
                         <h:outputText value="Tipos de evaluaci&oacute;n"/>
                     </f:facet>
-                    <p:column headerText="C&oacute;digo">
+                    <p:column headerText="C&oacute;digo" style="width: 8%;">
                         <h:outputText value="#{tipoEvaluacion.tipoEvaluacionPK.codTipoEvaluacion}"/>
                     </p:column>
                     <p:column headerText="Nombre" filterBy="#{tipoEvaluacion.nomTipoEvaluacion}" filterMatchMode="contains" >
                         <h:outputText value="#{tipoEvaluacion.nomTipoEvaluacion}"/>
                     </p:column>
                     <p:column headerText="Seleccionar" style="width: 8%;" >  
-                        <p:commandButton image="ui-icon ui-icon-circle-check" update="principalForm:mensajes" title="Seleccionar">
+                        <p:commandButton image="#{ tipoEvaluacion eq  empleados$campania.tipoEvaluacionSeleccionada ? 'button-ok':'nuevo'}" update="principalForm:mensajes,principalForm:tablaTipoEvaluacion" title="Seleccionar" >
                             <f:setPropertyActionListener value="#{tipoEvaluacion}" target="#{empleados$campania.tipoEvaluacionSeleccionada}" />  
                         </p:commandButton>
                     </p:column>
@@ -102,18 +102,19 @@
                     <h:outputLabel value="#{empleados$campania.tipoEvaluacionSeleccionada.nomTipoEvaluacion}" />
                 </h:panelGrid>
                 <p:spacer height="5" />
-                <p:dataTable rows="7" value="#{empleados$campania.plantillaTableModel}" var="plantilla" paginator="true" emptyMessage="No se han encontrado planillas.">
+                <p:dataTable id="tablaPlantillas" rows="7" value="#{empleados$campania.plantillaTableModel}" var="plantilla" paginator="true" emptyMessage="No se han encontrado planillas."
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" paginatorAlwaysVisible="true" rowsPerPageTemplate="5,10,25,50,100">
                     <f:facet name="header">
                         <h:outputText value="Plantillas"/>
                     </f:facet>
-                    <p:column headerText="ID">
+                    <p:column headerText="C&oacute;digo" style="width: 8%;" >
                         <h:outputText value="#{plantilla.plantillaPK.codPlantilla}"/>
                     </p:column>
-                    <p:column headerText="Nombre">
+                    <p:column headerText="Nombre" filterBy="#{plantilla.nombre}" filterMatchMode="contains" >
                         <h:outputText value="#{plantilla.nombre}"/>
                     </p:column>
-                    <p:column headerText="Seleccionar">
-                        <p:commandButton image="ui-icon ui-icon-circle-check" update="principalForm:mensajes" title="Seleccionar">
+                    <p:column headerText="Seleccionar" style="width: 8%;" >
+                        <p:commandButton image="#{plantilla eq  empleados$campania.plantillaSeleccionada ? 'button-ok':'nuevo'}" update="principalForm:mensajes,principalForm:tablaPlantillas" title="Seleccionar">
                             <f:setPropertyActionListener value="#{plantilla}" target="#{empleados$campania.plantillaSeleccionada}" />  
                         </p:commandButton>
                     </p:column>
@@ -152,7 +153,7 @@
                     </h:outputText>
                 </p:column>
                 <p:column headerText="Seleccionar" style="width: 8%;">
-                    <p:commandButton image="ui-icon ui-icon-circle-check" update="principalForm:panelAcciones principalForm:panelContenido principalForm:mensajes" oncomplete="dialogoEditar.hide();" title="Seleccionar" action="#{empleados$campania.editarCampania$action}" >
+                    <p:commandButton image="ui-icon ui-icon-circle-check" update="principalForm:panelAcciones,principalForm:panelContenido,principalForm:mensajes,principalForm:tablaPlantillas" oncomplete="dialogoEditar.hide();" title="Seleccionar" action="#{empleados$campania.editarCampania$action}" >
                         <f:setPropertyActionListener value="#{preevaluacion}" target="#{empleados$campania.preevaluacionSeleccionada}"/>
                     </p:commandButton>
                 </p:column>
