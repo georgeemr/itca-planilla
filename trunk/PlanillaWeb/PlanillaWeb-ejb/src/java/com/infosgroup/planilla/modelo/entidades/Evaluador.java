@@ -5,6 +5,7 @@
 package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -43,10 +44,30 @@ public class Evaluador implements Serializable {
     private Empleados empleados;
     @Column(name = "ESTADO", length = 1)
     private String estado;
-
+    @Column(name = "CRITERIO_EVALUACION", length = 1)
+    private String criterioEvaluacion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evaluador1")
+    private List<Evaluado> evaluadoList;
+    @Transient
+    private Integer cantidad;
+    @Column(name = "DEPARTAMENTO", length = 1)
+    private Short departamento;
+    
     public Evaluador() {
     }
+    
+    public Integer getCantidad() {
+        if ( evaluadoList==null ){
+            return 0;
+        }
+        cantidad = evaluadoList.size();
+        return cantidad;
+    }
 
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+    
     public Evaluador(EvaluadorPK evaluadorPK) {
         this.evaluadorPK = evaluadorPK;
     }
@@ -91,6 +112,30 @@ public class Evaluador implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getCriterioEvaluacion() {
+        return criterioEvaluacion;
+    }
+
+    public void setCriterioEvaluacion(String criterioEvaluacion) {
+        this.criterioEvaluacion = criterioEvaluacion;
+    }
+
+    public List<Evaluado> getEvaluadoList() {
+        return evaluadoList;
+    }
+
+    public void setEvaluadoList(List<Evaluado> evaluadoList) {
+        this.evaluadoList = evaluadoList;
+    }
+
+    public Short getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Short departamento) {
+        this.departamento = departamento;
     }
 
     @Override

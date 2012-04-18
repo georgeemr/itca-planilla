@@ -6,6 +6,7 @@ package com.infosgroup.planilla.view;
 
 import com.infosgroup.planilla.controlador.sessionbean.*;
 import java.util.Date;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
@@ -14,8 +15,10 @@ import javax.faces.context.FacesContext;
  *
  * @author root
  */
-public abstract class AbstractJSFPage {
+public abstract class AbstractJSFPage implements java.io.Serializable {
 
+    public static final Logger logger = Logger.getLogger(AbstractJSFPage.class.getPackage().getName());
+    
     public AbstractJSFPage() {
     }
 
