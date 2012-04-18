@@ -79,6 +79,12 @@ public void eliminarEvaluado(Evaluado evaluado)
     evaluadoFacade.remove(evaluado);
 }
 
+@PermitAll
+public void guardarEvaluado(Evaluado evaluado)
+{
+    evaluadoFacade.create(evaluado);
+}
+
 
 @PermitAll
 public void eliminarEvaluados(Evaluador evaluador)
