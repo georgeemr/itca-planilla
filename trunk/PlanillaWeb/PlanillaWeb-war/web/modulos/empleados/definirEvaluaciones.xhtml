@@ -289,7 +289,7 @@
 
         <p:confirmDialog message="&#191; Esta seguro que desea eliminar este evaluado ?" showEffect="bounce" hideEffect="explode"  
                          modal="true" header="Eliminar Evaluador" severity="alert" widgetVar="dlgEliminarEvaluado">  
-            <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,principalForm:tablaEvaluadores,principalForm:listadoEmpleados" oncomplete="dlgEliminarEvaluado.hide()"  
+            <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,principalForm:tablaEvaluadores,principalForm:listadoEmpleados,principalForm:lblTotal,principalForm:panelSeleccionEvaluados" oncomplete="dlgEliminarEvaluado.hide()"  
                              action="#{empleados$definirEvaluaciones.eliminarEvaluado}" />  
             <p:commandButton value="No" onclick="dlgEliminarEvaluado.hide()" type="button" />   
 
