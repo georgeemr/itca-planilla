@@ -52,6 +52,8 @@ private PlantillaFacade plantillaFacade;
 private PreEvaluacionFacade preEvaluacionFacade;
 @EJB
 private EvaluadorFacade evaluadorFacade;
+@EJB
+private EvaluadoFacade evaluadoFacade;
 
 @PermitAll
 public List<Evaluador> findEvaluadoresByPreEvaluacion(PreEvaluacion preEvaluacion)
@@ -69,6 +71,19 @@ public void guardarEvaluador(Evaluador evaluador)
 public void eliminarEvaluador(Evaluador evaluador)
 {
     evaluadorFacade.remove(evaluador);
+}
+
+@PermitAll
+public void eliminarEvaluado(Evaluado evaluado)
+{
+    evaluadoFacade.remove(evaluado);
+}
+
+
+@PermitAll
+public void eliminarEvaluados(Evaluador evaluador)
+{
+evaluadoFacade.eliminarEvaluados(evaluador);
 }
 
 @PermitAll
@@ -338,6 +353,16 @@ preEvaluacionFacade.create(p);
 @PermitAll    
 public List<Empleados> findEmpleadosByJefe(Empleados jefe) {
 return empleadosFacade.findEmpleadosByJefe(jefe);
+}
+
+@PermitAll    
+public List<Evaluado> findEvaluadosByJefe(Evaluador evaluador) {
+    List<Empleados> l = findEmpleadosByJefe(evaluador.getEmpleados());
+    List<Evaluado> evls = new ArrayList<Evaluado>();
+    for( Empleados e :l ){
+        evls.add( new Evaluado(evaluador, e) );
+    }
+    return evls;
 }
 
 @PermitAll

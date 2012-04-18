@@ -73,9 +73,9 @@ public class PlanillaSessionBean {
         List<TipoAusent> t = tipoAusentFacade.findAll();
         return t != null ? t : new ArrayList<TipoAusent>();
     }
-    
+
     @PermitAll
-    public void actualizarAccionPersonal(AccionPersonal accionPersonal ) {
+    public void actualizarAccionPersonal(AccionPersonal accionPersonal) {
         accionPersonalFacade.edit(accionPersonal);
     }
 
@@ -447,6 +447,16 @@ public class PlanillaSessionBean {
     @PermitAll
     public List<Empleados> findEmpleadosByDepartamentos(Departamentos departamento) {
         return empleadoFacade.findByDepartamentos(departamento);
+    }
+
+    @PermitAll
+    public List<Evaluado> findEvaluadosByDepartamentos(Evaluador evaluador, Departamentos departamento) {
+        List<Empleados> l = empleadoFacade.findByDepartamentos(departamento);
+        List<Evaluado> evls = new ArrayList<Evaluado>();
+        for( Empleados e :l ){
+            evls.add( new Evaluado(evaluador, e) );
+        }
+        return evls;
     }
 
     @PermitAll
