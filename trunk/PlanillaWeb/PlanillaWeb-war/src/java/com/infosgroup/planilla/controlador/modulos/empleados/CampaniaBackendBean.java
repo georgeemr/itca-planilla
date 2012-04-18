@@ -9,7 +9,7 @@ import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,376 +19,296 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 /**
-
- @author root
+ *
+ * @author root
  */
 @ManagedBean(name = "empleados$campania")
 @ViewScoped
-public class CampaniaBackendBean extends AbstractJSFPage implements Serializable
-{
+public class CampaniaBackendBean extends AbstractJSFPage implements Serializable {
 
-@EJB
-private EmpleadosSessionBean empleadosBean;
-private List<TipoEvaluacion> tipoEvaluacionTableModel;
-private List<Plantilla> plantillaTableModel;
+    @EJB
+    private EmpleadosSessionBean empleadosBean;
+    private List<TipoEvaluacion> tipoEvaluacionTableModel;
+    private List<Plantilla> plantillaTableModel;
+    private TipoEvaluacion tipoEvaluacionSeleccionada;
+    private Plantilla plantillaSeleccionada;
+    private String nombre;
+    private Integer periodo = Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date()));
+    private Date fechaInicial;
+    private Date fechaFinal;
+    private String estado;
+    private static final int CREANDO = 1;
+    private static final int EDITANDO = 2;
+    private int accion = 0;
+    private List<PreEvaluacion> listaPreevaluaciones;
+    private PreEvaluacion preevaluacionSeleccionada;
 
-public List<Plantilla> getPlantillaTableModel()
-{
-    if (tipoEvaluacionSeleccionada != null)
-        plantillaTableModel = empleadosBean.listarPlantillasPorTipoEvaluacion(tipoEvaluacionSeleccionada);
-    return plantillaTableModel;
-}
+    public List<Plantilla> getPlantillaTableModel() {
+        if (tipoEvaluacionSeleccionada != null) {
+            plantillaTableModel = empleadosBean.listarPlantillasPorTipoEvaluacion(tipoEvaluacionSeleccionada);
+        }
+        return plantillaTableModel;
+    }
 
-public void setPlantillaTableModel(List<Plantilla> plantillaTableModel)
-{
-    this.plantillaTableModel = plantillaTableModel;
-}
+    public void setPlantillaTableModel(List<Plantilla> plantillaTableModel) {
+        this.plantillaTableModel = plantillaTableModel;
+    }
 
-public List<TipoEvaluacion> getTipoEvaluacionTableModel()
-{
-    return tipoEvaluacionTableModel;
-}
+    public List<TipoEvaluacion> getTipoEvaluacionTableModel() {
+        return tipoEvaluacionTableModel;
+    }
 
-public void setTipoEvaluacionTableModel(List<TipoEvaluacion> tipoEvaluacionTableModel)
-{
-    this.tipoEvaluacionTableModel = tipoEvaluacionTableModel;
-}
-// =========================================================================================================
-private TipoEvaluacion tipoEvaluacionSeleccionada;
-private Plantilla plantillaSeleccionada;
+    public void setTipoEvaluacionTableModel(List<TipoEvaluacion> tipoEvaluacionTableModel) {
+        this.tipoEvaluacionTableModel = tipoEvaluacionTableModel;
+    }
 
-public Plantilla getPlantillaSeleccionada()
-{
-    return plantillaSeleccionada;
-}
+    public Plantilla getPlantillaSeleccionada() {
+        return plantillaSeleccionada;
+    }
 
-public void setPlantillaSeleccionada(Plantilla plantillaSeleccionada)
-{
-    this.plantillaSeleccionada = plantillaSeleccionada;
-}
+    public void setPlantillaSeleccionada(Plantilla plantillaSeleccionada) {
+        this.plantillaSeleccionada = plantillaSeleccionada;
+    }
 
-public TipoEvaluacion getTipoEvaluacionSeleccionada()
-{
-    return tipoEvaluacionSeleccionada;
-}
+    public TipoEvaluacion getTipoEvaluacionSeleccionada() {
+        return tipoEvaluacionSeleccionada;
+    }
 
-public void setTipoEvaluacionSeleccionada(TipoEvaluacion tipoEvaluacionSeleccionada)
-{
-    this.tipoEvaluacionSeleccionada = tipoEvaluacionSeleccionada;
-}
+    public void setTipoEvaluacionSeleccionada(TipoEvaluacion tipoEvaluacionSeleccionada) {
+        this.tipoEvaluacionSeleccionada = tipoEvaluacionSeleccionada;
+    }
 
-// =========================================================================================================
-@Override
-protected void limpiarCampos()
-{
-    throw new UnsupportedOperationException("Not supported yet.");
-}
-// =========================================================================================================
-@PostConstruct
-public void init()
-{
-    accion = CREANDO;
-    tipoEvaluacionTableModel = empleadosBean.listarTiposEvaluacion(getSessionBeanADM().getCompania());
-}
+    @Override
+    protected void limpiarCampos() {
+    }
 
-public String guardarCampania$action()
-{
-    if (!validarCampos())
+    @PostConstruct
+    public void init() {
+        accion = CREANDO;
+        tipoEvaluacionTableModel = empleadosBean.listarTiposEvaluacion(getSessionBeanADM().getCompania());
+    }
+
+    public String guardarCampania$action() {
+        if (!validarCampos()) {
+            return null;
+        }
+        switch (accion) {
+            case CREANDO:
+                guardarCampania();
+                accion = CREANDO;
+                break;
+            case EDITANDO:
+                editarCampania(preevaluacionSeleccionada);
+                accion = CREANDO;
+                break;
+        }
         return null;
-    switch (accion)
-        {
-        case CREANDO:
-            guardarCampania();
-            accion = CREANDO;
-            break;
-        case EDITANDO:
-            editarCampania(preevaluacionSeleccionada);
-            accion = CREANDO;
-            break;
+    }
+
+    public String editarCampania$action() {
+        if (preevaluacionSeleccionada != null) {
+            Campania campania = preevaluacionSeleccionada.getCampania();
+            nombre = campania.getNomCampania();
+            fechaInicial = campania.getFechaInicial();
+            fechaFinal = campania.getFechaFinal();
+            periodo = campania.getCampaniaPK().getPeriodo();
+            tipoEvaluacionSeleccionada = preevaluacionSeleccionada.getTipoEvaluacion1();
+            plantillaSeleccionada = preevaluacionSeleccionada.getPlantilla1();
+            accion = EDITANDO;
+        } else {
+            addMessage("InfoswebRRHH", "Seleccione una campa&ntilde;a", TipoMensaje.INFORMACION);
         }
-    return null;
-}
+        return null;
+    }
 
-public String editarCampania$action()
-{
-    if (preevaluacionSeleccionada != null)
-        {
-        Campania campania = preevaluacionSeleccionada.getCampania();
-        nombre = campania.getNomCampania();
-        fechaInicial = campania.getFechaInicial();
-        fechaFinal = campania.getFechaFinal();
-        periodo = campania.getCampaniaPK().getPeriodo();
-        nota = campania.getNota().doubleValue();
-        tipoEvaluacionSeleccionada = preevaluacionSeleccionada.getTipoEvaluacion1();
-        plantillaSeleccionada = preevaluacionSeleccionada.getPlantilla1();
-        accion = EDITANDO;
-        }
-    else
-        {
-        addMessage("InfoswebRRHH", "Seleccione una campa&ntilde;a", TipoMensaje.INFORMACION);
-        }
-    return null;
-}
-
-public String cancelar$action()
-{
-    nombre = null;
-    fechaInicial = null;
-    fechaFinal = null;
-    periodo = null;
-    nota = null;
-    accion = CREANDO;
-    preevaluacionSeleccionada = null;
-    tipoEvaluacionSeleccionada = null;
-    plantillaSeleccionada = null;
-    return null;
-}
-
-private boolean validarCampos()
-{
-    List<String> listaMensajes = new ArrayList<String>();
-    boolean formValido = true;
-    if ((nombre == null) || nombre.trim().isEmpty())
-        {
-        listaMensajes.add("Ingrese el nombre de la campa&ntilde;a");
-        formValido = false;
-        }
-    if (periodo == null)
-        {
-        listaMensajes.add("Ingrese el periodo de la campa&ntilde;a");
-        formValido = false;
-        }
-    if (fechaInicial == null)
-        {
-        listaMensajes.add("Seleccione la fecha inicial de la campa&ntilde;a");
-        formValido = false;
-        }
-    if (fechaFinal == null)
-        {
-        listaMensajes.add("Seleccione la fecha final de la campa&ntilde;a");
-        formValido = false;
-        }
-//    if ((estado == null) || estado.equals("0"))
-//        {
-//        listaMensajes.add("Seleccione el estado de la campa&ntilde;a");
-//        formValido = false;
-//        }
-    if (nota == null)
-        {
-        listaMensajes.add("Ingrese la nota de la campa&ntilde;a");
-        formValido = false;
-        }
-    if (tipoEvaluacionSeleccionada == null)
-        {
-        listaMensajes.add("Seleccione el tipo de evaluaci&oacute;n");
-        formValido = false;
-        }
-    if (plantillaSeleccionada == null)
-        {
-        listaMensajes.add("Seleccione la plantilla");
-        formValido = false;
-        }
-    for (String mensaje : listaMensajes)
-        addMessage("Infosweb RRHH", mensaje, TipoMensaje.INFORMACION);
-    return formValido;
-}
-
-private void guardarCampania()
-{
-    try
-        {
-        CampaniaPK campaniaPK = new CampaniaPK();
-
-        campaniaPK.setCodCia(getSessionBeanADM().getCompania().getCodCia());
-        campaniaPK.setPeriodo(periodo);
-        campaniaPK.setCodCampania(empleadosBean.maxCampania(getSessionBeanADM().getCompania()).shortValue());
-
-        Campania campania = new Campania(campaniaPK);
-        campania.setNomCampania(nombre);
-        campania.setFechaInicial(fechaInicial);
-        campania.setFechaFinal(fechaFinal);
-        campania.setEstado("G");
-        campania.setNota(new BigDecimal(nota));
-
-        empleadosBean.crearCampania(campania);
-
-        campania = empleadosBean.findCampaniaByPK(campaniaPK);
-
-        PreEvaluacionPK preevaluacionPK = new PreEvaluacionPK();
-        preevaluacionPK.setCodCia(campania.getCampaniaPK().getCodCia());
-        preevaluacionPK.setCodCampania(campania.getCampaniaPK().getCodCampania());
-        preevaluacionPK.setPeriodo(campania.getCampaniaPK().getPeriodo());
-        preevaluacionPK.setTipoEvaluacion(tipoEvaluacionSeleccionada.getTipoEvaluacionPK().getCodTipoEvaluacion());
-        preevaluacionPK.setPlantilla(plantillaSeleccionada.getPlantillaPK().getCodPlantilla());
-        PreEvaluacion preEvaluacion = new PreEvaluacion(preevaluacionPK);
-
-        preEvaluacion.setCampania(campania);
-        preEvaluacion.setTipoEvaluacion1(tipoEvaluacionSeleccionada);
-        preEvaluacion.setPlantilla1(plantillaSeleccionada);
-
-        empleadosBean.crearPreEvaluacion(preEvaluacion);
-
-        addMessage("Infosweb RRHH", "Campa&ntilde;a creada exitosamente", TipoMensaje.INFORMACION);
-
+    public String cancelar$action() {
         nombre = null;
-        periodo = null;
         fechaInicial = null;
         fechaFinal = null;
-        nota = null;
+        periodo = null;
+        accion = CREANDO;
         preevaluacionSeleccionada = null;
         tipoEvaluacionSeleccionada = null;
         plantillaSeleccionada = null;
+        return null;
+    }
+
+    private boolean validarCampos() {
+        List<String> listaMensajes = new ArrayList<String>();
+        boolean formValido = true;
+        if ((nombre == null) || nombre.trim().isEmpty()) {
+            listaMensajes.add("Ingrese el nombre de la campa&ntilde;a");
+            formValido = false;
         }
-    catch (Exception e)
-        {
-        e.printStackTrace(System.err);
-        addMessage("Infosweb RRHH", "Ocurrió un error al guardar la campa&ntilde;a", TipoMensaje.ERROR);
+        if (periodo == null) {
+            listaMensajes.add("Ingrese el periodo de la campa&ntilde;a");
+            formValido = false;
         }
-}
-
-private void editarCampania(PreEvaluacion p)
-{
-    if (p == null)
-        {
-        addMessage("Infosweb RRHH", "Seleccione la campa&tilde;a", TipoMensaje.ADVERTENCIA);
-        return;
+        if (fechaInicial == null) {
+            listaMensajes.add("Seleccione la fecha inicial de la campa&ntilde;a");
+            formValido = false;
         }
-    try
-        {
-        Campania campania = empleadosBean.findCampaniaByPK(p.getCampania().getCampaniaPK());
-        campania.setNomCampania(nombre);
-        campania.setFechaInicial(fechaInicial);
-        campania.setFechaFinal(fechaFinal);
-        campania.setEstado("G");
-        campania.setNota(new BigDecimal(nota));
-
-        empleadosBean.editarCampania(campania);
-
-        p.setCampania(campania);
-        p.setTipoEvaluacion1(tipoEvaluacionSeleccionada);
-        p.setPlantilla1(plantillaSeleccionada);
-        empleadosBean.editarPreEvaluacion(p);
-
-        addMessage("Infosweb RRHH", "Campa&ntilde;a editada exitosamente", TipoMensaje.INFORMACION);
-
-        nombre = null;
-        periodo = null;
-        fechaInicial = null;
-        fechaFinal = null;
-        nota = null;
-        preevaluacionSeleccionada = null;
-        tipoEvaluacionSeleccionada = null;
-        plantillaSeleccionada = null;
+        if (fechaFinal == null) {
+            listaMensajes.add("Seleccione la fecha final de la campa&ntilde;a");
+            formValido = false;
         }
-    catch (Exception e)
-        {
-        e.printStackTrace(System.err);
-        addMessage("Infosweb RRHH", "Ocurrió un error al guardar la campa&ntilde;a", TipoMensaje.ERROR);
+        if (tipoEvaluacionSeleccionada == null) {
+            listaMensajes.add("Seleccione el tipo de evaluaci&oacute;n");
+            formValido = false;
         }
-}
-// ====================================================================================================================
-private String nombre;
-private Integer periodo;
-private Date fechaInicial;
-private Date fechaFinal;
-private String estado;
-private Double nota;
+        if (plantillaSeleccionada == null) {
+            listaMensajes.add("Seleccione la plantilla");
+            formValido = false;
+        }
+        for (String mensaje : listaMensajes) {
+            addMessage("Infosweb RRHH", mensaje, TipoMensaje.INFORMACION);
+        }
+        return formValido;
+    }
 
-public String getEstado()
-{
-    return estado;
-}
+    private void guardarCampania() {
+        try {
+            CampaniaPK campaniaPK = new CampaniaPK();
 
-public void setEstado(String estado)
-{
-    this.estado = estado;
-}
+            campaniaPK.setCodCia(getSessionBeanADM().getCompania().getCodCia());
+            campaniaPK.setPeriodo(periodo);
+            campaniaPK.setCodCampania(empleadosBean.maxCampania(getSessionBeanADM().getCompania()).shortValue());
 
-public Date getFechaFinal()
-{
-    return fechaFinal;
-}
+            Campania campania = new Campania(campaniaPK);
+            campania.setNomCampania(nombre);
+            campania.setFechaInicial(fechaInicial);
+            campania.setFechaFinal(fechaFinal);
+            campania.setEstado("G");
 
-public void setFechaFinal(Date fechaFinal)
-{
-    this.fechaFinal = fechaFinal;
-}
+            empleadosBean.crearCampania(campania);
 
-public Date getFechaInicial()
-{
-    return fechaInicial;
-}
+            campania = empleadosBean.findCampaniaByPK(campaniaPK);
 
-public void setFechaInicial(Date fechaInicial)
-{
-    this.fechaInicial = fechaInicial;
-}
+            PreEvaluacionPK preevaluacionPK = new PreEvaluacionPK();
+            preevaluacionPK.setCodCia(campania.getCampaniaPK().getCodCia());
+            preevaluacionPK.setCodCampania(campania.getCampaniaPK().getCodCampania());
+            preevaluacionPK.setPeriodo(campania.getCampaniaPK().getPeriodo());
+            preevaluacionPK.setTipoEvaluacion(tipoEvaluacionSeleccionada.getTipoEvaluacionPK().getCodTipoEvaluacion());
+            preevaluacionPK.setPlantilla(plantillaSeleccionada.getPlantillaPK().getCodPlantilla());
+            PreEvaluacion preEvaluacion = new PreEvaluacion(preevaluacionPK);
 
-public String getNombre()
-{
-    return nombre;
-}
+            preEvaluacion.setCampania(campania);
+            preEvaluacion.setTipoEvaluacion1(tipoEvaluacionSeleccionada);
+            preEvaluacion.setPlantilla1(plantillaSeleccionada);
 
-public void setNombre(String nombre)
-{
-    this.nombre = nombre;
-}
+            empleadosBean.crearPreEvaluacion(preEvaluacion);
 
-public Double getNota()
-{
-    return nota;
-}
+            addMessage("Infosweb RRHH", "Campa&ntilde;a creada exitosamente", TipoMensaje.INFORMACION);
 
-public void setNota(Double nota)
-{
-    this.nota = nota;
-}
+            nombre = null;
+            periodo = null;
+            fechaInicial = null;
+            fechaFinal = null;
+            preevaluacionSeleccionada = null;
+            tipoEvaluacionSeleccionada = null;
+            plantillaSeleccionada = null;
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            addMessage("Infosweb RRHH", "Ocurrió un error al guardar la campa&ntilde;a", TipoMensaje.ERROR);
+        }
+    }
 
-public Integer getPeriodo()
-{
-    return periodo;
-}
+    private void editarCampania(PreEvaluacion p) {
+        if (p == null) {
+            addMessage("Infosweb RRHH", "Seleccione la campa&tilde;a", TipoMensaje.ADVERTENCIA);
+            return;
+        }
+        try {
+            Campania campania = empleadosBean.findCampaniaByPK(p.getCampania().getCampaniaPK());
+            campania.setNomCampania(nombre);
+            campania.setFechaInicial(fechaInicial);
+            campania.setFechaFinal(fechaFinal);
+            campania.setEstado("G");
 
-public void setPeriodo(Integer periodo)
-{
-    this.periodo = periodo;
-}
-// ============================================================
-private static final int CREANDO = 1;
-private static final int EDITANDO = 2;
-private int accion = 0;
+            empleadosBean.editarCampania(campania);
 
-public int getAccion()
-{
-    return accion;
-}
+            p.setCampania(campania);
+            p.setTipoEvaluacion1(tipoEvaluacionSeleccionada);
+            p.setPlantilla1(plantillaSeleccionada);
+            empleadosBean.editarPreEvaluacion(p);
 
-public void setAccion(int accion)
-{
-    this.accion = accion;
-}
-// ============================================================================================================
-private List<PreEvaluacion> listaPreevaluaciones;
+            addMessage("Infosweb RRHH", "Campa&ntilde;a editada exitosamente", TipoMensaje.INFORMACION);
 
-public List<PreEvaluacion> getListaPreevaluaciones()
-{
-    listaPreevaluaciones = empleadosBean.findPreevaluacionByCias(getSessionBeanADM().getCompania());
-    return listaPreevaluaciones;
-}
+            nombre = null;
+            periodo = null;
+            fechaInicial = null;
+            fechaFinal = null;
+            preevaluacionSeleccionada = null;
+            tipoEvaluacionSeleccionada = null;
+            plantillaSeleccionada = null;
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            addMessage("Infosweb RRHH", "Ocurrió un error al guardar la campa&ntilde;a", TipoMensaje.ERROR);
+        }
+    }
 
-public void setListaPreevaluaciones(List<PreEvaluacion> listaPreevaluaciones)
-{
-    this.listaPreevaluaciones = listaPreevaluaciones;
-}
-private PreEvaluacion preevaluacionSeleccionada;
+    public String getEstado() {
+        return estado;
+    }
 
-public PreEvaluacion getPreevaluacionSeleccionada()
-{
-    return preevaluacionSeleccionada;
-}
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
-public void setPreevaluacionSeleccionada(PreEvaluacion preevaluacionSeleccionada)
-{
-    this.preevaluacionSeleccionada = preevaluacionSeleccionada;
-}
+    public Date getFechaFinal() {
+        return fechaFinal;
+    }
+
+    public void setFechaFinal(Date fechaFinal) {
+        this.fechaFinal = fechaFinal;
+    }
+
+    public Date getFechaInicial() {
+        return fechaInicial;
+    }
+
+    public void setFechaInicial(Date fechaInicial) {
+        this.fechaInicial = fechaInicial;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Integer getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(Integer periodo) {
+        this.periodo = periodo;
+    }
+
+    public int getAccion() {
+        return accion;
+    }
+
+    public void setAccion(int accion) {
+        this.accion = accion;
+    }
+
+    public List<PreEvaluacion> getListaPreevaluaciones() {
+        listaPreevaluaciones = empleadosBean.findPreevaluacionByCias(getSessionBeanADM().getCompania());
+        return listaPreevaluaciones;
+    }
+
+    public void setListaPreevaluaciones(List<PreEvaluacion> listaPreevaluaciones) {
+        this.listaPreevaluaciones = listaPreevaluaciones;
+    }
+
+    public PreEvaluacion getPreevaluacionSeleccionada() {
+        return preevaluacionSeleccionada;
+    }
+
+    public void setPreevaluacionSeleccionada(PreEvaluacion preevaluacionSeleccionada) {
+        this.preevaluacionSeleccionada = preevaluacionSeleccionada;
+    }
 }
