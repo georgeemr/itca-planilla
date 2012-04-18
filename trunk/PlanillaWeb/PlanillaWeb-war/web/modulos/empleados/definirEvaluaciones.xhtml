@@ -33,68 +33,72 @@
         <p:spacer height="10" />
         <p:wizard flowListener="#{empleados$definirEvaluaciones.wizardFlowListener}" showNavBar="true" showStepStatus="true" backLabel="Anterior" nextLabel="Siguiente">
             <p:tab id="tab0" title="Evaluaci&oacute;n">
-                <p:spacer height="15" />
+                <p:panel header="Paso 1 de 3" style="border: none;" >
+                    <p:spacer height="5" />
+                    <h:panelGrid columns="1">
+                        <h:outputLabel value="Seleccione la Campa&ntilde;a para la cual definir&aacute; los evaluadores. No podr&aacute; avanzar al paso 2 sin haber seleccionado una campa&ntilde;a." />
+                    </h:panelGrid>
+                    <p:spacer height="5" />
+                    <p:dataTable id="tablaCampanias" paginator="true" emptyMessage="No se han encontrado Campa&ntilde;as." rowsPerPageTemplate="5,10,25,50,100"
+                                 var="preEvaluacion" rows="5"  selection="#{empleados$definirEvaluaciones.preEvaluacionSeleccionada}"
+                                 rowSelectListener="#{empleados$definirEvaluaciones.rowSelectListener}"
+                                 rowUnselectListener="#{empleados$definirEvaluaciones.rowUnSelectListener}"
+                                 value="#{empleados$definirEvaluaciones.listaPreEvaluacion}" paginatorAlwaysVisible="true" selectionMode="single"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >
 
-                <p:dataTable id="tablaCampanias" paginator="true" emptyMessage="No se han encontrado Campa&ntilde;as." rowsPerPageTemplate="5,10,25,50,100"
-                             var="preEvaluacion" rows="5"  selection="#{empleados$definirEvaluaciones.preEvaluacionSeleccionada}"
-                             rowSelectListener="#{empleados$definirEvaluaciones.rowSelectListener}"
-                             rowUnselectListener="#{empleados$definirEvaluaciones.rowUnSelectListener}"
-                             value="#{empleados$definirEvaluaciones.listaPreEvaluacion}" paginatorAlwaysVisible="true" selectionMode="single"
-                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >
+                        <f:facet name="header">
+                            <h:outputText value="Campa&ntilde;as"/>
+                        </f:facet>
 
-                    <f:facet name="header">
-                        <h:outputText value="Campa&ntilde;as"/>
-                    </f:facet>
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column rowspan="2" headerText="C&oacute;digo" />
+                                <p:column rowspan="2" headerText="Nombre de Campa&ntilde;a " filterBy="#{preEvaluacion.campania.nomCampania}" filterMatchMode="contains"/>
+                                <p:column rowspan="2" headerText="Tipo" />
+                                <p:column rowspan="1" colspan="2" headerText="Fecha" />
+                                <p:column rowspan="2" headerText="Periodo" sortBy="#{preEvaluacion.campania.campaniaPK.periodo}" />
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" headerText="Inicial" sortBy="#{preEvaluacion.campania.fechaInicial}" />
+                                <p:column rowspan="1" headerText="Final" sortBy="#{preEvaluacion.campania.fechaFinal}" />
+                            </p:row>
+                        </p:columnGroup>
 
-                    <p:columnGroup type="header">
-                        <p:row>
-                            <p:column rowspan="2" headerText="C&oacute;digo" />
-                            <p:column rowspan="2" headerText="Nombre de Campa&ntilde;a" filterBy="#{preEvaluacion.campania.nomCampania}" filterMatchMode="contains"/>
-                            <p:column rowspan="2" headerText="Tipo" />
-                            <p:column rowspan="1" colspan="2" headerText="Fecha" />
-                            <p:column rowspan="2" headerText="Periodo" sortBy="#{preEvaluacion.campania.campaniaPK.periodo}" />
-                        </p:row>
-                        <p:row>
-                            <p:column rowspan="1" headerText="Inicial" sortBy="#{preEvaluacion.campania.fechaInicial}" />
-                            <p:column rowspan="1" headerText="Final" sortBy="#{preEvaluacion.campania.fechaFinal}" />
-                        </p:row>
-                    </p:columnGroup>
+                        <p:column style="width: 6%">
+                            <h:outputLabel value="#{preEvaluacion.campania.campaniaPK.codCampania}"/>
+                        </p:column>
 
-                    <p:column style="width: 6%">
-                        <h:outputLabel value="#{preEvaluacion.campania.campaniaPK.codCampania}"/>
-                    </p:column>
+                        <p:column>
+                            <h:outputLabel value="#{preEvaluacion.campania.nomCampania}"/>
+                        </p:column> 
 
-                    <p:column>
-                        <h:outputLabel value="#{preEvaluacion.campania.nomCampania}"/>
-                    </p:column> 
+                        <p:column>
+                            <h:outputLabel value="#{preEvaluacion.tipoEvaluacion1.nomTipoEvaluacion}"/>
+                        </p:column> 
 
-                    <p:column>
-                        <h:outputLabel value="#{preEvaluacion.tipoEvaluacion1.nomTipoEvaluacion}"/>
-                    </p:column> 
+                        <p:column style="width: 8%">
+                            <h:outputLabel value="#{preEvaluacion.campania.fechaInicial}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputLabel>
+                        </p:column>    
 
-                    <p:column style="width: 8%">
-                        <h:outputLabel value="#{preEvaluacion.campania.fechaInicial}" >
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputLabel>
-                    </p:column>    
+                        <p:column style="width: 8%">
+                            <h:outputLabel value="#{preEvaluacion.campania.fechaFinal}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputLabel>
+                        </p:column>         
 
-                    <p:column style="width: 8%">
-                        <h:outputLabel value="#{preEvaluacion.campania.fechaFinal}" >
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputLabel>
-                    </p:column>         
+                        <p:column style="width: 8%" >
+                            <h:outputLabel value="#{preEvaluacion.campania.campaniaPK.periodo}" />
+                        </p:column> 
 
-                    <p:column style="width: 8%" >
-                        <h:outputLabel value="#{preEvaluacion.campania.campaniaPK.periodo}" />
-                    </p:column> 
-
-                </p:dataTable>
+                    </p:dataTable>
+                </p:panel>
             </p:tab>
 
             <p:tab id="tab1" title="Evaluadores">
-
-                <p:panel style="border: none;" >
-                    <p:spacer height="7" />
+                <p:panel header="Paso 2 de 3" style="border: none;" >
+                    <p:spacer height="5" />
                     <h:panelGrid columns="2" >
                         <h:outputLabel value="Evaluaci&oacute;n: " style="font-weight: bold" />
                         <h:outputLabel value="${SessionBeanEMP.preEvaluacionSeleccionada.campania.nomCampania}" />    
@@ -195,7 +199,7 @@
 
             <p:tab id="tab2" title="Evaluados">
 
-                <p:panel id="panelSeleccionEvaluados" style="border:none;" >
+                <p:panel id="panelSeleccionEvaluados" header="Paso 3 de 3" style="border:none;" >
                     <p:spacer height="7" />
                     <h:panelGrid columns="2" >
                         <h:outputLabel value="Evaluaci&oacute;n: " style="font-weight: bold" />
