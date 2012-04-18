@@ -399,6 +399,9 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
         if (e != null) {
             empleadosBean.eliminarEvaluados(evaluadorSeleccionado);
             evaluadorSeleccionado.setEvaluadoList(evls);
+            for (Evaluado q : evaluadorSeleccionado.getEvaluadoList()) {
+                empleadosBean.guardarEvaluado(q);
+            }
             evaluadores.set(indice, evaluadorSeleccionado);
             empleadosBean.editarEvaluador(evaluadorSeleccionado);
         }
