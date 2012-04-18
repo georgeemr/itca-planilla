@@ -35,7 +35,7 @@ public class PreEvaluacionFacade extends AbstractFacade<PreEvaluacion, PreEvalua
 
     @PermitAll
     public List<PreEvaluacion> findPreevaluacionByCias(Cias cias){
-        List<PreEvaluacion> l = em.createQuery("SELECT p FROM PreEvaluacion p WHERE p.campania.campaniaPK.codCia = :codCia AND p.campania.estado = 'G'", PreEvaluacion.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        List<PreEvaluacion> l = em.createQuery("SELECT p FROM PreEvaluacion p WHERE p.campania.campaniaPK.codCia = :codCia AND p.campania.estado = 'G' ORDER BY p.campania.fechaInicial DESC, p.campania.fechaFinal DESC", PreEvaluacion.class).setParameter("codCia", cias.getCodCia()).getResultList();
         return l!=null?l:new ArrayList<PreEvaluacion>();
     }
 }
