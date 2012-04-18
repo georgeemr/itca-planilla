@@ -55,7 +55,7 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
 
     @PostConstruct
     public void init() {
-        setListaPreEvaluacion(empleadosBean.findPreevaluacionByCias(getSessionBeanADM().getCompania()));
+        //setListaPreEvaluacion(empleadosBean.findPreevaluacionByCias(getSessionBeanADM().getCompania()));
         setListaDepartamentos(planillaSessionBean.findDepartamentos(getSessionBeanADM().getCompania()));
         setListaPuestos(planillaSessionBean.findPuestos(getSessionBeanADM().getCompania()));
         getSessionBeanEMP().setPreEvaluacionSeleccionada(null);
@@ -150,6 +150,7 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
     }
 
     public List<PreEvaluacion> getListaPreEvaluacion() {
+        setListaPreEvaluacion(empleadosBean.findPreevaluacionByCias(getSessionBeanADM().getCompania()));
         return listaPreEvaluacion;
     }
 
@@ -276,6 +277,7 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
     }
 
     public String volverACampanias() {
+        getSessionBeanEMP().setPreEvaluacionSeleccionada(null);
         return "definirEvaluaciones?faces-redirect=true";
     }
 
@@ -335,25 +337,28 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
         if (evaluadorSeleccionado == null) {
             return null;
         }
-        Evaluador m = evaluadorSeleccionado;
+        Integer indice = evaluadores.indexOf(evaluadorSeleccionado);
         if (evaluadorSeleccionado.getCriterioEvaluacion().equals("D")) {
             if (evaluadorSeleccionado.getDepartamento() == null || evaluadorSeleccionado.getDepartamento().equals(new Short("-1"))) {
                 addMessage(tituloMensajes, "Seleccione un departamento.", TipoMensaje.ERROR);
                 return null;
             }
-            empleadosBean.eliminarEvaluados(m);
-            m.setEvaluadoList(new ArrayList<Evaluado>());
-            m.setEvaluadoList(planillaSessionBean.findEvaluadosByDepartamentos(evaluadorSeleccionado, new Departamentos(new DepartamentosPK(getSessionBeanADM().getCompania().getCodCia(), evaluadorSeleccionado.getDepartamento()))));
-            evaluadores.set(evaluadores.indexOf(evaluadorSeleccionado), m);
-            empleadosBean.editarEvaluador(m);
+            empleadosBean.eliminarEvaluados(evaluadorSeleccionado);
+            evaluadorSeleccionado.setEvaluadoList(planillaSessionBean.findEvaluadosByDepartamentos(evaluadorSeleccionado, new Departamentos(new DepartamentosPK(getSessionBeanADM().getCompania().getCodCia(), evaluadorSeleccionado.getDepartamento()))));
+            for (Evaluado e : evaluadorSeleccionado.getEvaluadoList()) {
+                empleadosBean.guardarEvaluado(e);
+            }
+            empleadosBean.editarEvaluador(evaluadorSeleccionado);
+            evaluadores.set(indice, evaluadorSeleccionado);
         } else if (evaluadorSeleccionado.getCriterioEvaluacion().equals("C")) {
-            empleadosBean.eliminarEvaluados(m);
-            m.setEvaluadoList(new ArrayList<Evaluado>());
-            m.setEvaluadoList(empleadosBean.findEvaluadosByJefe(evaluadorSeleccionado));
-            evaluadores.set(evaluadores.indexOf(evaluadorSeleccionado), m);
-            empleadosBean.editarEvaluador(m);
+            empleadosBean.eliminarEvaluados(evaluadorSeleccionado);
+            evaluadorSeleccionado.setEvaluadoList(empleadosBean.findEvaluadosByJefe(evaluadorSeleccionado));
+            for (Evaluado e : evaluadorSeleccionado.getEvaluadoList()) {
+                empleadosBean.guardarEvaluado(e);
+            }
+            empleadosBean.editarEvaluador(evaluadorSeleccionado);
+            evaluadores.set(indice, evaluadorSeleccionado);
         }
-        evaluadorSeleccionado = m;
         return null;
     }
 
@@ -385,19 +390,18 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
         if (evaluadorSeleccionado == null) {
             return null;
         }
-        Evaluador m = evaluadorSeleccionado;
+        Integer indice = evaluadores.indexOf(evaluadorSeleccionado);
         List<Empleados> e = Arrays.asList(empleadosSeleccionados);
         List<Evaluado> evls = new ArrayList<Evaluado>();
         for (Empleados z : e) {
             evls.add(new Evaluado(evaluadorSeleccionado, z));
         }
         if (e != null) {
-            empleadosBean.eliminarEvaluados(m);
-            m.setEvaluadoList(evls);
-            evaluadores.set(evaluadores.indexOf(evaluadorSeleccionado), m);
-            empleadosBean.editarEvaluador(m);
+            empleadosBean.eliminarEvaluados(evaluadorSeleccionado);
+            evaluadorSeleccionado.setEvaluadoList(evls);
+            evaluadores.set(indice, evaluadorSeleccionado);
+            empleadosBean.editarEvaluador(evaluadorSeleccionado);
         }
-        evaluadorSeleccionado = m;
         return null;
     }
 
@@ -427,20 +431,20 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
             logger.log(Level.SEVERE, "No ha seleccionado un evaluador");
             return null;
         }
-        Evaluador m = evaluadorSeleccionado;
+        Integer indice = evaluadores.indexOf(evaluadorSeleccionado);
         Evaluado evaluado = new Evaluado(evaluadorSeleccionado, empleadoSeleccionado);
         if (evaluadorSeleccionado.getEvaluadoList().contains(evaluado)) {
             empleadosBean.eliminarEvaluado(evaluado);
-            m.getEvaluadoList().remove(evaluado);
-            evaluadores.set(evaluadores.indexOf(evaluadorSeleccionado), m);
+            evaluadorSeleccionado.getEvaluadoList().remove(evaluado);
+            evaluadores.set(indice, evaluadorSeleccionado);
+            empleadosBean.editarEvaluador(evaluadorSeleccionado);
             setEmpleados(new ArrayList<Empleados>());
             for (Evaluado a : evaluadorSeleccionado.getEvaluadoList()) {
                 getEmpleados().add(a.getEmpleados());
             }
-            evaluadorSeleccionado = m;
             addMessage(tituloMensajes, "Datos Eliminados con éxito.", TipoMensaje.INFORMACION);
         }
-        
+
         return null;
     }
 
