@@ -171,7 +171,7 @@
         <p:fieldset legend="Datos del Puesto" rendered="#{(puestosBackendBean.estadoAccion eq null) or (puestosBackendBean.estadoAccion eq 0) }" >
             <p:spacer height="5" />
 
-            <table cellpadding="3px;" width="75%" >
+            <table cellpadding="3px;" width="100%" >
 
                 <tr valign="middle" >
                     <td><i:etiquetaRequerido value="Nombre " /></td>
@@ -183,29 +183,36 @@
                 <tr valign="middle" >
                     <td><h:outputLabel value="Opciones de Puesto" style="font-weight: bold;" /></td>
                     <td colspan="5" >
-                        <h:panelGrid columns="2">
-                            <h:selectBooleanCheckbox id="chkHExtras" label="Horas Extras" value="#{puestosBackendBean.horasExtras}"  />
-                            <h:outputLabel value="Horas Extras" />
-                        </h:panelGrid>
+                        <h:panelGrid columns="6" >
+                            <h:panelGrid columns="2">
+                                <h:selectBooleanCheckbox id="chkHExtras" label="Horas Extras" value="#{puestosBackendBean.horasExtras}"  />
+                                <h:outputLabel value="Horas Extras" />
+                            </h:panelGrid>
 
-                        <h:panelGrid columns="2">
-                            <h:selectBooleanCheckbox id="chkHDobles" label="Horas Dobles" value="#{puestosBackendBean.horasDobles}" />
-                            <h:outputLabel value="Horas Dobles" />
-                        </h:panelGrid>
+                            <h:panelGrid columns="2">
+                                <h:selectBooleanCheckbox id="chkHDobles" label="Horas Dobles" value="#{puestosBackendBean.horasDobles}" />
+                                <h:outputLabel value="Horas Dobles" />
+                            </h:panelGrid>
 
-                        <h:panelGrid columns="2">
-                            <h:selectBooleanCheckbox id="chkViaticos" label="Viaticos" value="#{puestosBackendBean.viaticos}" />
-                            <h:outputLabel value="Viaticos" />
-                        </h:panelGrid>
+                            <h:panelGrid columns="2">
+                                <h:selectBooleanCheckbox id="chkViaticos" label="Viaticos" value="#{puestosBackendBean.viaticos}" />
+                                <h:outputLabel value="Viaticos" />
+                            </h:panelGrid>
 
-                        <h:panelGrid columns="2" >
-                            <h:selectBooleanCheckbox id="chkComision" label="Comisi&oacute;n" value="#{puestosBackendBean.comision}" />
-                            <h:outputLabel value="Comisi&oacute;n" />
-                        </h:panelGrid>
+                            <h:panelGrid columns="2" >
+                                <h:selectBooleanCheckbox id="chkComision" label="Comisi&oacute;n" value="#{puestosBackendBean.comision}" />
+                                <h:outputLabel value="Comisi&oacute;n" />
+                            </h:panelGrid>
 
-                        <h:panelGrid columns="2" >
-                            <h:selectBooleanCheckbox id="cnkInfConf" value="#{puestosBackendBean.informacionConfidencial}" />
-                            <h:outputLabel value="Informaci&oacute;n Confidencial" />
+                            <h:panelGrid columns="2" >
+                                <h:selectBooleanCheckbox id="cnkInfConf" value="#{puestosBackendBean.informacionConfidencial}" />
+                                <h:outputLabel value="Informaci&oacute;n Confidencial" />
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" >
+                                <h:selectBooleanCheckbox id="chkJefatura" value="#{puestosBackendBean.jefatura}" />
+                                <h:outputLabel value="Jefatura" />
+                            </h:panelGrid>
                         </h:panelGrid>
                     </td>
                 </tr>
@@ -218,49 +225,47 @@
                 </tr>
                 <tr>
                     <td><i:etiquetaRequerido value="Tipo Puesto" /></td>
-                    <td colspan="5">
-                        <h:selectOneMenu id="lstTipoPuesto" style="height: 25px;padding-top: 3px;width: 100%;" value="#{puestosBackendBean.tipoPuesto}" >
+                    <td>
+                        <h:selectOneMenu id="lstTipoPuesto" style="height: 25px;padding-top: 3px;width: 300px;" value="#{puestosBackendBean.tipoPuesto}" >
                             <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL TIPO DE PUESTO]" />
                             <f:selectItems value="#{puestosBackendBean.listaTipoPuesto}" var="tipoPuesto" itemValue="#{tipoPuesto.tipoPuestoPK.codTipoPuesto}" itemLabel="#{tipoPuesto.nomTipo}" />
                         </h:selectOneMenu>
                     </td>
-                </tr>
-                <tr>
+                    <td></td>
                     <td><i:etiquetaRequerido value="Estado" /></td>
                     <td colspan="5">
-                        <h:selectOneMenu id="lstEstadoPuesto" value="#{puestosBackendBean.estado}" style="height: 25px;padding-top: 3px;width: 100%;" required="true" requiredMessage="El Estado del Puesto es un campo obligatorio"  >
+                        <h:selectOneMenu id="lstEstadoPuesto" value="#{puestosBackendBean.estado}" style="height: 25px;padding-top: 3px;width: 300px;" required="true" requiredMessage="El Estado del Puesto es un campo obligatorio"  >
                             <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL ESTADO]" />
                             <f:selectItem itemValue="A" itemLabel="ACTIVO" />
                             <f:selectItem itemValue="I" itemLabel="INACTIVO" />
                         </h:selectOneMenu>
                     </td>
                 </tr>
+
                 <tr>
                     <td><i:etiquetaRequerido value="Departamento" /></td>
-                    <td colspan="5">
-                        <h:selectOneMenu id="lstDepartamentos" value="#{puestosBackendBean.departamento}" style="height: 25px;padding-top: 3px;width: 100%;" requiredMessage="El Departamento del Puesto es un campo obligatorio"  >
+                    <td>
+                        <h:selectOneMenu id="lstDepartamentos" value="#{puestosBackendBean.departamento}" style="height: 25px;padding-top: 3px;width: 300px;" requiredMessage="El Departamento del Puesto es un campo obligatorio"  >
                             <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL DEPARTAMENTO]" />
                             <f:selectItems value="#{puestosBackendBean.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
                         </h:selectOneMenu>
                     </td>
-                </tr>
-                <tr>
+                    <td></td>
                     <td><i:etiquetaRequerido value="&Aacute;rea" /></td>
-                    <td colspan="5">
-                        <h:selectOneMenu id="lstAreas" value="#{puestosBackendBean.area}" style="height: 25px;padding-top: 3px;width: 100%;" requiredMessage="El Area del Puesto es un campo obligatorio"  >
+                    <td>
+                        <h:selectOneMenu id="lstAreas" value="#{puestosBackendBean.area}" style="height: 25px;padding-top: 3px;width: 300px;" requiredMessage="El Area del Puesto es un campo obligatorio"  >
                             <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL AREA]" />
                             <f:selectItems value="#{puestosBackendBean.listaAreas}" var="areas" itemValue="#{areas.areasStaffPK.codArea}" itemLabel="#{areas.nomArea}" />
                         </h:selectOneMenu>
                     </td>
                 </tr>
-                <tr>
-                    <td valign="top" ><i:etiquetaRequerido value="Descripci&oacute;n del Puesto " /></td>
-                    <td colspan="5"><p:inputTextarea id="txDescPuesto" value="#{puestosBackendBean.descripcion}" style="width: 100%;" label="Descripci&oacute;n del Puesto" /></td>
-                </tr>
 
                 <tr>
+                    <td valign="top" ><i:etiquetaRequerido value="Descripci&oacute;n del Puesto " /></td>
+                    <td><p:inputTextarea id="txDescPuesto" value="#{puestosBackendBean.descripcion}" style="width: 300px;" label="Descripci&oacute;n del Puesto" autoResize="false" /></td>
+                    <td></td>
                     <td valign="top" ><h:outputLabel value="Objetivo " style="font-weight: bold;" /></td>
-                    <td colspan="5"><p:inputTextarea id="txObjPuesto" value="#{puestosBackendBean.objetivo}" style="width: 100%;" label="Objetivo del Puesto" /></td>
+                    <td><p:inputTextarea id="txObjPuesto" value="#{puestosBackendBean.objetivo}" style="width: 300px;" label="Objetivo del Puesto" autoResize="false" /></td>
                 </tr>
 
             </table>
@@ -355,7 +360,7 @@
         <p:fieldset legend="Editar Datos - Informacion del Concurso" rendered="#{(puestosBackendBean.estadoAccion eq 1)}" >
             <p:spacer height="20" />
 
-            <table cellpadding="3px;"  width="75%"  >
+            <table cellpadding="3px;"  width="100%"  >
 
                 <tr valign="middle" >
                     <td><i:etiquetaRequerido value="Nombre" /></td>
@@ -367,30 +372,36 @@
                 <tr valign="middle" >
                     <td><h:outputLabel value="Opciones de Puesto" style="font-weight: bold;" /></td>
                     <td colspan="5" >
-                        <h:panelGrid columns="2" >
-                            <h:selectBooleanCheckbox id="chkHExtrasED" label="Horas Extras" value="#{puestosBackendBean.horasExtras}" />
-                            <h:outputLabel value="Horas Extras" />
-                        </h:panelGrid>           
+                        <h:panelGrid columns="6" >
+                            <h:panelGrid columns="2" >
+                                <h:selectBooleanCheckbox id="chkHExtrasED" label="Horas Extras" value="#{puestosBackendBean.horasExtras}" />
+                                <h:outputLabel value="Horas Extras" />
+                            </h:panelGrid>           
 
-                        <h:panelGrid columns="2" >
-                            <h:selectBooleanCheckbox id="chkHDoblesED" label="Horas Dobles" value="#{puestosBackendBean.horasDobles}" />
-                            <h:outputLabel value="Horas Dobles" />
+                            <h:panelGrid columns="2" >
+                                <h:selectBooleanCheckbox id="chkHDoblesED" label="Horas Dobles" value="#{puestosBackendBean.horasDobles}" />
+                                <h:outputLabel value="Horas Dobles" />
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" >
+                                <h:selectBooleanCheckbox id="chkViaticosED" label="Viaticos" value="#{puestosBackendBean.viaticos}" />
+                                <h:outputLabel value="Viaticos" />
+                            </h:panelGrid>              
+
+                            <h:panelGrid columns="2" >
+                                <h:selectBooleanCheckbox id="chkComisionED" label="Comisi&oacute;n" value="#{puestosBackendBean.comision}" />
+                                <h:outputLabel value="Comisi&oacute;n" />
+                            </h:panelGrid>              
+
+                            <h:panelGrid columns="2" >
+                                <h:selectBooleanCheckbox id="cnkInfConfED" value="#{puestosBackendBean.informacionConfidencial}"/>
+                                <h:outputLabel value="Informaci&oacute;n Confidencial" />
+                            </h:panelGrid>  
+                            <h:panelGrid columns="2" >
+                                <h:selectBooleanCheckbox id="chkJefaturaED" value="#{puestosBackendBean.jefatura}" />
+                                <h:outputLabel value="Jefatura" />
+                            </h:panelGrid>
                         </h:panelGrid>
-
-                        <h:panelGrid columns="2" >
-                            <h:selectBooleanCheckbox id="chkViaticosED" label="Viaticos" value="#{puestosBackendBean.viaticos}" />
-                            <h:outputLabel value="Viaticos" />
-                        </h:panelGrid>              
-
-                        <h:panelGrid columns="2" >
-                            <h:selectBooleanCheckbox id="chkComisionED" label="Comisi&oacute;n" value="#{puestosBackendBean.comision}" />
-                            <h:outputLabel value="Comisi&oacute;n" />
-                        </h:panelGrid>              
-
-                        <h:panelGrid columns="2" >
-                            <h:selectBooleanCheckbox id="cnkInfConfED" value="#{puestosBackendBean.informacionConfidencial}"/>
-                            <h:outputLabel value="Informaci&oacute;n Confidencial" />
-                        </h:panelGrid>  
                     </td>
                 </tr>
                 <tr>
@@ -402,17 +413,16 @@
                 </tr>
                 <tr>
                     <td><i:etiquetaRequerido value="Tipo Puesto" /></td>
-                    <td colspan="5">
-                        <h:selectOneMenu id="lstTipoPuestoED" style="height: 25px;padding-top: 3px;width: 100%;" value="#{puestosBackendBean.tipoPuesto}" >
+                    <td>
+                        <h:selectOneMenu id="lstTipoPuestoED" style="height: 25px;padding-top: 3px;width: 300px;" value="#{puestosBackendBean.tipoPuesto}" >
                             <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL TIPO DE PUESTO]" />
                             <f:selectItems value="#{puestosBackendBean.listaTipoPuesto}" var="tipoPuesto" itemValue="#{tipoPuesto.tipoPuestoPK.codTipoPuesto}" itemLabel="#{tipoPuesto.nomTipo}" />
                         </h:selectOneMenu>
                     </td>
-                </tr>
-                <tr>
+                    <td></td>
                     <td><i:etiquetaRequerido value="Estado" /></td>
-                    <td colspan="5">
-                        <h:selectOneMenu id="lstEstadoPuestoED" value="#{puestosBackendBean.estado}" style="height: 25px;padding-top: 3px;width: 100%;" required="true" requiredMessage="El Estado del Puesto es un campo obligatorio"  >
+                    <td>
+                        <h:selectOneMenu id="lstEstadoPuestoED" value="#{puestosBackendBean.estado}" style="height: 25px;padding-top: 3px;width: 300px;" required="true" requiredMessage="El Estado del Puesto es un campo obligatorio"  >
                             <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL ESTADO]" />
                             <f:selectItem itemValue="A" itemLabel="ACTIVO" />
                             <f:selectItem itemValue="I" itemLabel="INACTIVO" />
@@ -421,17 +431,16 @@
                 </tr>
                 <tr>
                     <td><i:etiquetaRequerido value="Departamento" /></td>
-                    <td colspan="5">
-                        <h:selectOneMenu id="lstDepartamentosED" value="#{puestosBackendBean.departamento}" style="height: 25px;padding-top: 3px;width: 100%;" requiredMessage="El Departamento del Puesto es un campo obligatorio"  >
+                    <td>
+                        <h:selectOneMenu id="lstDepartamentosED" value="#{puestosBackendBean.departamento}" style="height: 25px;padding-top: 3px;width: 300px;" requiredMessage="El Departamento del Puesto es un campo obligatorio"  >
                             <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL DEPARTAMENTO]" />
                             <f:selectItems value="#{puestosBackendBean.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
                         </h:selectOneMenu>
                     </td>
-                </tr>
-                <tr>
+                    <td></td>
                     <td><i:etiquetaRequerido value="&Aacute;rea" /></td>
-                    <td colspan="5">
-                        <h:selectOneMenu id="lstAreasED" value="#{puestosBackendBean.area}" style="height: 25px;padding-top: 3px;width: 100%;" requiredMessage="El Area del Puesto es un campo obligatorio"  >
+                    <td>
+                        <h:selectOneMenu id="lstAreasED" value="#{puestosBackendBean.area}" style="height: 25px;padding-top: 3px;width: 300px;" requiredMessage="El Area del Puesto es un campo obligatorio"  >
                             <f:selectItem itemValue="-1" itemLabel="[SELECCIONE EL AREA]" />
                             <f:selectItems value="#{puestosBackendBean.listaAreas}" var="areas" itemValue="#{areas.areasStaffPK.codArea}" itemLabel="#{areas.nomArea}" />
                         </h:selectOneMenu>
@@ -440,12 +449,10 @@
 
                 <tr>
                     <td valign="top" ><i:etiquetaRequerido value="Descripci&oacute;n del Puesto" /></td>
-                    <td colspan="5"><p:inputTextarea id="txDescPuestoED" value="#{puestosBackendBean.descripcion}" style="width: 100%;" label="Descripci&oacute;n del Puesto" /></td>
-                </tr>
-
-                <tr>
+                    <td><p:inputTextarea id="txDescPuestoED" value="#{puestosBackendBean.descripcion}" style="width: 300px;" label="Descripci&oacute;n del Puesto" autoResize="false" /></td>
+                    <td></td>
                     <td valign="top" ><h:outputLabel value="Objetivo " style="font-weight: bold;" /></td>
-                    <td colspan="5"><p:inputTextarea id="txObjPuestoED" value="#{puestosBackendBean.objetivo}" style="width: 100%;" label="Objetivo del Puesto" /></td>
+                    <td><p:inputTextarea id="txObjPuestoED" value="#{puestosBackendBean.objetivo}" style="width: 300px;" label="Objetivo del Puesto" autoResize="false" /></td>
                 </tr>
 
             </table>
