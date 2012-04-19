@@ -48,10 +48,14 @@
                                 <p:column headerText="Pregunta">
                                     <h:outputText value="#{pregunta.descripcion}"/>
                                 </p:column>
-                                <p:column headerText="Respuesta">
-                                    <h:selectOneMenu value="#{pregunta.respuesta}">
+                                <p:column headerText="Respuesta">                                    
+                                    <h:outputText value="N/A" rendered="#{pregunta.tipo eq 0}"/>
+                                    <h:selectOneMenu value="#{pregunta.respuesta}" rendered="#{pregunta.tipo eq 1}">
                                         <f:selectItems value="#{pregunta.respuestaList}" var="respuesta" itemValue="#{respuesta.respuestaPK.codCia}:#{respuesta.respuestaPK.codTipoRespuesta}:#{respuesta.respuestaPK.codRespuesta}" itemLabel="#{respuesta.nivel}" itemDescription="#{respuesta.texto}"/>                                    
                                     </h:selectOneMenu>
+                                    
+                                    <p:inputText value="#{pregunta.respuesta}" rendered="#{pregunta.tipo eq 2}" />
+                                    
                                 </p:column>
                             </p:dataTable>
                         </p:tab>
