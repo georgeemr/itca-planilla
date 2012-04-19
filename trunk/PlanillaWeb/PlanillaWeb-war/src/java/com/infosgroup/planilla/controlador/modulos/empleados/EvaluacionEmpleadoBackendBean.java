@@ -83,23 +83,22 @@ public class EvaluacionEmpleadoBackendBean extends AbstractJSFPage implements Se
                 continue;
             }
             RespuestaPK respuestaPK = new RespuestaPK();
-
+            PreguntaRespuesta pr = new PreguntaRespuesta();
             if ((p.getTipo() != 1) || (p.getTipo() == null)) {
                 respuestaPK.setCodCia(getSessionBeanADM().getCompania().getCodCia());
                 respuestaPK.setCodTipoRespuesta( 2L );
                 respuestaPK.setCodRespuesta(1);
+                pr.setValor( p.getRespuesta() );
             } else {
                 String[] desco = respuesta.split(":");
                 respuestaPK.setCodCia(Short.parseShort(desco[0]));
                 respuestaPK.setCodTipoRespuesta(Integer.parseInt(desco[1]));
                 respuestaPK.setCodRespuesta(Integer.parseInt(desco[2]));
             }
-
-            PreguntaRespuesta pr = new PreguntaRespuesta();
             pr.setPregunta(p);
             Respuesta r = empleadosBean.findRespuestaById(respuestaPK);
             pr.setRespuesta(r);
-            pr.setValor( p.getRespuesta() );
+            
             l.add(pr);
 
         }
