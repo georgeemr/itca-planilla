@@ -11,17 +11,13 @@ import com.infosgroup.planilla.modelo.estructuras.Pregunta;
 import com.infosgroup.planilla.modelo.estructuras.PreguntaRespuesta;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.FlowEvent;
 
@@ -139,10 +135,11 @@ public class EvaluacionEmpleadoBackendBean extends AbstractJSFPage implements Se
         listaPreguntas = new ArrayList<Pregunta>();
         List<com.infosgroup.planilla.modelo.entidades.Pregunta> lPregs = empleadosBean.listarPreguntasPorFactor(getSessionBeanEMP().getFactorActual());
         for (com.infosgroup.planilla.modelo.entidades.Pregunta p : lPregs) {
-            Pregunta pr = new Pregunta();
+            Pregunta pr = new Pregunta();            
             pr.setPreguntaPK(p.getPreguntaPK());
             pr.setFactor(p.getFactor());
             pr.setDescripcion(p.getDescripcion());
+            pr.setTipo(((p.getRespuestaList() != null) && (!p.getRespuestaList().isEmpty())) ? p.getRespuestaList().get(0).getRespuestaPK().getCodTipoRespuesta() : 0);
             pr.setRespuestaList(p.getRespuestaList());
             listaPreguntas.add(pr);
         }
