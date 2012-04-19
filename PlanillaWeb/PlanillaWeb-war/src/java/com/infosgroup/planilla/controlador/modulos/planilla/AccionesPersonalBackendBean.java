@@ -36,7 +36,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private PlanillaSessionBean planillaSessionBean;
     @EJB
     private ReportesStatelessBean reportesStatelessBean;
-    //private DataTable tablaSolicitudes;
     private List<AccionPersonal> listaSolicitudes;
     private Short tipo;
     private List<TipoAccion> listaTipo;
@@ -366,14 +365,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         }
         return null;
     }
-
-//    public DataTable getTablaSolicitudes() {
-//        return tablaSolicitudes;
-//    }
-//
-//    public void setTablaSolicitudes(DataTable tablaSolicitudes) {
-//        this.tablaSolicitudes = tablaSolicitudes;
-//    }
 
     public void listarSolicitudes(ValueChangeEvent event) {
         if (solicitudesMostradas.equals("E")) {
