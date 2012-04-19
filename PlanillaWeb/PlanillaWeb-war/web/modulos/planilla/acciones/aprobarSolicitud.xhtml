@@ -4,6 +4,7 @@
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion" 
                 template="./../../../plantillas/defaultTemplate.xhtml">
 
     <ui:define name="titulo">Aprobar Solicitud</ui:define>
@@ -74,6 +75,26 @@
                     <td colspan="3" ><p:inputTextarea value="#{SessionBeanPLA.accionSeleccionada.observacion}" autoResize="false" style="width: 100%;" readonly="true" /></td>
                 </tr>
 
+                <tr>
+                    <td><i:etiquetaRequerido value="Tipo de planilla" rendered="#{aprobarSolicitud.renderPlanilla}" /></td>
+                    <td>
+                        <h:selectOneMenu id="lstTipoPlanilla" rendered="#{aprobarSolicitud.renderPlanilla}" style="height: 25px;padding-top: 3px;width: 250px;" disabled="#{!request.isUserInRole('rrhh')}" label="Tipo Planilla" value="#{aprobarSolicitud.tipoPlanilla}" >                       
+                            <f:ajax render="lstPlanilla" event="change" execute="lstTipoPlanilla" />
+                            <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
+                            <f:selectItems value="#{aprobarSolicitud.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                        </h:selectOneMenu>
+                    </td>
+                    <td><i:etiquetaRequerido value="Planilla" rendered="#{aprobarSolicitud.renderPlanilla}" /></td>
+                    <td>
+                        <h:selectOneMenu id="lstPlanilla" style="height: 25px;padding-top: 3px;width: 250px;" rendered="#{aprobarSolicitud.renderPlanilla}" disabled="#{!request.isUserInRole('rrhh')}" label="Planilla" value="#{aprobarSolicitud.planilla}" >
+                            <f:selectItem itemValue="-1" itemLabel="[SELECCIONE PLANILLA]" />
+                            <f:selectItems value="#{aprobarSolicitud.listaPlanillas}" var="pla" 
+                                        itemValue="#{pla.pkAsString}"
+                                        itemLabel="#{pla.anio} ------ #{pla.mes} ------ #{pla.numPlanilla}" />
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+                
                 <tr>
                     <td colspan="4" >
                         <h:panelGroup rendered="#{!request.isUserInRole('jefes') and !request.isUserInRole('rrhh')}" >

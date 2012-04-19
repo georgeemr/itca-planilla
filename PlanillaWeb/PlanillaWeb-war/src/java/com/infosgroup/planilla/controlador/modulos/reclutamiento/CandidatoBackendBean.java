@@ -181,7 +181,6 @@ private String entrevistas$resultado;
 // ===========================================================================================================
 // ===========================================================================================================
 private List<TipoDocumento> listaTipoDocumentos;
-private List<Candidato> listaCandidatos;
 private List<Paises> paisesSelectItemListModel;
 private List<Deptos> deptosDomicilioSelectItemListModel;
 private List<Municipios> municipiosDomicilioSelectItemListModel;
@@ -190,7 +189,6 @@ private List<Municipios> municipiosNacDomicilioSelectItemListModel;
 private List<Deptos> deptosExpDUISelectItemListModel;
 private List<Municipios> municipiosExpDUISelectItemListModel;
 private List<Deptos> deptosPrepAcadSelectItemListModel;
-//private List<Municipios> municipiosPrepAcadSelectItemListModel;
 private List<TipoSangre> listaTipoSangre;
 private List<NivelAcademico> listaNivelAcademico;
 private List<Profesion> listaProfesiones;
@@ -363,9 +361,7 @@ public void setEmpleadosSelectItemListModel(List<Empleados> empleadosSelectItemL
 {
     this.empleadosSelectItemListModel = empleadosSelectItemListModel;
 }
-// ======================================
-//private Boolean isError;
-// ===========================================================================================================
+
 // ===========================================================================================================
 // ===========================================================================================================
 
@@ -374,7 +370,6 @@ public void setEmpleadosSelectItemListModel(List<Empleados> empleadosSelectItemL
 public void init()
 {
     fechaSolicitud = Calendar.getInstance().getTime();
-    listaCandidatos = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
 
     paisesSelectItemListModel = sessionBeanParametros.getListaPaises();
 
@@ -427,7 +422,7 @@ public void init()
     estadoAccion = CREANDO;
     candidatosListModel = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
 }
-
+// ==================================================================================================================
 // == Acciones ======================================================================================================
 // ==================================================================================================================
 @PermitAll
@@ -2438,15 +2433,6 @@ public void setSessionBeanParametros(SessionBeanParametros sessionBeanParametros
 // ==================================================================================================================
 // ==================================================================================================================
 // ==================================================================================================================
-public List<Candidato> getListaCandidatos()
-{
-    return listaCandidatos;
-}
-
-public void setListaCandidatos(List<Candidato> listaCandidatos)
-{
-    this.listaCandidatos = listaCandidatos;
-}
 
 //public List<Deptos> getListaDepartamentos()
 //{
