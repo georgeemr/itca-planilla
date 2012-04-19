@@ -20,128 +20,116 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 /**
-
- @author root
+ *
+ * @author root
  */
 @ManagedBean(name = "empleados$seleccionEvaluacion")
 @ViewScoped
-public class SeleccionEvaluacionBackendBean extends AbstractJSFPage implements Serializable
-{
+public class SeleccionEvaluacionBackendBean extends AbstractJSFPage implements Serializable {
 
-@EJB
-private EmpleadosSessionBean empleadosBean;
+    @EJB
+    private EmpleadosSessionBean empleadosBean;
 
-public SeleccionEvaluacionBackendBean()
-{
-}
+    public SeleccionEvaluacionBackendBean() {
+    }
 
-@PostConstruct
-public void init()
-{
-    listaCampanias = empleadosBean.listarCampaniasPorEmpleado(sessionBeanEMP.getEmpleadoSesion());
-}
-private List<Campania> listaCampanias;
+    @PostConstruct
+    public void init() {
+        listaCampanias = empleadosBean.listarCampaniasPorEmpleado(sessionBeanEMP.getEmpleadoSesion());
+    }
+    private List<Campania> listaCampanias;
 
-public List<Campania> getListaCampanias()
-{
-    return listaCampanias;
-}
+    public List<Campania> getListaCampanias() {
+        return listaCampanias;
+    }
 
-public void setListaCampanias(List<Campania> listaCampanias)
-{
-    this.listaCampanias = listaCampanias;
-}
-private List<Evaluacion> listaEvaluaciones;
+    public void setListaCampanias(List<Campania> listaCampanias) {
+        this.listaCampanias = listaCampanias;
+    }
+    private List<Evaluacion> listaEvaluaciones;
 
-public List<Evaluacion> getListaEvaluaciones()
-{
-    listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada) : null;
-    return listaEvaluaciones;
-}
+    public List<Evaluacion> getListaEvaluaciones() {
+        listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada) : null;
+        return listaEvaluaciones;
+    }
 
-public void setListaEvaluaciones(List<Evaluacion> listaEvaluaciones)
-{
-    this.listaEvaluaciones = listaEvaluaciones;
-}
+    public void setListaEvaluaciones(List<Evaluacion> listaEvaluaciones) {
+        this.listaEvaluaciones = listaEvaluaciones;
+    }
 
-@Override
-protected void limpiarCampos()
-{
-    throw new UnsupportedOperationException("Not supported yet.");
-}
-private Campania campaniaSeleccionada;
+    @Override
+    protected void limpiarCampos() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    private Campania campaniaSeleccionada;
 
-public Campania getCampaniaSeleccionada()
-{
-    return campaniaSeleccionada;
-}
+    public Campania getCampaniaSeleccionada() {
+        return campaniaSeleccionada;
+    }
 
-public void setCampaniaSeleccionada(Campania campaniaSeleccionada)
-{
-    this.campaniaSeleccionada = campaniaSeleccionada;
-}
+    public void setCampaniaSeleccionada(Campania campaniaSeleccionada) {
+        this.campaniaSeleccionada = campaniaSeleccionada;
+    }
 
-public String evaluarEmpleado$action()
-{
-    boolean hayError = false;
-    String outcome = null;
+    public String evaluarEmpleado$action() {
+        boolean hayError = false;
+        String outcome = null;
 
-    if (getSessionBeanEMP().getEvaluacionSeleccionada() == null)
-        {
-        addMessage("Seleccion de evaluación", "Seleccione el empleado a evaluar", TipoMensaje.ADVERTENCIA);
-        hayError = true;
+        if (getSessionBeanEMP().getEvaluacionSeleccionada() == null) {
+            addMessage("Seleccion de evaluación", "Seleccione el empleado a evaluar", TipoMensaje.ADVERTENCIA);
+            hayError = true;
         }
-
-    if (!hayError)
-        {
-        List<Factor> listaFactores = empleadosBean.listarFactoresPorPlantilla(getSessionBeanEMP().getEvaluacionSeleccionada().getPlantilla1());
-        Factor primerFactor = ((listaFactores != null) && !listaFactores.isEmpty()) ? listaFactores.get(0) : null;
-
-        List<DetalleEvaluacion> listaDetalleTemporal = new ArrayList<DetalleEvaluacion>(0);
-        for (Factor f : listaFactores)
-            {
-            DetalleEvaluacion d = new DetalleEvaluacion();
-            d.setFactor(f);
-            d.setRespuestas(null);
-            listaDetalleTemporal.add(d);
-            }
         
-        if ( primerFactor==null ){
-            addMessage("Seleccion de evaluación", "La evaluación no tiene factores asociados.", TipoMensaje.ERROR);
+        if (getSessionBeanEMP().getEvaluacionSeleccionada().getFinalizada().equals( 1L) ) {
+            addMessage("Seleccion de evaluación", "Esta evaluación ya fue realizada.", TipoMensaje.ADVERTENCIA);
+            hayError = true;
+        }
+        
+        if (!hayError) {
+            List<Factor> listaFactores = empleadosBean.listarFactoresPorPlantilla(getSessionBeanEMP().getEvaluacionSeleccionada().getPlantilla1());
+            Factor primerFactor = ((listaFactores != null) && !listaFactores.isEmpty()) ? listaFactores.get(0) : null;
+
+            List<DetalleEvaluacion> listaDetalleTemporal = new ArrayList<DetalleEvaluacion>(0);
+            for (Factor f : listaFactores) {
+                DetalleEvaluacion d = new DetalleEvaluacion();
+                d.setFactor(f);                
+                d.setRespuestas(null);
+                listaDetalleTemporal.add(d);
+            }
+
+            if (primerFactor == null) {
+                addMessage("Seleccion de evaluación", "La evaluación no tiene factores asociados.", TipoMensaje.ERROR);
+                return null;
+            }
+            sessionBeanEMP.setDetalleEvaluacionTemporal(listaDetalleTemporal);
+            sessionBeanEMP.setListaFactores(listaFactores);
+            sessionBeanEMP.setFactorActual(primerFactor);
+            outcome = "evaluacionEmpleado?faces-redirect=true";
+        }
+        return outcome;
+    }
+
+    public String cerrarCampania() {
+        if (campaniaSeleccionada == null) {
+            addMessage("Evaluación de Desempeño", "No ha seleccionado ninguna Campaña.", TipoMensaje.ERROR);
             return null;
         }
-        sessionBeanEMP.setDetalleEvaluacionTemporal(listaDetalleTemporal);
-        sessionBeanEMP.setListaFactores(listaFactores);
-        sessionBeanEMP.setFactorActual(primerFactor);
-        outcome = "evaluacionEmpleado?faces-redirect=true";
-        }
-    return outcome;
-}
-
-public String cerrarCampania()
-{
-    if (campaniaSeleccionada == null)
-        {
-        addMessage("Evaluación de Desempeño", "No ha seleccionado ninguna Campaña.", TipoMensaje.ERROR);
+        campaniaSeleccionada.setEstado("C");
+        empleadosBean.editarCampania(campaniaSeleccionada);
+        campaniaSeleccionada = null;
+        listaCampanias = empleadosBean.listarCampaniasPorEmpleado(sessionBeanEMP.getEmpleadoSesion());
+        listaEvaluaciones = new ArrayList<Evaluacion>();
+        addMessage("Evaluación de Desempeño", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
         return null;
-        }
-    campaniaSeleccionada.setEstado("C");
-    empleadosBean.editarCampania(campaniaSeleccionada);
-    campaniaSeleccionada = null;
-    listaCampanias = empleadosBean.listarCampaniasPorEmpleado(sessionBeanEMP.getEmpleadoSesion());
-    listaEvaluaciones = new ArrayList<Evaluacion>();
-    addMessage("Evaluación de Desempeño", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
-    return null;
-}
-/*
- private Integer cantEmpEvaluados;
-
- public Integer getCantEmpEvaluados() {
- cantEmpEvaluados = 10;//empleadosBean.calcularEmpleadosEvaluados(campaniaSeleccionada);
- return cantEmpEvaluados;
- }
-
- public void setCantEmpEvaluados(Integer cantEmpEvaluados) {
- this.cantEmpEvaluados = cantEmpEvaluados;
- } */
+    }
+    /*
+     * private Integer cantEmpEvaluados;
+     *
+     * public Integer getCantEmpEvaluados() { cantEmpEvaluados =
+     * 10;//empleadosBean.calcularEmpleadosEvaluados(campaniaSeleccionada);
+     * return cantEmpEvaluados; }
+     *
+     * public void setCantEmpEvaluados(Integer cantEmpEvaluados) {
+     * this.cantEmpEvaluados = cantEmpEvaluados; }
+     */
 }

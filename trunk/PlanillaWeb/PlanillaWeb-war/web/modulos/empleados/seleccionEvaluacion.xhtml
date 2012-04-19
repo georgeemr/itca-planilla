@@ -5,7 +5,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:c="http://java.sun.com/jsp/jstl/core">
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion" >
     <!-- ======================================================================================================= -->
     <ui:define name="titulo">
         <h:outputText value="Seleccion de evaluaci&oacute;n"/>        
@@ -14,10 +15,10 @@
     <ui:define name="acciones">
         <p:tab title="Evaluaci&oacute;n">
             <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
-                <p:commandLink styleClass="opcionMenu" action="#{empleados$seleccionEvaluacion.evaluarEmpleado$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                <!-- p:commandLink styleClass="opcionMenu" action="# {empleados$seleccionEvaluacion.evaluarEmpleado$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/meeting-participant-request-response.png"/>
                     <h:outputText value="Evaluar Empleado" styleClass="espacioTexto"/>
-                </p:commandLink>
+                </p:commandLink-->
                 <p:commandLink styleClass="opcionMenu" onclick="confirmation.show()" update="principalForm:mensajes,principalForm:campaniasTable,evaluacionesTable" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/window-close.png"/>
                     <h:outputText value="Cerrar Evaluaci&oacute;n" styleClass="espacioTexto"/>
@@ -37,61 +38,75 @@
     <ui:define name="contenido">
         <p:panel style="border: none;" >
             <p:spacer height="15" style="display:block; " />
-        <h:outputLabel value="Empleados a evaluar" style="font-weight: bold;" />
-        <p:spacer height="15" style="display: block;" />
-        
-            <table width="100%" border="0">
-                <tr valign="top">
-                    <td width="50%">
-                        <p:dataTable id="campaniasTable" value="#{empleados$seleccionEvaluacion.listaCampanias}" var="campania" selection="#{empleados$seleccionEvaluacion.campaniaSeleccionada}" selectionMode="single" emptyMessage="[No hay campa&ntilde;as abiertas]" rows="5" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25" update="evaluacionesTable,cmdCerrarEvaluacion">
-                            <f:facet name="header">
-                                <h:outputText value="Campa&ntilde;as"/>
-                            </f:facet>
-                            <p:column headerText="Campa&ntilde;a" filterBy="#{campania.nomCampania}" sortBy="#{campania.nomCampania}">
-                                <p:graphicImage url="/resources/iconos/rating.png" height="16" width="16"/>
-                                <p:spacer width="5"/>
-                                <h:outputText id="nombreCompania" value="#{campania.nomCampania} - Evaluados: #{campania.empleadosEvaluados}"/>
-                                <p:tooltip for="nombreCompania" showEffect="grow" hideEffect="grow">
-                                    <p:graphicImage url="/resources/iconos/help-hint.png" height="16" width="16"/>
-                                    <p:spacer width="5"/>
-                                    <h:outputText value="#{campania.nomCampania} (del "/>
-                                    <h:outputText value="#{campania.fechaInicial}">
-                                        <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-                                    </h:outputText>
-                                    <h:outputText value=" al "/>
-                                    <h:outputText value="#{campania.fechaFinal}">
-                                        <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-                                    </h:outputText>
-                                    <h:outputText value=")"/>
-                                </p:tooltip>
-                            </p:column>
-                            <p:column headerText="Estado">
-                                <h:outputText  value="#{campania.descripcionEstado}" />
-                            </p:column>
-                        </p:dataTable>
-                    </td>
-                    <td width="50%">
-                        <p:dataTable id="evaluacionesTable" value="#{empleados$seleccionEvaluacion.listaEvaluaciones}" var="evaluacion" emptyMessage="[No hay evaluaciones pendientes]" rows="5" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25" selectionMode="single" selection="#{SessionBeanEMP.evaluacionSeleccionada}">
-                            <f:facet name="header">
-                                <h:outputText value="Evaluaciones"/>
-                            </f:facet>
-                            <p:column headerText="Empleado" filterBy="#{evaluacion.empleados.nombreCompleto}" sortBy="#{evaluacion.empleados.nombreCompleto}">
-                                <p:graphicImage url="/resources/iconos/meeting-participant.png" height="16" width="16" rendered="#{evaluacion.empleados eq 'M'}"/>
-                                <p:graphicImage url="/resources/iconos/personal_w.png" height="16" width="16" rendered="#{evaluacion.empleados eq 'F'}"/>
-                                <p:spacer width="5"/>
-                                <h:outputText id="nombreEmpleado" value="#{evaluacion.empleados.nombreCompleto}"/>
-                                <h:outputText value=" ( Evaluaci&oacute;n realizada ) " rendered="#{evaluacion.finalizada eq 1 }"/>
-                                <p:tooltip for="nombreEmpleado" showEffect="grow" hideEffect="grow">
-                                    <p:graphicImage url="/resources/iconos/help-hint.png" height="16" width="16"/>
-                                    <p:spacer width="5"/>
-                                    <h:outputText value="#{evaluacion.empleados.nombreCompleto}: evaluado para #{evaluacion.plantilla1.tipoEvaluacion.nomTipoEvaluacion} usando la plantilla #{evaluacion.plantilla1.nombre}"/>
-                                </p:tooltip>
-                            </p:column>
-                        </p:dataTable>
-                    </td>
-                </tr>
-            </table>
-            </p:panel>
+            <i:fieldset leyenda="Empleados a evaluar">
+                <f:facet name="contenido"  >
+                    <p:spacer height="5" style="display: block;" />
+                    <h:panelGrid columns="1" >
+                        <h:outputLabel value="Seleccione la campa&ntilde;a y a continuaci&oacute;n el empleado que desea evaluar." />
+                    </h:panelGrid>
+                    <p:spacer height="5" style="display: block;" />
+                    <table width="100%" border="0">
+                        <tr valign="top">
+                            <td width="50%">
+                                <p:dataTable id="campaniasTable" value="#{empleados$seleccionEvaluacion.listaCampanias}" var="campania" selection="#{empleados$seleccionEvaluacion.campaniaSeleccionada}" selectionMode="single" emptyMessage="[No hay campa&ntilde;as abiertas]" rows="5" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25" update="evaluacionesTable,cmdCerrarEvaluacion">
+                                    <f:facet name="header">
+                                        <h:outputText value="Campa&ntilde;as"/>
+                                    </f:facet>
+                                    <p:column headerText="Campa&ntilde;a" filterBy="#{campania.nomCampania}" sortBy="#{campania.nomCampania}">
+                                        <p:graphicImage url="/resources/iconos/rating.png" height="16" width="16"/>
+                                        <p:spacer width="5"/>
+                                        <h:outputText id="nombreCompania" value="#{campania.nomCampania} - Evaluados: #{campania.empleadosEvaluados}"/>
+                                        <p:tooltip for="nombreCompania" showEffect="grow" hideEffect="grow">
+                                            <p:graphicImage url="/resources/iconos/help-hint.png" height="16" width="16"/>
+                                            <p:spacer width="5"/>
+                                            <h:outputText value="#{campania.nomCampania} (del "/>
+                                            <h:outputText value="#{campania.fechaInicial}">
+                                                <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                            <h:outputText value=" al "/>
+                                            <h:outputText value="#{campania.fechaFinal}">
+                                                <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                            <h:outputText value=")"/>
+                                        </p:tooltip>
+                                    </p:column>
+                                    <p:column headerText="Estado">
+                                        <h:outputText  value="#{campania.descripcionEstado}" />
+                                    </p:column>
+                                </p:dataTable>
+                            </td>
+                            <td width="50%">
+<!-- selectionMode="single" selection="# {SessionBeanEMP.evaluacionSeleccionada}" -->
+                                <p:dataTable id="evaluacionesTable" value="#{empleados$seleccionEvaluacion.listaEvaluaciones}" var="evaluacion" emptyMessage="[No hay evaluaciones pendientes]" rows="5" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25" >
+                                    <f:facet name="header">
+                                        <h:outputText value="Evaluaciones"/>
+                                    </f:facet>
+                                    <p:column headerText="Empleado " filterBy="#{evaluacion.empleados.nombreCompleto}" sortBy="#{evaluacion.empleados.nombreCompleto}">
+                                        <p:graphicImage url="/resources/iconos/meeting-participant.png" height="16" width="16" rendered="#{evaluacion.empleados eq 'M'}"/>
+                                        <p:graphicImage url="/resources/iconos/personal_w.png" height="16" width="16" rendered="#{evaluacion.empleados eq 'F'}"/>
+                                        <p:spacer width="5"/>
+                                        <h:outputText id="nombreEmpleado" value="#{evaluacion.empleados.nombreCompleto}"/>
+                                        <!--h:outputText value=" ( Evaluaci&oacute;n realizada ) " rendered="# {evaluacion.finalizada eq 1 }"/-->
+                                        <p:tooltip for="nombreEmpleado" showEffect="grow" hideEffect="grow">
+                                            <p:graphicImage url="/resources/iconos/help-hint.png" height="16" width="16"/>
+                                            <p:spacer width="5"/>
+                                            <h:outputText value="#{evaluacion.empleados.nombreCompleto}: evaluado para #{evaluacion.plantilla1.tipoEvaluacion.nomTipoEvaluacion} usando la plantilla #{evaluacion.plantilla1.nombre}"/>
+                                        </p:tooltip>
+                                    </p:column>
+
+                                    <p:column>
+                                        <p:commandButton image="#{evaluacion.finalizada ne 1 ? 'evaluar' : 'button-ok'}" action="#{empleados$seleccionEvaluacion.evaluarEmpleado$action}" update="principalForm:mensajes,principalForm:evaluacionesTable" label="Evaluar Empleado" >
+                                            <f:setPropertyActionListener value="#{evaluacion}" target="#{SessionBeanEMP.evaluacionSeleccionada}" />
+                                        </p:commandButton>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </td>
+                        </tr>
+                    </table>
+                </f:facet>
+            </i:fieldset>
+        </p:panel>
         <!-- /p:fieldset -->
     </ui:define>
     <!-- ======================================================================================================= -->

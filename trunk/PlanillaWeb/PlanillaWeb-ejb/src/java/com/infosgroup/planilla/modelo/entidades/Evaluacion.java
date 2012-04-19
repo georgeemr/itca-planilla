@@ -117,7 +117,7 @@ public void setFecha(Date fecha)
     this.fecha = fecha;
 }
 
-public long getFinalizada()
+public Long getFinalizada()
 {
     return finalizada;
 }
