@@ -610,11 +610,11 @@ public class PlanillaSessionBean {
         switch (accionPersonal.getAccionPersonalPK().getCodTipoaccion()) {
             case 6:// 6	NOMBRAMIENTO INTERNO
                 accionSolicitud = new NombramientoAction(accionPersonal);
+                accionSolicitud.efectuar();
                 break;
             default:
                 break;
         }
-        accionSolicitud.efectuar();
     }
 
     @PermitAll

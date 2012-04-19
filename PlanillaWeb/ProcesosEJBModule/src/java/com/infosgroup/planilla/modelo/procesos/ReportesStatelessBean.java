@@ -290,7 +290,7 @@ public class ReportesStatelessBean {
             val_isss = 0.0;
             val_afp = 0.0;
             val_renta = 0.0;
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, excpt.getLocalizedMessage());
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"Ha ocurrido la siguiente excepción: ",excpt);
         }
         HashMap<String, Object> parametros = new HashMap<String, Object>();
         parametros.put("pCia", new BigDecimal(empleadosPK.getCodCia()));
