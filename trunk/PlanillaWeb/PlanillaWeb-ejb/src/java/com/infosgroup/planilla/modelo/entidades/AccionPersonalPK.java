@@ -59,7 +59,7 @@ public class AccionPersonalPK implements Serializable {
         this.codEmp = codEmp;
     }
 
-    public short getCodTipoaccion() {
+    public Short getCodTipoaccion() {
         return codTipoaccion;
     }
 

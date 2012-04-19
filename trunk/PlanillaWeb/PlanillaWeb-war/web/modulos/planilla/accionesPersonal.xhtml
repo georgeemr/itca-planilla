@@ -40,7 +40,7 @@
                     <p:graphicImage value="/resources/iconos/view-resource-calendar.png"/>
                     <h:outputText value="Ver calendario" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink styleClass="opcionMenu textoNormal" update="principalForm:mensajes" ajax="false" rendered="#{(SessionBeanPLA.accionSeleccionada ne null) and (SessionBeanPLA.accionSeleccionada.accionPersonalPK.codTipoaccion eq 20) and (SessionBeanPLA.accionSeleccionada.status eq 'A')}" action="#{planilla$accionesPersonal.imprimirConstancia}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                <p:commandLink id="btnReporte" styleClass="opcionMenu textoNormal" update="principalForm:mensajes" ajax="false" rendered="#{planilla$accionesPersonal.renderReportePagos}" action="#{planilla$accionesPersonal.imprimirConstancia}" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/document-pdf.png"/>
                     <h:outputText value="Imprimir Comprobante" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -97,8 +97,7 @@
                      var="sol" rendered="true" widgetVar="tableSolicitud"
                      value="#{planilla$accionesPersonal.listaSolicitudes}"
                      selection="#{SessionBeanPLA.accionSeleccionada}"
-                     selectionMode="single" update="tabAcciones, editarSolicitud"
-                     binding="#{planilla$accionesPersonal.tablaSolicitudes}" 
+                     selectionMode="single" update="principalForm:tabAcciones, principalForm:editarSolicitud, principalForm:panelAcciones,principalForm:btnReporte"
                      rowStyleClass="#{sol.status eq 'G' ? 'solicitudGenerada' : sol.status eq 'J' ? 'solicitudPreAprobada' : sol.status eq 'A' ? 'solicitudAprobada' : sol.status eq 'R' ? 'solicitudRechazada' : null }"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
             <f:facet name="header">

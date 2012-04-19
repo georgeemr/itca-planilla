@@ -22,6 +22,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -35,7 +36,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private PlanillaSessionBean planillaSessionBean;
     @EJB
     private ReportesStatelessBean reportesStatelessBean;
-    private DataTable tablaSolicitudes;
+    //private DataTable tablaSolicitudes;
     private List<AccionPersonal> listaSolicitudes;
     private Short tipo;
     private List<TipoAccion> listaTipo;
@@ -65,7 +66,24 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private SolicitudDiaDeVacacion solicitudDiaDeVacacion;
     private Empleados empleadoAccionPersonal;
     private SelectItem[] estados = {new SelectItem("G", "Solicitada"), new SelectItem("A", "Aprobada"), new SelectItem("R", "Rechazada")};
+    private Boolean renderReportePagos = Boolean.FALSE ;
 
+    public Boolean getRenderReportePagos() {
+        renderReportePagos = Boolean.FALSE;
+        if( getSessionBeanPLA().getAccionSeleccionada()!=null ){
+            if ( getSessionBeanPLA().getAccionSeleccionada().getStatus().equals("A") ){
+            if ( getSessionBeanPLA().getAccionSeleccionada().getAccionPersonalPK().getCodTipoaccion().equals(new Short("20")) ){    
+                renderReportePagos = Boolean.TRUE;
+            }
+            }
+        }
+        return renderReportePagos;
+    }
+
+    public void setRenderReportePagos(Boolean renderReportePagos) {
+        this.renderReportePagos = renderReportePagos;
+    }
+    
     public Empleados getEmpleadoAccionPersonal() {
         return empleadoAccionPersonal;
     }
@@ -349,13 +367,13 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         return null;
     }
 
-    public DataTable getTablaSolicitudes() {
-        return tablaSolicitudes;
-    }
-
-    public void setTablaSolicitudes(DataTable tablaSolicitudes) {
-        this.tablaSolicitudes = tablaSolicitudes;
-    }
+//    public DataTable getTablaSolicitudes() {
+//        return tablaSolicitudes;
+//    }
+//
+//    public void setTablaSolicitudes(DataTable tablaSolicitudes) {
+//        this.tablaSolicitudes = tablaSolicitudes;
+//    }
 
     public void listarSolicitudes(ValueChangeEvent event) {
         if (solicitudesMostradas.equals("E")) {
