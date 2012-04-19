@@ -167,9 +167,10 @@ public boolean cerrarEvaluacion(Evaluacion ev, List<DetalleEvaluacion> det)
                 detEvaluacionPK.setCodEmp(ev.getEmpleados().getEmpleadosPK().getCodEmp());
                 detEvaluacionPK.setPeriodo(new Short("" + ev.getCampania().getCampaniaPK().getPeriodo()));
                 detEvaluacionPK.setCodDetEvaluacion(i++);
-
+                
                 DetEvaluacion detEvaluacion = new DetEvaluacion();
                 detEvaluacion.setEvaluacion(ev);
+                detEvaluacion.setValor( pr.getValor() );
                 detEvaluacion.setDetEvaluacionPK(detEvaluacionPK);
                 detEvaluacion.setPregunta(preguntaFacade.find(pr.getPregunta().getPreguntaPK()));
                 detEvaluacion.setRespuesta(pr.getRespuesta());
