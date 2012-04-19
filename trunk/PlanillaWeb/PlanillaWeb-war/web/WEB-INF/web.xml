@@ -20,20 +20,20 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/faces/*</url-pattern>
+        <url-pattern>/rrhh/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>/faces/modulos/inicio.xhtml</welcome-file>
+        <welcome-file>/rrhh/modulos/inicio.xhtml</welcome-file><!-- -->
     </welcome-file-list>
     <security-constraint>
         <display-name>Constraint Prueba OpenDS</display-name>
         <web-resource-collection>
             <web-resource-name>PruebaOpenDS</web-resource-name>
             <description>PruebaOpenDS Web Resource</description>
-            <url-pattern>/faces/modulos/*</url-pattern>
+            <url-pattern>/rrhh/modulos/*</url-pattern><!-- -->
         </web-resource-collection>
         <auth-constraint>
             <description>Administradores authorization constraint</description>
