@@ -180,10 +180,12 @@ public class ReportesStatelessBean {
         List<DetalleReporteEvaluacion> det = new ArrayList<DetalleReporteEvaluacion>();
         for (DetEvaluacion e : eliminarRepetidos(detalle)) {
             Integer puntajeObtenido = getPuntajeObtenido(detalle, e);
+            if (e.getRespuesta().getNivel()!=null){
             det.add(new DetalleReporteEvaluacion(e.getRespuesta().getNivel(),
                     puntajeObtenido,
                     e.getRespuesta().getValor().intValue(), 100,
                     puntajeObtenido * e.getRespuesta().getValor().intValue() * 100 / 100));
+            }
         }
         return (det != null) ? det : new ArrayList<DetalleReporteEvaluacion>();
     }
@@ -202,8 +204,10 @@ public class ReportesStatelessBean {
     public Integer getPuntajeObtenido(List<DetEvaluacion> detalle, DetEvaluacion e) {
         int d = 0;
         for (DetEvaluacion deta : detalle) {
+            if(deta.getRespuesta().getNivel()!=null){
             if (deta.getRespuesta().getNivel().equals(e.getRespuesta().getNivel())) {
                 d++;
+            }
             }
         }
         return d;
@@ -213,7 +217,9 @@ public class ReportesStatelessBean {
     public Integer totalEvaluacion(List<DetEvaluacion> detalle) {
         Integer nota = 0;
         for (DetEvaluacion e : detalle) {
-            nota += e.getRespuesta().getValor().intValue();
+            if (e.getRespuesta().getValor()!=null){
+                nota += e.getRespuesta().getValor().intValue();    
+            }
         }
         return nota != null ? nota : 0;
     }
@@ -267,9 +273,7 @@ public class ReportesStatelessBean {
 
     @PermitAll
     public void generarConstanciaSueldo(EmpleadosPK empleadosPK) {
-        Double val_isss = 0.0;
-        Double val_afp = 0.0;
-        Double val_renta = 0.0;
+        Double val_isss, val_afp, val_renta;
         try {
             Connection conexion = planillaJDBCDatasource.getConnection();
             CallableStatement statement = conexion.prepareCall("begin DEDUC_LEYREPORTS(?, ?, ?, ?, ?); end;");

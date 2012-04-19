@@ -8,16 +8,20 @@ import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
 import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
+import com.infosgroup.planilla.modelo.estructuras.DetalleAdjuntoCorreo;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -94,7 +98,7 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
             planillaSessionBean.jefeEditaSolicitud(a, "A");
             getSessionBeanPLA().setAccionSeleccionada(a);
             addMessage("Aprobar Solicitud", "Datos Guardados con éxito. \n\n", TipoMensaje.INFORMACION);
-            SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.JEFE, a));
+            SolicitudDePersonal.enviarCorreo(a, getManifiestoCorreo(APRUEBA.JEFE, a));
         } catch (Exception e) {
             addMessage("Aprobar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
             logger.log(Level.SEVERE, "Usted no esta autorizado para realizar esta acción", e);
@@ -123,7 +127,7 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
             planillaSessionBean.rrhhEditaSolicitud(a, "A");
             getSessionBeanPLA().setAccionSeleccionada(a);
             addMessage("Aprobar Solicitud", "Datos Guardados con éxito. \n\n", TipoMensaje.INFORMACION);
-            SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.RECURSOS_HUMANOS, a));
+            SolicitudDePersonal.enviarCorreo(a, getManifiestoCorreo(APRUEBA.RECURSOS_HUMANOS, a));
         } catch (Exception e) {
             addMessage("Aprobar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
             logger.log(Level.SEVERE, "Usted no esta autorizado para realizar esta acción", e);
@@ -148,7 +152,7 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
             planillaSessionBean.rrhhEditaSolicitud(a, "R");
             getSessionBeanPLA().getAccionSeleccionada().setStatus("R");
             addMessage("Aprobar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
-            SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.RECURSOS_HUMANOS, a));
+            SolicitudDePersonal.enviarCorreo(a, getManifiestoCorreo(APRUEBA.RECURSOS_HUMANOS, a));
         } catch (Exception e) {
             addMessage("Aprobar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
             logger.log(Level.SEVERE, "Usted no esta autorizado para realizar esta acción", e);
@@ -166,7 +170,7 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
             planillaSessionBean.jefeEditaSolicitud(a, "R");
             getSessionBeanPLA().getAccionSeleccionada().setStatus("R");
             addMessage("Aprobar Solicitud", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
-            SolicitudPermiso.enviarCorreo(a, getManifiestoSolicitudPermiso(APRUEBA.RECURSOS_HUMANOS, a));
+            SolicitudDePersonal.enviarCorreo(a, getManifiestoCorreo(APRUEBA.RECURSOS_HUMANOS, a));
         } catch (Exception e) {
             addMessage("Aprobar Solicitud", "Usted no esta autorizado para realizar esta acción", TipoMensaje.ERROR);
             logger.log(Level.SEVERE, "Usted no esta autorizado para realizar esta acción", e);
@@ -204,7 +208,7 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
         return error;
     }
 
-    public String getManifiestoSolicitudPermiso(APRUEBA eaprueba, AccionPersonal a) {
+    public String getManifiestoCorreo(APRUEBA eaprueba, AccionPersonal a) {
         StringBuilder mensaje = new StringBuilder();
         mensaje.append("Solicitud Procesada.\n\n");
         mensaje.append("\n\nFecha: ").append(a.getFecha());
