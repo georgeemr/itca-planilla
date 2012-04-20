@@ -176,7 +176,7 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
 
     @PermitAll
     public List<Empleados> findEmpleadosByJefe(Empleados jefe) {
-        List<Empleados> l = em.createQuery("SELECT e FROM Empleados e WHERE e.empleados = :jefe", Empleados.class).setParameter("jefe",jefe).getResultList();
+        List<Empleados> l = em.createQuery("SELECT e FROM Empleados e WHERE e.empleados = :jefe", Empleados.class).setParameter("jefe", jefe).getResultList();
         return l != null ? l : new ArrayList<Empleados>();
     }
 
@@ -184,5 +184,33 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
     public List<Empleados> findJefesByDepto(Departamentos depto) {
         List<Empleados> l = em.createQuery("SELECT e FROM Empleados e WHERE e.empleadosPK.codCia = :codCia AND e.departamentos = :departamentos AND e.puestos.jefatura = 'SI'", Empleados.class).setParameter("departamentos", depto).setParameter("codCia", depto.getDepartamentosPK().getCodCia()).getResultList();
         return l != null ? l : new ArrayList<Empleados>();
+    }
+    
+    
+    @PermitAll
+    public void eliminarEvaluadorEvaluaciones( PreEvaluacion preevaluacion, Empleados empleado){
+        em.createNativeQuery("delete evaluador_evaluaciones where cod_cia = ? and periodo = ? and campania = ? and tipo_evaluacion = ? and plantilla = ? and evaluador = ? ")
+        .setParameter(1, preevaluacion.getPreEvaluacionPK().getCodCia())
+        .setParameter(2, preevaluacion.getPreEvaluacionPK().getPeriodo())
+        .setParameter(3, preevaluacion.getPreEvaluacionPK().getCodCampania())
+        .setParameter(4, preevaluacion.getPreEvaluacionPK().getTipoEvaluacion())
+        .setParameter(5, preevaluacion.getPreEvaluacionPK().getPlantilla())
+        .setParameter(6, empleado.getEmpleadosPK().getCodEmp())
+        .executeUpdate();
+
+        em.createNativeQuery(        
+        "delete evaluacion b where (b.cod_cia, b.periodo, b.cod_campania, b.tipo_evaluacion, b.plantilla, b.cod_emp) in( "+
+        "select b.cod_cia, b.periodo, b.cod_campania, b.tipo_evaluacion, b.plantilla, b.cod_emp from evaluador_evaluaciones a, evaluacion b "+
+        "where a.cod_cia = ? and a.periodo = ? and a.campania = ? and a.tipo_evaluacion = ? and a.plantilla = ? and a.evaluador = ? "+
+        "and b.cod_cia = a.cod_cia and b.periodo = a.periodo and b.cod_campania = a.campania "+
+        "and b.tipo_evaluacion = a.tipo_evaluacion and b.plantilla = a.plantilla and b.cod_emp = a.empleado) and b.finalizada != 1")
+        .setParameter(1, preevaluacion.getPreEvaluacionPK().getCodCia())
+        .setParameter(2, preevaluacion.getPreEvaluacionPK().getPeriodo())
+        .setParameter(3, preevaluacion.getPreEvaluacionPK().getCodCampania())
+        .setParameter(4, preevaluacion.getPreEvaluacionPK().getTipoEvaluacion())
+        .setParameter(5, preevaluacion.getPreEvaluacionPK().getPlantilla())
+        .setParameter(6, empleado.getEmpleadosPK().getCodEmp())
+        .executeUpdate();
+        
     }
 }

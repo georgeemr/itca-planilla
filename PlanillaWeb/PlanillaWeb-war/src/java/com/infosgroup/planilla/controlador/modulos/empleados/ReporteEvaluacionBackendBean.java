@@ -67,7 +67,11 @@ private List<Evaluacion> listaEvaluaciones;
 
 public List<Evaluacion> getListaEvaluaciones()
 {
+    if ( !isInRole("rrhh") ){
+    listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosSessionBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada, getSessionBeanEMP().getEmpleadoSesion()) : null;
+    }else{
     listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosSessionBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada) : null;
+    }
     return listaEvaluaciones;
 }
 

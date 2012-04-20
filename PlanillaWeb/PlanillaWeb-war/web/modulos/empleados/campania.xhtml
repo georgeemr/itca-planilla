@@ -21,14 +21,14 @@
             </h:panelGrid>
 
             <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0">
-                <p:commandLink styleClass="opcionMenu textoNormal" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';" onclick="dialogoEditar.show();" rendered="#{empleados$campania.accion eq 1}">
+                <p:commandLink styleClass="opcionMenu textoNormal" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';" update="principalForm:tablaPreevaluacion" oncomplete="dialogoEditar.show();" rendered="#{empleados$campania.accion eq 1}">
                     <p:graphicImage value="/resources/iconos/document-edit.png"/>
                     <h:outputText value="Editar campa&ntilde;a" styleClass="espacioTexto"/>
                 </p:commandLink>
             </h:panelGrid>
 
             <h:panelGrid columns="1" width="100%" border="0" cellpadding="0" cellspacing="0" rendered="#{empleados$campania.accion eq 2}">
-                <p:commandLink action="#{empleados$campania.cancelar$action()}" update="principalForm:panelAcciones principalForm:panelContenido principalForm:mensajes" styleClass="opcionMenu textoNormal" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                <p:commandLink action="#{empleados$campania.cancelar$action()}" ajax="false" update="principalForm:panelAcciones principalForm:panelContenido principalForm:mensajes" styleClass="opcionMenu textoNormal" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/dialog-cancel.png"/>
                     <h:outputText value="Cancelar edici&oacute;n" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -132,7 +132,7 @@
                 <h:outputLabel value="De clic en el bot&oacute;n seleccionar para la campa&ntilde;a que desea editar."/>
             </h:panelGrid>
             <p:spacer height="5" />
-            <p:dataTable value="#{empleados$campania.listaPreevaluaciones}" var="preevaluacion" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5">
+            <p:dataTable id="tablaPreevaluacion" value="#{empleados$campania.listaPreevaluaciones}" var="preevaluacion" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5">
                 <f:facet name="header">
                     <h:outputText value="Campa&ntilde;as existentes"/>
                 </f:facet>

@@ -158,3 +158,9 @@ body {
 .ui-state-default {
     font-size: 11px;
 }
+
+.elementoSeleccionado{
+    background: -moz-linear-gradient(bottom, #93BBD1, #fff)!important;
+    background: -webkit-gradient(linear, center bottom, center top, from(#93BBD1), to(#fff))!important; 
+    color: black;
+}
