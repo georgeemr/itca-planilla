@@ -21,15 +21,37 @@
                             <h:graphicImage url="/resources/imagenes/infosgroup.png" width="150" height="40"/>
                         </td>
                         <td width="300" align="left">
-                            <h:outputText value="Powered by Glassfish"/>
-                            <h:graphicImage url="/resources/imagenes/glassfish.png"/>
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Powered by Glassfish"/>
+                                <h:graphicImage url="/resources/imagenes/glassfish.png"/>
+                            </h:panelGrid>
                         </td>
                         <td>
                             <h:outputText value="Bienvenido"/>
                             <p:spacer width="5"/>
                             <h:outputText value="#{SessionBeanEMP.empleadoSesion.nombres} #{SessionBeanEMP.empleadoSesion.apellidos}" style="font-weight: bold;"/>
                         </td>
-                        <td>
+                        <td width="15%" align="right">
+                            <p:ajaxStatus>
+                                <f:facet name="start">
+                                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                        <tr>
+                                            <td align="right">
+                                                <h:graphicImage url="/resources/imagenes/ajax_loader_large.gif" width="24" height="24"/>
+                                            </td>
+                                            <td><p:spacer width="5"/></td>
+                                            <td align="left">
+                                                <h:outputText value="Espere un momento..." style="font-size: 8pt; color:black;"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </f:facet>
+                                <f:facet name="complete">
+                                    <h:outputText/>
+                                </f:facet>
+                            </p:ajaxStatus>
+                        </td>
+                        <td width="18%;" align="right" >
                             <p:commandButton value="Opciones" image="ui-icon ui-icon-wrench" oncomplete="dialogOpciones.show();"/>
                             <p:spacer width="5"/>
                             <p:commandButton value="Cerrar sesi&oacute;n" image="ui-icon ui-icon-locked" oncomplete="cerrarSessionDialog.show();"/>
@@ -51,26 +73,6 @@
                                 </h:panelGrid>
                             </p:dialog>
                             <ui:insert name="dialogos"/>
-                        </td>
-                        <td width="250" align="right">
-                            <p:ajaxStatus>
-                                <f:facet name="start">
-                                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                                        <tr>
-                                            <td align="right">
-                                                <h:graphicImage url="/resources/imagenes/ajax_loader_large.gif" width="24" height="24"/>
-                                            </td>
-                                            <td><p:spacer width="5"/></td>
-                                            <td align="left">
-                                                <h:outputText value="Espere un momento..." style="font-size: 8pt; color:black;"/>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </f:facet>
-                                <f:facet name="complete">
-                                    <h:outputText/>
-                                </f:facet>
-                            </p:ajaxStatus>
                         </td>
                     </tr>
                     <tr>
