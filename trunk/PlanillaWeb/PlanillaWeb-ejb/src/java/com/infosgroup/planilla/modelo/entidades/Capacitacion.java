@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Capacitacion.findByCostoRazon", query = "SELECT c FROM Capacitacion c WHERE c.costoRazon = :costoRazon"),
     @NamedQuery(name = "Capacitacion.findByStatus", query = "SELECT c FROM Capacitacion c WHERE c.status = :status")})
 public class Capacitacion implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected CapacitacionPK capacitacionPK;
@@ -79,18 +80,6 @@ public class Capacitacion implements Serializable {
         @JoinColumn(name = "COD_INSTI", referencedColumnName = "COD_INSTI")})
     @ManyToOne(optional = false)
     private Instituciones instituciones;
-    /*@JoinTable(name = "CAPACITACION_X_EMPLEADO", joinColumns = {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "COD_CAPACITACION", referencedColumnName = "COD_CAPACITACION", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "COD_EMP", referencedColumnName = "COD_EMP", nullable = false)})
-    @ManyToMany
-    private List<Empleados> empleadosList;*/
-//    @JoinColumns({
-//        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
-//        @JoinColumn(name = "COD_INSTI", referencedColumnName = "COD_INSTI")})
-//    @ManyToOne(optional = false)
-//    private Instituciones instituciones;
     @JoinColumns({
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "COD_CAPACITADOR", referencedColumnName = "COD_CAPACITADOR")})
@@ -111,14 +100,41 @@ public class Capacitacion implements Serializable {
     private List<CapacitacionXEmpleado> capacitacionXEmpleadoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
     private List<GastoXCapacitacion> gastoXCapacitacionList;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
-//    private List<CapacitacionXCandidato> capacitacionXCandidatoList;
-@OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "capacitacion")
     private List<CapacitacionAsistencia> capacitacionAsistenciaList;
-
+    @Transient
+    private String descripcionEstado;
+    
     public Capacitacion() {
     }
 
+    public String getDescripcionEstado() {
+        descripcionEstado ="";
+        if (status!=null){
+            if ( status.equalsIgnoreCase("G") ){
+                descripcionEstado ="Grabado";
+            }else
+            if ( status.equalsIgnoreCase("A") ){
+                descripcionEstado ="Aprobado";
+            }else
+            if ( status.equalsIgnoreCase("R") ){
+                descripcionEstado ="Rechazado";
+            }else
+            if ( status.equalsIgnoreCase("RE") ){
+                descripcionEstado ="Realizado";
+            }else
+            if ( status.equalsIgnoreCase("N")){
+                descripcionEstado ="Notificado";
+            }
+        }
+        
+        return descripcionEstado;
+    }
+
+    public void setDescripcionEstado(String descripcionEstado) {
+        this.descripcionEstado = descripcionEstado;
+    }
+    
     public Capacitacion(CapacitacionPK capacitacionPK) {
         this.capacitacionPK = capacitacionPK;
     }
@@ -151,14 +167,6 @@ public class Capacitacion implements Serializable {
     public void setInstituciones(Instituciones instituciones) {
         this.instituciones = instituciones;
     }
-
-//    public Instituciones getCodInsti() {
-//        return codInsti;
-//    }
-//
-//    public void setCodInsti(Instituciones codInsti) {
-//        this.codInsti = codInsti;
-//    }
 
     public String getNomCapacitacion() {
         return nomCapacitacion;
@@ -256,19 +264,11 @@ public class Capacitacion implements Serializable {
         this.capacitadores = capacitadores;
     }
 
-    /*@XmlTransient
-    public List<Empleados> getEmpleadosList() {
-        return empleadosList;
-    }
-
-    public void setEmpleadosList(List<Empleados> empleadosList) {
-        this.empleadosList = empleadosList;
-    }*/
-    
     @XmlTransient
     public List<CapacitacionXEmpleado> getCapacitacionXEmpleadoList() {
         return capacitacionXEmpleadoList;
     }
+
     @XmlTransient
     public List<CapacitacionAsistencia> getCapacitacionAsistenciaList() {
         return capacitacionAsistenciaList;
@@ -277,7 +277,6 @@ public class Capacitacion implements Serializable {
     public void setCapacitacionAsistenciaList(List<CapacitacionAsistencia> capacitacionAsistenciaList) {
         this.capacitacionAsistenciaList = capacitacionAsistenciaList;
     }
-
 
     public void setCapacitacionXEmpleadoList(List<CapacitacionXEmpleado> capacitacionXEmpleadoList) {
         this.capacitacionXEmpleadoList = capacitacionXEmpleadoList;
@@ -291,24 +290,6 @@ public class Capacitacion implements Serializable {
     public void setGastoXCapacitacionList(List<GastoXCapacitacion> gastoXCapacitacionList) {
         this.gastoXCapacitacionList = gastoXCapacitacionList;
     }
-
-//    @XmlTransient
-//    public List<CapacitacionXCandidato> getCapacitacionXCandidatoList() {
-//        return capacitacionXCandidatoList;
-//    }
-//
-//    public void setCapacitacionXCandidatoList(List<CapacitacionXCandidato> capacitacionXCandidatoList) {
-//        this.capacitacionXCandidatoList = capacitacionXCandidatoList;
-//    }
-
-//    @XmlTransient
-//    public List<CapacitacionAsistencia> getCapacitacionAsistenciaList() {
-//        return capacitacionAsistenciaList;
-//    }
-//
-//    public void setCapacitacionAsistenciaList(List<CapacitacionAsistencia> capacitacionAsistenciaList) {
-//        this.capacitacionAsistenciaList = capacitacionAsistenciaList;
-//    }
 
     @Override
     public int hashCode() {
@@ -334,5 +315,4 @@ public class Capacitacion implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.Capacitacion[ capacitacionPK=" + capacitacionPK + " ]";
     }
-    
 }

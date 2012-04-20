@@ -143,6 +143,12 @@ public Respuesta findRespuestaById(RespuestaPK pk)
 }
 
 @PermitAll
+public List<Evaluacion> listarEvaluacionesAbiertasPorCampania(Campania campania, Empleados empleado)
+{
+    return evaluacionFacade.findEvaluacionesAbiertasByCampania(campania, empleado);
+}
+
+@PermitAll
 public List<Evaluacion> listarEvaluacionesAbiertasPorCampania(Campania campania)
 {
     return evaluacionFacade.findEvaluacionesAbiertasByCampania(campania);

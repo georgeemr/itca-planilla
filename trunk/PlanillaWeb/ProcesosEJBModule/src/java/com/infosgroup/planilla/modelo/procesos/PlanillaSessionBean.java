@@ -616,6 +616,11 @@ public class PlanillaSessionBean {
                 break;
         }
     }
+    
+    @PermitAll
+    public void eliminarEvaluadorEvaluaciones(PreEvaluacion preevaluacion, Empleados empleado){
+        empleadoFacade.eliminarEvaluadorEvaluaciones(preevaluacion, empleado);
+    }
 
     @PermitAll
     public void actualizarEmpleado(Empleados empleados) {

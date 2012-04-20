@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -49,7 +51,7 @@ import org.primefaces.event.UnselectEvent;
  */
 @ManagedBean(name = "capacitaciones$capacitaciones")
 @ViewScoped
-public class capacitacionesBackendBean extends AbstractJSFPage implements Serializable {
+public class CapacitacionesBackendBean extends AbstractJSFPage implements Serializable {
 
     @EJB
     private CapacitacionesSessionBean capacitacionSessionBean;
@@ -63,7 +65,7 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
     private BigDecimal duracion;
     private String impartido;
     private String razon;
-    private BigDecimal costoRazon;
+    //private BigDecimal costoRazon;
     private String codCap;
     private Short inst;
     private Integer codArea;
@@ -87,7 +89,41 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
     private List<CapacitacionAreas> listaArea;
     private List<CapacitacionTemas> listaTemas;
     private List<Capacitadores> listaCapacitadores;
-    private DataTable tableCapacitaciones;
+//    private DataTable tableCapacitaciones;
+    private SelectItem[] estadoCapacitacion = { new SelectItem("G", "Grabado"), new SelectItem("A", "Aprobado"), new SelectItem("R", "Rechazado"), new SelectItem("RE", "Realizado"), new SelectItem("N", "Notificado") };
+    private Capacitacion capacitacionSeleccionada;
+    private Cias empresa;
+    
+    public CapacitacionesBackendBean(){}
+
+    @PostConstruct
+    public void _init(){
+        setEmpresa(getSessionBeanADM().getCompania());
+    }
+
+    public Cias getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Cias empresa) {
+        this.empresa = empresa;
+    }
+    
+    public Capacitacion getCapacitacionSeleccionada() {
+        return capacitacionSeleccionada;
+    }
+
+    public void setCapacitacionSeleccionada(Capacitacion capacitacionSeleccionada) {
+        this.capacitacionSeleccionada = capacitacionSeleccionada;
+    }
+    
+    public SelectItem[] getEstadoCapacitacion() {
+        return estadoCapacitacion;
+    }
+
+    public void setEstadoCapacitacion(SelectItem[] estadoCapacitacion) {
+        this.estadoCapacitacion = estadoCapacitacion;
+    }
     
     public String getCodCap() {
         return codCap;
@@ -105,13 +141,13 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
         this.status = status;
     }
 
-    public BigDecimal getCostoRazon() {
-        return costoRazon;
-    }
-
-    public void setCostoRazon(BigDecimal costoRazon) {
-        this.costoRazon = costoRazon;
-    }
+//    public BigDecimal getCostoRazon() {
+//        return costoRazon;
+//    }
+//
+//    public void setCostoRazon(BigDecimal costoRazon) {
+//        this.costoRazon = costoRazon;
+//    }
 
     public BigDecimal getDuracion() {
         return duracion;
@@ -322,13 +358,13 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
         this.listaTemas = listaTemas;
     }
 
-    public DataTable getTableCapacitaciones() {
-        return tableCapacitaciones;
-    }
-
-    public void setTableCapacitaciones(DataTable tableCapacitaciones) {
-        this.tableCapacitaciones = tableCapacitaciones;
-    }
+//    public DataTable getTableCapacitaciones() {
+//        return tableCapacitaciones;
+//    }
+//
+//    public void setTableCapacitaciones(DataTable tableCapacitaciones) {
+//        this.tableCapacitaciones = tableCapacitaciones;
+//    }
 
     public String getNombre() {
         return nombre;
@@ -356,25 +392,23 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
         setFechaFinal(null);
         setFechaInicial(null);
         setRazon(null);
-        setCostoRazon(null);
+//        setCostoRazon(null);
         setDuracion(null);
         setCodArea(null);
         setCodCapacitador(null);
         setCodTema(null);
         getSessionBeanCAP().setCapacitacionSeleccionada(null);
     }
-    
-    public capacitacionesBackendBean(){
-        
-    }
-    
+       
     public void consultar$vh$action() {
+        setCapacitacionSeleccionada(null);
         setEstadoAccion(0);
         setDetalleSelec(null);
         setNomEmp(null);
     }
 
     public void nuevo$vh$action() {
+        setCapacitacionSeleccionada(null);
         setEstadoAccion(2);
         setStatus("G");
     }
@@ -412,7 +446,7 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
         setDuracion(cap.getDuracion());
         setImpartido(cap.getImpartidaPor());
         setRazon(cap.getRazon());
-        setCostoRazon(cap.getCostoRazon());
+        //setCostoRazon(cap.getCostoRazon());
         setCodArea(cap.getCapacitacionAreas().getCapacitacionAreasPK().getCodArea());
         setCodTema(cap.getCapacitacionTemas().getCapacitacionTemasPK().getCodTema());
         setCodCapacitador(cap.getCapacitadores().getCapacitadoresPK().getCodCapacitador());
@@ -437,108 +471,79 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
     public String guardar$cap$action() {
         isError = Boolean.FALSE;
         validaCampos$action();
-        Short c = getSessionBeanADM().getCompania().getCodCia();
-        if (isError) {
-            return null;
-        }
+        if (isError) return null;
         
-        Capacitacion capacitacion = new Capacitacion();
-        //Concurso concurso = new Concurso();
+        
         /* Crear Capacitacion */
         if (getSessionBeanADM().getEstadoAccion().equals(2)) {
-            CapacitacionPK pk = new CapacitacionPK();
-            pk.setCodCia(c);
-            Cias ciaCod = getSessionBeanADM().getCompania();
-            Integer cod = capacitacionSessionBean.getMaxCapacitacion(ciaCod);
-            pk.setCodCapacitacion(cod);
+            Capacitacion capacitacion = new Capacitacion();
+            CapacitacionPK pk = new CapacitacionPK(getEmpresa().getCodCia(), capacitacionSessionBean.getMaxCapacitacion(getEmpresa()));
             capacitacion.setCapacitacionPK(pk);
-            CapacitacionAreas area = capacitacionSessionBean.findByAreaId(new CapacitacionAreasPK(getSessionBeanADM().getCompania().getCodCia(), codArea));
-            capacitacion.setCapacitacionAreas(area);
-            CapacitacionTemas tema = capacitacionSessionBean.findByTemaId(new CapacitacionTemasPK(getSessionBeanADM().getCompania().getCodCia(),area.getCapacitacionAreasPK().getCodArea(), codTema));
-            capacitacion.setCapacitacionTemas(tema);
-            Capacitadores capacitador = capacitacionSessionBean.findByCapId(new CapacitadoresPK(getSessionBeanADM().getCompania().getCodCia(), codCapacitador));
-            capacitacion.setCapacitadores(capacitador);
-            capacitacion.setStatus(status);
+            capacitacion.setCapacitacionAreas(capacitacionSessionBean.findByAreaId(new CapacitacionAreasPK(getEmpresa().getCodCia(), codArea)));
+            capacitacion.setCapacitacionTemas(capacitacionSessionBean.findByTemaId(new CapacitacionTemasPK(getEmpresa().getCodCia(), codArea, codTema)));
+            capacitacion.setCapacitadores(capacitacionSessionBean.findByCapId(new CapacitadoresPK(getEmpresa().getCodCia(), codCapacitador)));
+            capacitacion.setInstituciones(capacitacionSessionBean.findByInstId(new InstitucionesPK(getEmpresa().getCodCia(),inst)));
+            capacitacion.setStatus("G");            
             capacitacion.setNomCapacitacion(nombre.toUpperCase());
-            InstitucionesPK instPK = new InstitucionesPK(c,inst);
-            Instituciones instucion = capacitacionSessionBean.findByInstId(instPK);
-            capacitacion.setInstituciones(instucion);
             capacitacion.setFechaDesde(fechaInicial);
             capacitacion.setFechaHasta(fechaFinal);
             capacitacion.setDuracion(duracion);
-            //capacitacion.setImpartidaPor(impartido.toUpperCase());
-            capacitacion.setRazon(razon.toUpperCase());
-            capacitacion.setCostoRazon(costoRazon);
+            capacitacion.setImpartidaPor(impartido);
+            capacitacion.setRazon(razon);
             try {
                 capacitacionSessionBean.guardarCapacitacion(capacitacion);
                 addMessage("Mantenimiento de Capacitaciones.", "Datos guardados con éxito", TipoMensaje.INFORMACION);
                 limpiarCampos();
             } catch (Exception e) {
                 addMessage("Mantenimiento de Capacitaciones.", "Ha ocurrido un error al intentar guardar la capacitacion.", TipoMensaje.ERROR);
-                System.out.println(e.getMessage());
+                logger.log(Level.SEVERE, "Ha ocurrido un error al intentar guardar la capacitacion.", e);
             }
         } else if (getSessionBeanADM().getEstadoAccion().equals(1)) {
+            
             /* Modificar Concurso */
-            capacitacion = getSessionBeanCAP().getCapacitacionSeleccionada();
-            if (capacitacion == null) {
+            if (getCapacitacionSeleccionada() == null) {
                 addMessage("Mantenimiento de Concursos.", "No ha seleccionado ningún concurso para editar.", TipoMensaje.ERROR);
                 return null;
             }
-            CapacitacionAreas area = capacitacionSessionBean.findByAreaId(new CapacitacionAreasPK(getSessionBeanADM().getCompania().getCodCia(), codArea));
-            capacitacion.setCapacitacionAreas(area);
-            CapacitacionTemasPK temaPK = new CapacitacionTemasPK(getSessionBeanADM().getCompania().getCodCia(),area.getCapacitacionAreasPK().getCodArea(), codTema);
-            CapacitacionTemas tema = capacitacionSessionBean.findByTemaId(temaPK);
-            capacitacion.setCapacitacionTemas(tema);
-            CapacitadoresPK capPK = new CapacitadoresPK(getSessionBeanADM().getCompania().getCodCia(), codCapacitador);
-            Capacitadores capacitador = capacitacionSessionBean.findByCapId(capPK);
-            capacitacion.setCapacitadores(capacitador);
-            capacitacion.setNomCapacitacion(nombre);
-            InstitucionesPK instPK = new InstitucionesPK(c, inst);
-            Instituciones instucion = capacitacionSessionBean.findByInstId(instPK);
-            capacitacion.setInstituciones(instucion);
-            capacitacion.setFechaDesde(fechaInicial);
-            capacitacion.setFechaHasta(fechaFinal);
-            capacitacion.setDuracion(duracion);
-            capacitacion.setImpartidaPor(impartido);
-            capacitacion.setRazon(razon);
-            capacitacion.setCostoRazon(costoRazon);
-            capacitacion.setStatus(status);
+            
+            getCapacitacionSeleccionada().setCapacitacionAreas(capacitacionSessionBean.findByAreaId(new CapacitacionAreasPK(getEmpresa().getCodCia(), codArea)));           
+            getCapacitacionSeleccionada().setCapacitacionTemas(capacitacionSessionBean.findByTemaId(new CapacitacionTemasPK(getEmpresa().getCodCia(), codArea, codTema)));
+            getCapacitacionSeleccionada().setCapacitadores(capacitacionSessionBean.findByCapId(new CapacitadoresPK(getEmpresa().getCodCia(), codCapacitador)));
+            getCapacitacionSeleccionada().setInstituciones(capacitacionSessionBean.findByInstId(new InstitucionesPK(getEmpresa().getCodCia(), inst)));
+            getCapacitacionSeleccionada().setNomCapacitacion(nombre);            
+            getCapacitacionSeleccionada().setFechaDesde(fechaInicial);
+            getCapacitacionSeleccionada().setFechaHasta(fechaFinal);
+            getCapacitacionSeleccionada().setDuracion(duracion);
+            getCapacitacionSeleccionada().setImpartidaPor(impartido);
+            getCapacitacionSeleccionada().setRazon(razon);
+            getCapacitacionSeleccionada().setStatus(status);
             try {
-                capacitacionSessionBean.editarCapacitacion(capacitacion);
+                capacitacionSessionBean.editarCapacitacion(getCapacitacionSeleccionada());
                 addMessage("Mantenimiento de Capacitacion.", "Datos actualizados con éxito", TipoMensaje.INFORMACION);
                 limpiarCampos();
             } catch (Exception e) {
                 addMessage("Mantenimiento de Capacitacion.", "Ha ocurrido un error al intentar actualizar la Capacitacion.", TipoMensaje.ERROR);
-                System.out.println(e.getMessage());
+                logger.log(Level.SEVERE, "Ha ocurrido un error al intentar actualizar la Capacitacion.", e);
             }
         }
 
         return null;
     }
-    
-    public void onRowSelectConcurso(SelectEvent event) {
-        getSessionBeanCAP().setCapacitacionSeleccionada((Capacitacion) event.getObject());
-    }
-
-    public void onRowUnSelectConcurso(UnselectEvent event) {
-        getSessionBeanCAP().setCapacitacionSeleccionada(null);
-    }
-    
+       
     public void eliminar$crud$action(ActionEvent actionEvent) {
-        if (getSessionBeanCAP().getCapacitacionSeleccionada() == null) {
-            addMessage("Mantenimiento de Capacitaciones", "Primero seleccione una Capacitacion", TipoMensaje.ERROR);
+        if (getCapacitacionSeleccionada() == null) {
+            addMessage("Mantenimiento de Capacitaciones", "Primero seleccione una Capacitación", TipoMensaje.ERROR);
             return;
         }
         try {
-            Capacitacion capEliminar = getSessionBeanCAP().getCapacitacionSeleccionada();
-            capacitacionSessionBean.eliminarCapacitacion(capEliminar);
+            capacitacionSessionBean.eliminarCapacitacion(getCapacitacionSeleccionada());
             addMessage("Mantenimiento de Capacitaciones.", "Datos eliminados con éxito", TipoMensaje.INFORMACION);
+            setListaCap(capacitacionSessionBean.findCapByEmpresa(getSessionBeanADM().getCompania()));
             limpiarCampos();
         } catch (Exception e) {
-            addMessage("Mantenimiento de Capacitacion.", "Ha ocurrido un error al intentar remover la Capacitacion.", TipoMensaje.ERROR);
-            System.out.println(e.getMessage());
+            addMessage("Mantenimiento de Capacitacion.", "Ha ocurrido un error al intentar remover la Capacitación.", TipoMensaje.ERROR);
+            logger.log(Level.SEVERE, "Ha ocurrido un error al intentar remover la Capacitación.", e);
         }
-        listaCap = capacitacionSessionBean.findCapByEmpresa(getSessionBeanADM().getCompania());
     }
     
         //participantes-------------------------------------------------------------
@@ -751,3 +756,4 @@ public class capacitacionesBackendBean extends AbstractJSFPage implements Serial
     }
        
 }
+//754 getSessionBeanCAP().getCapacitacionSeleccionada() E L I M I N A R

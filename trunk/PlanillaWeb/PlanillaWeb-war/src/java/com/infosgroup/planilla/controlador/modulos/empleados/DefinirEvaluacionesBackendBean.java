@@ -204,6 +204,7 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
 
             for (Evaluador e : evaluadores) {
                 List<Evaluacion> evaluacion = new ArrayList<Evaluacion>();
+                planillaSessionBean.eliminarEvaluadorEvaluaciones(e.getPreEvaluacion(), e.getEmpleados());
                 for (Evaluado z : e.getEvaluadoList()) {
                     Evaluacion v = new Evaluacion();
                     EvaluacionPK pk = new EvaluacionPK();
@@ -234,7 +235,7 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
                     e.getEmpleados().setEvaluacionList(new ArrayList<Evaluacion>());
                     e.getEmpleados().getEvaluacionList().addAll(evaluacion);
                 }
-
+                
                 planillaSessionBean.actualizarEmpleado(e.getEmpleados());
                 e.setEstado("A");
                 empleadosBean.editarEvaluador(e);
@@ -248,6 +249,10 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
         return null;
     }
 
+    public void removerEvaluaciones( PreEvaluacion preevaluacion, Empleados empleado){
+        
+    }
+    
     public String mostrarEvaluadores() {
         setFiltroBusqueda("N");
         setModoBusqueda(Boolean.FALSE);
@@ -410,6 +415,7 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
 
     public String actualizarEvaluados() {
         if (evaluadorSeleccionado == null) {
+            logger.log(Level.SEVERE, "Evaluador seleccionado esta nulo.");
             return null;
         }
         if (evaluadorSeleccionado.getEvaluadoList() != null) {

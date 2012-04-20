@@ -49,7 +49,7 @@ public class SeleccionEvaluacionBackendBean extends AbstractJSFPage implements S
     private List<Evaluacion> listaEvaluaciones;
 
     public List<Evaluacion> getListaEvaluaciones() {
-        listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada) : null;
+        listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada, getSessionBeanEMP().getEmpleadoSesion()) : null;
         return listaEvaluaciones;
     }
 
