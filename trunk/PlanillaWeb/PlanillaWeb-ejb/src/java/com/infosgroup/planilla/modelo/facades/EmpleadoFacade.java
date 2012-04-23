@@ -197,9 +197,9 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
         .setParameter(5, preevaluacion.getPreEvaluacionPK().getPlantilla())
         .setParameter(6, empleado.getEmpleadosPK().getCodEmp())
         .executeUpdate();
-
+        /*
         em.createNativeQuery(        
-        "delete evaluacion b where (b.cod_cia, b.periodo, b.cod_campania, b.tipo_evaluacion, b.plantilla, b.cod_emp) in( "+
+        "delete evaluacion b where (b.cod_cia, b.periodo, b.cod_campania, b.tipo_evaluacion, b.plantilla, b.cod_emp) in ( "+
         "select b.cod_cia, b.periodo, b.cod_campania, b.tipo_evaluacion, b.plantilla, b.cod_emp from evaluador_evaluaciones a, evaluacion b "+
         "where a.cod_cia = ? and a.periodo = ? and a.campania = ? and a.tipo_evaluacion = ? and a.plantilla = ? and a.evaluador = ? "+
         "and b.cod_cia = a.cod_cia and b.periodo = a.periodo and b.cod_campania = a.campania "+
@@ -211,6 +211,6 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
         .setParameter(5, preevaluacion.getPreEvaluacionPK().getPlantilla())
         .setParameter(6, empleado.getEmpleadosPK().getCodEmp())
         .executeUpdate();
-        
+        */
     }
 }
