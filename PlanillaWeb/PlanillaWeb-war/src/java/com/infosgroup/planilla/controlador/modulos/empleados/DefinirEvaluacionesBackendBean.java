@@ -226,19 +226,19 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
                     //empleadosBean.EliminarEvaluacion(v);
                 }
                 Empleados empleado = empleadosBean.buscarEmpleadoPorPK( e.getEmpleados().getEmpleadosPK() );
-                List<Evaluacion> en = empleado.getEvaluacionList();
-                if (en != null && !en.isEmpty()) {
-                    for (Evaluacion n : evaluacion) {
-                        if (!en.contains(n)) {
-                            empleado.getEvaluacionList().add(n);
-                            logger.log(Level.SEVERE, "Agregando {0} a {1}", new Object[]{empleado.getNombreCompleto(), e.getEmpleados().getNombreCompleto()});
-                        }
-                    }
-                } else {
-                    empleado.setEvaluacionList(new ArrayList<Evaluacion>());
-                    empleado.getEvaluacionList().addAll(evaluacion);
-                     logger.log(Level.SEVERE, "Se agregaron todos a {0}", new Object[]{ e.getEmpleados().getNombreCompleto()});
-                }
+//                List<Evaluacion> en = empleado.getEvaluacionList();
+//                if (en != null && !en.isEmpty()) {
+//                    for (Evaluacion n : evaluacion) {
+//                        if (!en.contains(n)) {
+//                            empleado.getEvaluacionList().add(n);
+//                            logger.log(Level.SEVERE, "Agregando {0} a {1}", new Object[]{empleado.getNombreCompleto(), e.getEmpleados().getNombreCompleto()});
+//                        }
+//                    }
+//                } else {
+                empleado.setEvaluacionList(new ArrayList<Evaluacion>());
+                empleado.getEvaluacionList().addAll(evaluacion);
+                logger.log(Level.SEVERE, "Se agregaron todos a {0}", new Object[]{ e.getEmpleados().getNombreCompleto()});
+//                }
 
                 planillaSessionBean.actualizarEmpleado(empleado);
                 e.setEstado("A");
@@ -306,13 +306,13 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
         castListaEmpleadosToEvaluador(planillaSessionBean.findEmpleadosByPuestos(new Puestos(new PuestosPK(getSessionBeanADM().getCompania().getCodCia(), puesto))));
     }
 
-    public void rowSelectListener(SelectEvent event) {
-        getSessionBeanEMP().setPreEvaluacionSeleccionada((PreEvaluacion) event.getObject());
-    }
-
-    public void rowUnSelectListener(UnselectEvent event) {
-        getSessionBeanEMP().setPreEvaluacionSeleccionada(null);
-    }
+//    public void rowSelectListener(SelectEvent event) {
+//        getSessionBeanEMP().setPreEvaluacionSeleccionada((PreEvaluacion) event.getObject());
+//    }
+//
+//    public void rowUnSelectListener(UnselectEvent event) {
+//        getSessionBeanEMP().setPreEvaluacionSeleccionada(null);
+//    }
 
     public String eliminarEvaluador() {
         if (evaluadores != null && !evaluadores.isEmpty()) {
@@ -464,5 +464,10 @@ public class DefinirEvaluacionesBackendBean extends AbstractJSFPage implements S
 
     @Override
     protected void limpiarCampos() {
+    }
+    
+    public String seleccionarAction(){
+        getSessionBeanEMP().setPreEvaluacionSeleccionada(getPreEvaluacionSeleccionada());
+        return null;
     }
 }

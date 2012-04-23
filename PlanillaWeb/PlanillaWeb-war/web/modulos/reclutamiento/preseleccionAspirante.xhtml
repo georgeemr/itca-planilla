@@ -182,23 +182,23 @@
             selectionMode="multiple"
             -->
             <p:spacer height="15" />
-                <p:dataTable id="criteriosDisponibles" var="criterio" value="#{reclutamiento$preseleccionAspirante.criteriosDisponibles}" emptyMessage="No se han encontrado mas Criterios" 
-                             paginator="true" rows="5" onRowSelectUpdate="principalForm:criteriosDisponibles,principalForm:criteriosSeleccionados"
-                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                             rowsPerPageTemplate="5,10,25,50,100" >  
+            <p:dataTable id="criteriosDisponibles" var="criterio" value="#{reclutamiento$preseleccionAspirante.criteriosDisponibles}" emptyMessage="No se han encontrado mas Criterios" 
+                         paginator="true" rows="5" onRowSelectUpdate="principalForm:criteriosDisponibles,principalForm:criteriosSeleccionados"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="5,10,25,50,100" >  
 
-                    <p:column headerText="Criterio" filterMatchMode="contains"
-                              filterBy="#{criterio.nombre}" >  
-                        <h:outputLabel value="#{criterio.nombre}" />  
-                    </p:column>  
+                <p:column headerText="Criterio" filterMatchMode="contains"
+                          filterBy="#{criterio.nombre}" >  
+                    <h:outputLabel value="#{criterio.nombre}" />  
+                </p:column>  
 
-                    <p:column headerText="A&ntilde;adir" style="width: 5%;" >
-                        <p:commandButton  id="cmdAgregarCriterio"  image="ui-icon-circle-plus" title="Agregar este Evaluador." update="principalForm:mensajes,principalForm:criteriosSeleccionados" action="#{reclutamiento$preseleccionAspirante.agregarCriterio}" >
-                            <f:setPropertyActionListener value="#{criterio}" target="#{reclutamiento$preseleccionAspirante.criterio}" />  
-                        </p:commandButton>
-                    </p:column>
-                    
-                </p:dataTable>  
+                <p:column headerText="A&ntilde;adir" style="width: 5%;" >
+                    <p:commandButton  id="cmdAgregarCriterio"  image="ui-icon-circle-plus" title="Agregar este Evaluador." update="principalForm:mensajes,principalForm:criteriosSeleccionados" action="#{reclutamiento$preseleccionAspirante.agregarCriterio}" >
+                        <f:setPropertyActionListener value="#{criterio}" target="#{reclutamiento$preseleccionAspirante.criterio}" />  
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>  
 
             <!-- /p:fieldset -->
 
@@ -441,22 +441,17 @@
                                          update="mensajes,calFechaInicial,calFechaFinal,tablaConcursos,principalForm:criteriosDisponibles,panelAcciones" />
                     </h:panelGrid>
                     <p:spacer width="4" />
+                    <!--binding="# {reclutamiento$preseleccionAspirante.tableConcursos}" onRowSelectUpdate="panelAcciones,panelProceso" onRowUnselectUpdate="panelAcciones,panelProceso" selectionMode="single" rowSelectListener="# {reclutamiento$preseleccionAspirante.onRowSelectConcurso}" rowUnselectListener="# {reclutamiento$preseleccionAspirante.onRowUnSelectConcurso}" -->
                     <p:dataTable id="tablaConcursos" paginator="true" emptyMessage="No se han encontrado concursos."
-                                 var="concurso" rows="5"  onRowSelectUpdate="panelAcciones,panelProceso" onRowUnselectUpdate="panelAcciones,panelProceso"
-                                 value="#{reclutamiento$preseleccionAspirante.listaConcurso}"
-                                 binding="#{reclutamiento$preseleccionAspirante.tableConcursos}"
-                                 paginatorAlwaysVisible="true" selectionMode="single"
-                                 rowSelectListener="#{reclutamiento$preseleccionAspirante.onRowSelectConcurso}"
-                                 rowUnselectListener="#{reclutamiento$preseleccionAspirante.onRowUnSelectConcurso}"
+                                 var="concurso" rows="5" value="#{reclutamiento$preseleccionAspirante.listaConcurso}"
+                                 paginatorAlwaysVisible="true" 
+                                 rowStyleClass="#{reclutamiento$preseleccionAspirante.concursoSeleccionado eq concurso ? 'elementoSeleccionado': ''}"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
                         <f:facet name="header">
                             <h:outputText value="Concursos"/>
                         </f:facet>
 
-                        <p:column sortBy="#{concurso.concursoPK.codConcurso}">
-                            <f:facet name="header">
-                                C&oacute;digo
-                            </f:facet>
+                        <p:column sortBy="#{concurso.concursoPK.codConcurso}" headerText="C&oacute;digo" >
                             <h:outputLabel value="#{concurso.concursoPK.codConcurso}"/>
                         </p:column>
 
@@ -466,40 +461,36 @@
                             <h:outputLabel value="#{concurso.nombre}"/>
                         </p:column> 
 
-                        <p:column sortBy="#{concurso.fechaInicial}">
-                            <f:facet name="header">
-                                Fecha inicial
-                            </f:facet>
+                        <p:column sortBy="#{concurso.fechaInicial}" headerText="Fecha inicial" >
                             <h:outputLabel value="#{concurso.fechaInicial}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputLabel>
                         </p:column>    
 
-                        <p:column sortBy="#{concurso.fechaFinal}">
-                            <f:facet name="header">
-                                Fecha final
-                            </f:facet>
+                        <p:column sortBy="#{concurso.fechaFinal}" headerText="Fecha final" >
                             <h:outputLabel value="#{concurso.fechaFinal}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputLabel>
                         </p:column>         
 
-                        <p:column sortBy="#{concurso.numeroPlazas}">
-                            <f:facet name="header">
-                                N&uacute;mero de plazas
-                            </f:facet>
+                        <p:column sortBy="#{concurso.numeroPlazas}" headerText="Plazas">
                             <h:outputLabel value="#{concurso.numeroPlazas}" />
                         </p:column> 
 
                         <p:column sortBy="#{concurso.puestos.nomPuesto}"
                                   filterBy="#{concurso.puestos.nomPuesto}"
-                                  filterMatchMode="contains">
-                            <f:facet name="header">
-                                Puesto
-                            </f:facet>
+                                  filterMatchMode="contains" headerText="Puesto" >
                             <h:outputLabel value="#{concurso.puestos.nomPuesto}" />
                         </p:column> 
+                        
+                        <p:column headerText="Seleccionar" >
+                            <p:commandButton  id="cmdSeleccionar" update="principalForm:panelAcciones,principalForm:tablaConcursos,principalForm:panelProceso" image="ui-icon-circle-check" title="Seleccionar Concurso"  >
+                                <f:setPropertyActionListener value="#{concurso}" target="#{reclutamiento$preseleccionAspirante.concursoSeleccionado}" /> 
+                            </p:commandButton>
+                        </p:column>
+                        
                     </p:dataTable>
+
                     <p:spacer height="20" />
                 </p:panel>
                 <p:spacer height="20" />
@@ -615,7 +606,7 @@
                                           filterMatchMode="contains" headerText="Criterio " >
                                     <h:outputLabel value="#{criterio.nombre}" />
                                 </p:column>
-                                
+
                                 <p:column headerText="Remover" style="width: 5%;" >
                                     <p:commandButton  id="cmdEliminarCriterio"  image="ui-icon-circle-minus" update="principalForm:criteriosSeleccionados" action="#{reclutamiento$preseleccionAspirante.eliminarCriterio}" >
                                         <f:setPropertyActionListener value="#{criterio}" target="#{reclutamiento$preseleccionAspirante.criterio}" />  

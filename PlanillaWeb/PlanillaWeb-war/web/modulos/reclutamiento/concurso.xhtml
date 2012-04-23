@@ -127,77 +127,59 @@
 
         <p:fieldset legend="Consulta de Concursos" rendered="#{(SessionBeanADM.estadoAccion eq 2)}" >
 
+            <!--selection="# {SessionBeanREC.concursoSeleccionado}" binding="# {reclutamiento$concursos.tableConcursos}" selectionMode="single"  rowSelectListener="# {reclutamiento$concursos.onRowSelectConcurso}" rowUnselectListener="# {reclutamiento$concursos.onRowUnSelectConcurso}" -->
             <p:spacer height="20" />
-            <p:dataTable id="tablaConcursos"
-                         var="concurso" rows="5"  paginator="true" 
+            <p:dataTable id="tablaConcursos" var="concurso" rows="5"  paginator="true" 
                          value="#{reclutamiento$concursos.listaConcursos}"
+                         rowStyleClass="#{SessionBeanREC.concursoSeleccionado eq concurso ? 'elementoSeleccionado': ''}"
                          emptyMessage="No se han encontrado Concursos."
-                         binding="#{reclutamiento$concursos.tableConcursos}"
-                         paginatorAlwaysVisible="true" selectionMode="single" 
-                         selection="#{SessionBeanREC.concursoSeleccionado}"
-                         rowSelectListener="#{reclutamiento$concursos.onRowSelectConcurso}"  
-                         rowUnselectListener="#{reclutamiento$concursos.onRowUnSelectConcurso}"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" paginatorAlwaysVisible="true"  >
                 <f:facet name="header">
                     <h:outputText value="Concursos"/>
                 </f:facet>
 
-                <p:column sortBy="#{concurso.concursoPK.codConcurso}">
-                    <f:facet name="header">
-                        C&oacute;digo
-                    </f:facet>
+                <p:column sortBy="#{concurso.concursoPK.codConcurso}" headerText="C&oacute;digo" >
                     <h:outputLabel value="#{concurso.concursoPK.codConcurso}"/>
                 </p:column>
 
-                <p:column filterBy="#{concurso.nombre}" 
-                          filterMatchMode="contains"
-                          headerText="Nombre del concurso">
+                <p:column filterBy="#{concurso.nombre}" filterMatchMode="contains" headerText="Nombre del concurso">
                     <h:outputLabel value="#{concurso.nombre}"/>
                 </p:column> 
 
-                <p:column sortBy="#{concurso.fechaInicial}">
-                    <f:facet name="header">
-                        Fecha inicial
-                    </f:facet>
+                <p:column sortBy="#{concurso.fechaInicial}" headerText="Fecha inicial" >
                     <h:outputLabel value="#{concurso.fechaInicial}" >
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </h:outputLabel>
                 </p:column>    
 
-                <p:column sortBy="#{concurso.fechaFinal}">
-                    <f:facet name="header">
-                        Fecha final
-                    </f:facet>
+                <p:column sortBy="#{concurso.fechaFinal}" headerText="Fecha final" >
                     <h:outputLabel value="#{concurso.fechaFinal}" >
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </h:outputLabel>
                 </p:column>         
 
 
-                <p:column sortBy="#{concurso.numeroPlazas}">
-                    <f:facet name="header">
-                        N&uacute;mero de plazas
-                    </f:facet>
+                <p:column sortBy="#{concurso.numeroPlazas}" headerText="Plazas" >
                     <h:outputLabel value="#{concurso.numeroPlazas}" />
                 </p:column> 
 
                 <p:column sortBy="#{concurso.puestos.nomPuesto}"
                           filterBy="#{concurso.puestos.nomPuesto}"
-                          filterMatchMode="contains">
-                    <f:facet name="header">
-                        Puesto
-                    </f:facet>
+                          filterMatchMode="contains" headerText="Puesto" >
                     <h:outputLabel value="#{concurso.puestos.nomPuesto}" />
                 </p:column> 
 
                 <p:column filterBy="#{concurso.estadoConcurso.nombre}"
                           filterOptions="#{reclutamiento$concursos.itemEstado}"
-                          filterMatchMode="exact" >
-                    <f:facet name="header">
-                        Estado
-                    </f:facet>
+                          filterMatchMode="exact" headerText="Estado" >
                     <h:outputLabel value="#{concurso.estadoConcurso.nombre}" />
                 </p:column> 
+                
+                <p:column headerText="Seleccionar" >
+                    <p:commandButton  id="cmdSeleccionar" update="principalForm:panelAcciones,principalForm:tablaConcursos" image="ui-icon-circle-check" title="Seleccionar Concurso"  >
+                        <f:setPropertyActionListener value="#{concurso}" target="#{SessionBeanREC.concursoSeleccionado}" /> 
+                    </p:commandButton>
+                </p:column>
                 
             </p:dataTable>
             <p:spacer height="20" />    
