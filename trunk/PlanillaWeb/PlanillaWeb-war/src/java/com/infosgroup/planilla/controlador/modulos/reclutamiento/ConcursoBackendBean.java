@@ -40,7 +40,7 @@ public class ConcursoBackendBean extends AbstractJSFPage implements Serializable
     private List<Puestos> listaPuestos;
     private List<EstadoConcurso> listaEstadoConcurso;
     private List<Concurso> listaConcursos;
-    private DataTable tableConcursos;
+    //private DataTable tableConcursos;
     private SelectItem[] itemEstado;
 
     public ConcursoBackendBean() {
@@ -122,13 +122,13 @@ public class ConcursoBackendBean extends AbstractJSFPage implements Serializable
         this.listaConcursos = listaConcursos;
     }
 
-    public DataTable getTableConcursos() {
-        return tableConcursos;
-    }
-
-    public void setTableConcursos(DataTable tableConcursos) {
-        this.tableConcursos = tableConcursos;
-    }
+//    public DataTable getTableConcursos() {
+//        return tableConcursos;
+//    }
+//
+//    public void setTableConcursos(DataTable tableConcursos) {
+//        this.tableConcursos = tableConcursos;
+//    }
 
     public SelectItem[] getItemEstado() {
         List<EstadoConcurso> k = reclutamientoFacade.getEstadoConcursosByEmpresa(getSessionBeanADM().getCompania());
@@ -251,17 +251,17 @@ public class ConcursoBackendBean extends AbstractJSFPage implements Serializable
         }
     }
 
-    public void onRowSelectConcurso(SelectEvent event) {
-        getSessionBeanREC().setConcursoSeleccionado((Concurso) event.getObject());
-    }
-
-    public void onRowUnSelectConcurso(UnselectEvent event) {
-        getSessionBeanREC().setConcursoSeleccionado(null);
-    }
+//    public void onRowSelectConcurso(SelectEvent event) {
+//        getSessionBeanREC().setConcursoSeleccionado((Concurso) event.getObject());
+//    }
+//
+//    public void onRowUnSelectConcurso(UnselectEvent event) {
+//        getSessionBeanREC().setConcursoSeleccionado(null);
+//    }
 
     @Override
     protected void limpiarCampos() {
-        if (tableConcursos != null){tableConcursos.setSelection(null);}
+        //if (tableConcursos != null){tableConcursos.setSelection(null);}
         setNombreConcurso(null);
         setFechaInicial(null);
         setFechaFinal(null);

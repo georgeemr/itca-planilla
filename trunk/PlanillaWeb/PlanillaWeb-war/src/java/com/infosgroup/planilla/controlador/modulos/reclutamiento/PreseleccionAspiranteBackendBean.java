@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
-import javax.annotation.PostConstruct;
+import java.util.logging.Level;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -25,8 +25,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.RowEditEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
+
 
 /**
  *
@@ -43,7 +42,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private Date fechaInicial;
     private Date fechaFinal;
     private List<Concurso> listaConcurso;
-    private DataTable tableConcursos;
+    //private DataTable tableConcursos;
     private DataTable tableCandidatos;
     private DataTable tableSeleccion;
     private DataTable tableContratacion;
@@ -166,13 +165,13 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         this.candidatoSeleccionado = candidatoSeleccionado;
     }
 
-    public DataTable getTableConcursos() {
-        return tableConcursos;
-    }
-
-    public void setTableConcursos(DataTable tableConcursos) {
-        this.tableConcursos = tableConcursos;
-    }
+//    public DataTable getTableConcursos() {
+//        return tableConcursos;
+//    }
+//
+//    public void setTableConcursos(DataTable tableConcursos) {
+//        this.tableConcursos = tableConcursos;
+//    }
 
     public Date getFechaFinal() {
         return fechaFinal;
@@ -637,12 +636,12 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
 
     public void handleCloseCriterioAdicional(CloseEvent event) {
         if (getCriteriosAdicionales() != null && getCriteriosAdicionales().length > 0) {
-            for (Criterio criterio : getCriteriosAdicionales()) {
+            for (Criterio c : getCriteriosAdicionales()) {
                 if (getCriteriosPrincipales() == null) {
                     setCriteriosPrincipales(new ArrayList<Criterio>());
                 }
-                if (!getCriteriosPrincipales().contains(criterio)) {
-                    getCriteriosPrincipales().add(criterio);
+                if (!getCriteriosPrincipales().contains(c)) {
+                    getCriteriosPrincipales().add(c);
                 }
             }
         }
@@ -665,7 +664,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     protected void limpiarCampos() {
         setFechaInicial(null);
         setFechaFinal(null);
-        tableConcursos.setSelection(null);
+        //tableConcursos.setSelection(null);
         tableCandidatos.setSelection(null);
         setComentarioFinal(null);
         setConcursoSeleccionado(null);
@@ -753,13 +752,13 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
         this.candidatosSeleccionados = candidatosSeleccionados;
     }
 
-    public void onRowSelectConcurso(SelectEvent event) {
-        setConcursoSeleccionado((Concurso) event.getObject());
-    }
-
-    public void onRowUnSelectConcurso(UnselectEvent event) {
-        setConcursoSeleccionado(null);
-    }
+//    public void onRowSelectConcurso(SelectEvent event) {
+//        setConcursoSeleccionado((Concurso) event.getObject());
+//    }
+//
+//    public void onRowUnSelectConcurso(UnselectEvent event) {
+//        setConcursoSeleccionado(null);
+//    }
 
     public Criterio[] getCriteriosAdicionales() {
         return criteriosAdicionales;
@@ -919,7 +918,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
             listaBeneficiarios = candidatoSeleccionado != null ? reclutamientoSessionBean.findBeneficiariosByCandidato(candidatoSeleccionado.getCandidato1()) : new ArrayList<BeneficiarioXCandidato>();
             addMessage("Reclutamiento y Selección", "Datos Guardados con exito.", TipoMensaje.INFORMACION);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.OFF, "Ocurrio el siguiente error al intentar guardar: ", e);
         }
     }
 
@@ -989,7 +988,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
             setCandidatoSeleccionado(null);
         } catch (Exception e) {
             addMessage("Reclutamiento y Selección", "Ocurrio un error al intentar eliminar.", TipoMensaje.ERROR);
-            e.printStackTrace();
+            logger.log(Level.OFF, "Ocurrio el siguiente error al intentar eliminar: ", e);
         }
 
         return null;

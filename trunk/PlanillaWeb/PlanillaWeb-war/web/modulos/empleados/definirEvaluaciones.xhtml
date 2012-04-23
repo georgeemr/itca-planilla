@@ -39,11 +39,11 @@
                         <h:outputLabel value="Seleccione la Campa&ntilde;a para la cual definir&aacute; los evaluadores. No podr&aacute; avanzar al paso 2 sin haber seleccionado una campa&ntilde;a." />
                     </h:panelGrid>
                     <p:spacer height="5" />
+                    <!-- selectionMode="single" selection="# {empleados$definirEvaluaciones.preEvaluacionSeleccionada}" rowSelectListener="# {empleados$definirEvaluaciones.rowSelectListener}" rowUnselectListener="# {empleados$definirEvaluaciones.rowUnSelectListener}" -->
                     <p:dataTable id="tablaCampanias" paginator="true" emptyMessage="No se han encontrado Campa&ntilde;as." rowsPerPageTemplate="5,10,25,50,100"
-                                 var="preEvaluacion" rows="5"  selection="#{empleados$definirEvaluaciones.preEvaluacionSeleccionada}"
-                                 rowSelectListener="#{empleados$definirEvaluaciones.rowSelectListener}"
-                                 rowUnselectListener="#{empleados$definirEvaluaciones.rowUnSelectListener}"
-                                 value="#{empleados$definirEvaluaciones.listaPreEvaluacion}" paginatorAlwaysVisible="true" selectionMode="single"
+                                 value="#{empleados$definirEvaluaciones.listaPreEvaluacion}" var="preEvaluacion" rows="5"  
+                                 paginatorAlwaysVisible="true" 
+                                 rowStyleClass="#{SessionBeanEMP.preEvaluacionSeleccionada eq preEvaluacion ? 'elementoSeleccionado': ''}"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >
 
                         <f:facet name="header">
@@ -57,6 +57,7 @@
                                 <p:column rowspan="2" headerText="Tipo" />
                                 <p:column rowspan="1" colspan="2" headerText="Fecha" />
                                 <p:column rowspan="2" headerText="Periodo" sortBy="#{preEvaluacion.campania.campaniaPK.periodo}" />
+                                <p:column rowspan="2" headerText="Seleccionar" />
                             </p:row>
                             <p:row>
                                 <p:column rowspan="1" headerText="Inicial" sortBy="#{preEvaluacion.campania.fechaInicial}" />
@@ -91,6 +92,12 @@
                         <p:column style="width: 8%" >
                             <h:outputLabel value="#{preEvaluacion.campania.campaniaPK.periodo}" />
                         </p:column> 
+
+                        <p:column>
+                            <p:commandButton  id="cmdSeleccionar" update="principalForm:panelAcciones,principalForm:tablaCampanias" image="ui-icon-circle-check" title="Seleccionar Campa&ntilde;a" action="#{empleados$definirEvaluaciones.seleccionarAction}" >
+                                <f:setPropertyActionListener value="#{preEvaluacion}" target="#{empleados$definirEvaluaciones.preEvaluacionSeleccionada}" /> 
+                            </p:commandButton>
+                        </p:column>
 
                     </p:dataTable>
                 </p:panel>

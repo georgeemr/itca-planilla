@@ -535,13 +535,13 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         }
     }
 
-    public void onRowSelectPuesto(SelectEvent event) {
-        setPuestoSeleccionado((Puestos) event.getObject());
-    }
-
-    public void onRowUnSelectPuesto(UnselectEvent event) {
-        setPuestoSeleccionado(null);
-    }
+//    public void onRowSelectPuesto(SelectEvent event) {
+//        setPuestoSeleccionado((Puestos) event.getObject());
+//    }
+//
+//    public void onRowUnSelectPuesto(UnselectEvent event) {
+//        setPuestoSeleccionado(null);
+//    }
 
 //    public void onRowSelectCriterioPuesto(SelectEvent event) {
 //        setCriterioXPuestoSeleccionado((CriteriosXPuesto) event.getObject());

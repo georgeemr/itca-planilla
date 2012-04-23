@@ -281,25 +281,19 @@
         <p:spacer height="20" rendered="#{(puestosBackendBean.estadoAccion eq 2) }" />
 
         <p:fieldset id="fsConsulta" legend="Consulta de Puestos" rendered="#{(puestosBackendBean.estadoAccion eq 2)}" >
-
+            <!--  selectionMode="single"  selection="# {puestosBackendBean.puestoSeleccionado}" rowSelectListener="# {puestosBackendBean.onRowSelectPuesto}" rowUnselectListener="# {puestosBackendBean.onRowUnSelectPuesto}" -->
             <p:spacer height="20" />
-            <p:dataTable id="tablaPuesto"
+            <p:dataTable id="tablaPuesto" paginatorAlwaysVisible="true"
                          var="puesto" rows="5"  paginator="true" 
+                         rowStyleClass="#{puestosBackendBean.puestoSeleccionado eq puesto ? 'elementoSeleccionado': ''}"
                          value="#{puestosBackendBean.listaPuestos}"
                          emptyMessage="No se han encontrado Puestos."
-                         paginatorAlwaysVisible="true" selectionMode="single" 
-                         selection="#{puestosBackendBean.puestoSeleccionado}"
-                         rowSelectListener="#{puestosBackendBean.onRowSelectPuesto}"  
-                         rowUnselectListener="#{puestosBackendBean.onRowUnSelectPuesto}"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
                 <f:facet name="header">
                     <h:outputText value="Puestos"/>
                 </f:facet>
 
-                <p:column sortBy="#{puesto.puestosPK.codPuesto}">
-                    <f:facet name="header">
-                        C&oacute;digo
-                    </f:facet>
+                <p:column sortBy="#{puesto.puestosPK.codPuesto}" headerText="C&oacute;digo" >
                     <h:outputLabel value="#{puesto.puestosPK.codPuesto}"/>
                 </p:column>
 
@@ -326,6 +320,12 @@
                           headerText="Estado">
                     <h:outputLabel value="#{puesto.descripcionEstado}"/>
                 </p:column> 
+
+                <p:column headerText="Seleccionar" >
+                    <p:commandButton  id="cmdSeleccionar" update="principalForm:panelAcciones,principalForm:tablaPuesto" image="ui-icon-circle-check" title="Seleccionar Campa&ntilde;a" >
+                        <f:setPropertyActionListener value="#{puesto}" target="#{puestosBackendBean.puestoSeleccionado}" /> 
+                    </p:commandButton>
+                </p:column>
 
             </p:dataTable>
             <p:spacer height="20" />    
