@@ -337,7 +337,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
     }
 
     public List<Instituciones> getListaInst() {
-        listaInst = capacitacionSessionBean.findInstByEmpresa(getSessionBeanADM().getCompania());
+        listaInst = capacitacionSessionBean.findInstByEmpresa(getEmpresa());
         return listaInst;
     }
 
@@ -346,7 +346,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
     }
 
     public List<Capacitacion> getListaCap() {
-        listaCap = capacitacionSessionBean.findCapByEmpresa(getSessionBeanADM().getCompania());
+        listaCap = capacitacionSessionBean.findCapByEmpresa(getEmpresa());
         return listaCap;
     }
 
@@ -355,7 +355,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
     }
 
     public List<CapacitacionAreas> getListaArea() {
-        listaArea = capacitacionSessionBean.findAreaByCap(getSessionBeanADM().getCompania());
+        listaArea = capacitacionSessionBean.findAreaByCap(getEmpresa());
         return listaArea;
     }
 
@@ -364,7 +364,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
     }
 
     public List<Capacitadores> getListaCapacitadores() {
-        listaCapacitadores = capacitacionSessionBean.findCapacitadoresByCap(getSessionBeanADM().getCompania());
+        listaCapacitadores = capacitacionSessionBean.findCapacitadoresByCap(getEmpresa());
         return listaCapacitadores;
     }
 
@@ -374,7 +374,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
 
     public List<CapacitacionTemas> getListaTemas() {
         if (codArea != null && codArea != -1) {
-            listaTemas = capacitacionSessionBean.findTemaByArea(getSessionBeanADM().getCompania(), codArea);
+            listaTemas = capacitacionSessionBean.findTemaByArea(getEmpresa(), codArea);
         }
 
         listaTemas = listaTemas != null ? listaTemas : new ArrayList<CapacitacionTemas>();
@@ -439,21 +439,22 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
 
     public void participante$ver$action() {
         setEstadoAccion(3);
-        participantes$vh$action();
+        //participantes$vh$action();
         setListaDetalle(capacitacionSessionBean.findDetByCap(getEmpresa(), getCapacitacionSeleccionada()));
-        setListaEmpleado(capacitacionSessionBean.findEmpByEmpresa(getSessionBeanADM().getCompania()));
+        setListaEmpleado(capacitacionSessionBean.findEmpByEmpresa(getEmpresa()));
     }
 
     public void asistencia$ver$action() {
         setEstadoAccion(4);
-        participantes$vh$action();
-        listaAsistencia = new ArrayList<CapacitacionAsistencia>();
+        //participantes$vh$action();
+        setListaDetalle(capacitacionSessionBean.findDetByCap(getEmpresa(), getCapacitacionSeleccionada()));
+        //setListaAsistencia ( new ArrayList<CapacitacionAsistencia>());
     }
 
     public void notas$ver$action() {
         setEstadoAccion(5);
-        participantes$vh$action();
-        listaEmpleado = capacitacionSessionBean.findEmpByEmpresa(getSessionBeanADM().getCompania());
+        //participantes$vh$action();
+        setListaEmpleado(capacitacionSessionBean.findEmpByEmpresa(getEmpresa()));
     }
 
     public String editar$cap$action() {
@@ -530,7 +531,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
         /*
          * Crear Capacitacion
          */
-        if (getSessionBeanADM().getEstadoAccion().equals(2)) {
+        if (getEstadoAccion().equals(2)) {
             Capacitacion capacitacion = new Capacitacion();
             CapacitacionPK pk = new CapacitacionPK(getEmpresa().getCodCia(), capacitacionSessionBean.getMaxCapacitacion(getEmpresa()));
             capacitacion.setCapacitacionPK(pk);
@@ -553,7 +554,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
                 addMessage("Mantenimiento de Capacitaciones.", "Ha ocurrido un error al intentar guardar la capacitacion.", TipoMensaje.ERROR);
                 logger.log(Level.SEVERE, "Ha ocurrido un error al intentar guardar la capacitacion.", e);
             }
-        } else if (getSessionBeanADM().getEstadoAccion().equals(1)) {
+        } else if (getEstadoAccion().equals(1)) {
 
             /*
              * Modificar Concurso
@@ -595,7 +596,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
         try {
             capacitacionSessionBean.eliminarCapacitacion(getCapacitacionSeleccionada());
             addMessage("Mantenimiento de Capacitaciones.", "Datos eliminados con éxito", TipoMensaje.INFORMACION);
-            setListaCap(capacitacionSessionBean.findCapByEmpresa(getSessionBeanADM().getCompania()));
+            setListaCap(capacitacionSessionBean.findCapByEmpresa(getEmpresa()));
             limpiarCampos();
         } catch (Exception e) {
             addMessage("Mantenimiento de Capacitacion.", "Ha ocurrido un error al intentar remover la Capacitación.", TipoMensaje.ERROR);
@@ -605,26 +606,26 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
 
     //participantes-------------------------------------------------------------
     public String participantes$vh$action() {
-        if (getSessionBeanCAP().getCapacitacionSeleccionada() == null) {
+        if (getCapacitacionSeleccionada() == null) {
             addMessage("Mantenimiento de Capacitaciones.", "No ha seleccionado ninguna capacitacion para editar.", TipoMensaje.ERROR);
             return null;
         }
-        Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
-        setStatus(cap.getStatus());
-        setInst(cap.getInstituciones().getInstitucionesPK().getCodInsti());
-        setNomCapacitacion(cap.getNomCapacitacion());
-        setNomInst(cap.getInstituciones().getDesInsti());
-        setFechaInicial(cap.getFechaDesde());
-        setFechaFinal(cap.getFechaHasta());
-        setDuracion(cap.getDuracion());
-        setImpartido(cap.getImpartidaPor());
-        setNomArea(cap.getCapacitacionAreas().getNomArea());
-        setNomTema(cap.getCapacitacionTemas().getNomTema());
-        setNomCapacitador(cap.getCapacitadores().getNombre());
-        setNotaCapacitacion(cap.getNotaCapacitacion());
-        //Cias comp = getSessionBeanADM().getCompania();
-        listaDetalle = capacitacionSessionBean.findDetByCap(getSessionBeanADM().getCompania(), cap);
-        setEstadoAccion(3);
+//          Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
+//          setStatus(cap.getStatus());
+//          setInst(cap.getInstituciones().getInstitucionesPK().getCodInsti());
+//          setNomCapacitacion(cap.getNomCapacitacion());
+//          setNomInst(cap.getInstituciones().getDesInsti());
+//          setFechaInicial(cap.getFechaDesde());
+//          setFechaFinal(cap.getFechaHasta());
+//          setDuracion(cap.getDuracion());
+//          setImpartido(cap.getImpartidaPor());
+//          setNomArea(cap.getCapacitacionAreas().getNomArea());
+//          setNomTema(cap.getCapacitacionTemas().getNomTema());
+//          setNomCapacitador(cap.getCapacitadores().getNombre());
+//          setNotaCapacitacion(cap.getNotaCapacitacion());
+//          Cias comp = getSessionBeanADM().getCompania();
+        setListaDetalle(capacitacionSessionBean.findDetByCap(getEmpresa(), getCapacitacionSeleccionada()));
+        //setEstadoAccion(3);
         return null;
     }
 
@@ -768,14 +769,23 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
     }
 
     //Asistencia----------------------------------------------------------------
-    public void onRowSelectDetalleAsistencia(SelectEvent event) {
-        setDetalleSelec((CapacitacionXEmpleado) event.getObject());
+    //public void onRowSelectDetalleAsistencia(SelectEvent event) {
+        //setDetalleSelec((CapacitacionXEmpleado) event.getObject());
         //getSessionBeanCAP().setDetalleCapSeleccionada((CapacitacionXEmpleado) event.getObject());
-        Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
-        CapacitacionXEmpleado detalle = detalleSelec;
-        Empleados empleado = detalle.getEmpleados();
-        listaAsistencia = capacitacionSessionBean.findAsistenciaByDet(getSessionBeanADM().getCompania(), cap, empleado);
-        nomEmp = detalleSelec.getEmpleados().getNombreCompleto();
+        //Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
+        //CapacitacionXEmpleado detalle = detalleSelec;
+        //Empleados empleado = detalle.getEmpleados();
+        //listaAsistencia = capacitacionSessionBean.findAsistenciaByDet(getSessionBeanADM().getCompania(), cap, empleado);
+        //nomEmp = detalleSelec.getEmpleados().getNombreCompleto();
+    //}
+    
+    public String agregarDetalleAsistencia(){
+        if ( getDetalleSelec()==null){
+            addMessage("Mantenimiento de Particiantes.", "No ha seleccionado ningún Participante.", TipoMensaje.ERROR);
+            return null;
+        }
+        setListaAsistencia(capacitacionSessionBean.findAsistenciaByDet(getEmpresa(), getCapacitacionSeleccionada(), getDetalleSelec().getEmpleados()));
+        return null;
     }
 
     public void rowEditListenerAsistencia(RowEditEvent event) {
