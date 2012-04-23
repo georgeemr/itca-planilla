@@ -30,7 +30,7 @@
                              var="emp" update="txtEmp, tlEmp, tblDetalleParticipantes, mensajes, txtEmpAsistencia" 
                              value="#{capacitaciones$capacitaciones.listaEmpleado}" paginatorAlwaysVisible="true"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
-                    <p:column headerText="Codigo" style="width: 8%" filterBy="#{emp.empleadosPK.codEmp}" >
+                    <p:column headerText="C&oacute;digo" style="width: 8%" filterBy="#{emp.empleadosPK.codEmp}" >
                         <h:outputText value="#{emp.empleadosPK.codEmp}"/>
                     </p:column>
                     <p:column headerText="Nombre" filterBy="#{jefe.nombreCompleto}" >
@@ -54,22 +54,29 @@
 
         </p:confirmDialog>
 
-        <p:dialog id="dialogBuscaEmpAsis" widgetVar="dialogBuscaEmpAsis" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="500" height="350">
-            <p:dataTable id="tablBusEmpAsis"
-                         rows="3" paginator="true" onRowSelectComplete="dialogBuscaEmpAsis.hide();"
-                         emptyMessage="No hay Empleados que mostrar"
+        <p:dialog id="dialogBuscaEmpAsis" widgetVar="dialogBuscaEmpAsis" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="700" height="400">
+
+            <h:panelGrid columns="1" >
+                <h:outputLabel value="Seleccione los empleados que necesite para registrar su asistencia." />
+            </h:panelGrid>
+            <p:spacer height="5" />
+            <!-- rowSelectListener="# {capacitaciones$capacitaciones.onRowSelectDetalleAsistencia}" selectionMode="single" onRowSelectComplete="dialogBuscaEmpAsis.hide();" selection="# {capacitaciones$capacitaciones.detalleSelec}" -->
+            <p:dataTable id="tablBusEmpAsis" rows="3" paginator="true" 
+                         emptyMessage="No hay Empleados que mostrar" paginatorAlwaysVisible="true"
                          var="det" update="txtEmpAsistencia, tlEmpAsis, tblAsistencia"
                          value="#{capacitaciones$capacitaciones.listaDetalle}"
-                         selection="#{capacitaciones$capacitaciones.detalleSelec}"
-                         rowSelectListener="#{capacitaciones$capacitaciones.onRowSelectDetalleAsistencia}"  
-                         selectionMode="single"
-                         paginatorAlwaysVisible="true"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
-                <p:column headerText="Codigo" filterBy="#{det.empleados.empleadosPK.codEmp}" >
+
+                <p:column headerText="C&oacute;digo" filterBy="#{det.empleados.empleadosPK.codEmp}" style="width: 8%" >
                     <h:outputText value="#{det.empleados.empleadosPK.codEmp}"/>
                 </p:column>
                 <p:column headerText="Nombre" filterBy="#{jefe.nombreCompleto}" >
                     <h:outputText value="#{det.empleados.nombreCompleto}"/>
+                </p:column>
+                <p:column headerText="Seleccionar" style="width: 8%" >
+                    <p:commandButton  id="cmdSeleccionarEmpleado" update="principalForm:mensajes,principalForm:panelAcciones,principalForm:tblAsistencia" image="ui-icon-circle-check" title="Agregar Empleado" action="#{capacitaciones$capacitaciones.agregarDetalleAsistencia}" >
+                        <f:setPropertyActionListener value="#{det}" target="#{capacitaciones$capacitaciones.detalleSelec}" /> 
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
         </p:dialog>
@@ -457,7 +464,7 @@
                             <td align="right" >
                                 <p:commandButton id="cmdBuscaEmp" onclick="dialogBuscaEmp.show()" value="Agregar Empleado"
                                                  type="button" image="beneficiarios" rendered="#{capacitaciones$capacitaciones.estadoAccion eq 3}" /> 
-                                <p:commandButton id="cmdBuscaEAsistencia" onclick="dialogBuscaEmpAsis.show()" value="Registrar Asistencia" update="tablBusEmpAsis"
+                                <p:commandButton id="cmdBuscaEAsistencia" onclick="dialogBuscaEmpAsis.show()" value="Registrar Asistencia" update="principalForm:tablBusEmpAsis"
                                                  type="button" image="ui-icon ui-icon-search" rendered="#{capacitaciones$capacitaciones.estadoAccion eq 4}"/>
                             </td>
                         </tr>
@@ -523,13 +530,13 @@
             <!--/p:toolbarGroup>
             </p:toolbar>
             </div -->
-        
-            
-        <!--Asistencia-->
+
+
+            <!--Asistencia-->
 
             <!--/p:fieldset-->
             <!-- p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 4) }"/-->
-        <!--p:panel style="border:none;" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 4)}" -->
+            <!--p:panel style="border:none;" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 4)}" -->
             <!--p:fieldset  >
             <h:panelGrid columns="4">
             <h:outputLabel value="Empleado"/>
@@ -577,56 +584,56 @@
                     <p:rowEditor />  
                 </p:column>
             </p:dataTable>
-        </p:panel>
-        <!--Notas-->
-        <p:spacer height="20" rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5) }"/>
-        <p:fieldset rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5)}" >
-            <h:panelGrid columns="4">
-                <h:outputLabel value="Nota General: " />
-                <p:toolbar id="tlNota" >
-                    <p:toolbarGroup align="left">
-                        <p:inputText value="#{capacitaciones$capacitaciones.notaCapacitacion}" id="nota" immediate="true" style=" width: 50px;"/>
-                        <p:commandButton id="cmdGuardarNota" type="push" image="ui-icon ui-icon-disk" action="#{capacitaciones$capacitaciones.guardar$notaCap$action()}"
-                                         update="mensajes, nota"/>
-                    </p:toolbarGroup>
-                </p:toolbar>
-            </h:panelGrid>
-        </p:fieldset>
-        <p:spacer height="20" rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5) }"/>
-        <p:dataTable id="tblDetalleNotas"
-                     rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5) }"
-                     rows="3" paginator="true"
-                     emptyMessage="No hay jefes que mostrar"
-                     rowEditListener="#{capacitaciones$capacitaciones.rowEditListenerNotas}"
-                     var="detalle" update="txtJefe"
-                     value="#{capacitaciones$capacitaciones.listaDetalle}"
-                     selection="#{SessionBeanCAP.detalleCapSeleccionada}"
-                     selectionMode="single"
-                     paginatorAlwaysVisible="true"
-                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
-            <f:facet name="header">
-                <h:outputText value="Notas"/>
-            </f:facet><p:column headerText="Codigo" filterBy="#{detalle.empleados.empleadosPK.codEmp}" >
-                <h:outputText value="#{detalle.empleados.empleadosPK.codEmp}"/>
-            </p:column>
-            <p:column headerText="Nombre" filterBy="#{detalle.empleados.nombreCompleto}" >
-                <h:outputText value="#{detalle.empleados.nombreCompleto}"/>
-            </p:column>
-            <p:column headerText="Nota" filterBy="#{detalle.nota}" >
-                <p:cellEditor>  
-                    <f:facet name="output">  
-                        <h:outputText value="#{detalle.nota}" />  
-                    </f:facet>  
-                    <f:facet name="input">  
-                        <p:inputText value="#{detalle.nota}" style="width:100%" label="Year"/>  
-                    </f:facet>  
-                </p:cellEditor>  
-            </p:column>
-            <p:column headerText="Editar Nota" filterBy="#{detalle.nota}" >
-                <p:rowEditor />  
-            </p:column>
-        </p:dataTable>
 
+            <!--Notas-->
+            <!-- p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 5) }"/ -->
+            <!-- p:fieldset rendered="" -->
+                <h:panelGrid columns="4" rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5)}">
+                    <h:outputLabel value="Nota General: " />
+                    <!--p:toolbar id="tlNota" -->
+                        <!-- p:toolbarGroup align="left"-->
+                            <p:inputText value="#{capacitaciones$capacitaciones.notaCapacitacion}" id="nota" immediate="true" style=" width: 50px;"/>
+                            <p:commandButton id="cmdGuardarNota" type="push" image="ui-icon ui-icon-disk" action="#{capacitaciones$capacitaciones.guardar$notaCap$action()}"
+                                             update="mensajes, nota"/>
+                        <!--/p:toolbarGroup-->
+                    <!-- /p:toolbar-->
+                </h:panelGrid>
+            <!-- /p:fieldset -->
+            <p:spacer height="20" rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5) }"/>
+            <p:dataTable id="tblDetalleNotas"
+                         rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5) }"
+                         rows="3" paginator="true"
+                         emptyMessage="No hay jefes que mostrar"
+                         rowEditListener="#{capacitaciones$capacitaciones.rowEditListenerNotas}"
+                         var="detalle" update="txtJefe"
+                         value="#{capacitaciones$capacitaciones.listaDetalle}"
+                         selection="#{SessionBeanCAP.detalleCapSeleccionada}"
+                         selectionMode="single"
+                         paginatorAlwaysVisible="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
+                <f:facet name="header">
+                    <h:outputText value="Notas"/>
+                </f:facet><p:column headerText="Codigo" filterBy="#{detalle.empleados.empleadosPK.codEmp}" >
+                    <h:outputText value="#{detalle.empleados.empleadosPK.codEmp}"/>
+                </p:column>
+                <p:column headerText="Nombre" filterBy="#{detalle.empleados.nombreCompleto}" >
+                    <h:outputText value="#{detalle.empleados.nombreCompleto}"/>
+                </p:column>
+                <p:column headerText="Nota" filterBy="#{detalle.nota}" >
+                    <p:cellEditor>  
+                        <f:facet name="output">  
+                            <h:outputText value="#{detalle.nota}" />  
+                        </f:facet>  
+                        <f:facet name="input">  
+                            <p:inputText value="#{detalle.nota}" style="width:100%" label="Year"/>  
+                        </f:facet>  
+                    </p:cellEditor>  
+                </p:column>
+                <p:column headerText="Editar Nota" filterBy="#{detalle.nota}" >
+                    <p:rowEditor />  
+                </p:column>
+            </p:dataTable>
+        </p:panel>
 
     </ui:define>
 </ui:composition>
