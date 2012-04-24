@@ -291,7 +291,7 @@ public class Empleados implements Serializable {
         @JoinColumn(name = "PLANTILLA", referencedColumnName = "PLANTILLA", nullable = false),
         @JoinColumn(name = "EMPLEADO", referencedColumnName = "COD_EMP", nullable = false)
     })
-    @ManyToMany
+    @ManyToMany( cascade= CascadeType.ALL )
     private List<Evaluacion> evaluacionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
     private List<CapacitacionXEmpleado> capacitacionXEmpleadoList;

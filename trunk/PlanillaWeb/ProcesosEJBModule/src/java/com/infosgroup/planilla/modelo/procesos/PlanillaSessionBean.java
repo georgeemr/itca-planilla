@@ -618,8 +618,8 @@ public class PlanillaSessionBean {
     }
     
     @PermitAll
-    public void eliminarEvaluadorEvaluaciones(PreEvaluacion preevaluacion, Empleados empleado){
-        empleadoFacade.eliminarEvaluadorEvaluaciones(preevaluacion, empleado);
+    public void eliminarEvaluadorEvaluaciones(PreEvaluacion preevaluacion, Empleados empleado,List<Evaluacion> evaluacion){
+        empleadoFacade.eliminarEvaluadorEvaluaciones(preevaluacion, empleado,evaluacion);
     }
 
     @PermitAll
