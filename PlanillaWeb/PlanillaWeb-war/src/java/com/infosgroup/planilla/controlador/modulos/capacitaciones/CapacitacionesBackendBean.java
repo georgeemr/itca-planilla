@@ -444,6 +444,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
         setCapacitacionSeleccionada(null);
         setEstadoAccion(2);
         setStatus("G");
+        limpiarCampos();
     }
 
     public void participante$ver$action() {
