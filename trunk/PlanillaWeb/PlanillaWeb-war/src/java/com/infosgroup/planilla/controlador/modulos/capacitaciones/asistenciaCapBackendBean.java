@@ -255,7 +255,7 @@ public class asistenciaCapBackendBean extends AbstractJSFPage implements Seriali
         boolean hayError = false;
         CapacitacionAsistencia asistencia = (CapacitacionAsistencia) event.getObject();
         try {
-            asistencia.setAsistio((asistencia.getAsiste()) ? "N" : "S");
+            asistencia.setAsistio((asistencia.getAsiste().equalsIgnoreCase("Si Asistio")) ? "S" : "N");
             capacitacionSessionBean.editarAsistencia(asistencia);
             addMessage("Mantenimiento de Asistencia de Capacitacion.", "Asistencias actualizadas con éxito", TipoMensaje.INFORMACION);
             limpiarCampos();

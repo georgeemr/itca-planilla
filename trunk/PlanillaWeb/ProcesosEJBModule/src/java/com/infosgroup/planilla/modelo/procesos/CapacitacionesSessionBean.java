@@ -6,6 +6,7 @@ package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.facades.*;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;

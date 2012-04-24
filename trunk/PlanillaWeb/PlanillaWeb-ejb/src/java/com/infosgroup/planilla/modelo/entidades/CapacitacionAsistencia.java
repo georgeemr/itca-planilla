@@ -51,7 +51,7 @@ public class CapacitacionAsistencia implements Serializable {
     @ManyToOne(optional = false)
     private Capacitacion capacitacion;
     @Transient
-    private Boolean asiste;
+    private String asiste;
 
     public CapacitacionAsistencia() {
     }
@@ -122,18 +122,18 @@ public class CapacitacionAsistencia implements Serializable {
     }
 
     @XmlTransient
-    public Boolean getAsiste() {
-        if (asistio.equals("N")) {
-            asiste = false;
+    public String getAsiste() {
+        if (asistio==null || asistio.equals("N")) {
+            asiste = "No";
         } else {
             if (asistio.equals("S")) {
-                asiste = true;
+                asiste = "Si";
             }
         }
         return asiste;
     }
 
-    public void setAsiste(Boolean asiste) {
+    public void setAsiste(String asiste) {
         this.asiste = asiste;
     }
 }

@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
 public abstract class AbstractJSFPage implements java.io.Serializable {
 
     public static final Logger logger = Logger.getLogger(AbstractJSFPage.class.getPackage().getName());
+    public final long MILISEGUNDOS_POR_DIA = 24 * 60 * 60 * 1000;
     
     public AbstractJSFPage() {
     }
@@ -118,5 +119,14 @@ public abstract class AbstractJSFPage implements java.io.Serializable {
     
     public boolean isInRole(String rol){
         return FacesContext.getCurrentInstance().getExternalContext().isUserInRole( rol );
+    }
+    
+    public Integer calculaDias(java.util.Date f1, java.util.Date f2) {
+        if (f1 != null && f2 != null) {
+            Long d = ((f2.getTime() - f1.getTime()) / MILISEGUNDOS_POR_DIA) + 1L;
+            return d.intValue();
+        } else {
+            return 0;
+        }
     }
 }

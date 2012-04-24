@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractEditAccionPersonal extends AbstractJSFPage implements java.io.Serializable {
 
-    public final long MILISEGUNDOS_POR_DIA = 24 * 60 * 60 * 1000;
+    //public final long MILISEGUNDOS_POR_DIA = 24 * 60 * 60 * 1000;
     public static final Logger looger = Logger.getLogger(AbstractEditAccionPersonal.class.getPackage().getName());
     private List<TiposPlanilla> listaTipos;
     private List<ProgramacionPla> listaPlanillas;
@@ -64,14 +64,14 @@ public abstract class AbstractEditAccionPersonal extends AbstractJSFPage impleme
         this.listaPlanillas = listaPlanillas;
     }
     
-    public Integer calculaDias(java.util.Date f1, java.util.Date f2) {
-        if (f1 != null && f2 != null) {
-            Long d = ((f2.getTime() - f1.getTime()) / MILISEGUNDOS_POR_DIA) + 1L;
-            return d.intValue();
-        } else {
-            return 0;
-        }
-    }
+//    public Integer calculaDias(java.util.Date f1, java.util.Date f2) {
+//        if (f1 != null && f2 != null) {
+//            Long d = ((f2.getTime() - f1.getTime()) / MILISEGUNDOS_POR_DIA) + 1L;
+//            return d.intValue();
+//        } else {
+//            return 0;
+//        }
+//    }
 
     public String regresar() {
         limpiarCampos();
