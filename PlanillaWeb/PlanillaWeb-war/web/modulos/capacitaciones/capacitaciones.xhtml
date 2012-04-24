@@ -11,8 +11,8 @@
         <p:confirmDialog message="&#191; Esta seguro que desea eliminar la Capacitaci&oacute;n seleccionada?"  
                          showEffect="bounce" hideEffect="explode"  modal="true"
                          header="Eliminar Capacitaci&oacute;n" severity="alert" widgetVar="confirmation">  
-            <p:commandButton value="Si, estoy seguro" update="mensajes, tablaConcursos" oncomplete="confirmation.hide()"  
-                             actionListener="#{capacitaciones$capacitaciones.eliminar$crud$action}" />  
+            <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,principalForm:tablaConcursos,principalForm:panelContenido,principalForm:panelAcciones" oncomplete="confirmation.hide()"  
+                             action="#{capacitaciones$capacitaciones.eliminar$crud$action}" />  
             <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
 
         </p:confirmDialog>  
@@ -588,48 +588,45 @@
             <!--Notas-->
             <!-- p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 5) }"/ -->
             <!-- p:fieldset rendered="" -->
-                <h:panelGrid columns="4" rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5)}">
-                    <h:outputLabel value="Nota General: " />
-                    <!--p:toolbar id="tlNota" -->
-                        <!-- p:toolbarGroup align="left"-->
-                            <p:inputText value="#{capacitaciones$capacitaciones.notaCapacitacion}" id="nota" immediate="true" style=" width: 50px;"/>
-                            <p:commandButton id="cmdGuardarNota" type="push" image="ui-icon ui-icon-disk" action="#{capacitaciones$capacitaciones.guardar$notaCap$action()}"
-                                             update="mensajes, nota"/>
-                        <!--/p:toolbarGroup-->
-                    <!-- /p:toolbar-->
-                </h:panelGrid>
+            <!--p:toolbar id="tlNota" -->
+            <!-- p:toolbarGroup align="left"-->
+            <h:panelGrid columns="3" rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5)}">
+                <h:outputLabel value="Nota General: " />
+                <p:inputText value="#{capacitaciones$capacitaciones.notaCapacitacion}" id="nota" immediate="true" style=" width: 50px;"/>
+                <p:commandButton id="cmdGuardarNota" value="Guardar" image="ui-icon ui-icon-disk" action="#{capacitaciones$capacitaciones.guardar$notaCap$action()}"
+                                 update="mensajes, nota"/>
+            </h:panelGrid>
+            <!--/p:toolbarGroup-->
+            <!-- /p:toolbar-->
             <!-- /p:fieldset -->
-            <p:spacer height="20" rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5) }"/>
-            <p:dataTable id="tblDetalleNotas"
+            <!--p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 5) }"/ -->
+            <!-- selection="# {SessionBeanCAP.detalleCapSeleccionada}" selectionMode="single" -->
+            <p:dataTable id="tblDetalleNotas" paginatorAlwaysVisible="true"
                          rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5) }"
-                         rows="3" paginator="true"
-                         emptyMessage="No hay jefes que mostrar"
+                         rows="3" paginator="true" emptyMessage="No hay notas que mostrar" var="detalle" 
                          rowEditListener="#{capacitaciones$capacitaciones.rowEditListenerNotas}"
-                         var="detalle" update="txtJefe"
                          value="#{capacitaciones$capacitaciones.listaDetalle}"
-                         selection="#{SessionBeanCAP.detalleCapSeleccionada}"
-                         selectionMode="single"
-                         paginatorAlwaysVisible="true"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
                 <f:facet name="header">
                     <h:outputText value="Notas"/>
-                </f:facet><p:column headerText="Codigo" filterBy="#{detalle.empleados.empleadosPK.codEmp}" >
+                </f:facet>
+                <p:column headerText="C&oacute;digo" filterBy="#{detalle.empleados.empleadosPK.codEmp}" style="width: 8%;" >
                     <h:outputText value="#{detalle.empleados.empleadosPK.codEmp}"/>
                 </p:column>
                 <p:column headerText="Nombre" filterBy="#{detalle.empleados.nombreCompleto}" >
                     <h:outputText value="#{detalle.empleados.nombreCompleto}"/>
                 </p:column>
-                <p:column headerText="Nota" filterBy="#{detalle.nota}" >
+                <p:column headerText="Nota" style="width: 5%;" >
                     <p:cellEditor>  
                         <f:facet name="output">  
                             <h:outputText value="#{detalle.nota}" />  
                         </f:facet>  
                         <f:facet name="input">  
-                            <p:inputText value="#{detalle.nota}" style="width:100%" label="Year"/>  
+                            <p:inputText value="#{detalle.nota}" style="width:100%" label="Nota"/>  
                         </f:facet>  
                     </p:cellEditor>  
                 </p:column>
-                <p:column headerText="Editar Nota" filterBy="#{detalle.nota}" >
+                <p:column headerText="Editar Nota" style="width: 5%;" >
                     <p:rowEditor />  
                 </p:column>
             </p:dataTable>

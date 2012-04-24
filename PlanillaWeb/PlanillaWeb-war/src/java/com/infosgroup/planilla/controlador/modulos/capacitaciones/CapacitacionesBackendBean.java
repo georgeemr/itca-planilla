@@ -421,7 +421,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
         setCodArea(null);
         setCodCapacitador(null);
         setCodTema(null);
-        getSessionBeanCAP().setCapacitacionSeleccionada(null);
+        setCapacitacionSeleccionada(null);
     }
 
     public void consultar$vh$action() {
@@ -454,12 +454,13 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
     public void notas$ver$action() {
         setEstadoAccion(5);
         //participantes$vh$action();
-        setListaEmpleado(capacitacionSessionBean.findEmpByEmpresa(getEmpresa()));
+        setListaDetalle(capacitacionSessionBean.findDetByCap(getEmpresa(), getCapacitacionSeleccionada()));
+        //setListaEmpleado(capacitacionSessionBean.findEmpByEmpresa(getEmpresa()));
     }
 
     public String editar$cap$action() {
         if (getCapacitacionSeleccionada() == null) {
-            addMessage("Mantenimiento de Capacitaciones.", "No ha seleccionado ninguna capacitacion para editar.", TipoMensaje.ERROR);
+            addMessage("Mantenimiento de Capacitaciones.", "No ha seleccionado ninguna Capacitación para editar.", TipoMensaje.ERROR);
             return null;
         }
         Capacitacion cap = getCapacitacionSeleccionada();
@@ -527,10 +528,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
             return null;
         }
 
-
-        /*
-         * Crear Capacitacion
-         */
+        // Crear Capacitacion
         if (getEstadoAccion().equals(2)) {
             Capacitacion capacitacion = new Capacitacion();
             CapacitacionPK pk = new CapacitacionPK(getEmpresa().getCodCia(), capacitacionSessionBean.getMaxCapacitacion(getEmpresa()));
@@ -551,14 +549,12 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
                 addMessage("Mantenimiento de Capacitaciones.", "Datos guardados con éxito", TipoMensaje.INFORMACION);
                 limpiarCampos();
             } catch (Exception e) {
-                addMessage("Mantenimiento de Capacitaciones.", "Ha ocurrido un error al intentar guardar la capacitacion.", TipoMensaje.ERROR);
+                addMessage("Mantenimiento de Capacitaciones.", "Ha ocurrido un error al intentar guardar la Capacitación.", TipoMensaje.ERROR);
                 logger.log(Level.SEVERE, "Ha ocurrido un error al intentar guardar la capacitacion.", e);
             }
         } else if (getEstadoAccion().equals(1)) {
 
-            /*
-             * Modificar Concurso
-             */
+            // Modificar Concurso
             if (getCapacitacionSeleccionada() == null) {
                 addMessage("Mantenimiento de Concursos.", "No ha seleccionado ningún concurso para editar.", TipoMensaje.ERROR);
                 return null;
@@ -580,18 +576,18 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
                 addMessage("Mantenimiento de Capacitacion.", "Datos actualizados con éxito", TipoMensaje.INFORMACION);
                 limpiarCampos();
             } catch (Exception e) {
-                addMessage("Mantenimiento de Capacitacion.", "Ha ocurrido un error al intentar actualizar la Capacitacion.", TipoMensaje.ERROR);
-                logger.log(Level.SEVERE, "Ha ocurrido un error al intentar actualizar la Capacitacion.", e);
+                addMessage("Mantenimiento de Capacitacion.", "Ha ocurrido un error al intentar actualizar la Capacitación.", TipoMensaje.ERROR);
+                logger.log(Level.SEVERE, "Ha ocurrido un error al intentar actualizar la Capacitación.", e);
             }
         }
 
         return null;
     }
 
-    public void eliminar$crud$action(ActionEvent actionEvent) {
+    public String eliminar$crud$action() {
         if (getCapacitacionSeleccionada() == null) {
             addMessage("Mantenimiento de Capacitaciones", "Primero seleccione una Capacitación", TipoMensaje.ERROR);
-            return;
+            return null;
         }
         try {
             capacitacionSessionBean.eliminarCapacitacion(getCapacitacionSeleccionada());
@@ -599,15 +595,16 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
             setListaCap(capacitacionSessionBean.findCapByEmpresa(getEmpresa()));
             limpiarCampos();
         } catch (Exception e) {
-            addMessage("Mantenimiento de Capacitacion.", "Ha ocurrido un error al intentar remover la Capacitación.", TipoMensaje.ERROR);
+            addMessage("Mantenimiento de Capacitaciones.", "Ha ocurrido un error al intentar remover la Capacitación.", TipoMensaje.ERROR);
             logger.log(Level.SEVERE, "Ha ocurrido un error al intentar remover la Capacitación.", e);
         }
+        return null;
     }
 
     //participantes-------------------------------------------------------------
     public String participantes$vh$action() {
         if (getCapacitacionSeleccionada() == null) {
-            addMessage("Mantenimiento de Capacitaciones.", "No ha seleccionado ninguna capacitacion para editar.", TipoMensaje.ERROR);
+            addMessage("Mantenimiento de Capacitaciones.", "No ha seleccionado ninguna Capacitación para editar.", TipoMensaje.ERROR);
             return null;
         }
 //          Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
@@ -642,7 +639,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
         //Short c = getSessionBeanADM().getCompania().getCodCia();
         //Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
         if (getCapacitacionSeleccionada().getStatus().equals("N")) {
-            addMessage("Mantenimiento Participantes", "Esta Capacitacion ya fue notificada, no se pueden agregar más participantes", TipoMensaje.INFORMACION);
+            addMessage("Mantenimiento Participantes", "Esta Capacitación ya fue notificada, no se pueden agregar más participantes", TipoMensaje.INFORMACION);
             isError = true;
         }
 //        if (isError) {
@@ -725,7 +722,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
             cap.setStatus("N");
             capacitacionSessionBean.editarCapacitacion(cap);
 
-            addMessage("Mantenimiento de participantes.", "Correos enviados a los Participantes de esta capacitación ", TipoMensaje.INFORMACION);
+            addMessage("Mantenimiento de participantes.", "Correos enviados a los Participantes de esta Capacitación ", TipoMensaje.INFORMACION);
         } catch (Exception e) {
             addMessage("Mantenimiento de Particiantes.", "Ha ocurrido un error al enviar correos a Participantes.", TipoMensaje.ERROR);
             System.out.println(e.getMessage());
@@ -743,7 +740,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
         //isError = false;
         //Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
         if (getCapacitacionSeleccionada().getStatus().equals("N")) {
-            addMessage("Mantenimiento Participantes", "Esta Capacitacion ya fue notificada, no se pueden eliminar participantes", TipoMensaje.INFORMACION);
+            addMessage("Mantenimiento Participantes", "Esta Capacitación ya fue notificada, no se pueden eliminar participantes", TipoMensaje.INFORMACION);
             return null;
             //isError = true;
         }
@@ -789,7 +786,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
     }
 
     public void rowEditListenerAsistencia(RowEditEvent event) {
-        boolean hayError = false;
+        //boolean hayError = false;
         CapacitacionAsistencia asistencia = (CapacitacionAsistencia) event.getObject();
         try {
             asistencia.setAsistio((asistencia.getAsiste()) ? "N" : "S");
@@ -797,43 +794,48 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
             addMessage("Mantenimiento de Asistencia de Capacitacion.", "Asistencias actualizadas con éxito", TipoMensaje.INFORMACION);
             setDetalleSelec(null);
         } catch (Exception e) {
-            addMessage("Mantenimiento de Asistencia de Capacitacion.", "Ha ocurrido un error al intentar actualizar la Asistencia de Capacitacion.", TipoMensaje.ERROR);
-            System.out.println(e.getMessage());
+            addMessage("Mantenimiento de Asistencia de Capacitacion.", "Ha ocurrido un error al intentar actualizar la Asistencia de Capacitación.", TipoMensaje.ERROR);
+            logger.log(Level.SEVERE, "Ha ocurrido un error al intentar actualizar la Asistencia de Capacitación.", e);
+            //System.out.println(e.getMessage());
         }
     }
 
     //Notas---------------------------------------------------------------------
     public void rowEditListenerNotas(RowEditEvent event) {
-        boolean hayError = false;
+        //boolean hayError = false;
         CapacitacionXEmpleado detalle = (CapacitacionXEmpleado) event.getObject();
         //detalle.setNota(nota);
         try {
             capacitacionSessionBean.editarDetalleCapacitacion(detalle);
-            addMessage("Mantenimiento de Detalle de Capacitacion.", "Datos actualizados con éxito", TipoMensaje.INFORMACION);
-            limpiarCampos();
+            addMessage("Mantenimiento de Detalle de Capacitación.", "Datos actualizados con éxito", TipoMensaje.INFORMACION);
+            //limpiarCampos();
         } catch (Exception e) {
-            addMessage("Mantenimiento de Detalle de Capacitacion.", "Ha ocurrido un error al intentar actualizar el Detallle Capacitacion.", TipoMensaje.ERROR);
-            System.out.println(e.getMessage());
+            addMessage("Mantenimiento de Detalle de Capacitación.", "Ha ocurrido un error al intentar actualizar el Detallle Capacitacion.", TipoMensaje.ERROR);
+            logger.log(Level.SEVERE, "Ha ocurrido un error al intentar actualizar el Detallle Capacitacion.", e);
+            //System.out.println(e.getMessage());
         }
     }
 
-    public void guardar$notaCap$action() {
-        isError = false;
+    public String guardar$notaCap$action() {
+        //isError = false;
         if (notaCapacitacion == null) {
-            isError = true;
+            addMessage("Mantenimiento de Detalle de Capacitación.", "Ingrese la nota general.", TipoMensaje.INFORMACION);
+            return null;
+          //  isError = true;
         }
-        if (isError) {
-            return;
-        }
+  //      if (isError) {
+//            return;
+        //}
         try {
-            Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
-            cap.setNotaCapacitacion(notaCapacitacion);
-            capacitacionSessionBean.editarCapacitacion(cap);
-            addMessage("Mantenimiento de Detalle de Capacitacion.", "Nota general actualizada con éxito", TipoMensaje.INFORMACION);
+            //Capacitacion cap = getSessionBeanCAP().getCapacitacionSeleccionada();
+            getCapacitacionSeleccionada().setNotaCapacitacion(notaCapacitacion);
+            capacitacionSessionBean.editarCapacitacion(getCapacitacionSeleccionada());
+            addMessage("Mantenimiento de Detalle de Capacitación.", "Nota general actualizada con éxito", TipoMensaje.INFORMACION);
         } catch (Exception e) {
-            addMessage("Mantenimiento de Detalle de Capacitacion.", "Ha ocurrido un error al intentar actualizar la nota general.", TipoMensaje.ERROR);
-            System.out.println(e.getMessage());
+            addMessage("Mantenimiento de Detalle de Capacitación.", "Ha ocurrido un error al intentar actualizar la nota general.", TipoMensaje.ERROR);
+            logger.log(Level.SEVERE, "Ha ocurrido un error al intentar actualizar la nota general.", e);
         }
+        return null;
     }
 }
 //754 getSessionBeanCAP().getCapacitacionSeleccionada() E L I M I N A R
