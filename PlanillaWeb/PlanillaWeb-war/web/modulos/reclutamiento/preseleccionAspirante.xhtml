@@ -408,8 +408,9 @@
         </p:tab>
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" value="Cancelar" ajax="true" action="#{reclutamiento$preseleccionAspirante.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">
-                    <p:graphicImage styleClass="ui-icon ui-icon-circle-close" />
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{reclutamiento$preseleccionAspirante.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" immediate="true">                               
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
                 </p:commandLink>
             </h:panelGrid>
         </p:tab>
