@@ -74,7 +74,7 @@
                     <h:outputText value="#{det.empleados.nombreCompleto}"/>
                 </p:column>
                 <p:column headerText="Seleccionar" style="width: 8%" >
-                    <p:commandButton  id="cmdSeleccionarEmpleado" update="principalForm:mensajes,principalForm:panelAcciones,principalForm:tblAsistencia" image="ui-icon-circle-check" title="Agregar Empleado" action="#{capacitaciones$capacitaciones.agregarDetalleAsistencia}" >
+                    <p:commandButton  id="cmdSeleccionarEmpleado" update="principalForm:mensajes,principalForm:panelAcciones,principalForm:tblAsistencia,principalForm:lbEmpleadosSeleccionados" image="ui-icon-circle-check" title="Agregar Empleado" action="#{capacitaciones$capacitaciones.agregarDetalleAsistencia}" oncomplete="dialogBuscaEmpAsis.hide();" >
                         <f:setPropertyActionListener value="#{det}" target="#{capacitaciones$capacitaciones.detalleSelec}" /> 
                     </p:commandButton>
                 </p:column>
@@ -552,39 +552,48 @@
             </p:fieldset-->
 
             <!-- p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 4) }"/-->
+            <!-- rowEditListener="# {capacitaciones$capacitaciones.rowEditListenerAsistencia}" selection="# {SessionBeanCAP.asistenciaSeleccionada}" selectionMode="single" -->
+            
+            
             <p:dataTable id="tblAsistencia"
                          rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 4) }"
-                         rows="3" paginator="true"
+                         rows="3" paginator="true" paginatorAlwaysVisible="true"
                          emptyMessage="No hay participantes que mostrar"
-                         rowEditListener="#{capacitaciones$capacitaciones.rowEditListenerAsistencia}"
-                         var="asistencia" update="txtEmp"
-                         value="#{capacitaciones$capacitaciones.listaAsistencia}"
-                         selection="#{SessionBeanCAP.asistenciaSeleccionada}"
-                         selectionMode="single"
-                         paginatorAlwaysVisible="true"
+                         var="asistencia" value="#{capacitaciones$capacitaciones.listaAsistencia}"         
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
+                
                 <f:facet name="header">
                     <h:outputText value="Asistencias"/>
-                </f:facet><p:column headerText="Fecha">
+                    <h:outputLabel id="lbEmpleadosSeleccionados" value="Empleado seleccionado: #{capacitaciones$capacitaciones.detalleSelec.empleados.nombreCompleto}" rendered="#{capacitaciones$capacitaciones.detalleSelec ne null}" />
+                </f:facet>
+                
+                <p:column headerText="Fecha" style="width: 8%;" >
                     <h:outputText value="#{asistencia.capacitacionAsistenciaPK.fecha}">
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Asistencia">
-                    <p:cellEditor>  
-                        <f:facet name="output">  
-                            <h:selectBooleanCheckbox value="#{asistencia.asiste}" disabled="true"/>
-                        </f:facet>  
-                        <f:facet name="input">  
-                            <h:selectBooleanCheckbox value="#{asistencia.asiste}"/>  
-                        </f:facet>  
-                    </p:cellEditor>  
+                
+                <p:column headerText="Asistio">
+                    <h:outputLabel value="#{asistencia.asiste}" style="#{asistencia.asiste eq 'No' ?  'color: red;' : ''}" />  
                 </p:column>
-                <p:column headerText="Guardar Asistencia" >
-                    <p:rowEditor />  
+                <p:column headerText="Registrar Asistencia" style="width: 8%;" >
+                    <p:commandButton value="No Asistio" image="cancelar" update="principalForm:tblAsistencia,principalForm:mensajes" rendered="#{asistencia.asiste eq 'Si'}" action="#{capacitaciones$capacitaciones.editarAsistencia('N')}" >
+                        <f:setPropertyActionListener value="#{asistencia}" target="#{capacitaciones$capacitaciones.asistenciaSeleccionada}" />
+                    </p:commandButton>
+                    <p:commandButton value="Si Asistio" image="button-ok" update="principalForm:tblAsistencia,principalForm:mensajes" rendered="#{asistencia.asiste ne 'Si'}" action="#{capacitaciones$capacitaciones.editarAsistencia('S')}" >
+                        <f:setPropertyActionListener value="#{asistencia}" target="#{capacitaciones$capacitaciones.asistenciaSeleccionada}"  />
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
-
+<!--p:cellEditor>  
+                        <f:facet name="output">  
+                            <h:selectBooleanCheckbox value="# {asistencia.asiste}" disabled="true"/>
+                        </f:facet-->  
+                        <!--f:facet name="input"-->  
+                            <!-- h:selectBooleanCheckbox value="# {asistencia.asiste}"/-->  
+                        <!--/f:facet>  
+                    </p:cellEditor-->  
+                        
             <!--Notas-->
             <!-- p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 5) }"/ -->
             <!-- p:fieldset rendered="" -->
@@ -601,7 +610,7 @@
             <!-- /p:fieldset -->
             <!--p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 5) }"/ -->
             <!-- selection="# {SessionBeanCAP.detalleCapSeleccionada}" selectionMode="single" -->
-            <p:dataTable id="tblDetalleNotas" paginatorAlwaysVisible="true"
+            <p:dataTable id="tblDetalleNotas" paginatorAlwaysVisible="true" onRowEditUpdate="principalForm:mensajes"
                          rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5) }"
                          rows="3" paginator="true" emptyMessage="No hay notas que mostrar" var="detalle" 
                          rowEditListener="#{capacitaciones$capacitaciones.rowEditListenerNotas}"
