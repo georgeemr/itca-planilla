@@ -39,7 +39,7 @@ public class CapacitacionFacade extends AbstractFacade<Capacitacion, Capacitacio
     
     public List<Capacitacion> findCapByEmpresa(Cias empresa){
         List<Capacitacion> l = new ArrayList<Capacitacion>();
-        l.addAll(getEntityManager().createQuery("SELECT c FROM Capacitacion c WHERE c.capacitacionPK.codCia = :codCia order by c.capacitacionPK.codCapacitacion", Capacitacion.class).setParameter("codCia", empresa.getCodCia()).getResultList());
+        l.addAll(getEntityManager().createQuery("SELECT c FROM Capacitacion c WHERE c.capacitacionPK.codCia = :codCia order by c.fechaDesde DESC", Capacitacion.class).setParameter("codCia", empresa.getCodCia()).getResultList());
         
         //l.addAll( em.createQuery("SELECT c FROM Instituciones c WHERE c.institucionesPK.codCia = :codCia", Instituciones.class).setParameter("codCia", empresa.getCodCia()).getResultList() );
         return l != null ? l : new ArrayList<Capacitacion>();
