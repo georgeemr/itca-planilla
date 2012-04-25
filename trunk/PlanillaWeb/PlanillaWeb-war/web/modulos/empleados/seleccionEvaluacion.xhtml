@@ -95,7 +95,7 @@
                                     </p:column>
 
                                     <p:column>
-                                        <p:commandButton image="#{evaluacion.finalizada ne 1 ? 'evaluar' : 'button-ok'}" action="#{empleados$seleccionEvaluacion.evaluarEmpleado$action}" update="principalForm:mensajes,principalForm:evaluacionesTable" label="Evaluar Empleado" >
+                                        <p:commandButton image="#{evaluacion.finalizada ne 1 ? 'evaluar' : 'button-ok'}" action="#{empleados$seleccionEvaluacion.evaluarEmpleado$action}" update="principalForm:mensajes,principalForm:evaluacionesTable" title="#{evaluacion.finalizada ne 1 ? 'Evaluar Empleado' : 'Evaluaci&oacute;n finalizada'}" label="Evaluar Empleado" >
                                             <f:setPropertyActionListener value="#{evaluacion}" target="#{SessionBeanEMP.evaluacionSeleccionada}" />
                                         </p:commandButton>
                                     </p:column>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="preguntaRespuesta" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="2.357947691000003"/>
+	<property name="ireport.x" value="578"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cod_cia" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="campania" class="java.lang.String"/>
+	<parameter name="tipo_evaluacion" class="java.lang.String"/>
+	<parameter name="plantilla" class="java.lang.String"/>
+	<parameter name="empleado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+b.descripcion as pregunta,
+nvl(c.nivel,a.valor) as respuesta
+
+from
+det_evaluacion a, pregunta b, respuesta c
+
+where
+a.cod_cia = $P{cod_cia} and a.periodo = $P{periodo} and a.cod_campania = $P{campania} and a.tipo_evaluacion = $P{tipo_evaluacion} and a.plantilla = $P{plantilla} and a.cod_emp = $P{empleado}  and
+b.cod_cia = a.cod_cia and b.cod_factor = a.cod_factor and b.cod_pregunta = a.cod_pregunta and
+c.cod_cia = a.cod_cia and c.cod_tipo_respuesta = a.cod_tipo_respuesta and c.cod_respuesta = a.cod_respuesta]]>
+	</queryString>
+	<field name="PREGUNTA" class="java.lang.String"/>
+	<field name="RESPUESTA" class="java.lang.String"/>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="2" width="457" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PREGUNTA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="469" y="2" width="98" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RESPUESTA}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="21" width="567" height="1" forecolor="#CCCCCC"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

@@ -23,123 +23,113 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 /**
-
- @author root
+ *
+ * @author root
  */
 @ManagedBean(name = "empleados$reporteEvaluacion")
 @ViewScoped
-public class ReporteEvaluacionBackendBean extends AbstractJSFPage implements Serializable
-{
+public class ReporteEvaluacionBackendBean extends AbstractJSFPage implements Serializable {
 
-@EJB
-private EmpleadosSessionBean empleadosSessionBean;
-@EJB
-private ReportesStatelessBean reportesBean;
+    @EJB
+    private EmpleadosSessionBean empleadosSessionBean;
+    @EJB
+    private ReportesStatelessBean reportesBean;
 
-public ReporteEvaluacionBackendBean()
-{
-}
-private List<Campania> listaCampanias;
-
-public List<Campania> getListaCampanias()
-{
-    listaCampanias = empleadosSessionBean.findAllByCia(getSessionBeanADM().getCompania().getCodCia());
-    return listaCampanias;
-}
-
-public void setListaCampanias(List<Campania> listaCampanias)
-{
-    this.listaCampanias = listaCampanias;
-}
-private List<TipoEvaluacion> listaTiposEvaluacion;
-
-public List<TipoEvaluacion> getListaTiposEvaluacion()
-{
-//listaTiposEvaluacion = empleadosBean.listarTiposEvaluacion();
-    return listaTiposEvaluacion;
-}
-
-public void setListaTiposEvaluacion(List<TipoEvaluacion> listaTiposEvaluacion)
-{
-    this.listaTiposEvaluacion = listaTiposEvaluacion;
-}
-private List<Evaluacion> listaEvaluaciones;
-
-public List<Evaluacion> getListaEvaluaciones()
-{
-    if ( !isInRole("rrhh") ){
-    listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosSessionBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada, getSessionBeanEMP().getEmpleadoSesion()) : null;
-    }else{
-    listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosSessionBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada) : null;
+    public ReporteEvaluacionBackendBean() {
     }
-    return listaEvaluaciones;
-}
+    private List<Campania> listaCampanias;
 
-public void setListaEvaluaciones(List<Evaluacion> listaEvaluaciones)
-{
-    this.listaEvaluaciones = listaEvaluaciones;
-}
+    public List<Campania> getListaCampanias() {
+        listaCampanias = empleadosSessionBean.findAllByCia(getSessionBeanADM().getCompania().getCodCia());
+        return listaCampanias;
+    }
 
-public String mostrarEvaluaciones$action()
-{
-    return null;
-}
-private Evaluacion evaluacionSeleccionada;
+    public void setListaCampanias(List<Campania> listaCampanias) {
+        this.listaCampanias = listaCampanias;
+    }
+    private List<TipoEvaluacion> listaTiposEvaluacion;
 
-public Evaluacion getEvaluacionSeleccionada()
-{
-    return evaluacionSeleccionada;
-}
+    public List<TipoEvaluacion> getListaTiposEvaluacion() {
+//listaTiposEvaluacion = empleadosBean.listarTiposEvaluacion();
+        return listaTiposEvaluacion;
+    }
 
-public void setEvaluacionSeleccionada(Evaluacion evaluacionSeleccionada)
-{
-    this.evaluacionSeleccionada = evaluacionSeleccionada;
-}
+    public void setListaTiposEvaluacion(List<TipoEvaluacion> listaTiposEvaluacion) {
+        this.listaTiposEvaluacion = listaTiposEvaluacion;
+    }
+    private List<Evaluacion> listaEvaluaciones;
 
-@Override
-protected void limpiarCampos()
-{
-    throw new UnsupportedOperationException("Not supported yet.");
-}
+    public List<Evaluacion> getListaEvaluaciones() {
+        if (!isInRole("rrhh")) {
+            listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosSessionBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada, getSessionBeanEMP().getEmpleadoSesion()) : null;
+        } else {
+            listaEvaluaciones = (campaniaSeleccionada != null) ? empleadosSessionBean.listarEvaluacionesAbiertasPorCampania(campaniaSeleccionada) : null;
+        }
+        return listaEvaluaciones;
+    }
 
-public String seleccionTipoEvaluacion$action()
-{
-    return null;
-}
+    public void setListaEvaluaciones(List<Evaluacion> listaEvaluaciones) {
+        this.listaEvaluaciones = listaEvaluaciones;
+    }
 
-@PermitAll
-public String mostrarReporteEvaluacion$action()
-{
-    Evaluacion ev = evaluacionSeleccionada;
-    if (ev == null)
-        {
-        addMessage("Reporte de Evalución", "No ha seleccionado ninguna evaluación", TipoMensaje.ERROR);
+    public String mostrarEvaluaciones$action() {
         return null;
+    }
+    private Evaluacion evaluacionSeleccionada;
+
+    public Evaluacion getEvaluacionSeleccionada() {
+        return evaluacionSeleccionada;
+    }
+
+    public void setEvaluacionSeleccionada(Evaluacion evaluacionSeleccionada) {
+        this.evaluacionSeleccionada = evaluacionSeleccionada;
+    }
+
+    @Override
+    protected void limpiarCampos() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public String seleccionTipoEvaluacion$action() {
+        return null;
+    }
+
+    @PermitAll
+    public String mostrarReporteEvaluacion$action() {
+        Evaluacion ev = evaluacionSeleccionada;
+        if (ev == null) {
+            addMessage("Reporte de Evalución", "No ha seleccionado ninguna evaluación", TipoMensaje.ERROR);
+            return null;
         }
 
-    HashMap<String, Object> parametros = new HashMap<String, Object>();
+        HashMap<String, Object> parametros = new HashMap<String, Object>();
+        parametros.put("cod_cia", String.valueOf(evaluacionSeleccionada.getEvaluacionPK().getCodCia()));
+        parametros.put("periodo", String.valueOf(evaluacionSeleccionada.getEvaluacionPK().getPeriodo()));
+        parametros.put("campania", String.valueOf(evaluacionSeleccionada.getEvaluacionPK().getCodCampania()));
+        parametros.put("tipo_evaluacion", String.valueOf(evaluacionSeleccionada.getEvaluacionPK().getTipoEvaluacion()));
+        parametros.put("plantilla", String.valueOf(evaluacionSeleccionada.getEvaluacionPK().getPlantilla()));
+        parametros.put("empleado", String.valueOf(evaluacionSeleccionada.getEvaluacionPK().getCodEmp()));
+//
+//        List<ReporteEvaluacion> lr = reportesBean.listarReporteEvaluacion(ev);
+//        for (ReporteEvaluacion r : lr) {
+//            r.setDetalleEvaluacion(reportesBean.getDetalleReporteEvaluacion(ev.getDetEvaluacionList()));
+//        }
+        //reportesBean.generarReporteBean(FacesContext.getCurrentInstance(), parametros, "reporteEvaluacion", lr);
+        reportesBean.generarReporteSQL(FacesContext.getCurrentInstance(), parametros, "reporteEvaluacion");
+        return null;
+    }
 
-    List<ReporteEvaluacion> lr = reportesBean.listarReporteEvaluacion(ev);
-    for (ReporteEvaluacion r : lr)
-        r.setDetalleEvaluacion(reportesBean.getDetalleReporteEvaluacion(ev.getDetEvaluacionList()));
-    reportesBean.generarReporteBean(FacesContext.getCurrentInstance(), parametros, "reporteEvaluacion", lr);
-    return null;
-}
+    @PermitAll
+    public static List<ReporteEvaluacion> listarReporteEvaluacion() {
+        return new ArrayList<ReporteEvaluacion>(10);
+    }
+    private Campania campaniaSeleccionada;
 
-@PermitAll
-public static List<ReporteEvaluacion> listarReporteEvaluacion()
-{
-    return new ArrayList<ReporteEvaluacion>(10);
-}
-private Campania campaniaSeleccionada;
+    public Campania getCampaniaSeleccionada() {
+        return campaniaSeleccionada;
+    }
 
-public Campania getCampaniaSeleccionada()
-{
-    return campaniaSeleccionada;
-}
-
-public void setCampaniaSeleccionada(Campania campaniaSeleccionada)
-{
-    this.campaniaSeleccionada = campaniaSeleccionada;
-}
+    public void setCampaniaSeleccionada(Campania campaniaSeleccionada) {
+        this.campaniaSeleccionada = campaniaSeleccionada;
+    }
 }
