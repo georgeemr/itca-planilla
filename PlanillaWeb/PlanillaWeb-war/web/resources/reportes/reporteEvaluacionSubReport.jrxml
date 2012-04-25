@@ -1,29 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteEvaluacionSubReport" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="4.177248169415664"/>
-	<property name="ireport.x" value="1662"/>
+	<property name="ireport.zoom" value="1.6105100000000043"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="cod_cia" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="periodo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="campania" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tipo_evaluacion" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="plantilla" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="empleado" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[select
+ nvl(c.nivel, 'PREGUNTAS ABIERTAS') as nivel,
+count(*) as numero, nvl(c.valor, 0) as valor,
+e.ponderacion as ponderacion,
+(count(c.nivel) * nvl(c.valor,0) * (e.ponderacion / 100.00)) as subtotal
+from
+det_evaluacion a, pregunta b, respuesta c, factor e
+
+where
+a.cod_cia = $P{cod_cia} and a.periodo = $P{periodo} and a.cod_campania = $P{campania} and a.tipo_evaluacion = $P{tipo_evaluacion} and a.plantilla = $P{plantilla} and a.cod_emp = $P{empleado}  and
+b.cod_cia = a.cod_cia and b.cod_factor = a.cod_factor and b.cod_pregunta = a.cod_pregunta and
+c.cod_cia = a.cod_cia and c.cod_tipo_respuesta = a.cod_tipo_respuesta and c.cod_respuesta = a.cod_respuesta and
+e.cod_cia = a.cod_cia and e.cod_factor = b.cod_factor
+group by c.nivel, c.valor, e.ponderacion]]>
 	</queryString>
-	<field name="class" class="java.lang.Class">
-		<fieldDescription><![CDATA[class]]></fieldDescription>
-	</field>
-	<field name="nivel" class="java.lang.String">
-		<fieldDescription><![CDATA[nivel]]></fieldDescription>
-	</field>
-	<field name="ponderacion" class="java.lang.Integer">
-		<fieldDescription><![CDATA[ponderacion]]></fieldDescription>
-	</field>
-	<field name="puntaje" class="java.lang.Integer">
-		<fieldDescription><![CDATA[puntaje]]></fieldDescription>
-	</field>
-	<field name="subTotal" class="java.lang.Integer">
-		<fieldDescription><![CDATA[subTotal]]></fieldDescription>
-	</field>
-	<field name="valor" class="java.lang.Integer">
-		<fieldDescription><![CDATA[valor]]></fieldDescription>
-	</field>
+	<field name="NIVEL" class="java.lang.String"/>
+	<field name="NUMERO" class="java.math.BigDecimal"/>
+	<field name="VALOR" class="java.math.BigDecimal"/>
+	<field name="PONDERACION" class="java.math.BigDecimal"/>
+	<field name="SUBTOTAL" class="java.math.BigDecimal"/>
+	<variable name="TOTAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SUBTOTAL}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -37,103 +62,117 @@
 		<band height="20" splitType="Stretch">
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="0" width="82" height="20" backcolor="#99CCFF"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[NIVEL]]></text>
+				<text><![CDATA[Nivel]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="82" y="0" width="116" height="20" backcolor="#99CCFF"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[PUNTAJE OBTENIDO]]></text>
+				<text><![CDATA[Puntaje Obtenido]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="198" y="0" width="31" height="20" backcolor="#99CCFF"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[x]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="229" y="0" width="79" height="20" backcolor="#99CCFF"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[VALOR]]></text>
+				<text><![CDATA[Valor]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="308" y="0" width="31" height="20" backcolor="#99CCFF"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[x]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="339" y="0" width="100" height="20" backcolor="#99CCFF"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[PONDERACIÓN]]></text>
+				<text><![CDATA[Ponderación]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="439" y="0" width="33" height="20" backcolor="#99CCFF"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[=]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="472" y="0" width="100" height="20" backcolor="#99CCFF"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[RESULTADO]]></text>
+				<text><![CDATA[Resultado]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="82" height="20"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nivel}]]></textFieldExpression>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="96" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NIVEL}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="82" y="0" width="116" height="20"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{puntaje}]]></textFieldExpression>
+			<textField isBlankWhenNull="true">
+				<reportElement x="96" y="0" width="73" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{NUMERO}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="198" y="0" width="31" height="20"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[x]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="229" y="0" width="79" height="20"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{valor}]]></textFieldExpression>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="229" y="0" width="51" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALOR}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="308" y="0" width="31" height="20"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[x]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="339" y="0" width="100" height="20"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{ponderacion}]]></textFieldExpression>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="339" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PONDERACION}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="439" y="0" width="33" height="20"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[=]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="472" y="0" width="100" height="20"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{subTotal}]]></textFieldExpression>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="472" y="0" width="82" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SUBTOTAL}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -144,6 +183,38 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band splitType="Stretch"/>
+		<band height="80">
+			<subreport>
+				<reportElement x="0" y="21" width="612" height="59"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="sub_total">
+					<subreportParameterExpression><![CDATA[$V{TOTAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cod_cia">
+					<subreportParameterExpression><![CDATA[$P{cod_cia}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipo_evaluacion">
+					<subreportParameterExpression><![CDATA[$P{tipo_evaluacion}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "calificacionEvaluacion.jasper"]]></subreportExpression>
+			</subreport>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="472" y="0" width="82" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="372" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nota]]></text>
+			</staticText>
+		</band>
 	</summary>
 </jasperReport>

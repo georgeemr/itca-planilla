@@ -2,74 +2,59 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteEvaluacion" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.3310000000000097"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="191"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String">
 		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="cod_cia" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="periodo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="campania" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tipo_evaluacion" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="plantilla" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="empleado" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[select
+c.nom_tipo_evaluacion as tipo_evaluacion,
+d.nombres || decode(nvl(d.apellidos, '0'), '0', '', ' '|| d.apellidos) || decode(nvl(d.ap_casada, '0'), '0', '', ' '|| d.ap_casada) as empleado,
+nvl(e.nom_depto, 'NO ASIGNADO') as departamento,
+nvl(f.nom_puesto,'NO ASIGNADO') as puesto,
+'del ' || to_char(b.fecha_inicial,'DD/MM/YYYY') || ' Al ' || to_char(b.fecha_final,'DD/MM/YYYY') as periodo,
+g.nom_comercial as nombre_empresa
+
+from
+evaluacion a, campania b, tipo_evaluacion c, empleados d, departamentos e, puestos f, cias g
+
+where
+a.cod_cia = $P{cod_cia} and a.periodo = $P{periodo} and a.cod_campania = $P{campania} and a.tipo_evaluacion = $P{tipo_evaluacion} and a.plantilla = $P{plantilla} and a.cod_emp = $P{empleado} and
+b.cod_cia = a.cod_cia and b.cod_campania = a.cod_campania and
+c.cod_cia = b.cod_cia and c.cod_tipo_evaluacion = a.tipo_evaluacion and
+d.cod_cia = c.cod_cia and d.cod_emp = a.cod_emp and
+e.cod_cia(+) = d.cod_cia and e.cod_depto(+) = d.cod_depto and
+f.cod_cia(+) = d.cod_cia and f.cod_puesto(+) = d.cod_puesto and
+g.cod_cia = d.cod_cia]]>
 	</queryString>
-	<field name="calificacionFinal" class="java.lang.String">
-		<fieldDescription><![CDATA[calificacionFinal]]></fieldDescription>
-	</field>
-	<field name="class" class="java.lang.Class">
-		<fieldDescription><![CDATA[class]]></fieldDescription>
-	</field>
-	<field name="detalleEvaluacion" class="java.util.List">
-		<fieldDescription><![CDATA[detalleEvaluacion]]></fieldDescription>
-	</field>
-	<field name="fechaFinCampania" class="java.util.Date">
-		<fieldDescription><![CDATA[fechaFinCampania]]></fieldDescription>
-	</field>
-	<field name="fechaInicioCampania" class="java.util.Date">
-		<fieldDescription><![CDATA[fechaInicioCampania]]></fieldDescription>
-	</field>
-	<field name="idDepartamento" class="java.lang.Integer">
-		<fieldDescription><![CDATA[idDepartamento]]></fieldDescription>
-	</field>
-	<field name="idEmpleado" class="java.lang.Integer">
-		<fieldDescription><![CDATA[idEmpleado]]></fieldDescription>
-	</field>
-	<field name="idEmpresa" class="java.lang.Integer">
-		<fieldDescription><![CDATA[idEmpresa]]></fieldDescription>
-	</field>
-	<field name="idFactor" class="java.lang.Integer">
-		<fieldDescription><![CDATA[idFactor]]></fieldDescription>
-	</field>
-	<field name="idPregunta" class="java.lang.String">
-		<fieldDescription><![CDATA[idPregunta]]></fieldDescription>
-	</field>
-	<field name="idPuesto" class="java.lang.Integer">
-		<fieldDescription><![CDATA[idPuesto]]></fieldDescription>
-	</field>
-	<field name="nombreDepartamento" class="java.lang.String">
-		<fieldDescription><![CDATA[nombreDepartamento]]></fieldDescription>
-	</field>
-	<field name="nombreEmpleado" class="java.lang.String">
-		<fieldDescription><![CDATA[nombreEmpleado]]></fieldDescription>
-	</field>
-	<field name="nombreEmpresa" class="java.lang.String">
-		<fieldDescription><![CDATA[nombreEmpresa]]></fieldDescription>
-	</field>
-	<field name="nombrePuesto" class="java.lang.String">
-		<fieldDescription><![CDATA[nombrePuesto]]></fieldDescription>
-	</field>
-	<field name="nombreTipoEvaluacion" class="java.lang.String">
-		<fieldDescription><![CDATA[nombreTipoEvaluacion]]></fieldDescription>
-	</field>
-	<field name="pregunta" class="java.lang.String">
-		<fieldDescription><![CDATA[pregunta]]></fieldDescription>
-	</field>
-	<field name="respuesta" class="java.lang.String">
-		<fieldDescription><![CDATA[respuesta]]></fieldDescription>
-	</field>
+	<field name="TIPO_EVALUACION" class="java.lang.String"/>
+	<field name="EMPLEADO" class="java.lang.String"/>
+	<field name="DEPARTAMENTO" class="java.lang.String"/>
+	<field name="PUESTO" class="java.lang.String"/>
+	<field name="PERIODO" class="java.lang.String"/>
+	<field name="NOMBRE_EMPRESA" class="java.lang.String"/>
 	<variable name="fecha_hora" class="java.util.Date">
 		<variableExpression><![CDATA[]]></variableExpression>
 		<initialValueExpression><![CDATA[Calendar.getInstance().getTime()]]></initialValueExpression>
 	</variable>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<title>
 		<band height="204" splitType="Stretch">
 			<textField>
@@ -77,56 +62,56 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isUnderline="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreEmpresa}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMBRE_EMPRESA}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="0" width="50" height="20"/>
-				<textElement/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Módulo]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="51" y="0" width="100" height="20"/>
-				<textElement/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Recursos Humanos]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="20" width="50" height="20"/>
-				<textElement/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Reporte]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="51" y="20" width="100" height="20"/>
-				<textElement/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[RRH014]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="430" y="0" width="54" height="20"/>
-				<textElement textAlignment="Right"/>
+				<reportElement x="444" y="0" width="40" height="20"/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="430" y="20" width="54" height="20"/>
-				<textElement textAlignment="Right"/>
+				<reportElement x="444" y="20" width="40" height="20"/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Hora]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="430" y="40" width="54" height="20"/>
-				<textElement textAlignment="Right"/>
+				<reportElement x="444" y="40" width="40" height="20"/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Página]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="486" y="0" width="86" height="20"/>
-				<textElement/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$V{fecha_hora}]]></textFieldExpression>
 			</textField>
 			<textField pattern="hh:mm:ss a">
 				<reportElement x="486" y="20" width="86" height="20"/>
-				<textElement/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$V{fecha_hora}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="486" y="40" width="86" height="20"/>
-				<textElement/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -137,79 +122,62 @@
 			<textField>
 				<reportElement x="0" y="100" width="572" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreTipoEvaluacion}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO_EVALUACION}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="120" width="572" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="123" width="119" height="20"/>
-				<textElement/>
+				<reportElement x="0" y="123" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[Empleado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="143" width="119" height="20"/>
-				<textElement/>
+				<reportElement x="0" y="143" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[Puesto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="163" width="119" height="20"/>
-				<textElement/>
+				<reportElement x="0" y="163" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[Departamento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="183" width="119" height="20"/>
-				<textElement/>
-				<text><![CDATA[Periodo a evaluar del]]></text>
+				<reportElement x="0" y="183" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Periodo a evaluar]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="122" y="123" width="54" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{idEmpleado}]]></textFieldExpression>
+				<reportElement x="103" y="123" width="432" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{EMPLEADO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="123" width="392" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreEmpleado}]]></textFieldExpression>
+				<reportElement x="103" y="143" width="432" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PUESTO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="122" y="143" width="54" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{idPuesto}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="180" y="143" width="392" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombrePuesto}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="122" y="163" width="54" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{idDepartamento}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="180" y="163" width="392" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreDepartamento}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement x="122" y="183" width="70" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{fechaInicioCampania}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="192" y="183" width="20" height="20"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[al]]></text>
-			</staticText>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement x="218" y="183" width="86" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{fechaFinCampania}]]></textFieldExpression>
+				<reportElement x="103" y="163" width="432" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DEPARTAMENTO}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="203" width="572" height="1"/>
 			</line>
+			<textField>
+				<reportElement x="103" y="183" width="432" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PERIODO}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -218,22 +186,15 @@
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="100" height="20" backcolor="#99CCFF"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Factor]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="100" y="0" width="372" height="20" backcolor="#99CCFF"/>
-				<textElement textAlignment="Center">
+				<reportElement mode="Opaque" x="0" y="0" width="472" height="20" backcolor="#99CCFF"/>
+				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="472" y="0" width="100" height="20" backcolor="#99CCFF"/>
-				<textElement textAlignment="Center">
+				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Respuesta]]></text>
@@ -241,27 +202,33 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="100" height="20"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{idFactor}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="100" y="0" width="51" height="20"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{idPregunta}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="151" y="0" width="321" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{pregunta}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="472" y="0" width="100" height="20"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{respuesta}]]></textFieldExpression>
-			</textField>
+		<band height="42" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="572" height="42"/>
+				<subreportParameter name="campania">
+					<subreportParameterExpression><![CDATA[$P{campania}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="empleado">
+					<subreportParameterExpression><![CDATA[$P{empleado}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="plantilla">
+					<subreportParameterExpression><![CDATA[$P{plantilla}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cod_cia">
+					<subreportParameterExpression><![CDATA[$P{cod_cia}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="periodo">
+					<subreportParameterExpression><![CDATA[$P{periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipo_evaluacion">
+					<subreportParameterExpression><![CDATA[$P{tipo_evaluacion}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "preguntaRespuesta.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<columnFooter>
@@ -271,25 +238,39 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="66" splitType="Stretch">
-			<subreport isUsingCache="true">
-				<reportElement x="0" y="0" width="572" height="45"/>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{detalleEvaluacion})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "reporteEvaluacionSubReport.jasper"]]></subreportExpression>
-			</subreport>
-			<textField>
-				<reportElement positionType="FixRelativeToBottom" mode="Opaque" x="0" y="46" width="572" height="20" backcolor="#CCCCCC"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Calificación " + $F{calificacionFinal}]]></textFieldExpression>
-			</textField>
+		<band height="48" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="0" width="572" height="1"/>
 			</line>
 			<line>
 				<reportElement positionType="FixRelativeToBottom" x="0" y="45" width="572" height="1"/>
 			</line>
+			<subreport>
+				<reportElement x="0" y="1" width="572" height="44"/>
+				<subreportParameter name="campania">
+					<subreportParameterExpression><![CDATA[$P{campania}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="empleado">
+					<subreportParameterExpression><![CDATA[$P{empleado}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="plantilla">
+					<subreportParameterExpression><![CDATA[$P{plantilla}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cod_cia">
+					<subreportParameterExpression><![CDATA[$P{cod_cia}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="periodo">
+					<subreportParameterExpression><![CDATA[$P{periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipo_evaluacion">
+					<subreportParameterExpression><![CDATA[$P{tipo_evaluacion}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "reporteEvaluacionSubReport.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</summary>
 </jasperReport>
