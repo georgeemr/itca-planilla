@@ -115,7 +115,7 @@ public class PlanillaFacade extends AbstractFacade<Planilla, PlanillaPK> {
     public List<Planilla> findPlanillaByProgramacion(ProgramacionPla programacionPla) {
         List<Planilla> l = em.createQuery("SELECT p FROM Planilla p WHERE p.planillaPK.codCia = :codCia "
                 + "AND p.planillaPK.anio = :anio AND p.planillaPK.mes = :mes "
-                + "AND p.planillaPK.numPlanilla = :numPlanilla AND p.planillaPK.codTipopla = :codTipopla ", Planilla.class)
+                + "AND p.planillaPK.numPlanilla = :numPlanilla AND p.planillaPK.codTipopla = :codTipopla ORDER BY p.empleados.empleadosPK.codEmp ASC", Planilla.class)
         .setParameter("codCia", programacionPla.getProgramacionPlaPK().getCodCia())
         .setParameter("anio", programacionPla.getAnio())
         .setParameter("mes", programacionPla.getMes())
