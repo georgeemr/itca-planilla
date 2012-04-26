@@ -164,3 +164,10 @@ body {
     background: -webkit-gradient(linear, center bottom, center top, from(#93BBD1), to(#fff))!important; 
     color: black;
 }
+
+.accionSeleccionada{
+    background: -moz-linear-gradient(bottom, #FFF300, #fff)!important;
+    background: -webkit-gradient(linear, center bottom, center top, from(#FFF300), to(#fff))!important; 
+    color: black;
+    font-weight: bold;
+}
