@@ -35,7 +35,7 @@ and open the template in the editor.
                     </tr>
                 </table>
 
-                <p:dataTable id="listadoEmpleados" value="#{planilla$accionesPersonal.listaEmp}" var="empleado" 
+                <p:dataTable id="listadoEmpleados" value="#{planilla$informacionPagos.listaPlanillas}" var="planilla" 
                              paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true" 
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                              rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" >
@@ -44,17 +44,17 @@ and open the template in the editor.
                         Empleados
                     </f:facet>
 
-                    <p:column headerText="C&#243;digo" style="width: 8%" filterBy="#{empleado.empleadosPK.codEmp}" filterMatchMode="contains" >  
-                        <h:outputLabel value="#{empleado.empleadosPK.codEmp}" />
+                    <p:column headerText="C&#243;digo" style="width: 8%" filterBy="#{planilla.empleados.empleadosPK.codEmp}" filterMatchMode="contains" >  
+                        <h:outputLabel value="#{planilla.empleados.empleadosPK.codEmp}" />
                     </p:column>  
 
-                    <p:column headerText="Nombre " filterBy="#{empleado.nombreCompleto}" filterMatchMode="contains" >  
-                        <h:outputLabel value="#{empleado.nombreCompleto}" />
+                    <p:column headerText="Nombre " filterBy="#{planilla.empleados.nombreCompleto}" filterMatchMode="contains" >  
+                        <h:outputLabel value="#{planilla.empleados.nombreCompleto}" />
                     </p:column>  
 
                     <p:column style="width: 5%;" >
                         <p:commandButton styleClass="opcionMenu" update="#{cc.attrs.update}" oncomplete="#{cc.attrs.name}.hide();" action="#{cc.attrs.okAction}" image="ui-icon-circle-check" title="Seleccionar empleado" >
-                            <f:setPropertyActionListener value="#{empleado}" target="#{cc.attrs.selection}" /> 
+                            <f:setPropertyActionListener value="#{planilla}" target="#{cc.attrs.selection}" /> 
                         </p:commandButton>
                     </p:column>
 

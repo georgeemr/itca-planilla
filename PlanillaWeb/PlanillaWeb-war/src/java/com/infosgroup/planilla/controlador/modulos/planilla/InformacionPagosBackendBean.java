@@ -4,13 +4,9 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
-import com.infosgroup.planilla.modelo.entidades.MovDp;
-import com.infosgroup.planilla.modelo.entidades.Planilla;
-import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
-import com.infosgroup.planilla.modelo.entidades.TiposPlanilla;
+import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
-import com.infosgroup.planilla.view.AutocompletePlanillaConverter;
 import com.infosgroup.planilla.view.AutocompleteProgramacionPlaConverter;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,7 +16,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
-import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -37,13 +32,22 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
     private ProgramacionPla proPlaSeleccionada;
     private Planilla planillaSeleccionada;
     private AutocompleteProgramacionPlaConverter programacionPlaConverter;
-    private AutocompletePlanillaConverter planillaConverter;
     private List<Planilla> listaPlanillas;
     private List<MovDp> listaPrestaciones;
     private List<MovDp> listaDeducciones;
+    private Cias empresa;
 
     @PostConstruct
     public void init() {
+        setEmpresa(getSessionBeanADM().getCompania());
+    }
+
+    public Cias getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Cias empresa) {
+        this.empresa = empresa;
     }
 
     public Short getTipoPlanilla() {
@@ -55,7 +59,7 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
     }
 
     public List<TiposPlanilla> getListaTipos() {
-        listaTipos = planillaSessionBean.listarTipos(getSessionBeanADM().getCompania());
+        listaTipos = planillaSessionBean.listarTipos(getEmpresa());
         return listaTipos;
     }
 
@@ -81,24 +85,11 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
 
     public AutocompleteProgramacionPlaConverter getProgramacionPlaConverter() {
         if (tipoPlanilla != null && tipoPlanilla != -1) {
-            programacionPlaConverter = new AutocompleteProgramacionPlaConverter(planillaSessionBean.getProgramacionPlaByTipo(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla));
+            programacionPlaConverter = new AutocompleteProgramacionPlaConverter(planillaSessionBean.getProgramacionPlaByTipo(getEmpresa().getCodCia(), tipoPlanilla));
         } else {
             programacionPlaConverter = new AutocompleteProgramacionPlaConverter(new ArrayList<ProgramacionPla>());
         }
         return programacionPlaConverter;
-    }
-
-    public AutocompletePlanillaConverter getPlanillaConverter() {
-        if (proPlaSeleccionada != null) {
-            planillaConverter = new AutocompletePlanillaConverter(planillaSessionBean.findByProgramacionPla(proPlaSeleccionada));
-        } else {
-            planillaConverter = new AutocompletePlanillaConverter(new ArrayList<Planilla>());
-        }
-        return planillaConverter;
-    }
-
-    public void setPlanillaConverter(AutocompletePlanillaConverter planillaConverter) {
-        this.planillaConverter = planillaConverter;
     }
 
     public List<ProgramacionPla> completeProgramacionPla(String query) {
@@ -111,17 +102,11 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
         return suggestions;
     }
 
-    public List<Planilla> completePlanillaEmpleado(String query) {
-        List<Planilla> suggestions = new ArrayList<Planilla>();
-        for (Planilla p : planillaConverter.listaPlanilla) {
-            if (p.getEmpleados().getNombreCompleto().contains(query)) {
-                suggestions.add(p);
-            }
-        }
-        return suggestions;
-    }
-
     public List<Planilla> getListaPlanillas() {
+        setListaPlanillas( new ArrayList<Planilla>());
+        if (getProPlaSeleccionada()!=null){
+        setListaPlanillas(planillaSessionBean.findByProgramacionPla(getProPlaSeleccionada()));
+        }
         return listaPlanillas;
     }
 
@@ -157,12 +142,19 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
         setPlanillaSeleccionada(null);
     }
 
-    public void handleSelectEmpleado(SelectEvent event) {
-        listaDeducciones = planillaSessionBean.findDeduccionesPresta(planillaSeleccionada, "R");
-        listaPrestaciones = planillaSessionBean.findDeduccionesPresta(planillaSeleccionada, "S");
-    }
-
     public void seleccionarTipoPlanilla(AjaxBehaviorEvent event) {
         limpiarCampos();
+    }
+
+    public String selectEmpleado$Action() {
+        setListaDeducciones (planillaSessionBean.findDeduccionesPresta(planillaSeleccionada, "R"));
+        setListaPrestaciones( planillaSessionBean.findDeduccionesPresta(planillaSeleccionada, "S"));
+        return null;
+    }
+
+    public String cancelSelectEmpleado$Action() {
+        setPlanillaSeleccionada(null);
+        limpiarCampos();
+        return null;
     }
 }
