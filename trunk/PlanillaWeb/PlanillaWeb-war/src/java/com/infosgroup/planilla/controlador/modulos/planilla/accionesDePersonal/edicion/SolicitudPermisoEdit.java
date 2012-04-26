@@ -161,7 +161,12 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
                 error = Boolean.FALSE;
             }
         }
-
+        
+        if ( dias!=null && dias>calculaDias( getFechaInicial(), getFechaFinal() ).shortValue()){
+            addMessage("Acciones de Personal", "Cantidad de Días fuera del rango seleccionado.", TipoMensaje.ERROR);
+            error = Boolean.FALSE;
+        }
+        
         if (getHoras() != null) {
             if (getHoras() < 0 || getHoras() > 23) {
                 addMessage("Acciones de Personal", "La cantidad de horas no es valida.", TipoMensaje.ERROR);
