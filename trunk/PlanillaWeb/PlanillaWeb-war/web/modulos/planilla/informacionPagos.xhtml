@@ -6,10 +6,59 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.prime.com.tr/ui"
     xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"  >
+    xmlns:i="http://java.sun.com/jsf/composite/components/presentacion" 
+    xmlns:d="http://java.sun.com/jsf/composite/components/dialogo" >
 
     <ui:define name="titulo">
         <h:outputText value="Informaci&oacute;n de Pagos"/>
+    </ui:define>
+
+    <ui:define name="dialogos" >
+                <p:dialog widgetVar="dlgEmpleados" header="Listado general de Empleados" showEffect="fold" hideEffect="fold" width="725" height="460" >
+
+                <table style="width: 100%" >
+                    <tr>
+                        <td style="width: 5%;" >
+                            <p:graphicImage value="/resources/imagenes/64/meeting-participant.png" />   
+                        </td>
+                        <td>
+                            <h:outputLabel id="lbl1" value="Seleccione un empleado"  style="font-weight: bold;"/>
+                        </td>
+                    </tr>
+                </table>
+
+                <p:dataTable id="listadoEmpleados" value="#{planilla$informacionPagos.listaPlanillas}" var="planilla" 
+                             paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" >
+
+                    <f:facet name="header">
+                        Empleados
+                    </f:facet>
+
+                    <p:column headerText="C&#243;digo" style="width: 8%" filterBy="#{planilla.empleados.empleadosPK.codEmp}" filterMatchMode="contains" >  
+                        <h:outputLabel value="#{planilla.empleados.empleadosPK.codEmp}" />
+                    </p:column>  
+
+                    <p:column headerText="Nombre " filterBy="#{planilla.empleados.nombreCompleto}" filterMatchMode="contains" >  
+                        <h:outputLabel value="#{planilla.empleados.nombreCompleto}" />
+                    </p:column>  
+
+                    <p:column style="width: 5%;" >
+                        <p:commandButton styleClass="opcionMenu" update="principalForm:mensajes,principalForm:tbIng,principalForm:tbEgr,principalForm:panelDescripcion" oncomplete="dlgEmpleados.hide();" action="#{planilla$informacionPagos.selectEmpleado$Action}" image="ui-icon-circle-check" title="Seleccionar empleado" >
+                            <f:setPropertyActionListener value="#{planilla}" target="#{planilla$informacionPagos.planillaSeleccionada}" /> 
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:spacer height="15" />
+                <h:panelGrid columns="2">
+                    <p:commandButton value="Cancelar" styleClass="opcionMenu" update="principalForm:mensajes,tbIng,tbEgr,panelDescripcion" oncomplete="dlgEmpleados.hide();" action="#{planilla$informacionPagos.cancelSelectEmpleado$Action}" image="ui-icon-circle-check" /> 
+                </h:panelGrid>
+                
+        </p:dialog>
+        
     </ui:define>
 
     <ui:define name="acciones">
@@ -29,7 +78,7 @@
             <h:panelGrid columns="2" >
                 <i:etiquetaRequerido value="Tipo de planilla" />
                 <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{planilla$informacionPagos.tipoPlanilla}" >                       
-                    <f:ajax render="panelInformacionPagos" event="change" execute="LstTipoPlanilla" listener="#{planilla$informacionPagos.seleccionarTipoPlanilla}" />
+                    <f:ajax render="panelInformacionPagos listadoEmpleados" event="change" execute="LstTipoPlanilla" listener="#{planilla$informacionPagos.seleccionarTipoPlanilla}" />
                     <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
                     <f:selectItems value="#{planilla$informacionPagos.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                 </h:selectOneMenu>
@@ -41,23 +90,19 @@
                                     itemValue="#{programacionPla.pkAsString}" itemLabel="#{programacionPla.stringProgramacionPla}"
                                     completeMethod="#{planilla$informacionPagos.completeProgramacionPla}"
                                     converter="#{planilla$informacionPagos.programacionPlaConverter}" 
-                                    onSelectUpdate="panelDescripcion,panelInformacionPagos" >
-                        <f:ajax render="AutCompltEmpleado" event="change" execute="AutCompltProgPla" />
+                                    onSelectUpdate="panelDescripcion,panelInformacionPagos,principalForm:listadoEmpleados" >
+                        <f:ajax render="principalForm:listadoEmpleados" event="change" execute="AutCompltProgPla" />
                     </p:autoComplete>
-                    <!-- h:outputLabel value=" A&Ntilde;OMESN&Uacute;MERO DE PLANILLA " style="font-weight: bold;color: red;" / -->
+                    
                     <i:etiquetaPlanilla />
                 </h:panelGroup>
                 <i:etiquetaRequerido value="Empleado" />
-                <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
-                                value="#{planilla$informacionPagos.planillaSeleccionada}"
-                                itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.empleados.nombreCompleto}"
-                                completeMethod="#{planilla$informacionPagos.completePlanillaEmpleado}"
-                                converter="#{planilla$informacionPagos.planillaConverter}" 
-                                selectListener="#{planilla$informacionPagos.handleSelectEmpleado}"
-                                onSelectUpdate="tbIng,tbEgr,panelDescripcion"
-                                style="width: 300px;"  >
-                    <!-- f:ajax render="panelContenido" event="change" execute="AutCompltEmpleado" / -->
-                </p:autoComplete>
+
+                <p:commandLink styleClass="opcionMenu" update="principalForm:listadoEmpleados" oncomplete="dlgEmpleados.show();" style="color:blue">
+                    <p:graphicImage value="/resources/iconos/personal.png"/>
+                    <h:outputText value="Seleccionar" styleClass="espacioTexto" />
+                </p:commandLink>
+
                 <h:outputLabel value=""/>
                 <h:panelGrid id="panelDescripcion" columns="4" style="padding-left: 0;" >
                     <i:etiquetaMoneda label="Sueldo Base: " value="#{planilla$informacionPagos.planillaSeleccionada ne null ? planilla$informacionPagos.planillaSeleccionada.sueldoBase : '0.00'}" />
@@ -97,7 +142,7 @@
                                 <h:outputText value="#{egreso.valor}">
                                     <f:convertNumber pattern="#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
                                 </h:outputText>
-                                
+
                             </p:column>
                         </p:dataTable>
                     </td>
