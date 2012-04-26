@@ -2,9 +2,12 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte Sin Titulo 2" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
-	<import value="net.sf.jasperreports.engine.data.*"/>
 	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="pCia" class="java.math.BigDecimal">
 		<defaultValueExpression><![CDATA[new BigDecimal ("0")]]></defaultValueExpression>
 	</parameter>
@@ -20,6 +23,7 @@
 	<parameter name="val_AFP" class="java.math.BigDecimal">
 		<defaultValueExpression><![CDATA[new BigDecimal ("0")]]></defaultValueExpression>
 	</parameter>
+	<parameter name="SIGNO" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select 'AFP' as prestacion, $P{val_AFP} as valor from dual
 union
@@ -30,12 +34,14 @@ union
 select
     lower(a.des_dp) as prestacion,
     c.valor_presta as valor
+
 from
     deduc_presta a,
     empleados b,
     prestamos c
+
 where
-    a.cod_cia = b.cod_cia and  
+    a.cod_cia = b.cod_cia and
     c.cod_cia = a.cod_cia and a.cod_dp = c.cod_deduc and b.cod_emp=c.cod_emp and
     a.constancia = 'S' and b.cod_emp = $P{pCodEmp} and c.cod_cia = $P{pCia}]]>
 	</queryString>
@@ -73,7 +79,7 @@ where
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-1" x="269" y="0" width="22" height="13"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA["$ "]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{SIGNO}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
