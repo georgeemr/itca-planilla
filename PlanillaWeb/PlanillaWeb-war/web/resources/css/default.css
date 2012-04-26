@@ -112,9 +112,9 @@ body {
     color: black;
 }
 
-.toolbarUsuario{
+/*.toolbarUsuario{
     border:none; background: -moz-linear-gradient(right, #CDCDCD, #fff ); background: -webkit-gradient(linear, 0 0, 0 100%, from(#65b6cf),  to(#2c2c2c));
-}
+}*/
 
 .requerido{
     color: #DF0000;

@@ -18,10 +18,7 @@
                 <table width="100%" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <td width="200" align="left">
-                            <!-- h:panelGrid columns="1" -->
                             <h:graphicImage url="/resources/imagenes/infosgroup.png" width="150" height="40"/>
-                            <!--h:outputLabel value="Portal Web de Recursos Humanos"/-->
-                            <!-- /h:panelGrid -->
                         </td>
                         <td width="300" align="left">
                             <h:panelGrid columns="2">
@@ -56,21 +53,21 @@
                         </td>
                         <td width="18%;" align="right" >
                             <p:commandButton value="Opciones" image="ui-icon ui-icon-wrench" oncomplete="dialogOpciones.show();"/>
-                            <!--p:commandLink styleClass="opcionMenu textoNormal" ajax="true" oncomplete="dialogOpciones.show();" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
-                                <p:graphicImage value="/resources/iconos/theme.png"/>
-                                <h:outputText value="Cambiar tema" styleClass="espacioTexto"/>
-                            </p:commandLink-->
                             <p:spacer width="5"/>
                             <p:commandButton value="Cerrar sesi&oacute;n" image="ui-icon ui-icon-locked" oncomplete="cerrarSessionDialog.show();"/>
-                            <!--p:commandLink styleClass="opcionMenu textoNormal" ajax="true" oncomplete="cerrarSessionDialog.show();" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
-                                <p:graphicImage value="/resources/iconos/logout.png"/>
-                                <h:outputText value="Cerrar sesi&oacute;n" styleClass="espacioTexto"/>
-                            </p:commandLink-->
-                            <p:dialog id="dialogOpciones" widgetVar="dialogOpciones" header="Opciones" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="zoom" showEffect="zoom" modal="true" height="400" width="500">
-                                <h:panelGrid columns="2">
+                            <p:dialog id="dialogOpciones" widgetVar="dialogOpciones" header="Opciones" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="zoom" showEffect="zoom" modal="true" height="150" width="500">
+                                
+                                <h:panelGrid columns="1" style="width: 100%;">
+                                    <h:outputText value="Seleccione el aspecto visual que desea aplicar al entorno."/>
+                                </h:panelGrid>
+
+                                <h:panelGrid columns="2" style="width: 100%" >
                                     <h:outputText value="Tema"/>
                                     <p:themeSwitcher width="400"/>
+                                    <h:panelGroup />
+                                    <p:commandButton value="Aceptar" oncomplete="dialogOpciones.hide();" />
                                 </h:panelGrid>
+                                
                             </p:dialog>
                             <p:dialog id="cerrarSessionDialog" widgetVar="cerrarSessionDialog" header="Portal de Recursos Humanos" closable="true" draggable="true" resizable="false" closeOnEscape="true" hideEffect="zoom" showEffect="zoom" modal="true" width="400">
                                 <h:panelGrid columns="2" width="100%">
