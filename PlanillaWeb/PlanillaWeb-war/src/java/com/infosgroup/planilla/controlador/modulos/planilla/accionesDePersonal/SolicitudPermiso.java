@@ -128,6 +128,11 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
                 error = Boolean.FALSE;
             }
         }
+        
+        if ( dias!=null && dias>calculaDias( getFechaInicial(), getFechaFinal() ).shortValue()){
+            addMessage("Acciones de Personal", "Cantidad de Días fuera del rango seleccionado.", TipoMensaje.ERROR);
+            error = Boolean.FALSE;
+        }
 
         if (horas != null) {
             if (horas < 0) {

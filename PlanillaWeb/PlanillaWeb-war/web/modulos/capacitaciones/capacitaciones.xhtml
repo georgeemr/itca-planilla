@@ -33,7 +33,7 @@
                     <p:column headerText="C&oacute;digo" style="width: 8%" filterBy="#{emp.empleadosPK.codEmp}" >
                         <h:outputText value="#{emp.empleadosPK.codEmp}"/>
                     </p:column>
-                    <p:column headerText="Nombre" filterBy="#{jefe.nombreCompleto}" >
+                    <p:column headerText="Nombre" filterBy="#{emp.nombreCompleto}" filterMatchMode="contains" >
                         <h:outputText value="#{emp.nombreCompleto}"/>
                     </p:column>
                     <p:column headerText="Seleccionar" style="width: 8%" >
@@ -70,7 +70,7 @@
                 <p:column headerText="C&oacute;digo" filterBy="#{det.empleados.empleadosPK.codEmp}" style="width: 8%" >
                     <h:outputText value="#{det.empleados.empleadosPK.codEmp}"/>
                 </p:column>
-                <p:column headerText="Nombre" filterBy="#{jefe.nombreCompleto}" >
+                <p:column headerText="Nombre" filterBy="#{det.empleados.nombreCompleto}" filterMatchMode="contains" >
                     <h:outputText value="#{det.empleados.nombreCompleto}"/>
                 </p:column>
                 <p:column headerText="Seleccionar" style="width: 8%" >
