@@ -11,12 +11,8 @@ import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.mail.BodyPart;
-import javax.mail.Message;
 import javax.mail.Message.RecipientType;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -30,12 +26,12 @@ import javax.mail.internet.MimeMultipart;
 @LocalBean
 public class MailStatelessBean {
     
-    @Resource(name = "mail/gmailSession")
-    private Session mailSession;
+    @Resource(name = "gmailSession")
+    private Session gmailSession;
 
     @PermitAll
     public void enviarCorreoElectronico(String titulo, String contenido, String destinatarios) {
-        Message msg = new MimeMessage(mailSession);
+        Message msg = new MimeMessage(gmailSession);
         try {
             msg.setSubject(titulo);
             String[] arrayDestinatarios = destinatarios.split(":");
@@ -51,7 +47,7 @@ public class MailStatelessBean {
 
     @PermitAll
     public void enviarCorreoElectronicoAdjuntos(String titulo, String contenido, String destinatarios, List<DetalleAdjuntoCorreo> adjuntos) {
-        Message msg = new MimeMessage(mailSession);
+        Message msg = new MimeMessage(gmailSession);
         try {
             msg.setSubject(titulo);
             String[] arrayDestinatarios = destinatarios.split(":");
