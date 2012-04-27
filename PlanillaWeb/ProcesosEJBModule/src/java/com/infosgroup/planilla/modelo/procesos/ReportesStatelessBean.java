@@ -43,7 +43,7 @@ public class ReportesStatelessBean {
     private CiasFacade ciasFacade;
     @EJB
     private EscalaEvaluacionFacade escalaEvaluacionFacade;
-    @Resource(name = "jdbc/PlanillaDatasource")
+    @Resource(name = "PlanillaDatasource")
     private DataSource planillaJDBCDatasource;
 
     @PermitAll

@@ -144,6 +144,10 @@ public class DeducPresta implements Serializable {
 
     public DeducPresta() {
     }
+    
+    public DeducPresta(String desDp){
+        this.desDp = desDp;
+    }
 
     public DeducPresta(DeducPrestaPK deducPrestaPK) {
         this.deducPrestaPK = deducPrestaPK;

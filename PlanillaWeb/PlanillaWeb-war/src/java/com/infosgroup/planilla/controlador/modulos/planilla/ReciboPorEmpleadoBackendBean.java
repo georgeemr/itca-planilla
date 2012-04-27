@@ -13,6 +13,7 @@ import com.infosgroup.planilla.view.AutocompletePlanillaConverter;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.List;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.annotation.PostConstruct;
@@ -52,7 +53,7 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
 
     @PostConstruct
     public void init() {
-        setEmpleado( getSessionBeanEMP().getEmpleadoSesion() );
+        setEmpleado(getSessionBeanEMP().getEmpleadoSesion());
     }
 
     public void updateByTipoPlanilla(AjaxBehaviorEvent event) {
@@ -61,9 +62,9 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
 
     public List<TiposPlanilla> getListaTipos() {
         if (isInRole("rrhh")) {
-            setListaTipos ( planillaSessionBean.listarTipos(getSessionBeanADM().getCompania()) );
+            setListaTipos(planillaSessionBean.listarTipos(getSessionBeanADM().getCompania()));
         } else {
-            setListaTipos (planillaSessionBean.listarTiposByEmpleado(getEmpleado()));
+            setListaTipos(planillaSessionBean.listarTiposByEmpleado(getEmpleado()));
         }
         return listaTipos;
     }
@@ -98,9 +99,9 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
 
     public AutocompletePlanillaConverter getPlanillaConverter() {
         if (tipoPlanilla != null && tipoPlanilla != -1) {
-            setPlanillaConverter( new AutocompletePlanillaConverter(planillaSessionBean.findPlaByEmp(getEmpleado(), getTipoPlanilla())));
+            setPlanillaConverter(new AutocompletePlanillaConverter(planillaSessionBean.findPlaByEmp(getEmpleado(), getTipoPlanilla())));
         } else {
-            setPlanillaConverter( new AutocompletePlanillaConverter(new ArrayList<Planilla>()));
+            setPlanillaConverter(new AutocompletePlanillaConverter(new ArrayList<Planilla>()));
         }
         return planillaConverter;
     }
@@ -136,20 +137,25 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
     }
 
     public void handleSelectPlanilla(SelectEvent event) {
-        setListaDeducciones ( planillaSessionBean.findDeduccionesPresta(getPlanillaSeleccionada(), "R"));
-        setListaPrestaciones( planillaSessionBean.findDeduccionesPresta(getPlanillaSeleccionada(), "S"));
+        setListaDeducciones(planillaSessionBean.findDeduccionesPresta(getPlanillaSeleccionada(), "R"));
+        setListaPrestaciones(new ArrayList<MovDp>());
+        Double salario = (getPlanillaSeleccionada().getSueldoBase() != null) ? new Double(getPlanillaSeleccionada().getSueldoBase().doubleValue()) : new Double("0");
+        Double diasLaborados = (getPlanillaSeleccionada().getSueldoBase() != null) ? new Double(getPlanillaSeleccionada().getDLaborados().doubleValue()) : new Double("0");
+        salario = (salario / 30) * diasLaborados;
+        setListaPrestaciones(planillaSessionBean.findDeduccionesPresta(getPlanillaSeleccionada(), "S"));
+        listaPrestaciones.add(new MovDp(new DeducPresta("SALARIO"), null, BigDecimal.ZERO, new BigDecimal(salario), BigDecimal.ZERO, null, null, null));
     }
 
-    public String okActionDialogEmpleado(){
+    public String okActionDialogEmpleado() {
         return null;
     }
-    
-    public String cancelActionDialogEmpleado(){
+
+    public String cancelActionDialogEmpleado() {
         setEmpleado(getSessionBeanEMP().getEmpleadoSesion());
         limpiarCampos();
         return null;
     }
-    
+
     public String mostrar$reporte$action() {
         if (getPlanillaSeleccionada() == null) {
             addMessage("Reporte por Empleado", "No ha elegido ninguna planilla", TipoMensaje.INFORMACION);
@@ -166,5 +172,39 @@ public class ReciboPorEmpleadoBackendBean extends AbstractJSFPage implements Ser
             reportesBean.generarReporteSQL(FacesContext.getCurrentInstance(), parametros, "RPLA018", FormatoReporte.PDF);
         }
         return null;
+    }
+    private Double totalPrestaciones;
+    private Double totalDeducciones;
+
+    public Double getTotalDeducciones() {
+        totalDeducciones = 0.0;
+        if (listaDeducciones != null) {
+            for (MovDp d : listaDeducciones) {
+                if (d.getValor() != null) {
+                    totalDeducciones += d.getValor().doubleValue();
+                }
+            }
+        }
+        return totalDeducciones;
+    }
+
+    public void setTotalDeducciones(Double totalDeducciones) {
+        this.totalDeducciones = totalDeducciones;
+    }
+
+    public Double getTotalPrestaciones() {
+        totalPrestaciones = 0.0;
+        if (listaPrestaciones != null) {
+            for (MovDp d : listaPrestaciones) {
+                if (d.getValor() != null) {
+                    totalPrestaciones += d.getValor().doubleValue();
+                }
+            }
+        }
+        return totalPrestaciones;
+    }
+
+    public void setTotalPrestaciones(Double totalPrestaciones) {
+        this.totalPrestaciones = totalPrestaciones;
     }
 }

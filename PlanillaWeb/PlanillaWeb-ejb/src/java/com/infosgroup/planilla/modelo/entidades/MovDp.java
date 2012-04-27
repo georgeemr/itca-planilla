@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "MovDp.findByCodPresta", query = "SELECT m FROM MovDp m WHERE m.codPresta = :codPresta"),
     @NamedQuery(name = "MovDp.findByConstancia", query = "SELECT m FROM MovDp m WHERE m.constancia = :constancia")})
 public class MovDp implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected MovDpPK movDpPK;
@@ -93,12 +94,27 @@ public class MovDp implements Serializable {
         @JoinColumn(name = "COD_DP", referencedColumnName = "COD_DP", nullable = false)})
     @ManyToOne(optional = false)
     private DeducPresta deducPresta;
-    
+
     public MovDp() {
     }
 
     public MovDp(MovDpPK movDpPK) {
         this.movDpPK = movDpPK;
+    }
+
+    public MovDp(DeducPresta deducPresta) {
+        this.deducPresta = deducPresta;
+    }
+
+    public MovDp(DeducPresta deducPresta, String vpr, BigDecimal factor, BigDecimal valor, BigDecimal baseCalculo, Date fechaMovto, String sumaResta, String status) {
+        this.deducPresta = deducPresta;
+        this.vpr = vpr;
+        this.factor = factor;
+        this.valor = valor;
+        this.baseCalculo = baseCalculo;
+        this.fechaMovto = fechaMovto;
+        this.sumaResta = sumaResta;
+        this.status = status;
     }
 
     public MovDp(MovDpPK movDpPK, String vpr, BigDecimal factor, BigDecimal valor, BigDecimal baseCalculo, Date fechaMovto, String sumaResta, String status) {
@@ -268,5 +284,4 @@ public class MovDp implements Serializable {
     public String toString() {
         return "com.infosgroup.planilla.modelo.entidades.MovDp[ movDpPK=" + movDpPK + " ]";
     }
-    
 }

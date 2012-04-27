@@ -9,6 +9,8 @@ import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.AutocompleteProgramacionPlaConverter;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -148,7 +150,12 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
 
     public String selectEmpleado$Action() {
         setListaDeducciones (planillaSessionBean.findDeduccionesPresta(planillaSeleccionada, "R"));
+        setListaPrestaciones(new ArrayList<MovDp>());
+        Double salario = (getPlanillaSeleccionada().getSueldoBase()!=null)?new Double(getPlanillaSeleccionada().getSueldoBase().doubleValue()):new Double("0");
+        Double diasLaborados = (getPlanillaSeleccionada().getSueldoBase()!=null)?new Double(getPlanillaSeleccionada().getDLaborados().doubleValue()) : new Double("0");
+        salario = (salario/30)*diasLaborados;        
         setListaPrestaciones( planillaSessionBean.findDeduccionesPresta(planillaSeleccionada, "S"));
+        listaPrestaciones.add( new MovDp(new DeducPresta("SALARIO"), null, BigDecimal.ZERO, new BigDecimal(salario), BigDecimal.ZERO, null, null, null) );
         return null;
     }
 
@@ -157,4 +164,36 @@ public class InformacionPagosBackendBean extends AbstractJSFPage implements Seri
         limpiarCampos();
         return null;
     }
+    
+    private Double totalPrestaciones;
+    private Double totalDeducciones;
+
+    public Double getTotalDeducciones() {
+        totalDeducciones = 0.0;
+        if( listaDeducciones!=null ){
+            for (MovDp d: listaDeducciones){
+                if ( d.getValor()!=null ) totalDeducciones += d.getValor().doubleValue();
+            }    
+        }
+        return totalDeducciones;
+    }
+
+    public void setTotalDeducciones(Double totalDeducciones) {
+        this.totalDeducciones = totalDeducciones;
+    }
+
+    public Double getTotalPrestaciones() {
+        totalPrestaciones = 0.0;
+        if( listaPrestaciones!=null ){
+            for (MovDp d: listaPrestaciones){
+                if ( d.getValor()!=null ) totalPrestaciones += d.getValor().doubleValue();
+            }    
+        }
+        return totalPrestaciones;
+    }
+
+    public void setTotalPrestaciones(Double totalPrestaciones) {
+        this.totalPrestaciones = totalPrestaciones;
+    }
+    
 }
