@@ -14,51 +14,51 @@
     </ui:define>
 
     <ui:define name="dialogos" >
-                <p:dialog widgetVar="dlgEmpleados" header="Listado general de Empleados" showEffect="fold" hideEffect="fold" width="725" height="460" >
+        <p:dialog widgetVar="dlgEmpleados" header="Listado general de Empleados" showEffect="fold" hideEffect="fold" width="725" height="460" >
 
-                <table style="width: 100%" >
-                    <tr>
-                        <td style="width: 5%;" >
-                            <p:graphicImage value="/resources/imagenes/64/meeting-participant.png" />   
-                        </td>
-                        <td>
-                            <h:outputLabel id="lbl1" value="Seleccione un empleado"  style="font-weight: bold;"/>
-                        </td>
-                    </tr>
-                </table>
+            <table style="width: 100%" >
+                <tr>
+                    <td style="width: 5%;" >
+                        <p:graphicImage value="/resources/imagenes/64/meeting-participant.png" />   
+                    </td>
+                    <td>
+                        <h:outputLabel id="lbl1" value="Seleccione un empleado"  style="font-weight: bold;"/>
+                    </td>
+                </tr>
+            </table>
 
-                <p:dataTable id="listadoEmpleados" value="#{planilla$informacionPagos.listaPlanillas}" var="planilla" 
-                             paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true" 
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                             rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" >
+            <p:dataTable id="listadoEmpleados" value="#{planilla$informacionPagos.listaPlanillas}" var="planilla" 
+                         paginator="true" rows="5"  emptyMessage="No se han encontrado Empleados." dynamic="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                         rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" >
 
-                    <f:facet name="header">
-                        Empleados
-                    </f:facet>
+                <f:facet name="header">
+                    Empleados
+                </f:facet>
 
-                    <p:column headerText="C&#243;digo" style="width: 8%" filterBy="#{planilla.empleados.empleadosPK.codEmp}" filterMatchMode="contains" >  
-                        <h:outputLabel value="#{planilla.empleados.empleadosPK.codEmp}" />
-                    </p:column>  
+                <p:column headerText="C&#243;digo" style="width: 8%" filterBy="#{planilla.empleados.empleadosPK.codEmp}" filterMatchMode="contains" >  
+                    <h:outputLabel value="#{planilla.empleados.empleadosPK.codEmp}" />
+                </p:column>  
 
-                    <p:column headerText="Nombre " filterBy="#{planilla.empleados.nombreCompleto}" filterMatchMode="contains" >  
-                        <h:outputLabel value="#{planilla.empleados.nombreCompleto}" />
-                    </p:column>  
+                <p:column headerText="Nombre " filterBy="#{planilla.empleados.nombreCompleto}" filterMatchMode="contains" >  
+                    <h:outputLabel value="#{planilla.empleados.nombreCompleto}" />
+                </p:column>  
 
-                    <p:column style="width: 5%;" >
-                        <p:commandButton styleClass="opcionMenu" update="principalForm:mensajes,principalForm:tbIng,principalForm:tbEgr,principalForm:panelDescripcion" oncomplete="dlgEmpleados.hide();" action="#{planilla$informacionPagos.selectEmpleado$Action}" image="ui-icon-circle-check" title="Seleccionar empleado" >
-                            <f:setPropertyActionListener value="#{planilla}" target="#{planilla$informacionPagos.planillaSeleccionada}" /> 
-                        </p:commandButton>
-                    </p:column>
+                <p:column style="width: 5%;" >
+                    <p:commandButton styleClass="opcionMenu" update="principalForm:mensajes,principalForm:tbIng,principalForm:tbEgr,principalForm:panelDescripcion" oncomplete="dlgEmpleados.hide();" action="#{planilla$informacionPagos.selectEmpleado$Action}" image="ui-icon-circle-check" title="Seleccionar empleado" >
+                        <f:setPropertyActionListener value="#{planilla}" target="#{planilla$informacionPagos.planillaSeleccionada}" /> 
+                    </p:commandButton>
+                </p:column>
 
-                </p:dataTable>
+            </p:dataTable>
 
-                <p:spacer height="15" />
-                <h:panelGrid columns="2">
-                    <p:commandButton value="Cancelar" styleClass="opcionMenu" update="principalForm:mensajes,tbIng,tbEgr,panelDescripcion" oncomplete="dlgEmpleados.hide();" action="#{planilla$informacionPagos.cancelSelectEmpleado$Action}" image="ui-icon-circle-check" /> 
-                </h:panelGrid>
-                
+            <p:spacer height="15" />
+            <h:panelGrid columns="2">
+                <p:commandButton value="Cancelar" styleClass="opcionMenu" update="principalForm:mensajes,tbIng,tbEgr,panelDescripcion" oncomplete="dlgEmpleados.hide();" action="#{planilla$informacionPagos.cancelSelectEmpleado$Action}" image="ui-icon-circle-check" /> 
+            </h:panelGrid>
+
         </p:dialog>
-        
+
     </ui:define>
 
     <ui:define name="acciones">
@@ -93,7 +93,7 @@
                                     onSelectUpdate="panelDescripcion,panelInformacionPagos,principalForm:listadoEmpleados" >
                         <f:ajax render="principalForm:listadoEmpleados" event="change" execute="AutCompltProgPla" />
                     </p:autoComplete>
-                    
+
                     <i:etiquetaPlanilla />
                 </h:panelGroup>
                 <i:etiquetaRequerido value="Empleado" />
@@ -102,14 +102,6 @@
                     <p:graphicImage value="/resources/iconos/personal.png"/>
                     <h:outputText value="Seleccionar" styleClass="espacioTexto" />
                 </p:commandLink>
-
-                <h:outputLabel value=""/>
-                <h:panelGrid id="panelDescripcion" columns="4" style="padding-left: 0;" >
-                    <i:etiquetaMoneda label="Sueldo Base: " value="#{planilla$informacionPagos.planillaSeleccionada ne null ? planilla$informacionPagos.planillaSeleccionada.sueldoBase : '0.00'}" />
-                    <i:etiquetaMoneda label="Prestaciones: " value="#{planilla$informacionPagos.planillaSeleccionada ne null ? planilla$informacionPagos.planillaSeleccionada.prestaciones : '0.00'}" />
-                    <i:etiquetaMoneda label="Deducciones: "  value="#{planilla$informacionPagos.planillaSeleccionada ne null ? planilla$informacionPagos.planillaSeleccionada.deducciones : '0.00'}" />
-                    <i:etiquetaMoneda label="Total: " value="#{ planilla$informacionPagos.planillaSeleccionada ne null ? planilla$informacionPagos.planillaSeleccionada.liqRecibir : '0.00'}" />
-                </h:panelGrid>
 
             </h:panelGrid>
             <p:spacer height="10"/>
@@ -120,13 +112,21 @@
                             <f:facet name="header">
                                 <h:outputText value="Ingresos"/>
                             </f:facet>
-                            <p:column headerText="Descripcion">
+                            <p:column headerText="Descripci&oacute;n">
                                 <h:outputText value="#{ingreso.deducPresta.desDp}"/>
+                                <f:facet name="footer" >
+                                    <h:outputLabel value="Total" />
+                                </f:facet>
                             </p:column>
                             <p:column headerText="Cantidad" style="text-align: right">
                                 <h:outputText value="#{ingreso.valor}">
-                                    <f:convertNumber pattern="#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
+                                    <f:convertNumber pattern="#,##0.00" maxFractionDigits="2"/>
                                 </h:outputText>
+                                <f:facet name="footer" >
+                                    <h:outputLabel value="#{planilla$informacionPagos.totalPrestaciones}" >
+                                        <f:convertNumber pattern="#,##0.00" maxFractionDigits="2"/>
+                                    </h:outputLabel>
+                                </f:facet>
                             </p:column>
                         </p:dataTable>
                     </td>
@@ -135,14 +135,21 @@
                             <f:facet name="header">
                                 <h:outputText value="Egresos"/>
                             </f:facet>
-                            <p:column headerText="Descripcion">
+                            <p:column headerText="Descripci&oacute;n">
                                 <h:outputText value="#{egreso.deducPresta.desDp}"/>
+                                <f:facet name="footer" >
+                                    <h:outputLabel value="Total" />
+                                </f:facet>
                             </p:column>
                             <p:column headerText="Cantidad" style="text-align: right">
                                 <h:outputText value="#{egreso.valor}">
-                                    <f:convertNumber pattern="#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
+                                    <f:convertNumber pattern="#,##0.00" maxFractionDigits="2" />
                                 </h:outputText>
-
+                                <f:facet name="footer" >
+                                    <h:outputLabel value="#{planilla$informacionPagos.totalDeducciones}" >
+                                        <f:convertNumber pattern="#,##0.00" maxFractionDigits="2"/>
+                                    </h:outputLabel>
+                                </f:facet>
                             </p:column>
                         </p:dataTable>
                     </td>

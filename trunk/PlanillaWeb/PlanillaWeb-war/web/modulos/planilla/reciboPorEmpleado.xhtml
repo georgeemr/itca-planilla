@@ -44,19 +44,19 @@
                             <h:panelGroup>
                                 <h:outputLabel id="lblNombreEmpleado" value="#{planilla$reciboPorEmpleado.empleado.nombreCompleto}" style=" font-weight: bold"/>
                                 <p:spacer width="15" rendered="#{request.isUserInRole('rrhh')}" />
-                                
+
                                 <p:commandLink styleClass="opcionMenu" oncomplete="dlgReciboEmpleados.show();" style="color:blue" rendered="#{request.isUserInRole('rrhh')}">
                                     <p:graphicImage value="/resources/iconos/personal.png"/>
                                     <h:outputText value="Seleccionar otro empleado" styleClass="espacioTexto" />
                                 </p:commandLink>
-                                
+
                                 <d:dialogoEmpleados name="dlgReciboEmpleados" title="Listado general de Empleados" information="Seleccione un empleado."
                                                     selection="#{planilla$reciboPorEmpleado.empleado}" image="/resources/imagenes/64/meeting-participant.png"
                                                     update="principalForm:mensajes,principalForm:lblNombreEmpleado,principalForm:AutCompltEmpleado,principalForm:panelInformacionPagos" 
                                                     okAction="#{planilla$reciboPorEmpleado.okActionDialogEmpleado}"
                                                     cancelAction="#{planilla$reciboPorEmpleado.cancelActionDialogEmpleado}"/>
                             </h:panelGroup>
-                            
+
                             <i:etiquetaRequerido value="Tipo de planilla" />
                             <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{planilla$reciboPorEmpleado.tipoPlanilla}" >                       
                                 <f:ajax render="AutCompltEmpleado panelInformacionPagos principalForm:mensajes" event="change" execute="LstTipoPlanilla" listener="#{planilla$reciboPorEmpleado.updateByTipoPlanilla}" />
@@ -99,13 +99,21 @@
                             <f:facet name="header">
                                 <h:outputText value="Ingresos"/>
                             </f:facet>
-                            <p:column headerText="Descripcion">
+                            <p:column headerText="Descripci&oacute;n">
                                 <h:outputText value="#{ingreso.deducPresta.desDp}"/>
+                                <f:facet name="footer" >
+                                    <h:outputLabel value="Total" />
+                                </f:facet>
                             </p:column>
                             <p:column headerText="Cantidad" style="text-align: right">
                                 <h:outputText value="#{ingreso.valor}">
                                     <f:convertNumber pattern="#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
                                 </h:outputText>
+                                <f:facet name="footer" >
+                                    <h:outputLabel value="#{planilla$reciboPorEmpleado.totalPrestaciones}" >
+                                        <f:convertNumber pattern="#,##0.00" maxFractionDigits="2"/>
+                                    </h:outputLabel>
+                                </f:facet>
                             </p:column>
                         </p:dataTable>
                     </td>
@@ -114,13 +122,21 @@
                             <f:facet name="header">
                                 <h:outputText value="Egresos"/>
                             </f:facet>
-                            <p:column headerText="Descripcion">
+                            <p:column headerText="Descripci&oacute;n">
                                 <h:outputText value="#{egreso.deducPresta.desDp}"/>
+                                <f:facet name="footer" >
+                                    <h:outputLabel value="Total" />
+                                </f:facet>
                             </p:column>
                             <p:column headerText="Cantidad" style="text-align: right">
                                 <h:outputText value="#{egreso.valor}">
                                     <f:convertNumber pattern="#,##0.00" maxFractionDigits="2" currencySymbol="$"/>
                                 </h:outputText>
+                                <f:facet name="footer" >
+                                    <h:outputLabel value="#{planilla$reciboPorEmpleado.totalDeducciones}" >
+                                        <f:convertNumber pattern="#,##0.00" maxFractionDigits="2"/>
+                                    </h:outputLabel>
+                                </f:facet>
                             </p:column>
                         </p:dataTable>
                     </td>
