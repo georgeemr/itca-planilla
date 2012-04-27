@@ -116,18 +116,16 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
     }
 
     @RolesAllowed({"empleados", "rrhh", "jefes"})
-    public List<AccionPersonal> findSolicitudesByEmpleado(Empleados empleado) {
-        List<AccionPersonal> l = new ArrayList<AccionPersonal>();
+    public List<AccionPersonal> findSolicitudesByEmpleado(Empleados empleado) {        
         TypedQuery<AccionPersonal> tq = em.createQuery("SELECT a FROM AccionPersonal a WHERE a.accionPersonalPK.codCia = :codCia AND a.accionPersonalPK.codEmp = :idEmpleado ORDER BY a.fecha DESC", AccionPersonal.class);
         tq.setParameter("codCia", empleado.getEmpleadosPK().getCodCia());
         tq.setParameter("idEmpleado", empleado.getEmpleadosPK().getCodEmp());
-        l = tq.getResultList();
+        List<AccionPersonal> l = tq.getResultList();
         return l != null ? l : new ArrayList<AccionPersonal>();
     }
 
     @RolesAllowed({"rrhh"})
     public List<AccionPersonal> findSolicitudesByRRHH(Empleados empleado) {
-        List<AccionPersonal> l = new ArrayList<AccionPersonal>();
         StringBuilder query = new StringBuilder();
         query.append("select * from ( select * from accion_personal where ( cod_cia , cod_tipoaccion ) in ");
         query.append("( select cod_cia, cod_tipoaccion from planilla.tipo_accion a where a.cod_cia = ? and firma_jefe = 'S' and firma_rh = 'S' ) ");
@@ -138,22 +136,20 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
         Query q = em.createNativeQuery(query.toString(), AccionPersonal.class);
         q.setParameter(1, empleado.getEmpleadosPK().getCodCia());
         q.setParameter(2, empleado.getEmpleadosPK().getCodCia());
-        l = (List<AccionPersonal>) q.getResultList();
+        List<AccionPersonal> l = (List<AccionPersonal>) q.getResultList();
         return l != null ? l : new ArrayList<AccionPersonal>();
     }
 
     @RolesAllowed({"jefes"})
     public List<AccionPersonal> findSolicitudesByJefe(Empleados empleado) {
-        List<AccionPersonal> l = new ArrayList<AccionPersonal>();
-        Query q = em.createNativeQuery("select * from accion_personal where cod_cia = ? and cod_emp in ( "
-                + " select cod_emp from empleados where cod_cia = ? and cod_emp = ? union select cod_emp from empleados where cod_cia = ? and jefe = ? ) and aprobado_jefe is null order by fecha desc",
-                AccionPersonal.class);
+        //Query q = em.createNativeQuery("select * from accion_personal where cod_cia = ? and cod_emp in ( select cod_emp from empleados where cod_cia = ? and cod_emp = ? union select cod_emp from empleados where cod_cia = ? and jefe = ? ) and aprobado_jefe is null order by fecha desc", AccionPersonal.class);
+        Query q = em.createNativeQuery("select * from accion_personal where cod_cia = ? and cod_emp in ( select cod_emp from empleados where cod_cia = ? and cod_emp = ? union select cod_emp from empleados where cod_cia = ? and jefe = ? ) and f_aprueba_jefe is null and aprobado_jefe != 'S' order by fecha desc", AccionPersonal.class);
         q.setParameter(1, empleado.getEmpleadosPK().getCodCia());
         q.setParameter(2, empleado.getEmpleadosPK().getCodCia());
         q.setParameter(3, empleado.getEmpleadosPK().getCodEmp());
         q.setParameter(4, empleado.getEmpleadosPK().getCodCia());
         q.setParameter(5, empleado.getEmpleadosPK().getCodEmp());
-        l = q.getResultList();
+        List<AccionPersonal> l = q.getResultList();
         return l != null ? l : new ArrayList<AccionPersonal>();
     }
 }
