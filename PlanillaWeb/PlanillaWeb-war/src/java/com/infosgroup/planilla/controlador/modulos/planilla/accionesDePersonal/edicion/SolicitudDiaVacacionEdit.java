@@ -28,7 +28,6 @@ public class SolicitudDiaVacacionEdit extends AbstractEditAccionPersonal impleme
     private PlanillaSessionBean planillaSessionBean;
     private Date fechaInicial;
     private Date fechaFinal;
-    private String observacion;
     private Short dias = 0;
 
     public SolicitudDiaVacacionEdit() {
@@ -60,14 +59,6 @@ public class SolicitudDiaVacacionEdit extends AbstractEditAccionPersonal impleme
 
     public void setFechaInicial(Date fechaInicial) {
         this.fechaInicial = fechaInicial;
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
     }
 
     public Short getDias() {

@@ -8,32 +8,22 @@ import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBack
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.Date;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.event.DateSelectEvent;
 
 /**
  *
  * @author root
  */
+@ManagedBean(name="solicitudPermiso")
+@ViewScoped
 public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Serializable {
 
-    private java.util.Date fechaInicial;
-    private java.util.Date fechaFinal;
+    private Date fechaInicial;
+    private Date fechaFinal;
     private Short dias = 0;
     private Short horas = 0;
-
-    private String observacion;
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-    
-    public SolicitudPermiso(AccionesPersonalBackendBean encabezadoSolicitud) {
-        super(encabezadoSolicitud);
-    }
 
     public Short getDias() {
         return dias;
@@ -70,13 +60,13 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
     public String guardarSolicitud$action() {
         if (!validarSolicitud()) return null;
         AccionPersonal accionPersonal = new AccionPersonal();
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), getEmpleadosToAccionPersonal()));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getSessionBeanADM().getCompania(), getEmpleadosToAccionPersonal()));
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setStatus("G");
-        accionPersonal.setUsuarioCreacion( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
+        accionPersonal.setUsuarioCreacion(getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setFechaFinal(fechaFinal);
         accionPersonal.setFechaInicial(fechaInicial);
         accionPersonal.setEmpleados1( getEmpleadosToAccionPersonal().getEmpleados() );
@@ -86,11 +76,11 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
         accionPersonal.setPuestos(getEmpleadosToAccionPersonal().getPuestos());
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
-        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
-        planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
+        //getEncabezadoSolicitud().setListaSolicitudes(getPlanillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
+        //getPlanillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
         StringBuilder mensaje = new StringBuilder();
 
-        enviarCorreo(accionPersonal, "Mensaje de Prueba de accion de personal");
+        enviarCorreoAccionPersonal(accionPersonal, "Mensaje de Prueba de accion de personal");
         limpiarCampos();
         return null;
     }
@@ -107,10 +97,6 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
     @Override
     public boolean validarSolicitud() {
         Boolean error = Boolean.TRUE;
-        if (getEncabezadoSolicitud().getTipo() == null) {
-            addMessage("Acciones de Personal", "Tipo de acción es un campo requerido", TipoMensaje.ERROR);
-            error = Boolean.FALSE;
-        }
 
         if (fechaInicial == null) {
             addMessage("Acciones de Personal", "Fecha inicio es un campo requerido.", TipoMensaje.ERROR);
@@ -141,7 +127,7 @@ public class SolicitudPermiso extends SolicitudDePersonal implements java.io.Ser
             }
         }
 
-        if (getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getPuestos() == null) {
+        if (getSessionBeanEMP().getEmpleadoSesion().getPuestos() == null) {
             addMessage("Acciones de Personal", "Usted no tiene ningún puesto asignado.", TipoMensaje.ERROR);
             error = Boolean.FALSE;
         }

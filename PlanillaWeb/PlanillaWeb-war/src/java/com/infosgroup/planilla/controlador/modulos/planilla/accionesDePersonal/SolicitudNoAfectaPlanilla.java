@@ -10,35 +10,31 @@ import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author root
  */
+@ManagedBean(name="solicitudNoAfectaPlanilla")
+@ViewScoped
 public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements java.io.Serializable {
 
     private Short tipoAccionSeleccionada;
-    private java.util.Date fechaInicial;
-    private java.util.Date fechaFinal;
-    private java.util.List<TipoAccion> listaTipoAccionNoAfecta;
-    private String observacion;
+    private Date fechaInicial;
+    private Date fechaFinal;
+    private List<TipoAccion> listaTipoAccionNoAfecta;
 
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-
-    public SolicitudNoAfectaPlanilla(AccionesPersonalBackendBean encabezadoSolicitud) {
-        super(encabezadoSolicitud);
-        if (encabezadoSolicitud.isInRole("rrhh")) {
-            listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), "rrhh");
-        } else if (encabezadoSolicitud.isInRole("jefes")) {
-            listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), "jefes");
-        } else if (encabezadoSolicitud.isInRole("empleados")) {
-            listaTipoAccionNoAfecta = planillaSessionBean().listarTipoAccionNoAfectaPlanilla(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), "empleados");
+    @PostConstruct
+    public void _init(){
+        if (isInRole("rrhh")) {
+            listaTipoAccionNoAfecta = getPlanillaSessionBean().listarTipoAccionNoAfectaPlanilla(getSessionBeanADM().getCompania(), "rrhh");
+        } else if (isInRole("jefes")) {
+            listaTipoAccionNoAfecta = getPlanillaSessionBean().listarTipoAccionNoAfectaPlanilla(getSessionBeanADM().getCompania(), "jefes");
+        } else if (isInRole("empleados")) {
+            listaTipoAccionNoAfecta = getPlanillaSessionBean().listarTipoAccionNoAfectaPlanilla(getSessionBeanADM().getCompania(), "empleados");
         } else {
             listaTipoAccionNoAfecta = new ArrayList<TipoAccion>();
         }
@@ -79,23 +75,23 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
     public String guardarSolicitud$action() {
         if (validarSolicitud()) return null;
         AccionPersonal accionPersonal = new AccionPersonal();       
-        TipoAccion tipoAccion = new TipoAccion(new TipoAccionPK(getEncabezadoSolicitud().getEmpresa(), tipoAccionSeleccionada));
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), tipoAccion, getEmpleadosToAccionPersonal()));
+        TipoAccion tipoAccion = new TipoAccion(new TipoAccionPK(getSessionBeanADM().getCompania().getCodCia(), tipoAccionSeleccionada));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getSessionBeanADM().getCompania(), tipoAccion, getEmpleadosToAccionPersonal()));
         accionPersonal.setTipoAccion(tipoAccion);
         accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());
         accionPersonal.setEmpleados1( getEmpleadosToAccionPersonal().getEmpleados() );
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setStatus("G");
-        accionPersonal.setUsuarioCreacion(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario());
+        accionPersonal.setUsuarioCreacion(getSessionBeanEMP().getEmpleadoSesion().getUsuario());
         accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
         accionPersonal.setFechaInicial(fechaInicial);
         accionPersonal.setFechaFinal(fechaInicial);
         accionPersonal.setPuestos(getEmpleadosToAccionPersonal().getPuestos());
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
-        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
-        planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
+        //getEncabezadoSolicitud().setListaSolicitudes(getPlanillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
+        //getPlanillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
         limpiarCampos();
         return null;
     }

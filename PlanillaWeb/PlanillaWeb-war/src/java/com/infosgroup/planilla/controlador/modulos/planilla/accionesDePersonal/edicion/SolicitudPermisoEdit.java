@@ -29,7 +29,6 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
     private PlanillaSessionBean planillaSessionBean;
     private Date fechaInicial;
     private Date fechaFinal;
-    private String observacion;
     private Short dias;
     private Short horas;
     private Double valorDescuento;
@@ -93,14 +92,6 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
 
     public void setValorDescuento(Double valorDescuento) {
         this.valorDescuento = valorDescuento;
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
     }
 
     public void handleFechaInicial(DateSelectEvent event) {

@@ -21,8 +21,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -37,43 +35,25 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     @EJB
     private ReportesStatelessBean reportesStatelessBean;
     private List<AccionPersonal> listaSolicitudes;
-    private Short tipo;
     private List<TipoAccion> listaTipo;
     private List<Empleados> listaEmp;
-    private List<TiposPlanilla> listaTipos;
     private Short empresa;
     private Long tipoAccion;
-    private DataTable tablaEmpleado;
     private Date fecha;
     private String urlPlantilla;
     private String urlPlantillaDefault = "/modulos/planilla/acciones/ninguna.xhtml";
-    private TipoAccion accionSeleccionada;
+    private TipoAccion accionSeleccionada;//<  Remover luego >
     private String solicitudesMostradas;
-    /*
-     * Campos de Detalle de Solicitud
-     */
-    private SolicitudPermiso solicitudPermiso;
-    private SolicitudVacacionesAnuales solicitudVacacionesAnuales;
-    private SolicitudIncapacidad solicitudIncapacidad;
-    private SolicitudNombramiento solicitudNombramiento;
-    private SolicitudVacacionColectiva solicitudVacacionColectiva;
-    private SolicitudAumentoSueldo solicitudAumentoSueldo;
-    private SolicitudAumentoSueldoColectivo solicitudAumentoSueldoColectivo;
-    private SolicitudRetiro solicitudRetiro;
-    private SolicitudNoAfectaPlanilla solicitudNoAfectaPlanilla;
-    private SolicitudConstanciaSueldo solicitudConstanciaSueldo;
-    private SolicitudDiaDeVacacion solicitudDiaDeVacacion;
-    private Empleados empleadoAccionPersonal;
     private SelectItem[] estados = {new SelectItem("G", "Solicitada"), new SelectItem("A", "Aprobada"), new SelectItem("R", "Rechazada")};
-    private Boolean renderReportePagos = Boolean.FALSE ;
+    private Boolean renderReportePagos = Boolean.FALSE;
 
     public Boolean getRenderReportePagos() {
         renderReportePagos = Boolean.FALSE;
-        if( getSessionBeanPLA().getAccionSeleccionada()!=null ){
-            if ( getSessionBeanPLA().getAccionSeleccionada().getStatus().equals("A") ){
-            if ( getSessionBeanPLA().getAccionSeleccionada().getAccionPersonalPK().getCodTipoaccion().equals(new Short("20")) ){    
-                renderReportePagos = Boolean.TRUE;
-            }
+        if (getSessionBeanPLA().getAccionSeleccionada() != null) {
+            if (getSessionBeanPLA().getAccionSeleccionada().getStatus().equals("A")) {
+                if (getSessionBeanPLA().getAccionSeleccionada().getAccionPersonalPK().getCodTipoaccion().equals(new Short("20"))) {
+                    renderReportePagos = Boolean.TRUE;
+                }
             }
         }
         return renderReportePagos;
@@ -81,10 +61,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     public void setRenderReportePagos(Boolean renderReportePagos) {
         this.renderReportePagos = renderReportePagos;
-    }
-    
-    public Empleados getEmpleadoAccionPersonal() {
-        return empleadoAccionPersonal;
     }
 
     public SelectItem[] getEstados() {
@@ -95,122 +71,13 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.estados = estados;
     }
 
-    public void setEmpleadoAccionPersonal(Empleados empleadoAccionPersonal) {
-        this.empleadoAccionPersonal = empleadoAccionPersonal;
-    }
-
-    public SolicitudDiaDeVacacion getSolicitudDiaDeVacacion() {
-        return solicitudDiaDeVacacion;
-    }
-
-    public void setSolicitudDiaDeVacacion(SolicitudDiaDeVacacion solicitudDiaDeVacacion) {
-        this.solicitudDiaDeVacacion = solicitudDiaDeVacacion;
-    }
-
-    public SolicitudConstanciaSueldo getSolicitudConstanciaSueldo() {
-        return solicitudConstanciaSueldo;
-    }
-
-    public void setSolicitudConstanciaSueldo(SolicitudConstanciaSueldo solicitudConstanciaSueldo) {
-        this.solicitudConstanciaSueldo = solicitudConstanciaSueldo;
-    }
-
-    public SolicitudNoAfectaPlanilla getSolicitudNoAfectaPlanilla() {
-        return solicitudNoAfectaPlanilla;
-    }
-
-    public void setSolicitudNoAfectaPlanilla(SolicitudNoAfectaPlanilla solicitudNoAfectaPlanilla) {
-        this.solicitudNoAfectaPlanilla = solicitudNoAfectaPlanilla;
-    }
-
-    public SolicitudRetiro getSolicitudRetiro() {
-        return solicitudRetiro;
-    }
-
-    public void setSolicitudRetiro(SolicitudRetiro solicitudRetiro) {
-        this.solicitudRetiro = solicitudRetiro;
-    }
-
-    public SolicitudAumentoSueldoColectivo getSolicitudAumentoSueldoColectivo() {
-        return solicitudAumentoSueldoColectivo;
-    }
-
-    public void setSolicitudAumentoSueldoColectivo(SolicitudAumentoSueldoColectivo solicitudAumentoSueldoColectivo) {
-        this.solicitudAumentoSueldoColectivo = solicitudAumentoSueldoColectivo;
-    }
-
-    public SolicitudAumentoSueldo getSolicitudAumentoSueldo() {
-        return solicitudAumentoSueldo;
-    }
-
-    public void setSolicitudAumentoSueldo(SolicitudAumentoSueldo solicitudAumentoSueldo) {
-        this.solicitudAumentoSueldo = solicitudAumentoSueldo;
-    }
-
-    public SolicitudVacacionColectiva getSolicitudVacacionColectiva() {
-        return solicitudVacacionColectiva;
-    }
-
-    public void setSolicitudVacacionColectiva(SolicitudVacacionColectiva solicitudVacacionColectiva) {
-        this.solicitudVacacionColectiva = solicitudVacacionColectiva;
-    }
-
-    public SolicitudNombramiento getSolicitudNombramiento() {
-        return solicitudNombramiento;
-    }
-
-    public void setSolicitudNombramiento(SolicitudNombramiento solicitudNombramiento) {
-        this.solicitudNombramiento = solicitudNombramiento;
-    }
-
-    public SolicitudPermiso getSolicitudPermiso() {
-        return solicitudPermiso;
-    }
-
-    public void setSolicitudPermiso(SolicitudPermiso solicitudPermiso) {
-        this.solicitudPermiso = solicitudPermiso;
-    }
-
-    public SolicitudVacacionesAnuales getSolicitudVacacionesAnuales() {
-        return solicitudVacacionesAnuales;
-    }
-
-    public void setSolicitudVacacionesAnuales(SolicitudVacacionesAnuales solicitudVacacionesAnuales) {
-        this.solicitudVacacionesAnuales = solicitudVacacionesAnuales;
-    }
-
-    public SolicitudIncapacidad getSolicitudIncapacidad() {
-        return solicitudIncapacidad;
-    }
-
-    public void setSolicitudIncapacidad(SolicitudIncapacidad solicitudIncapacidad) {
-        this.solicitudIncapacidad = solicitudIncapacidad;
-    }
-
     public AccionesPersonalBackendBean() {
     }
 
     public void seleccionarAccion(AjaxBehaviorEvent event) {
-        accionSeleccionada = null;
-        for (TipoAccion a : listaTipo) {
-            if (a.getTipoAccionPK().getCodCia().equals(new Short(empresa)) && a.getTipoAccionPK().getCodTipoaccion().equals(tipo)) {
-                accionSeleccionada = a;
-                break;
-            }
-        }
+        accionSeleccionada = planillaSessionBean.buscarTipoAccion(empresa, getSessionBeanEMP().getTipo());
         urlPlantilla = accionSeleccionada != null ? accionSeleccionada.getUrlPlantilla() : null;
-        solicitudPermiso = new SolicitudPermiso(this);
-        solicitudVacacionesAnuales = new SolicitudVacacionesAnuales(this);
-        solicitudIncapacidad = new SolicitudIncapacidad(this);
-        solicitudNombramiento = new SolicitudNombramiento(this);
-        solicitudVacacionColectiva = new SolicitudVacacionColectiva(this);
-        solicitudAumentoSueldo = new SolicitudAumentoSueldo(this);
-        solicitudAumentoSueldoColectivo = new SolicitudAumentoSueldoColectivo(this);
-        solicitudRetiro = new SolicitudRetiro(this);
-        solicitudNoAfectaPlanilla = new SolicitudNoAfectaPlanilla(this);
-        solicitudConstanciaSueldo = new SolicitudConstanciaSueldo(this);
-        solicitudDiaDeVacacion = new SolicitudDiaDeVacacion(this);
-        empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
+        getSessionBeanEMP().setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
     }
 
     @PostConstruct
@@ -225,23 +92,13 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         } else {
             listaSolicitudes = new ArrayList<AccionPersonal>();
         }
-        //listaSolicitudes = planillaSessionBean.getAccionesByRol(getSessionBeanEMP().getEmpleadoSesion());
-        empresa = getSessionBeanADM().getCompania().getCodCia();
-        solicitudPermiso = new SolicitudPermiso(this);
-        solicitudVacacionesAnuales = new SolicitudVacacionesAnuales(this);
-        solicitudIncapacidad = new SolicitudIncapacidad(this);
-        solicitudNombramiento = new SolicitudNombramiento(this);
-        solicitudVacacionColectiva = new SolicitudVacacionColectiva(this);
-        solicitudAumentoSueldo = new SolicitudAumentoSueldo(this);
-        solicitudAumentoSueldoColectivo = new SolicitudAumentoSueldoColectivo(this);
-        solicitudRetiro = new SolicitudRetiro(this);
-        solicitudNoAfectaPlanilla = new SolicitudNoAfectaPlanilla(this);
-        solicitudesMostradas = "E";
-        empleadoAccionPersonal = getSessionBeanEMP().getEmpleadoSesion();
-        solicitudConstanciaSueldo = new SolicitudConstanciaSueldo(this);
-        solicitudDiaDeVacacion = new SolicitudDiaDeVacacion(this);
+        getSessionBeanEMP().setTipo(null);
+        setEmpresa( getSessionBeanADM().getCompania().getCodCia());
+        setSolicitudesMostradas( "E" );
+        getSessionBeanEMP().setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
         getSessionBeanPLA().setAccionSeleccionada(null);
-        fecha = new Date();
+        listar();
+        setFecha( new Date() );
     }
 
     public String getSolicitudesMostradas() {
@@ -271,14 +128,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.accionSeleccionada = accionSeleccionada;
     }
 
-    public Short getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Short tipo) {
-        this.tipo = tipo;
-    }
-
     public Date getFecha() {
         return fecha;
     }
@@ -295,23 +144,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.listaEmp = listaEmp;
     }
 
-    public List<TiposPlanilla> getListaTipos() {
-        listaTipos = planillaSessionBean.listarTipos(getSessionBeanADM().getCompania());
-        return listaTipos;
-    }
-
-    public void setListaTipos(List<TiposPlanilla> listaTipos) {
-        this.listaTipos = listaTipos;
-    }
-
-    public DataTable getTablaEmpleado() {
-        return tablaEmpleado;
-    }
-
-    public void setTablaEmpleado(DataTable tablaEmpleado) {
-        this.tablaEmpleado = tablaEmpleado;
-    }
-
     public Long getTipoAccion() {
         return tipoAccion;
     }
@@ -324,7 +156,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         return empresa;
     }
 
-    public void setCia(Short empresa) {
+    public void setEmpresa(Short empresa) {
         this.empresa = empresa;
     }
 
@@ -360,13 +192,14 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     public String cancelar$action() {
         limpiarCampos();
-        if (solicitudPermiso != null) {
-            solicitudPermiso.limpiarCampos();
-        }
         return null;
     }
 
-    public void listarSolicitudes(ValueChangeEvent event) {
+    public void listarSolicitudes(AjaxBehaviorEvent event) {
+        listar();
+    }
+
+    public void listar() {
         if (solicitudesMostradas.equals("E")) {
             listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
         } else {
@@ -379,12 +212,12 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public String seleccionarEmpleado() {
-        addMessage("Acciones de Personal", "Empleado seleccionado " + empleadoAccionPersonal.getNombreCompleto(), TipoMensaje.INFORMACION);
+        addMessage("Acciones de Personal", "Empleado seleccionado " + getSessionBeanEMP().getEmpleadoAccionPersonal().getNombreCompleto(), TipoMensaje.INFORMACION);
         return null;
     }
 
     public String cancelSeleccionarEmpleado() {
-        setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
+        getSessionBeanEMP().setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
         return null;
     }
 
@@ -443,3 +276,4 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         tipoAccion = 0L;
     }
 }
+//448

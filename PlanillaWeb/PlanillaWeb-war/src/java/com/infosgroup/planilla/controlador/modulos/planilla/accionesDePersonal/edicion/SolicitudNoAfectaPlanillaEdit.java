@@ -27,7 +27,6 @@ public class SolicitudNoAfectaPlanillaEdit extends AbstractEditAccionPersonal im
     @EJB
     private PlanillaSessionBean planillaSessionBean;
     private Cias empresa;
-    private String observacion;
     private Date fechaInicial;
     private Date fechaFinal;
     private TipoAccion tipoAccion;
@@ -37,14 +36,6 @@ public class SolicitudNoAfectaPlanillaEdit extends AbstractEditAccionPersonal im
 
     public void setEmpresa(Cias empresa) {
         this.empresa = empresa;
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
     }
 
     public Date getFechaFinal() {

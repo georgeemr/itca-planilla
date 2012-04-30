@@ -8,22 +8,21 @@ import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBack
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.Date;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.event.DateSelectEvent;
 
 /**
  *
  * @author root
  */
+@ManagedBean(name="solicitudDiaDeVacacion")
+@ViewScoped
 public class SolicitudDiaDeVacacion extends SolicitudDePersonal implements java.io.Serializable {
 
     private Date fechaInicial;
     private Date fechaFinal;
-    private String observacion;
     private Short dias = 0;
-
-    public SolicitudDiaDeVacacion(AccionesPersonalBackendBean encabezadoSolicitud) {
-        super(encabezadoSolicitud);
-    }
 
     public Date getFechaFinal() {
         return fechaFinal;
@@ -41,14 +40,6 @@ public class SolicitudDiaDeVacacion extends SolicitudDePersonal implements java.
         this.fechaInicial = fechaInicial;
     }
 
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-
     public Short getDias() {
         return dias;
     }
@@ -62,7 +53,7 @@ public class SolicitudDiaDeVacacion extends SolicitudDePersonal implements java.
             return null;
         }
         AccionPersonal accionPersonal = new AccionPersonal();
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), getEmpleadosToAccionPersonal()));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getSessionBeanADM().getCompania(), getEmpleadosToAccionPersonal()));
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());
         accionPersonal.setEmpleados1( getEmpleadosToAccionPersonal().getEmpleados() );
@@ -71,14 +62,14 @@ public class SolicitudDiaDeVacacion extends SolicitudDePersonal implements java.
         accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
         accionPersonal.setStatus("G");
         accionPersonal.setDias(dias);
-        accionPersonal.setUsuarioCreacion(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario());
+        accionPersonal.setUsuarioCreacion(getSessionBeanEMP().getEmpleadoSesion().getUsuario());
         accionPersonal.setFechaFinal(fechaFinal);
         accionPersonal.setFechaInicial(fechaInicial);
         accionPersonal.setPuestos(getEmpleadosToAccionPersonal().getPuestos());
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
-        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
-        planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
+        //getEncabezadoSolicitud().setListaSolicitudes(getPlanillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
+        //getPlanillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
         limpiarCampos();
         return null;
     }

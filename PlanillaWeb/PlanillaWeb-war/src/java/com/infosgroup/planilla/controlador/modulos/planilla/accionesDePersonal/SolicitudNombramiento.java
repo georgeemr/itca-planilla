@@ -9,31 +9,22 @@ import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.Date;
 import java.util.List;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author root
  */
+@ManagedBean(name="solicitudNombramiento")
+@ViewScoped
 public class SolicitudNombramiento extends SolicitudDePersonal implements java.io.Serializable {
 
-    private java.util.List<Departamentos> listaDepartamentos;
-    private java.util.List<Puestos> listaPuestos;
+    private List<Departamentos> listaDepartamentos;
+    private List<Puestos> listaPuestos;
     private Short departamento;
     private Short puesto;
-    private java.util.Date fechaInicial;
-    private String observacion;
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-    
-    public SolicitudNombramiento(AccionesPersonalBackendBean encabezadoSolicitud) {
-        super(encabezadoSolicitud);
-    }
+    private Date fechaInicial;
 
     public Short getDepartamento() {
         return departamento;
@@ -60,7 +51,7 @@ public class SolicitudNombramiento extends SolicitudDePersonal implements java.i
     }
 
     public List<Departamentos> getListaDepartamentos() {
-        listaDepartamentos = planillaSessionBean().findDepartamentos(getEncabezadoSolicitud().getSessionBeanADM().getCompania());
+        listaDepartamentos = getPlanillaSessionBean().findDepartamentos(getSessionBeanADM().getCompania());
         return listaDepartamentos;
     }
 
@@ -69,7 +60,7 @@ public class SolicitudNombramiento extends SolicitudDePersonal implements java.i
     }
 
     public List<Puestos> getListaPuestos() {
-        listaPuestos = planillaSessionBean().findPuestos(getEncabezadoSolicitud().getSessionBeanADM().getCompania());
+        listaPuestos = getPlanillaSessionBean().findPuestos(getSessionBeanADM().getCompania());
         return listaPuestos;
     }
 
@@ -80,23 +71,23 @@ public class SolicitudNombramiento extends SolicitudDePersonal implements java.i
     public String guardarSolicitud$action() {
         if (validarSolicitud()) return null;
         AccionPersonal accionPersonal = new AccionPersonal();
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(),getEmpleadosToAccionPersonal()));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getSessionBeanADM().getCompania(),getEmpleadosToAccionPersonal()));
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());
         accionPersonal.setEmpleados1( getEmpleadosToAccionPersonal().getEmpleados() );
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setStatus("G");
-        accionPersonal.setUsuarioCreacion( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
+        accionPersonal.setUsuarioCreacion( getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
-        accionPersonal.setNuevoDepartamento(new Departamentos(new DepartamentosPK(getEncabezadoSolicitud().getEmpresa(), departamento)));
+        accionPersonal.setNuevoDepartamento(new Departamentos(new DepartamentosPK(getSessionBeanADM().getCompania().getCodCia(), departamento)));
         accionPersonal.setPuestos(getEmpleadosToAccionPersonal().getPuestos());
-        accionPersonal.setNuevoPuesto(new Puestos(new PuestosPK(getEncabezadoSolicitud().getEmpresa(), puesto)));
+        accionPersonal.setNuevoPuesto(new Puestos(new PuestosPK(getSessionBeanADM().getCompania().getCodCia(), puesto)));
         accionPersonal.setFechaInicial(fechaInicial);
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
-        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
-        planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
+        //getEncabezadoSolicitud().setListaSolicitudes(getPlanillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
+        //getPlanillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
         limpiarCampos();
         return null;
     }

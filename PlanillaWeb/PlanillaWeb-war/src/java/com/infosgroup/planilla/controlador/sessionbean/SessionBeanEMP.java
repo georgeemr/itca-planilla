@@ -4,10 +4,7 @@
  */
 package com.infosgroup.planilla.controlador.sessionbean;
 
-import com.infosgroup.planilla.modelo.entidades.Empleados;
-import com.infosgroup.planilla.modelo.entidades.Evaluacion;
-import com.infosgroup.planilla.modelo.entidades.Factor;
-import com.infosgroup.planilla.modelo.entidades.PreEvaluacion;
+import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import java.util.List;
@@ -28,6 +25,17 @@ public class SessionBeanEMP implements java.io.Serializable {
     @EJB
     private EmpleadosSessionBean empleadosBean;
     private Empleados empleadoSesion;
+    private Empleados empleadoAccionPersonal;
+    private Short tipo;
+    private TipoAccion accionSeleccionada;
+
+    public TipoAccion getAccionSeleccionada() {
+        return accionSeleccionada;
+    }
+
+    public void setAccionSeleccionada(TipoAccion accionSeleccionada) {
+        this.accionSeleccionada = accionSeleccionada;
+    }
 
     public Empleados getEmpleadoSesion() {
         return empleadoSesion;
@@ -35,6 +43,22 @@ public class SessionBeanEMP implements java.io.Serializable {
 
     public void setEmpleadoSesion(Empleados empleadoSesion) {
         this.empleadoSesion = empleadoSesion;
+    }
+
+    public Empleados getEmpleadoAccionPersonal() {
+        return empleadoAccionPersonal;
+    }
+
+    public void setEmpleadoAccionPersonal(Empleados empleadoAccionPersonal) {
+        this.empleadoAccionPersonal = empleadoAccionPersonal;
+    }
+
+    public Short getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Short tipo) {
+        this.tipo = tipo;
     }
 
     @PostConstruct
