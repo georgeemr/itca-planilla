@@ -31,7 +31,7 @@ and open the template in the editor.
                     <h:outputLabel value="Empleado" style="font-weight: bold;" />
                 </td>
                 <td width="53%;">
-                    <h:outputLabel value="#{planilla$accionesPersonal.empleadoAccionPersonal.nombreCompleto}" />
+                    <h:outputLabel value="#{SessionBeanEMP.empleadoAccionPersonal.nombreCompleto}" />
                 </td>
                 <td>
                     <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, lstTipos" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}"
@@ -45,16 +45,16 @@ and open the template in the editor.
 
             <tr>
                 <td width="20%;" ><h:outputLabel value="Jefe" style="font-weight: bold;" /></td>
-                <td width="80%;" colspan="2"><h:outputLabel  value="#{planilla$accionesPersonal.empleadoAccionPersonal.empleados.nombreCompleto}"  /></td>
+                <td width="80%;" colspan="2"><h:outputLabel  value="#{SessionBeanEMP.empleadoAccionPersonal.empleados.nombreCompleto}"  /></td>
             </tr>
 
             <tr>
                 <td width="20%;" ><h:outputLabel value="Departamento" style="font-weight: bold;" /></td>
-                <td width="80%;" colspan="2" ><h:outputLabel  value="#{planilla$accionesPersonal.empleadoAccionPersonal.departamentos.nomDepto}" /></td>
+                <td width="80%;" colspan="2" ><h:outputLabel  value="#{SessionBeanEMP.empleadoAccionPersonal.departamentos.nomDepto}" /></td>
             </tr>
             <tr>
                 <td width="20%;" ><h:outputLabel value="Puesto" style="font-weight: bold;" /></td>
-                <td width="80%;" colspan="2" ><h:outputLabel  value="#{planilla$accionesPersonal.empleadoAccionPersonal.puestos.nomPuesto}" /></td>
+                <td width="80%;" colspan="2" ><h:outputLabel  value="#{SessionBeanEMP.empleadoAccionPersonal.puestos.nomPuesto}" /></td>
             </tr>
         </table>
     </composite:implementation>

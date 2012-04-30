@@ -32,7 +32,6 @@ public class SolicitudAumentoSueldoEdit extends AbstractEditAccionPersonal imple
     private String formaAumento = "V";
     private Date fechaInicial;
     private Double porcentaje;
-    private String observacion;
 
     public SolicitudAumentoSueldoEdit() {
     }
@@ -55,14 +54,6 @@ public class SolicitudAumentoSueldoEdit extends AbstractEditAccionPersonal imple
 
     public void setFormaAumento(String formaAumento) {
         this.formaAumento = formaAumento;
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
     }
 
     public Double getPorcentaje() {
@@ -137,14 +128,16 @@ public class SolicitudAumentoSueldoEdit extends AbstractEditAccionPersonal imple
             error = Boolean.FALSE;
         }
 
-        if (getTipoPlanilla() == null || getTipoPlanilla() == -1) {
-            addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
-            error = Boolean.FALSE;
-        }
+        if (isInRole("rrhh")) {
+            if (getTipoPlanilla() == null || getTipoPlanilla() == -1) {
+                addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
+                error = Boolean.FALSE;
+            }
 
-        if ((getTipoPlanilla() != null && getTipoPlanilla() != -1) && (getPlanilla() == null || getPlanilla().equals("-1"))) {
-            addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
-            error = Boolean.FALSE;
+            if ((getTipoPlanilla() != null && getTipoPlanilla() != -1) && (getPlanilla() == null || getPlanilla().equals("-1"))) {
+                addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
+                error = Boolean.FALSE;
+            }
         }
         return error;
     }

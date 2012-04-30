@@ -11,67 +11,27 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 /**
  *
  * @author root
  */
+@ManagedBean(name="solicitudAumentoSueldoColectivo")
+@ViewScoped
 public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal implements java.io.Serializable {
 
     private String criterioSeleccionado;
     private String formaAumento = "V";
     private Double sueldoNuevo;
     private java.util.Date fechaInicial;
-    private java.util.List<ProgramacionPla> listaPlanillas;
-    private Short tipoPlanilla;
-    private String planilla;
     private Integer empleadosAfectados = 0;
     private Double salarioMaximo;
     private Double salarioMinimo;
     private Short departamento;
-    private java.util.List<Departamentos> listaDepartamentos;
-    private String observacion;
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-
-
-    public SolicitudAumentoSueldoColectivo(AccionesPersonalBackendBean encabezadoSolicitud) {
-        super(encabezadoSolicitud);
-    }
-
-    public List<ProgramacionPla> getListaPlanillas() {
-        if (tipoPlanilla != null && tipoPlanilla != -1) {
-            listaPlanillas = planillaSessionBean().getProgramacionPlaByTipo(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla);
-        }
-        return listaPlanillas != null ? listaPlanillas : new java.util.ArrayList<ProgramacionPla>();
-    }
-
-    public void setListaPlanillas(List<ProgramacionPla> listaPlanillas) {
-        this.listaPlanillas = listaPlanillas;
-    }
-
-    public String getPlanilla() {
-        return planilla;
-    }
-
-    public void setPlanilla(String planilla) {
-        this.planilla = planilla;
-    }
-
-    public Short getTipoPlanilla() {
-        return tipoPlanilla;
-    }
-
-    public void setTipoPlanilla(Short tipoPlanilla) {
-        this.tipoPlanilla = tipoPlanilla;
-    }
+    private List<Departamentos> listaDepartamentos;
 
     public Date getFechaInicial() {
         return fechaInicial;
@@ -115,13 +75,13 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
         }
         try {
             if (criterioSeleccionado.equals("rangoSalario")) {
-                planillaSessionBean().registrarAccionPersonalColectiva(obtenerAccionesPersonal(planillaSessionBean().listarAfectadosRangoSalarios(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), new BigDecimal(salarioMinimo), new BigDecimal(salarioMaximo))));
+                getPlanillaSessionBean().registrarAccionPersonalColectiva(obtenerAccionesPersonal(getPlanillaSessionBean().listarAfectadosRangoSalarios(getSessionBeanADM().getCompania(), new BigDecimal(salarioMinimo), new BigDecimal(salarioMaximo))));
             } else if (criterioSeleccionado.equals("departamentos")) {
-                planillaSessionBean().registrarAccionPersonalColectiva(obtenerAccionesPersonal(planillaSessionBean().listaAfectadosDepartamentos( new Departamentos(new DepartamentosPK(getEncabezadoSolicitud().getEmpresa(), departamento)) )));
+                getPlanillaSessionBean().registrarAccionPersonalColectiva(obtenerAccionesPersonal(getPlanillaSessionBean().listaAfectadosDepartamentos( new Departamentos(new DepartamentosPK(getSessionBeanADM().getCompania().getCodCia(), departamento)) )));
             }
             addMessage("Solicitud de Aumentos de Sueldo Colectivo", "Datos guardados exitosamente.", TipoMensaje.INFORMACION);
-            getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
-            planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
+            //getEncabezadoSolicitud().setListaSolicitudes(getPlanillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
+            //getPlanillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
         } catch (Exception exception) {
             addMessage("Solicitud de Vacaciones Colectivas", exception.getMessage(), TipoMensaje.ERROR);
         }
@@ -142,20 +102,21 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
 
     public AccionPersonal getAccionPersonal(Empleados e) {
         AccionPersonal accionPersonal = new AccionPersonal();
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), e));
-        accionPersonal.setTipoAccion(getTipoAccion());
+        TipoAccion tipoAccion = new TipoAccion(new TipoAccionPK(getSessionBeanADM().getCompania().getCodCia(), new Short("7")));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getSessionBeanADM().getCompania(), tipoAccion, e));
+        accionPersonal.setTipoAccion(tipoAccion);
         accionPersonal.setEmpleados(e);
         accionPersonal.setEmpleados1( e.getEmpleados() );
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(e.getDepartamentos());
         accionPersonal.setStatus("G");
-        accionPersonal.setUsuarioCreacion( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
+        accionPersonal.setUsuarioCreacion(getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setFechaInicial(fechaInicial);
-        accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));
-        accionPersonal.setMes(new Short(planilla.split(":")[2].toString()));
-        accionPersonal.setNumPlanilla(new Short(planilla.split(":")[3].toString()));
-        accionPersonal.setCodTipopla(tipoPlanilla);
+        accionPersonal.setAnio(new Short(getPlanilla().split(":")[1].toString()));
+        accionPersonal.setMes(new Short(getPlanilla().split(":")[2].toString()));
+        accionPersonal.setNumPlanilla(new Short(getPlanilla().split(":")[3].toString()));
+        accionPersonal.setCodTipopla(getTipoPlanilla());
         accionPersonal.setSueldoAnterior(e.getSalario());
         accionPersonal.setCantidad(formaAumento.equals("V") ? new BigDecimal(sueldoNuevo + e.getSalario().doubleValue()) : new BigDecimal(e.getSalario().doubleValue() + (sueldoNuevo / 100) * e.getSalario().doubleValue()));
         accionPersonal.setPorcentaje(formaAumento.equals("P") ? new BigDecimal(sueldoNuevo) : BigDecimal.ZERO);
@@ -214,12 +175,12 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
             e = Boolean.TRUE;
         }
 
-        if (tipoPlanilla == null || tipoPlanilla == -1) {
+        if (getTipoPlanilla() == null || getTipoPlanilla() == -1) {
             addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
             e = Boolean.TRUE;
         }
 
-        if ((tipoPlanilla != null && tipoPlanilla != -1) && (planilla == null || planilla.equals("-1"))) {
+        if ((getTipoPlanilla() != null && getTipoPlanilla() != -1) && (getPlanilla() == null || getPlanilla().equals("-1"))) {
             addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
             e = Boolean.TRUE;
         }
@@ -234,8 +195,8 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
         setFechaInicial(null);
         setFormaAumento("V");
         setDepartamento(new Short("-1"));
-        tipoPlanilla = -1;
-        planilla = null;
+        setTipoPlanilla(new Short("-1"));
+        setPlanilla(null);
         setSueldoNuevo(0.0);
         setObservacion("");
     }
@@ -257,7 +218,7 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
     }
 
     public List<Departamentos> getListaDepartamentos() {
-        listaDepartamentos = planillaSessionBean().findDepartamentos(getEncabezadoSolicitud().getSessionBeanADM().getCompania());
+        listaDepartamentos = getPlanillaSessionBean().findDepartamentos(getSessionBeanADM().getCompania());
         return listaDepartamentos;
     }
 
@@ -273,10 +234,10 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
         if (criterioSeleccionado.equals("-1")) {
             empleadosAfectados = 0;
         } else if (criterioSeleccionado.equals("rangoSalario")) {
-            empleadosAfectados = planillaSessionBean().totalAfectadosRangoSalarios(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), new BigDecimal(salarioMinimo != null ? salarioMinimo : 0), new BigDecimal(salarioMaximo != null ? salarioMaximo : 0));
+            empleadosAfectados = getPlanillaSessionBean().totalAfectadosRangoSalarios(getSessionBeanADM().getCompania(), new BigDecimal(salarioMinimo != null ? salarioMinimo : 0), new BigDecimal(salarioMaximo != null ? salarioMaximo : 0));
         } else if (criterioSeleccionado.equals("departamentos")) {
             if (departamento != -1) {
-                empleadosAfectados = planillaSessionBean().totalAfectadosDepartamentos(new Departamentos(new DepartamentosPK(getEncabezadoSolicitud().getEmpresa(), departamento)));
+                empleadosAfectados = getPlanillaSessionBean().totalAfectadosDepartamentos(new Departamentos(new DepartamentosPK(getSessionBeanADM().getCompania().getCodCia(), departamento)));
             } else {
                 empleadosAfectados = 0;
             }

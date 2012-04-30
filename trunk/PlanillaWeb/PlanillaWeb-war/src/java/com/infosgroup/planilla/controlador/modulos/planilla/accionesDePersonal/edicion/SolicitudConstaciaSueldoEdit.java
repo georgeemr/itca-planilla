@@ -25,17 +25,8 @@ public class SolicitudConstaciaSueldoEdit extends AbstractEditAccionPersonal imp
     @EJB
     private PlanillaSessionBean planillaSessionBean;
     private Cias empresa;
-    private String observacion;
 
     public SolicitudConstaciaSueldoEdit() {
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
     }
 
     public void setEmpresa(Cias empresa) {

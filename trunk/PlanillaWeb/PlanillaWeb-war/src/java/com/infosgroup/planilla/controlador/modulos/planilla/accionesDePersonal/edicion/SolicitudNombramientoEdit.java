@@ -31,7 +31,6 @@ public class SolicitudNombramientoEdit extends AbstractEditAccionPersonal implem
     private Short departamento;
     private Short puesto;
     private Date fechaInicial;
-    private String observacion;
 
     public SolicitudNombramientoEdit() {
     }
@@ -50,14 +49,6 @@ public class SolicitudNombramientoEdit extends AbstractEditAccionPersonal implem
 
     public void setFechaInicial(Date fechaInicial) {
         this.fechaInicial = fechaInicial;
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
     }
 
     public Short getPuesto() {

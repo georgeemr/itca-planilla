@@ -8,11 +8,15 @@ import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBack
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.Date;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author root
  */
+@ManagedBean(name="solicitudVacacionesAnuales")
+@ViewScoped
 public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements java.io.Serializable {
 
     private Date fechaInicialPeriodoPagar;
@@ -20,19 +24,6 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
     private Date fechaInicialPeriodoGozar;
     private Date fechaFinalPeriodoGozar;
     private String devengadas;
-    private String observacion;
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-    
-    public SolicitudVacacionesAnuales(AccionesPersonalBackendBean encabezadoSolicitud) {
-        super(encabezadoSolicitud);
-    }
 
     public Date getFechaFinalPeriodoPagar() {
         return fechaFinalPeriodoPagar;
@@ -86,10 +77,10 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
     @Override
     public boolean validarSolicitud() {
         Boolean error = Boolean.TRUE;
-        if (getEncabezadoSolicitud().getTipo() == null) {
-            addMessage("Acciones de Personal", "Tipo de acción es un campo requerido", TipoMensaje.ERROR);
-            error = Boolean.FALSE;
-        }
+//        if (getEncabezadoSolicitud().getTipo() == null) {
+//            addMessage("Acciones de Personal", "Tipo de acción es un campo requerido", TipoMensaje.ERROR);
+//            error = Boolean.FALSE;
+//        }
 
         if (fechaInicialPeriodoPagar == null) {
             addMessage("Acciones de Personal", "Fecha inicio es un campo requerido.", TipoMensaje.ERROR);
@@ -130,7 +121,7 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
     public String guardarSolicitud$action() {
         if (!validarSolicitud()) return null;
         AccionPersonal accionPersonal = new AccionPersonal();
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(),getEmpleadosToAccionPersonal()));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getSessionBeanADM().getCompania(),getEmpleadosToAccionPersonal()));
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());
         accionPersonal.setEmpleados1( getEmpleadosToAccionPersonal().getEmpleados() );
@@ -138,7 +129,7 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
         accionPersonal.setStatus("G");
-        accionPersonal.setUsuarioCreacion( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
+        accionPersonal.setUsuarioCreacion( getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setDevengadas(devengadas);
         accionPersonal.setPeriodo(fechaInicialPeriodoPagar);
         accionPersonal.setPeriodoFinal(fechaFinalPeriodoPagar);
@@ -147,8 +138,8 @@ public class SolicitudVacacionesAnuales extends SolicitudDePersonal implements j
         accionPersonal.setPuestos(getEmpleadosToAccionPersonal().getPuestos());
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
-        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
-        planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
+        //getEncabezadoSolicitud().setListaSolicitudes(getPlanillaSessionBean().getAccionesByRol(getSessionBeanEMP().getEmpleadoSesion()));
+        //getPlanillaSessionBean().listarAccionporTipo(getSessionBeanADM().getCompania(), getEncabezadoSolicitud().getTipo());
         limpiarCampos();
         return null;
     }

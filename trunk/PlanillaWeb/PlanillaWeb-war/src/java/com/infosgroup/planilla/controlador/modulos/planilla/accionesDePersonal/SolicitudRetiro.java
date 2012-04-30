@@ -9,48 +9,30 @@ import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.Date;
 import java.util.List;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author root
  */
+@ManagedBean(name="solicitudRetiro")
+@ViewScoped
 public class SolicitudRetiro extends SolicitudDePersonal implements java.io.Serializable {
 
     private java.util.List<CausasRenuncia> listaCausasRenuncia;
     private Short tipoRenuncia;
     private java.util.Date fechaRetiro;
-    private Short tipoPlanilla;
-    private String observacion;
     private Short accion;
     private List<TipoAccion> listaTipoAccion;
 
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-
     public List<TipoAccion> getListaTipoAccion() {
-        listaTipoAccion = planillaSessionBean().listaTipoAccionRetiro( getEncabezadoSolicitud().getSessionBeanADM().getCompania());
+        listaTipoAccion = getPlanillaSessionBean().listaTipoAccionRetiro( getSessionBeanADM().getCompania());
         return listaTipoAccion;
     }
 
     public void setListaTipoAccion(List<TipoAccion> listaTipoAccion) {
         this.listaTipoAccion = listaTipoAccion;
-    }
-
-    public SolicitudRetiro(AccionesPersonalBackendBean encabezadoSolicitud) {
-        super(encabezadoSolicitud);
-    }
-
-    public Short getTipoPlanilla() {
-        return tipoPlanilla;
-    }
-
-    public void setTipoPlanilla(Short tipoPlanilla) {
-        this.tipoPlanilla = tipoPlanilla;
     }
 
     public Date getFechaRetiro() {
@@ -70,7 +52,7 @@ public class SolicitudRetiro extends SolicitudDePersonal implements java.io.Seri
     }
 
     public List<CausasRenuncia> getListaCausasRenuncia() {
-        listaCausasRenuncia = planillaSessionBean().findCausasRenunciasByCias(getEncabezadoSolicitud().getSessionBeanADM().getCompania());
+        listaCausasRenuncia = getPlanillaSessionBean().findCausasRenunciasByCias(getSessionBeanADM().getCompania());
         return listaCausasRenuncia;
     }
 
@@ -89,23 +71,23 @@ public class SolicitudRetiro extends SolicitudDePersonal implements java.io.Seri
     public String guardarSolicitud$action() {
         if (validarSolicitud()) return null;
         AccionPersonal accionPersonal = new AccionPersonal();
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), new TipoAccion(new TipoAccionPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), accion)),getEmpleadosToAccionPersonal()));
-        accionPersonal.setTipoAccion(new TipoAccion(new TipoAccionPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), accion)));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getSessionBeanADM().getCompania(), new TipoAccion(new TipoAccionPK(getSessionBeanADM().getCompania().getCodCia(), accion)),getEmpleadosToAccionPersonal()));
+        accionPersonal.setTipoAccion(new TipoAccion(new TipoAccionPK(getSessionBeanADM().getCompania().getCodCia(), accion)));
         accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());
         accionPersonal.setEmpleados1( getEmpleadosToAccionPersonal().getEmpleados() );
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
-        accionPersonal.setCausasRenuncia(new CausasRenuncia(new CausasRenunciaPK(getEncabezadoSolicitud().getEmpresa(), tipoRenuncia)));
+        accionPersonal.setCausasRenuncia(new CausasRenuncia(new CausasRenunciaPK(getSessionBeanADM().getCompania().getCodCia(), tipoRenuncia)));
         accionPersonal.setStatus("G");
-        accionPersonal.setUsuarioCreacion( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
+        accionPersonal.setUsuarioCreacion( getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setFechaInicial(fechaRetiro);
-        accionPersonal.setCodTipopla(tipoPlanilla);
+        accionPersonal.setCodTipopla(getTipoPlanilla());
         accionPersonal.setPuestos(getEmpleadosToAccionPersonal().getPuestos());
         guardarAccionPersonal(accionPersonal);
         addMessage("Acciones de Personal", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
-        getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
-        planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
+        //getEncabezadoSolicitud().setListaSolicitudes(getPlanillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
+        //getPlanillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
         limpiarCampos();
         return null;
     }
@@ -128,7 +110,7 @@ public class SolicitudRetiro extends SolicitudDePersonal implements java.io.Seri
             error = Boolean.TRUE;
         }
 
-        if (tipoPlanilla == null || tipoPlanilla == -1) {
+        if (getTipoPlanilla() == null || getTipoPlanilla() == -1) {
             addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
             error = Boolean.TRUE;
         }

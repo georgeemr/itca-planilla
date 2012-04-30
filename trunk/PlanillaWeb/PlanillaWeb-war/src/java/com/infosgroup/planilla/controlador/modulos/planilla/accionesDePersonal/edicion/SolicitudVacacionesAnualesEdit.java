@@ -31,17 +31,8 @@ public class SolicitudVacacionesAnualesEdit extends AbstractEditAccionPersonal i
     private Date fechaInicialPeriodo;
     private Date fechaFinalPeriodo;
     private String devengadas;
-    private String observacion;
 
     public SolicitudVacacionesAnualesEdit() {
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
     }
 
     public String getDevengadas() {

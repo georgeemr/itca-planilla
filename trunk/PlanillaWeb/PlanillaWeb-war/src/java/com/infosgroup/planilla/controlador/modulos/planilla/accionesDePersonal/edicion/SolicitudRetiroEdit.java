@@ -29,7 +29,6 @@ public class SolicitudRetiroEdit extends AbstractEditAccionPersonal implements j
     @EJB
     private PlanillaSessionBean planillaSessionBean;
     private Cias empresa;
-    private String observacion;
     private TipoAccion tipoAccion;
     private Short tipoRenuncia;
     private Date fechaRetiro;
@@ -64,14 +63,6 @@ public class SolicitudRetiroEdit extends AbstractEditAccionPersonal implements j
 
     public void setEmpresa(Cias empresa) {
         this.empresa = empresa;
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
     }
 
     public List<CausasRenuncia> getListaCausasRenuncia() {

@@ -10,12 +10,16 @@ import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 /**
  *
  * @author root
  */
+@ManagedBean(name="solicitudVacacionColectiva")
+@ViewScoped
 public class SolicitudVacacionColectiva extends SolicitudDePersonal implements java.io.Serializable {
 
     private String criterioSeleccionado;
@@ -28,19 +32,6 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
     private List<Empleados> listaEmpleadosAfectar;
     private Empleados[] empleadosSeleccionados;
     private List<ProgramacionPla> listaPlanillas;
-    private String observacion;
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-    
-    public SolicitudVacacionColectiva(AccionesPersonalBackendBean encabezadoSolicitud) {
-        super(encabezadoSolicitud);
-    }
 
     public Short getTipoPlanillaAplicar() {
         return tipoPlanillaAplicar;
@@ -50,21 +41,25 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
         this.tipoPlanillaAplicar = tipoPlanillaAplicar;
     }
 
+    @Override
     public List<ProgramacionPla> getListaPlanillas() {
         if (tipoPlanillaAplicar != null && tipoPlanillaAplicar != -1) {
-            listaPlanillas = planillaSessionBean().getProgramacionPlaByTipo(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), tipoPlanillaAplicar);
+            listaPlanillas = getPlanillaSessionBean().getProgramacionPlaByTipo(getSessionBeanADM().getCompania().getCodCia(), tipoPlanillaAplicar);
         }
         return listaPlanillas != null ? listaPlanillas : new ArrayList<ProgramacionPla>();
     }
 
+    @Override
     public void setListaPlanillas(List<ProgramacionPla> listaPlanillas) {
         this.listaPlanillas = listaPlanillas;
     }
 
+    @Override
     public String getPlanilla() {
         return planilla;
     }
 
+    @Override
     public void setPlanilla(String planilla) {
         this.planilla = planilla;
     }
@@ -93,10 +88,12 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
         this.departamento = departamento;
     }
 
+    @Override
     public Short getTipoPlanilla() {
         return tipoPlanilla;
     }
 
+    @Override
     public void setTipoPlanilla(Short tipoPlanilla) {
         this.tipoPlanilla = tipoPlanilla;
     }
@@ -110,7 +107,7 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
     }
 
     public List<Departamentos> getListaDepartamentos() {
-        listaDepartamentos = planillaSessionBean().findDepartamentos(getEncabezadoSolicitud().getSessionBeanADM().getCompania());
+        listaDepartamentos = getPlanillaSessionBean().findDepartamentos(getSessionBeanADM().getCompania());
         return listaDepartamentos;
     }
 
@@ -138,21 +135,21 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
         if (criterioSeleccionado.equals("departamentos")) {
             //Si ha seleccionado empleados guarda la seleccion, de lo contrario se guarda la solicitud para todos.
             if (e == null || e.size() <= 0) {
-                e = planillaSessionBean().listaAfectadosDepartamentos(new Departamentos(new DepartamentosPK(getEncabezadoSolicitud().getEmpresa(), departamento)));
+                e = getPlanillaSessionBean().listaAfectadosDepartamentos(new Departamentos(new DepartamentosPK(getSessionBeanADM().getCompania().getCodCia(), departamento)));
             }
 
         } else if (criterioSeleccionado.equals("tipoPlanilla")) {
             if (e == null || e.size() <= 0) {
-                e = planillaSessionBean().listaAfectadosTipoPlanilla(new TiposPlanilla(new TiposPlanillaPK(getEncabezadoSolicitud().getEmpresa(), tipoPlanilla)));
+                e = getPlanillaSessionBean().listaAfectadosTipoPlanilla(new TiposPlanilla(new TiposPlanillaPK(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla)));
             }
         }
         try {
             
-            planillaSessionBean().registrarAccionPersonalColectiva(getAccionesPersonal(e));
+            getPlanillaSessionBean().registrarAccionPersonalColectiva(getAccionesPersonal(e));
             
             addMessage("Solicitud de Vacaciones Colectivas", "Datos guardados exitosamente.", TipoMensaje.INFORMACION);
-            getEncabezadoSolicitud().setListaSolicitudes(planillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
-            planillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
+            //getEncabezadoSolicitud().setListaSolicitudes(getPlanillaSessionBean().getAccionesByRol(getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion()));
+            //getPlanillaSessionBean().listarAccionporTipo(getEncabezadoSolicitud().getEmpresa(), getEncabezadoSolicitud().getTipo());
             limpiarCampos();
         } catch (Exception exception) {
             addMessage("Solicitud de Vacaciones Colectivas", exception.getMessage(), TipoMensaje.ERROR);
@@ -174,15 +171,16 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
 
     public AccionPersonal getAccionPersonal(Empleados e) {
         AccionPersonal accionPersonal = new AccionPersonal();
-        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania(), e));
-        accionPersonal.setTipoAccion(new TipoAccion(new TipoAccionPK(getEncabezadoSolicitud().getSessionBeanADM().getCompania().getCodCia(), new Short("1")))); /* Solicitud de Vacacion */
+        TipoAccion tipoAccion = new TipoAccion(new TipoAccionPK(getSessionBeanADM().getCompania().getCodCia(), new Short("1")));
+        accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getSessionBeanADM().getCompania(), e));
+        accionPersonal.setTipoAccion(tipoAccion); /* Solicitud de Vacacion */
         accionPersonal.setEmpleados(e);
         accionPersonal.setEmpleados1( e.getEmpleados() );
         accionPersonal.setFecha(new java.util.Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(e.getDepartamentos());
         accionPersonal.setStatus("G");
-        accionPersonal.setUsuarioCreacion( getEncabezadoSolicitud().getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
+        accionPersonal.setUsuarioCreacion(getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setPuestos(e.getPuestos());
         accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));
         accionPersonal.setMes(new Short(planilla.split(":")[2].toString()));
@@ -234,11 +232,11 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
         if (criterioSeleccionado != null && !criterioSeleccionado.equals("-1")) {
             if (criterioSeleccionado.equals("departamentos")) {
                 if (departamento != null && departamento != -1) {
-                    valorAfectados = planillaSessionBean().totalAfectadosDepartamentos(new Departamentos(new DepartamentosPK(getEncabezadoSolicitud().getEmpresa(), departamento)));
+                    valorAfectados = getPlanillaSessionBean().totalAfectadosDepartamentos(new Departamentos(new DepartamentosPK(getSessionBeanADM().getCompania().getCodCia(), departamento)));
                 }
             } else if (criterioSeleccionado.equals("tipoPlanilla")) {
                 if (tipoPlanilla != null && tipoPlanilla != -1) {
-                    valorAfectados = planillaSessionBean().totalAfectadosTipoPlanilla(new TiposPlanilla(new TiposPlanillaPK(getEncabezadoSolicitud().getEmpresa(), tipoPlanilla)));
+                    valorAfectados = getPlanillaSessionBean().totalAfectadosTipoPlanilla(new TiposPlanilla(new TiposPlanillaPK(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla)));
                 }
             }
         }
@@ -249,11 +247,11 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
         if (criterioSeleccionado != null && !criterioSeleccionado.equals("-1")) {
             if (criterioSeleccionado.equals("departamentos")) {
                 if (departamento != null && departamento != -1) {
-                    listaEmpleadosAfectar = planillaSessionBean().listaAfectadosDepartamentos(new Departamentos(new DepartamentosPK(getEncabezadoSolicitud().getEmpresa(), departamento)));
+                    listaEmpleadosAfectar = getPlanillaSessionBean().listaAfectadosDepartamentos(new Departamentos(new DepartamentosPK( getSessionBeanADM().getCompania().getCodCia(), departamento)));
                 }
             } else if (criterioSeleccionado.equals("tipoPlanilla")) {
                 if (tipoPlanilla != null && tipoPlanilla != -1) {
-                    listaEmpleadosAfectar = planillaSessionBean().listaAfectadosTipoPlanilla(new TiposPlanilla(new TiposPlanillaPK(getEncabezadoSolicitud().getEmpresa(), tipoPlanilla)));
+                    listaEmpleadosAfectar = getPlanillaSessionBean().listaAfectadosTipoPlanilla(new TiposPlanilla(new TiposPlanillaPK(getSessionBeanADM().getCompania().getCodCia(), tipoPlanilla)));
                 }
             }
         }

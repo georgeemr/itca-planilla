@@ -31,7 +31,6 @@ public class SolicitudIncapacidadEdit extends AbstractEditAccionPersonal impleme
     private Date fechaRealPlanilla;
     private Date fechaInicioIncapacidad;
     private Date fechaFinIncapacidad;
-    private String observacion;
     private Short dias;
     
     public void setEmpresa(Cias empresa) {
@@ -79,14 +78,6 @@ public class SolicitudIncapacidadEdit extends AbstractEditAccionPersonal impleme
     }
 
     public SolicitudIncapacidadEdit() {
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
     }
 
     @Override
@@ -159,14 +150,16 @@ public class SolicitudIncapacidadEdit extends AbstractEditAccionPersonal impleme
             }
         }
 
-        if (getTipoPlanilla() == null || getTipoPlanilla() == -1) {
-            addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
-            error = Boolean.FALSE;
-        }
+        if (isInRole("rrhh")) {
+            if (getTipoPlanilla() == null || getTipoPlanilla() == -1) {
+                addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
+                error = Boolean.FALSE;
+            }
 
-        if ((getTipoPlanilla() != null && getTipoPlanilla() != -1) && (getPlanilla() == null || getPlanilla().equals("-1"))) {
-            addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
-            error = Boolean.FALSE;
+            if ((getTipoPlanilla() != null && getTipoPlanilla() != -1) && (getPlanilla() == null || getPlanilla().equals("-1"))) {
+                addMessage("Acciones de Personal", "Debe seleccionar una planilla.", TipoMensaje.ERROR);
+                error = Boolean.FALSE;
+            }
         }
 
         return error;
