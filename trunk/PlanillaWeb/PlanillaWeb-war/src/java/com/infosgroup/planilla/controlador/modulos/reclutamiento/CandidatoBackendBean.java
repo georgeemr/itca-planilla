@@ -1007,13 +1007,6 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
     @PermitAll
     public String nuevo$action() {
         limpiarCampos();
-//    nombre = null;
-//    apellido = null;
-//    apellidoCasada = null;
-//    fechaSolicitud = GregorianCalendar.getInstance().getTime();
-//    sexo = null;
-//    estadoCivil = null;
-        // ===
         estadoAccion = CREANDO;
         return null;
     }

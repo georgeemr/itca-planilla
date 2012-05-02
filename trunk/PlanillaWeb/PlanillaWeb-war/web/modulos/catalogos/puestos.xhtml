@@ -31,13 +31,11 @@
         </p:confirmDialog>   
 
         <p:dialog id="dialogNuevoCriterio" widgetVar="dialogCriterio" header="Agregar Criterio por Puesto" showEffect="fold" hideEffect="fold" width="417" height="422" >
-            <!-- p:spacer height="10px"/ -->
             <p:panel id="panelInformacionCriterio" style="border:none;" >
                 <h:panelGrid columns="1" >
                     <h:outputLabel value="Seleccione los criterios que desea aplicar." />
                 </h:panelGrid>
             </p:panel>
-            <!-- p:spacer height="10px"/ -->
 
             <p:fieldset id="fieldsetEncabezado" style="border:none;">
 
@@ -73,31 +71,8 @@
 
                 </p:dataTable>
                 <p:spacer height="15" />
-                <!-- h:panelGrid columns="2" >
-                    <h:outputLabel id="lvalor" value="Valor" rendered="# {puestosBackendBean.criterioSeleccionado.operador eq 'equal'}" />
-                    <p:inputText  id="txvalor" value="# {puestosBackendBean.valor}" rendered="# {puestosBackendBean.criterioSeleccionado.operador eq 'equal'}" />
-                    <h:outputLabel id="lvalori" value="Valor Inicial" rendered="# {puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
-                    <p:inputText id="txvalori" value="# {puestosBackendBean.valorInicialRango}" rendered="# {puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
-                    <h:outputLabel id="lvalorf" value="Valor Final" rendered="# {puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
-                    <p:inputText id="txvalorf" value="# {puestosBackendBean.valorFinalRango}" rendered="# {puestosBackendBean.criterioSeleccionado.operador eq 'between'}" />
-                    <h:outputLabel value="Nombre"/>
-                    <p:inputText value="# {puestosBackendBean.etiqueta}" />
-                </h:panelGrid -->
-
             </p:fieldset>
-
-            <!-- p:spacer height="15" / -->
-            <!-- h:panelGrid columns="2"  -->
-            <!--p:commandButton value="Aceptar" update="principalForm:mensajes,fsCriterios,tablaCriteriosXPuesto"
-                             action="# {puestosBackendBean.guardarCriterio$crud$action}"
-                             ajax="true" image="ui-icon-circle-check" / -->
-
-
-            <!-- /h:panelGrid -->
-
         </p:dialog>
-
-
     </ui:define>
 
     <ui:define name="acciones">
@@ -149,7 +124,7 @@
         <p:panel id="panelInformacion" style="border:none;" >
             <div>
                 <div style="float:left;width: 30%;" >
-                    <h:panelGrid columns="4" rendered="#{(puestosBackendBean.estadoAccion eq null) or (puestosBackendBean.estadoAccion eq 0) }"  >
+                    <h:panelGrid columns="4" rendered="#{(puestosBackendBean.estadoAccion eq null) or (puestosBackendBean.estadoAccion eq 0) or (puestosBackendBean.estadoAccion eq 1)}"  >
                         <p:graphicImage value="../../resources/imagenes/64/info.png" />
                         <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
                         <h:outputLabel value="*" styleClass="requerido"/>                                
@@ -157,13 +132,6 @@
                     </h:panelGrid>
                 </div>    
                 <div style="float:left; width: 70%;"  >
-                    <p:toolbar rendered="#{(puestosBackendBean.estadoAccion eq null) or (puestosBackendBean.estadoAccion eq 0) }" 
-                               styleClass="toolbarUsuario" >
-                        <p:toolbarGroup align="right"  >
-                            <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{puestosBackendBean.guardar$crud$action()}"
-                                             update="principalForm:mensajes,txNombre,chkHExtras,chkHDobles,chkViaticos,chkComision,cnkInfConf,txSalarioMin,txSalarioMax,lstTipoPuesto,lstEstadoPuesto,lstDepartamentos,lstAreas,txDescPuesto,txObjPuesto" />  
-                        </p:toolbarGroup>
-                    </p:toolbar>
                 </div>
                 <div style="clear:both;" ></div>
             </div>
@@ -268,21 +236,27 @@
                     <td valign="top" ><h:outputLabel value="Objetivo " style="font-weight: bold;" /></td>
                     <td><p:inputTextarea id="txObjPuesto" value="#{puestosBackendBean.objetivo}" style="width: 300px;" label="Objetivo del Puesto" autoResize="false" /></td>
                 </tr>
-
+                <tr>
+                    <td></td>
+                    <td colspan="4" >
+                        <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{puestosBackendBean.guardar$crud$action()}"
+                                         update="principalForm:mensajes,txNombre,chkHExtras,chkHDobles,chkViaticos,chkComision,cnkInfConf,txSalarioMin,txSalarioMax,lstTipoPuesto,lstEstadoPuesto,lstDepartamentos,lstAreas,txDescPuesto,txObjPuesto" />  
+                    </td>
+                </tr>
             </table>
             <p:spacer height="20" />
         </p:fieldset>
 
-        <p:toolbar rendered="#{(puestosBackendBean.estadoAccion eq 2)}" styleClass="toolbarUsuario" >
+        <!--p:toolbar rendered="# {(puestosBackendBean.estadoAccion eq 2)}" styleClass="toolbarUsuario" >
             <p:toolbarGroup align="right" >
                 <p:commandButton value="Eliminar" update="tablaPuesto" image="ui-icon ui-icon-circle-minus" ajax="true" onclick="confirmation.show()"/>
             </p:toolbarGroup>
-        </p:toolbar>
+        </p:toolbar-->
 
         <p:spacer height="20" rendered="#{(puestosBackendBean.estadoAccion eq 2) }" />
 
         <p:fieldset id="fsConsulta" legend="Consulta de Puestos" rendered="#{(puestosBackendBean.estadoAccion eq 2)}" >
-            <!--  selectionMode="single"  selection="# {puestosBackendBean.puestoSeleccionado}" rowSelectListener="# {puestosBackendBean.onRowSelectPuesto}" rowUnselectListener="# {puestosBackendBean.onRowUnSelectPuesto}" -->
+
             <p:spacer height="20" />
             <p:dataTable id="tablaPuesto" paginatorAlwaysVisible="true"
                          var="puesto" rows="5"  paginator="true" 
@@ -294,7 +268,7 @@
                     <h:outputText value="Puestos"/>
                 </f:facet>
 
-                <p:column sortBy="#{puesto.puestosPK.codPuesto}" headerText="C&oacute;digo" >
+                <p:column headerText="C&oacute;digo" >
                     <h:outputLabel value="#{puesto.puestosPK.codPuesto}"/>
                 </p:column>
 
@@ -327,16 +301,21 @@
                         <f:setPropertyActionListener value="#{puesto}" target="#{puestosBackendBean.puestoSeleccionado}" /> 
                     </p:commandButton>
                 </p:column>
+                <p:column headerText="Eliminar" >
+                    <p:commandButton title="Eliminar este puesto." update="tablaPuesto" image="ui-icon ui-icon-circle-minus" ajax="true" onclick="confirmation.show()">
+                        <f:setPropertyActionListener value="#{puesto}" target="#{puestosBackendBean.puestoSeleccionado}" /> 
+                    </p:commandButton>
+                </p:column>
 
             </p:dataTable>
             <p:spacer height="20" />    
 
         </p:fieldset>
 
-        <p:panel id="panelInformacionEdit" style="border:none;" >
+        <!--p:panel id="panelInformacionEdit" style="border:none;" >
             <div>
                 <div style="float:left;width: 30%;" >
-                    <h:panelGrid columns="4" rendered="#{(puestosBackendBean.estadoAccion eq 1)}"  >
+                    <h:panelGrid columns="4" rendered="# {(puestosBackendBean.estadoAccion eq 1)}"  >
                         <p:graphicImage value="../../resources/imagenes/64/info.png" />
                         <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
                         <h:outputLabel value="*" styleClass="requerido"/>                                
@@ -344,16 +323,10 @@
                     </h:panelGrid>
                 </div>    
                 <div style="float:left; width: 70%;"  >
-                    <p:toolbar rendered="#{(puestosBackendBean.estadoAccion eq 1)}" styleClass="toolbarUsuario" >
-                        <p:toolbarGroup align="right" >
-                            <p:commandButton id="cmdModificar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{puestosBackendBean.guardar$crud$action()}"
-                                             update="principalForm:mensajes,txNombreED,chkHExtrasED,chkHDoblesED,chkViaticosED,chkComisionED,cnkInfConfED,txSalarioMinED,txSalarioMaxED,lstTipoPuestoED,lstEstadoPuestoED,lstDepartamentosED,lstAreasED,txDescPuestoED,txObjPuestoED" />  
-                        </p:toolbarGroup>
-                    </p:toolbar>
                 </div>
                 <div style="clear:both;" ></div>
             </div>
-        </p:panel>
+        </p:panel-->
 
 
         <!-- p:spacer height="20" rendered="# {(puestosBackendBean.estadoAccion eq 1)}" / -->
@@ -455,7 +428,15 @@
                     <td valign="top" ><h:outputLabel value="Objetivo " style="font-weight: bold;" /></td>
                     <td><p:inputTextarea id="txObjPuestoED" value="#{puestosBackendBean.objetivo}" style="width: 300px;" label="Objetivo del Puesto" autoResize="false" /></td>
                 </tr>
-
+                <td>
+                    <tr>
+                        <td></td>
+                        <td colspan="4" >
+                            <p:commandButton id="cmdModificar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{puestosBackendBean.guardar$crud$action()}"
+                                update="principalForm:mensajes,txNombreED,chkHExtrasED,chkHDoblesED,chkViaticosED,chkComisionED,cnkInfConfED,txSalarioMinED,txSalarioMaxED,lstTipoPuestoED,lstEstadoPuestoED,lstDepartamentosED,lstAreasED,txDescPuestoED,txObjPuestoED" />  
+                        </td>
+                    </tr>
+                </td>
             </table>
             <p:spacer height="20" />
         </p:fieldset>

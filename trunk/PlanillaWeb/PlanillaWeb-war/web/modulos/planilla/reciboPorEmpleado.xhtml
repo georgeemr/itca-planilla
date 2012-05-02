@@ -65,17 +65,18 @@
                             </h:selectOneMenu>
                             <i:etiquetaRequerido value="Planilla" />
                             <h:panelGroup>
-                                <p:autoComplete id="AutCompltEmpleado" var="planilla" 
-                                                value="#{planilla$reciboPorEmpleado.planillaSeleccionada}"
-                                                itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.planillaToString}"
-                                                completeMethod="#{planilla$reciboPorEmpleado.completePlanillaEmpleado}"
-                                                converter="#{planilla$reciboPorEmpleado.planillaConverter}" 
-                                                selectListener="#{planilla$reciboPorEmpleado.handleSelectPlanilla}"
-                                                onSelectUpdate="tbIng,tbEgr,panelDescripcion"
-                                                style="width: 300px;"  >
-                                </p:autoComplete>
-                                <i:etiquetaPlanilla/>
-
+                                <h:panelGrid columns="1">
+                                    <p:autoComplete id="AutCompltEmpleado" var="planilla" 
+                                                    value="#{planilla$reciboPorEmpleado.planillaSeleccionada}"
+                                                    itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.planillaToString}"
+                                                    completeMethod="#{planilla$reciboPorEmpleado.completePlanillaEmpleado}"
+                                                    converter="#{planilla$reciboPorEmpleado.planillaConverter}" 
+                                                    selectListener="#{planilla$reciboPorEmpleado.handleSelectPlanilla}"
+                                                    onSelectUpdate="tbIng,tbEgr,panelDescripcion"
+                                                    style="width: 300px;"  >
+                                    </p:autoComplete>
+                                    <i:etiquetaPlanilla/>
+                                </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
                     </td>

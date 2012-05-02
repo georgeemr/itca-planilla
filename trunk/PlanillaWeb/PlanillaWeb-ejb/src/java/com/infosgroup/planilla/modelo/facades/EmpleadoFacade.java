@@ -167,8 +167,7 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
 
     @PermitAll
     public List<Empleados> findEmpleadosByCias(Cias cias) {
-        List<Empleados> l = new ArrayList<Empleados>(0);
-        l = em.createQuery("SELECT e FROM Empleados e WHERE e.empleadosPK.codCia = :codCia", Empleados.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        List<Empleados> l = em.createQuery("SELECT e FROM Empleados e WHERE e.empleadosPK.codCia = :codCia ORDER BY e.empleadosPK.codEmp", Empleados.class).setParameter("codCia", cias.getCodCia()).getResultList();
         return l != null ? l : new ArrayList<Empleados>();
     }
 
