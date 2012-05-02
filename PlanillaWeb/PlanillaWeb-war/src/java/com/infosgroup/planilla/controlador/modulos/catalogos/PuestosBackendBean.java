@@ -15,8 +15,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -46,9 +44,6 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     private String descripcion;
     private String objetivo;
     private Criterio criterioSeleccionado;
-//    private String valor;
-//    private String valorInicialRango;
-//    private String valorFinalRango;
     /* Listas */
     private List<TipoPuesto> listaTipoPuesto;
     private List<Departamentos> listaDepartamentos;
@@ -81,30 +76,6 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     public void setJefatura(Boolean jefatura) {
         this.jefatura = jefatura;
     }
-
-//    public String getValor() {
-//        return valor;
-//    }
-//
-//    public void setValor(String valor) {
-//        this.valor = valor;
-//    }
-//
-//    public String getValorFinalRango() {
-//        return valorFinalRango;
-//    }
-//
-//    public void setValorFinalRango(String valorFinalRango) {
-//        this.valorFinalRango = valorFinalRango;
-//    }
-//
-//    public String getValorInicialRango() {
-//        return valorInicialRango;
-//    }
-//
-//    public void setValorInicialRango(String valorInicialRango) {
-//        this.valorInicialRango = valorInicialRango;
-//    }
 
     public Criterio getCriterioSeleccionado() {
         return criterioSeleccionado;
@@ -435,23 +406,6 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
             return null;
         }
 
-//        if (getCriterioSeleccionado().getOperador().equals("equal")) {
-//            if (valor == null || valor.length() <= 0) {
-//                addMessage("Mantenimiento de Puestos.", "Ingrese on valor para el criterio.", TipoMensaje.ERROR);
-//                return null;
-//            }
-//        } else if (getCriterioSeleccionado().getOperador().equals("between")) {
-//            if ((valorInicialRango == null || valorInicialRango.length()<= 0) || (valorFinalRango == null || valorFinalRango.length()<=0)) {
-//                addMessage("Mantenimiento de Puestos.", "Complemente los dos valores para el criterio.", TipoMensaje.ERROR);
-//                return null;
-//            }
-//        }
-//        
-//        if (etiqueta == null || etiqueta.length() <= 0) {
-//            addMessage("Puestos", "Ingrese el nombre del Criterio.", TipoMensaje.ERROR);
-//            return null;
-//        }
-
         CriteriosXPuesto cxp = new CriteriosXPuesto();
         CriteriosXPuestoPK pk = new CriteriosXPuestoPK(getSessionBeanADM().getCompania().getCodCia(), getPuestoSeleccionado().getPuestosPK().getCodPuesto(), getCriterioSeleccionado().getCriterioPK().getCodigo());
         cxp.setCriterio(getCriterioSeleccionado());
@@ -469,9 +423,6 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
             reclutamientoFacade.guardarCriterioXPuesto(cxp);
             addMessage("Mantenimiento de Puestos.", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
             listaCriteriosXPuestos = reclutamientoFacade.criteriosPorPuesto(getPuestoSeleccionado().getPuestosPK());
-//            setValor(null);
-//            setValorInicialRango(null);
-//            setValorFinalRango(null);
         } catch (Exception e) {
             addMessage("Mantenimiento de Puestos.", "Ocurrio un error al intentar guardar los datos.", TipoMensaje.ERROR);
             e.printStackTrace();
@@ -513,7 +464,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
             addMessage("Mantenimiento de Puestos.", "Datos eliminados con éxito", TipoMensaje.INFORMACION);
             limpiarCampos();
         } catch (Exception e) {
-            addMessage("Mantenimiento de Puesto.", "Ha ocurrido un error al intentar remover el Puesto.", TipoMensaje.ERROR);
+            addMessage("Mantenimiento de Puesto.", "No se puede eliminar el puesto Seleccionado.", TipoMensaje.ERROR);
             System.out.println(e.getMessage());
         }
         listaPuestos = reclutamientoFacade.getPuestosByEmpresa(getSessionBeanADM().getCompania());
@@ -535,27 +486,4 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         }
     }
 
-//    public void onRowSelectPuesto(SelectEvent event) {
-//        setPuestoSeleccionado((Puestos) event.getObject());
-//    }
-//
-//    public void onRowUnSelectPuesto(UnselectEvent event) {
-//        setPuestoSeleccionado(null);
-//    }
-
-//    public void onRowSelectCriterioPuesto(SelectEvent event) {
-//        setCriterioXPuestoSeleccionado((CriteriosXPuesto) event.getObject());
-//    }
-//
-//    public void onRowUnSelectCriterioPuesto(UnselectEvent event) {
-//        setCriterioXPuestoSeleccionado(null);
-//    }
-
-//    public void onRowSelectCriterio(SelectEvent event) {
-//        setCriterioSeleccionado((Criterio) event.getObject());
-//    }
-//
-//    public void onRowUnSelectCriterio(UnselectEvent event) {
-//        setCriterioSeleccionado(null);
-//    }
 }

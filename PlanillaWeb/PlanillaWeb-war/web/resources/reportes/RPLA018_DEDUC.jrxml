@@ -82,7 +82,7 @@ and mov_dp.cod_cia=$P{pCia}
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DES_DEDUC}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false">
-				<reportElement key="textField" x="180" y="1" width="68" height="15"/>
+				<reportElement key="textField" x="174" y="1" width="68" height="15"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>

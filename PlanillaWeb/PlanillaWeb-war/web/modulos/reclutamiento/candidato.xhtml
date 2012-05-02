@@ -1029,7 +1029,7 @@
 
     <ui:define name="dialogos">
         <p:dialog widgetVar="dialogoEditar" header="Editar candidato" modal="true" draggable="true" resizable="false" closable="true" width="650">
-            <p:dataTable id="tablaCandidatos" value="#{reclutamiento$candidato.candidatosListModel}" var="candidato" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5" selectionMode="single" selection="#{reclutamiento$candidato.candidatoSeleccionado}" onRowSelectUpdate="principalForm:editarAceptarCommandButton" onRowUnselectUpdate="principalForm:editarAceptarCommandButton">
+            <p:dataTable id="tablaCandidatos" value="#{reclutamiento$candidato.candidatosListModel}" var="candidato" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5"  onRowSelectUpdate="principalForm:editarAceptarCommandButton" onRowUnselectUpdate="principalForm:editarAceptarCommandButton">
                 <f:facet name="header">
                     <h:outputText value="Candidatos"/>
                 </f:facet>
@@ -1039,9 +1039,13 @@
                 <p:column headerText="Nombre del candidato" filterBy="#{candidato.nombreCompleto}" filterMatchMode="contains">
                     <h:outputText value="#{candidato.nombreCompleto}"/>
                 </p:column>
+                <p:column headerText="Seleccionar" >
+                    <p:commandButton id="editarAceptarCommandButton" image="ui-icon ui-icon-circle-check" onclick="dialogoEditar.hide();" action="#{reclutamiento$candidato.editar$action}" update="principalForm:mensajes principalForm:panelAcciones principalForm:panelContenido" title="Seleccionar Candidato" >
+                        <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$candidato.candidatoSeleccionado}" />
+                    </p:commandButton>
+                </p:column>
             </p:dataTable>
             <h:panelGrid columns="2">
-                <p:commandButton id="editarAceptarCommandButton" value="Aceptar" image="ui-icon ui-icon-circle-check" onclick="dialogoEditar.hide();" action="#{reclutamiento$candidato.editar$action}" disabled="#{reclutamiento$candidato.candidatoSeleccionado eq null}" update="principalForm:mensajes principalForm:panelAcciones principalForm:panelContenido"/>
                 <p:commandButton id="editarCancelarCommandButton" value="Cancelar" image="ui-icon ui-icon-circle-close" onclick="dialogoEditar.hide();" action="#{reclutamiento$candidato.cancelar$action}" update="principalForm:mensajes principalForm:panelAcciones principalForm:panelContenido"/>
             </h:panelGrid>       
         </p:dialog>

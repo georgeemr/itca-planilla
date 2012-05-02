@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.2100000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="53"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -33,7 +33,7 @@
     f.cod_emp cod_emp,
     d.num_tarjeta,
     d.cod_empref cod_ref,
-    decode(a.numero_valor,0,'',(a.numero_texto || decode(a.numero_valor,1,' MILLON ',' MILLONES ' )))|| decode(b.numero_valor,0,'',(b.numero_texto || ' MIL ' )) || decode(c.numero_valor,0,'',c.numero_texto)|| decode(substr(to_char(c.numero_valor), length(to_char(c.numero_valor)),1),'1','0','')|| decode(c.numero_valor,0,'', ' ')|| decode(round(((tot_debenga)-trunc((tot_debenga),0))*100,0),0,'EXACTOS', to_char(round(((tot_debenga)- trunc((tot_debenga),0))*100,0),'00')||'/100 '|| k.NOM_MONEDA) descripcion,
+    decode(a.numero_valor,0,'',(a.numero_texto || decode(a.numero_valor,1,' MILLON ',' MILLONES ' )))|| decode(b.numero_valor,0,'',(b.numero_texto || ' MIL ' )) || decode(c.numero_valor,0,'',c.numero_texto)|| decode(substr(to_char(c.numero_valor), length(to_char(c.numero_valor)),1),'1','0','')|| decode(c.numero_valor,0,'', ' ')|| decode(round(((liq_recibir)-trunc((liq_recibir),0))*100,0),0,'EXACTOS', to_char(round(((liq_recibir)- trunc((liq_recibir),0))*100,0),'00')||'/100 '|| k.NOM_MONEDA) descripcion,
     e.nom_depto,
     d.apellidos,
     d.nombres,
@@ -75,9 +75,9 @@ from
     monedas k
  where
        f.cod_cia = h.cod_cia
-    and a.numero_valor = (floor(((abs(tot_debenga)))/1000000))
-    and b.numero_valor = (floor(((abs(tot_debenga)))/1000)) - ((floor(((abs(tot_debenga)))/1000000))*1000)
-    and c.numero_valor = (trunc((abs(tot_debenga)) - trunc((abs(tot_debenga)),-3),0))
+    and a.numero_valor = (floor(((abs(liq_recibir)))/1000000))
+    and b.numero_valor = (floor(((abs(liq_recibir)))/1000)) - ((floor(((abs(liq_recibir)))/1000000))*1000)
+    and c.numero_valor = (trunc((abs(liq_recibir)) - trunc((abs(liq_recibir)),-3),0))
     and f.cod_cia = $P{pCia}
     and f.anio = $P{pAnio}
     and f.mes = $P{pMes}
@@ -177,10 +177,10 @@ order by
 	<detail>
 		<band height="353" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" mode="Transparent" x="258" y="131" width="272" height="175"/>
+				<reportElement key="rectangle-2" mode="Transparent" x="273" y="131" width="272" height="175"/>
 			</rectangle>
 			<rectangle>
-				<reportElement key="rectangle-1" mode="Transparent" x="7" y="131" width="245" height="175"/>
+				<reportElement key="rectangle-1" mode="Transparent" x="7" y="131" width="261" height="175"/>
 			</rectangle>
 			<textField pattern="###0.00" isBlankWhenNull="false">
 				<reportElement key="textField" x="163" y="136" width="86" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -324,7 +324,7 @@ order by
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIGNO} +" "+ NumberFormat.getCurrencyInstance().getCurrencyInstance(Locale.ENGLISH).format($V{total_devengado}).replace("¤", "")]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-10" x="268" y="283" width="87" height="19"/>
+				<reportElement key="staticText-10" x="284" y="283" width="87" height="19"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -338,7 +338,7 @@ order by
 				<text><![CDATA[Ingresos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-12" x="258" y="115" width="272" height="15"/>
+				<reportElement key="staticText-12" x="273" y="115" width="272" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true" isUnderline="false"/>
 				</textElement>
@@ -352,7 +352,7 @@ order by
 				<text><![CDATA[Total a Pagar:]]></text>
 			</staticText>
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="266" y="136" width="253" height="144"/>
+				<reportElement key="subreport-1" x="277" y="136" width="260" height="144"/>
 				<subreportParameter name="pCia">
 					<subreportParameterExpression><![CDATA[$P{pCia}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -437,7 +437,7 @@ order by
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOM_PUESTO}]]></textFieldExpression>
 			</textField>
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-2" x="14" y="154" width="235" height="126"/>
+				<reportElement key="subreport-2" x="14" y="154" width="244" height="126"/>
 				<subreportParameter name="pCia">
 					<subreportParameterExpression><![CDATA[$P{pCia}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -470,7 +470,7 @@ order by
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIGNO} +" "+ NumberFormat.getCurrencyInstance().getCurrencyInstance(Locale.ENGLISH).format($F{LIQ_RECIBIR}).replace("¤", "")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="356" y="283" width="163" height="19"/>
+				<reportElement x="374" y="283" width="163" height="19"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
