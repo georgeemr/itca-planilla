@@ -139,7 +139,7 @@ public class ReportePlanilla extends AbstractJSFPage implements java.io.Serializ
             HashMap<String, Object> parametros = new HashMap<String, Object>();
             parametros.put("anio", String.valueOf(getProPlaSeleccionada().getAnio()));
             parametros.put("empresa", String.valueOf(getProPlaSeleccionada().getProgramacionPlaPK().getCodCia()));
-            parametros.put("departamento",  codDepto !=null?BigDecimal.valueOf(codDepto):null );
+            parametros.put("departamento",  codDepto !=null?String.valueOf(codDepto):null );
             parametros.put("tipo_planilla", String.valueOf(getProPlaSeleccionada().getProgramacionPlaPK().getCodTipopla()));
             parametros.put("mes", String.valueOf(getProPlaSeleccionada().getMes()));
             parametros.put("planilla", String.valueOf(getProPlaSeleccionada().getNumPlanilla()));
