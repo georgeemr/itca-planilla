@@ -3,7 +3,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="departamento" class="java.math.BigDecimal"/>
+	<parameter name="departamento" class="java.lang.String"/>
 	<parameter name="empresa" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -16,8 +16,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[select nom_comercial, b.nom_tipopla from cias a, tipos_planilla b where a.cod_cia = $P{empresa}
-and b.cod_cia = a.cod_cia and b.cod_tipopla= $P{tipo_planilla}
-]]>
+and b.cod_cia = a.cod_cia and b.cod_tipopla= $P{tipo_planilla}]]>
 	</queryString>
 	<field name="NOM_COMERCIAL" class="java.lang.String"/>
 	<field name="NOM_TIPOPLA" class="java.lang.String"/>
