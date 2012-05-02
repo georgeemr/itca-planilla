@@ -181,8 +181,8 @@
                 </i:fieldset>
             </p:tab>
             <p:tab title="Preparaci&oacute;n acad&eacute;mica">
-                <i:fieldset leyenda="Institución" >
-                    <f:facet name="contenido" >
+                <p:fieldset legend="Instituci&oacute;n" styleClass="borderFieldset"   >
+                    <!--f:facet name="contenido" -->
                         <h:panelGrid columns="6">
                             <h:outputText value="Nombre"/>
                             <p:inputText size="50" value="#{reclutamiento$candidato.preparacion$nombreInstitucion}"/>
@@ -198,11 +198,11 @@
                                 <f:selectItems var="departamento" value="#{reclutamiento$candidato.deptosPrepAcadSelectItemListModel}" itemValue="#{departamento.deptosPK.codPais}:#{departamento.deptosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
                             </h:selectOneMenu>
                         </h:panelGrid>
-                    </f:facet>
-                </i:fieldset>
+                    <!--/f:facet -->
+                </p:fieldset>
                 <p:spacer height="10"/>
-                <i:fieldset leyenda="Nivel alcanzado/Carrera" >
-                    <f:facet name="contenido" >
+                <p:fieldset legend="Nivel alcanzado/Carrera" styleClass="borderFieldset" >
+                    <!-- f:facet name="contenido"  -->
                         <table width="100%" border="0" cellpadding="0" cellspacing="3">
                             <tr>
                                 <td>
@@ -244,8 +244,8 @@
                                 <td colspan="3"><p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" action="#{reclutamiento$candidato.preparacionAcademica$agregar$action}" update="mensajes, preparacionAcademicaTable"/></td>
                             </tr>
                         </table>    
-                    </f:facet>
-                </i:fieldset>
+                    <!--/f:facet-->
+                </p:fieldset>
 
 
 
@@ -271,8 +271,8 @@
                 </p:dataTable>
             </p:tab>
             <p:tab title="Emergencias">     
-                <i:fieldset leyenda="Conyuge" >
-                    <f:facet name="contenido" >
+                <p:fieldset legend="Conyuge" styleClass="borderFieldset" >
+                    <!--f:facet name="contenido" -->
                         <h:panelGrid columns="6">
                             <h:outputText value="Nombre"/>
                             <p:inputText value="#{reclutamiento$candidato.emergencias$conyuge}"/>
@@ -281,11 +281,11 @@
                             <h:outputText value="Tel&eacute;fono"/>
                             <p:inputText value="#{reclutamiento$candidato.emergencias$telefono}"/>
                         </h:panelGrid>
-                    </f:facet>
-                </i:fieldset>
+                    <!--/f:facet-->
+                </p:fieldset>
                 <p:spacer height="10"/>
-                <i:fieldset leyenda="Condiciones f&iacute;sicas del solicitante" >
-                    <f:facet name="contenido" >
+                <p:fieldset legend="Condiciones f&iacute;sicas del solicitante" styleClass="borderFieldset" >
+                    <!--f:facet name="contenido" -->
                         <h:panelGrid columns="4">
                             <h:outputText value="Condici&oacute;n de salud general"/>
                             <h:selectOneMenu style="width: 175px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.emergencias$condicionSalud}">
@@ -310,11 +310,11 @@
                             <h:outputText value="Estatura (m)"/>
                             <p:spinner min="0" max="300.00" stepFactor="0.01" value="#{reclutamiento$candidato.emergencias$estatura}" style="height: 14px;"/>
                         </h:panelGrid>
-                    </f:facet>
-                </i:fieldset>
+                    <!--/f:facet-->
+                </p:fieldset>
                 <p:spacer height="10"/>
-                <i:fieldset leyenda="Contactos en casos de emergencia" >
-                    <f:facet name="contenido" >
+                <p:fieldset legend="Contactos en casos de emergencia" styleClass="borderFieldset" >
+                    <!--f:facet name="contenido" -->
                         <!-- p:fieldset legend="Contactos en casos de emergencia" -->
                         <h:panelGrid columns="7">
                             <h:outputText value="Nombre"/>
@@ -345,12 +345,12 @@
                                 <p:commandButton image="ui-icon ui-icon-trash" title="Eliminar"  action="#{reclutamiento$candidato.parentescos$eliminar$action}" update="mensajes, principalForm:parentescosTable"/>
                             </p:column>
                         </p:dataTable>
-                    </f:facet>
-                </i:fieldset>
+                    <!--/f:facet-->
+                </p:fieldset>
             </p:tab>
             <p:tab title="Experiencia laboral">
-                <i:fieldset leyenda="Informaci&oacute;n de experiencia laboral" >
-                    <f:facet name="contenido" >
+                <p:fieldset legend="Informaci&oacute;n de experiencia laboral" styleClass="borderFieldset" >
+                    <!--f:facet name="contenido" -->
                         <!-- p:fieldset legend="Informaci&oacute;n de experiencia laboral" -->
                         <table>
                             <tr>
@@ -397,8 +397,8 @@
                                 <td colspan="3" ><p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" update="mensajes, experienciaLaboralTable" action="#{reclutamiento$candidato.experienciaLaboral$agregar$action}"/></td>
                             </tr>
                         </table>
-                    </f:facet>
-                </i:fieldset>
+                    <!-- /f:facet -->
+                </p:fieldset>
 
                 <p:dataTable id="experienciaLaboralTable" binding="#{reclutamiento$candidato.experienciaLaboralTable}" value="#{reclutamiento$candidato.experienciasLaboralesCandidato}" var="experienciaLaboral" rows="3" paginator="true" paginatorAlwaysVisible="true">
                     <f:facet name="header">
@@ -429,7 +429,7 @@
                 <p:wizard nextLabel="Referencias personales" backLabel="Referencias laborales">
                     <p:tab title="Laborales">
                         <p:spacer height="5" />
-                        <p:fieldset legend="Informaci&oacute;n de la referencia">
+                        <p:fieldset legend="Informaci&oacute;n de la referencia" styleClass="borderFieldset" >
                             <h:panelGrid columns="6">
                                 <h:outputText value="Nombre"/>
                                 <p:inputText id="referenciaLaboralNombre" value="#{reclutamiento$candidato.referencias$rl$nombre}"/>
@@ -469,7 +469,7 @@
                         </p:dataTable>
                     </p:tab>
                     <p:tab title="Personales">
-                        <p:fieldset legend="Informaci&oacute;n de la referencia">
+                        <p:fieldset legend="Informaci&oacute;n de la referencia" styleClass="borderFieldset" >
                             <p:spacer height="5" />
                             <h:panelGrid columns="6">
                                 <h:outputText value="Nombre"/>
@@ -511,9 +511,9 @@
                 </p:wizard>
             </p:tab>            
             <p:tab title="Documentos" >
-                <i:fieldset leyenda="Documentos de identidad/Otros documentos" >
+                <p:fieldset legend="Documentos de identidad/Otros documentos" styleClass="borderFieldset" >
                     <!--p:fieldset legend="Documentos de identidad/Otros documentos" -->
-                    <f:facet name="contenido">
+                    <!--f:facet name="contenido" -->
                         <h:panelGrid columns="5">
                             <h:outputLabel value="Tipo de Documento: " />
                             <h:selectOneMenu id="documentoTipo" style="width: 250px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.documentos$tipo}">
@@ -524,8 +524,8 @@
                             <p:inputText id="documentoNumero" value="#{reclutamiento$candidato.documentos$numero}"/>
                             <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" update="mensajes, documentosTable, documentoTipo, documentoNumero" action="#{reclutamiento$candidato.documento$agregar$action}"/>
                         </h:panelGrid>
-                    </f:facet>
-                </i:fieldset>
+                    <!-- /f:facet -->
+                </p:fieldset>
 
                 <p:dataTable id="documentosTable" binding="#{reclutamiento$candidato.documentosTable}" emptyMessage="No se ha encontrado ning&uacute;n documento" value="#{reclutamiento$candidato.documentosCandidato}" var="documento" rows="3" paginator="true" paginatorAlwaysVisible="true">
                     <f:facet name="header">
@@ -543,9 +543,7 @@
                 </p:dataTable>
             </p:tab>
             <p:tab title="Capacitaciones">
-                <i:fieldset leyenda="Datos de capacitaci&oacute;n" >
-                    <!--p:fieldset legend="Datos de capacitaci&oacute;n"-->
-                    <f:facet name="contenido" >
+                <p:fieldset legend="Datos de capacitaci&oacute;n" styleClass="borderFieldset" >
                         <table>
                             <tr>
                                 <td>
@@ -589,8 +587,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </f:facet>
-                </i:fieldset>
+                </p:fieldset>
 
                 <p:dataTable id="capacitacionesTable" binding="#{reclutamiento$candidato.capacitacionesTable}" emptyMessage="[No se ha agregado ninguna capacitaci&oacute;n]" value="#{reclutamiento$candidato.capacitacionesCandidato}" var="capacitacion" rows="3" paginator="true" paginatorAlwaysVisible="true">
                     <f:facet name="header">
@@ -611,9 +608,8 @@
                 </p:dataTable>
             </p:tab>
             <p:tab title="Dependientes">
-                <i:fieldset leyenda="Datos del dependiente" >
-                    <!--p:fieldset legend="Datos del dependiente"-->
-                    <f:facet name="contenido" >
+                <p:fieldset legend="Datos del dependiente" styleClass="borderFieldset">
+
                         <table width="100%" border="0">
                             <tr>
                                 <td>
@@ -645,8 +641,7 @@
                                 <td colspan="3" ><p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" action="#{reclutamiento$candidato.dependientes$agregar$action}" update="mensajes, dependientesTable, dependientesNombre, dependientesFechaNacimiento, dependientesParentesco"/></td>
                             </tr>
                         </table>
-                    </f:facet>
-                </i:fieldset>
+                </p:fieldset>
 
                 <p:dataTable id="dependientesTable" binding="#{reclutamiento$candidato.dependientesTable}" rows="3" paginator="true" paginatorAlwaysVisible="true" emptyMessage="[No se han agregado dependientes]" value="#{reclutamiento$candidato.dependientesCandidato}" var="dependiente">
                     <f:facet name="header">
@@ -667,9 +662,8 @@
                 </p:dataTable>
             </p:tab>
             <p:tab title="Idiomas">
-                <i:fieldset leyenda="Datos de idioma">
-                    <!-- p:fieldset legend="Datos de idioma" -->
-                    <f:facet name="contenido">
+                <p:fieldset legend="Datos de idioma" styleClass="borderFieldset">
+                    
                         <table width="100%" border="0">
                             <tr>
                                 <td>
@@ -713,8 +707,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </f:facet>
-                </i:fieldset>
+                </p:fieldset>
 
                 <p:dataTable id="idiomasTable" binding="#{reclutamiento$candidato.idiomasTable}" rows="3" paginator="true" paginatorAlwaysVisible="true" var="idiomaCandidato" value="#{reclutamiento$candidato.idiomasCandidato}">
                     <f:facet name="header">
@@ -742,9 +735,7 @@
                 </p:dataTable>
             </p:tab>
             <p:tab title="Beneficiarios">
-                <i:fieldset leyenda="Datos del beneficiario">
-                    <!-- p:fieldset legend="Datos del beneficiario" -->
-                    <f:facet name="contenido" >
+                <p:fieldset legend="Datos del beneficiario"  styleClass="borderFieldset" >
                         <table width="100%" border="0">
                             <tr>
                                 <td>
@@ -770,8 +761,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </f:facet>
-                </i:fieldset>
+                </p:fieldset>
 
                 <p:dataTable id="beneficiariosTable" binding="#{reclutamiento$candidato.beneficiariosTable}" rows="3" paginator="true" paginatorAlwaysVisible="true" pageLinks="3" value="#{reclutamiento$candidato.beneficiariosCandidato}" var="beneficiarioCandidato">
                     <f:facet name="header">
@@ -789,9 +779,8 @@
                 </p:dataTable>
             </p:tab>
             <p:tab title="Equipos de oficina">
-                <!--p:fieldset legend="Equipo de oficina" -->
-                <i:fieldset leyenda="Equipo de oficina" >
-                    <f:facet name="contenido" >
+
+                <p:fieldset legend="Equipo de oficina"  styleClass="borderFieldset" >
                         <h:panelGrid columns="4" width="100%">
                             <h:outputText value="Equipo"/>
                             <h:selectOneMenu id="equiposEquipo" style="width: 400px; height: 24px; padding-top: 3px;" value="#{reclutamiento$candidato.equipos$equipo}">
@@ -805,8 +794,8 @@
                                 <f:selectItem itemValue="3" itemLabel="Alto"/>
                             </h:selectOneMenu>
                         </h:panelGrid>
-                    </f:facet>
-                </i:fieldset>
+
+                </p:fieldset>
                 <h:panelGrid columns="1">
                     <p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" action="#{reclutamiento$candidato.equipos$agregar$action}" update="mensajes, equiposTable, equiposEquipo, equiposEstado"/>
                 </h:panelGrid>
@@ -828,8 +817,8 @@
                 </p:dataTable>
             </p:tab>
             <p:tab title="Pruebas">
-                <i:fieldset leyenda="Prueba" >
-                    <f:facet name="contenido" >
+                <p:fieldset legend="Prueba"  styleClass="borderFieldset" >
+
                         <!--p:fieldset legend="Prueba" -->
                         <table width="100%" border="0">
                             <tr>
@@ -874,8 +863,8 @@
                                 <td colspan="4" ><p:commandButton value="Agregar" image="ui-icon ui-icon-circle-arrow-s" action="#{reclutamiento$candidato.pruebas$agregar$action}" update="mensajes, pruebasTable, pruebasResultado, pruebasFecha"/></td>
                             </tr>
                         </table>
-                    </f:facet>
-                </i:fieldset>
+
+                </p:fieldset>
 
                 <p:dataTable id="pruebasTable" binding="#{reclutamiento$candidato.pruebasTable}" rows="3" paginator="true" paginatorAlwaysVisible="true" pageLinks="5" value="#{reclutamiento$candidato.pruebasCandidato}" var="pruebaCandidato">
                     <f:facet name="header">
@@ -904,9 +893,7 @@
                 </p:dataTable>
             </p:tab>
             <p:tab title="Puestos/Entrevistas">
-                <i:fieldset leyenda="Puestos" >
-                    <f:facet name="contenido" >
-                        <!--p:fieldset legend="Puestos"-->
+                <p:fieldset legend="Puestos"  styleClass="borderFieldset" >
                         <table width="100%" border="0" cellpadding="0" cellspacing="2">
                             <tr>
                                 <td>
@@ -932,8 +919,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </f:facet>
-                </i:fieldset>
+                </p:fieldset>
 
                 <p:dataTable id="puestosTable" binding="#{reclutamiento$candidato.puestosTable}" rows="3" paginator="true" paginatorAlwaysVisible="true" pageLinks="5" value="#{reclutamiento$candidato.puestosCandidato}" var="puestoCandidato">
                     <f:facet name="header">
@@ -950,9 +936,8 @@
                     </p:column>
                 </p:dataTable>
                 <p:spacer height="10"/>
-                <i:fieldset leyenda="Entrevistas" >
-                    <f:facet name="contenido" >
-                        <!--p:fieldset legend="Entrevistas"-->
+                <p:fieldset legend="Entrevistas"  styleClass="borderFieldset" >
+                   
                         <table width="100%" border="0" cellpadding="0" cellspacing="2">
                             <tr>
                                 <td>
@@ -994,8 +979,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </f:facet>
-                </i:fieldset>
+                </p:fieldset>
 
                 <p:dataTable id="entrevistasTable" binding="#{reclutamiento$candidato.entrevistasTable}" rows="2" paginator="true" paginatorAlwaysVisible="true" pageLinks="5" value="#{reclutamiento$candidato.entrevistasCandidato}" var="entrevistaCandidato">
                     <f:facet name="header">
@@ -1033,13 +1017,13 @@
                 <f:facet name="header">
                     <h:outputText value="Candidatos"/>
                 </f:facet>
-                <p:column headerText="ID" filterBy="#{candidato.candidatoPK.codCandidato}" filterMatchMode="contains">
+                <p:column headerText="ID " filterBy="#{candidato.candidatoPK.codCandidato}" filterMatchMode="contains" style="width: 10%;"  >
                     <h:outputText value="#{candidato.candidatoPK.codCandidato}"/>
                 </p:column>
                 <p:column headerText="Nombre del candidato" filterBy="#{candidato.nombreCompleto}" filterMatchMode="contains">
                     <h:outputText value="#{candidato.nombreCompleto}"/>
                 </p:column>
-                <p:column headerText="Seleccionar" >
+                <p:column headerText="Seleccionar" style="width: 8%;" >
                     <p:commandButton id="editarAceptarCommandButton" image="ui-icon ui-icon-circle-check" onclick="dialogoEditar.hide();" action="#{reclutamiento$candidato.editar$action}" update="principalForm:mensajes principalForm:panelAcciones principalForm:panelContenido" title="Seleccionar Candidato" >
                         <f:setPropertyActionListener value="#{candidato}" target="#{reclutamiento$candidato.candidatoSeleccionado}" />
                     </p:commandButton>
