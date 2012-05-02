@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RPLA010_DETALLE" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="departamento" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="empresa" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mes" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="planilla" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tipo_planilla" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select a.nom_depto, a.cod_emp, a.nombre, a.salario_base, a.had,a.vhad, a.chextra,a.vextra, a.bonificacion, b.otras_presta,a.tot_debenga,
+b.isr,b.ivm,b.emrp,b.fsv,b.otras_deduc,a.deducciones, a.liquido
+from
+(
+SELECT a.cod_cia,a.cod_tipopla,a.anio, a.mes, a.num_planilla, a.cod_emp,
+ DECODE(a.estado,'L',b.apellidos||', '||b.nombres,'V',b.apellidos||', '||b.nombres||' **** VACACIONES','I',
+ b.apellidos||', '||b.nombres||' **** INCAPACIDAD','P',b.apellidos||', '||b.nombres||' **** PERMISO SIN GOCE DE SUELDO',b.apellidos||', '||b.nombres) NOMBRE,
+b.num_tarjeta,b.cheque_dep,a.cod_afp,
+-- b.salario_base,
+a.sueldo_base salario_base, c.nom_depto, a.tot_debenga, a.bonificacion BONIFICACION,
+a.chr_noche HAD,a.vhr_noche VHAD, (a.ch_xsencilla+a.ch_xdoble+a.ch_x250+a.ch_x150) CHEXTRA,
+decode(a.ch_xsencilla,0,'','D')|| decode(a.ch_xdoble,0,'','M')||decode(a.ch_x250,0,'','T') TIPO,
+(a.vh_xsencilla + a.vh_xdoble +a.vh_x250+a.vh_x150) VEXTRA, NVL(a.vh_hora,0) TARDE,
+a.tot_debenga BRUTO,
+a.Liq_recibir  LIQUIDO,
+a.Deducciones,
+NVL(a.D_LABORADOS,0) D_Laborados,
+c.cod_depto
+FROM EMPLEADOS b, PLANILLA a, DEPARTAMENTOS c
+WHERE b.cod_cia = a.cod_cia
+   And b.cod_emp = a.cod_emp
+   And c.cod_cia = b.cod_cia
+   And c.COD_DEPTO = b.cod_depto
+   And c.cod_depto = DECODE($P{departamento},NULL,c.cod_depto,$P{departamento})
+   And  a.cod_cia = $P{empresa}
+   And a.anio = $P{anio}
+   And a.mes = $P{mes}
+   And a.num_planilla = $P{planilla}
+   And a.cod_tipopla = $P{tipo_planilla}
+--Order By c.cod_depto, a.cod_emp
+) a,
+(
+select cod_cia, tipo_planilla cod_tipopla, anio,mes,num_planilla,cod_emp,
+isr,ivm,emrp,fsv,otras_deduc,otras_presta
+from v_mov_dp v
+where  v.cod_cia = $P{empresa}
+   And v.anio = $P{anio}
+   And v.mes = $P{mes}
+   And v.cod_depto = nvl($P{departamento}, v.cod_depto)
+   And v.num_planilla = $P{planilla}
+   And v.tipo_planilla = $P{tipo_planilla}
+union
+select a.cod_cia,a.cod_tipopla, a.anio,a.mes,a.num_planilla,a.cod_emp,0,0.0,0,0,0,0
+from planilla a
+where  a.cod_cia = $P{empresa}
+   And a.anio = $P{anio}
+   And a.mes = $P{mes}
+   And a.cod_depto =  nvl($P{departamento}, a.cod_depto)
+   And a.num_planilla = $P{planilla}
+   And a.cod_tipopla = $P{tipo_planilla}
+   and a.cod_emp not in
+  (select c.cod_emp
+     from mov_dp c
+   where c.cod_cia = a.cod_cia
+    and c.anio = a.anio
+    and c.mes = a.mes
+    and c.cod_depto =  nvl($P{departamento}, c.cod_depto)
+    and c.num_planilla = a.num_planilla
+    and c.cod_tipopla = a.cod_tipopla )
+) b
+WHERE A.COD_CIA = B.COD_CIA
+AND  A.ANIO = B.ANIO
+AND  A.MES  = B.MES
+AND  A.COD_TIPOPLA = B.COD_TIPOPLA
+AND  A.NUM_PLANILLA = B.NUM_PLANILLA
+AND  A.COD_EMP = B.COD_EMP
+order by 1,2]]>
+	</queryString>
+	<field name="NOM_DEPTO" class="java.lang.String"/>
+	<field name="COD_EMP" class="java.math.BigDecimal"/>
+	<field name="NOMBRE" class="java.lang.String"/>
+	<field name="SALARIO_BASE" class="java.math.BigDecimal"/>
+	<field name="HAD" class="java.math.BigDecimal"/>
+	<field name="VHAD" class="java.math.BigDecimal"/>
+	<field name="CHEXTRA" class="java.math.BigDecimal"/>
+	<field name="VEXTRA" class="java.math.BigDecimal"/>
+	<field name="BONIFICACION" class="java.math.BigDecimal"/>
+	<field name="OTRAS_PRESTA" class="java.math.BigDecimal"/>
+	<field name="TOT_DEBENGA" class="java.math.BigDecimal"/>
+	<field name="ISR" class="java.math.BigDecimal"/>
+	<field name="IVM" class="java.math.BigDecimal"/>
+	<field name="EMRP" class="java.math.BigDecimal"/>
+	<field name="FSV" class="java.math.BigDecimal"/>
+	<field name="OTRAS_DEDUC" class="java.math.BigDecimal"/>
+	<field name="DEDUCCIONES" class="java.math.BigDecimal"/>
+	<field name="LIQUIDO" class="java.math.BigDecimal"/>
+	<variable name="total_registros" class="java.math.BigDecimal" calculation="Count">
+		<variableExpression><![CDATA[$F{COD_EMP}]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="41" width="42" height="20" backcolor="#CCCCCC"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="42" y="41" width="80" height="20" backcolor="#CCCCCC"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="122" y="41" width="43" height="20" backcolor="#CCCCCC"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Salario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="165" y="41" width="25" height="20" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[HAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="190" y="41" width="33" height="20" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[VHAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="223" y="41" width="50" height="20" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[C. Hrs. Extra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="273" y="41" width="50" height="20" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[V. Hrs. Extra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="323" y="41" width="52" height="20" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Bonificación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="375" y="41" width="77" height="20" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Otros Ingresos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="452" y="41" width="59" height="20" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Devengado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="511" y="41" width="33" height="20" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Renta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="544" y="41" width="37" height="20" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Seguro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="581" y="41" width="60" height="20" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Otros. Desc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="640" y="41" width="60" height="20" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Deducciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="700" y="41" width="56" height="20" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Liquido]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="69" y="10" width="687" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOM_DEPTO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="10" width="69" height="20" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Departamento]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="42" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COD_EMP}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="42" y="0" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="122" y="0" width="43" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALARIO_BASE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="190" y="0" width="33" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VHAD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="165" y="0" width="25" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{HAD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="223" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CHEXTRA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="273" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VEXTRA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="323" y="0" width="52" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{BONIFICACION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="375" y="0" width="77" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{OTRAS_PRESTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="452" y="0" width="59" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOT_DEBENGA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="511" y="0" width="33" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ISR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="544" y="0" width="37" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{EMRP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="581" y="0" width="60" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{OTRAS_DEDUC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="641" y="0" width="59" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DEDUCCIONES}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="700" y="0" width="56" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{LIQUIDO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
