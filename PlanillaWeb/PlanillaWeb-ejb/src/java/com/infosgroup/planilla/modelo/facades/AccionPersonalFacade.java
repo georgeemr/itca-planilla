@@ -42,58 +42,34 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
         return (max == null) ? 1 : ++max;
     }
 
-    /**
-     * Listado de solicitudes de accion de personal por jefe
-     *
-     * @param jefe
-     * @param cia
-     * @return
-     */
     public List<AccionPersonal> findAprobacionJefe(Integer jefe, Short cia) {
-        List<AccionPersonal> listaAccion = new ArrayList<AccionPersonal>(0);
         TypedQuery<AccionPersonal> acc = em.createQuery("select a from AccionPersonal a where a.accionPersonalPK.codCia = :cia and a.empleado.empleadoPK.codEmp = :jefe and a.status = 'G'", AccionPersonal.class);
         acc.setParameter("cia", cia);
         acc.setParameter("jefe", jefe);
-        listaAccion = (List<AccionPersonal>) acc.getResultList();
+        List<AccionPersonal> listaAccion = (List<AccionPersonal>) acc.getResultList();
         return listaAccion;
     }
 
-    /**
-     * Listado a acccion de personal aprobadas
-     *
-     * @return
-     */
     public List<AccionPersonal> findAccionesAprobadas() {
-        List<AccionPersonal> listaAccion = new ArrayList<AccionPersonal>(0);
         TypedQuery<AccionPersonal> acc = em.createQuery("select a from AccionPersonal a where a.status = 'B'", AccionPersonal.class);
-        listaAccion = (List<AccionPersonal>) acc.getResultList();
-
+        List<AccionPersonal> listaAccion = (List<AccionPersonal>) acc.getResultList();
         return listaAccion;
     }
 
-    /**
-     * Listado de acciones de personal segun tipo de acción
-     *
-     * @param cia
-     * @param tipo
-     * @return
-     */
     @PermitAll
     public List<AccionPersonal> findByTipo(long cia, long tipo) {
-        List<AccionPersonal> listaAccion = new ArrayList<AccionPersonal>(0);
         TypedQuery<AccionPersonal> acc = em.createQuery("select a from AccionPersonal a where a.tipoAccion.tipoAccionPK.codCia = :cia and a.tipoAccion.tipoAccionPK.codTipoaccion = :tipo", AccionPersonal.class);
         acc.setParameter("cia", cia);
         acc.setParameter("tipo", tipo);
-        listaAccion = (List<AccionPersonal>) acc.getResultList();
+        List<AccionPersonal> listaAccion  = (List<AccionPersonal>) acc.getResultList();
         return listaAccion != null ? listaAccion : new ArrayList<AccionPersonal>(0);
     }
 
     @PermitAll
     public List<AccionPersonal> findByNoAfecta(long cia) {
-        List<AccionPersonal> listaAccion = new ArrayList<AccionPersonal>(0);
         TypedQuery<AccionPersonal> acc = em.createQuery("select a from AccionPersonal a where a.tipoAccion.tipoAccionPK.codCia = :cia and a.tipoAccion.afectaSal = 'N'", AccionPersonal.class);
         acc.setParameter("cia", cia);
-        listaAccion = acc.getResultList();
+        List<AccionPersonal> listaAccion  = acc.getResultList();
         return listaAccion != null ? listaAccion : new ArrayList<AccionPersonal>();
     }
 
