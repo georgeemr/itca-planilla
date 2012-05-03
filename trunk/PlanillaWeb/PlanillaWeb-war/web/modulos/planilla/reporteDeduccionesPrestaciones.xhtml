@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../plantillas/defaultTemplate.xhtml">
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                template="./../../plantillas/defaultTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html">
 
     <ui:define name="titulo">
         Planilla de Deducciones/Prestaciones
@@ -12,11 +14,18 @@
     </ui:define>
 
     <ui:define name="acciones">
-        acciones
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{reporteDeduccionesPrestaciones.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
     </ui:define>
 
     <ui:define name="contenido">
-        contenido
+
     </ui:define>
 
 </ui:composition>
