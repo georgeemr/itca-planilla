@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/plantillas/defaultTemplate.xhtml"
+                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="titulo">
+        Impresi&oacute;n de Boletas de Pago
+    </ui:define>
+
+    <ui:define name="dialogos" />
+
+    <ui:define name="acciones">
+        <p:tab title="Otras acciones">
+            <h:panelGrid columns="1">
+                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="#{reporteBoletasDePago.inicio$action}" update="principalForm:mensajes" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                    <p:graphicImage value="/resources/iconos/application-exit.png"/>
+                    <h:outputText value="Cancelar" styleClass="espacioTexto"/>
+                </p:commandLink>
+            </h:panelGrid>
+        </p:tab>
+    </ui:define>
+
+    <ui:define name="contenido">
+        <p:panel id="panelEnvioBoleta" style="border:none;" >
+            <h:panelGrid columns="2" >
+
+                <i:etiquetaRequerido value="Tipo de planilla" />
+                <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{reporteBoletasDePago.tipoPlanilla}" >                       
+                    <f:ajax render="AutCompltEmpleado panelEnvioBoleta" event="change" execute="LstTipoPlanilla" listener="#{reporteBoletasDePago.updateByTipoPlanilla}" />
+                    <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
+                    <f:selectItems value="#{reporteBoletasDePago.listaTiposPlanilla}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                </h:selectOneMenu>
+
+                <i:etiquetaRequerido value="Planilla" />
+                <h:panelGroup>
+                    <h:panelGrid columns="1">
+                        <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
+                                        value="#{reporteBoletasDePago.proPlaSeleccionada}"
+                                        itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.stringProgramacionPla}"
+                                        completeMethod="#{reporteBoletasDePago.completePlanillaEmpleado}"
+                                        converter="#{reporteBoletasDePago.planillaConverter}" 
+                                        onSelectUpdate="panelEnvioBoleta"
+                                        style="width: 300px;"  >
+                        </p:autoComplete>
+                        <i:etiquetaPlanilla/>
+                    </h:panelGrid>
+                </h:panelGroup>
+                <i:etiquetaRequerido value="Departamento" />
+                <h:selectOneMenu id="lstDepto" value="#{reporteBoletasDePago.codDepto}" style="height: 25px;padding-top: 3px; width: 300px;" >
+                    <f:selectItem itemLabel="[ SELECCIONE UN DEPARTAMENTO ]" itemValue="-1"/>
+                    <f:selectItem itemLabel="[ TODOS LOS DEPARTAMENTOS ]"    itemValue="0"/>
+                    <f:selectItems value="#{reporteBoletasDePago.listaDeptos}" var="depto" itemValue="#{depto.departamentosPK.codDepto}"  itemLabel="#{depto.nomDepto}"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="" />
+                <p:commandButton value="Imprimir reporte" image="ui-icon-print" ajax="false" action="#{reporteBoletasDePago.imprimirReporte$action}" />
+            </h:panelGrid>
+        </p:panel>        
+    </ui:define>
+
+</ui:composition>
