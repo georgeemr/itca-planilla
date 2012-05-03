@@ -19,7 +19,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 /**
@@ -42,7 +41,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private Date fecha;
     private String urlPlantilla;
     private String urlPlantillaDefault = "/modulos/planilla/acciones/ninguna.xhtml";
-    private TipoAccion accionSeleccionada;//<  Remover luego >
+    private TipoAccion accionSeleccionada;
     private String solicitudesMostradas;
     private SelectItem[] estados = {new SelectItem("G", "Solicitada"), new SelectItem("A", "Aprobada"), new SelectItem("R", "Rechazada")};
     private Boolean renderReportePagos = Boolean.FALSE;
@@ -50,7 +49,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public Boolean getRenderReportePagos() {
         renderReportePagos = Boolean.FALSE;
         if (getSessionBeanPLA().getAccionSeleccionada() != null) {
-            if (getSessionBeanPLA().getAccionSeleccionada().getStatus().equals("A")) {
+            if (getSessionBeanPLA().getAccionSeleccionada().getStatus().equals("A") && getSessionBeanPLA().getAccionSeleccionada().getfApruebaRh()!=null) {
                 if (getSessionBeanPLA().getAccionSeleccionada().getAccionPersonalPK().getCodTipoaccion().equals(new Short("20"))) {
                     renderReportePagos = Boolean.TRUE;
                 }
@@ -185,11 +184,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         this.listaTipo = listaTipo;
     }
 
-    public String consulta$action() {
-        listaSolicitudes = planillaSessionBean.getAccionesByRol(getSessionBeanEMP().getEmpleadoSesion());
-        return null;
-    }
-
     public String cancelar$action() {
         limpiarCampos();
         return null;
@@ -201,13 +195,17 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
 
     public void listar() {
         if (solicitudesMostradas.equals("E")) {
-            listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
-        } else {
             if (isInRole("rrhh")) {
                 listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
             } else if (isInRole("jefes")) {
                 listaSolicitudes = planillaSessionBean.findSolicitudesByJefe(getSessionBeanEMP().getEmpleadoSesion());
+            }else if (isInRole("empleados")) {
+                listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+            }else {
+                listaSolicitudes = new ArrayList<AccionPersonal>();
             }
+        } else {
+            listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
         }
     }
 
@@ -276,4 +274,3 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         tipoAccion = 0L;
     }
 }
-//448

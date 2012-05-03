@@ -77,18 +77,18 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
             addMessage("Aprobar Solicitud", "No ha seleccionado ninguna solicitud.", TipoMensaje.ERROR);
             return null;
         }
-        if (validaPlanilla()) return null;
+//        if (validaPlanilla()) return null;
         try {
-            switch (getTipoAccion()) {
-                case 1:
-                case 2:
-                case 5:
-                a.setAnio(new Short(getPlanilla().split(":")[1].toString()));
-                a.setMes(new Short(getPlanilla().split(":")[2].toString()));
-                a.setNumPlanilla(new Short(getPlanilla().split(":")[3].toString()));
-                a.setCodTipopla(getTipoPlanilla());
-                break;
-            }
+//            switch (getTipoAccion()) {
+//                case 1:
+//                case 2:
+//                case 5:
+//                a.setAnio(new Short(getPlanilla().split(":")[1].toString()));
+//                a.setMes(new Short(getPlanilla().split(":")[2].toString()));
+//                a.setNumPlanilla(new Short(getPlanilla().split(":")[3].toString()));
+//                a.setCodTipopla(getTipoPlanilla());
+//                break;
+//            }
             planillaSessionBean.jefeEditaSolicitud(a, "A");
             getSessionBeanPLA().setAccionSeleccionada(a);
             addMessage("Aprobar Solicitud", "Datos Guardados con éxito. \n\n", TipoMensaje.INFORMACION);

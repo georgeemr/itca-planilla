@@ -66,7 +66,7 @@
                                 <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc" itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
                                 <f:ajax event="change" execute="lstAcc" render="@form" listener="#{planilla$accionesPersonal.seleccionarAccion}" />
                             </h:selectOneMenu>
-                            <h:outputLabel value="Solicitudes a mostrar:" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}" style="font-weight: bold;" />
+                            <h:outputLabel value="Solicitudes a mostrar" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}" style="font-weight: bold;" />
                             <h:selectOneRadio id="chkSolicitudes" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}" value="#{planilla$accionesPersonal.solicitudesMostradas}" >
                                 <f:selectItem itemValue="E" itemLabel="Solicitudes de Empleados" />
                                 <f:selectItem itemValue="R" itemLabel="Solicitudes #{request.isUserInRole('rrhh') ? 'de Recursos Humanos' : 'de Jefes'  }" />

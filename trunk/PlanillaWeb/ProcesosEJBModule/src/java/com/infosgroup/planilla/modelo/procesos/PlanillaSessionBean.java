@@ -393,18 +393,18 @@ public class PlanillaSessionBean {
         accionPersonalFacade.edit(a);
     }
 
-    @PermitAll
-    public List<AccionPersonal> getAccionesByRol(Empleados empleado) {
-        if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("rrhh")) {
-            return findSolicitudesByRRHH(empleado);
-        } else if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("jefes")) {
-            return findSolicitudesByJefe(empleado);
-        } else if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("empleados")) {
-            return findSolicitudesByEmpleado(empleado);
-        } else {
-            return new ArrayList<AccionPersonal>();
-        }
-    }
+//    @PermitAll
+//    public List<AccionPersonal> getAccionesByRol(Empleados empleado) {
+//        if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("rrhh")) {
+//            return findSolicitudesByRRHH(empleado);
+//        } else if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("jefes")) {
+//            return findSolicitudesByJefe(empleado);
+//        } else if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("empleados")) {
+//            return findSolicitudesByEmpleado(empleado);
+//        } else {
+//            return new ArrayList<AccionPersonal>();
+//        }
+//    }
 
     @PermitAll
     public List<ProgramacionPla> getProgramacionPlaByTipo(Short empresa, Short tipoPlanilla) {
