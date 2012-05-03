@@ -12,7 +12,7 @@
     <ui:define name="titulo">
         <h:outputText value="Acciones de personal"/>
     </ui:define>
-<!-- onclick="# {planilla$accionesPersonal.urlPlantilla}.show();" -->
+
     <ui:define name="acciones">
         <p:tab id="tabAcciones" title="Acciones">
             <h:panelGrid columns="1">
@@ -26,7 +26,7 @@
                     <p:graphicImage value="/resources/iconos/document-edit.png"/>
                     <h:outputText value="Editar Solicitud" styleClass="espacioTexto"/>
                 </p:commandLink>
-                <p:commandLink id="aprobarSolicitud" update="principalForm:mensajes" rendered="#{(request.isUserInRole('jefes') or request.isUserInRole('rrhh'))}" action="#{planilla$accionesPersonal.navigateAprobarAction}" styleClass="opcionMenu textoNormal" ajax="true" 
+                <p:commandLink id="aprobarSolicitud" update="principalForm:mensajes" rendered="#{((request.isUserInRole('jefes') and planilla$accionesPersonal.solicitudesMostradas eq 'E' )or request.isUserInRole('rrhh'))}" action="#{planilla$accionesPersonal.navigateAprobarAction}" styleClass="opcionMenu textoNormal" ajax="true" 
                                onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/dialog-ok-apply.png"/>
                     <h:outputText value="Aprobar Solicitud" styleClass="espacioTexto"/>
