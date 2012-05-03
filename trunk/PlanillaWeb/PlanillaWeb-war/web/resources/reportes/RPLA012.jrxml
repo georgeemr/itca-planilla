@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RPLA012" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="empresa" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mes" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="planilla" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tipo_planilla" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tipo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select distinct
+        b.cod_emp,
+        b.nombres || decode(nvl(b.apellidos, '0'), '0', '', ' '|| b.apellidos) || decode(nvl(b.ap_casada, '0'), '0', '', ' '|| b.ap_casada) as empleado,
+        b.cod_depto,
+        c.nom_depto,
+        d.des_dp,
+        a.valor,
+        e.nom_comercial,
+        'Planilla ' || $P{planilla} || ' de ' || trim(to_char(to_date('01/'||$P{mes}||'/2011'), 'Month')) || ' de ' || $P{anio} as descripcion_planilla
+   from mov_dp a, empleados b, departamentos c, deduc_presta d, cias e
+  where a.cod_cia = $P{empresa}
+    and a.anio    = $P{anio}
+    and a.mes     = $P{mes}
+    and a.num_planilla = $P{planilla}
+    and a.cod_tipopla  = $P{tipo_planilla}
+    and a.suma_resta   = decode( $P{tipo} ,1, 'S', 2, 'R',3, a.suma_resta)
+    and b.cod_cia = a.cod_cia
+    and b.cod_emp = a.cod_emp
+    and c.cod_cia = b.cod_cia
+    and c.cod_depto = b.cod_depto
+    and d.cod_cia = c.cod_cia
+    and d.cod_dp = a.cod_dp
+    and e.cod_cia = d.cod_cia
+  order by 2,1]]>
+	</queryString>
+	<field name="COD_EMP" class="java.math.BigDecimal"/>
+	<field name="EMPLEADO" class="java.lang.String"/>
+	<field name="COD_DEPTO" class="java.math.BigDecimal"/>
+	<field name="NOM_DEPTO" class="java.lang.String"/>
+	<field name="DES_DP" class="java.lang.String"/>
+	<field name="VALOR" class="java.math.BigDecimal"/>
+	<field name="NOM_COMERCIAL" class="java.lang.String"/>
+	<field name="DESCRIPCION_PLANILLA" class="java.lang.String"/>
+	<title>
+		<band height="74" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="30" width="752" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Planilla de Deducciones/Prestaciones]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="10" width="752" height="20" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOM_COMERCIAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="51" width="752" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRIPCION_PLANILLA}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="72" width="752" height="1"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="39" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="752" height="34"/>
+				<rowGroup name="NOM_DEPTO" width="115" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{NOM_DEPTO}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="115" height="25"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{NOM_DEPTO}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#005FB3" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="140" height="25" forecolor="#FFFFFF"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Total Global]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="EMPLEADO" width="111" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{EMPLEADO}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="111" height="25"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{EMPLEADO}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="25"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Total Departamento]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="DES_DP" height="30" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{DES_DP}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="74" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{DES_DP}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Total Deduc/Prest.]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="VALORMeasure" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[$F{VALOR}]]></measureExpression>
+				</measure>
+				<crosstabCell width="74" height="25">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="74" height="25"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALORMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="74" height="25" rowTotalGroup="NOM_DEPTO">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="74" height="25" forecolor="#FFFFFF"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALORMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="90" height="25" columnTotalGroup="DES_DP">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="90" height="25"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALORMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="90" rowTotalGroup="NOM_DEPTO" columnTotalGroup="DES_DP">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="90" height="25" forecolor="#FFFFFF"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALORMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="74" height="25" rowTotalGroup="EMPLEADO">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="74" height="25"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALORMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="90" rowTotalGroup="EMPLEADO" columnTotalGroup="DES_DP">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="90" height="25"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALORMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>
