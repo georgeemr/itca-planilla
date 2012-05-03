@@ -3,15 +3,15 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 template="./../../plantillas/defaultTemplate.xhtml"
-                xmlns:h="http://java.sun.com/jsf/html">
+                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion" 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="titulo">
         Planilla de Deducciones/Prestaciones
     </ui:define>
 
-    <ui:define name="dialogos">
-        dialogos
-    </ui:define>
+    <ui:define name="dialogos"/>
 
     <ui:define name="acciones">
         <p:tab title="Otras acciones">
@@ -25,7 +25,39 @@
     </ui:define>
 
     <ui:define name="contenido">
+        <p:spacer height="15" />
+        <p:panel id="panelReportePlanilla" style="border: none;" >
+            <h:panelGrid columns="2" >
+                <i:etiquetaRequerido value="Tipo de planilla" />
+                <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{reporteDeduccionesPrestaciones.tipoPlanilla}" >                       
+                    <f:ajax render="panelReportePlanilla" event="change" execute="LstTipoPlanilla" listener="#{reporteDeduccionesPrestaciones.seleccionarTipoPlanilla}" />
+                    <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
+                    <f:selectItems value="#{reporteDeduccionesPrestaciones.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
+                </h:selectOneMenu>
 
+                <i:etiquetaRequerido value="Programaci&#243;n planilla" />
+                <h:panelGroup>
+                    <h:panelGrid columns="1">
+                        <p:autoComplete id="AutCompltProgPla" forceSelection="true" var="programacionPla" 
+                                        value="#{reporteDeduccionesPrestaciones.proPlaSeleccionada}"
+                                        itemValue="#{programacionPla.pkAsString}" itemLabel="#{programacionPla.stringProgramacionPla}"
+                                        completeMethod="#{reporteDeduccionesPrestaciones.completeProgramacionPla}"
+                                        converter="#{reporteDeduccionesPrestaciones.programacionPlaConverter}" >
+                        </p:autoComplete>
+
+                        <i:etiquetaPlanilla />
+                    </h:panelGrid>
+                </h:panelGroup>
+                <h:outputLabel value="Tipo"  style="font-weight: bold;" />
+                <h:selectOneMenu id="deduccionPrestacion" value="#{reporteDeduccionesPrestaciones.deducPresta}" style="height: 25px;padding-top: 3px; width: 300px;" >
+                    <f:selectItem itemLabel="[ Deducciones Y Prestaciones ]"    itemValue="3"/>
+                    <f:selectItem itemLabel=" Deducciones  "    itemValue="2"/>
+                    <f:selectItem itemLabel=" Prestaciones "    itemValue="1"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="" />
+                <p:commandButton value="Imprimir reporte" image="ui-icon-print" ajax="false" action="#{reporteDeduccionesPrestaciones.imprimirReporte}" />
+            </h:panelGrid>
+        </p:panel>
     </ui:define>
 
 </ui:composition>

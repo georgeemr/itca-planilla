@@ -132,7 +132,7 @@ public class ReportePlanilla extends AbstractJSFPage implements java.io.Serializ
     
     public String imprimirReporte(){
         if (getProPlaSeleccionada() == null) {
-            addMessage("Reporte por Empleado", "No ha elegido ninguna planilla", TipoMensaje.INFORMACION);
+            addMessage("Reporte de Planilla", "No ha elegido ninguna planilla", TipoMensaje.INFORMACION);
             return null;
         } else {
             if (codDepto.equals(new Short("0"))) codDepto=null;
