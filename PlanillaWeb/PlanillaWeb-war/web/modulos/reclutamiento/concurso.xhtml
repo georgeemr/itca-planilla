@@ -61,7 +61,7 @@
         <p:panel id="panelInformacion" style="border:none;" >
             <div>
                 <div style="float:left;width: 30%;" >
-                    <h:panelGrid columns="4" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }"  >
+                    <h:panelGrid columns="4" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0)or (SessionBeanADM.estadoAccion eq 1) }"  >
                         <p:graphicImage value="../../resources/imagenes/64/info.png" />
                         <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
                         <h:outputLabel value="*" styleClass="requerido"/>                                
@@ -75,15 +75,13 @@
             </div>
         </p:panel>
 
-        <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" />
-
         <p:fieldset legend="Datos del Concurso" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }" >
             <p:spacer height="20" />
             <h:panelGrid columns="2">
                 <i:etiquetaRequerido value="Nombre" />
                 <p:inputText id="Nombre" value="#{reclutamiento$concursos.nombreConcurso}" maxlength="100" required="true" style="width: 350px;"
                              requiredMessage="El Nombre del Concurso es un campo obligatorio" />
-                
+
                 <i:etiquetaRequerido value="Fecha Inicial" />
                 <p:calendar id="calFecIni" value="#{reclutamiento$concursos.fechaInicial}" showOn="button" required="true" 
                             requiredMessage="La Fecha Inicial del concurso es un campo obligatorio" pattern="dd/MM/yyyy" />
@@ -108,27 +106,17 @@
                 <h:selectOneMenu id="lstEstado" value="#{reclutamiento$concursos.estadoConcurso}" style="height: 25px;padding-top: 3px;" required="true" requiredMessage="El Estado del Concurso es un campo obligatorio"  >
                     <f:selectItems value="#{reclutamiento$concursos.listaEstadoConcurso}" var="estado" itemValue="#{estado.estadoConcursoPK.codigo}"  itemLabel="#{estado.nombre}"/>
                 </h:selectOneMenu>
-                
+
                 <h:outputLabel value="" />
                 <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{reclutamiento$concursos.guardar$crud$action()}"
-                                    update="mensajes, Nombre, calFecIni, calFecFin, numPlazas, lstPuesto, lstEstado" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }"  />  
+                                 update="mensajes, Nombre, calFecIni, calFecFin, numPlazas, lstPuesto, lstEstado" rendered="#{(SessionBeanADM.estadoAccion eq null) or (SessionBeanADM.estadoAccion eq 0) }"  />  
 
             </h:panelGrid>
             <p:spacer height="20" />
         </p:fieldset>
-
-        <p:toolbar rendered="#{(SessionBeanADM.estadoAccion eq 2)}" 
-                   styleClass="toolbarUsuario" >
-            <p:toolbarGroup align="right" >
-                <p:commandButton value="Eliminar" image="ui-icon ui-icon-circle-minus" ajax="true" onclick="confirmation.show()"/>
-            </p:toolbarGroup>
-        </p:toolbar>
-
-        <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq 2) }" />
-
+        
         <p:fieldset legend="Consulta de Concursos" rendered="#{(SessionBeanADM.estadoAccion eq 2)}" >
 
-            <!--selection="# {SessionBeanREC.concursoSeleccionado}" binding="# {reclutamiento$concursos.tableConcursos}" selectionMode="single"  rowSelectListener="# {reclutamiento$concursos.onRowSelectConcurso}" rowUnselectListener="# {reclutamiento$concursos.onRowUnSelectConcurso}" -->
             <p:spacer height="20" />
             <p:dataTable id="tablaConcursos" var="concurso" rows="5"  paginator="true" 
                          value="#{reclutamiento$concursos.listaConcursos}"
@@ -139,7 +127,7 @@
                     <h:outputText value="Concursos"/>
                 </f:facet>
 
-                <p:column sortBy="#{concurso.concursoPK.codConcurso}" headerText="C&oacute;digo" >
+                <p:column  headerText="C&oacute;digo" >
                     <h:outputLabel value="#{concurso.concursoPK.codConcurso}"/>
                 </p:column>
 
@@ -160,7 +148,7 @@
                 </p:column>         
 
 
-                <p:column sortBy="#{concurso.numeroPlazas}" headerText="Plazas" >
+                <p:column headerText="Plazas" >
                     <h:outputLabel value="#{concurso.numeroPlazas}" />
                 </p:column> 
 
@@ -175,52 +163,38 @@
                           filterMatchMode="exact" headerText="Estado" >
                     <h:outputLabel value="#{concurso.estadoConcurso.nombre}" />
                 </p:column> 
-                
-                <p:column headerText="Seleccionar" >
+
+                <p:column headerText="Seleccionar" style="width: 8%;" >
                     <p:commandButton  id="cmdSeleccionar" update="principalForm:panelAcciones,principalForm:tablaConcursos" image="ui-icon-circle-check" title="Seleccionar Concurso"  >
                         <f:setPropertyActionListener value="#{concurso}" target="#{SessionBeanREC.concursoSeleccionado}" /> 
                     </p:commandButton>
                 </p:column>
-                
+                <p:column headerText="Eliminar" style="width: 8%;" >
+                    <p:commandButton image="ui-icon ui-icon-circle-minus" ajax="true"  oncomplete="confirmation.show()" title="Eliminar Concurso" >
+                        <f:setPropertyActionListener value="#{concurso}" target="#{SessionBeanREC.concursoSeleccionado}" /> 
+                    </p:commandButton>
+                </p:column>
+
             </p:dataTable>
             <p:spacer height="20" />    
 
         </p:fieldset>
 
-
-        <p:panel id="panelInformacionEdit" style="border:none;" >
-            <div>
-                <div style="float:left;width: 30%;" >
-                    <h:panelGrid columns="4" rendered="#{(SessionBeanADM.estadoAccion eq 1)}" >
-                        <p:graphicImage value="../../resources/imagenes/64/info.png" />
-                        <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
-                        <h:outputLabel value="*" styleClass="requerido"/>                                
-                        <h:outputLabel value=" son requeridos." style="font-style: italic;" />
-                    </h:panelGrid>
-                </div>    
-                <div style="float:left; width: 70%;"  >
-                </div>
-                <div style="clear:both;" ></div>
-            </div>
-        </p:panel>
-
-        <p:spacer height="20" rendered="#{(SessionBeanADM.estadoAccion eq 1)}" />
-
         <p:fieldset legend="Editar Datos - Informacion del Concurso" rendered="#{(SessionBeanADM.estadoAccion eq 1)}" >
-            <p:spacer height="20" />
+            <p:spacer height="15" />
             <h:panelGrid columns="2">
                 <i:etiquetaRequerido value="Nombre" />
                 <p:inputText id="NombreMod" value="#{reclutamiento$concursos.nombreConcurso}" maxlength="100" required="true" 
                              requiredMessage="El Nombre del Concurso es un campo obligatorio" style="width: 350px;"/>
-                
+
                 <i:etiquetaRequerido value="Fecha Inicial" />
                 <p:calendar id="calFecIniMod" value="#{reclutamiento$concursos.fechaInicial}" showOn="button" required="true" 
                             requiredMessage="La Fecha Inicial del concurso es un campo obligatorio" pattern="dd/MM/yyyy" />
-                
+
                 <i:etiquetaRequerido value="Fecha Final" />
                 <p:calendar id="calFecFinMod" value="#{reclutamiento$concursos.fechaFinal}"  showOn="button" required="true"
                             requiredMessage="La Fecha Final del concurso es un campo obligatorio" pattern="dd/MM/yyyy"/>
-                
+
                 <i:etiquetaRequerido value="N&#250;mero de plazas" />
                 <p:inputText id="numPlazasMod" value="#{reclutamiento$concursos.numeroPlazas}" maxlength="3" required="true"
                              requiredMessage="El n&#250;mero de Plazas es un campo obligatorio" 

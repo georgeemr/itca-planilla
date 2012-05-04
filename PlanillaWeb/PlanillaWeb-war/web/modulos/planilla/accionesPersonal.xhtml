@@ -296,7 +296,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><i:etiquetaRequerido value="Fecha Planilla" styleClass="requerido" /></td>
+                        <td width="20%" ><i:etiquetaRequerido value="Fecha Planilla" styleClass="requerido" /></td>
                         <td><p:calendar id="incFecPlanilla" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudIncapacidad.fechaPlanilla}" />
                         </td>
                         <td></td>
@@ -928,9 +928,9 @@
 
             <p:fieldset id="fldRetiro" >
 
-                <table border="0"  >
+                <table border="0" width="100%" >
                     <tr>
-                        <td><i:etiquetaRequerido value="Fecha Retiro" styleClass="requerido" /></td>
+                        <td style="width: 20%" ><i:etiquetaRequerido value="Fecha Retiro" styleClass="requerido" /></td>
                         <td>                            
                             <p:calendar id="fecRetiro" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudRetiro.fechaRetiro}"  />
                         </td>
@@ -1000,9 +1000,9 @@
 
             <p:fieldset id="fldNoAfectaPlanilla" >
 
-                <table border="0"  >
+                <table border="0" width="100%" >
                     <tr>
-                        <td><i:etiquetaRequerido value="Tipo de Acci&oacute;n" styleClass="requerido" /></td>
+                        <td width="20%" ><i:etiquetaRequerido value="Tipo de Acci&oacute;n" styleClass="requerido" /></td>
                         <td>                            
                             <h:selectOneMenu style="height: 25px;padding-top: 3px;width: 250px;" value="#{solicitudNoAfectaPlanilla.tipoAccionSeleccionada}" >
                                 <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE UN TIPO DE ACCI&Oacute;N ]" />
