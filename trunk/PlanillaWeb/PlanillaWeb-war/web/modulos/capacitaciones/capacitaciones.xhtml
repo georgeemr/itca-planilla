@@ -18,7 +18,7 @@
         </p:confirmDialog>  
 
         <p:dialog id="dialogBuscaEmp" widgetVar="dialogBuscaEmp" header="Buscar Empleado" showEffect="fold" hideEffect="fold" width="700" height="400" resizable="false">
-            <!-- rowSelectListener="# {capacitaciones$capacitaciones.onRowSelectEmpleado}" selection="# {SessionBeanCAP.empleadoSeleccionado}"  -->
+
             <p:panel style="border: none;" >
                 <h:panelGrid columns="1">
                     <h:outputLabel value="Seleccione los Empleados que desea agregar a la Capacitaci&oacute;n" />
@@ -60,7 +60,6 @@
                 <h:outputLabel value="Seleccione los empleados que necesite para registrar su asistencia." />
             </h:panelGrid>
             <p:spacer height="5" />
-            <!-- rowSelectListener="# {capacitaciones$capacitaciones.onRowSelectDetalleAsistencia}" selectionMode="single" onRowSelectComplete="dialogBuscaEmpAsis.hide();" selection="# {capacitaciones$capacitaciones.detalleSelec}" -->
             <p:dataTable id="tablBusEmpAsis" rows="3" paginator="true" 
                          emptyMessage="No hay Empleados que mostrar" paginatorAlwaysVisible="true"
                          var="det" update="txtEmpAsistencia, tlEmpAsis, tblAsistencia"
@@ -150,8 +149,7 @@
         <p:panel id="panelCrearCapacitacion" style="border:none;" rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 2)}" >
 
             <i:fieldset leyenda="Datos de la Capacitaci&oacute;n" />
-            <!--f:facet name="contenido" -->
-            <!-- h:panelGrid columns="4" -->
+
             <table width="100%" cellpadding="2" border="0" >
                 <tr>
                     <td width="15%">
@@ -202,6 +200,13 @@
                 </tr>
 
                 <tr>
+                    <td><h:outputLabel value="Impartida por: " /></td>
+                    <td colspan="4" ><p:inputText id="impartida" value="#{capacitaciones$capacitaciones.impartido}" maxlength="100" required="true" style=" width: 450px;"
+                                                  requiredMessage="Impartida por es un campo obligatorio" />
+                    </td>
+                </tr>
+
+                <tr>
                     <td><h:outputLabel value="Duraci&#243;n (Hrs): " /></td>
                     <td colspan="4" ><p:inputText id="Duracion" value="#{capacitaciones$capacitaciones.duracion}" maxlength="100" required="true" 
                                                   requiredMessage="La duraci&#243;n es un campo obligatorio" />
@@ -230,7 +235,7 @@
                     <td></td>
                     <td colspan="4" >
                         <p:commandButton id="cmdGuardar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{capacitaciones$capacitaciones.guardar$cap$action}"
-                                         update="mensajes, lstStatus, lstInst, Nombre, calFecIni, calFecFin, Duracion, impartida, Razon, costoRazon, lstCapacitador" />  
+                                         update="mensajes, impartida,lstStatus, lstInst, Nombre, calFecIni, calFecFin, Duracion, impartida, Razon, costoRazon, lstCapacitador" />  
                     </td>
                 </tr>
 
@@ -282,7 +287,7 @@
                             <h:outputLabel value="#{capacitacion.descripcionEstado}" />
                         </p:column> 
 
-                        <p:column headerText="Impartida por " filterBy="#{capacitacion.impartidaPor}" filterMatchMode="contains" >
+                        <p:column headerText="Capacitador " filterBy="#{capacitacion.impartidaPor}" filterMatchMode="contains" >
                             <h:outputLabel value="#{capacitacion.impartidaPor}" />
                         </p:column>
 
@@ -296,27 +301,12 @@
             </i:fieldset>
         </p:panel>
 
-        <!--p:panel id="panelInformacionEdit" style="border:none;" >
-            <div>
-                <div style="float:left; width: 100%;"  >
-                    <p:toolbar rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 1)}"
-                               styleClass="toolbarUsuario" >
-                        <p:toolbarGroup align="right"  >
-                            <p:commandButton id="cmdModificar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="# {capacitaciones$capacitaciones.guardar$cap$action()}"
-                                             update="mensajes, lstStatus2, lstInst2, Nombre2, calFecIni2, calFecFin2, Duracion2, impartida2, Razon2, costoRazon2, lstCapacitador2" />  
-                        </p:toolbarGroup>
-                    </p:toolbar>
-                </div>
-                <div style="clear:both;" ></div>
-            </div>
-        </p:panel -->
 
         <p:panel id="panelEditarCapacitacion" style="border:none;" rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 1)}">
-            <!-- p:fieldset legend=""  -->
+
             <p:spacer height="15" />
             <i:fieldset leyenda="Editar Datos - Informaci&oacute;n de la capacitaci&oacute;n">
                 <f:facet name="contenido" >
-                    <!--h:panelGrid columns="4" -->
 
                     <table width="100%" cellpadding="3" >
 
@@ -369,6 +359,12 @@
                             </td>
                         </tr>
                         <tr>
+                            <td><h:outputLabel value="Impartida por: " /></td>
+                            <td colspan="4" ><p:inputText id="impartida2" value="#{capacitaciones$capacitaciones.impartido}" maxlength="100" required="true" style=" width: 450px;"
+                                                          requiredMessage="Impartida por es un campo obligatorio" />
+                            </td>
+                        </tr>
+                        <tr>
                             <td><h:outputLabel value="Duraci&#243;n (Hrs): " /></td>    
                             <td><p:inputText id="Duracion2" value="#{capacitaciones$capacitaciones.duracion}" maxlength="100" required="true" 
                                              requiredMessage="La duraci&#243;n es un campo obligatorio" /></td>
@@ -398,14 +394,13 @@
                         <tr>
                             <td><h:outputLabel value="Raz&#243;n de la capacitaci&#243;n: " /></td>
                             <td colspan="4" ><p:inputTextarea autoResize="false" id="Razon2" value="#{capacitaciones$capacitaciones.razon}" style="width: 450px;" /></td>
-                            <!-- h:outputLabel value="Costo Raz&#243;n: " />
-                            <p:inputText id="costoRazon2" value="# {capacitaciones$capacitaciones.costoRazon}" maxlength="11" /-->
+
                         </tr>
                         <tr>
                             <td></td>
                             <td colspan="4" >
                                 <p:commandButton id="cmdModificar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{capacitaciones$capacitaciones.guardar$cap$action()}"
-                                                 update="mensajes, lstStatus2, lstInst2, Nombre2, calFecIni2, calFecFin2, Duracion2, impartida2, Razon2, costoRazon2, lstCapacitador2" />  
+                                                 update="principalForm:mensajes, impartida2, lstStatus2, lstInst2, Nombre2, calFecIni2, calFecFin2, Duracion2, impartida2, Razon2, costoRazon2, lstCapacitador2" />  
                             </td>
                         </tr>
                     </table>
@@ -414,10 +409,7 @@
         </p:panel>
 
         <!--Participantes-->
-        <!-- p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 3) or (capacitaciones$capacitaciones.estadoAccion eq 4) or (capacitaciones$capacitaciones.estadoAccion eq 5)}" /-->
-
         <p:panel style="border: none;" rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 3) or (capacitaciones$capacitaciones.estadoAccion eq 4) or (capacitaciones$capacitaciones.estadoAccion eq 5)}">
-            <!-- p:fieldset legend="Capacitaci&#243;n"  -->
             <i:fieldset leyenda="Capacitaci&#243;n Seleccionada" >
                 <f:facet name="contenido">
                     <table width="100%" cellpadding="2" border="0" >
@@ -472,26 +464,6 @@
                 </f:facet>
             </i:fieldset>
 
-            <!-- p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 3) }"/ -->
-
-            <!--p:fieldset rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 3)}" >
-                <h:panelGrid columns="4">
-                    <p:toolbar id="tlEmpPar" >
-                        <p:toolbarGroup align="left"-->
-            <!--p:inputText value="# {capacitaciones$participantesCapacitacion.nomEmp}" id="txtEmp" immediate="true" style=" width: 300px;"/-->
-
-            <!--/p:toolbarGroup>
-            </p:toolbar>
-            </h:panelGrid>
-
-            </p:fieldset-->
-
-
-
-            <!--p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 3) }"/ -->
-
-            <!-- i:fieldset leyenda="Participantes Agregados" /-->
-            <!-- selectionMode="single" selection="# {SessionBeanCAP.detalleCapSeleccionada}" rowSelectListener="# {capacitaciones$capacitaciones.onRowSelectDetalle}"  -->
             <p:dataTable id="tblDetalleParticipantes" rows="5" paginator="true"
                          rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 3) }" var="detalle" update="txtJefe"
                          emptyMessage="No hay Empleados que mostrar"
@@ -518,61 +490,29 @@
 
             </p:dataTable>
 
-            <!-- div style="float:left; width: 100%;"  >
-                <p:toolbar rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 3)}" 
-                           styleClass="toolbarUsuario" >
-                    <p:toolbarGroup align="left"  -->
             <h:panelGrid columns="1" >
                 <p:commandButton id="cmdEnviar" type="push" value="Generar Correos" image="ui-icon ui-icon-mail-closed" action="#{capacitaciones$capacitaciones.enviar$correo$action()}"
                                  update="mensajes, lstStatus3, tblDetalleParticipantes, tablaConcursos" rendered="#{capacitaciones$capacitaciones.estadoAccion eq 3}"/>  
             </h:panelGrid>
 
-            <!--/p:toolbarGroup>
-            </p:toolbar>
-            </div -->
-
-
-            <!--Asistencia-->
-
-            <!--/p:fieldset-->
-            <!-- p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 4) }"/-->
-            <!--p:panel style="border:none;" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 4)}" -->
-            <!--p:fieldset  >
-            <h:panelGrid columns="4">
-            <h:outputLabel value="Empleado"/>
-            <p:toolbar id="tlEmpAsis" >
-            <p:toolbarGroup align="left" -->
-            <!-- p:inputText value="# {capacitaciones$capacitaciones.nomEmp}" id="txtEmpAsistencia" immediate="true" style=" width: 300px" /-->
-            <!-- p:commandButton id="cmdBuscaEAsistencia" onclick="dialogBuscaEmpAsis.show()" update="tablBusEmpAsis"
-                             type="button" image="ui-icon ui-icon-search" / -->
-            <!--/p:toolbarGroup>
-            </p:toolbar>
-            </h:panelGrid>
-
-            </p:fieldset-->
-
-            <!-- p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 4) }"/-->
-            <!-- rowEditListener="# {capacitaciones$capacitaciones.rowEditListenerAsistencia}" selection="# {SessionBeanCAP.asistenciaSeleccionada}" selectionMode="single" -->
-            
-            
             <p:dataTable id="tblAsistencia"
                          rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 4) }"
                          rows="3" paginator="true" paginatorAlwaysVisible="true"
                          emptyMessage="No hay participantes que mostrar"
                          var="asistencia" value="#{capacitaciones$capacitaciones.listaAsistencia}"         
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
-                
+
                 <f:facet name="header">
                     <h:outputText value="Asistencias"/>
                     <h:outputLabel id="lbEmpleadosSeleccionados" value="Empleado seleccionado: #{capacitaciones$capacitaciones.detalleSelec.empleados.nombreCompleto}" rendered="#{capacitaciones$capacitaciones.detalleSelec ne null}" />
                 </f:facet>
-                
+
                 <p:column headerText="Fecha" style="width: 8%;" >
                     <h:outputText value="#{asistencia.capacitacionAsistenciaPK.fecha}">
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </h:outputText>
                 </p:column>
-                
+
                 <p:column headerText="Asistio">
                     <h:outputLabel value="#{asistencia.asiste}" style="#{asistencia.asiste eq 'No' ?  'color: red;' : ''}" />  
                 </p:column>
@@ -585,31 +525,14 @@
                     </p:commandButton>
                 </p:column>
             </p:dataTable>
-<!--p:cellEditor>  
-                        <f:facet name="output">  
-                            <h:selectBooleanCheckbox value="# {asistencia.asiste}" disabled="true"/>
-                        </f:facet-->  
-                        <!--f:facet name="input"-->  
-                            <!-- h:selectBooleanCheckbox value="# {asistencia.asiste}"/-->  
-                        <!--/f:facet>  
-                    </p:cellEditor-->  
-                        
-            <!--Notas-->
-            <!-- p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 5) }"/ -->
-            <!-- p:fieldset rendered="" -->
-            <!--p:toolbar id="tlNota" -->
-            <!-- p:toolbarGroup align="left"-->
+
             <h:panelGrid columns="3" rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5)}">
                 <h:outputLabel value="Nota General: " />
                 <p:inputText value="#{capacitaciones$capacitaciones.notaCapacitacion}" id="nota" immediate="true" style=" width: 50px;"/>
                 <p:commandButton id="cmdGuardarNota" value="Guardar" image="ui-icon ui-icon-disk" action="#{capacitaciones$capacitaciones.guardar$notaCap$action()}"
                                  update="mensajes, nota"/>
             </h:panelGrid>
-            <!--/p:toolbarGroup-->
-            <!-- /p:toolbar-->
-            <!-- /p:fieldset -->
-            <!--p:spacer height="20" rendered="# {(capacitaciones$capacitaciones.estadoAccion eq 5) }"/ -->
-            <!-- selection="# {SessionBeanCAP.detalleCapSeleccionada}" selectionMode="single" -->
+
             <p:dataTable id="tblDetalleNotas" paginatorAlwaysVisible="true" onRowEditUpdate="principalForm:mensajes"
                          rendered="#{(capacitaciones$capacitaciones.estadoAccion eq 5) }"
                          rows="3" paginator="true" emptyMessage="No hay notas que mostrar" var="detalle" 
