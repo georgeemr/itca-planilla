@@ -43,16 +43,17 @@
 
                 <i:etiquetaRequerido value="Planilla" />
                 <h:panelGroup>
-                    <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
-                                    value="#{planilla$envioBoletas.proPlaSeleccionada}"
-                                    itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.stringProgramacionPla}"
-                                    completeMethod="#{planilla$envioBoletas.completePlanillaEmpleado}"
-                                    converter="#{planilla$envioBoletas.planillaConverter}" 
-                                    onSelectUpdate="panelEnvioBoleta"
-                                    style="width: 300px;"  >
-                    </p:autoComplete>
-                    <i:etiquetaPlanilla/>
-                    <!--h:outputLabel value="A&Ntilde;OMESN&Uacute;MERO DE PLANILLA" style="font-weight: bold;color: red;" /-->
+                    <h:panelGrid columns="1">
+                        <p:autoComplete id="AutCompltEmpleado" forceSelection="true" var="planilla" 
+                                        value="#{planilla$envioBoletas.proPlaSeleccionada}"
+                                        itemValue="#{planilla.pkAsString}" itemLabel="#{planilla.stringProgramacionPla}"
+                                        completeMethod="#{planilla$envioBoletas.completePlanillaEmpleado}"
+                                        converter="#{planilla$envioBoletas.planillaConverter}" 
+                                        onSelectUpdate="panelEnvioBoleta"
+                                        style="width: 300px;"  >
+                        </p:autoComplete>
+                        <i:etiquetaPlanilla/>
+                    </h:panelGrid>
                 </h:panelGroup>
                 <i:etiquetaRequerido value="Departamento" />
                 <h:selectOneMenu id="lstDepto" value="#{planilla$envioBoletas.codDepto}" style="height: 25px;padding-top: 3px; width: 300px;" >
