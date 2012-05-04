@@ -41,11 +41,21 @@ public class CalendarioBackendBean extends AbstractJSFPage implements Serializab
     @PostConstruct
     public void init() {
         anio = "" + Calendar.getInstance().get(Calendar.YEAR);
-        listaEmpleados = empleadosBean.findEmpleadosByCias( getSessionBeanADM().getCompania() );
+        if (isInRole("rrhh")) {
+            setListaEmpleados( empleadosBean.findEmpleadosByCias(getSessionBeanADM().getCompania()));
+            getListaEmpleados().add(getSessionBeanEMP().getEmpleadoSesion());
+        } else if (isInRole("jefes")) {
+            setListaEmpleados( empleadosBean.findEmpleadosByJefe(getSessionBeanEMP().getEmpleadoSesion()));
+            getListaEmpleados().add(getSessionBeanEMP().getEmpleadoSesion());
+        } else if (isInRole("empleados")) {
+            setListaEmpleados( new ArrayList<Empleados>());
+        }
     }
 
     @Override
     protected void limpiarCampos() {
+        setEmpleadoSeleccionado(null);
+        setListaEmpleados( new ArrayList<Empleados>());
     }
 
     public String getAnio() {
@@ -57,6 +67,11 @@ public class CalendarioBackendBean extends AbstractJSFPage implements Serializab
     }
 
     public String mostrarAcciones$action() {
+        
+        if( isInRole("empleados") ){
+            setEmpleadoSeleccionado(getSessionBeanEMP().getEmpleadoSesion());
+        }
+        
         if (empleadoSeleccionado == null) {
             addMessage("RRHH", "Seleccione un empleado", TipoMensaje.INFORMACION);
             return null;

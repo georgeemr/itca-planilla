@@ -187,7 +187,6 @@ public class EmpleadosSessionBean {
 
     @PermitAll
     public List<Empleados> listarPuestosEmpleados(Cias cia) {
-        //return empleadosFacade.findAll();
         return empleadosFacade.findEmpleadosByCias(cia);
     }
 
