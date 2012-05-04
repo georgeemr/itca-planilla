@@ -57,15 +57,15 @@
 
                 <i:etiquetaRequerido value="Programaci&#243;n planilla" />
                 <h:panelGroup>
-                    <p:autoComplete id="AutCompltProgPla" forceSelection="true" var="programacionPla" 
-                                    value="#{resumenAsistenciaBackendBean.proPlaSeleccionada}"
-                                    itemValue="#{programacionPla.pkAsString}" itemLabel="#{programacionPla.stringProgramacionPla}"
-                                    completeMethod="#{resumenAsistenciaBackendBean.completeProgramacionPla}"
-                                    converter="#{resumenAsistenciaBackendBean.programacionPlaConverter}" title="Seleccione la planilla" >
-                        <!-- f:ajax render="AutCompltEmpleado" event="change" execute="AutCompltProgPla" / -->
-                    </p:autoComplete>
-                    <!-- h:outputLabel value=" A&Ntilde;OMESN&Uacute;MERO DE PLANILLA " style="font-weight: bold;color: red;" / -->
-                    <i:etiquetaPlanilla />
+                    <h:panelGrid columns="1">
+                        <p:autoComplete id="AutCompltProgPla" forceSelection="true" var="programacionPla" 
+                                        value="#{resumenAsistenciaBackendBean.proPlaSeleccionada}"
+                                        itemValue="#{programacionPla.pkAsString}" itemLabel="#{programacionPla.stringProgramacionPla}"
+                                        completeMethod="#{resumenAsistenciaBackendBean.completeProgramacionPla}"
+                                        converter="#{resumenAsistenciaBackendBean.programacionPlaConverter}" title="Seleccione la planilla" >
+                        </p:autoComplete>
+                        <i:etiquetaPlanilla />
+                    </h:panelGrid>
                 </h:panelGroup>
 
                 <h:outputLabel value="Sucursal" style="font-weight: bold;" />
@@ -226,7 +226,7 @@
                 <p:column>
                     <p:rowEditor rendered="#{resumenAsistenciaBackendBean.proPlaSeleccionada.status ne 'C'}" />
                 </p:column>
-                
+
                 <p:column>
                     <p:commandButton image="ui-icon-circle-minus" title="Eliminar" oncomplete="dlgEliminarResumen.show();" disabled="#{resumenAsistenciaBackendBean.proPlaSeleccionada.status eq 'C'}" >
                         <f:setPropertyActionListener value="#{resumenAsistencia}" target="#{resumenAsistenciaBackendBean.resumenSeleccionado}" /> 
@@ -244,7 +244,7 @@
     </ui:define>
 
     <ui:define name="dialogos">
-        
+
         <p:confirmDialog message="&#191; Esta seguro que desea eliminar el resumen seleccionado ?" showEffect="bounce" hideEffect="explode"  
                          modal="true" header="Eliminar Resumen Asistencia" severity="alert" widgetVar="dlgEliminarResumen">  
             <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,tablaResumenAsistencia" oncomplete="dlgEliminarResumen.hide()"  
@@ -252,7 +252,7 @@
             <p:commandButton value="No" onclick="dlgEliminarResumen.hide()" type="button" />   
 
         </p:confirmDialog>  
-        
+
         <p:confirmDialog message="&#191; Esta seguro que desea eliminar la planilla ?" showEffect="bounce" hideEffect="explode"  
                          modal="true" header="Eliminar Planilla" severity="alert" widgetVar="dlgEliminarPlanilla">  
             <p:commandButton value="Si, estoy seguro" update="principalForm:mensajes,tablaResumenAsistencia" oncomplete="dlgEliminarPlanilla.hide()"  
@@ -260,7 +260,7 @@
             <p:commandButton value="No" onclick="dlgEliminarPlanilla.hide()" type="button" />   
 
         </p:confirmDialog>  
-        
+
         <p:dialog widgetVar="dlgEmpSolPermisos" header="Listado general de Empleados" showEffect="fold" hideEffect="fold" width="506" height="475" >
 
             <h:panelGrid columns="2" >

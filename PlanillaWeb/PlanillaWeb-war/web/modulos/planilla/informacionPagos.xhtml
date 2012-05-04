@@ -85,16 +85,17 @@
 
                 <i:etiquetaRequerido value="Programaci&#243;n planilla" />
                 <h:panelGroup>
-                    <p:autoComplete id="AutCompltProgPla" forceSelection="true" var="programacionPla" 
-                                    value="#{planilla$informacionPagos.proPlaSeleccionada}"
-                                    itemValue="#{programacionPla.pkAsString}" itemLabel="#{programacionPla.stringProgramacionPla}"
-                                    completeMethod="#{planilla$informacionPagos.completeProgramacionPla}"
-                                    converter="#{planilla$informacionPagos.programacionPlaConverter}" 
-                                    onSelectUpdate="panelDescripcion,panelInformacionPagos,principalForm:listadoEmpleados" >
-                        <f:ajax render="principalForm:listadoEmpleados" event="change" execute="AutCompltProgPla" />
-                    </p:autoComplete>
-
-                    <i:etiquetaPlanilla />
+                    <h:panelGrid columns="1">
+                        <p:autoComplete id="AutCompltProgPla" forceSelection="true" var="programacionPla" 
+                                        value="#{planilla$informacionPagos.proPlaSeleccionada}"
+                                        itemValue="#{programacionPla.pkAsString}" itemLabel="#{programacionPla.stringProgramacionPla}"
+                                        completeMethod="#{planilla$informacionPagos.completeProgramacionPla}"
+                                        converter="#{planilla$informacionPagos.programacionPlaConverter}" 
+                                        onSelectUpdate="panelDescripcion,panelInformacionPagos,principalForm:listadoEmpleados" >
+                            <f:ajax render="principalForm:listadoEmpleados" event="change" execute="AutCompltProgPla" />
+                        </p:autoComplete>
+                        <i:etiquetaPlanilla />
+                    </h:panelGrid>
                 </h:panelGroup>
                 <i:etiquetaRequerido value="Empleado" />
 
