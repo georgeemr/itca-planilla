@@ -14,14 +14,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
-import javax.faces.context.FacesContext;
 
 /**
  *
@@ -149,9 +146,7 @@ public class PlanillaSessionBean {
             accionPersonalFacade.edit(accion);
             mailBean.enviarCorreoElectronico(
                     "Sobre Solicitud de Personal",
-                    "Se ha aprobado una solicitud a nombre de: " + accion.getEmpleados().getNombreCompleto(), accion.getEmpleados().getCorreo() + ":" + accion.getEmpleados()./*
-                     * getJefe()
-                     */getEmpleados().getCorreo());
+                    "Se ha aprobado una solicitud a nombre de: " + accion.getEmpleados().getNombreCompleto(), accion.getEmpleados().getCorreo() + ":" + accion.getEmpleados().getEmpleados().getCorreo());
         }
         return null;
     }
@@ -392,19 +387,6 @@ public class PlanillaSessionBean {
     public void editarSolicitud(AccionPersonal a) {
         accionPersonalFacade.edit(a);
     }
-
-//    @PermitAll
-//    public List<AccionPersonal> getAccionesByRol(Empleados empleado) {
-//        if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("rrhh")) {
-//            return findSolicitudesByRRHH(empleado);
-//        } else if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("jefes")) {
-//            return findSolicitudesByJefe(empleado);
-//        } else if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("empleados")) {
-//            return findSolicitudesByEmpleado(empleado);
-//        } else {
-//            return new ArrayList<AccionPersonal>();
-//        }
-//    }
 
     @PermitAll
     public List<ProgramacionPla> getProgramacionPlaByTipo(Short empresa, Short tipoPlanilla) {

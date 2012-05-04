@@ -39,14 +39,12 @@ public class DepartamentoFacade extends AbstractFacade<Departamentos, Departamen
 
     @PermitAll
     public List<Departamentos> findDepartamentosByCias(Cias cias) {
-        List<Departamentos> l = new ArrayList<Departamentos>();
-        l = em.createQuery("SELECT d FROM Departamentos d WHERE d.departamentosPK.codCia = :codCia ORDER BY d.nomDepto ASC", Departamentos.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        List<Departamentos> l = em.createQuery("SELECT d FROM Departamentos d WHERE d.departamentosPK.codCia = :codCia ORDER BY d.nomDepto ASC", Departamentos.class).setParameter("codCia", cias.getCodCia()).getResultList();
         return l != null ? l : new ArrayList<Departamentos>();
     }
 
     @PermitAll
     public List<Departamentos> findDepartamentosByPlanilla(ProgramacionPla pla) {
-        List<Departamentos> l = null;
             Query q = em.createNativeQuery("SELECT D.* FROM DEPARTAMENTOS D "
                     + "WHERE (D.COD_CIA, D.COD_DEPTO) "
                     + "IN (SELECT DISTINCT P.COD_CIA, P.COD_DEPTO FROM PLANILLA P "
@@ -56,7 +54,7 @@ public class DepartamentoFacade extends AbstractFacade<Departamentos, Departamen
             q.setParameter(3, pla.getAnio());
             q.setParameter(4, pla.getMes());
             q.setParameter(5, pla.getProgramacionPlaPK().getCodTipopla());
-            l = (List<Departamentos>)q.getResultList();
+            List<Departamentos> l = (List<Departamentos>)q.getResultList();
         return l != null ? l : new ArrayList<Departamentos>();
     }
 }
