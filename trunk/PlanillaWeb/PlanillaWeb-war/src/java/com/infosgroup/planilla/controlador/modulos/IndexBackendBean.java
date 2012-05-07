@@ -46,15 +46,6 @@ public class IndexBackendBean extends AbstractJSFPage implements Serializable {
     }
     private String password;
 
-    public String iniciarSesion$action() {
-        if (seguridadBean.validarUsuario(usuario, password)) {
-            return "/inicio?faces-redirect=true";
-        } else {
-            mostrarMensaje(FacesMessage.SEVERITY_WARN, "El nombre de usuario o la contraseña no son validos");
-            return null;
-        }
-    }
-
     @Override
     protected void limpiarCampos() {
     }

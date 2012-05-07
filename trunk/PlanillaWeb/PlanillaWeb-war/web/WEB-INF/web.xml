@@ -3,7 +3,6 @@
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Production</param-value>
-        <!--param-value>Development</param-value-->
     </context-param>
     <context-param>
         <param-name>com.sun.faces.enableMissingResourceLibraryDetection</param-name>
@@ -43,19 +42,6 @@
             <role-name>empleados</role-name>
         </auth-constraint>
     </security-constraint>
-
-    <!--security-constraint>
-        <display-name>Constraint recursos OpenDS</display-name>
-        <web-resource-collection>
-            <web-resource-name>PruebaRecursosOpenDS</web-resource-name>
-            <description>PruebaOpenDS Web Resource</description>
-            <url-pattern>/rrhh/resources/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <description>Administradores authorization constraint</description>
-            <role-name>*</role-name>
-        </auth-constraint>
-    </security-constraint-->
     
     <login-config>
         <auth-method>FORM</auth-method>
@@ -93,4 +79,10 @@
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
+    
+    <!-- Configuracion LDAP-->
+    <context-param>
+        <param-name>ConfiguracionLDAP</param-name>
+        <param-value>SVRINFOS02:389:cn=Directory Manager:infos</param-value>
+    </context-param>    
 </web-app>

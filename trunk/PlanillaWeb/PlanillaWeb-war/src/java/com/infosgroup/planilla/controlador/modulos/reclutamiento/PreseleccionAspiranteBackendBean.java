@@ -8,7 +8,9 @@ import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.estructuras.FormatoReporte;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
+import com.infosgroup.planilla.modelo.procesos.usuarios.LDAPManager;
 import com.infosgroup.planilla.view.AbstractJSFPage;
+import com.infosgroup.planilla.view.AbstractPreseleccion;
 import com.infosgroup.planilla.view.AutocompletePruebaConverter;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
@@ -33,7 +35,7 @@ import org.primefaces.event.RowEditEvent;
  */
 @ManagedBean(name = "reclutamiento$preseleccionAspirante")
 @ViewScoped
-public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements Serializable {
+public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion implements Serializable {
 
     @EJB
     private ReclutamientoSessionBean reclutamientoSessionBean;
@@ -42,7 +44,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     private Date fechaInicial;
     private Date fechaFinal;
     private List<Concurso> listaConcurso;
-    //private DataTable tableConcursos;
     private DataTable tableCandidatos;
     private DataTable tableSeleccion;
     private DataTable tableContratacion;
@@ -164,14 +165,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     public void setCandidatoSeleccionado(CandidatoConcurso candidatoSeleccionado) {
         this.candidatoSeleccionado = candidatoSeleccionado;
     }
-
-//    public DataTable getTableConcursos() {
-//        return tableConcursos;
-//    }
-//
-//    public void setTableConcursos(DataTable tableConcursos) {
-//        this.tableConcursos = tableConcursos;
-//    }
 
     public Date getFechaFinal() {
         return fechaFinal;
@@ -346,14 +339,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
     public void setDui(String dui) {
         this.dui = dui;
     }
-
-//    public String getEstadoContrato() {
-//        return estadoContrato;
-//    }
-//
-//    public void setEstadoContrato(String estadoContrato) {
-//        this.estadoContrato = estadoContrato;
-//    }
 
     public Double getSalario() {
         return salario;
@@ -590,6 +575,16 @@ public class PreseleccionAspiranteBackendBean extends AbstractJSFPage implements
             limpiarDatosContratacion();
             addMessage("Contratar Candidato", "Datos Guardados ", TipoMensaje.INFORMACION);
             actualizaListas();
+            
+            //Crear usuario LDAP
+            try {
+                LDAPManager lDAPManager = getLDAPManager();
+                lDAPManager.addUser(usuario, candidatoSeleccionado.getCandidato1().getNombre(), candidatoSeleccionado.getCandidato1().getApellido(), usuario);
+                lDAPManager.assignUser(usuario, "empleados");
+            } catch (Exception e) {
+                addMessage("Contratar Candidato", "Usuario de Aplicación no creado.", TipoMensaje.ERROR);
+                logger.log(Level.SEVERE, "Error al registrar empleado en servidor LDAP.", e);
+            }
         }
         return null;
     }
