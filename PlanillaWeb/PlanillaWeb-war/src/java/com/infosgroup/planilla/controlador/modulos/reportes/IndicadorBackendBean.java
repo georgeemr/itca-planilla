@@ -64,7 +64,7 @@ public class IndicadorBackendBean extends AbstractJSFPage implements Serializabl
     public String aplicar(){
         
         if (!validaFechas(fechaInicial, fechaFinal)) {
-            addMessage("Indicadores", "Los rangos de fecha no son consistentes.", TipoMensaje.INFORMACION);
+            addMessage("Indicadores", "Los rangos de fecha no son consistentes.", TipoMensaje.ERROR);
             return null;
         }
         setModelIndicadores ( indicadorBean.listaIndicadores(getSessionBeanADM().getCompania(), getFechaInicial(), getFechaFinal()));
