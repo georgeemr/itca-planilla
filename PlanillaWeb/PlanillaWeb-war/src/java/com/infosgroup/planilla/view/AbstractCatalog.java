@@ -8,7 +8,7 @@ package com.infosgroup.planilla.view;
  *
  * @author root
  */
-public abstract class CatalogBehavior extends AbstractJSFPage implements java.io.Serializable {
+public abstract class AbstractCatalog extends AbstractJSFPage implements java.io.Serializable {
 
     private String accion = "nuevo";
 

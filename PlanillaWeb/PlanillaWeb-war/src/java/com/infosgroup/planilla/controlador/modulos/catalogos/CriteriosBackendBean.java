@@ -5,7 +5,7 @@
 package com.infosgroup.planilla.controlador.modulos.catalogos;
 
 import com.infosgroup.planilla.view.AbstractJSFPage;
-import com.infosgroup.planilla.view.CatalogBehavior;
+import com.infosgroup.planilla.view.AbstractCatalog;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -15,7 +15,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean(name = "criteriosBackendBean")
 @ViewScoped
-public class CriteriosBackendBean extends CatalogBehavior implements java.io.Serializable {
+public class CriteriosBackendBean extends AbstractCatalog implements java.io.Serializable {
 
     public CriteriosBackendBean() {
     }
