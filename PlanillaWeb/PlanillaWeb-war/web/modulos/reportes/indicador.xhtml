@@ -26,37 +26,43 @@
 
         <p:spacer height="15" />
 
-        <p:fieldset legend="Indicadores"   >
+        <p:fieldset id="fldIndicadores" legend="Indicadores"   >
             <p:spacer height="15" />
-            <h:panelGroup >
-                <table width="100%" >                                
-                    <ui:repeat value="#{reportes$indicador.modelIndicadores}" var="modelIndicador" >
+            <h:panelGrid columns="5" >
+                <h:outputLabel value="Fecha inicial" />
+                <p:calendar showOn="button" />
+                <h:outputLabel value="Fecha final" />
+                <p:calendar showOn="button" />
+                <p:commandButton image="button-ok" value="Aplicar" update="fldIndicadores" action="#{reportes$indicador.aplicar}" />
+            </h:panelGrid>
+            <p:spacer height="10" />
+            <table width="100%" >                                
+                <ui:repeat value="#{reportes$indicador.modelIndicadores}" var="modelIndicador" >
+                    <tr>
+                        <td colspan="3" width="100%" >
+                            <h:outputLabel value="#{modelIndicador.categoria}" style="width: 150px;font-weight: bold; " />
+                        </td>
+                    </tr>
+
+                    <ui:repeat value="#{modelIndicador.listaIndicadores}" var="indicador" >
                         <tr>
-                            <td colspan="3" width="100%" >
-                                <h:outputLabel value="#{modelIndicador.categoria}" style="width: 150px;font-weight: bold; " />
+                            <td width="3%">
+
+                            </td>
+                            <td width="50%" >
+                                <h:outputLabel value="#{indicador.nombreIndicador}" style="width: 150px;" />
+                            </td>
+                            <td width="10%" ></td>
+                            <td width="30%" >
+                                <h:outputLabel value="#{indicador.valorIndicador}" />
                             </td>
                         </tr>
-
-                        <ui:repeat value="#{modelIndicador.listaIndicadores}" var="indicador" >
-                            <tr>
-                                <td width="3%">
-
-                                </td>
-                                <td width="67%" >
-                                    <h:outputLabel value="#{indicador.nombreIndicador}" style="width: 150px;" />
-                                </td>
-                                <td width="10%" ></td>
-                                <td width="20%" >
-                                    <h:outputLabel value="#{indicador.valorIndicador}" />
-                                </td>
-                            </tr>
-                        </ui:repeat>
-                        <tr>
-                            <td colspan="3" ><p:spacer height="10" /></td>
-                        </tr>
                     </ui:repeat>
-                </table>
-            </h:panelGroup>
+                    <tr>
+                        <td colspan="3" ><p:spacer height="10" /></td>
+                    </tr>
+                </ui:repeat>
+            </table>
         </p:fieldset>                
 
     </ui:define>

@@ -8,11 +8,12 @@ package com.infosgroup.planilla.controlador.modulos.reportes;
  *
  * @author Soporte
  */
-import com.infosgroup.planilla.modelo.entidades.Indicador;
 import com.infosgroup.planilla.modelo.estructuras.ModelIndicadores;
 import com.infosgroup.planilla.modelo.procesos.IndicadorSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -24,20 +25,11 @@ public class IndicadorBackendBean extends AbstractJSFPage implements Serializabl
 
     @EJB
     private IndicadorSessionBean indicadorBean;
-    private List<Indicador> indicadores;
     private List<ModelIndicadores> modelIndicadores;
-
-    public List<Indicador> getIndicadores() {
-        indicadores = indicadorBean.listarIndicadores(getSessionBeanADM().getCompania());
-        return indicadores;
-    }
-
-    public void setIndicadores(List<Indicador> indicadores) {
-        this.indicadores = indicadores;
-    }
+    private Date fechaInicial;
+    private Date fechaFinal;
 
     public List<ModelIndicadores> getModelIndicadores() {
-        modelIndicadores = indicadorBean.listaIndicadores(getSessionBeanADM().getCompania());
         return modelIndicadores;
     }
 
@@ -45,8 +37,31 @@ public class IndicadorBackendBean extends AbstractJSFPage implements Serializabl
         this.modelIndicadores = modelIndicadores;
     }
 
+    public Date getFechaFinal() {
+        return fechaFinal;
+    }
+
+    public void setFechaFinal(Date fechaFinal) {
+        this.fechaFinal = fechaFinal;
+    }
+
+    public Date getFechaInicial() {
+        return fechaInicial;
+    }
+
+    public void setFechaInicial(Date fechaInicial) {
+        this.fechaInicial = fechaInicial;
+    }
+    
+    public String aplicar(){
+        setModelIndicadores ( indicadorBean.listaIndicadores(getSessionBeanADM().getCompania()));
+        return null;
+    }
+    
     @Override
     protected void limpiarCampos() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        setFechaInicial(new Date());
+        setFechaFinal(new Date());
+        setModelIndicadores(new ArrayList<ModelIndicadores>());
     }
 }
