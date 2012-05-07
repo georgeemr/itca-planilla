@@ -5,6 +5,7 @@
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
                 template="/plantillas/defaultTemplate.xhtml"
+                xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <ui:define name="titulo">
@@ -24,46 +25,54 @@
 
     <ui:define name="contenido">
 
-        <p:spacer height="15" />
+        <p:spacer height="10" />
+        <i:fieldset leyenda="Indicadores" >   
 
-        <p:fieldset id="fldIndicadores" legend="Indicadores"   >
-            <p:spacer height="15" />
-            <h:panelGrid columns="5" >
-                <h:outputLabel value="Fecha inicial" />
-                <p:calendar showOn="button" />
-                <h:outputLabel value="Fecha final" />
-                <p:calendar showOn="button" />
-                <p:commandButton image="button-ok" value="Aplicar" update="fldIndicadores" action="#{reportes$indicador.aplicar}" />
-            </h:panelGrid>
-            <p:spacer height="10" />
-            <table width="100%" >                                
-                <ui:repeat value="#{reportes$indicador.modelIndicadores}" var="modelIndicador" >
-                    <tr>
-                        <td colspan="3" width="100%" >
-                            <h:outputLabel value="#{modelIndicador.categoria}" style="width: 150px;font-weight: bold; " />
-                        </td>
-                    </tr>
+            <f:facet name="contenido" >
 
-                    <ui:repeat value="#{modelIndicador.listaIndicadores}" var="indicador" >
-                        <tr>
-                            <td width="3%">
+                <p:panel id="fldIndicadores" style="border:none;" >
+                    <h:panelGrid columns="1">
+                        <h:outputLabel value="Ingrese los rangos de fecha para calcular los indicadores." />
+                    </h:panelGrid>
+                    <p:spacer height="5" />
+                    <h:panelGrid columns="5" >
+                        <h:outputLabel value="Fecha inicial" />
+                        <p:calendar showOn="button" />
+                        <h:outputLabel value="Fecha final" />
+                        <p:calendar showOn="button" />
+                        <p:commandButton image="button-ok" value="Aplicar" update="fldIndicadores principalForm:mensajes" action="#{reportes$indicador.aplicar}" />
+                    </h:panelGrid>
+                    <p:spacer height="10" />
+                    <table width="100%" >                                
+                        <ui:repeat value="#{reportes$indicador.modelIndicadores}" var="modelIndicador" >
+                            <tr>
+                                <td colspan="3" width="100%" >
+                                    <h:outputLabel value="#{modelIndicador.categoria}" style="width: 150px;font-weight: bold; " />
+                                </td>
+                            </tr>
 
-                            </td>
-                            <td width="50%" >
-                                <h:outputLabel value="#{indicador.nombreIndicador}" style="width: 150px;" />
-                            </td>
-                            <td width="10%" ></td>
-                            <td width="30%" >
-                                <h:outputLabel value="#{indicador.valorIndicador}" />
-                            </td>
-                        </tr>
-                    </ui:repeat>
-                    <tr>
-                        <td colspan="3" ><p:spacer height="10" /></td>
-                    </tr>
-                </ui:repeat>
-            </table>
-        </p:fieldset>                
+                            <ui:repeat value="#{modelIndicador.listaIndicadores}" var="indicador" >
+                                <tr>
+                                    <td width="3%">
+
+                                    </td>
+                                    <td width="50%" >
+                                        <h:outputLabel value="#{indicador.nombreIndicador}" style="width: 150px;" />
+                                    </td>
+                                    <td width="10%" ></td>
+                                    <td width="30%" >
+                                        <h:outputLabel value="#{indicador.valorIndicador}" />
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            <tr>
+                                <td colspan="3" ><p:spacer height="10" /></td>
+                            </tr>
+                        </ui:repeat>
+                    </table>
+                </p:panel>
+            </f:facet>
+        </i:fieldset>             
 
     </ui:define>
 
