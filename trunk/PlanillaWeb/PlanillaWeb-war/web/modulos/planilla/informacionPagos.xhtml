@@ -45,7 +45,7 @@
                 </p:column>  
 
                 <p:column style="width: 5%;" >
-                    <p:commandButton styleClass="opcionMenu" update="principalForm:mensajes,principalForm:tbIng,principalForm:tbEgr,principalForm:panelDescripcion" oncomplete="dlgEmpleados.hide();" action="#{planilla$informacionPagos.selectEmpleado$Action}" image="ui-icon-circle-check" title="Seleccionar empleado" >
+                    <p:commandButton styleClass="opcionMenu" update="principalForm:mensajes,principalForm:tbIng,principalForm:tbEgr,principalForm:panelDescripcion,principalForm:lblNomEmpleado" oncomplete="dlgEmpleados.hide();" action="#{planilla$informacionPagos.selectEmpleado$Action}" image="ui-icon-circle-check" title="Seleccionar empleado" >
                         <f:setPropertyActionListener value="#{planilla}" target="#{planilla$informacionPagos.planillaSeleccionada}" /> 
                     </p:commandButton>
                 </p:column>
@@ -54,7 +54,7 @@
 
             <p:spacer height="15" />
             <h:panelGrid columns="2">
-                <p:commandButton value="Cancelar" styleClass="opcionMenu" update="principalForm:mensajes,tbIng,tbEgr,panelDescripcion" oncomplete="dlgEmpleados.hide();" action="#{planilla$informacionPagos.cancelSelectEmpleado$Action}" image="ui-icon-circle-check" /> 
+                <p:commandButton value="Cancelar" styleClass="opcionMenu" update="principalForm:mensajes,tbIng,tbEgr,panelDescripcion,principalForm:lblNomEmpleado" oncomplete="dlgEmpleados.hide();" action="#{planilla$informacionPagos.cancelSelectEmpleado$Action}" image="ui-icon-circle-check" /> 
             </h:panelGrid>
 
         </p:dialog>
@@ -74,11 +74,11 @@
 
     <ui:define name="contenido">
         <p:spacer height="15" />
-        <p:panel id="panelInformacionPagos" style="border: none;" >
+        <p:panel id="panelInformacionPagos" style="border: none;width: 100%;" >
             <h:panelGrid columns="2" >
                 <i:etiquetaRequerido value="Tipo de planilla" />
                 <h:selectOneMenu id="LstTipoPlanilla" style="height: 25px;padding-top: 3px;width: 300px;" label="Tipo Planilla" value="#{planilla$informacionPagos.tipoPlanilla}" >                       
-                    <f:ajax render="panelInformacionPagos listadoEmpleados" event="change" execute="LstTipoPlanilla" listener="#{planilla$informacionPagos.seleccionarTipoPlanilla}" />
+                    <f:ajax render="panelInformacionPagos listadoEmpleados lblNomEmpleado" event="change" execute="LstTipoPlanilla" listener="#{planilla$informacionPagos.seleccionarTipoPlanilla}" />
                     <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE TIPO PLANILLA ]" />
                     <f:selectItems value="#{planilla$informacionPagos.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
                 </h:selectOneMenu>
@@ -98,11 +98,14 @@
                     </h:panelGrid>
                 </h:panelGroup>
                 <i:etiquetaRequerido value="Empleado" />
+                <h:panelGrid columns="2">
+                    <h:outputLabel id="lblNomEmpleado" value="#{planilla$informacionPagos.planillaSeleccionada.empleados.nombreCompleto}" />
+                    <p:commandLink styleClass="opcionMenu" update="principalForm:listadoEmpleados" oncomplete="dlgEmpleados.show();" style="color:blue">
+                        <p:graphicImage value="/resources/iconos/personal.png"/>
+                        <h:outputText value="Seleccionar" styleClass="espacioTexto" />
+                    </p:commandLink>
+                </h:panelGrid>
 
-                <p:commandLink styleClass="opcionMenu" update="principalForm:listadoEmpleados" oncomplete="dlgEmpleados.show();" style="color:blue">
-                    <p:graphicImage value="/resources/iconos/personal.png"/>
-                    <h:outputText value="Seleccionar" styleClass="espacioTexto" />
-                </p:commandLink>
 
             </h:panelGrid>
             <p:spacer height="10"/>
