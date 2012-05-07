@@ -11,10 +11,12 @@ package com.infosgroup.planilla.controlador.modulos.reportes;
 import com.infosgroup.planilla.modelo.estructuras.ModelIndicadores;
 import com.infosgroup.planilla.modelo.procesos.IndicadorSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
+import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -28,6 +30,12 @@ public class IndicadorBackendBean extends AbstractJSFPage implements Serializabl
     private List<ModelIndicadores> modelIndicadores;
     private Date fechaInicial;
     private Date fechaFinal;
+    
+    @PostConstruct
+    public void _init(){
+        setFechaInicial(new Date());
+        setFechaFinal(new Date());
+    }
 
     public List<ModelIndicadores> getModelIndicadores() {
         return modelIndicadores;
@@ -54,7 +62,12 @@ public class IndicadorBackendBean extends AbstractJSFPage implements Serializabl
     }
     
     public String aplicar(){
-        setModelIndicadores ( indicadorBean.listaIndicadores(getSessionBeanADM().getCompania()));
+        
+        if (!validaFechas(fechaInicial, fechaFinal)) {
+            addMessage("Indicadores", "Los rangos de fecha no son consistentes.", TipoMensaje.INFORMACION);
+            return null;
+        }
+        setModelIndicadores ( indicadorBean.listaIndicadores(getSessionBeanADM().getCompania(), getFechaInicial(), getFechaFinal()));
         return null;
     }
     

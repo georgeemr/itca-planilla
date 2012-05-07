@@ -36,10 +36,10 @@
                     </h:panelGrid>
                     <p:spacer height="5" />
                     <h:panelGrid columns="5" >
-                        <h:outputLabel value="Fecha inicial" />
-                        <p:calendar showOn="button" />
-                        <h:outputLabel value="Fecha final" />
-                        <p:calendar showOn="button" />
+                        <i:etiquetaRequerido value="Fecha inicial" />
+                        <p:calendar showOn="button" value="#{reportes$indicador.fechaInicial}" label="Fecha Inicial" title="Fecha Inicial" required="true" requiredMessage="Fecha inicial es un campo requerido." />
+                        <i:etiquetaRequerido value="Fecha final" />
+                        <p:calendar showOn="button" value="#{reportes$indicador.fechaFinal}" label="Fecha Final" title="Fecha Final" required="true" requiredMessage="Fecha Final es un campo requerido." />
                         <p:commandButton image="button-ok" value="Aplicar" update="fldIndicadores principalForm:mensajes" action="#{reportes$indicador.aplicar}" />
                     </h:panelGrid>
                     <p:spacer height="10" />
