@@ -5,11 +5,9 @@
 package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 
 import com.infosgroup.planilla.modelo.entidades.*;
-import com.infosgroup.planilla.modelo.estructuras.FormatoReporte;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
 import com.infosgroup.planilla.modelo.procesos.usuarios.LDAPManager;
-import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.AbstractPreseleccion;
 import com.infosgroup.planilla.view.AutocompletePruebaConverter;
 import com.infosgroup.planilla.view.TipoMensaje;
@@ -62,7 +60,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
     private String dui;
     private String tipoContratoSeleccionado;
     private String comentarioFinal;
-    //private String estadoContrato;
     private Double salario;
     private Boolean error;
     private String observaciones;
@@ -596,7 +593,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
         setDui(null);
         setTipoContratoSeleccionado(null);
         setComentarioFinal(null);
-        //setEstadoContrato(null);
         setSalario(null);
         setObservaciones(null);
         error = Boolean.FALSE;
@@ -659,7 +655,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
     protected void limpiarCampos() {
         setFechaInicial(null);
         setFechaFinal(null);
-        //tableConcursos.setSelection(null);
         tableCandidatos.setSelection(null);
         setComentarioFinal(null);
         setConcursoSeleccionado(null);
@@ -746,14 +741,6 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
     public void setCandidatosSeleccionados(Candidato[] candidatosSeleccionados) {
         this.candidatosSeleccionados = candidatosSeleccionados;
     }
-
-//    public void onRowSelectConcurso(SelectEvent event) {
-//        setConcursoSeleccionado((Concurso) event.getObject());
-//    }
-//
-//    public void onRowUnSelectConcurso(UnselectEvent event) {
-//        setConcursoSeleccionado(null);
-//    }
 
     public Criterio[] getCriteriosAdicionales() {
         return criteriosAdicionales;
