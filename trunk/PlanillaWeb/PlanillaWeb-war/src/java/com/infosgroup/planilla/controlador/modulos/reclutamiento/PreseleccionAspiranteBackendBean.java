@@ -613,6 +613,7 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
         if (tableSeleccion.getRowIndex() != -1) {
             CandidatoConcurso c = candidatosGuardados.get(tableSeleccion.getRowIndex());
             c.setEstado(estado);
+            c.setFecha(new Date());
             reclutamientoSessionBean.editarCandidatoConcurso(c);
             addMessage("Seleccionar Candidato", "Datos Guardados " + candidatosGuardados.get(tableSeleccion.getRowIndex()).getCandidato1().getNombreCompleto(), TipoMensaje.INFORMACION);
             actualizaListas();
