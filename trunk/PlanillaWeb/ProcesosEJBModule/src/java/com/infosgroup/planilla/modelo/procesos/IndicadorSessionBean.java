@@ -57,6 +57,8 @@ public class IndicadorSessionBean {
             statement.setDate(2, new java.sql.Date(fechaInicial.getTime()) );
             statement.setDate(3, new java.sql.Date(fechaFinal.getTime()));
             statement.execute();
+            statement.close();
+            conexion.close();
             conexion=null;
         } catch (Exception excpt) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Ha ocurrido la siguiente excepción: ", excpt);
