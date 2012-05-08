@@ -43,8 +43,7 @@ public class IndicadorSessionBean {
     }
 
     @PermitAll
-    public List<ModelIndicadores> listaIndicadores(Cias cias, Date fechaInicial, Date fechaFinal) {
-        calcularIndicadores(cias, fechaInicial, fechaFinal);
+    public List<ModelIndicadores> listaIndicadores(Cias cias) {
         return indicadorFacade.listaIndicadores(cias);
     }
 
