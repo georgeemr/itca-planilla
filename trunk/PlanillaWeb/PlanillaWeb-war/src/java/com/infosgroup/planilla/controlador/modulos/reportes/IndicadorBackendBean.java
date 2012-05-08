@@ -67,7 +67,9 @@ public class IndicadorBackendBean extends AbstractJSFPage implements Serializabl
             addMessage("Indicadores", "Los rangos de fecha no son consistentes.", TipoMensaje.ERROR);
             return null;
         }
-        setModelIndicadores ( indicadorBean.listaIndicadores(getSessionBeanADM().getCompania(), getFechaInicial(), getFechaFinal()));
+        setModelIndicadores(new ArrayList<ModelIndicadores>());
+        indicadorBean.calcularIndicadores(getSessionBeanADM().getCompania(), fechaInicial, fechaFinal);
+        setModelIndicadores ( indicadorBean.listaIndicadores(getSessionBeanADM().getCompania()));
         return null;
     }
     

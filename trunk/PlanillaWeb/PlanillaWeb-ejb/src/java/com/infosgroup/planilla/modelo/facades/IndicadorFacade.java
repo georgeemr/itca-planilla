@@ -8,10 +8,12 @@ import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Indicador;
 import com.infosgroup.planilla.modelo.entidades.IndicadorPK;
 import com.infosgroup.planilla.modelo.estructuras.ModelIndicadores;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -41,7 +43,7 @@ public class IndicadorFacade extends AbstractFacade<Indicador, IndicadorPK> {
         List<Indicador> i = em.createQuery("SELECT i FROM Indicador i WHERE i.indicadorPK.codCia = :codCia ORDER BY i.nombreIndicador", Indicador.class).setParameter("codCia", cias.getCodCia()).getResultList();
         return i != null ? i : new ArrayList<Indicador>();
     }
-    
+
     @PermitAll
     public List<ModelIndicadores> listaIndicadores(Cias cias) {
         List<Indicador> listaIndicadores = findIndicadoresByCias(cias);
@@ -57,8 +59,8 @@ public class IndicadorFacade extends AbstractFacade<Indicador, IndicadorPK> {
             ModelIndicadores m = new ModelIndicadores();
             m.setCategoria(i);
             m.setListaIndicadores(new ArrayList<Indicador>());
-            for ( Indicador e : listaIndicadores) if ( e.getNombreModulo().equals(i) ) m.getListaIndicadores().add(e);
-            indicadores.add(m);
+            for ( Indicador e : listaIndicadores){ if ( e.getNombreModulo().equals(i) ) m.getListaIndicadores().add(e);}
+                    indicadores.add(m);
         }
         return indicadores;
     }
