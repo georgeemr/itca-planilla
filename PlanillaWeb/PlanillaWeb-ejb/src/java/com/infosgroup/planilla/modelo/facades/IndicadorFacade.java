@@ -25,19 +25,19 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class IndicadorFacade extends AbstractFacade<Indicador, IndicadorPK> {
-    
+
     @PersistenceContext(unitName = "PlanillaWeb-ejbPU")
     private EntityManager em;
-    
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     public IndicadorFacade() {
         super(Indicador.class);
     }
-    
+
     @PermitAll
     public List<Indicador> findIndicadoresByCias(Cias cias) {
         List<Indicador> i = em.createQuery("SELECT i FROM Indicador i WHERE i.indicadorPK.codCia = :codCia ORDER BY i.nombreIndicador", Indicador.class).setParameter("codCia", cias.getCodCia()).getResultList();
@@ -45,22 +45,47 @@ public class IndicadorFacade extends AbstractFacade<Indicador, IndicadorPK> {
     }
 
     @PermitAll
+    public void calcularIndicadores(Cias empresa, Date fechaInicial, Date fechaFinal) {
+        try {
+            Connection conexion = em.unwrap(java.sql.Connection.class);
+            CallableStatement statement = conexion.prepareCall("begin pkg_indicadores.calcular_indicadores( ?, ?, ? ); end;");
+            statement.setBigDecimal(1, new BigDecimal(empresa.getCodCia()));
+            statement.setDate(2, new java.sql.Date(fechaInicial.getTime()));
+            statement.setDate(3, new java.sql.Date(fechaFinal.getTime()));
+            statement.execute();
+            statement.close();
+            conexion.close();
+            conexion = null;
+        } catch (Exception excpt) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Ha ocurrido la siguiente excepción: ", excpt);
+        }
+    }
+
+    @PermitAll
     public List<ModelIndicadores> listaIndicadores(Cias cias) {
         List<Indicador> listaIndicadores = findIndicadoresByCias(cias);
-        if (listaIndicadores == null) return new ArrayList<ModelIndicadores>();
+        if (listaIndicadores == null) {
+            return new ArrayList<ModelIndicadores>();
+        }
         List<ModelIndicadores> indicadores = new ArrayList<ModelIndicadores>();
         List<String> categorias = new ArrayList<String>();
-        for ( Indicador i : listaIndicadores) categorias.add( i.getNombreModulo() );
+        for (Indicador i : listaIndicadores) {
+            categorias.add(i.getNombreModulo());
+        }
         Set t = new HashSet();
         t.addAll(categorias);
         categorias.clear();
         categorias.addAll(t);
-        for ( String i : categorias){
+        for (String i : categorias) {
             ModelIndicadores m = new ModelIndicadores();
             m.setCategoria(i);
             m.setListaIndicadores(new ArrayList<Indicador>());
-            for ( Indicador e : listaIndicadores){ if ( e.getNombreModulo().equals(i) ) m.getListaIndicadores().add(e);}
-                    indicadores.add(m);
+            for (Indicador e : listaIndicadores) {
+                if (e.getNombreModulo().equals(i)) {
+                    m.getListaIndicadores().add(e);
+                }
+            }
+            indicadores.add(m);
         }
         return indicadores;
     }

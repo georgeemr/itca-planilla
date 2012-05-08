@@ -233,22 +233,6 @@ public class ReclutamientoSessionBean {
         return candidatoFacade.findCandidatosMatchCriteria(listaCriterios, cod_cia);
     }
 
-//@PermitAll
-//public void eliminarCriteriosSeleccionados(Cias empresa, String usuario)
-//{
-//    criterioSeleccionadoFacade.eliminarCriteriosSeleccionados(empresa, usuario);
-//}
-//@PermitAll
-//public void guardarCriterioSeleccionado(CriteriosXPuesto c, String usuario)
-//{
-//    criterioSeleccionadoFacade.guardarCriterio(c, usuario);
-//}
-//
-//@PermitAll
-//public void eliminarCriterioSeleccionado(CriteriosXPuesto c, String usuario)
-//{
-//    criterioSeleccionadoFacade.eliminarCriterio(c, usuario);
-//}
     @PermitAll
     public List<EvaluacionCandidato> getListEvaluacionCandidato(CandidatoConcurso c) {
         return evaluacionCandidatoFacade.getListEvaluacionCandidato(c);

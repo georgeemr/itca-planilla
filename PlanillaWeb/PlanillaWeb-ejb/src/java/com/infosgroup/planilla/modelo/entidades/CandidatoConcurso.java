@@ -6,20 +6,9 @@ package com.infosgroup.planilla.modelo.entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -74,7 +63,10 @@ public class CandidatoConcurso implements Serializable, Comparable<CandidatoConc
     private List<EvaluacionCandidato> evaluacionCandidatoList;
     @Transient
     private Integer orden = 10;
-
+    @Column(name = "FECHA" )
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecha;
+    
     public CandidatoConcurso() {
     }
 
@@ -139,6 +131,14 @@ public class CandidatoConcurso implements Serializable, Comparable<CandidatoConc
 
     public void setCandidato1(Candidato candidato1) {
         this.candidato1 = candidato1;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     @XmlTransient
