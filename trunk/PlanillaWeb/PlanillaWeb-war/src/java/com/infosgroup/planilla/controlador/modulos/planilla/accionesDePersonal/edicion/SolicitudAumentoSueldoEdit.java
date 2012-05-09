@@ -88,15 +88,16 @@ public class SolicitudAumentoSueldoEdit extends AbstractEditAccionPersonal imple
             setFechaInicial(getSessionBeanPLA().getAccionSeleccionada().getFechaInicial());
             setPlanilla(getSessionBeanPLA().getAccionSeleccionada().getPlanillaToString());
             setTipoPlanilla(getSessionBeanPLA().getAccionSeleccionada().getCodTipopla());
+            setFormaAumento(getSessionBeanPLA().getAccionSeleccionada().getFormaAumento());
             if(getSessionBeanPLA().getAccionSeleccionada().getFormaAumento().equals("V")){
-                setFormaAumento(getSessionBeanPLA().getAccionSeleccionada().getFormaAumento());
                 setSueldoNuevo( getSessionBeanPLA().getAccionSeleccionada().getCantidad().doubleValue() );
                 setPorcentaje(new Double("0.0"));
             }else if (getSessionBeanPLA().getAccionSeleccionada().getFormaAumento().equals("P")){
-                setFormaAumento(getSessionBeanPLA().getAccionSeleccionada().getFormaAumento());
                 setPorcentaje( getSueldoNuevo() );
+                setSueldoNuevo( getSessionBeanPLA().getAccionSeleccionada().getPorcentaje().doubleValue() );
             }
         }
+        calculoSueldo();
     }
     
     public void calculoSueldo() {

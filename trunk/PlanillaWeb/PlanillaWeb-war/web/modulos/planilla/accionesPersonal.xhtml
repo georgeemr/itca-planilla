@@ -178,10 +178,10 @@
                         <td colspan="3" ></td>
                     </tr>
                     <tr>
-                        <td><h:outputLabel value="Dias"  /></td>
+                        <td><h:outputLabel value="Dias" style="font-weight: bold;" /></td>
                         <td><p:inputText id="txtDias"  value="#{solicitudPermiso.dias}" style="width: 25px;" /></td>
                         <td></td>
-                        <td><h:outputLabel value="Horas" /></td>
+                        <td><h:outputLabel value="Horas" style="font-weight: bold;" /></td>
                         <td><p:inputText id="txtHoras"  value="#{solicitudPermiso.horas}" style="width: 25px;" /></td>
                     </tr>
                 </table>
@@ -248,7 +248,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Devengadas</td>
+                        <td><h:outputLabel value="Devengadas" style="font-weight: bold;" /></td>
                         <td colspan="4" >
                             <h:selectOneMenu id="lstDevengadoVac" style="height: 25px;padding-top: 3px;" label="Planilla" value="#{solicitudVacacionesAnuales.devengadas}" >
                                 <f:selectItem itemValue="S" itemLabel="SI" />
@@ -1093,7 +1093,7 @@
 
                 <table border="0" width="100%" >
                     <tr>
-                        <td><i:etiquetaRequerido value="Fecha inicio" styleClass="requerido" /></td>
+                        <td width="20%" ><i:etiquetaRequerido value="Fecha inicio" styleClass="requerido" /></td>
                         <td><p:calendar id="dvFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudDiaDeVacacion.fechaInicial}" selectListener="#{solicitudDiaDeVacacion.handleFechaInicial}" onSelectUpdate="dvtxtDias" /></td>
                     </tr>
                     <tr>
@@ -1102,7 +1102,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><h:outputLabel value="Dias"/></td>
+                        <td><h:outputLabel value="Dias" style="font-weight: bold;" /></td>
                         <td><h:outputLabel id="dvtxtDias"  value="#{solicitudDiaDeVacacion.dias}" /></td>
                     </tr>
                 </table>
