@@ -111,9 +111,9 @@
                     <td colspan="3" >
                         
                         <h:panelGroup rendered="#{request.isUserInRole('jefes')}"  >
-                            <p:commandButton value="Aprobar" image="ui-icon-circle-check" action="#{aprobarSolicitud.aprobarSolicitudJefe}" disabled="#{(SessionBeanPLA.accionSeleccionada.status eq 'A') or (SessionBeanPLA.accionSeleccionada.status eq 'R')}" update="principalForm:mensajes,lblEstado,panelAprobacion" />
+                            <p:commandButton value="Aprobar" image="ui-icon-circle-check" action="#{aprobarSolicitud.aprobarSolicitudJefe}" disabled="#{(SessionBeanPLA.accionSeleccionada.status eq 'A') or (SessionBeanPLA.accionSeleccionada.status eq 'R') or (SessionBeanPLA.accionSeleccionada.status eq 'J')}" update="principalForm:mensajes,lblEstado,panelAprobacion" />
                             <p:spacer width="15" />
-                            <p:commandButton value="Rechazar" image="ui-icon-closethick" action="#{aprobarSolicitud.rechazarSolicitudJefe}" disabled="#{(SessionBeanPLA.accionSeleccionada.status eq 'A') or (SessionBeanPLA.accionSeleccionada.status eq 'R')}" update="principalForm:mensajes,lblEstado,panelAprobacion" />
+                            <p:commandButton value="Rechazar" image="ui-icon-closethick" action="#{aprobarSolicitud.rechazarSolicitudJefe}" disabled="#{(SessionBeanPLA.accionSeleccionada.status eq 'A') or (SessionBeanPLA.accionSeleccionada.status eq 'R') or (SessionBeanPLA.accionSeleccionada.status eq 'J')}" update="principalForm:mensajes,lblEstado,panelAprobacion" />
                         </h:panelGroup >
 
                         

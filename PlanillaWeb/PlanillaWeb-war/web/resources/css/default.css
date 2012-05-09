@@ -95,8 +95,8 @@ body {
 }
 
 .solicitudPreAprobada{
-    background: -moz-linear-gradient(bottom, #9CD128, #fff)!important;
-    background: -webkit-gradient(linear, center bottom, center top, from(#9CD128), to(#fff))!important; 
+    background: -moz-linear-gradient(bottom, #F07800, #fff)!important;
+    background: -webkit-gradient(linear, center bottom, center top, from(#F07800), to(#fff))!important; 
     color: black;
 }
 

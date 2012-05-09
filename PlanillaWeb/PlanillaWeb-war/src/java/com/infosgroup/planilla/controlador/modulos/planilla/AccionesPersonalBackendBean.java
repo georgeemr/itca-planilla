@@ -43,7 +43,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private String urlPlantillaDefault = "/modulos/planilla/acciones/ninguna.xhtml";
     private TipoAccion accionSeleccionada;
     private String solicitudesMostradas;
-    private SelectItem[] estados = {new SelectItem("G", "Solicitada"), new SelectItem("A", "Aprobada"), new SelectItem("R", "Rechazada")};
+    private SelectItem[] estados = {new SelectItem("G", "Solicitada"), new SelectItem("A", "Aprobada"), new SelectItem("R", "Rechazada"), new SelectItem("J", "Pre-Aprobada")};
     private Boolean renderReportePagos = Boolean.FALSE;
 
     public Boolean getRenderReportePagos() {

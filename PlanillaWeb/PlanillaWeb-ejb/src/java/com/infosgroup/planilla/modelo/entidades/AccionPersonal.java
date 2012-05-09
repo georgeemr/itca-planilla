@@ -460,7 +460,7 @@ public class AccionPersonal implements Serializable {
             accEstado = "Solicitada";
         } else {
             if (getStatus().matches("J")) {
-                accEstado = "pre-Aprobada";
+                accEstado = "Pre-Aprobada";
             } else {
                 if (getStatus().matches("R")) {
                     accEstado = "Rechazada";
