@@ -37,19 +37,19 @@
                 <p:calendar showOn="button" value="#{reportes$indicador.fechaInicial}" label="Fecha Inicial" title="Fecha Inicial" required="true" requiredMessage="Fecha inicial es un campo requerido." />
                 <i:etiquetaRequerido value="Fecha final" />
                 <p:calendar showOn="button" value="#{reportes$indicador.fechaFinal}" label="Fecha Final" title="Fecha Final" required="true" requiredMessage="Fecha Final es un campo requerido." />
-                <p:commandButton image="button-ok" value="Aplicar" update="principalForm:panelTable,principalForm:lblValor,principalForm:lblNombre,principalForm:lblCategoria,principalForm:panelContenido,principalForm:mensajes" action="#{reportes$indicador.aplicar}" />
+                <p:commandButton image="button-ok" value="Aplicar" update="principalForm:model,principalForm:detalle,principalForm:panelTable,principalForm:lblValor,principalForm:lblNombre,principalForm:lblCategoria,principalForm:panelContenido,principalForm:mensajes" action="#{reportes$indicador.aplicar}" />
             </h:panelGrid>
             <p:spacer height="10" />
             <p:panel id="panelTable" > 
                 <table width="100%" >                                
-                    <ui:repeat value="#{reportes$indicador.modelIndicadores}" var="modelIndicador" >
+                    <ui:repeat id="model" value="#{reportes$indicador.modelIndicadores}" var="modelIndicador" >
                         <tr>
                             <td colspan="3" width="100%" >
                                 <h:outputLabel id="lblCategoria" value="#{modelIndicador.categoria}" style="width: 150px;font-weight: bold; " />
                             </td>
                         </tr>
 
-                        <ui:repeat value="#{modelIndicador.listaIndicadores}" var="indicador" >
+                        <ui:repeat id="detalle" value="#{modelIndicador.listaIndicadores}" var="indicador" >
                             <tr>
                                 <td width="3%">
 
