@@ -31,11 +31,11 @@ public class IndicadorBackendBean extends AbstractJSFPage implements Serializabl
     private Date fechaInicial;
     private Date fechaFinal;
     
-    @PostConstruct
-    public void _init(){
-        setFechaInicial(new Date());
-        setFechaFinal(new Date());
-    }
+//    @PostConstruct
+//    public void _init(){
+//        setFechaInicial(new Date());
+//        setFechaFinal(new Date());
+//    }
 
     public List<ModelIndicadores> getModelIndicadores() {
         return modelIndicadores;

@@ -18,6 +18,7 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -40,22 +41,18 @@ public class IndicadorFacade extends AbstractFacade<Indicador, IndicadorPK> {
 
     @PermitAll
     public List<Indicador> findIndicadoresByCias(Cias cias) {
-        List<Indicador> i = em.createQuery("SELECT i FROM Indicador i WHERE i.indicadorPK.codCia = :codCia ORDER BY i.nombreIndicador", Indicador.class).setParameter("codCia", cias.getCodCia()).getResultList();
+        List<Indicador> i = em.createNativeQuery("SELECT * FROM Indicador i WHERE i.cod_Cia = ? ORDER BY i.nombre_Indicador", Indicador.class).setParameter(1, cias.getCodCia()).getResultList();
         return i != null ? i : new ArrayList<Indicador>();
     }
 
     @PermitAll
     public void calcularIndicadores(Cias empresa, Date fechaInicial, Date fechaFinal) {
         try {
-            Connection conexion = em.unwrap(java.sql.Connection.class);
-            CallableStatement statement = conexion.prepareCall("begin pkg_indicadores.calcular_indicadores( ?, ?, ? ); end;");
-            statement.setBigDecimal(1, new BigDecimal(empresa.getCodCia()));
-            statement.setDate(2, new java.sql.Date(fechaInicial.getTime()));
-            statement.setDate(3, new java.sql.Date(fechaFinal.getTime()));
-            statement.execute();
-            statement.close();
-            conexion.close();
-            conexion = null;
+            Query query = em.createNativeQuery("begin pkg_indicadores.calcular_indicadores( ?, ?, ? ); end;");
+            query.setParameter(1, empresa.getCodCia());
+            query.setParameter(2, fechaInicial);
+            query.setParameter(3, fechaFinal);
+            query.executeUpdate();
         } catch (Exception excpt) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Ha ocurrido la siguiente excepción: ", excpt);
         }
