@@ -28,11 +28,11 @@ public class SolicitudDiaVacacionEdit extends AbstractEditAccionPersonal impleme
     private PlanillaSessionBean planillaSessionBean;
     private Date fechaInicial;
     private Date fechaFinal;
-    private Short dias = 0;
+    private Double dias = 0.0;
 
     public SolicitudDiaVacacionEdit() {
     }
-    
+
     @PostConstruct
     public void _init() {
         if (getSessionBeanPLA().getAccionSeleccionada() != null) {
@@ -61,18 +61,20 @@ public class SolicitudDiaVacacionEdit extends AbstractEditAccionPersonal impleme
         this.fechaInicial = fechaInicial;
     }
 
-    public Short getDias() {
+    public Double getDias() {
         return dias;
     }
 
-    public void setDias(Short dias) {
+    public void setDias(Double dias) {
         this.dias = dias;
     }
 
     @Override
     public String guardarCambios() {
         AccionPersonal a = getSessionBeanPLA().getAccionSeleccionada();
-        if (a == null || !validarSolicitud()) return null;
+        if (a == null || !validarSolicitud()) {
+            return null;
+        }
         try {
             if (isInRole("rrhh")) {
                 a.setAnio(new Short(getPlanilla().split(":")[1].toString()));
@@ -92,7 +94,7 @@ public class SolicitudDiaVacacionEdit extends AbstractEditAccionPersonal impleme
         }
         return null;
     }
-    
+
     @Override
     public boolean validarSolicitud() {
         Boolean error = Boolean.TRUE;
@@ -112,6 +114,10 @@ public class SolicitudDiaVacacionEdit extends AbstractEditAccionPersonal impleme
                 error = Boolean.FALSE;
             }
         }
+        if (dias != null && dias > calculaDias(getFechaInicial(), getFechaFinal()).shortValue()) {
+            addMessage("Acciones de Personal", "Cantidad de Días fuera del rango seleccionado.", TipoMensaje.ERROR);
+            error = Boolean.FALSE;
+        }
         if (isInRole("rrhh")) {
             if (getTipoPlanilla() == null || getTipoPlanilla() == -1) {
                 addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
@@ -128,14 +134,14 @@ public class SolicitudDiaVacacionEdit extends AbstractEditAccionPersonal impleme
 
     public void handleFechaInicial(DateSelectEvent event) {
         setFechaInicial(event.getDate());
-        setDias(calculaDias(getFechaInicial(), getFechaFinal()).shortValue());
+        setDias(calculaDias(getFechaInicial(), getFechaFinal()).doubleValue());
     }
 
     public void handleFechaFinal(DateSelectEvent event) {
         setFechaFinal(event.getDate());
-        setDias(calculaDias(getFechaInicial(), getFechaFinal()).shortValue());
+        setDias(calculaDias(getFechaInicial(), getFechaFinal()).doubleValue());
     }
-    
+
     @Override
     protected void limpiarCampos() {
         getSessionBeanPLA().setAccionSeleccionada(null);

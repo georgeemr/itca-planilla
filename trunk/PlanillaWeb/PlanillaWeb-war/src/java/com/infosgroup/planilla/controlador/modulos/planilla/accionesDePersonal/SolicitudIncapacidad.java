@@ -24,13 +24,13 @@ public class SolicitudIncapacidad extends SolicitudDePersonal implements java.io
     private Date fechaRealPlanilla;
     private Date fechaInicial;
     private Date fechaFinal;
-    private Short dias = 0;
+    private Double dias = 0.0;
 
-    public Short getDias() {
+    public Double getDias() {
         return dias;
     }
 
-    public void setDias(Short dias) {
+    public void setDias(Double dias) {
         this.dias = dias;
     }
 
@@ -74,7 +74,7 @@ public class SolicitudIncapacidad extends SolicitudDePersonal implements java.io
         fechaFinal = null;
         setTipoPlanilla(null);
         setPlanilla(null);
-        dias = new Short("0");
+        dias = new Double("0.0");
         setObservacion("");
     }
 
@@ -158,12 +158,12 @@ public class SolicitudIncapacidad extends SolicitudDePersonal implements java.io
 
     public void handleFechaInicial(DateSelectEvent event) {
         setFechaInicial(event.getDate());
-        setDias( calculaDias(getFechaInicial(), getFechaFinal()).shortValue() );
+        setDias( calculaDias(getFechaInicial(), getFechaFinal()).doubleValue() );
     }
 
     public void handleFechaFinal(DateSelectEvent event) {
         setFechaFinal(event.getDate());
-        setDias( calculaDias(getFechaInicial(), getFechaFinal()).shortValue() );
+        setDias( calculaDias(getFechaInicial(), getFechaFinal()).doubleValue() );
     }
 
 }
