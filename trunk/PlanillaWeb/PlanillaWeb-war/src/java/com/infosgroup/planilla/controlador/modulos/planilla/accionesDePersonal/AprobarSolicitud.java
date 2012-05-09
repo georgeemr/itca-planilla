@@ -79,7 +79,11 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
         }
 
         try {
-            planillaSessionBean.jefeEditaSolicitud(a, "A");
+            if ( a.getTipoAccion().getFirmaRh().equals("S") ){
+                planillaSessionBean.jefeEditaSolicitud(a, "J");
+            }else{
+                planillaSessionBean.jefeEditaSolicitud(a, "A");
+            }
             getSessionBeanPLA().setAccionSeleccionada(a);
             addMessage("Aprobar Solicitud", "Datos Guardados con éxito. \n\n", TipoMensaje.INFORMACION);
             enviarCorreoAccionPersonal(a, getManifiestoCorreo(APRUEBA.JEFE, a));
@@ -176,7 +180,7 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
         Boolean error = Boolean.FALSE;
         switch (getTipoAccion()) {
             case 1:
-            case 2:
+            //case 2:
             case 5:
             if (getTipoPlanilla() == null || getTipoPlanilla() == -1) {
                 addMessage("Acciones de Personal", "Debe seleccionar el Tipo de Planilla.", TipoMensaje.ERROR);
