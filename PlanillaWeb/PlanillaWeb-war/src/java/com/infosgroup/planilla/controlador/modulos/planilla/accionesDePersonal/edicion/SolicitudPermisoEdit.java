@@ -29,7 +29,7 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
     private PlanillaSessionBean planillaSessionBean;
     private Date fechaInicial;
     private Date fechaFinal;
-    private Short dias;
+    private Double dias;
     private Short horas;
     private Double valorDescuento;
 
@@ -54,11 +54,11 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
         }
     }
 
-    public Short getDias() {
+    public Double getDias() {
         return dias;
     }
 
-    public void setDias(Short dias) {
+    public void setDias(Double dias) {
         this.dias = dias;
     }
 
@@ -96,12 +96,12 @@ public class SolicitudPermisoEdit extends AbstractEditAccionPersonal implements 
 
     public void handleFechaInicial(DateSelectEvent event) {
         setFechaInicial(event.getDate());
-        setDias(calculaDias(getFechaInicial(), getFechaFinal()).shortValue());
+        setDias(calculaDias(getFechaInicial(), getFechaFinal()).doubleValue());
     }
 
     public void handleFechaFinal(DateSelectEvent event) {
         setFechaFinal(event.getDate());
-        setDias(calculaDias(getFechaInicial(), getFechaFinal()).shortValue());
+        setDias(calculaDias(getFechaInicial(), getFechaFinal()).doubleValue());
     }
 
     @Override

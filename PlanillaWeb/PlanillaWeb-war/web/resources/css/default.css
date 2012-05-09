@@ -160,14 +160,14 @@ body {
 }
 
 .elementoSeleccionado{
-    background: -moz-linear-gradient(bottom, #93BBD1, #fff)!important;
-    background: -webkit-gradient(linear, center bottom, center top, from(#93BBD1), to(#fff))!important; 
+    background: -moz-linear-gradient(bottom, #668297, #fff)!important;
+    background: -webkit-gradient(linear, center bottom, center top, from(#668297), to(#fff))!important; 
     color: black;
 }
 
 .accionSeleccionada{
-    background: -moz-linear-gradient(bottom, #FFF300, #fff)!important;
-    background: -webkit-gradient(linear, center bottom, center top, from(#FFF300), to(#fff))!important; 
+    background: -moz-linear-gradient(bottom, #668297, #fff)!important;
+    background: -webkit-gradient(linear, center bottom, center top, from(#668297), to(#fff))!important; 
     color: black;
     font-weight: bold;
 }

@@ -43,7 +43,7 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
     public Boolean getRenderPlanilla() {
         switch (getTipoAccion()) {
             case 1: //Vacaciones Anuales
-            case 2: //Dia de vacacion
+            //case 2: //Dia de vacacion
             case 5: //Permiso sin goce de sueldo
                 renderPlanilla = Boolean.TRUE;
                 break;
@@ -100,7 +100,7 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
         try {
             switch (getTipoAccion()) {
                 case 1:
-                case 2:
+                //case 2:
                 case 5:
                 a.setAnio(new Short(getPlanilla().split(":")[1].toString()));
                 a.setMes(new Short(getPlanilla().split(":")[2].toString()));

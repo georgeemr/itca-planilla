@@ -31,17 +31,17 @@ public class SolicitudIncapacidadEdit extends AbstractEditAccionPersonal impleme
     private Date fechaRealPlanilla;
     private Date fechaInicioIncapacidad;
     private Date fechaFinIncapacidad;
-    private Short dias;
+    private Double dias;
     
     public void setEmpresa(Cias empresa) {
         this.empresa = empresa;
     }
 
-    public Short getDias() {
+    public Double getDias() {
         return dias;
     }
 
-    public void setDias(Short dias) {
+    public void setDias(Double dias) {
         this.dias = dias;
     }
 
@@ -167,12 +167,12 @@ public class SolicitudIncapacidadEdit extends AbstractEditAccionPersonal impleme
     
     public void handleFechaInicial(DateSelectEvent event) {
         setFechaInicioIncapacidad(event.getDate());
-        setDias(calculaDias(getFechaInicioIncapacidad(), getFechaFinIncapacidad()).shortValue());
+        setDias(calculaDias(getFechaInicioIncapacidad(), getFechaFinIncapacidad()).doubleValue());
     }
 
     public void handleFechaFinal(DateSelectEvent event) {
         setFechaFinIncapacidad(event.getDate());
-        setDias(calculaDias(getFechaInicioIncapacidad(), getFechaFinIncapacidad()).shortValue());
+        setDias(calculaDias(getFechaInicioIncapacidad(), getFechaFinIncapacidad()).doubleValue());
     }
 
     @Override

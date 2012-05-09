@@ -93,7 +93,7 @@ public class AccionPersonal implements Serializable {
     @Column(name = "COD_TIPOPLA")
     private Short codTipopla;
     @Column(name = "DIAS")
-    private Short dias;
+    private Double dias;
     @Column(name = "HORAS")
     private Short horas;
     @Column(name = "PERIODO_FINAL")
@@ -319,11 +319,11 @@ public class AccionPersonal implements Serializable {
         this.codTipopla = codTipopla;
     }
 
-    public Short getDias() {
+    public Double getDias() {
         return dias;
     }
 
-    public void setDias(Short dias) {
+    public void setDias(Double dias) {
         this.dias = dias;
     }
 

@@ -16,13 +16,13 @@ import org.primefaces.event.DateSelectEvent;
  *
  * @author root
  */
-@ManagedBean(name="solicitudDiaDeVacacion")
+@ManagedBean(name = "solicitudDiaDeVacacion")
 @ViewScoped
 public class SolicitudDiaDeVacacion extends SolicitudDePersonal implements java.io.Serializable {
 
     private Date fechaInicial;
     private Date fechaFinal;
-    private Short dias = 0;
+    private Double dias = 0.0;
 
     public Date getFechaFinal() {
         return fechaFinal;
@@ -40,11 +40,11 @@ public class SolicitudDiaDeVacacion extends SolicitudDePersonal implements java.
         this.fechaInicial = fechaInicial;
     }
 
-    public Short getDias() {
+    public Double getDias() {
         return dias;
     }
 
-    public void setDias(Short dias) {
+    public void setDias(Double dias) {
         this.dias = dias;
     }
 
@@ -56,7 +56,7 @@ public class SolicitudDiaDeVacacion extends SolicitudDePersonal implements java.
         accionPersonal.setAccionPersonalPK(getAccionPersonalPK(getSessionBeanADM().getCompania(), getEmpleadosToAccionPersonal()));
         accionPersonal.setTipoAccion(getTipoAccion());
         accionPersonal.setEmpleados(getEmpleadosToAccionPersonal());
-        accionPersonal.setEmpleados1( getEmpleadosToAccionPersonal().getEmpleados() );
+        accionPersonal.setEmpleados1(getEmpleadosToAccionPersonal().getEmpleados());
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
@@ -93,6 +93,11 @@ public class SolicitudDiaDeVacacion extends SolicitudDePersonal implements java.
                 error = Boolean.TRUE;
             }
         }
+
+        if (dias != null && dias > calculaDias(getFechaInicial(), getFechaFinal()).shortValue()) {
+            addMessage("Acciones de Personal", "Cantidad de Días fuera del rango seleccionado.", TipoMensaje.ERROR);
+            error = Boolean.FALSE;
+        }
         return error;
     }
 
@@ -101,16 +106,16 @@ public class SolicitudDiaDeVacacion extends SolicitudDePersonal implements java.
         setFechaInicial(null);
         setFechaFinal(null);
         setObservacion("");
-        setDias(new Short("0"));
+        setDias(new Double("0.0"));
     }
 
     public void handleFechaInicial(DateSelectEvent event) {
         setFechaInicial(event.getDate());
-        setDias(calculaDias(getFechaInicial(), getFechaFinal()).shortValue());
+        setDias(calculaDias(getFechaInicial(), getFechaFinal()).doubleValue());
     }
 
     public void handleFechaFinal(DateSelectEvent event) {
         setFechaFinal(event.getDate());
-        setDias(calculaDias(getFechaInicial(), getFechaFinal()).shortValue());
+        setDias(calculaDias(getFechaInicial(), getFechaFinal()).doubleValue());
     }
 }
