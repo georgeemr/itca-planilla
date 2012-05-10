@@ -177,8 +177,8 @@ public abstract class AbstractJSFPage implements java.io.Serializable {
         StringBuilder mensaje = new StringBuilder();
         mensaje.append("Solicitud Procesada\n\n");
         mensaje.append("Tipo de Solicitud: ");
-        mensaje.append("\n\nFecha: ").append( new SimpleDateFormat("dd/MM/yyyy").format(a.getFecha()));
-        mensaje.append("Detalle:\n\n\n\n");
+        mensaje.append("\n\nFecha: ").append( new SimpleDateFormat("dd/MM/yyyy").format(a.getFecha())).append("\n\n");
+        mensaje.append("Detalle:\n\n");
         mensaje.append("\n\nResultado: Solicitud ").append(a.getAccEstado());
         if (eaprueba.equals(AprobarSolicitud.APRUEBA.JEFE)) {
             mensaje.append("\n\nProcesado por: ").append(getSessionBeanEMP().getEmpleadoSesion().getNombreCompleto()).append(" ( Jefe Inmediato ) ");
