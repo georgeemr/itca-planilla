@@ -136,7 +136,7 @@ public class SolicitudIncapacidad extends SolicitudDePersonal implements java.io
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
-        accionPersonal.setStatus("G");
+        accionPersonal = getEstadoSolicitudByRol(accionPersonal);//accionPersonal.setStatus("G");
         accionPersonal.setUsuarioCreacion( getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setDias(dias != null ? dias : 0);
         accionPersonal.setPeriodo(fechaInicial);

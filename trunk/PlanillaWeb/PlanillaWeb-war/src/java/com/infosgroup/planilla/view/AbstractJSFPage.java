@@ -4,6 +4,7 @@
  */
 package com.infosgroup.planilla.view;
 
+import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.AprobarSolicitud;
 import com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal.SolicitudDePersonal;
 import com.infosgroup.planilla.controlador.sessionbean.*;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
@@ -11,6 +12,7 @@ import com.infosgroup.planilla.modelo.estructuras.DetalleAdjuntoCorreo;
 import com.infosgroup.planilla.modelo.procesos.MailStatelessBean;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -169,5 +171,21 @@ public abstract class AbstractJSFPage implements java.io.Serializable {
         String ruta = r + "resources" + java.io.File.separator + "imagenes" + java.io.File.separator + archivo;
         f = new File(ruta);
         return f;
+    }
+    
+    public String getManifiestoCorreo(AprobarSolicitud.APRUEBA eaprueba, AccionPersonal a) {
+        StringBuilder mensaje = new StringBuilder();
+        mensaje.append("Solicitud Procesada\n\n");
+        mensaje.append("Tipo de Solicitud: ");
+        mensaje.append("\n\nFecha: ").append( new SimpleDateFormat("dd/MM/yyyy").format(a.getFecha()));
+        mensaje.append("Detalle:\n\n\n\n");
+        mensaje.append("\n\nResultado: Solicitud ").append(a.getAccEstado());
+        if (eaprueba.equals(AprobarSolicitud.APRUEBA.JEFE)) {
+            mensaje.append("\n\nProcesado por: ").append(getSessionBeanEMP().getEmpleadoSesion().getNombreCompleto()).append(" ( Jefe Inmediato ) ");
+        } else {
+            mensaje.append("\n\nProcesado por: ").append(getSessionBeanEMP().getEmpleadoSesion().getNombreCompleto()).append(" ( Recursos Humanos ) ");
+        }
+        mensaje.append("\n\nAtte. \n\nDepartamento de Recursos Humanos ").append(getSessionBeanADM().getCompania().getNomComercial());
+        return mensaje.toString();
     }
 }

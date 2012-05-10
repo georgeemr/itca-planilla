@@ -7,6 +7,7 @@ package com.infosgroup.planilla.controlador.sessionbean;
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
+import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;

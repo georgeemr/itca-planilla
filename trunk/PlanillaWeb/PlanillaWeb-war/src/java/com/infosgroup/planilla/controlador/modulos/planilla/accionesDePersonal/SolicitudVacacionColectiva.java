@@ -179,7 +179,7 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
         accionPersonal.setFecha(new java.util.Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(e.getDepartamentos());
-        accionPersonal.setStatus("G");
+        accionPersonal = getEstadoSolicitudByRol(accionPersonal);//accionPersonal.setStatus("G");
         accionPersonal.setUsuarioCreacion(getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setPuestos(e.getPuestos());
         accionPersonal.setAnio(new Short(planilla.split(":")[1].toString()));

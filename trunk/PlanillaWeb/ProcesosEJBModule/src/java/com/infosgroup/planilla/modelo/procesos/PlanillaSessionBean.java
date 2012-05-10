@@ -125,6 +125,10 @@ public class PlanillaSessionBean {
     public List<Empleados> listarJefes() {
         return empleadoFacade.findByJefes();
     }
+    
+    public List<Empleados> findEmpleadosByJefe(Empleados empleado) {
+        return empleadoFacade.findEmpleadosByJefe(empleado);
+    }
 
     public List<Empleados> listaEmpleados(Cias cia) {
         return empleadoFacade.findEmpleadosByCias(cia);

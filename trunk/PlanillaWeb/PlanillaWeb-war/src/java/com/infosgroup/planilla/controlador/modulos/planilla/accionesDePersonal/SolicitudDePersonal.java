@@ -9,6 +9,7 @@ import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.facades.AccionPersonalFacade;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -121,7 +122,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         AccionPersonalPK nuevaPK = new AccionPersonalPK();
         try {
             nuevaPK.setCodCia(cias.getCodCia());
-            nuevaPK.setCodTipoaccion(getSessionBeanEMP().getTipo()/** getSessionBeanEMP().getAccionSeleccionada().getTipoAccionPK().getCodTipoaccion() */);
+            nuevaPK.setCodTipoaccion(getSessionBeanEMP().getTipo());
             nuevaPK.setCodEmp(e.getEmpleadosPK().getCodEmp());
             nuevaPK.setCorrelativo(accionPersonalFacade.max(cias.getCodCia(), e.getEmpleadosPK().getCodEmp()));
         } catch (Exception exception) {
@@ -145,11 +146,13 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
 
     public void guardarAccionPersonal(AccionPersonal accionPersonal) {
         try {
-            accionPersonal.setAprobadoRh("N");
-            accionPersonal.setAprobadoJefe("N");
             accionPersonalFacade.create(accionPersonal);
-            if ( getAccionesPersonalBackendBean()!=null ) {
+            if (getAccionesPersonalBackendBean() != null) {
                 getAccionesPersonalBackendBean().listar();
+            }
+            if(isInRole("rrhh")){//Si quien guarda la solicitud es RRHH implica que esta autorizada y se envia el correo.
+                planillaSessionBean.ejecutarAccionSolicitud(accionPersonal);
+                enviarCorreoAccionPersonal(accionPersonal, getManifiestoCorreo(AprobarSolicitud.APRUEBA.RECURSOS_HUMANOS, accionPersonal));
             }
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Se desencadeno la siguiente excepcion: ", e);
@@ -159,7 +162,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
     public TipoAccion getTipoAccion() {
         return planillaSessionBean.buscarTipoAccion(getSessionBeanADM().getCompania().getCodCia(), getSessionBeanEMP().getTipo());
     }
-
+    
     public Empleados getEmpleadosToAccionPersonal() {
         if (getSessionBeanEMP().getEmpleadoAccionPersonal() != null && !getSessionBeanEMP().getEmpleadoAccionPersonal().equals(getSessionBeanEMP().getEmpleadoSesion())) {
             return getSessionBeanEMP().getEmpleadoAccionPersonal();
@@ -167,4 +170,39 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
             return getSessionBeanEMP().getEmpleadoSesion();
         }
     }
+
+    public AccionPersonal getEstadoSolicitudByRol(AccionPersonal accionPersonal) {
+        accionPersonal.setAprobadoJefe("N");
+        accionPersonal.setAprobadoRh("N");
+        if (isInRole("rrhh")) {
+            if (getTipoAccion().getFirmaJefe() != null && getTipoAccion().getFirmaJefe().equals("S")) {
+                accionPersonal.setAprobadoJefe("J");
+                accionPersonal.setfApruebaJefe(new Date());
+            }
+            accionPersonal.setAprobadoRh("A");
+            accionPersonal.setfApruebaRh(new Date());
+            accionPersonal.setStatus("A");
+        } else if (isInRole("jefes")) {
+            // Si el jefe registra una Accion a uno de sus colaboradores.
+            if (getSessionBeanEMP().getEmpleadoAccionPersonal() != null && !getSessionBeanEMP().getEmpleadoAccionPersonal().equals(getSessionBeanEMP().getEmpleadoSesion())) {
+                if (getTipoAccion().getFirmaRh() != null && (getTipoAccion().getFirmaRh().equals("S") && (getTipoAccion().getFirmaJefe().equals("S")) )) {
+                    accionPersonal.setAprobadoJefe("J");
+                    accionPersonal.setfApruebaJefe(new Date());
+                    accionPersonal.setStatus("J");
+                }else if (getTipoAccion().getFirmaRh() != null && (getTipoAccion().getFirmaRh().equals("S") && (getTipoAccion().getFirmaJefe().equals("N")) )) {
+                    accionPersonal.setStatus("G");
+                } else {
+                    accionPersonal.setfApruebaJefe(new Date());
+                    accionPersonal.setStatus("A");
+                }
+            } else {
+                accionPersonal.setStatus("G");
+            }
+
+        } else {
+            accionPersonal.setStatus("G");
+        }
+        return accionPersonal;
+    }
+    
 }

@@ -24,12 +24,15 @@
 		<defaultValueExpression><![CDATA[new BigDecimal ("0")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SIGNO" class="java.lang.String"/>
+	<parameter name="nom_Isss" class="java.lang.String"/>
+	<parameter name="nom_Renta" class="java.lang.String"/>
+	<parameter name="nom_AFP" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select 'AFP' as prestacion, $P{val_AFP} as valor from dual
+		<![CDATA[select $P{nom_AFP} as prestacion, $P{val_AFP} as valor from dual
 union
-select 'ISSS' as prestacion, $P{val_Isss} as valor from dual
+select $P{nom_Isss} as prestacion, $P{val_Isss} as valor from dual
 union
-select 'RENTA' as prestacion, $P{val_Renta} as valor from dual
+select $P{nom_Renta} as prestacion, $P{val_Renta} as valor from dual
 union
 select
     lower(a.des_dp) as prestacion,
@@ -64,19 +67,19 @@ where
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField" x="34" y="0" width="215" height="13"/>
 				<textElement>
 					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{PRESTACION}]]></textFieldExpression>
 			</textField>
-			<textField pattern="##0.00" isBlankWhenNull="false">
+			<textField pattern="##0.00" isBlankWhenNull="true">
 				<reportElement key="textField" x="292" y="0" width="82" height="13"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALOR}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField-1" x="269" y="0" width="22" height="13"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{SIGNO}]]></textFieldExpression>

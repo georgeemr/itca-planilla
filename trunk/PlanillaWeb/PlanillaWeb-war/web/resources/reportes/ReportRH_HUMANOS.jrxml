@@ -26,6 +26,9 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String">
 		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="nom_Isss" class="java.lang.String"/>
+	<parameter name="nom_Renta" class="java.lang.String"/>
+	<parameter name="nom_AFP" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select d.nom_comercial, initcap(nombres||' '||apellidos) as nombre, to_char(trunc (a.fec_ingreso),'dd "de " fmmonth " de " yyyy') fecha_ingreso, b.nom_puesto, c.nom_agencia, valorLetras(a.salario_base,$P{pCia}) valor_letras, a.salario_base, to_char(trunc (sysdate),'dd "de " fmmonth " de " yyyy') al_dia_de,
 nvl(e.nom_depto, '') as departamento,
@@ -88,6 +91,15 @@ f.cod_moneda(+) = d.moneda_base]]>
 				</subreportParameter>
 				<subreportParameter name="pCia">
 					<subreportParameterExpression><![CDATA[$P{pCia}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="nom_Renta">
+					<subreportParameterExpression><![CDATA[$P{nom_Renta}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="nom_Isss">
+					<subreportParameterExpression><![CDATA[$P{nom_Isss}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="nom_AFP">
+					<subreportParameterExpression><![CDATA[$P{nom_AFP}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="val_Isss">
 					<subreportParameterExpression><![CDATA[$P{val_Isss}]]></subreportParameterExpression>

@@ -29,7 +29,7 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
 
     @EJB
     private PlanillaSessionBean planillaSessionBean;
-    enum APRUEBA {JEFE, RECURSOS_HUMANOS};
+    public enum APRUEBA {JEFE, RECURSOS_HUMANOS};
     private List<TiposPlanilla> listaTipos;
     private List<ProgramacionPla> listaPlanillas;
     private String planilla;
@@ -194,21 +194,6 @@ public class AprobarSolicitud extends AbstractJSFPage implements java.io.Seriali
             break;
         }
         return error;
-    }
-
-    public String getManifiestoCorreo(APRUEBA eaprueba, AccionPersonal a) {
-        StringBuilder mensaje = new StringBuilder();
-        mensaje.append("Solicitud Procesada.\n\n");
-        mensaje.append("\n\nFecha: ").append(a.getFecha());
-        mensaje.append("Detalle:\n\n\n\n");
-        mensaje.append("\n\nResultado: Solicitud ").append(a.getAccEstado());
-        if (eaprueba.equals(APRUEBA.JEFE)) {
-            mensaje.append("\n\nProcesado por: ").append(getSessionBeanEMP().getEmpleadoSesion().getNombreCompleto()).append(" ( Jefe Inmediato ) ");
-        } else {
-            mensaje.append("\n\nProcesado por: ").append(getSessionBeanEMP().getEmpleadoSesion().getNombreCompleto()).append(" ( Recursos Humanos ) ");
-        }
-        mensaje.append("\n\nAtte. \n\nDepartamento de Recursos Humanos ").append(getSessionBeanADM().getCompania().getNomComercial());
-        return mensaje.toString();
     }
 
     public Short getTipoPlanilla() {
