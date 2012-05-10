@@ -36,37 +36,33 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
     }
 
     public List<Empleados> findEmpleadosEvaluados(Campania c) {
-        List<Empleados> le = null;
         Query q = em.createNativeQuery("select em.* from empleados em where (cod_cia, em.cod_emp) in (select ev.cod_cia, ev.empleado from evaluacion ev where (ev.cod_cia, ev.periodo, ev.cod_campania) in (select c.cod_cia, c.periodo, c.cod_campania from campania c where cod_cia = ? and periodo = ? and cod_campania = ?)) order by em.cod_cia, em.cod_emp", Empleados.class);
         q.setParameter(1, c.getCampaniaPK().getCodCia());
         q.setParameter(2, c.getCampaniaPK().getPeriodo());
         q.setParameter(3, c.getCampaniaPK().getCodCampania());
-        le = (List<Empleados>) q.getResultList();
+        List<Empleados> le = (List<Empleados>) q.getResultList();
         return le;
     }
 
     public List<Empleados> findEmpleadosNoEvaluados(Campania c) {
-        List<Empleados> le = null;
         Query q = em.createNativeQuery("select em.* from empleados em where (cod_cia, em.cod_emp) not in (select ev.cod_cia, ev.empleado from evaluacion ev where (ev.cod_cia, ev.periodo, ev.cod_campania) in (select c.cod_cia, c.periodo, c.cod_campania from campania c where cod_cia = ? and periodo = ? and cod_campania = ?)) order by em.cod_cia, em.cod_emp", Empleados.class);
         q.setParameter(1, c.getCampaniaPK().getCodCia());
         q.setParameter(2, c.getCampaniaPK().getPeriodo());
         q.setParameter(3, c.getCampaniaPK().getCodCampania());
-        le = (List<Empleados>) q.getResultList();
+        List<Empleados> le = (List<Empleados>) q.getResultList();
         return le;
     }
 
     public Empleados findByUsuario(String usuario) throws javax.persistence.NoResultException {
-        Empleados e = null;
         TypedQuery tq = em.createQuery("SELECT e FROM Empleados e WHERE e.usuario = :usuario", Empleados.class);
         tq.setParameter("usuario", usuario);
-        e = (Empleados) tq.getSingleResult();
+        Empleados e = (Empleados) tq.getSingleResult();
         return e;
     }
 
     public List<Empleados> findByJefes() {
-        List<Empleados> listaJefes = new ArrayList<Empleados>(0);
         TypedQuery<Empleados> pue = em.createQuery("select e from Empleado e, PuestoEmpleado p where p.puesto.jefatura = 1 ", Empleados.class);
-        listaJefes = pue.getResultList();
+        List<Empleados> listaJefes = pue.getResultList();
         return listaJefes != null ? listaJefes : new ArrayList<Empleados>();
     }
 
@@ -110,10 +106,9 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
 
     @PermitAll
     public List<Empleados> findEmpleadosByUsuario(String usuario) {
-        List<Empleados> lista = null;
         Query q = em.createNamedQuery("Empleados.findByUsuario", Empleados.class);
         q.setParameter("usuario", usuario);
-        lista = q.getResultList();
+        List<Empleados> lista = q.getResultList();
         return lista != null ? lista : new ArrayList<Empleados>();
     }
 
@@ -185,26 +180,9 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
 
     @PermitAll
     public void eliminarEvaluadorEvaluaciones(PreEvaluacion preevaluacion, Empleados empleado, List<Evaluacion> evaluacion) {
-
         Empleados e = em.find(Empleados.class, empleado.getEmpleadosPK() );
         e.getEvaluacionList().clear();
         e.setEvaluacionList(evaluacion);
-        em.merge(e);
-//        try {
-//         em.createNativeQuery( "delete evaluacion b where (b.cod_cia, b.periodo, b.cod_campania, b.tipo_evaluacion, b.plantilla, b.cod_emp) not in ( "+ 
-//                 "select b.cod_cia, b.periodo, b.cod_campania, b.tipo_evaluacion, b.plantilla, b.cod_emp from evaluador_evaluaciones a, evaluacion b "+
-//                 "where a.cod_cia = ? and a.periodo = ? and a.campania = ? and a.tipo_evaluacion = ? and a.plantilla = ? and a.evaluador = ? "+ 
-//                 "and b.cod_cia = a.cod_cia and b.periodo = a.periodo and b.cod_campania = a.campania "+ 
-//                 "and b.tipo_evaluacion = a.tipo_evaluacion and b.plantilla = a.plantilla and b.cod_emp = a.empleado) and b.finalizada != 1") 
-//          .setParameter(1, preevaluacion.getPreEvaluacionPK().getCodCia())
-//          .setParameter(2, preevaluacion.getPreEvaluacionPK().getPeriodo())
-//          .setParameter(3, preevaluacion.getPreEvaluacionPK().getCodCampania())
-//          .setParameter(4, preevaluacion.getPreEvaluacionPK().getTipoEvaluacion())
-//          .setParameter(5, preevaluacion.getPreEvaluacionPK().getPlantilla())
-//          .setParameter(6, empleado.getEmpleadosPK().getCodEmp()).executeUpdate();   
-//        } catch (Exception exception) {
-//            logger.log(Level.SEVERE, "Ocurrio el siguiente error al intentar eliminar las evaluaciones.", exception);
-//        }
-         
+        em.merge(e);         
     }
 }

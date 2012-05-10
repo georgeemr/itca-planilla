@@ -34,7 +34,7 @@ and open the template in the editor.
                     <h:outputLabel value="#{SessionBeanEMP.empleadoAccionPersonal.nombreCompleto}" />
                 </td>
                 <td>
-                    <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, lstTipos" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}"
+                    <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" update="principalForm:mensajes, lstTipos" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes') }"
                                    onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" 
                                    oncomplete="#{cc.attrs.dialogoEmpleados}.show();">
                         <p:graphicImage value="/resources/iconos/personal.png"/>

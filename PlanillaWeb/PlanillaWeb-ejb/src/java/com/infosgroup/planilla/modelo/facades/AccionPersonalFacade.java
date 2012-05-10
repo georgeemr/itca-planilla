@@ -97,12 +97,18 @@ public class AccionPersonalFacade extends AbstractFacade<AccionPersonal, AccionP
     @RolesAllowed({"rrhh"})
     public List<AccionPersonal> findSolicitudesByRRHH(Empleados empleado) {
         StringBuilder query = new StringBuilder();
+        /*query.append("select * from ( select a.* from accion_personal a, tipo_accion b where ");
+        query.append("a.cod_cia = ? and b.cod_cia = a.cod_cia and b.cod_tipoaccion = a.cod_tipoaccion and b.firma_jefe = 'S' and b.firma_rh = 'S' and a.f_aprueba_jefe ");
+        query.append("is not null and a.aprobado_jefe = 'J' and status = 'J' and a.f_aprueba_rh is null ");
+        query.append("union ");
+        query.append("select c.* from accion_personal c, tipo_accion d where c.cod_cia = ? and d.cod_cia = c.cod_cia and d.cod_tipoaccion = c.cod_tipoaccion ");
+        query.append("and d.firma_jefe = 'N' and d.firma_rh = 'S' and c.status = 'G') order by fecha desc");*/
         query.append("select * from ( select a.* from accion_personal a, tipo_accion b where ");
         query.append("a.cod_cia = ? and b.cod_cia = a.cod_cia and b.cod_tipoaccion = a.cod_tipoaccion and b.firma_jefe = 'S' and b.firma_rh = 'S' and a.f_aprueba_jefe ");
         query.append("is not null and a.aprobado_jefe = 'J' and status = 'J' and a.f_aprueba_rh is null ");
         query.append("union ");
         query.append("select c.* from accion_personal c, tipo_accion d where c.cod_cia = ? and d.cod_cia = c.cod_cia and d.cod_tipoaccion = c.cod_tipoaccion ");
-        query.append("and d.firma_jefe = 'N' and d.firma_rh = 'S' and c.status = 'G') order by fecha desc");
+        query.append("and d.firma_jefe = 'N' and d.firma_rh = 'S' and c.status = 'G' or c.status = 'J') order by fecha desc");
         Query q = em.createNativeQuery(query.toString(), AccionPersonal.class);
         q.setParameter(1, empleado.getEmpleadosPK().getCodCia());
         q.setParameter(2, empleado.getEmpleadosPK().getCodCia());

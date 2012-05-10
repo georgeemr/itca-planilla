@@ -74,22 +74,25 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public void seleccionarAccion(AjaxBehaviorEvent event) {
-        accionSeleccionada = planillaSessionBean.buscarTipoAccion(empresa, getSessionBeanEMP().getTipo());
+        accionSeleccionada = planillaSessionBean.buscarTipoAccion(empresa, getSessionBeanEMP().getTipo());       
         urlPlantilla = accionSeleccionada != null ? accionSeleccionada.getUrlPlantilla() : null;
         getSessionBeanEMP().setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
     }
 
     @PostConstruct
     public void init() {
-        listaEmp = planillaSessionBean.listaEmpleados(getSessionBeanADM().getCompania());
         if (isInRole("rrhh")) {
-            listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
+            setListaSolicitudes( planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion()));
+            setListaEmp( planillaSessionBean.listaEmpleados(getSessionBeanADM().getCompania()) );
         } else if (isInRole("jefes")) {
-            listaSolicitudes = planillaSessionBean.findSolicitudesByJefe(getSessionBeanEMP().getEmpleadoSesion());
+            setListaSolicitudes(planillaSessionBean.findSolicitudesByJefe(getSessionBeanEMP().getEmpleadoSesion()));
+            setListaEmp( planillaSessionBean.findEmpleadosByJefe(getSessionBeanEMP().getEmpleadoSesion()) );
         } else if (isInRole("empleados")) {
-            listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
+            setListaSolicitudes( planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion()));
+            setListaEmp(new ArrayList<Empleados>());
         } else {
-            listaSolicitudes = new ArrayList<AccionPersonal>();
+            setListaSolicitudes( new ArrayList<AccionPersonal>() );
+            setListaEmp(new ArrayList<Empleados>());
         }
         getSessionBeanEMP().setTipo(null);
         setEmpresa( getSessionBeanADM().getCompania().getCodCia());

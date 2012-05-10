@@ -79,7 +79,7 @@ public class SolicitudRetiro extends SolicitudDePersonal implements java.io.Seri
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
         accionPersonal.setCausasRenuncia(new CausasRenuncia(new CausasRenunciaPK(getSessionBeanADM().getCompania().getCodCia(), tipoRenuncia)));
-        accionPersonal.setStatus("G");
+        accionPersonal = getEstadoSolicitudByRol(accionPersonal);//accionPersonal.setStatus("G");
         accionPersonal.setUsuarioCreacion( getSessionBeanEMP().getEmpleadoSesion().getUsuario() );
         accionPersonal.setFechaInicial(fechaRetiro);
         accionPersonal.setCodTipopla(getTipoPlanilla());

@@ -60,7 +60,7 @@ public class SolicitudDiaDeVacacion extends SolicitudDePersonal implements java.
         accionPersonal.setFecha(new Date());
         accionPersonal.setObservacion(getObservacion());
         accionPersonal.setDepartamentos(getEmpleadosToAccionPersonal().getDepartamentos());
-        accionPersonal.setStatus("G");
+        accionPersonal = getEstadoSolicitudByRol(accionPersonal);//accionPersonal.setStatus("G");
         accionPersonal.setDias(dias);
         accionPersonal.setUsuarioCreacion(getSessionBeanEMP().getEmpleadoSesion().getUsuario());
         accionPersonal.setFechaFinal(fechaFinal);

@@ -117,7 +117,7 @@
             </p:column>
 
             <p:column headerText="Ap. Jefe" style="width: 5%;" >
-                <p:graphicImage value="/resources/iconos/dialog-ok-apply.png" rendered="#{sol.aprobadoJefe eq 'A'}" />
+                <p:graphicImage value="/resources/iconos/dialog-ok-apply.png" rendered="#{(sol.aprobadoJefe eq 'A') or ((sol.aprobadoJefe eq 'J') and (sol.tipoAccion.firmaJefe eq 'S') )}" />
                 <p:graphicImage value="/resources/iconos/edit-delete.png" rendered="#{sol.aprobadoJefe eq 'R'}" />
             </p:column>
 

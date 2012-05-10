@@ -115,8 +115,9 @@ public class ReportesStatelessBean {
             System.out.println("[REPORTE] Conexion:  " + conexion);
             JasperPrint jrPrint = JasperFillManager.fillReport(rutaReporte, parametros, conexion);
             byte[] bytesReporte = JasperExportManager.exportReportToPdf(jrPrint);
-            if((conexion != null) && !conexion.isClosed())
-            conexion.close();
+            if ((conexion != null) && !conexion.isClosed()) {
+                conexion.close();
+            }
             return bytesReporte;
         } catch (Exception excpt) {
             System.out.println(excpt.getClass().getName() + ": " + excpt.getLocalizedMessage());
@@ -180,11 +181,11 @@ public class ReportesStatelessBean {
         List<DetalleReporteEvaluacion> det = new ArrayList<DetalleReporteEvaluacion>();
         for (DetEvaluacion e : eliminarRepetidos(detalle)) {
             Integer puntajeObtenido = getPuntajeObtenido(detalle, e);
-            if (e.getRespuesta().getNivel()!=null){
-            det.add(new DetalleReporteEvaluacion(e.getRespuesta().getNivel(),
-                    puntajeObtenido,
-                    e.getRespuesta().getValor().intValue(), 100,
-                    puntajeObtenido * e.getRespuesta().getValor().intValue() * 100 / 100));
+            if (e.getRespuesta().getNivel() != null) {
+                det.add(new DetalleReporteEvaluacion(e.getRespuesta().getNivel(),
+                        puntajeObtenido,
+                        e.getRespuesta().getValor().intValue(), 100,
+                        puntajeObtenido * e.getRespuesta().getValor().intValue() * 100 / 100));
             }
         }
         return (det != null) ? det : new ArrayList<DetalleReporteEvaluacion>();
@@ -204,10 +205,10 @@ public class ReportesStatelessBean {
     public Integer getPuntajeObtenido(List<DetEvaluacion> detalle, DetEvaluacion e) {
         int d = 0;
         for (DetEvaluacion deta : detalle) {
-            if(deta.getRespuesta().getNivel()!=null){
-            if (deta.getRespuesta().getNivel().equals(e.getRespuesta().getNivel())) {
-                d++;
-            }
+            if (deta.getRespuesta().getNivel() != null) {
+                if (deta.getRespuesta().getNivel().equals(e.getRespuesta().getNivel())) {
+                    d++;
+                }
             }
         }
         return d;
@@ -217,8 +218,8 @@ public class ReportesStatelessBean {
     public Integer totalEvaluacion(List<DetEvaluacion> detalle) {
         Integer nota = 0;
         for (DetEvaluacion e : detalle) {
-            if (e.getRespuesta().getValor()!=null){
-                nota += e.getRespuesta().getValor().intValue();    
+            if (e.getRespuesta().getValor() != null) {
+                nota += e.getRespuesta().getValor().intValue();
             }
         }
         return nota != null ? nota : 0;
@@ -274,23 +275,33 @@ public class ReportesStatelessBean {
     @PermitAll
     public void generarConstanciaSueldo(EmpleadosPK empleadosPK) {
         Double val_isss, val_afp, val_renta;
+        String nom_isss, nom_afp, nom_renta;
         try {
             Connection conexion = planillaJDBCDatasource.getConnection();
-            CallableStatement statement = conexion.prepareCall("begin DEDUC_LEYREPORTS(?, ?, ?, ?, ?); end;");
+            CallableStatement statement = conexion.prepareCall("begin DEDUC_LEYREPORTS_WEB(?, ?, ?, ?, ?, ?, ?, ?); end;");
             statement.setBigDecimal(1, new BigDecimal(empleadosPK.getCodCia()));
             statement.setBigDecimal(2, new BigDecimal(empleadosPK.getCodEmp()));
             statement.registerOutParameter(3, Types.DOUBLE);
             statement.registerOutParameter(4, Types.DOUBLE);
             statement.registerOutParameter(5, Types.DOUBLE);
+            statement.registerOutParameter(6, Types.VARCHAR);
+            statement.registerOutParameter(7, Types.VARCHAR);
+            statement.registerOutParameter(8, Types.VARCHAR);
             statement.execute();
             val_isss = statement.getDouble(3);
             val_afp = statement.getDouble(4);
             val_renta = statement.getDouble(5);
+            nom_isss = statement.getString(6);
+            nom_afp = statement.getString(7);
+            nom_renta = statement.getString(8);
         } catch (Exception excpt) {
             val_isss = 0.0;
             val_afp = 0.0;
             val_renta = 0.0;
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"Ha ocurrido la siguiente excepción: ",excpt);
+            nom_isss = "";
+            nom_afp = "";
+            nom_renta = "";
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Ha ocurrido la siguiente excepción: ", excpt);
         }
         HashMap<String, Object> parametros = new HashMap<String, Object>();
         parametros.put("pCia", new BigDecimal(empleadosPK.getCodCia()));
@@ -298,6 +309,9 @@ public class ReportesStatelessBean {
         parametros.put("val_Isss", new BigDecimal(val_isss));
         parametros.put("val_AFP", new BigDecimal(val_afp));
         parametros.put("val_Renta", new BigDecimal(val_renta));
+        parametros.put("nom_Isss",nom_isss );
+        parametros.put("nom_AFP", nom_afp);
+        parametros.put("nom_Renta", nom_renta);
         generarReporteSQL(FacesContext.getCurrentInstance(), parametros, "ReportRH_HUMANOS");
     }
 }
