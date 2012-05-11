@@ -51,9 +51,11 @@ public class FuncionPuesto implements Serializable {
     private String descFuncion;
     @Column(name = "COD_TIPO_PUESTO")
     private Short codTipoPuesto;
-    @JoinTable(name = "FUNCION_X_PUESTO", joinColumns = {
+    @JoinTable(name = "FUNCION_X_PUESTO", 
+    joinColumns = {
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
-        @JoinColumn(name = "COD_FUNCION", referencedColumnName = "COD_FUNCION", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "COD_FUNCION", referencedColumnName = "COD_FUNCION", nullable = false)}, 
+    inverseJoinColumns = {
         @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false),
         @JoinColumn(name = "COD_PUESTO", referencedColumnName = "COD_PUESTO", nullable = false)})
     @ManyToMany

@@ -45,6 +45,11 @@ public class PerfilXPuesto implements Serializable {
         @JoinColumn(name = "COD_PUESTO", referencedColumnName = "COD_PUESTO", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Puestos puestos;
+        @JoinColumns({
+        @JoinColumn(name = "COD_CIA", referencedColumnName = "COD_CIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "COD_PERFIL", referencedColumnName = "COD_PERFIL", nullable = false, insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private Perfil perfil;
 
     public PerfilXPuesto() {
     }
@@ -87,6 +92,14 @@ public class PerfilXPuesto implements Serializable {
 
     public void setPuestos(Puestos puestos) {
         this.puestos = puestos;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
     }
 
     @Override

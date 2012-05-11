@@ -81,7 +81,13 @@ public class ReclutamientoSessionBean {
     private CandidatoXCargoFacade candidatoXCargoFacade;
     @EJB
     private CriterioFacade CriterioFacade;
-
+    @EJB
+    private FuncionPuestoFacade funcionPuestoFacade;
+    @EJB
+    private PerfilXPuestoFacade perfilXPuestoFacade;
+    @EJB
+    private PerfilFacade perfilFacade;
+    
     @PermitAll
     public List<Criterio> getListaCriteriosByCias(Short cod_cia) {
         return CriterioFacade.findByCias(cod_cia);
@@ -655,5 +661,20 @@ public class ReclutamientoSessionBean {
     @PermitAll
     public List<EmergenciaXCandidato> findEmergenciasByCandidato(Candidato candidato) {
         return emergenciaCandidatoFacade.findByCandidato(candidato);
+    }
+    
+    @PermitAll
+    public List<FuncionPuesto> findFuncionPuestoByEmpresa(Cias empresa){
+        return funcionPuestoFacade.findByEmpresa(empresa);
+    }
+    
+    @PermitAll
+    public List<PerfilXPuesto> findPerfilXPuestoByEmpresa(Cias empresa){
+        return perfilXPuestoFacade.findByEmpresa(empresa);
+    }
+    
+    @PermitAll
+    public List<Perfil> findPerfilByEmpresa(Cias empresa){
+        return perfilFacade.findByEmpresa(empresa);
     }
 }

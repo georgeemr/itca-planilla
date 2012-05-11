@@ -7,21 +7,8 @@ package com.infosgroup.planilla.modelo.entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -57,8 +44,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Puestos.findByJefatura", query = "SELECT p FROM Puestos p WHERE p.jefatura = :jefatura")})
 public class Puestos implements Serializable {
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-//    private List<CriteriosXPuesto> criteriosXPuestoList;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PuestosPK puestosPK;
@@ -120,8 +105,10 @@ public class Puestos implements Serializable {
         @JoinColumn(name = "COD_AREA", referencedColumnName = "COD_AREA")})
     @ManyToOne(optional = false)
     private AreasStaff areasStaff;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
-//    private List<PruebaXPuesto> pruebaXPuestoList;
+    @ManyToMany(mappedBy = "puestosList", cascade= CascadeType.ALL)
+    private List<FuncionPuesto> funcionPuestoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
+    private List<PerfilXPuesto> perfilXPuestoList;
     @Transient
     private String descripcionEstado;
     
@@ -213,13 +200,6 @@ public class Puestos implements Serializable {
         this.codAlterno = codAlterno;
     }
 
-//    public Short getCodTipoPuesto() {
-//        return codTipoPuesto;
-//    }
-//
-//    public void setCodTipoPuesto(Short codTipoPuesto) {
-//        this.codTipoPuesto = codTipoPuesto;
-//    }
     public String getDescPuesto() {
         return descPuesto;
     }
@@ -260,13 +240,6 @@ public class Puestos implements Serializable {
         this.puestoJefe = puestoJefe;
     }
 
-//    public Short getCodDepto() {
-//        return codDepto;
-//    }
-//
-//    public void setCodDepto(Short codDepto) {
-//        this.codDepto = codDepto;
-//    }
     public String getObjetivo() {
         return objetivo;
     }
@@ -351,9 +324,23 @@ public class Puestos implements Serializable {
     public void setDescripcionEstado(String descripcionEstado) {
         this.descripcionEstado = descripcionEstado;
     }
-    
-    
 
+    public List<FuncionPuesto> getFuncionPuestoList() {
+        return funcionPuestoList;
+    }
+
+    public void setFuncionPuestoList(List<FuncionPuesto> funcionPuestoList) {
+        this.funcionPuestoList = funcionPuestoList;
+    }
+
+    public List<PerfilXPuesto> getPerfilXPuestoList() {
+        return perfilXPuestoList;
+    }
+
+    public void setPerfilXPuestoList(List<PerfilXPuesto> perfilXPuestoList) {
+        this.perfilXPuestoList = perfilXPuestoList;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -379,15 +366,6 @@ public class Puestos implements Serializable {
         return "com.infosgroup.planilla.modelo.entidades.planilla.Puestos[ puestosPK=" + puestosPK + " ]";
     }
 
-//    @XmlTransient
-//    public List<CriteriosXPuesto> getCriteriosXPuestoList() {
-//        return criteriosXPuestoList;
-//    }
-//
-//    public void setCriteriosXPuestoList(List<CriteriosXPuesto> criteriosXPuestoList) {
-//        this.criteriosXPuestoList = criteriosXPuestoList;
-//    }
-
     public TipoPuesto getTipoPuesto() {
         return tipoPuesto;
     }
@@ -404,12 +382,4 @@ public class Puestos implements Serializable {
         this.departamentos = departamentos;
     }
 
-//    @XmlTransient
-//    public List<PruebaXPuesto> getPruebaXPuestoList() {
-//        return pruebaXPuestoList;
-//    }
-//
-//    public void setPruebaXPuestoList(List<PruebaXPuesto> pruebaXPuestoList) {
-//        this.pruebaXPuestoList = pruebaXPuestoList;
-//    }
 }

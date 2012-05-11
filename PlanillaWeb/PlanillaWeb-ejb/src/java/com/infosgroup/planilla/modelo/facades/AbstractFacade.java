@@ -34,6 +34,7 @@ public abstract class AbstractFacade<T, P> {
     @PermitAll
     public void edit(T entity) throws javax.persistence.EntityNotFoundException {
         getEntityManager().merge(entity);
+        getEntityManager().flush();
     }
 
     @PermitAll
