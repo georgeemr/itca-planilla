@@ -375,9 +375,23 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
                 reclutamientoFacade.guardarPuesto(nuevoPuesto, getSessionBeanADM().getCompania());
                 limpiarCampos();
             } else if (getEstadoAccion() != null && getEstadoAccion().equals(1)) {
-                nuevoPuesto.setFuncionPuestoList(funcionesPuesto);
-                nuevoPuesto.setPerfilXPuestoList(perfilesXPuesto);
-                reclutamientoFacade.editarPuesto(nuevoPuesto);
+                PuestosPK p = getPuestoSeleccionado().getPuestosPK();
+                setPuestoSeleccionado(nuevoPuesto);
+                getPuestoSeleccionado().setPuestosPK(p);
+                if( getPuestoSeleccionado().getFuncionPuestoList()==null){ 
+                    getPuestoSeleccionado().setFuncionPuestoList(new ArrayList<FuncionPuesto>()) ;
+                }else{
+                    getPuestoSeleccionado().getFuncionPuestoList().clear();
+                }
+                
+                if( getPuestoSeleccionado().getPerfilXPuestoList()==null){
+                    getPuestoSeleccionado().setPerfilXPuestoList(new ArrayList<PerfilXPuesto>()) ;
+                }else{
+                    getPuestoSeleccionado().getPerfilXPuestoList().clear();
+                }
+                getPuestoSeleccionado().getFuncionPuestoList().addAll(funcionesPuesto);
+                getPuestoSeleccionado().getPerfilXPuestoList().addAll( perfilesXPuesto);
+                reclutamientoFacade.editarPuesto(getPuestoSeleccionado());
             }
             addMessage("Mantenimiento de Puestos", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
             
