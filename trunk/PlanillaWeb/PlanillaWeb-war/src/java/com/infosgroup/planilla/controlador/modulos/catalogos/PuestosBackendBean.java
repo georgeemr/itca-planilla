@@ -9,12 +9,14 @@ import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
-import org.primefaces.component.datatable.DataTable;
 
 /**
  *
@@ -24,10 +26,11 @@ import org.primefaces.component.datatable.DataTable;
 @ViewScoped
 public class PuestosBackendBean extends AbstractJSFPage implements java.io.Serializable {
 
-    /*EJB*/
     @EJB
     private ReclutamientoSessionBean reclutamientoFacade;
-    /* Campos */
+    /*
+     * Campos
+     */
     private String nombre;
     private Boolean horasExtras;
     private Boolean horasDobles;
@@ -44,21 +47,90 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
     private String descripcion;
     private String objetivo;
     private Criterio criterioSeleccionado;
-    /* Listas */
+    /*
+     * Listas
+     */
     private List<TipoPuesto> listaTipoPuesto;
     private List<Departamentos> listaDepartamentos;
     private List<AreasStaff> listaAreas;
     private List<Puestos> listaPuestos;
-    private java.util.List<CriteriosXPuesto> listaCriteriosXPuestos;
+    private List<CriteriosXPuesto> listaCriteriosXPuestos;
     private List<Criterio> listaCriterios;
-
-    private DataTable tablaPuestos;
+    private List<FuncionPuesto> listaFuncionPuesto;
+    private List<Perfil> listaPerfil;
+    private List<PerfilXPuesto> perfilesXPuesto;
+    private List<FuncionPuesto> funcionesPuesto;
     private Puestos puestoSeleccionado;
     private CriteriosXPuesto criterioXPuestoSeleccionado;
     private Integer estadoAccion;
     private String etiqueta;
-    
+    private FuncionPuesto funcionPuestoSeleccionado;
+    private PerfilXPuesto perfilxPuestoSeleccionado;
+    private Perfil perfilSeleccionado;
+
     public PuestosBackendBean() {
+    }
+
+    @PostConstruct
+    public void _init() {
+        setListaFuncionPuesto(reclutamientoFacade.findFuncionPuestoByEmpresa(getSessionBeanADM().getCompania()));
+        setListaPerfil(reclutamientoFacade.findPerfilByEmpresa(getSessionBeanADM().getCompania()));
+    }
+
+    public Perfil getPerfilSeleccionado() {
+        return perfilSeleccionado;
+    }
+
+    public void setPerfilSeleccionado(Perfil perfilSeleccionado) {
+        this.perfilSeleccionado = perfilSeleccionado;
+    }
+
+    public PerfilXPuesto getPerfilxPuestoSeleccionado() {
+        return perfilxPuestoSeleccionado;
+    }
+
+    public void setPerfilxPuestoSeleccionado(PerfilXPuesto perfilxPuestoSeleccionado) {
+        this.perfilxPuestoSeleccionado = perfilxPuestoSeleccionado;
+    }
+
+    public FuncionPuesto getFuncionPuestoSeleccionado() {
+        return funcionPuestoSeleccionado;
+    }
+
+    public void setFuncionPuestoSeleccionado(FuncionPuesto funcionPuestoSeleccionado) {
+        this.funcionPuestoSeleccionado = funcionPuestoSeleccionado;
+    }
+
+    public List<FuncionPuesto> getListaFuncionPuesto() {
+        return listaFuncionPuesto;
+    }
+
+    public void setListaFuncionPuesto(List<FuncionPuesto> listaFuncionPuesto) {
+        this.listaFuncionPuesto = listaFuncionPuesto;
+    }
+
+    public List<FuncionPuesto> getFuncionesPuesto() {
+        return funcionesPuesto;
+    }
+
+    public void setFuncionesPuesto(List<FuncionPuesto> funcionesPuesto) {
+        this.funcionesPuesto = funcionesPuesto;
+    }
+
+    public List<PerfilXPuesto> getPerfilesXPuesto() {
+        return perfilesXPuesto;
+    }
+
+    public void setPerfilesXPuesto(List<PerfilXPuesto> perfilesXPuesto) {
+        this.perfilesXPuesto = perfilesXPuesto;
+    }
+
+    public List<Perfil> getListaPerfil() {
+        return listaPerfil;
+    }
+
+    public void setListaPerfil(List<Perfil> listaPerfil) {
+        this.listaPerfil = listaPerfil;
     }
 
     public String getEtiqueta() {
@@ -124,14 +196,6 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
 
     public void setPuestoSeleccionado(Puestos puestoSeleccionado) {
         this.puestoSeleccionado = puestoSeleccionado;
-    }
-
-    public DataTable getTablaPuestos() {
-        return tablaPuestos;
-    }
-
-    public void setTablaPuestos(DataTable tablaPuestos) {
-        this.tablaPuestos = tablaPuestos;
     }
 
     public Short getArea() {
@@ -282,7 +346,9 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         this.listaPuestos = listaPuestos;
     }
 
-    /* Acciones */
+    /*
+     * Acciones
+     */
     public String guardar$crud$action() {
         if (validarFormulario().equals(Boolean.FALSE)) {
             return null;
@@ -303,17 +369,21 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         nuevoPuesto.setAreasStaff((area != null && area != -1) ? new AreasStaff(new AreasStaffPK(getSessionBeanADM().getCompania().getCodCia(), area)) : null);
         nuevoPuesto.setDescPuesto(descripcion);
         nuevoPuesto.setObjetivo(objetivo);
+
         try {
             if (getEstadoAccion() == null || getEstadoAccion().equals(0)) {
                 reclutamientoFacade.guardarPuesto(nuevoPuesto, getSessionBeanADM().getCompania());
+                limpiarCampos();
             } else if (getEstadoAccion() != null && getEstadoAccion().equals(1)) {
+                nuevoPuesto.setFuncionPuestoList(funcionesPuesto);
+                nuevoPuesto.setPerfilXPuestoList(perfilesXPuesto);
                 reclutamientoFacade.editarPuesto(nuevoPuesto);
             }
             addMessage("Mantenimiento de Puestos", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
-            limpiarCampos();
+            
         } catch (Exception e) {
             addMessage("Mantenimiento de Puestos", "Ocurrio un error al intentar guardar los datos.", TipoMensaje.INFORMACION);
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Ocurrio un error al intentar guardar los datos.", e);
         }
 
         return null;
@@ -379,9 +449,11 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         setTipoPuesto(getPuestoSeleccionado().getTipoPuesto() != null ? getPuestoSeleccionado().getTipoPuesto().getTipoPuestoPK().getCodTipoPuesto() : new Short("-1"));
         setEstado(getPuestoSeleccionado().getStatus() != null ? getPuestoSeleccionado().getStatus() : "-1");
         setDepartamento(getPuestoSeleccionado().getDepartamentos() != null ? getPuestoSeleccionado().getDepartamentos().getDepartamentosPK().getCodDepto() : new Short("-1"));
-        setArea(getPuestoSeleccionado().getAreasStaff() != null ? getPuestoSeleccionado().getAreasStaff().getAreasStaffPK().getCodArea().shortValue()/*getPuestoSeleccionado().getPuestosPK().getCodPuesto()*/ : new Short("-1"));
+        setArea(getPuestoSeleccionado().getAreasStaff() != null ? getPuestoSeleccionado().getAreasStaff().getAreasStaffPK().getCodArea().shortValue() : new Short("-1"));
         setDescripcion(getPuestoSeleccionado().getDescPuesto());
         setObjetivo(getPuestoSeleccionado().getObjetivo());
+        setPerfilesXPuesto(getPuestoSeleccionado().getPerfilXPuestoList());
+        setFuncionesPuesto(getPuestoSeleccionado().getFuncionPuestoList());
         setEstadoAccion(1);
         return null;
     }
@@ -411,21 +483,21 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         cxp.setCriterio(getCriterioSeleccionado());
         cxp.setPuestos(getPuestoSeleccionado());
         cxp.setCriteriosXPuestoPK(pk);
-        
-        if (listaCriteriosXPuestos!=null && !listaCriteriosXPuestos.isEmpty()){
-            if (listaCriteriosXPuestos.contains(cxp)){
-               addMessage("Mantenimiento de Puestos.", "Este criterio ya existe para este puesto.", TipoMensaje.INFORMACION);    
-               return null; 
+
+        if (listaCriteriosXPuestos != null && !listaCriteriosXPuestos.isEmpty()) {
+            if (listaCriteriosXPuestos.contains(cxp)) {
+                addMessage("Mantenimiento de Puestos.", "Este criterio ya existe para este puesto.", TipoMensaje.INFORMACION);
+                return null;
             }
         }
-        
+
         try {
             reclutamientoFacade.guardarCriterioXPuesto(cxp);
             addMessage("Mantenimiento de Puestos.", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
             listaCriteriosXPuestos = reclutamientoFacade.criteriosPorPuesto(getPuestoSeleccionado().getPuestosPK());
         } catch (Exception e) {
             addMessage("Mantenimiento de Puestos.", "Ocurrio un error al intentar guardar los datos.", TipoMensaje.ERROR);
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Ocurrio un error al intentar guardar los datos.", e);
         }
         return null;
     }
@@ -452,6 +524,9 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         setArea(new Short("-1"));
         setDescripcion("");
         setObjetivo("");
+        setPerfilesXPuesto(new ArrayList<PerfilXPuesto>());
+        setFuncionesPuesto(new ArrayList<FuncionPuesto>());
+        setPuestoSeleccionado(null);
     }
 
     public void eliminar$crud$action(ActionEvent actionEvent) {
@@ -486,4 +561,54 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         }
     }
 
+    public String agregarFuncion() {
+        if (getFuncionesPuesto() == null) {
+            setFuncionesPuesto(new ArrayList<FuncionPuesto>());
+            getFuncionesPuesto().add(getFuncionPuestoSeleccionado());
+        } else {
+            if (!getFuncionesPuesto().contains(getFuncionPuestoSeleccionado())) {
+                getFuncionesPuesto().add(getFuncionPuestoSeleccionado());
+            } else {
+                addMessage("Mantenimiento de Puesto.", "Esta función ya se encuentra en la lista.", TipoMensaje.ERROR);
+            }
+        }
+        return null;
+    }
+
+    public String removerFuncion() {
+        if (getFuncionesPuesto() == null) {
+            return null;
+        }
+        if (getFuncionesPuesto().contains(getFuncionPuestoSeleccionado())) {
+            getFuncionesPuesto().remove(getFuncionPuestoSeleccionado());
+        }
+        return null;
+    }
+
+    public String agregarPerfil() {
+        PerfilXPuesto a = new PerfilXPuesto(getPuestoSeleccionado().getPuestosPK().getCodCia(), getPuestoSeleccionado().getPuestosPK().getCodPuesto(), getPerfilSeleccionado().getPerfilPK().getCodPerfil());
+        a.setPerfil(getPerfilSeleccionado());
+        a.setPuestos(getPuestoSeleccionado());
+        if (getPerfilesXPuesto() == null) {
+            setPerfilesXPuesto(new ArrayList<PerfilXPuesto>());
+            getPerfilesXPuesto().add(a);
+        } else {
+            if (!getPerfilesXPuesto().contains(a)) {
+                getPerfilesXPuesto().add(a);
+            } else {
+                addMessage("Mantenimiento de Puesto.", "Este perfil ya se encuentra en la lista.", TipoMensaje.ERROR);
+            }
+        }
+        return null;
+    }
+
+    public String removerPerfil() {
+        if (getPerfilesXPuesto() == null) {
+            return null;
+        }
+        if (getPerfilesXPuesto().contains(getPerfilxPuestoSeleccionado())) {
+            getPerfilesXPuesto().remove(getPerfilxPuestoSeleccionado());
+        }
+        return null;
+    }
 }

@@ -58,8 +58,8 @@
                         <h:outputLabel value="#{criterio.nombre}"/>
                     </p:column>
 
-                    <p:column>
-                        <p:commandButton image="ui-icon-circle-plus" ajax="true" action="#{puestosBackendBean.guardarCriterio$crud$action}" update="principalForm:mensajes,principalForm:fsCriterios,principalForm:tablaCriteriosXPuesto" >
+                    <p:column style="width: 8%;" >
+                        <p:commandButton image="ui-icon-circle-plus" ajax="true" title="Agregar" action="#{puestosBackendBean.guardarCriterio$crud$action}" update="principalForm:mensajes,principalForm:fsCriterios,principalForm:tablaCriteriosXPuesto" >
                             <f:setPropertyActionListener value="#{criterio}" target="#{puestosBackendBean.criterioSeleccionado}" /> 
                         </p:commandButton>
                     </p:column>
@@ -73,6 +73,73 @@
                 <p:spacer height="15" />
             </p:fieldset>
         </p:dialog>
+
+        <p:dialog id="dialogNuevaFuncion" widgetVar="dlgFunciones" header="Agregar Funciones" showEffect="fold" hideEffect="fold" width="632" height="430" >
+
+            <h:panelGrid columns="1" >
+                <h:outputLabel value="Seleccione las funciones que desea agregar." />
+            </h:panelGrid>
+
+            <p:dataTable id="tableFunciones"
+                         var="funcion" rows="5"  paginator="true" 
+                         value="#{puestosBackendBean.listaFuncionPuesto}"
+                         emptyMessage="No se han encontrado funciones."
+                         paginatorAlwaysVisible="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
+
+                <p:column filterBy="#{funcion.nomFuncion}" 
+                          filterMatchMode="contains"
+                          headerText="Nombre">
+                    <h:outputLabel value="#{funcion.nomFuncion}"/>
+                </p:column>
+
+                <p:column style="width: 8%;" >
+                    <p:commandButton image="ui-icon-circle-plus" title="Agregar" ajax="true" action="#{puestosBackendBean.agregarFuncion}" update="principalForm:mensajes,principalForm:tabFuncionesPerfiles,principalForm:tablaFunciones" >
+                        <f:setPropertyActionListener value="#{funcion}" target="#{puestosBackendBean.funcionPuestoSeleccionado}" /> 
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <h:panelGrid columns="1">
+                <p:commandButton value="Cerrar" styleClass="opcionMenu" oncomplete="dlgFunciones.hide()" image="ui-icon-closethick" /> 
+            </h:panelGrid>
+
+        </p:dialog>
+
+        <p:dialog id="dialogNuevoPerfil" widgetVar="dlgPerfiles" header="Agregar Perfiles" showEffect="fold" hideEffect="fold" width="632" height="430" >
+
+            <h:panelGrid columns="1" >
+                <h:outputLabel value="Seleccione los perfiles que desea agregar." />
+            </h:panelGrid>
+
+            <p:dataTable id="tablePerfiles"
+                         var="perfil" rows="5"  paginator="true" 
+                         value="#{puestosBackendBean.listaPerfil}"
+                         emptyMessage="No se han encontrado perfiles."
+                         paginatorAlwaysVisible="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100" >
+
+                <p:column filterBy="#{perfil.nomPerfil}" 
+                          filterMatchMode="contains"
+                          headerText="Nombre">
+                    <h:outputLabel value="#{perfil.nomPerfil}"/>
+                </p:column>
+
+                <p:column style="width: 8%;" >
+                    <p:commandButton image="ui-icon-circle-plus" title="Agregar" ajax="true" action="#{puestosBackendBean.agregarPerfil}" update="principalForm:mensajes,principalForm:tabFuncionesPerfiles,principalForm:tablaPerfiles" >
+                        <f:setPropertyActionListener value="#{perfil}" target="#{puestosBackendBean.perfilSeleccionado}" /> 
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <h:panelGrid columns="1">
+                <p:commandButton value="Cerrar" styleClass="opcionMenu" oncomplete="dlgPerfiles.hide()" image="ui-icon-closethick" /> 
+            </h:panelGrid>
+
+        </p:dialog>
+
     </ui:define>
 
     <ui:define name="acciones">
@@ -244,16 +311,8 @@
                     </td>
                 </tr>
             </table>
-            <p:spacer height="20" />
+            <p:spacer height="10" />
         </p:fieldset>
-
-        <!--p:toolbar rendered="# {(puestosBackendBean.estadoAccion eq 2)}" styleClass="toolbarUsuario" >
-            <p:toolbarGroup align="right" >
-                <p:commandButton value="Eliminar" update="tablaPuesto" image="ui-icon ui-icon-circle-minus" ajax="true" onclick="confirmation.show()"/>
-            </p:toolbarGroup>
-        </p:toolbar-->
-
-        <p:spacer height="20" rendered="#{(puestosBackendBean.estadoAccion eq 2) }" />
 
         <p:fieldset id="fsConsulta" legend="Consulta de Puestos" rendered="#{(puestosBackendBean.estadoAccion eq 2)}" >
 
@@ -312,26 +371,7 @@
 
         </p:fieldset>
 
-        <!--p:panel id="panelInformacionEdit" style="border:none;" >
-            <div>
-                <div style="float:left;width: 30%;" >
-                    <h:panelGrid columns="4" rendered="# {(puestosBackendBean.estadoAccion eq 1)}"  >
-                        <p:graphicImage value="../../resources/imagenes/64/info.png" />
-                        <h:outputLabel value="Campos marcardos con " style="font-style: italic;" />
-                        <h:outputLabel value="*" styleClass="requerido"/>                                
-                        <h:outputLabel value=" son requeridos." style="font-style: italic;" />
-                    </h:panelGrid>
-                </div>    
-                <div style="float:left; width: 70%;"  >
-                </div>
-                <div style="clear:both;" ></div>
-            </div>
-        </p:panel-->
-
-
-        <!-- p:spacer height="20" rendered="# {(puestosBackendBean.estadoAccion eq 1)}" / -->
-
-        <p:fieldset legend="Editar Datos - Informacion del Concurso" rendered="#{(puestosBackendBean.estadoAccion eq 1)}" >
+        <p:fieldset legend="Editar Datos - Informacion del Puesto" rendered="#{(puestosBackendBean.estadoAccion eq 1)}" >
             <p:spacer height="20" />
 
             <table cellpadding="3px;"  width="100%"  >
@@ -428,20 +468,71 @@
                     <td valign="top" ><h:outputLabel value="Objetivo " style="font-weight: bold;" /></td>
                     <td><p:inputTextarea id="txObjPuestoED" value="#{puestosBackendBean.objetivo}" style="width: 300px;" label="Objetivo del Puesto" autoResize="false" /></td>
                 </tr>
-                <td>
-                    <tr>
-                        <td></td>
-                        <td colspan="4" >
-                            <p:commandButton id="cmdModificar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{puestosBackendBean.guardar$crud$action()}"
-                                update="principalForm:mensajes,txNombreED,chkHExtrasED,chkHDoblesED,chkViaticosED,chkComisionED,cnkInfConfED,txSalarioMinED,txSalarioMaxED,lstTipoPuestoED,lstEstadoPuestoED,lstDepartamentosED,lstAreasED,txDescPuestoED,txObjPuestoED" />  
-                        </td>
-                    </tr>
-                </td>
+                <tr>
+                    <td></td>
+                    <td colspan="4" >
+                        <p:tabView id="tabFuncionesPerfiles" >
+                            <p:tab title="Funciones">
+                                <table width="100%" >
+                                    <tr>
+                                        <td width="90%" valign="top" >
+                                            <p:dataTable id="tablaFunciones" value="#{puestosBackendBean.funcionesPuesto}" var="funcion" emptyMessage="Aun no ha agregado funciones al puesto." >
+                                                <p:column headerText="Nombre" >
+                                                    <h:outputLabel value="#{funcion.nomFuncion}" />
+                                                </p:column>
+                                                <p:column style="width: 8%" headerText="Eliminar" >
+                                                    <p:commandButton  title="Eliminar Funci&oacute;n" image="ui-icon ui-icon-circle-minus" update="principalForm:mensajes,principalForm:tabFuncionesPerfiles,principalForm:tablaFunciones" action="#{puestosBackendBean.removerFuncion}" >
+                                                        <f:setPropertyActionListener value="#{funcion}" target="#{puestosBackendBean.funcionPuestoSeleccionado}" />
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </td>
+                                        <td width="10%" align="left" valign="top" >
+                                            <h:panelGroup>
+                                                <p:commandButton image="nuevo" title="Agregar" oncomplete="dlgFunciones.show();" />
+                                            </h:panelGroup>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p:tab>
+                            <p:tab title="Perfiles">
+                                <table width="100%" >
+                                    <tr>
+                                        <td width="90%" valign="top" >
+                                            <p:dataTable id="tablaPerfiles" value="#{puestosBackendBean.perfilesXPuesto}" var="perfil" emptyMessage="Aun no ha agregado perfiles al puesto." >
+                                                <p:column headerText="Nombre" >
+                                                    <h:outputLabel value="#{perfil.perfil.nomPerfil}" />
+                                                </p:column>
+                                                <p:column style="width: 8%" headerText="Eliminar" >
+                                                    <p:commandButton  title="Eliminar Perfil" image="ui-icon ui-icon-circle-minus" update="principalForm:mensajes,principalForm:tabFuncionesPerfiles,principalForm:tablaPerfiles" action="#{puestosBackendBean.removerPerfil}" >
+                                                        <f:setPropertyActionListener value="#{perfil}" target="#{puestosBackendBean.perfilxPuestoSeleccionado}" />
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </td>
+                                        <td width="10%" align="left" valign="top" >
+                                            <h:panelGroup>
+                                                <p:commandButton image="nuevo" title="Agregar" oncomplete="dlgPerfiles.show();" />
+                                            </h:panelGroup>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p:tab>
+                        </p:tabView>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td colspan="4" >
+                        <p:commandButton id="cmdModificar" type="push" value="Guardar" image="ui-icon ui-icon-disk" action="#{puestosBackendBean.guardar$crud$action()}"
+                                         update="principalForm:mensajes,txNombreED,chkHExtrasED,chkHDoblesED,chkViaticosED,chkComisionED,cnkInfConfED,txSalarioMinED,txSalarioMaxED,lstTipoPuestoED,lstEstadoPuestoED,lstDepartamentosED,lstAreasED,txDescPuestoED,txObjPuestoED" />  
+                    </td>
+                </tr>
+
             </table>
             <p:spacer height="20" />
         </p:fieldset>
-
-        <!-- p:spacer height="20" rendered="# {(puestosBackendBean.estadoAccion eq 3) }" /-->
 
         <p:fieldset id="fsCriterios" legend="Criterios Aplicados" rendered="#{(puestosBackendBean.estadoAccion eq 3)}" >
             <p:spacer height="5" />
