@@ -105,9 +105,9 @@ public class Puestos implements Serializable {
         @JoinColumn(name = "COD_AREA", referencedColumnName = "COD_AREA")})
     @ManyToOne(optional = false)
     private AreasStaff areasStaff;
-    @ManyToMany(mappedBy = "puestosList", cascade= CascadeType.ALL)
+    @ManyToMany(mappedBy = "puestosList", cascade= CascadeType.ALL, fetch= FetchType.EAGER)
     private List<FuncionPuesto> funcionPuestoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "puestos", fetch= FetchType.EAGER)
     private List<PerfilXPuesto> perfilXPuestoList;
     @Transient
     private String descripcionEstado;
