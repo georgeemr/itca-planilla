@@ -378,19 +378,8 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
                 PuestosPK p = getPuestoSeleccionado().getPuestosPK();
                 setPuestoSeleccionado(nuevoPuesto);
                 getPuestoSeleccionado().setPuestosPK(p);
-                if( getPuestoSeleccionado().getFuncionPuestoList()==null){ 
-                    getPuestoSeleccionado().setFuncionPuestoList(new ArrayList<FuncionPuesto>()) ;
-                }else{
-                    getPuestoSeleccionado().getFuncionPuestoList().clear();
-                }
-                
-                if( getPuestoSeleccionado().getPerfilXPuestoList()==null){
-                    getPuestoSeleccionado().setPerfilXPuestoList(new ArrayList<PerfilXPuesto>()) ;
-                }else{
-                    getPuestoSeleccionado().getPerfilXPuestoList().clear();
-                }
-                getPuestoSeleccionado().getFuncionPuestoList().addAll(funcionesPuesto);
-                getPuestoSeleccionado().getPerfilXPuestoList().addAll( perfilesXPuesto);
+                getPuestoSeleccionado().setFuncionPuestoList(funcionesPuesto);
+                getPuestoSeleccionado().setPerfilXPuestoList(perfilesXPuesto);
                 reclutamientoFacade.editarPuesto(getPuestoSeleccionado());
             }
             addMessage("Mantenimiento de Puestos", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
@@ -579,9 +568,11 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         if (getFuncionesPuesto() == null) {
             setFuncionesPuesto(new ArrayList<FuncionPuesto>());
             getFuncionesPuesto().add(getFuncionPuestoSeleccionado());
+            reclutamientoFacade.guardarFuncionPuesto(new FuncionXPuesto(getFuncionPuestoSeleccionado().getFuncionPuestoPK().getCodCia(), getPuestoSeleccionado().getPuestosPK().getCodPuesto(), getFuncionPuestoSeleccionado().getFuncionPuestoPK().getCodFuncion()));
         } else {
             if (!getFuncionesPuesto().contains(getFuncionPuestoSeleccionado())) {
                 getFuncionesPuesto().add(getFuncionPuestoSeleccionado());
+                reclutamientoFacade.guardarFuncionPuesto(new FuncionXPuesto(getFuncionPuestoSeleccionado().getFuncionPuestoPK().getCodCia(), getPuestoSeleccionado().getPuestosPK().getCodPuesto(), getFuncionPuestoSeleccionado().getFuncionPuestoPK().getCodFuncion()));
             } else {
                 addMessage("Mantenimiento de Puesto.", "Esta función ya se encuentra en la lista.", TipoMensaje.ERROR);
             }
@@ -595,6 +586,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         }
         if (getFuncionesPuesto().contains(getFuncionPuestoSeleccionado())) {
             getFuncionesPuesto().remove(getFuncionPuestoSeleccionado());
+            reclutamientoFacade.eliminarFuncionPuesto(new FuncionXPuesto(getFuncionPuestoSeleccionado().getFuncionPuestoPK().getCodCia(), getPuestoSeleccionado().getPuestosPK().getCodPuesto(), getFuncionPuestoSeleccionado().getFuncionPuestoPK().getCodFuncion()));
         }
         return null;
     }
@@ -606,9 +598,11 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         if (getPerfilesXPuesto() == null) {
             setPerfilesXPuesto(new ArrayList<PerfilXPuesto>());
             getPerfilesXPuesto().add(a);
+            reclutamientoFacade.guardarPerfilXPuesto(a);
         } else {
             if (!getPerfilesXPuesto().contains(a)) {
                 getPerfilesXPuesto().add(a);
+                reclutamientoFacade.guardarPerfilXPuesto(a);
             } else {
                 addMessage("Mantenimiento de Puesto.", "Este perfil ya se encuentra en la lista.", TipoMensaje.ERROR);
             }
@@ -622,6 +616,7 @@ public class PuestosBackendBean extends AbstractJSFPage implements java.io.Seria
         }
         if (getPerfilesXPuesto().contains(getPerfilxPuestoSeleccionado())) {
             getPerfilesXPuesto().remove(getPerfilxPuestoSeleccionado());
+            reclutamientoFacade.eliminarPerfilXPuesto( getPerfilxPuestoSeleccionado() );
         }
         return null;
     }

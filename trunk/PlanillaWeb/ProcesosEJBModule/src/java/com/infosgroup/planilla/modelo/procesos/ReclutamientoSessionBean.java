@@ -87,7 +87,9 @@ public class ReclutamientoSessionBean {
     private PerfilXPuestoFacade perfilXPuestoFacade;
     @EJB
     private PerfilFacade perfilFacade;
-    
+    @EJB
+    private FuncionXPuestoFacade funcionXPuestoFacade;
+
     @PermitAll
     public List<Criterio> getListaCriteriosByCias(Short cod_cia) {
         return CriterioFacade.findByCias(cod_cia);
@@ -662,19 +664,39 @@ public class ReclutamientoSessionBean {
     public List<EmergenciaXCandidato> findEmergenciasByCandidato(Candidato candidato) {
         return emergenciaCandidatoFacade.findByCandidato(candidato);
     }
-    
+
     @PermitAll
-    public List<FuncionPuesto> findFuncionPuestoByEmpresa(Cias empresa){
+    public List<FuncionPuesto> findFuncionPuestoByEmpresa(Cias empresa) {
         return funcionPuestoFacade.findByEmpresa(empresa);
     }
-    
+
     @PermitAll
-    public List<PerfilXPuesto> findPerfilXPuestoByEmpresa(Cias empresa){
+    public List<PerfilXPuesto> findPerfilXPuestoByEmpresa(Cias empresa) {
         return perfilXPuestoFacade.findByEmpresa(empresa);
     }
-    
+
     @PermitAll
-    public List<Perfil> findPerfilByEmpresa(Cias empresa){
+    public void guardarPerfilXPuesto(PerfilXPuesto perfilXPuesto) {
+        perfilXPuestoFacade.create(perfilXPuesto);
+    }
+
+    @PermitAll
+    public void eliminarPerfilXPuesto(PerfilXPuesto perfilXPuesto) {
+        perfilXPuestoFacade.remove(perfilXPuesto);
+    }
+
+    @PermitAll
+    public void guardarFuncionPuesto(FuncionXPuesto funcionXPuesto) {
+        funcionXPuestoFacade.create(funcionXPuesto);
+    }
+
+    @PermitAll
+    public void eliminarFuncionPuesto(FuncionXPuesto funcionXPuesto) {
+        funcionXPuestoFacade.remove(funcionXPuesto);
+    }
+
+    @PermitAll
+    public List<Perfil> findPerfilByEmpresa(Cias empresa) {
         return perfilFacade.findByEmpresa(empresa);
     }
 }
