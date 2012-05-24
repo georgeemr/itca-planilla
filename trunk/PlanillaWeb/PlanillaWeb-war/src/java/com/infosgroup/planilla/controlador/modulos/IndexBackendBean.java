@@ -4,11 +4,8 @@
  */
 package com.infosgroup.planilla.controlador.modulos;
 
-import com.infosgroup.planilla.modelo.procesos.SeguridadSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import java.io.Serializable;
-import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -21,8 +18,8 @@ import javax.faces.bean.ViewScoped;
 public class IndexBackendBean extends AbstractJSFPage implements Serializable {
     
    
-    @EJB
-    private SeguridadSessionBean seguridadBean;
+    /*@EJB
+    private SeguridadSessionBean seguridadBean;*/
 
     /** Creates a new instance of IndexBackendBean */
     public IndexBackendBean() {

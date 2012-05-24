@@ -12,17 +12,7 @@ import javax.naming.Context;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.AttributeInUseException;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.BasicAttributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
-import javax.naming.directory.ModificationItem;
-import javax.naming.directory.NoSuchAttributeException;
-import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
+import javax.naming.directory.*;
 
 /**
  *
@@ -194,12 +184,9 @@ public class LDAPManager implements java.io.Serializable {
         if (attributes != null) {
             Attribute memberAtts = attributes.get("uniqueMember");
             if (memberAtts != null) {
-                for (NamingEnumeration vals = memberAtts.getAll();
-                        vals.hasMoreElements();
-                        members.add(getUserUID((String) vals.nextElement()))) ;
+                for (NamingEnumeration vals = memberAtts.getAll(); vals.hasMoreElements(); members.add(getUserUID((String) vals.nextElement())));
             }
         }
-
         return members;
     }
 
