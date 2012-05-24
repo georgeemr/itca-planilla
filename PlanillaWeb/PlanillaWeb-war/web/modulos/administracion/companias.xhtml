@@ -5,35 +5,37 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:f="http://java.sun.com/jsf/core">
-    <ui:define name="titulo">Compa&ntilde;ias</ui:define>
+    <ui:define name="titulo">
+        <h:outputText value="Compa&ntilde;ias"/>
+    </ui:define>
     <ui:define name="content">
-            <p:panel header="Datos de la compañia">
-                <h:panelGrid columns="2">
-                    <h:outputText value="Nombre"/>
-                    <p:inputText id="nomCompania" value="#{administracion$companias.nomCompania}"/>
-                    <h:outputText value="Descripcion"/>
-                    <p:inputText id="detCompania" value="#{administracion$companias.detCompania}"/>
-                    <h:outputText value="Razon social"/>
-                    <p:inputText id="razonSocial" value="#{administracion$companias.razonSocial}"/>
-                </h:panelGrid>
-                <f:facet name="footer">
-                    <p:commandButton value="Guardar" image="guardar" action="#{administracion$companias.guardar_action()}" update="statusForm:status messageForm:message nomCompania detCompania razonSocial companiasDataTable"/>
-                    <p:commandButton value="Cancelar" image="cancelar" action="#{administracion$companias.cancelar_action()}" update="statusForm:status messageForm:message nomCompania detCompania razonSocial"/>
-                </f:facet>
-            </p:panel>
-            <p:separator/>
-          
-            <p:dataTable id="companiasDataTable" value="#{administracion$companias.listaCompanias}" var="compania" selection="#{administracion$companias.companiaSeleccionada}" paginator="true" rows="10" selectionMode="single" update="statusForm:status companiasDataTable">
-                <f:facet name="header">
-                    <p:commandButton id="modificarButton" value="Modificar" image="modificar" action="#{administracion$companias.modificar_action()}" disabled="#{administracion$companias.companiaSeleccionada eq null}" update="statusForm:status messageForm:message nomCompania detCompania razonSocial companiasDataTable"/>
-                    <p:commandButton id="eliminarButton" value="Eliminar" image="eliminar" action="#{administracion$companias.eliminar_action()}" disabled="#{administracion$companias.companiaSeleccionada eq null}" update="statusForm:status messageForm:message companiasDataTable"/>
-                </f:facet>
-                <p:column headerText="ID">
-                    <h:outputText value="#{compania.idCompania}"/>
-                </p:column>
-                <p:column headerText="Nombre">
-                    <h:outputText value="#{compania.nomCompania}"/>
-                </p:column>
-            </p:dataTable>
+        <p:panel header="Datos de la compañia">
+            <h:panelGrid columns="2">
+                <h:outputText value="Nombre"/>
+                <p:inputText id="nomCompania" value="#{administracion$companias.nomCompania}"/>
+                <h:outputText value="Descripcion"/>
+                <p:inputText id="detCompania" value="#{administracion$companias.detCompania}"/>
+                <h:outputText value="Razon social"/>
+                <p:inputText id="razonSocial" value="#{administracion$companias.razonSocial}"/>
+            </h:panelGrid>
+            <f:facet name="footer">
+                <p:commandButton value="Guardar" image="guardar" action="#{administracion$companias.guardar_action()}" update="statusForm:status messageForm:message nomCompania detCompania razonSocial companiasDataTable"/>
+                <p:commandButton value="Cancelar" image="cancelar" action="#{administracion$companias.cancelar_action()}" update="statusForm:status messageForm:message nomCompania detCompania razonSocial"/>
+            </f:facet>
+        </p:panel>
+        <p:separator/>
+
+        <p:dataTable id="companiasDataTable" value="#{administracion$companias.listaCompanias}" var="compania" selection="#{administracion$companias.companiaSeleccionada}" paginator="true" rows="10" selectionMode="single" update="statusForm:status companiasDataTable">
+            <f:facet name="header">
+                <p:commandButton id="modificarButton" value="Modificar" image="modificar" action="#{administracion$companias.modificar_action()}" disabled="#{administracion$companias.companiaSeleccionada eq null}" update="statusForm:status messageForm:message nomCompania detCompania razonSocial companiasDataTable"/>
+                <p:commandButton id="eliminarButton" value="Eliminar" image="eliminar" action="#{administracion$companias.eliminar_action()}" disabled="#{administracion$companias.companiaSeleccionada eq null}" update="statusForm:status messageForm:message companiasDataTable"/>
+            </f:facet>
+            <p:column headerText="ID">
+                <h:outputText value="#{compania.idCompania}"/>
+            </p:column>
+            <p:column headerText="Nombre">
+                <h:outputText value="#{compania.nomCompania}"/>
+            </p:column>
+        </p:dataTable>
     </ui:define>
 </ui:composition>

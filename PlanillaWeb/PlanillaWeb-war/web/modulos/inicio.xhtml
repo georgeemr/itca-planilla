@@ -1,4 +1,15 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" template="/plantillas/defaultTemplate.xhtml">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/plantillas/defaultTemplate.xhtml">
+    <ui:define name="titulo">
+        <h:outputText value="Inicio"/>
+    </ui:define>
+    <ui:define name="contenido">
+        <!--div style="vertical-align: middle; text-align: center; ">
+                <p:graphicImage value="prueba.jpg"/>
+        </div-->
+    </ui:define>               
 </ui:composition>
