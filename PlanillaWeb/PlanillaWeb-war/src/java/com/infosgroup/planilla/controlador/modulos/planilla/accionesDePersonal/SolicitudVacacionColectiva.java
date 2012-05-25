@@ -4,7 +4,6 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
-import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.ArrayList;
