@@ -79,7 +79,6 @@
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
-    
     <!-- Configuracion LDAP-->
     <context-param>
         <param-name>ConfiguracionLDAP</param-name>

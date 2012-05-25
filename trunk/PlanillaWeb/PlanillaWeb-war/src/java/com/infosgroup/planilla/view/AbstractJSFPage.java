@@ -20,9 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
 /**
@@ -32,7 +32,7 @@ import javax.servlet.ServletContext;
 public abstract class AbstractJSFPage implements java.io.Serializable {
 
     public static final Logger logger = Logger.getLogger(AbstractJSFPage.class.getPackage().getName());
-    public final long MILISEGUNDOS_POR_DIA = 24 * 60 * 60 * 1000;
+    public static final long MILISEGUNDOS_POR_DIA = 24 * 60 * 60 * 1000;
 
     public AbstractJSFPage() {
     }
@@ -71,15 +71,20 @@ public abstract class AbstractJSFPage implements java.io.Serializable {
     public static void mostrarMensaje(FacesMessage.Severity severidad, String textoMensaje) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severidad, "Planilla web", textoMensaje));
     }
-    @ManagedProperty(value = "#{SessionBeanADM}")
+    //@ManagedProperty(value = "#{SessionBeanADM}")
+    @Inject
     protected SessionBeanADM sessionBeanADM;
-    @ManagedProperty(value = "#{SessionBeanREC}")
+    //@ManagedProperty(value = "#{SessionBeanREC}")
+    @Inject
     protected SessionBeanREC sessionBeanREC;
-    @ManagedProperty(value = "#{SessionBeanEMP}")
+    //@ManagedProperty(value = "#{SessionBeanEMP}")
+    @Inject
     protected SessionBeanEMP sessionBeanEMP;
-    @ManagedProperty(value = "#{SessionBeanPLA}")
+    //@ManagedProperty(value = "#{SessionBeanPLA}")
+    @Inject
     protected SessionBeanPLA sessionBeanPLA;
-    @ManagedProperty(value = "#{SessionBeanCAP}")
+    //@ManagedProperty(value = "#{SessionBeanCAP}")
+    @Inject
     protected SessionBeanCAP sessionBeanCAP;
 
     public SessionBeanCAP getSessionBeanCAP() {
@@ -143,10 +148,9 @@ public abstract class AbstractJSFPage implements java.io.Serializable {
             return 0;
         }
     }
-
     @EJB
     private MailStatelessBean mailStatelessBean;
-        
+
     public boolean enviarCorreoAccionPersonal(AccionPersonal accionPersonal, String mensaje) {
         if (accionPersonal.getEmpleados().getCorreo() == null) {
             return false;
@@ -172,12 +176,12 @@ public abstract class AbstractJSFPage implements java.io.Serializable {
         f = new File(ruta);
         return f;
     }
-    
+
     public String getManifiestoCorreo(AprobarSolicitud.APRUEBA eaprueba, AccionPersonal a) {
         StringBuilder mensaje = new StringBuilder();
         mensaje.append("Solicitud Procesada\n\n");
         mensaje.append("Tipo de Solicitud: ");
-        mensaje.append("\n\nFecha: ").append( new SimpleDateFormat("dd/MM/yyyy").format(a.getFecha())).append("\n\n");
+        mensaje.append("\n\nFecha: ").append(new SimpleDateFormat("dd/MM/yyyy").format(a.getFecha())).append("\n\n");
         mensaje.append("Detalle:\n\n");
         mensaje.append("\n\nResultado: Solicitud ").append(a.getAccEstado());
         if (eaprueba.equals(AprobarSolicitud.APRUEBA.JEFE)) {
