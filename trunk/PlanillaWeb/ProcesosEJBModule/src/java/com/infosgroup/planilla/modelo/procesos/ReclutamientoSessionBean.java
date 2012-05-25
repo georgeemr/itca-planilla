@@ -699,4 +699,10 @@ public class ReclutamientoSessionBean {
     public List<Perfil> findPerfilByEmpresa(Cias empresa) {
         return perfilFacade.findByEmpresa(empresa);
     }
+    
+    @PermitAll
+    public List<Empleados> findEmpleadosCandidatosByCia(Cias cia)
+    {
+        return empleadoFacade.findEmpleadosCandidatosByCia(cia);
+    }
 }

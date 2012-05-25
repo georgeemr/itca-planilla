@@ -390,12 +390,12 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
 // ==================================================================================================================
 // == Acciones ======================================================================================================
 // ==================================================================================================================
-    
-    public String refrescarCandidatos(){
+
+    public String refrescarCandidatos() {
         candidatosListModel = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
         return null;
     }
-    
+
     @PermitAll
     public String preparacionAcademica$agregar$action() {
         try {
@@ -1014,14 +1014,229 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
     @PermitAll
     public String editar$action() {
         try {
+            Candidato c = null;
             Paises pais = null;
             Deptos depto = null;
             if (candidatoSeleccionado == null) {
                 addMessage("Infosweb RRHH", "Seleccione un candidato para editarlo", TipoMensaje.INFORMACION);
                 return null;
             }
-            Candidato c = reclutamientoFacade.findCandidatoById(candidatoSeleccionado.getCandidatoPK());
+
+            c = reclutamientoFacade.findCandidatoById(candidatoSeleccionado.getCandidatoPK());
+            
             nombre = c.getNombre();
+            apellido = c.getApellido();
+            apellidoCasada = c.getApCasada();
+            fechaSolicitud = c.getFecSolicitud();
+            sexo = c.getSexo();
+            estadoCivil = c.getEstadoCivil();
+            // ==
+            generales$pais = "" + c.getCodPaisDomic();
+
+            if (c.getCodPaisDomic() != null) {
+                pais = sessionBeanParametros.findPaisesByid(c.getCodPaisDomic());
+                deptosDomicilioSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
+            }
+
+            generales$departamento = generales$pais + ":" + c.getCodDepartamentoDomic();
+
+            if ((c.getCodPaisDomic() != null) && (c.getCodDepartamentoDomic() != null)) {
+                depto = sessionBeanParametros.findDepartamentoById(new DeptosPK(c.getCodPaisDomic(), c.getCodDepartamentoDomic()));
+                municipiosDomicilioSelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(depto);
+            }
+
+            generales$municipio = generales$departamento + ":" + c.getCodMunicipioDomic();
+            generales$telefono = c.getTelefono();
+            generales$direccion = c.getDireccion();
+            // ==
+            generales$paisNacimiento = "" + c.getCodPaisNacimiento();
+            if (c.getCodPaisNacimiento() != null) {
+                pais = sessionBeanParametros.findPaisesByid(c.getCodPaisNacimiento());
+                deptosNacSelectItemListModel = sessionBeanParametros.findDepartamentosByPais(pais);
+            }
+
+            generales$departamentoNacimiento = generales$paisNacimiento + ":" + c.getCodDepartamentoNacim();
+
+            if ((c.getCodPaisNacimiento() != null) && (c.getCodDepartamentoNacim() != null)) {
+                depto = sessionBeanParametros.findDepartamentoById(new DeptosPK(c.getCodPaisNacimiento(), c.getCodDepartamentoNacim()));
+                municipiosNacDomicilioSelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(depto);
+            }
+
+            generales$municipioNacimiento = generales$departamentoNacimiento + ":" + c.getCodMunicipioNacim();
+            generales$fechaNacimiento = c.getFechaNac();
+            generales$paisNacionalidad = (c.getCodPaisNacionalidad() != null) ? c.getCodPaisNacionalidad().toString() : null;
+            generales$grupoSanguineo = (c.getTipoSangre() != null) ? c.getTipoSangre().getTipoSangre() : null;
+            // ==
+            generales$dui = c.getNumDui();
+            generales$nit = c.getNumNit();
+            generales$fechaExpDui = c.getFechaExpDui();
+
+            generales$departamentoExpDui = "4:" + c.getExpedicionDui();
+            if (c.getExpedicionDui() != null) {
+                depto = sessionBeanParametros.findDepartamentoById(new DeptosPK(new Short("4"), new Short(c.getExpedicionDui())));
+                municipiosExpDUISelectItemListModel = sessionBeanParametros.findMunicipiosByDepartamento(depto);
+            }
+            generales$municipioExpDui = generales$departamentoExpDui + ":" + c.getMuniExpDui();
+
+            generales$licenciaConducir = c.getNumLicencia();
+            generales$pasaporte = c.getNumPasaporte();
+            generales$nombreISSS = c.getNomIsss();
+            generales$nombreNIT = c.getNomNit();
+            // ==
+            preparacionesAcademicasCandidato = new ArrayList<PreparacionAcademicaCandidato>();
+            List<NivelesXCandidato> ln = reclutamientoFacade.findNivelCandidatoByCandidato(c);
+            for (NivelesXCandidato n : ln) {
+                PreparacionAcademicaCandidato p = new PreparacionAcademicaCandidato();
+                p.setNombreInstitucion(n.getNomInstitucion());
+                p.setNivelAcademico(sessionBeanParametros.findNivelAcademicoById(new NivelAcademicoPK(n.getNivelesXCandidatoPK().getCodCia(), n.getNivelesXCandidatoPK().getCodNivel())));
+                p.setAnioIngreso(n.getAnioIngreso());
+                p.setAnioEgreso(n.getAnioEgreso());
+                p.setDepartamentoInstitucion(sessionBeanParametros.findDepartamentoById(new DeptosPK(n.getCodPais(), n.getCodDepto())));
+                preparacionesAcademicasCandidato.add(p);
+            }
+            // ==
+            emergencias$conyuge = c.getNombreConyuge();
+            emergencias$trabajo = c.getTrabajoConyuge();
+            emergencias$telefono = c.getTelefonoConyuge();
+            emergencias$condicionSalud = c.getCondicionSalud();
+            emergencias$actividadLimitada = (c.getActividadLimitada() != null) ? c.getActividadLimitada().equals("S") : null;
+            emergencias$haSufridoAccidentes = (c.getTieneAccidente() != null) ? c.getTieneAccidente().equals("S") : null;
+            emergencias$tipoAccidente = c.getTipoAccidente();
+            emergencias$pesoActual = c.getPeso();
+            emergencias$estatura = c.getEstatura();
+
+            parentescosCandidatos = new ArrayList<ParentescoCandidato>();
+            List<EmergenciaXCandidato> le = reclutamientoFacade.findEmergenciasByCandidato(c);
+            for (EmergenciaXCandidato e : le) {
+                ParentescoCandidato p = new ParentescoCandidato();
+                p.setParentesco(sessionBeanParametros.findParentescoById(new ParentescoPK(getSessionBeanADM().getCompania().getCodCia(), e.getCodParentesco())));
+                p.setNombre(e.getNombre());
+                p.setTelefono(e.getTelefono());
+                parentescosCandidatos.add(p);
+            }
+            // ==
+            experienciasLaboralesCandidato = new ArrayList<ExperienciaLaboralCandidato>();
+            // ==
+            referenciasLaboralesCandidato = new ArrayList<ReferenciaLaboralCandidato>();
+            referenciasPersonalesCandidato = new ArrayList<ReferenciaPersonalCandidato>();
+            List<Referencia> lr = reclutamientoFacade.findReferenciasByCandidato(c);
+            for (Referencia r : lr) {
+                if (r.getTipoReferencia() == 'L') {
+                    ReferenciaLaboralCandidato rlc = new ReferenciaLaboralCandidato();
+                    rlc.setNombre(r.getNomReferencia());
+                    rlc.setLugarTrabajo(r.getLugar());
+                    rlc.setTelefono(r.getTelefono());
+                    rlc.setCorreoElectronico(r.getEmail());
+                    referenciasLaboralesCandidato.add(rlc);
+                } else {
+                    ReferenciaPersonalCandidato rpc = new ReferenciaPersonalCandidato();
+                    rpc.setNombre(r.getNomReferencia());
+                    rpc.setLugarTrabajo(r.getLugar());
+                    rpc.setTiempoConocerle(new Integer(r.getTiempo()));
+                    rpc.setTelefono(r.getTelefono());
+                    rpc.setCorreoElectronico(r.getEmail());
+                    referenciasPersonalesCandidato.add(rpc);
+                }
+            }
+            // ==
+            documentosCandidato = new ArrayList<DocumentoCandidato>();
+            List<DocumentoPresentado> ld = reclutamientoFacade.findDocumentosByCandidato(c);
+            for (DocumentoPresentado d : ld) {
+                DocumentoCandidato dc = new DocumentoCandidato();
+                dc.setTipo(d.getTipoDocumento());
+                dc.setNumero(d.getObservacion());
+                documentosCandidato.add(dc);
+            }
+            // ==
+            capacitacionesCandidato = new ArrayList<CapacitacionCandidato>();
+            List<CapacitacionXCandidato> lc = reclutamientoFacade.findCapacitacionesByCandidato(c);
+            for (CapacitacionXCandidato cxc : lc) {
+                CapacitacionCandidato cc = new CapacitacionCandidato();
+                cc.setInstitucion(cxc.getNomInstitucion());
+                cc.setDescripcion(cxc.getDescripcion());
+                cc.setPeriodo(cxc.getFecha());
+                cc.setTipo(cxc.getTipo());
+                capacitacionesCandidato.add(cc);
+            }
+            // ==
+            dependientesCandidato = new ArrayList<DependienteCandidato>();
+            List<DependienteXCandidato> ldeps = reclutamientoFacade.findDependientesByCandidato(c);
+            for (DependienteXCandidato dxc : ldeps) {
+                DependienteCandidato dc = new DependienteCandidato();
+                dc.setNombre(dxc.getNombre());
+                dc.setParentesco(sessionBeanParametros.findParentescoById(new ParentescoPK(dxc.getDependienteXCandidatoPK().getCodCia(), dxc.getCodParentesco())));
+                dc.setFechaNacimiento(dxc.getFechaNacimiento());
+                dependientesCandidato.add(dc);
+            }
+            // ==
+            idiomasCandidato = new ArrayList<IdiomaCandidato>();
+            List<IdiomaXCandidato> li = reclutamientoFacade.findIdiomasByCandidato(c);
+            for (IdiomaXCandidato ixc : li) {
+                try {
+                    IdiomaCandidato ic = new IdiomaCandidato();
+                    ic.setIdioma(sessionBeanParametros.findIdiomaById(new IdiomaPK(ixc.getIdiomaXCandidatoPK().getCodCia(), ixc.getIdiomaXCandidatoPK().getCodIdioma())));
+                    ic.setNivel(new Integer(ixc.getNivel()));
+                    ic.setLee(ixc.getLee().equals("S"));
+                    ic.setEscribe(ixc.getEscribe().equals("S"));
+                    idiomasCandidato.add(ic);
+                } catch (Exception ex) {
+                    continue;
+                }
+            }
+            // ==
+            beneficiariosCandidato = new ArrayList<BeneficiarioCandidato>();
+            List<BeneficiarioXCandidato> lb = reclutamientoFacade.findBeneficiariosByCandidato(c);
+            for (BeneficiarioXCandidato b : lb) {
+                BeneficiarioCandidato bc = new BeneficiarioCandidato();
+                bc.setNombre(b.getNombre());
+                bc.setParentesco(b.getParentesco());
+                beneficiariosCandidato.add(bc);
+            }
+            // ==
+            equiposCandidato = new ArrayList<EquipoCandidato>();
+            List<Equipo> leq = c.getEquipoList();
+            for (Equipo eq : leq) {
+                EquipoCandidato eqc = new EquipoCandidato();
+                eqc.setEquipo(eq);
+                equiposCandidato.add(eqc);
+            }
+            // ==
+            pruebasCandidato = new ArrayList<PruebaCandidato>();
+            List<TipoPruebaXCandidato> ltprueba = reclutamientoFacade.findTiposPruebasByCandidato(c);
+            for (TipoPruebaXCandidato tp : ltprueba) {
+                PruebaCandidato pc = new PruebaCandidato();
+                pc.setTipoPrueba(tp.getTipoPrueba());
+                pc.setFecha(tp.getFecha());
+                pc.setNota(tp.getNota().doubleValue());
+                pc.setCosto(tp.getCosto().doubleValue());
+                pc.setResultado(tp.getResultado());
+                pruebasCandidato.add(pc);
+            }
+            // ==
+            puestosCandidato = new ArrayList<PuestoCandidato>();
+            List<CandidatoXCargo> lcargo = reclutamientoFacade.findCargosByCandidato(c);
+            for (CandidatoXCargo cxc : lcargo) {
+                PuestoCandidato pcan = new PuestoCandidato();
+                pcan.setPuesto(cxc.getPuestos());
+                pcan.setSalarioAspirado(cxc.getSalarioAspirado());
+                puestosCandidato.add(pcan);
+            }
+            // ==
+            entrevistasCandidato = new ArrayList<EntrevistaCandidato>();
+            List<EntrevistaXCandidato> lentr = reclutamientoFacade.findEntrevistasByCandidato(c);
+            for (EntrevistaXCandidato entr : lentr) {
+                EntrevistaCandidato ec = new EntrevistaCandidato();
+                ec.setPuesto(entr.getPuesto());
+                ec.setEntrevistador(entr.getEmpleado());
+                ec.setFecha(entr.getFecha());
+                ec.setDescripcion(entr.getDescripcion());
+                ec.setResultado(entr.getResultado());
+                entrevistasCandidato.add(ec);
+            }
+            // ==
+            observaciones = c.getObservacion();            
+            
+            /*nombre = c.getNombre();
             apellido = c.getApellido();
             apellidoCasada = c.getApCasada();
             fechaSolicitud = c.getFecSolicitud();
@@ -1211,7 +1426,7 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
                 entrevistasCandidato.add(ec);
             }
             // ==
-            observaciones = c.getObservacion();
+            observaciones = c.getObservacion();*/
             // ==
             addMessage("Infosweb RRHH", "Editando candidato: " + c.getCandidatoPK().getCodCandidato() + " - " + c.getNombreCompleto(), TipoMensaje.INFORMACION);
             // ==
@@ -2173,6 +2388,7 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
     private List<PuestoCandidato> puestosCandidato;
     private List<EntrevistaCandidato> entrevistasCandidato;
 //=======================================
+
     public List<PreparacionAcademicaCandidato> getPreparacionesAcademicasCandidato() {
         return preparacionesAcademicasCandidato;
     }

@@ -14,14 +14,14 @@
     <ui:define name="acciones">
         <p:tab title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu" ajax="true" action="#{planilla$empleado.guardar$action()}" update="mensajes, panelAcciones, panelContenido" rendered="#{planilla$empleado.estadoAccion ne 0}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
+                <p:commandLink styleClass="opcionMenu" ajax="true" action="#{planilla$empleado.guardar$action()}" update="mensajes, panelAcciones, panelContenido" rendered="#{planilla$empleado.estadoAccion eq 2}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';">
                     <p:graphicImage value="/resources/iconos/document-save.png"/>
-                    <h:outputText value="Guardar candidato" styleClass="espacioTexto"/>
+                    <h:outputText value="Guardar empleado" styleClass="espacioTexto"/>
                 </p:commandLink>
                 <p:commandLink styleClass="opcionMenu"  ajax="true" update="principalForm:tablaCandidatos" oncomplete="dialogoEditar.show();" rendered="#{planilla$empleado.estadoAccion eq 1}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';"
                                action="#{planilla$empleado.refrescarCandidatos}" >
                     <p:graphicImage value="/resources/iconos/edit.png"/>
-                    <h:outputText value="Editar candidato" styleClass="espacioTexto"/>
+                    <h:outputText value="Editar empleado" styleClass="espacioTexto"/>
                 </p:commandLink>
                 <p:commandLink styleClass="opcionMenu" ajax="true" update="principalForm:panelAcciones principalForm:panelContenido principalForm:mensajes" rendered="#{planilla$empleado.estadoAccion eq 2}" onmouseover="this.className='opcionMenu textonegrita';" onmouseout="this.className='opcionMenu textonormal';" action="#{planilla$empleado.cancelar$action}">
                     <p:graphicImage value="/resources/iconos/edit.png"/>
@@ -1002,19 +1002,19 @@
 
     <ui:define name="dialogos">
         <p:dialog widgetVar="dialogoEditar" header="Editar candidato" modal="true" draggable="true" resizable="false" closable="true" width="650">
-            <p:dataTable id="tablaCandidatos" value="#{planilla$empleado.candidatosListModel}" var="candidato" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5"  onRowSelectUpdate="principalForm:editarAceptarCommandButton" onRowUnselectUpdate="principalForm:editarAceptarCommandButton">
+            <p:dataTable id="tablaCandidatos" value="#{planilla$empleado.empleadosListModel}" var="empleado" rows="5" paginator="true" paginatorAlwaysVisible="true" pageLinks="5"  onRowSelectUpdate="principalForm:editarAceptarCommandButton" onRowUnselectUpdate="principalForm:editarAceptarCommandButton">
                 <f:facet name="header">
-                    <h:outputText value="Candidatos"/>
+                    <h:outputText value="Empleados"/>
                 </f:facet>
-                <p:column headerText="ID " filterBy="#{candidato.candidatoPK.codCandidato}" filterMatchMode="contains" style="width: 10%;"  >
-                    <h:outputText value="#{candidato.candidatoPK.codCandidato}"/>
+                <p:column headerText="ID " filterBy="#{empleado.empleadosPK.codEmp}" filterMatchMode="contains" style="width: 10%;"  >
+                    <h:outputText value="#{empleado.empleadosPK.codEmp}"/>
                 </p:column>
-                <p:column headerText="Nombre del candidato" filterBy="#{candidato.nombreCompleto}" filterMatchMode="contains">
-                    <h:outputText value="#{candidato.nombreCompleto}"/>
+                <p:column headerText="Nombre del empleado" filterBy="#{candidato.nombreCompleto}" filterMatchMode="contains">
+                    <h:outputText value="#{empleado.nombreCompleto}"/>
                 </p:column>
                 <p:column headerText="Seleccionar" style="width: 8%;" >
                     <p:commandButton id="editarAceptarCommandButton" image="ui-icon ui-icon-circle-check" onclick="dialogoEditar.hide();" action="#{planilla$empleado.editar$action}" update="principalForm:mensajes principalForm:panelAcciones principalForm:panelContenido" title="Seleccionar Candidato" >
-                        <f:setPropertyActionListener value="#{candidato}" target="#{planilla$empleado.candidatoSeleccionado}" />
+                        <f:setPropertyActionListener value="#{empleado}" target="#{planilla$empleado.empleadoSeleccionado}" />
                     </p:commandButton>
                 </p:column>
             </p:dataTable>

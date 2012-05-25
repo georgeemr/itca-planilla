@@ -6,14 +6,15 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.*;
 import java.math.BigDecimal;
-import com.infosgroup.planilla.modelo.entidades.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -180,9 +181,18 @@ public class EmpleadoFacade extends AbstractFacade<Empleados, EmpleadosPK> {
 
     @PermitAll
     public void eliminarEvaluadorEvaluaciones(PreEvaluacion preevaluacion, Empleados empleado, List<Evaluacion> evaluacion) {
-        Empleados e = em.find(Empleados.class, empleado.getEmpleadosPK() );
+        Empleados e = em.find(Empleados.class, empleado.getEmpleadosPK());
         e.getEvaluacionList().clear();
         e.setEvaluacionList(evaluacion);
-        em.merge(e);         
+        em.merge(e);
+    }
+
+    @PermitAll
+    public List<Empleados> findEmpleadosCandidatosByCia(Cias cia) {
+        //String jpql = "SELECT e FROM Empleados e JOIN Candidato c WHERE e.empleadosPK.codCia = c.candidatoPK.codCia AND e.candidato IN NOT NULL AND e.empleadosPK.codCia = :codCia";
+        String jpql = "SELECT e FROM Empleados e JOIN e.candidatoList c WHERE e.empleadosPK.codCia = :codCia AND c.candidatoPK.codCia = e.empleadosPK.codCia AND e.candidatoList IS NOT EMPTY";
+        TypedQuery<Empleados> tq = getEntityManager().createQuery(jpql, entityClass);
+        tq.setParameter("codCia", cia.getCodCia());
+        return tq.getResultList();
     }
 }
