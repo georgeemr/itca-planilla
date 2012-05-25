@@ -10,14 +10,14 @@ import com.infosgroup.planilla.modelo.facades.CiasFacade;
 import com.infosgroup.planilla.modelo.facades.ParamPlanFacade;
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author root
  */
-@ManagedBean(name = "SessionBeanADM")
+@Named(value="SessionBeanADM")
 @SessionScoped
 public class SessionBeanADM implements Serializable {
 

@@ -7,19 +7,19 @@ package com.infosgroup.planilla.controlador.sessionbean;
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.estructuras.DetalleEvaluacion;
 import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
-import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
 /**
  *
  * @author root
  */
-@ManagedBean(name = "SessionBeanEMP")
+//@ManagedBean(name = "SessionBeanEMP")
+@Named(value="SessionBeanEMP")
 @SessionScoped
 public class SessionBeanEMP implements java.io.Serializable {
 

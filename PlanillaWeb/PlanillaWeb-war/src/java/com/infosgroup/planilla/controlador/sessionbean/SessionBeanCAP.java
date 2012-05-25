@@ -8,22 +8,21 @@ import com.infosgroup.planilla.modelo.entidades.Capacitacion;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionAsistencia;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionXEmpleado;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
-import com.infosgroup.planilla.modelo.procesos.CapacitacionesSessionBean;
 import java.io.Serializable;
-import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author infosgroup
  */
-@ManagedBean(name = "SessionBeanCAP")
+//@ManagedBean(name = "SessionBeanCAP")
+@Named(value = "SessionBeanCAP")
 @SessionScoped
 public class SessionBeanCAP implements Serializable {
 
-    @EJB
-    private CapacitacionesSessionBean capacitacionesSessionBean;
+    //@EJB
+    //private CapacitacionesSessionBean capacitacionesSessionBean;
     private Capacitacion capacitacionSeleccionada;
     private CapacitacionXEmpleado detalleCapSeleccionada;
     private Empleados empleadoSeleccionado;
@@ -60,6 +59,4 @@ public class SessionBeanCAP implements Serializable {
     public void setAsistenciaSeleccionada(CapacitacionAsistencia asistenciaSeleccionada) {
         this.asistenciaSeleccionada = asistenciaSeleccionada;
     }
-    
-    
 }

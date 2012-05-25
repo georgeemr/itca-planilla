@@ -6,14 +6,14 @@ package com.infosgroup.planilla.controlador.sessionbean;
 
 import com.infosgroup.planilla.modelo.entidades.Candidato;
 import com.infosgroup.planilla.modelo.entidades.Concurso;
-//import com.infosgroup.planilla.modelo.entidades.CriteriosXPuesto;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import java.util.List;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.inject.Named;
 
 /**
  *
@@ -21,7 +21,8 @@ import javax.faces.bean.ManagedProperty;
  * <pre>Bean de Session utilizado para almacenar los datos 
  * de Reclutamiento y preseleccion de candidatos.</pre>
  */
-@ManagedBean(name = "SessionBeanREC")
+//@ManagedBean(name = "SessionBeanREC")
+@Named(value="SessionBeanREC")
 @SessionScoped
 public class SessionBeanREC implements Serializable {
 

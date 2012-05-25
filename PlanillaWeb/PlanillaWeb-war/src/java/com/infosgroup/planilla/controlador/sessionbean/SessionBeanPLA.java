@@ -8,14 +8,15 @@ import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.modelo.entidades.ProgramacionPla;
 import com.infosgroup.planilla.modelo.entidades.ResumenAsistencia;
 import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author infosgroup
  */
-@ManagedBean(name = "SessionBeanPLA")
+//@ManagedBean(name = "SessionBeanPLA")
+@Named(value="SessionBeanPLA")
 @SessionScoped
 public class SessionBeanPLA implements Serializable{
 
