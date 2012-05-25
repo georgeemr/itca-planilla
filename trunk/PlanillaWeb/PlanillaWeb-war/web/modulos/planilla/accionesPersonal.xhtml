@@ -97,7 +97,7 @@
                      rowStyleClass="#{(sol.status eq 'G' and SessionBeanPLA.accionSeleccionada ne sol)? 'solicitudGenerada' : (sol.status eq 'J' and SessionBeanPLA.accionSeleccionada ne sol )? 'solicitudPreAprobada' : (sol.status eq 'A' and SessionBeanPLA.accionSeleccionada ne sol ) ? 'solicitudAprobada' : (sol.status eq 'R' and SessionBeanPLA.accionSeleccionada ne sol )? 'solicitudRechazada' : 'accionSeleccionada' }"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50,100">
             <f:facet name="header">
-                Acciones de personal
+                <h:outputText value="Acciones de personal"/>                
             </f:facet>
 
             <p:column headerText="C&oacute;digo" style="width: 5%;">
@@ -133,7 +133,7 @@
             </p:column>
 
             <p:column headerText="Seleccionar" style="width: 8%;">
-                <p:commandButton  id="cmdSeleccionar" update="principalForm:tabAcciones, principalForm:editarSolicitud, principalForm:panelAcciones,principalForm:btnReporte,principalForm:tableSolicitud" image="ui-icon-circle-check" title="Seleccionar Concurso"  >
+                <p:commandButton id="cmdSeleccionar" update="principalForm:tabAcciones, principalForm:editarSolicitud, principalForm:panelAcciones,principalForm:btnReporte,principalForm:tableSolicitud" image="ui-icon-circle-check" title="Seleccionar Concurso">
                     <f:setPropertyActionListener value="#{sol}" target="#{SessionBeanPLA.accionSeleccionada}" /> 
                 </p:commandButton>
             </p:column>

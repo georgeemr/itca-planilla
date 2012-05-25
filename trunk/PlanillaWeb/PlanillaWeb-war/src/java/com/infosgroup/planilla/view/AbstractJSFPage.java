@@ -30,7 +30,20 @@ import javax.servlet.ServletContext;
  * @author root
  */
 public abstract class AbstractJSFPage implements java.io.Serializable {
-
+    @Inject
+    protected SessionBeanADM sessionBeanADM;
+    @Inject
+    protected SessionBeanREC sessionBeanREC;
+    @Inject
+    protected SessionBeanEMP sessionBeanEMP;
+    @Inject
+    protected SessionBeanPLA sessionBeanPLA;
+    @Inject
+    protected SessionBeanCAP sessionBeanCAP;
+    //
+    @EJB
+    private MailStatelessBean mailStatelessBean;
+    //
     public static final Logger logger = Logger.getLogger(AbstractJSFPage.class.getPackage().getName());
     public static final long MILISEGUNDOS_POR_DIA = 24 * 60 * 60 * 1000;
 
@@ -71,17 +84,6 @@ public abstract class AbstractJSFPage implements java.io.Serializable {
     public static void mostrarMensaje(FacesMessage.Severity severidad, String textoMensaje) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severidad, "Planilla web", textoMensaje));
     }
-    // Se reemplazo @ManagedProperty(value = "#{SessionBeanADM}") por CDI, la inyecccion de dependencia se hace implicitamente
-    @Inject
-    protected SessionBeanADM sessionBeanADM;
-    @Inject
-    protected SessionBeanREC sessionBeanREC;
-    @Inject
-    protected SessionBeanEMP sessionBeanEMP;
-    @Inject
-    protected SessionBeanPLA sessionBeanPLA;
-    @Inject
-    protected SessionBeanCAP sessionBeanCAP;
 
     public SessionBeanCAP getSessionBeanCAP() {
         return sessionBeanCAP;
@@ -144,8 +146,6 @@ public abstract class AbstractJSFPage implements java.io.Serializable {
             return 0;
         }
     }
-    @EJB
-    private MailStatelessBean mailStatelessBean;
 
     public boolean enviarCorreoAccionPersonal(AccionPersonal accionPersonal, String mensaje) {
         if (accionPersonal.getEmpleados().getCorreo() == null) {

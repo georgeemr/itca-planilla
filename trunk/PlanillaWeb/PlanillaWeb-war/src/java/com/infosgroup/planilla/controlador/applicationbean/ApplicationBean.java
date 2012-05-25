@@ -4,17 +4,15 @@
  */
 package com.infosgroup.planilla.controlador.applicationbean;
 
-/*import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ApplicationScoped;*/
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 
 /**
  *
  * @author root
  */
 
-@Named(value="ApplicationBean")
+@ManagedBean(name="ApplicationBean")
 @ApplicationScoped
 
 /*@ManagedBean(name="ApplicationBean", eager=true)

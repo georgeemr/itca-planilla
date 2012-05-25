@@ -10,6 +10,7 @@ import com.infosgroup.planilla.modelo.procesos.EmpleadosSessionBean;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -18,8 +19,7 @@ import javax.inject.Named;
  *
  * @author root
  */
-//@ManagedBean(name = "SessionBeanEMP")
-@Named(value="SessionBeanEMP")
+@ManagedBean(name = "SessionBeanEMP")
 @SessionScoped
 public class SessionBeanEMP implements java.io.Serializable {
 

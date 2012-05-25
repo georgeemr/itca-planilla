@@ -10,17 +10,18 @@ import com.infosgroup.planilla.modelo.facades.TipoDocumentoFacade;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import java.util.List;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 /**
  *
  * @author ralarcon
  */
+
 @ManagedBean(name = "administracion$tiposDocumento")
 @ViewScoped
 public class TiposDocumentoBackendBean extends AbstractJSFPage implements Serializable {

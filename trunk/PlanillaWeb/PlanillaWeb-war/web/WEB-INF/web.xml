@@ -42,7 +42,7 @@
             <role-name>empleados</role-name>
         </auth-constraint>
     </security-constraint>
-    
+    <!-- -->
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>OpenDS</realm-name>
@@ -51,6 +51,7 @@
             <form-error-page>/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+    <!-- -->
     <security-role>
         <description>Rol de Administradores</description>
         <role-name>administradores</role-name>
@@ -67,6 +68,7 @@
         <description>Rol de Empleados</description>
         <role-name>empleados</role-name>
     </security-role>
+    <!-- -->
     <filter>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
@@ -75,6 +77,7 @@
             <param-value>2097152</param-value>
         </init-param>     
     </filter>
+    <!-- -->
     <filter-mapping>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
@@ -83,5 +86,5 @@
     <context-param>
         <param-name>ConfiguracionLDAP</param-name>
         <param-value>SVRINFOS02:389:cn=Directory Manager:infos</param-value>
-    </context-param>    
+    </context-param>
 </web-app>

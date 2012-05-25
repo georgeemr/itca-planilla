@@ -2,19 +2,19 @@
 <!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
 <resources>
     <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="table" datasource-classname="oracle.jdbc.pool.OracleDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="8" max-wait-time-in-millis="60000" name="PlanillaConnectionPool" non-transactional-connections="false" ping="false" pool-resize-quantity="1" pooling="true" res-type="javax.sql.ConnectionPoolDataSource" statement-cache-size="0" statement-leak-reclaim="false" statement-leak-timeout-in-seconds="0" statement-timeout-in-seconds="-1" steady-pool-size="1" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="true">
-        <property name="URL" value="jdbc:oracle:thin:@192.168.20.200:1521:TSE"/>
+        <property name="URL" value="jdbc:oracle:thin:@SVRINFOS01:1521:TSE"/>
         <property name="User" value="PLANILLA"/>
         <property name="Password" value="INFOS"/>
-        <property name="serverName" value="192.168.20.200"/>
+        <property name="serverName" value="SVRINFOS01"/>
         <property name="portNumber" value="1521"/>
         <property name="databaseName" value="TSE"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="PlanillaDatasource" object-type="user" pool-name="PlanillaConnectionPool">
-        <description>Datasource hacia esquema de Recursos Humanos</description>
+        <description>Datasource hacia esquema de Recursos Humanos utilizando PlanillaConnectionPool</description>
     </jdbc-resource>    
 
     <mail-resource debug="false" enabled="true" from="infosgces@gmail.com" host="smtp.gmail.com" jndi-name="gmailSession" object-type="user" store-protocol="imaps" store-protocol-class="com.sun.mail.imap.IMAPStore" transport-protocol="smtps" transport-protocol-class="com.sun.mail.smtp.SMTPTransport" user="infosgces@gmail.com">
-        <description>Cuenta de correo configurada en glassfish v3.1</description>
+        <description>Cuenta de correo infosgces@gmail.com configurada en glassfish v3.1</description>
         <property name="mail.smtps.host" value="smtp.gmail.com"/>
         <property name="mail.smtps.port" value="465"/>
         <property name="mail.smtps.user" value="infosgces@gmail.com"/>

@@ -9,6 +9,7 @@ import com.infosgroup.planilla.modelo.entidades.CapacitacionAsistencia;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionXEmpleado;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
 import java.io.Serializable;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Named;
 
@@ -16,8 +17,7 @@ import javax.inject.Named;
  *
  * @author infosgroup
  */
-//@ManagedBean(name = "SessionBeanCAP")
-@Named(value = "SessionBeanCAP")
+@ManagedBean(name = "SessionBeanCAP")
 @SessionScoped
 public class SessionBeanCAP implements Serializable {
 
