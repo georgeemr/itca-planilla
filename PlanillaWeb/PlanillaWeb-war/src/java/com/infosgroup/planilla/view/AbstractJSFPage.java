@@ -20,9 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
-import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
 /**
@@ -30,15 +30,16 @@ import javax.servlet.ServletContext;
  * @author root
  */
 public abstract class AbstractJSFPage implements java.io.Serializable {
-    @Inject
+
+    @ManagedProperty(value = "#{SessionBeanADM}")
     protected SessionBeanADM sessionBeanADM;
-    @Inject
+    @ManagedProperty(value = "#{SessionBeanREC}")
     protected SessionBeanREC sessionBeanREC;
-    @Inject
+    @ManagedProperty(value = "#{SessionBeanEMP}")
     protected SessionBeanEMP sessionBeanEMP;
-    @Inject
+    @ManagedProperty(value = "#{SessionBeanPLA}")
     protected SessionBeanPLA sessionBeanPLA;
-    @Inject
+    @ManagedProperty(value = "#{SessionBeanCAP}")
     protected SessionBeanCAP sessionBeanCAP;
     //
     @EJB

@@ -7,7 +7,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:i="http://java.sun.com/jsf/composite/components/presentacion"
                 xmlns:ap="http://java.sun.com/jsf/composite/components/accionPersonal" 
-                xmlns:d="http://java.sun.com/jsf/composite/components/dialogo" >
+                xmlns:d="http://java.sun.com/jsf/composite/components/dialogo">
 
     <ui:define name="titulo">
         <h:outputText value="Acciones de personal"/>
@@ -16,9 +16,7 @@
     <ui:define name="acciones">
         <p:tab id="tabAcciones" title="Acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" update="principalForm:mensajes, principalForm:lstTipos" 
-                               onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" 
-                               oncomplete="#{planilla$accionesPersonal.urlPlantilla}.show();" >
+                <p:commandLink styleClass="opcionMenu textoNormal" update="principalForm:mensajes, principalForm:lstTipos" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';" oncomplete="#{planilla$accionesPersonal.urlPlantilla}.show();">
                     <p:graphicImage value="/resources/iconos/new.png"/>
                     <h:outputText value="Nuevo" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -61,10 +59,10 @@
                     <td>
                         <h:panelGrid columns="2">
                             <h:outputLabel value="Acci&oacute;n de Personal" style="font-weight: bold;" />
-                            <h:selectOneMenu id="lstAcc" style="height: 25px;padding-top: 3px; width: 250px;" value="#{SessionBeanEMP.tipo}">
-                                <f:selectItem  itemValue="-1" itemLabel="[ SELECCIONE UN TIPO DE ACCI&Oacute;N ]" />
+                        <h:selectOneMenu id="lstAcc" style="height: 25px;padding-top: 3px; width: 250px;" value="#{planilla$accionesPersonal.tipoAccionPersonal}">                                
+                                <f:selectItem  itemValue="-1" itemLabel="[SELECCIONE UN TIPO DE ACCI&Oacute;N]" />
                                 <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc" itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
-                                <f:ajax event="change" execute="lstAcc" render="@form" listener="#{planilla$accionesPersonal.seleccionarAccion}" />
+                                <f:ajax event="change" execute="lstAcc" render="@form" listener="#{planilla$accionesPersonal.seleccionarAccion}"/>
                             </h:selectOneMenu>
                             <h:outputLabel value="Solicitudes a mostrar" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}" style="font-weight: bold;" />
                             <h:selectOneRadio id="chkSolicitudes" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}" value="#{planilla$accionesPersonal.solicitudesMostradas}" >
@@ -144,7 +142,7 @@
 
     <ui:define name="dialogos">
         <d:dialogoEmpleados name="dlgEmpSolPermisos"
-                            title="Listado general de Empleados" selection="#{SessionBeanEMP.empleadoAccionPersonal}"
+                            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
                             update="principalForm:mensajes,principalForm:fieldsetEncabezado" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
                             okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
@@ -194,7 +192,7 @@
         </p:dialog>
 
         <d:dialogoEmpleados name="dlgEmpSolVacaciones"
-                            title="Listado general de Empleados" selection="#{SessionBeanEMP.empleadoAccionPersonal}"
+                            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
                             update="principalForm:mensajes,principalForm:fieldsetEncabezadoVac" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
                             okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
@@ -267,7 +265,7 @@
         </p:dialog>
 
         <d:dialogoEmpleados name="dlgEmpSolIncapacidad"
-                            title="Listado general de Empleados" selection="#{SessionBeanEMP.empleadoAccionPersonal}"
+                            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
                             update="principalForm:mensajes,principalForm:fieldsetEncabezadoInc" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
                             okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
@@ -356,7 +354,7 @@
         </p:dialog>
 
         <d:dialogoEmpleados name="dlgEmpSolNombramientos"
-                            title="Listado general de Empleados" selection="#{SessionBeanEMP.empleadoAccionPersonal}"
+                            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
                             update="principalForm:mensajes,principalForm:fieldsetEncabezadoNom" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
                             okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
@@ -559,7 +557,7 @@
                          rowsPerPageTemplate="5,10,25,50,100" style="margin-top: 20px;" onRowSelectUpdate="principalForm:mensajes,tableEmpleadosAfectar,afectadosTipoPlanilla,afectadosDepartamento" onRowUnselectUpdate="principalForm:mensajes,tableEmpleadosAfectar,afectadosTipoPlanilla,afectadosDepartamento" >
 
                 <f:facet name="header">
-                    Empleados
+                    <h:outputText value="Empleados"/>
                 </f:facet>
                 <p:column selectionMode="multiple" style="width:18px" /> 
                 <p:column headerText="C&oacute;digo" >  
@@ -579,7 +577,7 @@
 
         <!-- Aumento de Sueldo -->
         <d:dialogoEmpleados name="dlgEmpSolAumentoSueldo" 
-                            title="Listado general de Empleados" selection="#{SessionBeanEMP.empleadoAccionPersonal}"
+                            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
                             update="principalForm:mensajes,principalForm:fieldsetEncabezadoAuSal,principalForm:lbSalario,principalForm:etiquetaSalario" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
                             okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
@@ -905,7 +903,7 @@
 
         <!-- Solicitud de Retiro  -->
         <d:dialogoEmpleados name="dlgEmpSolRetiro" 
-                            title="Listado general de Empleados" selection="#{SessionBeanEMP.empleadoAccionPersonal}"
+                            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
                             update="principalForm:mensajes,principalForm:fieldsetEncabezadoRetiro" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
                             okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
@@ -977,7 +975,7 @@
 
         <!-- Solicitud No Afecta Planilla -->
         <d:dialogoEmpleados name="dlgEmpSolNoAfecta" 
-                            title="Listado general de Empleados" selection="#{SessionBeanEMP.empleadoAccionPersonal}"
+                            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
                             update="principalForm:mensajes,principalForm:fieldsetEncabezadoNA" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
                             okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
@@ -1042,7 +1040,7 @@
         </p:dialog>
 
         <d:dialogoEmpleados name="dlgSolConstancia" 
-                            title="Listado general de Empleados" selection="#{SessionBeanEMP.empleadoAccionPersonal}"
+                            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
                             update="principalForm:mensajes,principalForm:fieldsetEncabezadoSC" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
                             okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
@@ -1069,7 +1067,7 @@
         </p:dialog>
 
         <d:dialogoEmpleados name="dlgEmpleadosDiaVacacion"
-                            title="Listado general de Empleados" selection="#{SessionBeanEMP.empleadoAccionPersonal}"
+                            title="Listado general de Empleados" selection="#{planilla$accionesPersonal.empleadoAccionPersonal}"
                             update="principalForm:mensajes,principalForm:fieldsetEncabezadoDiaVacacion,fldDiaVacacion" image="/resources/imagenes/64/meeting-participant.png"
                             information="Seleccione un empleado para la solicitud"
                             okAction="#{planilla$accionesPersonal.seleccionarEmpleado}"
