@@ -4,7 +4,9 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla;
 
-import com.infosgroup.planilla.modelo.entidades.*;
+import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
+import com.infosgroup.planilla.modelo.entidades.Empleados;
+import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.procesos.PlanillaSessionBean;
 import com.infosgroup.planilla.modelo.procesos.ReportesStatelessBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
@@ -32,6 +34,28 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     private PlanillaSessionBean planillaSessionBean;
     @EJB
     private ReportesStatelessBean reportesStatelessBean;
+    //
+    private Short tipoAccionPersonal;
+
+    public Short getTipoAccionPersonal() {
+        return tipoAccionPersonal;
+    }
+
+    public void setTipoAccionPersonal(Short tipoAccionPersonal) {
+        this.tipoAccionPersonal = tipoAccionPersonal;
+    }
+    //
+    private Empleados empleadoAccionPersonal;
+
+    public Empleados getEmpleadoAccionPersonal() {
+        return empleadoAccionPersonal;
+    }
+
+    public void setEmpleadoAccionPersonal(Empleados empleadoAccionPersonal) {
+        this.empleadoAccionPersonal = empleadoAccionPersonal;
+    }
+    
+    //
     private List<AccionPersonal> listaSolicitudes;
     private List<TipoAccion> listaTipo;
     private List<Empleados> listaEmp;
@@ -48,7 +72,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public Boolean getRenderReportePagos() {
         renderReportePagos = Boolean.FALSE;
         if (getSessionBeanPLA().getAccionSeleccionada() != null) {
-            if (getSessionBeanPLA().getAccionSeleccionada().getStatus().equals("A") && getSessionBeanPLA().getAccionSeleccionada().getfApruebaRh()!=null) {
+            if (getSessionBeanPLA().getAccionSeleccionada().getStatus().equals("A") && getSessionBeanPLA().getAccionSeleccionada().getfApruebaRh() != null) {
                 if (getSessionBeanPLA().getAccionSeleccionada().getAccionPersonalPK().getCodTipoaccion().equals(new Short("20"))) {
                     renderReportePagos = Boolean.TRUE;
                 }
@@ -73,33 +97,38 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public void seleccionarAccion(AjaxBehaviorEvent event) {
-        accionSeleccionada = planillaSessionBean.buscarTipoAccion(empresa, getSessionBeanEMP().getTipo());       
+        accionSeleccionada = planillaSessionBean.buscarTipoAccion(empresa, tipoAccionPersonal);
+        //getSessionBeanEMP().setTipo(tipoAccionPersonal);
+        //accionSeleccionada = planillaSessionBean.buscarTipoAccion(empresa, getSessionBeanEMP().getTipo());
         urlPlantilla = accionSeleccionada != null ? accionSeleccionada.getUrlPlantilla() : null;
-        getSessionBeanEMP().setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
+        //getSessionBeanEMP().setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
+        setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
     }
 
     @PostConstruct
     public void init() {
         if (isInRole("rrhh")) {
-            setListaSolicitudes( planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion()));
-            setListaEmp( planillaSessionBean.listaEmpleados(getSessionBeanADM().getCompania()) );
+            setListaSolicitudes(planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion()));
+            setListaEmp(planillaSessionBean.listaEmpleados(getSessionBeanADM().getCompania()));
         } else if (isInRole("jefes")) {
             setListaSolicitudes(planillaSessionBean.findSolicitudesByJefe(getSessionBeanEMP().getEmpleadoSesion()));
-            setListaEmp( planillaSessionBean.findEmpleadosByJefe(getSessionBeanEMP().getEmpleadoSesion()) );
+            setListaEmp(planillaSessionBean.findEmpleadosByJefe(getSessionBeanEMP().getEmpleadoSesion()));
         } else if (isInRole("empleados")) {
-            setListaSolicitudes( planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion()));
+            setListaSolicitudes(planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion()));
             setListaEmp(new ArrayList<Empleados>());
         } else {
-            setListaSolicitudes( new ArrayList<AccionPersonal>() );
+            setListaSolicitudes(new ArrayList<AccionPersonal>());
             setListaEmp(new ArrayList<Empleados>());
         }
-        getSessionBeanEMP().setTipo(null);
-        setEmpresa( getSessionBeanADM().getCompania().getCodCia());
-        setSolicitudesMostradas( "E" );
-        getSessionBeanEMP().setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
+        //getSessionBeanEMP().setTipo(null);
+        tipoAccionPersonal = null;
+        setEmpresa(getSessionBeanADM().getCompania().getCodCia());
+        setSolicitudesMostradas("E");
+        //getSessionBeanEMP().setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
+        setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
         getSessionBeanPLA().setAccionSeleccionada(null);
         listar();
-        setFecha( new Date() );
+        setFecha(new Date());
     }
 
     public String getSolicitudesMostradas() {
@@ -201,9 +230,9 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
                 listaSolicitudes = planillaSessionBean.findSolicitudesByRRHH(getSessionBeanEMP().getEmpleadoSesion());
             } else if (isInRole("jefes")) {
                 listaSolicitudes = planillaSessionBean.findSolicitudesByJefe(getSessionBeanEMP().getEmpleadoSesion());
-            }else if (isInRole("empleados")) {
+            } else if (isInRole("empleados")) {
                 listaSolicitudes = planillaSessionBean.findSolicitudesByEmpleado(getSessionBeanEMP().getEmpleadoSesion());
-            }else {
+            } else {
                 listaSolicitudes = new ArrayList<AccionPersonal>();
             }
         } else {
@@ -212,12 +241,14 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     }
 
     public String seleccionarEmpleado() {
-        addMessage("Acciones de Personal", "Empleado seleccionado " + getSessionBeanEMP().getEmpleadoAccionPersonal().getNombreCompleto(), TipoMensaje.INFORMACION);
+        //addMessage("Acciones de Personal", "Empleado seleccionado " + getSessionBeanEMP().getEmpleadoAccionPersonal().getNombreCompleto(), TipoMensaje.INFORMACION);
+        addMessage("Acciones de Personal", "Empleado seleccionado " + getEmpleadoAccionPersonal().getNombreCompleto(), TipoMensaje.INFORMACION);
         return null;
     }
 
     public String cancelSeleccionarEmpleado() {
-        getSessionBeanEMP().setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
+        //getSessionBeanEMP().setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
+        setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());
         return null;
     }
 

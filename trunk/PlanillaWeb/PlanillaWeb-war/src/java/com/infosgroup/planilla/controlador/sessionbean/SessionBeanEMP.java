@@ -13,7 +13,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 
 /**
  *
@@ -26,8 +25,8 @@ public class SessionBeanEMP implements java.io.Serializable {
     @EJB
     private EmpleadosSessionBean empleadosBean;
     private Empleados empleadoSesion;
-    private Empleados empleadoAccionPersonal;
-    private Short tipo;
+    //private Empleados empleadoAccionPersonal;
+    //private Short tipo;
     private TipoAccion accionSeleccionada;
 
     public TipoAccion getAccionSeleccionada() {
@@ -46,21 +45,21 @@ public class SessionBeanEMP implements java.io.Serializable {
         this.empleadoSesion = empleadoSesion;
     }
 
-    public Empleados getEmpleadoAccionPersonal() {
+    /*public Empleados getEmpleadoAccionPersonal() {
         return empleadoAccionPersonal;
     }
 
     public void setEmpleadoAccionPersonal(Empleados empleadoAccionPersonal) {
         this.empleadoAccionPersonal = empleadoAccionPersonal;
-    }
+    }*/
 
-    public Short getTipo() {
+    /*public Short getTipo() {
         return tipo;
     }
 
     public void setTipo(Short tipo) {
         this.tipo = tipo;
-    }
+    }*/
 
     @PostConstruct
     public void postConstruct() {

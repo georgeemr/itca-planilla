@@ -5,20 +5,16 @@
 package com.infosgroup.planilla.modelo.procesos;
 
 import com.infosgroup.planilla.modelo.entidades.*;
-import com.infosgroup.planilla.modelo.entidades.TipoAccion;
 import com.infosgroup.planilla.modelo.facades.*;
-import com.infosgroup.planilla.modelo.procesos.accionesDePersonal.*;
+import com.infosgroup.planilla.modelo.procesos.accionesDePersonal.AccionSolicitud;
+import com.infosgroup.planilla.modelo.procesos.accionesDePersonal.NombramientoAction;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 
 /**
  *
@@ -125,7 +121,7 @@ public class PlanillaSessionBean {
     public List<Empleados> listarJefes() {
         return empleadoFacade.findByJefes();
     }
-    
+
     public List<Empleados> findEmpleadosByJefe(Empleados empleado) {
         return empleadoFacade.findEmpleadosByJefe(empleado);
     }
@@ -439,8 +435,8 @@ public class PlanillaSessionBean {
     public List<Evaluado> findEvaluadosByDepartamentos(Evaluador evaluador, Departamentos departamento) {
         List<Empleados> l = empleadoFacade.findByDepartamentos(departamento);
         List<Evaluado> evls = new ArrayList<Evaluado>();
-        for( Empleados e :l ){
-            evls.add( new Evaluado(evaluador, e) );
+        for (Empleados e : l) {
+            evls.add(new Evaluado(evaluador, e));
         }
         return evls;
     }
@@ -602,10 +598,10 @@ public class PlanillaSessionBean {
                 break;
         }
     }
-    
+
     @PermitAll
-    public void eliminarEvaluadorEvaluaciones(PreEvaluacion preevaluacion, Empleados empleado,List<Evaluacion> evaluacion){
-        empleadoFacade.eliminarEvaluadorEvaluaciones(preevaluacion, empleado,evaluacion);
+    public void eliminarEvaluadorEvaluaciones(PreEvaluacion preevaluacion, Empleados empleado, List<Evaluacion> evaluacion) {
+        empleadoFacade.eliminarEvaluadorEvaluaciones(preevaluacion, empleado, evaluacion);
     }
 
     @PermitAll

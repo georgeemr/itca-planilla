@@ -9,8 +9,8 @@ import com.infosgroup.planilla.modelo.entidades.Concurso;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.inject.Inject;
 
 /**
  *
@@ -22,7 +22,7 @@ import javax.inject.Inject;
 @SessionScoped
 public class SessionBeanREC implements Serializable {
 
-    @Inject
+    @ManagedProperty(value="#{SessionBeanEMP}")
     private SessionBeanEMP sessionBeanEMP;
     //@EJB private ReclutamientoSessionBean reclutamientoSessionBean;
     private Concurso concursoSeleccionado;

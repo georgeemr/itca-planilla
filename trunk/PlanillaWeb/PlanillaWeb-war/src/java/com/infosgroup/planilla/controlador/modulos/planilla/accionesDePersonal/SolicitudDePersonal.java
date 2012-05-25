@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.inject.Inject;
+import javax.faces.bean.ManagedProperty;
 
 /**
  *
@@ -22,7 +22,7 @@ import javax.inject.Inject;
  */
 public abstract class SolicitudDePersonal extends AbstractJSFPage implements java.io.Serializable {
 
-    @Inject
+    @ManagedProperty(value="#{planilla$accionesPersonal}")
     protected AccionesPersonalBackendBean accionesPersonalBackendBean;
     //
     @EJB
@@ -124,7 +124,8 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         AccionPersonalPK nuevaPK = new AccionPersonalPK();
         try {
             nuevaPK.setCodCia(cias.getCodCia());
-            nuevaPK.setCodTipoaccion(getSessionBeanEMP().getTipo());
+            //nuevaPK.setCodTipoaccion(getSessionBeanEMP().getTipo());
+            nuevaPK.setCodTipoaccion(accionesPersonalBackendBean.getTipoAccionPersonal());
             nuevaPK.setCodEmp(e.getEmpleadosPK().getCodEmp());
             nuevaPK.setCorrelativo(accionPersonalFacade.max(cias.getCodCia(), e.getEmpleadosPK().getCodEmp()));
         } catch (Exception exception) {
@@ -162,12 +163,16 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
     }
 
     public TipoAccion getTipoAccion() {
-        return planillaSessionBean.buscarTipoAccion(getSessionBeanADM().getCompania().getCodCia(), getSessionBeanEMP().getTipo());
+        //return planillaSessionBean.buscarTipoAccion(getSessionBeanADM().getCompania().getCodCia(), getSessionBeanEMP().getTipo());
+        return planillaSessionBean.buscarTipoAccion(getSessionBeanADM().getCompania().getCodCia(), accionesPersonalBackendBean.getTipoAccionPersonal());
     }
 
     public Empleados getEmpleadosToAccionPersonal() {
-        if (getSessionBeanEMP().getEmpleadoAccionPersonal() != null && !getSessionBeanEMP().getEmpleadoAccionPersonal().equals(getSessionBeanEMP().getEmpleadoSesion())) {
-            return getSessionBeanEMP().getEmpleadoAccionPersonal();
+        //if (getSessionBeanEMP().getEmpleadoAccionPersonal() != null && !getSessionBeanEMP().getEmpleadoAccionPersonal().equals(getSessionBeanEMP().getEmpleadoSesion())) {
+        if (accionesPersonalBackendBean.getEmpleadoAccionPersonal() != null && !accionesPersonalBackendBean.getEmpleadoAccionPersonal().equals(getSessionBeanEMP().getEmpleadoSesion())) {        
+            //return getSessionBeanEMP().getEmpleadoAccionPersonal();
+            return accionesPersonalBackendBean.getEmpleadoAccionPersonal();
+            
         } else {
             return getSessionBeanEMP().getEmpleadoSesion();
         }
@@ -186,7 +191,8 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
             accionPersonal.setStatus("A");
         } else if (isInRole("jefes")) {
             // Si el jefe registra una Accion a uno de sus colaboradores.
-            if (getSessionBeanEMP().getEmpleadoAccionPersonal() != null && !getSessionBeanEMP().getEmpleadoAccionPersonal().equals(getSessionBeanEMP().getEmpleadoSesion())) {
+            //if (getSessionBeanEMP().getEmpleadoAccionPersonal() != null && !getSessionBeanEMP().getEmpleadoAccionPersonal().equals(getSessionBeanEMP().getEmpleadoSesion())) {
+                if (accionesPersonalBackendBean.getEmpleadoAccionPersonal() != null && !accionesPersonalBackendBean.getEmpleadoAccionPersonal().equals(getSessionBeanEMP().getEmpleadoSesion())) {
                 if (getTipoAccion().getFirmaRh() != null && (getTipoAccion().getFirmaRh().equals("S") && (getTipoAccion().getFirmaJefe().equals("S")))) {
                     accionPersonal.setAprobadoJefe("J");
                     accionPersonal.setfApruebaJefe(new Date());
