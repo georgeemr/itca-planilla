@@ -71,19 +71,15 @@ public abstract class AbstractJSFPage implements java.io.Serializable {
     public static void mostrarMensaje(FacesMessage.Severity severidad, String textoMensaje) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severidad, "Planilla web", textoMensaje));
     }
-    //@ManagedProperty(value = "#{SessionBeanADM}")
+    // Se reemplazo @ManagedProperty(value = "#{SessionBeanADM}") por CDI, la inyecccion de dependencia se hace implicitamente
     @Inject
     protected SessionBeanADM sessionBeanADM;
-    //@ManagedProperty(value = "#{SessionBeanREC}")
     @Inject
     protected SessionBeanREC sessionBeanREC;
-    //@ManagedProperty(value = "#{SessionBeanEMP}")
     @Inject
     protected SessionBeanEMP sessionBeanEMP;
-    //@ManagedProperty(value = "#{SessionBeanPLA}")
     @Inject
     protected SessionBeanPLA sessionBeanPLA;
-    //@ManagedProperty(value = "#{SessionBeanCAP}")
     @Inject
     protected SessionBeanCAP sessionBeanCAP;
 

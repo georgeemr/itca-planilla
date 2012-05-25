@@ -1095,4 +1095,18 @@ public class Empleados implements Serializable {
     public void setPkAsString(String pkAsString) {
         this.pkAsString = pkAsString;
     }
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
+    private List<Candidato> candidatoList;
+
+    @XmlTransient
+    public List<Candidato> getCandidatoList() {
+        return candidatoList;
+    }
+
+    public void setCandidatoList(List<Candidato> candidatoList) {
+        this.candidatoList = candidatoList;
+    }
+    
+    
 }

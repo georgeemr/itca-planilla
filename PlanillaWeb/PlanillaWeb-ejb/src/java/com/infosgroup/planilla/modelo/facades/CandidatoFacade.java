@@ -6,12 +6,12 @@ package com.infosgroup.planilla.modelo.facades;
 
 import com.infosgroup.planilla.modelo.entidades.*;
 import java.util.ArrayList;
-import javax.ejb.Stateless;
-import javax.ejb.LocalBean;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import javax.annotation.security.PermitAll;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -113,7 +113,7 @@ public class CandidatoFacade extends AbstractFacade<Candidato, CandidatoPK> {
             try {
                 stringBuilder.append( criterio.getPartialQuery() );
             } catch (Exception ex) {
-                ex.printStackTrace();
+                ex.printStackTrace(System.err);
             }
             if (   listaCriterio.indexOf(criterio) != (listaCriterio.size()-1) ){
                 stringBuilder.append(" and ");

@@ -385,14 +385,16 @@ public class EmpleadoBackendBean extends AbstractJSFPage implements Serializable
         entrevistasCandidato = new ArrayList<EntrevistaCandidato>();
 
         estadoAccion = CREANDO;
-        candidatosListModel = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
+        //candidatosListModel = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania());        
+        empleadosListModel = reclutamientoFacade.findEmpleadosCandidatosByCia(getSessionBeanADM().getCompania());
     }
 // ==================================================================================================================
 // == Acciones ======================================================================================================
 // ==================================================================================================================
 
     public String refrescarCandidatos() {
-        candidatosListModel = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
+        //candidatosListModel = reclutamientoFacade.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
+        empleadosListModel = reclutamientoFacade.findEmpleadosCandidatosByCia(getSessionBeanADM().getCompania());
         return null;
     }
 
@@ -1014,13 +1016,23 @@ public class EmpleadoBackendBean extends AbstractJSFPage implements Serializable
     @PermitAll
     public String editar$action() {
         try {
+            Candidato c = null;
             Paises pais = null;
             Deptos depto = null;
-            if (candidatoSeleccionado == null) {
-                addMessage("Infosweb RRHH", "Seleccione un candidato para editarlo", TipoMensaje.INFORMACION);
+
+            if (empleadoSeleccionado == null) {
+                addMessage("Infosweb RRHH", "Seleccione un empleado para editarlo", TipoMensaje.INFORMACION);
                 return null;
             }
-            Candidato c = reclutamientoFacade.findCandidatoById(candidatoSeleccionado.getCandidatoPK());
+
+            if (!((empleadoSeleccionado.getCandidatoList() != null) && (!empleadoSeleccionado.getCandidatoList().isEmpty()))) {
+                addMessage("Infosweb RRHH", "El empleado no esta asociado a ning&uacute;n candidato", TipoMensaje.ERROR);
+                return null;
+            }
+
+            c = empleadoSeleccionado.getCandidatoList().get(0);
+            candidatoSeleccionado = c;
+            
             nombre = c.getNombre();
             apellido = c.getApellido();
             apellidoCasada = c.getApCasada();
@@ -1081,7 +1093,6 @@ public class EmpleadoBackendBean extends AbstractJSFPage implements Serializable
             generales$nombreNIT = c.getNomNit();
             // ==
             preparacionesAcademicasCandidato = new ArrayList<PreparacionAcademicaCandidato>();
-            //List<NivelesXCandidato> ln =  c.getNivelesXCandidatoList();
             List<NivelesXCandidato> ln = reclutamientoFacade.findNivelCandidatoByCandidato(c);
             for (NivelesXCandidato n : ln) {
                 PreparacionAcademicaCandidato p = new PreparacionAcademicaCandidato();
@@ -1248,10 +1259,7 @@ public class EmpleadoBackendBean extends AbstractJSFPage implements Serializable
     public String guardar$action() {
         switch (estadoAccion) {
             case CREANDO:
-                if (guardarCandidato()) {
-                    estadoAccion = EDITANDO;
-                    reclutamientoFacade.flushCandidato();
-                }
+                //if (guardarCandidato()) { estadoAccion = EDITANDO; reclutamientoFacade.flushCandidato(); }
                 break;
             case EDITANDO:
                 if (candidatoSeleccionado != null) {
@@ -1260,7 +1268,7 @@ public class EmpleadoBackendBean extends AbstractJSFPage implements Serializable
                         reclutamientoFacade.flushCandidato();
                     }
                 } else {
-                    addMessage("Infosweb RRHH", "No se ha seleccionado el candidato a editar", TipoMensaje.INFORMACION);
+                    addMessage("Infosweb RRHH", "No se ha seleccionado el empleado a editar", TipoMensaje.INFORMACION);
                 }
                 break;
         }
@@ -1270,6 +1278,7 @@ public class EmpleadoBackendBean extends AbstractJSFPage implements Serializable
     @PermitAll
     public String cancelar$action() {
         limpiarCampos();
+        empleadoSeleccionado = null;
         candidatoSeleccionado = null;
         estadoAccion = CREANDO;
         return null;
@@ -2595,16 +2604,32 @@ public class EmpleadoBackendBean extends AbstractJSFPage implements Serializable
     public static final int CREANDO = 1;
     public static final int EDITANDO = 2;
 // ==============================================================================================================
-    private List<Candidato> candidatosListModel;
+    /*
+     * private List<Candidato> candidatosListModel; public List<Candidato>
+     * getCandidatosListModel() { return candidatosListModel; }
+     *
+     * public void setCandidatosListModel(List<Candidato> candidatosListModel) {
+     * this.candidatosListModel = candidatosListModel; }
+     */
+    private List<Empleados> empleadosListModel;
 
-    public List<Candidato> getCandidatosListModel() {
-        return candidatosListModel;
+    public List<Empleados> getEmpleadosListModel() {
+        return empleadosListModel;
     }
 
-    public void setCandidatosListModel(List<Candidato> candidatosListModel) {
-        this.candidatosListModel = candidatosListModel;
+    public void setEmpleadosListModel(List<Empleados> empleadosListModel) {
+        this.empleadosListModel = empleadosListModel;
     }
+    private Empleados empleadoSeleccionado;
     private Candidato candidatoSeleccionado;
+
+    public Empleados getEmpleadoSeleccionado() {
+        return empleadoSeleccionado;
+    }
+
+    public void setEmpleadoSeleccionado(Empleados empleadoSeleccionado) {
+        this.empleadoSeleccionado = empleadoSeleccionado;
+    }
 
     public Candidato getCandidatoSeleccionado() {
         return candidatoSeleccionado;
