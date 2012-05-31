@@ -4,9 +4,9 @@
  */
 package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 
-import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
+import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.io.Serializable;
 import java.util.Date;
@@ -16,9 +16,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
 
 /**
  *

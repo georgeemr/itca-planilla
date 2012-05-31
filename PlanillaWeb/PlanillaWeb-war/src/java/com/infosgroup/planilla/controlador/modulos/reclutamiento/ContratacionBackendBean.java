@@ -4,14 +4,15 @@
  */
 package com.infosgroup.planilla.controlador.modulos.reclutamiento;
 
+import com.infosgroup.planilla.modelo.entidades.Candidato;
+import com.infosgroup.planilla.modelo.entidades.Concurso;
 import com.infosgroup.planilla.modelo.procesos.ReclutamientoSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
-import java.io.Serializable;
-import javax.ejb.EJB;
-import java.util.List;
-import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.view.TipoMensaje;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.component.datatable.DataTable;

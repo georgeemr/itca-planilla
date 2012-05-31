@@ -92,7 +92,7 @@ public abstract class SolicitudDePersonal extends AbstractJSFPage implements jav
         this.listaTipos = listaTipos;
     }
 
-    abstract boolean validarSolicitud();
+    public abstract boolean validarSolicitud();
 
     public AccionPersonalPK getAccionPersonalPK(Cias cias) {
         AccionPersonalPK nuevaPK = new AccionPersonalPK();

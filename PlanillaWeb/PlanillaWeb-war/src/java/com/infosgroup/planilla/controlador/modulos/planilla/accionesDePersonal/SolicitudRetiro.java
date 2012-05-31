@@ -4,7 +4,6 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
-import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.Date;
@@ -93,7 +92,7 @@ public class SolicitudRetiro extends SolicitudDePersonal implements java.io.Seri
     }
 
     @Override
-    boolean validarSolicitud() {
+    public boolean validarSolicitud() {
         Boolean error = Boolean.FALSE;
         if (fechaRetiro == null) {
             addMessage("Acciones de Personal", "Fecha de retiro es un campo requerido.", TipoMensaje.ERROR);

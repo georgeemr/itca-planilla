@@ -4,7 +4,6 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
-import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.Date;
@@ -40,7 +39,7 @@ public class SolicitudConstanciaSueldo extends SolicitudDePersonal implements ja
     }
     
     @Override
-    boolean validarSolicitud() {
+    public boolean validarSolicitud() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

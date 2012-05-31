@@ -67,7 +67,7 @@ public class SolicitudAumentoSueldo extends SolicitudDePersonal implements java.
     }
 
     @Override
-    boolean validarSolicitud() {
+    public boolean validarSolicitud() {
 
         Boolean error = Boolean.FALSE;
 
