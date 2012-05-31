@@ -4,7 +4,6 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
-import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.Date;
@@ -93,7 +92,7 @@ public class SolicitudNombramiento extends SolicitudDePersonal implements java.i
     }
 
     @Override
-    boolean validarSolicitud() {
+    public boolean validarSolicitud() {
         Boolean error = Boolean.FALSE;
         if (departamento == null || departamento==-1) {
             addMessage("Acciones de Personal", "Departamento es un campo requerido.", TipoMensaje.ERROR);

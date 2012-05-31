@@ -142,7 +142,7 @@ public class SolicitudAumentoSueldoColectivo extends SolicitudDePersonal impleme
     }
 
     @Override
-    boolean validarSolicitud() {
+    public boolean validarSolicitud() {
         Boolean e = Boolean.FALSE;
         if (criterioSeleccionado.equals("-1")) {
             addMessage("Acciones de Personal", "Seleccione un criterio.", TipoMensaje.ERROR);

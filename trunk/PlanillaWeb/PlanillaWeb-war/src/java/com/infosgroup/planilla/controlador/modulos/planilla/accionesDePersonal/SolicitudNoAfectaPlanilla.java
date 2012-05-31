@@ -4,8 +4,9 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
-import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
-import com.infosgroup.planilla.modelo.entidades.*;
+import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
+import com.infosgroup.planilla.modelo.entidades.TipoAccion;
+import com.infosgroup.planilla.modelo.entidades.TipoAccionPK;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,7 +98,7 @@ public class SolicitudNoAfectaPlanilla extends SolicitudDePersonal implements ja
     }
 
     @Override
-    boolean validarSolicitud() {
+    public boolean validarSolicitud() {
         Boolean error = Boolean.FALSE;
 
         if (tipoAccionSeleccionada == null || tipoAccionSeleccionada.equals(new Short("-1"))) {

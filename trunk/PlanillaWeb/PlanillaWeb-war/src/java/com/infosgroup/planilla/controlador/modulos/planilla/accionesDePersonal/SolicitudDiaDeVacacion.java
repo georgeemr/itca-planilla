@@ -4,7 +4,6 @@
  */
 package com.infosgroup.planilla.controlador.modulos.planilla.accionesDePersonal;
 
-import com.infosgroup.planilla.controlador.modulos.planilla.AccionesPersonalBackendBean;
 import com.infosgroup.planilla.modelo.entidades.AccionPersonal;
 import com.infosgroup.planilla.view.TipoMensaje;
 import java.util.Date;
@@ -75,7 +74,7 @@ public class SolicitudDiaDeVacacion extends SolicitudDePersonal implements java.
     }
 
     @Override
-    boolean validarSolicitud() {
+    public boolean validarSolicitud() {
         Boolean error = Boolean.FALSE;
         if (fechaInicial == null) {
             addMessage("Acciones de Personal", "Fecha inicial es un campo requerido.", TipoMensaje.ERROR);

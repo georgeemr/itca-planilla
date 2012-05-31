@@ -189,7 +189,7 @@ public class SolicitudVacacionColectiva extends SolicitudDePersonal implements j
     }
 
     @Override
-    boolean validarSolicitud() {
+    public boolean validarSolicitud() {
         Boolean error = Boolean.FALSE;
         if (criterioSeleccionado == null || criterioSeleccionado.equals("-1")) {
             addMessage("Acciones de Personal", "Seleccione el Criterio.", TipoMensaje.ERROR);
