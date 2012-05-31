@@ -54,7 +54,6 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
     public void setEmpleadoAccionPersonal(Empleados empleadoAccionPersonal) {
         this.empleadoAccionPersonal = empleadoAccionPersonal;
     }
-    
     //
     private List<AccionPersonal> listaSolicitudes;
     private List<TipoAccion> listaTipo;
@@ -122,6 +121,7 @@ public class AccionesPersonalBackendBean extends AbstractJSFPage implements Seri
         }
         //getSessionBeanEMP().setTipo(null);
         tipoAccionPersonal = null;
+        //tipoAccionPersonal = -1 ;
         setEmpresa(getSessionBeanADM().getCompania().getCodCia());
         setSolicitudesMostradas("E");
         //getSessionBeanEMP().setEmpleadoAccionPersonal(getSessionBeanEMP().getEmpleadoSesion());

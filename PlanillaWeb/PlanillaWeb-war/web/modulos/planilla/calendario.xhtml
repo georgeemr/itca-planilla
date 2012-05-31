@@ -22,7 +22,7 @@
         </p:tab>
         <p:tab title="Otras acciones">
             <h:panelGrid columns="1">
-                <p:commandLink styleClass="opcionMenu textoNormal" ajax="true" action="accionesPersonal?faces-redirect=true" update="principalForm:mensajes" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
+                <p:commandLink styleClass="opcionMenu textoNormal" action="accionesPersonal?faces-redirect=true" ajax="true" onmouseover="this.className='opcionMenu  textonegrita';" onmouseout="this.className='opcionMenu  textonormal';">
                     <p:graphicImage value="/resources/iconos/arrow-left.png"/>
                     <h:outputText value="Acciones de personal" styleClass="espacioTexto"/>
                 </p:commandLink>
@@ -31,7 +31,7 @@
     </ui:define>
     <!-- ======================================================================================================= -->
     <ui:define name="contenido">
-        <h:outputScript target="head">           
+        <h:outputScript target="head">
             function highlightCalendar(fechaActual, estiloCSS)
             {
             var diasMarcados = [#{planilla$calendario.fechas}];
@@ -52,7 +52,7 @@
             jQuery("#datepicker01").datepicker("option", "beforeShowDay", function (date) { return highlightCalendar(date, '#{planilla$calendario.estilo}'); });
             jQuery("#datepicker01").datepicker({dateFormat: 'mm/dd/yyyy'}).datepicker('setDate', '01/01/#{planilla$calendario.anio}');
             });
-        </h:outputScript>
+        </h:outputScript>        
         <table width="100%">
             <tr valign="top">
                 <td width="33%">
