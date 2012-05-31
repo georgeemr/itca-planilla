@@ -6,7 +6,7 @@
     </context-param>
     <context-param>
         <param-name>com.sun.faces.enableMissingResourceLibraryDetection</param-name>
-        <param-value>true</param-value>    
+        <param-value>true</param-value>
     </context-param>
     <context-param>
         <param-name>primefaces.THEME</param-name>
@@ -25,14 +25,14 @@
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>/rrhh/modulos/inicio.xhtml</welcome-file><!-- -->
+        <welcome-file>/rrhh/modulos/inicio.xhtml</welcome-file>
     </welcome-file-list>
     <security-constraint>
         <display-name>Constraint Prueba OpenDS</display-name>
         <web-resource-collection>
             <web-resource-name>PruebaOpenDS</web-resource-name>
             <description>PruebaOpenDS Web Constraint</description>
-            <url-pattern>/rrhh/modulos/*</url-pattern><!-- -->
+            <url-pattern>/rrhh/modulos/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description>Administradores authorization constraint</description>
@@ -75,7 +75,7 @@
         <init-param>
             <param-name>thresholdSize</param-name>
             <param-value>2097152</param-value>
-        </init-param>     
+        </init-param>
     </filter>
     <!-- -->
     <filter-mapping>
