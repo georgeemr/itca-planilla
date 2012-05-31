@@ -69,7 +69,7 @@
                                 </td>
                                 <td>
                                     <h:selectOneMenu id="paisDomicilio" style="width: 175px; height: 24px; padding-top: 3px;" value="#{planilla$empleado.generales$pais}" requiredMessage="Seleccione el pa&iacute;s de domicilio">
-                                        <f:ajax event="change" render="deptoDomicilio municipioDomicilio" listener="#{planilla$empleado.paisDomicilio_ajaxListener(event)}"/>
+                                        <f:ajax event="change" render="deptoDomicilio municipioDomicilio" listener="#{planilla$empleado.paisDomicilio_ajaxListener}"/>
                                         <f:selectItem itemLabel="-- Seleccione --" itemValue="0" />
                                         <f:selectItems var="pais" value="#{planilla$empleado.paisesSelectItemListModel}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />                            
                                     </h:selectOneMenu>
@@ -79,7 +79,7 @@
                                 </td>
                                 <td>
                                     <h:selectOneMenu id="deptoDomicilio" style="width: 175px; height: 24px; padding-top: 3px;" value="#{planilla$empleado.generales$departamento}" requiredMessage="Seleccione el departamento de domicilio">
-                                        <f:ajax event="change" render="municipioDomicilio" listener="#{planilla$empleado.deptoDomicilio_ajaxListener(event)}"/>
+                                        <f:ajax event="change" render="municipioDomicilio" listener="#{planilla$empleado.deptoDomicilio_ajaxListener}"/>
                                         <f:selectItem itemLabel="-- Seleccione --" itemValue="0:0" />
                                         <f:selectItems var="departamento" value="#{planilla$empleado.deptosDomicilioSelectItemListModel}" itemValue="#{departamento.deptosPK.codPais}:#{departamento.deptosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
                                     </h:selectOneMenu>
@@ -117,13 +117,13 @@
                         <h:panelGrid columns="6">
                             <h:outputLabel value="Pa&iacute;s"/>
                             <h:selectOneMenu id="paisNacimiento" style="width: 175px; height: 24px; padding-top: 3px;" value="#{planilla$empleado.generales$paisNacimiento}">
-                                <f:ajax event="change" render="deptoNacimiento municipioNacimiento" listener="#{planilla$empleado.paisNacimiento_ajaxListener(event)}"/>
+                                <f:ajax event="change" render="deptoNacimiento municipioNacimiento" listener="#{planilla$empleado.paisNacimiento_ajaxListener}"/>
                                 <f:selectItem itemLabel="-- Seleccione --" itemValue="0" />
                                 <f:selectItems var="pais" value="#{planilla$empleado.paisesSelectItemListModel}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}" />
                             </h:selectOneMenu>
                             <h:outputLabel value="Departamento"/>
                             <h:selectOneMenu id="deptoNacimiento" style="width: 175px; height: 24px; padding-top: 3px;" value="#{planilla$empleado.generales$departamentoNacimiento}">
-                                <f:ajax event="change" render="municipioNacimiento" listener="#{planilla$empleado.deptoNacimiento_ajaxListener(event)}"/>
+                                <f:ajax event="change" render="municipioNacimiento" listener="#{planilla$empleado.deptoNacimiento_ajaxListener}"/>
                                 <f:selectItem itemLabel="-- Seleccione --" itemValue="0:0" />
                                 <f:selectItems var="departamento" value="#{planilla$empleado.deptosNacSelectItemListModel}" itemValue="#{departamento.deptosPK.codPais}:#{departamento.deptosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
                             </h:selectOneMenu>
@@ -159,7 +159,7 @@
                             <p:calendar navigator="true" pattern="dd/MM/yyyy" showOn="button" value="#{planilla$empleado.generales$fechaExpDui}"/>
                             <h:outputText value="Depto. exped. c&eacute;dula"/>
                             <h:selectOneMenu id="deptoExpDUI" style="width: 175px; height: 24px; padding-top: 3px;" value="#{planilla$empleado.generales$departamentoExpDui}">
-                                <f:ajax event="change" render="municExpDUI" listener="#{planilla$empleado.deptoExpDUI_ajaxListener(event)}"/>
+                                <f:ajax event="change" render="municExpDUI" listener="#{planilla$empleado.deptoExpDUI_ajaxListener}"/>
                                 <f:selectItem itemLabel="-- Seleccione --" itemValue="0:0" />
                                 <f:selectItems var="departamento" value="#{planilla$empleado.deptosExpDUISelectItemListModel}" itemValue="#{departamento.deptosPK.codPais}:#{departamento.deptosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
                             </h:selectOneMenu>
@@ -188,7 +188,7 @@
                             <p:inputText size="50" value="#{planilla$empleado.preparacion$nombreInstitucion}"/>
                             <h:outputText value="Pa&iacute;s"/>
                             <h:selectOneMenu id="paisPrepAcad" style="width: 175px; height: 24px; padding-top: 3px;" value="#{planilla$empleado.preparacion$pais}">                       
-                                <f:ajax event="change" render="deptoPrepAcad" listener="#{planilla$empleado.paisPrepAcad_ajaxListener(event)}"/>
+                                <f:ajax event="change" render="deptoPrepAcad" listener="#{planilla$empleado.paisPrepAcad_ajaxListener}"/>
                                 <f:selectItem itemLabel="-- Seleccione --" itemValue="0" />
                                 <f:selectItems var="pais" value="#{planilla$empleado.paisesSelectItemListModel}" itemValue="#{pais.codPais}" itemLabel="#{pais.nombPais}"/>
                             </h:selectOneMenu>

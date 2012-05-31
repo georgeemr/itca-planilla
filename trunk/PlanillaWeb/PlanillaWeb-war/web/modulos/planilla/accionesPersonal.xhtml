@@ -62,13 +62,13 @@
                             <h:selectOneMenu id="lstAcc" style="height: 25px;padding-top: 3px; width: 250px;" value="#{planilla$accionesPersonal.tipoAccionPersonal}">                                
                                 <f:selectItem  itemValue="-1" itemLabel="[SELECCIONE UN TIPO DE ACCI&Oacute;N]" />
                                 <f:selectItems value="#{planilla$accionesPersonal.listaTipo}" var="tipoAcc" itemValue="#{tipoAcc.tipoAccionPK.codTipoaccion}" itemLabel="#{tipoAcc.nomTipoaccion}"/>
-                                <f:ajax event="change" execute="lstAcc" render="@form" listener="#{planilla$accionesPersonal.seleccionarAccion(event)}"/>
+                                <f:ajax event="change" execute="lstAcc" render="@form" listener="#{planilla$accionesPersonal.seleccionarAccion}"/>
                             </h:selectOneMenu>
                             <h:outputLabel value="Solicitudes a mostrar" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}" style="font-weight: bold;" />
                             <h:selectOneRadio id="chkSolicitudes" rendered="#{request.isUserInRole('rrhh') or request.isUserInRole('jefes')}" value="#{planilla$accionesPersonal.solicitudesMostradas}" >
                                 <f:selectItem itemValue="E" itemLabel="Solicitudes de Empleados" />
                                 <f:selectItem itemValue="R" itemLabel="Solicitudes #{request.isUserInRole('rrhh') ? 'de Recursos Humanos' : 'de Jefes'  }" />
-                                <f:ajax event="change" render="principalForm:tableSolicitud principalForm:mensajes" execute="chkSolicitudes" listener="#{planilla$accionesPersonal.listarSolicitudes(event)}" />
+                                <f:ajax event="change" render="principalForm:tableSolicitud principalForm:mensajes" execute="chkSolicitudes" listener="#{planilla$accionesPersonal.listarSolicitudes}" />
                             </h:selectOneRadio>
                         </h:panelGrid>
                     </td>
@@ -169,12 +169,12 @@
                 <table border="0" width="100%" >
                     <tr>
                         <td width="20%" ><i:etiquetaRequerido value="Fecha inicio" styleClass="requerido" /></td>
-                        <td><p:calendar id="spFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudPermiso.fechaInicial}" selectListener="#{solicitudPermiso.handleFechaInicial(event)}" onSelectUpdate="txtDias" /></td>
+                        <td><p:calendar id="spFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudPermiso.fechaInicial}" selectListener="#{solicitudPermiso.handleFechaInicial}" onSelectUpdate="txtDias" /></td>
                         <td colspan="3" ></td>
                     </tr>
                     <tr>
                         <td><i:etiquetaRequerido value="Fecha fin" styleClass="requerido" /></td>
-                        <td><p:calendar id="spFecFinal" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudPermiso.fechaFinal}" selectListener="#{solicitudPermiso.handleFechaFinal(event)}" onSelectUpdate="txtDias"/></td>
+                        <td><p:calendar id="spFecFinal" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudPermiso.fechaFinal}" selectListener="#{solicitudPermiso.handleFechaFinal}" onSelectUpdate="txtDias"/></td>
                         <td colspan="3" ></td>
                     </tr>
                     <tr>
@@ -308,11 +308,11 @@
 
                     <tr>
                         <td><i:etiquetaRequerido value="Fecha Inicio Inc." styleClass="requerido" /></td>
-                        <td><p:calendar id="incFecInicio" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudIncapacidad.fechaInicial}" selectListener="#{solicitudIncapacidad.handleFechaInicial(event)}" onSelectUpdate="txDiasInc" />
+                        <td><p:calendar id="incFecInicio" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudIncapacidad.fechaInicial}" selectListener="#{solicitudIncapacidad.handleFechaInicial}" onSelectUpdate="txDiasInc" />
                         </td>
                         <td></td>
                         <td><i:etiquetaRequerido value="Fecha Fin Inc." styleClass="requerido" /></td>
-                        <td><p:calendar id="incFecFin" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudIncapacidad.fechaFinal}" selectListener="#{solicitudIncapacidad.handleFechaFinal(event)}" onSelectUpdate="txDiasInc" />
+                        <td><p:calendar id="incFecFin" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudIncapacidad.fechaFinal}" selectListener="#{solicitudIncapacidad.handleFechaFinal}" onSelectUpdate="txDiasInc" />
                         </td>
                     </tr>
 
@@ -448,7 +448,7 @@
                                 <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE UN CRITERIO ]" />
                                 <f:selectItem itemValue="departamentos"  itemLabel=" APLICAR POR DEPARTAMENTO " />
                                 <f:selectItem itemValue="tipoPlanilla"  itemLabel=" APLICAR POR TIPO DE PLANILLA " />
-                                <f:ajax event="change" execute="lstCriterio" listener="#{solicitudVacacionColectiva.limpiarFormaAplicar(event)}" render="fldVacColectiva" />
+                                <f:ajax event="change" execute="lstCriterio" listener="#{solicitudVacacionColectiva.limpiarFormaAplicar}" render="fldVacColectiva" />
                             </h:selectOneMenu>
                         </td>        
                     </tr>
@@ -462,7 +462,7 @@
                                     <h:selectOneMenu id="lstDeptosSolVacColDep" style="height: 25px;padding-top: 3px;width: 250px;" value="#{solicitudVacacionColectiva.departamento}" >
                                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE UN DEPARTAMENTO]" />
                                         <f:selectItems value="#{solicitudVacacionColectiva.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
-                                        <f:ajax event="change" execute="lstDeptosSolVacColDep" listener="#{solicitudVacacionColectiva.calcularAfectados(event)}" render="afectadosDepartamento selectXDepartamento" />
+                                        <f:ajax event="change" execute="lstDeptosSolVacColDep" listener="#{solicitudVacacionColectiva.calcularAfectados}" render="afectadosDepartamento selectXDepartamento" />
                                     </h:selectOneMenu>
                                     <h:outputLabel value="" />
 
@@ -471,7 +471,7 @@
                                         <f:ajax render="lstPlanillaTPDep" event="change" execute="lstTipoPlanillaSolVacColDep" />
                                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
                                         <f:selectItems value="#{solicitudVacacionColectiva.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
-                                        <f:ajax event="change" execute="lstTipoPlanillaSolVacColDep" listener="#{solicitudVacacionColectiva.calcularAfectados(event)}" render="afectadosTipoPlanilla lstPlanillaTPDep" />
+                                        <f:ajax event="change" execute="lstTipoPlanillaSolVacColDep" listener="#{solicitudVacacionColectiva.calcularAfectados}" render="afectadosTipoPlanilla lstPlanillaTPDep" />
                                     </h:selectOneMenu>
 
                                     <h:panelGroup />
@@ -504,7 +504,7 @@
                                     <h:selectOneMenu id="lstTipoPlanillaSolVacCol" style="height: 25px;padding-top: 3px;width: 250px;" label="Tipo Planilla" value="#{solicitudVacacionColectiva.tipoPlanilla}" >                       
                                         <f:selectItem itemValue="-1" itemLabel="[SELECCIONE TIPO PLANILLA]" />
                                         <f:selectItems value="#{solicitudVacacionColectiva.listaTipos}" var="tipo" itemValue="#{tipo.tiposPlanillaPK.codTipopla}" itemLabel="#{tipo.nomTipopla}"/>
-                                        <f:ajax event="change" execute="lstTipoPlanillaSolVacCol" listener="#{solicitudVacacionColectiva.calcularAfectados(event)}" render="afectadosTipoPlanilla selectXTipoPlanilla lstPlanillaTP" />
+                                        <f:ajax event="change" execute="lstTipoPlanillaSolVacCol" listener="#{solicitudVacacionColectiva.calcularAfectados}" render="afectadosTipoPlanilla selectXTipoPlanilla lstPlanillaTP" />
                                     </h:selectOneMenu>
                                     <h:panelGroup />
 
@@ -721,7 +721,7 @@
                                 <f:selectItem itemValue="-1" itemLabel="[ SELECCIONE UN CRITERIO ]" />
                                 <f:selectItem itemValue="rangoSalario"  itemLabel=" APLICAR POR RANGOS DE SALARIO " />
                                 <f:selectItem itemValue="departamentos"  itemLabel=" APLICAR POR DEPARTAMENTOS " />
-                                <f:ajax event="change" execute="lstCriterioAumSalCol" listener="#{solicitudAumentoSueldoColectivo.limpiarFormaAplicar(event)}" render="fldAumentoSalarioCol" />
+                                <f:ajax event="change" execute="lstCriterioAumSalCol" listener="#{solicitudAumentoSueldoColectivo.limpiarFormaAplicar}" render="fldAumentoSalarioCol" />
                             </h:selectOneMenu>
                         </td>        
                     </tr>
@@ -822,7 +822,7 @@
                                             <h:selectOneMenu id="lstDeptosSolAumCol" style="height: 25px;padding-top: 3px;width: 250px;" value="#{solicitudAumentoSueldoColectivo.departamento}" >
                                                 <f:selectItem itemValue="-1" itemLabel="[SELECCIONE UN DEPARTAMENTO]" />
                                                 <f:selectItems value="#{solicitudVacacionColectiva.listaDepartamentos}" var="departamento" itemValue="#{departamento.departamentosPK.codDepto}" itemLabel="#{departamento.nomDepto}" />
-                                                <f:ajax event="change" execute="lstDeptosSolAumCol" listener="#{solicitudAumentoSueldoColectivo.calcularAfectador(event)}" render="totalEmpleadosAfectadosSalColDep totalEmpleadosAfectadosSalColVDep" />
+                                                <f:ajax event="change" execute="lstDeptosSolAumCol" listener="#{solicitudAumentoSueldoColectivo.calcularAfectador}" render="totalEmpleadosAfectadosSalColDep totalEmpleadosAfectadosSalColVDep" />
                                             </h:selectOneMenu>   
                                         </td>
 
@@ -1094,11 +1094,11 @@
                 <table border="0" width="100%" >
                     <tr>
                         <td width="20%" ><i:etiquetaRequerido value="Fecha inicio" styleClass="requerido" /></td>
-                        <td><p:calendar id="dvFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudDiaDeVacacion.fechaInicial}" selectListener="#{solicitudDiaDeVacacion.handleFechaInicial(event)}" onSelectUpdate="dvtxtDias" /></td>
+                        <td><p:calendar id="dvFecInicial" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudDiaDeVacacion.fechaInicial}" selectListener="#{solicitudDiaDeVacacion.handleFechaInicial}" onSelectUpdate="dvtxtDias" /></td>
                     </tr>
                     <tr>
                         <td><i:etiquetaRequerido value="Fecha fin" styleClass="requerido" /></td>
-                        <td><p:calendar id="dvFecFinal" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudDiaDeVacacion.fechaFinal}" selectListener="#{solicitudDiaDeVacacion.handleFechaFinal(event)}" onSelectUpdate="dvtxtDias"/>
+                        <td><p:calendar id="dvFecFinal" showOn="button" pattern="dd/MM/yyyy" value="#{solicitudDiaDeVacacion.fechaFinal}" selectListener="#{solicitudDiaDeVacacion.handleFechaFinal}" onSelectUpdate="dvtxtDias"/>
                         </td>
                     </tr>
                     <tr>
