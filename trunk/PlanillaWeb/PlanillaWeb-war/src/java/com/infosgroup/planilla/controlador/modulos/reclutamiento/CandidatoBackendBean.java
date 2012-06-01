@@ -2835,20 +2835,20 @@ public class CandidatoBackendBean extends AbstractJSFPage implements Serializabl
 // ============================================================================================
 // ============================================================================================
 // ============================================================================================
-    private DataTable preparacionAcademicatable;
-    private DataTable parentescosTable;
-    private DataTable experienciaLaboralTable;
-    private DataTable referenciasLaboralesTable;
-    private DataTable referenciasPersonalesTable;
-    private DataTable documentosTable;
-    private DataTable capacitacionesTable;
-    private DataTable dependientesTable;
-    private DataTable idiomasTable;
-    private DataTable beneficiariosTable;
-    private DataTable equiposTable;
-    private DataTable pruebasTable;
-    private DataTable puestosTable;
-    private DataTable entrevistasTable;
+    private transient DataTable preparacionAcademicatable;
+    private transient DataTable parentescosTable;
+    private transient DataTable experienciaLaboralTable;
+    private transient DataTable referenciasLaboralesTable;
+    private transient DataTable referenciasPersonalesTable;
+    private transient DataTable documentosTable;
+    private transient DataTable capacitacionesTable;
+    private transient DataTable dependientesTable;
+    private transient DataTable idiomasTable;
+    private transient DataTable beneficiariosTable;
+    private transient DataTable equiposTable;
+    private transient DataTable pruebasTable;
+    private transient DataTable puestosTable;
+    private transient DataTable entrevistasTable;
 
     public DataTable getPreparacionAcademicatable()
     {

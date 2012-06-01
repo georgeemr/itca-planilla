@@ -27,88 +27,109 @@ import org.primefaces.event.FlowEvent;
  */
 @ManagedBean(name = "empleados$evaluacionEmpleado")
 @ViewScoped
-public class EvaluacionEmpleadoBackendBean extends AbstractJSFPage implements Serializable {
+public class EvaluacionEmpleadoBackendBean extends AbstractJSFPage implements Serializable
+{
 
     @EJB
     private EmpleadosSessionBean empleadosBean;
+    // ==
     private List<Pregunta> listaPreguntas;
-    private DataTable[] wizardTable;
-    private static Integer ultimoTab;
+    private transient DataTable[] wizardTable;
+    private Integer ultimoTab;
 
-    public Integer getUltimoTab() {
+    public Integer getUltimoTab()
+    {
         return ultimoTab;
     }
 
-    public EvaluacionEmpleadoBackendBean() {
+    public void setUltimoTab(Integer ultimoTab)
+    {
+        this.ultimoTab = ultimoTab;
     }
 
-    public DataTable[] getWizardTable() {
+    public EvaluacionEmpleadoBackendBean()
+    {
+    }
+
+    public DataTable[] getWizardTable()
+    {
         return wizardTable;
     }
 
-    public void setWizardTable(DataTable[] wizardTable) {
+    public void setWizardTable(DataTable[] wizardTable)
+    {
         this.wizardTable = wizardTable;
     }
 
-    public List<Pregunta> getListaPreguntas() {
+    public List<Pregunta> getListaPreguntas()
+    {
         return listaPreguntas;
     }
 
-    public void setListaPreguntas(List<Pregunta> listaPreguntas) {
+    public void setListaPreguntas(List<Pregunta> listaPreguntas)
+    {
         this.listaPreguntas = listaPreguntas;
     }
 
-    public String defaultFlowListener(FlowEvent event) {
+    public String defaultFlowListener(FlowEvent event)
+    {
         List<DetalleEvaluacion> listaDetalleEvaluacion = sessionBeanEMP.getDetalleEvaluacionTemporal();
         Integer actual = Integer.parseInt(event.getOldStep().replaceAll("tab", "")) - 1;
         Integer nuevo = Integer.parseInt(event.getNewStep().replaceAll("tab", "")) - 1;
         List<PreguntaRespuesta> l = new ArrayList<PreguntaRespuesta>();
 
-        if ((actual > nuevo) && (actual >= wizardTable.length)) {
+        if ((actual > nuevo) && (actual >= wizardTable.length))
+            {
             actual = wizardTable.length - 1;
-        }
+            }
 
         DataTable tabla = wizardTable[actual];
         Integer filas = tabla.getRowCount();
-        for (int fila = 0; fila < filas; fila++) {
+        for (int fila = 0; fila < filas; fila++)
+            {
             tabla.setRowIndex(fila);
             Pregunta p = (Pregunta) tabla.getRowData();
             String respuesta = p.getRespuesta();
 
-            if (respuesta == null) {
+            if (respuesta == null)
                 continue;
-            }
+
             RespuestaPK respuestaPK = new RespuestaPK();
             PreguntaRespuesta pr = new PreguntaRespuesta();
-            if ((p.getTipo() != 1) || (p.getTipo() == null)) {
+            if ((p.getTipo() != 1) || (p.getTipo() == null))
+                {
                 respuestaPK.setCodCia(getSessionBeanADM().getCompania().getCodCia());
-                respuestaPK.setCodTipoRespuesta( 2L );
+                respuestaPK.setCodTipoRespuesta(2L);
                 respuestaPK.setCodRespuesta(1);
-                pr.setValor( p.getRespuesta() );
-            } else {
+                pr.setValor(p.getRespuesta());
+                }
+            else
+                {
                 String[] desco = respuesta.split(":");
                 respuestaPK.setCodCia(Short.parseShort(desco[0]));
                 respuestaPK.setCodTipoRespuesta(Integer.parseInt(desco[1]));
                 respuestaPK.setCodRespuesta(Integer.parseInt(desco[2]));
-            }
+                }
             pr.setPregunta(p);
             Respuesta r = empleadosBean.findRespuestaById(respuestaPK);
             pr.setRespuesta(r);
-            
+
             l.add(pr);
 
-        }
+            }
         sessionBeanEMP.getDetalleEvaluacionTemporal().get(actual).setRespuestas(l);
         //if (nuevo < 999)
-        if (nuevo < (ultimoTab - 1)) {
+        if (nuevo < (ultimoTab - 1))
+            {
             DetalleEvaluacion detalle = listaDetalleEvaluacion.get(nuevo);
             //getSessionBeanEMP().setFactor(getSessionBeanEMP().getListaFactores().get(nuevo));
             getSessionBeanEMP().setFactorActual(detalle.getFactor());
-        }
+            }
 
         listaPreguntas = new ArrayList<Pregunta>();
         List<com.infosgroup.planilla.modelo.entidades.Pregunta> lPregs = empleadosBean.listarPreguntasPorFactor(getSessionBeanEMP().getFactorActual());
-        for (com.infosgroup.planilla.modelo.entidades.Pregunta p : lPregs) {
+        for (com.infosgroup.planilla.modelo.entidades.Pregunta p : lPregs)
+            {
             Pregunta pr = new Pregunta();
             pr.setPreguntaPK(p.getPreguntaPK());
             pr.setFactor(p.getFactor());
@@ -116,32 +137,36 @@ public class EvaluacionEmpleadoBackendBean extends AbstractJSFPage implements Se
             pr.setRespuestaList(p.getRespuestaList());
             pr.setTipo(((p.getRespuestaList() != null) && (!p.getRespuestaList().isEmpty())) ? p.getRespuestaList().get(0).getRespuestaPK().getCodTipoRespuesta() : 0);
             listaPreguntas.add(pr);
-        }
+            }
         return event.getNewStep();
     }
 
-    public String cerrarEvaluacion$action() {
+    public String cerrarEvaluacion$action()
+    {
         return empleadosBean.cerrarEvaluacion(sessionBeanEMP.getEvaluacionSeleccionada(), sessionBeanEMP.getDetalleEvaluacionTemporal()) ? "seleccionEvaluacion?faces-redirect=true" : null;
     }
 
     @Override
-    protected void limpiarCampos() {
+    protected void limpiarCampos()
+    {
     }
 
     @PostConstruct
-    public void init() {      
+    public void init()
+    {
         ultimoTab = getSessionBeanEMP().getListaFactores().size() + 1;
         wizardTable = new DataTable[getSessionBeanEMP().getListaFactores().size()];
         listaPreguntas = new ArrayList<Pregunta>();
         List<com.infosgroup.planilla.modelo.entidades.Pregunta> lPregs = empleadosBean.listarPreguntasPorFactor(getSessionBeanEMP().getFactorActual());
-        for (com.infosgroup.planilla.modelo.entidades.Pregunta p : lPregs) {
-            Pregunta pr = new Pregunta();            
+        for (com.infosgroup.planilla.modelo.entidades.Pregunta p : lPregs)
+            {
+            Pregunta pr = new Pregunta();
             pr.setPreguntaPK(p.getPreguntaPK());
             pr.setFactor(p.getFactor());
             pr.setDescripcion(p.getDescripcion());
             pr.setTipo(((p.getRespuestaList() != null) && (!p.getRespuestaList().isEmpty())) ? p.getRespuestaList().get(0).getRespuestaPK().getCodTipoRespuesta() : 0);
             pr.setRespuestaList(p.getRespuestaList());
             listaPreguntas.add(pr);
-        }
+            }
     }
 }

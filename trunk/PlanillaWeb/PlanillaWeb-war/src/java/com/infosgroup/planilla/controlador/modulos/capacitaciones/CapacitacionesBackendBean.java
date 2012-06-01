@@ -963,11 +963,11 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
             {
             detalle = (CapacitacionXEmpleado) event.getObject();
             capacitacionSessionBean.editarDetalleCapacitacion(detalle);
-            addMessage("Mantenimiento de Detalle de Capacitación.", "Datos actualizados con éxito", TipoMensaje.INFORMACION);
+            addMessage("Mantenimiento de Detalle de Capacitación", "Datos actualizados con éxito", TipoMensaje.INFORMACION);
             }
         catch (Exception e)
             {
-            addMessage("Mantenimiento de Detalle de Capacitación.", "Ha ocurrido un error al intentar actualizar el Detallle Capacitacion.", TipoMensaje.ERROR);
+            addMessage("Mantenimiento de Detalle de Capacitación", "Ha ocurrido un error al intentar actualizar el Detallle Capacitacion.", TipoMensaje.ERROR);
             logger.log(Level.SEVERE, "Ha ocurrido un error al intentar actualizar el Detallle Capacitacion.", e);
             //System.out.println(e.getMessage());
             }
@@ -978,7 +978,7 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
             // ==
             Candidato candidato = reclutamientoFacade.findCandidatoByEmpleado(detalle.getEmpleados());
             if (candidato == null)
-                return ;
+                return;
 
             CapacitacionXCandidatoPK capacitacionXCandidatoPK = new CapacitacionXCandidatoPK();
             capacitacionXCandidatoPK.setCodCia(detalle.getCapacitacion().getCapacitacionPK().getCodCia());
@@ -987,16 +987,30 @@ public class CapacitacionesBackendBean extends AbstractJSFPage implements Serial
 
             CapacitacionXCandidato capacitacionXCandidato = reclutamientoFacade.findCapacitacionCandidatoByID(capacitacionXCandidatoPK);
 
-            capacitacionXCandidato.setCapacitacionXCandidatoPK(capacitacionXCandidatoPK);
-            capacitacionXCandidato.setCandidato(candidato);
-            capacitacionXCandidato.setTipo("");
-
             if (capacitacionXCandidato == null)
+                {
+                capacitacionXCandidato = new CapacitacionXCandidato();
+                capacitacionXCandidato.setCapacitacionXCandidatoPK(capacitacionXCandidatoPK);
+                capacitacionXCandidato.setCandidato(candidato);
+                capacitacionXCandidato.setTipo("CU");
+                capacitacionXCandidato.setDescripcion(detalle.getCapacitacion().getNomCapacitacion());
+                capacitacionXCandidato.setNomInstitucion((detalle.getCapacitacion().getInstituciones() != null) ? detalle.getCapacitacion().getInstituciones().getDesInsti() : null);
+                capacitacionXCandidato.setFecha(String.format("%tD", detalle.getCapacitacion().getFechaDesde()) + " - " + String.format("%tD", detalle.getCapacitacion().getFechaHasta()));
                 reclutamientoFacade.crearCapacitacionXCandidato(capacitacionXCandidato);
-            else
-                reclutamientoFacade.editarCapacitacionXCandidato(capacitacionXCandidato);
+                addMessage("Infosweb RRHH - Capacitaciones", "La capacitaci&oacute;n ha sido agregada al expediente del empleado", TipoMensaje.INFORMACION);
+                }
+//            else
+//                {
+//                capacitacionXCandidato.setCapacitacionXCandidatoPK(capacitacionXCandidatoPK);
+//                capacitacionXCandidato.setCandidato(candidato);
+//                capacitacionXCandidato.setTipo("C");
+//                capacitacionXCandidato.setDescripcion(detalle.getCapacitacion().getNomCapacitacion());
+//                capacitacionXCandidato.setNomInstitucion((detalle.getCapacitacion().getInstituciones() != null) ? detalle.getCapacitacion().getInstituciones().getDesInsti() : null);
+//                capacitacionXCandidato.setFecha("-");
+//                reclutamientoFacade.editarCapacitacionXCandidato(capacitacionXCandidato);
+//                }            
             }
-        catch(Exception excpt)
+        catch (Exception excpt)
             {
             System.err.println(excpt.toString());
             }

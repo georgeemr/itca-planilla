@@ -6,7 +6,6 @@ package com.infosgroup.planilla.controlador.modulos.capacitaciones;
 
 import com.infosgroup.planilla.modelo.entidades.Capacitacion;
 import com.infosgroup.planilla.modelo.entidades.CapacitacionXEmpleado;
-import com.infosgroup.planilla.modelo.entidades.CapacitacionXEmpleadoPK;
 import com.infosgroup.planilla.modelo.entidades.Cias;
 import com.infosgroup.planilla.modelo.entidades.Empleados;
 import com.infosgroup.planilla.modelo.procesos.CapacitacionesSessionBean;
@@ -52,8 +51,8 @@ public class capaXEmpleadoBackendBean extends AbstractJSFPage implements Seriali
     private List<CapacitacionXEmpleado> listaDetalle;
     private List<Empleados> listaEmpleado;
     private BigDecimal nota;
-    private DataTable tableCapacitaciones;
-    private DataTable tableDetalles;
+    private transient DataTable tableCapacitaciones;
+    private transient DataTable tableDetalles;
     private Dialog dialogBuscaEmp;
 
     public Boolean getIsError() {
