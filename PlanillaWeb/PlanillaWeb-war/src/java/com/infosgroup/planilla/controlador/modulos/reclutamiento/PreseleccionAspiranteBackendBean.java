@@ -25,25 +25,26 @@ import org.primefaces.event.CloseEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.RowEditEvent;
 
-
 /**
  *
  * @author root
  */
 @ManagedBean(name = "reclutamiento$preseleccionAspirante")
 @ViewScoped
-public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion implements Serializable {
+public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion implements Serializable
+{
 
     @EJB
     private ReclutamientoSessionBean reclutamientoSessionBean;
     @EJB
     private ReportesStatelessBean reportesStatelessBean;
+    // ==
     private Date fechaInicial;
     private Date fechaFinal;
     private List<Concurso> listaConcurso;
-    private DataTable tableCandidatos;
-    private DataTable tableSeleccion;
-    private DataTable tableContratacion;
+    private transient DataTable tableCandidatos;
+    private transient DataTable tableSeleccion;
+    private transient DataTable tableContratacion;
     private CandidatoConcurso candidatoSeleccionado;
     private List<EvaluacionCandidato> evaluacionCandidatos;
     private List<CandidatoConcurso> candidatosGuardados;
@@ -83,479 +84,604 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
     private String accionSeleccion = "A";
     private Candidato preCandidatoSeleccionado;
 
-    public PreseleccionAspiranteBackendBean() {
+    public PreseleccionAspiranteBackendBean()
+    {
     }
 
-    public Criterio getCriterio() {
+    public Criterio getCriterio()
+    {
         return criterio;
     }
 
-    public void setCriterio(Criterio criterio) {
+    public void setCriterio(Criterio criterio)
+    {
         this.criterio = criterio;
     }
 
-    public String agregarCriterio(){
-        if (criteriosPrincipales == null) {
+    public String agregarCriterio()
+    {
+        if (criteriosPrincipales == null)
+            {
             criteriosPrincipales = new ArrayList<Criterio>();
-        }
-        if (!criteriosPrincipales.contains(criterio)) {
+            }
+        if (!criteriosPrincipales.contains(criterio))
+            {
             criteriosPrincipales.add(criterio);
-        } else {
+            }
+        else
+            {
             addMessage("Agregar criterio", "Este criterio ya ha sido seleccionado.", TipoMensaje.INFORMACION);
-        }
+            }
         return null;
     }
-    
-    public String eliminarCriterio() {
-        if (criteriosPrincipales != null && !criteriosPrincipales.isEmpty()) {
-            if (criteriosPrincipales.contains(criterio)) {
+
+    public String eliminarCriterio()
+    {
+        if (criteriosPrincipales != null && !criteriosPrincipales.isEmpty())
+            {
+            if (criteriosPrincipales.contains(criterio))
+                {
                 criteriosPrincipales.remove(criterio);
+                }
             }
-        }
         return null;
     }
 
     @PostConstruct
-    public void init() {
+    public void init()
+    {
         setDia(new Date());
         pruebaConverter = new AutocompletePruebaConverter(reclutamientoSessionBean.finPruebaXPuestosByCias(getSessionBeanADM().getCompania()));
         listaParentesco = reclutamientoSessionBean.findParentescoByCias(getSessionBeanADM().getCompania());
     }
 
-    public Candidato getPreCandidatoSeleccionado() {
+    public Candidato getPreCandidatoSeleccionado()
+    {
         return preCandidatoSeleccionado;
     }
 
-    public void setPreCandidatoSeleccionado(Candidato preCandidatoSeleccionado) {
+    public void setPreCandidatoSeleccionado(Candidato preCandidatoSeleccionado)
+    {
         this.preCandidatoSeleccionado = preCandidatoSeleccionado;
     }
 
-    public String getAccionSeleccion() {
+    public String getAccionSeleccion()
+    {
         return accionSeleccion;
     }
 
-    public void setAccionSeleccion(String accionSeleccion) {
+    public void setAccionSeleccion(String accionSeleccion)
+    {
         this.accionSeleccion = accionSeleccion;
     }
 
-    public List<Parentesco> getListaParentesco() {
+    public List<Parentesco> getListaParentesco()
+    {
         return listaParentesco;
     }
 
-    public void setListaParentesco(List<Parentesco> listaParentesco) {
+    public void setListaParentesco(List<Parentesco> listaParentesco)
+    {
         this.listaParentesco = listaParentesco;
     }
 
-    public List<BeneficiarioXCandidato> getListaBeneficiarios() {
+    public List<BeneficiarioXCandidato> getListaBeneficiarios()
+    {
         return listaBeneficiarios;
     }
 
-    public void setListaBeneficiarios(List<BeneficiarioXCandidato> listaBeneficiarios) {
+    public void setListaBeneficiarios(List<BeneficiarioXCandidato> listaBeneficiarios)
+    {
         this.listaBeneficiarios = listaBeneficiarios;
     }
 
-    public CandidatoConcurso getCandidatoSeleccionado() {
+    public CandidatoConcurso getCandidatoSeleccionado()
+    {
         return candidatoSeleccionado;
     }
 
-    public void setCandidatoSeleccionado(CandidatoConcurso candidatoSeleccionado) {
+    public void setCandidatoSeleccionado(CandidatoConcurso candidatoSeleccionado)
+    {
         this.candidatoSeleccionado = candidatoSeleccionado;
     }
 
-    public Date getFechaFinal() {
+    public Date getFechaFinal()
+    {
         return fechaFinal;
     }
 
-    public void setFechaFinal(Date fechaFinal) {
+    public void setFechaFinal(Date fechaFinal)
+    {
         this.fechaFinal = fechaFinal;
     }
 
-    public Date getFechaInicial() {
+    public Date getFechaInicial()
+    {
         return fechaInicial;
     }
 
-    public void setFechaInicial(Date fechaInicial) {
+    public void setFechaInicial(Date fechaInicial)
+    {
         this.fechaInicial = fechaInicial;
     }
 
-    public List<Concurso> getListaConcurso() {
+    public List<Concurso> getListaConcurso()
+    {
         return listaConcurso;
     }
 
-    public void setListaConcurso(List<Concurso> listaConcurso) {
+    public void setListaConcurso(List<Concurso> listaConcurso)
+    {
         this.listaConcurso = listaConcurso;
     }
 
-    public List<Candidato> getListaCandidato() {
+    public List<Candidato> getListaCandidato()
+    {
         return reclutamientoSessionBean.getCandidatosByEmpresa(getSessionBeanADM().getCompania());
     }
 
-    public DataTable getTableCandidatos() {
+    public DataTable getTableCandidatos()
+    {
         return tableCandidatos;
     }
 
-    public void setTableCandidatos(DataTable tableCandidatos) {
+    public void setTableCandidatos(DataTable tableCandidatos)
+    {
         this.tableCandidatos = tableCandidatos;
     }
 
-    public DataTable getTableContratacion() {
+    public DataTable getTableContratacion()
+    {
         return tableContratacion;
     }
 
-    public void setTableContratacion(DataTable tableContratacion) {
+    public void setTableContratacion(DataTable tableContratacion)
+    {
         this.tableContratacion = tableContratacion;
     }
 
-    public List<CandidatoConcurso> getCandidatosGuardados() {
+    public List<CandidatoConcurso> getCandidatosGuardados()
+    {
         return candidatosGuardados;
     }
 
-    public void setCandidatosGuardados(List<CandidatoConcurso> candidatoConcurso) {
+    public void setCandidatosGuardados(List<CandidatoConcurso> candidatoConcurso)
+    {
         this.candidatosGuardados = candidatoConcurso;
     }
 
-    public DataTable getTableSeleccion() {
+    public DataTable getTableSeleccion()
+    {
         return tableSeleccion;
     }
 
-    public void setTableSeleccion(DataTable tableSeleccion) {
+    public void setTableSeleccion(DataTable tableSeleccion)
+    {
         this.tableSeleccion = tableSeleccion;
     }
 
-    public List<EvaluacionCandidato> getEvaluacionCandidatos() {
+    public List<EvaluacionCandidato> getEvaluacionCandidatos()
+    {
         return evaluacionCandidatos;
     }
 
-    public void setEvaluacionCandidatos(List<EvaluacionCandidato> evaluacionCandidatos) {
+    public void setEvaluacionCandidatos(List<EvaluacionCandidato> evaluacionCandidatos)
+    {
         this.evaluacionCandidatos = evaluacionCandidatos;
     }
 
-    public List<CandidatoConcurso> getCandidatosContratar() {
+    public List<CandidatoConcurso> getCandidatosContratar()
+    {
         return candidatosContratar;
     }
 
-    public void setCandidatosContratar(List<CandidatoConcurso> candidatosContratar) {
+    public void setCandidatosContratar(List<CandidatoConcurso> candidatosContratar)
+    {
         this.candidatosContratar = candidatosContratar;
     }
 
-    public List<Agencias> getListaAgencias() {
+    public List<Agencias> getListaAgencias()
+    {
         listaAgencias = reclutamientoSessionBean.findAgenciasByEmpresa(getSessionBeanADM().getCompania());
         return listaAgencias;
     }
 
-    public void setListaSucursales(List<Agencias> listaAgencias) {
+    public void setListaSucursales(List<Agencias> listaAgencias)
+    {
         this.listaAgencias = listaAgencias;
     }
 
-    public List<TiposPlanilla> getListaTipoPlanilla() {
+    public List<TiposPlanilla> getListaTipoPlanilla()
+    {
         listaTipoPlanilla = reclutamientoSessionBean.findTipoPlanillaByEmpresa(getSessionBeanADM().getCompania());
         return listaTipoPlanilla;
     }
 
-    public void setListaTipoPlanilla(List<TiposPlanilla> listaTipoPlanilla) {
+    public void setListaTipoPlanilla(List<TiposPlanilla> listaTipoPlanilla)
+    {
         this.listaTipoPlanilla = listaTipoPlanilla;
     }
 
-    public Short getAgencia() {
+    public Short getAgencia()
+    {
         return agencia;
     }
 
-    public void setAgencia(Short agencia) {
+    public void setAgencia(Short agencia)
+    {
         this.agencia = agencia;
     }
 
-    public Short getTipoPlanilla() {
+    public Short getTipoPlanilla()
+    {
         return tipoPlanilla;
     }
 
-    public void setTipoPlanilla(Short tipoPlanilla) {
+    public void setTipoPlanilla(Short tipoPlanilla)
+    {
         this.tipoPlanilla = tipoPlanilla;
     }
 
-    public Date getDia() {
+    public Date getDia()
+    {
         return dia;
     }
 
-    public void setDia(Date dia) {
+    public void setDia(Date dia)
+    {
         this.dia = dia;
     }
 
-    public List<Criterio> getCriteriosDisponibles() {
+    public List<Criterio> getCriteriosDisponibles()
+    {
         return criteriosDisponibles;
     }
 
-    public void setCriteriosDisponibles(List<Criterio> criteriosDisponibles) {
+    public void setCriteriosDisponibles(List<Criterio> criteriosDisponibles)
+    {
         this.criteriosDisponibles = criteriosDisponibles;
     }
 
-    public String getTipoContratoSeleccionado() {
+    public String getTipoContratoSeleccionado()
+    {
         return tipoContratoSeleccionado;
     }
 
-    public void setTipoContratoSeleccionado(String tipoContratoSeleccionado) {
+    public void setTipoContratoSeleccionado(String tipoContratoSeleccionado)
+    {
         this.tipoContratoSeleccionado = tipoContratoSeleccionado;
     }
 
-    public String getComentarioFinal() {
+    public String getComentarioFinal()
+    {
         return comentarioFinal;
     }
 
-    public void setComentarioFinal(String comentarioFinal) {
+    public void setComentarioFinal(String comentarioFinal)
+    {
         this.comentarioFinal = comentarioFinal;
     }
 
-    public String getActaOAcuerdo() {
+    public String getActaOAcuerdo()
+    {
         return actaOAcuerdo;
     }
 
-    public void setActaOAcuerdo(String actaOAcuerdo) {
+    public void setActaOAcuerdo(String actaOAcuerdo)
+    {
         this.actaOAcuerdo = actaOAcuerdo;
     }
 
-    public Date getFechaFin() {
+    public Date getFechaFin()
+    {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(Date fechaFin)
+    {
         this.fechaFin = fechaFin;
     }
 
-    public Date getFechaInicio() {
+    public Date getFechaInicio()
+    {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(Date fechaInicio)
+    {
         this.fechaInicio = fechaInicio;
     }
 
-    public String getDui() {
+    public String getDui()
+    {
         return dui;
     }
 
-    public void setDui(String dui) {
+    public void setDui(String dui)
+    {
         this.dui = dui;
     }
 
-    public Double getSalario() {
+    public Double getSalario()
+    {
         return salario;
     }
 
-    public void setSalario(Double salario) {
+    public void setSalario(Double salario)
+    {
         this.salario = salario;
     }
 
-    public String getObservaciones() {
+    public String getObservaciones()
+    {
         return observaciones;
     }
 
-    public void setObservaciones(String observaciones) {
+    public void setObservaciones(String observaciones)
+    {
         this.observaciones = observaciones;
     }
 
-    public List<Criterio> getCriteriosPrincipales() {
+    public List<Criterio> getCriteriosPrincipales()
+    {
         return criteriosPrincipales;
     }
 
-    public void setCriteriosPrincipales(List<Criterio> criteriosPrincipales) {
+    public void setCriteriosPrincipales(List<Criterio> criteriosPrincipales)
+    {
         this.criteriosPrincipales = criteriosPrincipales;
     }
 
-    public String getUsuario() {
-        if (candidatoSeleccionado != null) {
-            if (candidatoSeleccionado.getCandidato1() != null) {
+    public String getUsuario()
+    {
+        if (candidatoSeleccionado != null)
+            {
+            if (candidatoSeleccionado.getCandidato1() != null)
+                {
                 usuario = reclutamientoSessionBean.generaUsuario(candidatoSeleccionado.getCandidato1());
+                }
             }
-        }
         return usuario;
     }
 
-    public void setUsuario(String usuario) {
+    public void setUsuario(String usuario)
+    {
         this.usuario = usuario;
     }
 
-    public String buscarConcurso$action() {
+    public String buscarConcurso$action()
+    {
         setConcursoSeleccionado(null);
-        if (fechaInicial != null && fechaFinal != null) {
-            if (validaFechas(fechaInicial, fechaFinal) == true) {
+        if (fechaInicial != null && fechaFinal != null)
+            {
+            if (validaFechas(fechaInicial, fechaFinal) == true)
+                {
                 setListaConcurso(reclutamientoSessionBean.getListaConcursos(getSessionBeanADM().getCompania(), fechaInicial, fechaFinal));
-            } else {
+                }
+            else
+                {
                 addMessage("Buscar concurso", "Los rangos de fecha Ingresados no son consistentes.", TipoMensaje.ERROR);
+                }
             }
-        }
         setListaConcurso(reclutamientoSessionBean.getListaConcursos(getSessionBeanADM().getCompania(), fechaInicial, fechaFinal));
         limpiarCampos();
         return null;
     }
 
-    public String iniciar() {
-        if (comentarioFinal == null || comentarioFinal.length() <= 0) {
+    public String iniciar()
+    {
+        if (comentarioFinal == null || comentarioFinal.length() <= 0)
+            {
             addMessage("Cerrar Concurso", "Debe ingresar un comentario final antes de cerrar el concurso.", TipoMensaje.ERROR);
             return null;
-        }
+            }
         cerrarConcurso();
         setListaConcurso(new ArrayList<Concurso>());
         limpiarCampos();
         return "concursoSeleccionado";
     }
 
-    public void cerrarConcurso() {
+    public void cerrarConcurso()
+    {
         EstadoConcurso ec = reclutamientoSessionBean.findEstadoConcursoById(new EstadoConcursoPK(getSessionBeanADM().getCompania().getCodCia(), "C"));
-        if (ec == null) {
+        if (ec == null)
+            {
             addMessage("Cerrar Concurso", "No esta registrado el estado de concurso para guardar los cambios.", TipoMensaje.INFORMACION);
             return;
-        }
-        if (getConcursoSeleccionado() != null) {
+            }
+        if (getConcursoSeleccionado() != null)
+            {
             getConcursoSeleccionado().setEstadoConcurso(ec);
             getConcursoSeleccionado().setComentarioFinal(comentarioFinal);
             reclutamientoSessionBean.editarConcurso(getConcursoSeleccionado());
             addMessage("Cerrar Concurso", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
-        }
+            }
     }
 
-    public void onEditCandidato(RowEditEvent event) {
+    public void onEditCandidato(RowEditEvent event)
+    {
         reclutamientoSessionBean.editarCandidatoConcurso((CandidatoConcurso) event.getObject());
         actualizaListas();
     }
 
-    public void onEditNotasCandidato(RowEditEvent event) {
+    public void onEditNotasCandidato(RowEditEvent event)
+    {
         EvaluacionCandidato c = (EvaluacionCandidato) event.getObject();
-        if (c.getNota() == null) {
+        if (c.getNota() == null)
+            {
             c.setNota(BigDecimal.ZERO);
-        }
+            }
         reclutamientoSessionBean.editarEvaluacionCandidato(c);
-        if (evaluacionCandidatos != null && evaluacionCandidatos.size() > 0) {
-            reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos,candidatoSeleccionado);
-        }
+        if (evaluacionCandidatos != null && evaluacionCandidatos.size() > 0)
+            {
+            reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos, candidatoSeleccionado);
+            }
         actualizaListas();
         addMessage("Evaluacion de Candidato", "Datos Guardados", TipoMensaje.INFORMACION);
     }
 
-    public void onEditUpdate(RowEditEvent event) {
+    public void onEditUpdate(RowEditEvent event)
+    {
         reclutamientoSessionBean.editarCandidatoConcurso((CandidatoConcurso) event.getObject());
         actualizaListas();
     }
 
-    public String onFlowListener(FlowEvent event) {
-        if (getConcursoSeleccionado() == null) {
+    public String onFlowListener(FlowEvent event)
+    {
+        if (getConcursoSeleccionado() == null)
+            {
             addMessage("Contratar Candidato", "No ha seleccionado ningún concurso", TipoMensaje.INFORMACION);
             return "concursoSeleccionado";
-        }
-        if (event.getOldStep().equals("concursoSeleccionado")) {
-            if (getConcursoSeleccionado() != null) {
-                setCriteriosPrincipales( reclutamientoSessionBean.getListaCriteriosPorPuesto(getConcursoSeleccionado().getPuestos().getPuestosPK()));            
-                setCriteriosDisponibles( reclutamientoSessionBean.getListaCriteriosByCias(concursoSeleccionado.getConcursoPK().getCodCia()));
             }
-        }
+        if (event.getOldStep().equals("concursoSeleccionado"))
+            {
+            if (getConcursoSeleccionado() != null)
+                {
+                setCriteriosPrincipales(reclutamientoSessionBean.getListaCriteriosPorPuesto(getConcursoSeleccionado().getPuestos().getPuestosPK()));
+                setCriteriosDisponibles(reclutamientoSessionBean.getListaCriteriosByCias(concursoSeleccionado.getConcursoPK().getCodCia()));
+                }
+            }
         actualizaListas();
-        if (event.getNewStep().equals("tabSeleccion")) {
+        if (event.getNewStep().equals("tabSeleccion"))
+            {
             ordenarLista();
-        }
+            }
         return event.getNewStep();
     }
 
-    public void ordenarLista() {
-        if (candidatosGuardados != null) {
+    public void ordenarLista()
+    {
+        if (candidatosGuardados != null)
+            {
             Collections.sort(candidatosGuardados);
-            for (int i = 0; i <= candidatosGuardados.size() - 1; i++) {
+            for (int i = 0; i <= candidatosGuardados.size() - 1; i++)
+                {
                 candidatosGuardados.get(i).setOrden(i);
-                if (i == 5) {
+                if (i == 5)
+                    {
                     break;
+                    }
                 }
             }
-        }
     }
 
-    public String aplicarCriterios() {
-        if (getConcursoSeleccionado() != null) {
-            if (getCandidatosSeleccionados() != null) {
-                for (Candidato n : getCandidatosSeleccionados()) {
-                    if (n.getConcursoList() == null) {
+    public String aplicarCriterios()
+    {
+        if (getConcursoSeleccionado() != null)
+            {
+            if (getCandidatosSeleccionados() != null)
+                {
+                for (Candidato n : getCandidatosSeleccionados())
+                    {
+                    if (n.getConcursoList() == null)
+                        {
                         n.setConcursoList(new ArrayList<Concurso>());
                         n.getConcursoList().add(getConcursoSeleccionado());
-                    } else if (!n.getConcursoList().contains(getConcursoSeleccionado())) {
+                        }
+                    else if (!n.getConcursoList().contains(getConcursoSeleccionado()))
+                        {
                         n.getConcursoList().add(getConcursoSeleccionado());
-                    }
+                        }
                     reclutamientoSessionBean.editarCandidato(n);
-                }
+                    }
                 addMessage("Preselección de Candidatos", "Datos Guardados con éxito.", TipoMensaje.INFORMACION);
                 return "concursoSeleccionado";
+                }
             }
-        }
         addMessage("Preselección de Candidatos", "No ha seleccionado ningún concurso, de clic en Atrás para reiniciar el asistente.", TipoMensaje.INFORMACION);
         return "concursoSeleccionado";
     }
 
-    public String seleccionarCandidato() {
+    public String seleccionarCandidato()
+    {
         cambioEstadoCandidato("S");
         return null;
     }
 
-    public String deseleccionarCandidato() {
+    public String deseleccionarCandidato()
+    {
         cambioEstadoCandidato("P");
         return null;
     }
 
-    public String contratarCandidato() {
-        if (candidatoSeleccionado != null) {
-            if (getConcursoSeleccionado() == null) {
+    public String contratarCandidato()
+    {
+        if (candidatoSeleccionado != null)
+            {
+            if (getConcursoSeleccionado() == null)
+                {
                 addMessage("Contratar Candidato", "No ha seleccionado ningún concurso", TipoMensaje.INFORMACION);
                 return null;
-            }
+                }
             error = Boolean.FALSE;
             Contrato contrato = new Contrato();
-            if (actaOAcuerdo == null || actaOAcuerdo.length() <= 0) {
+            if (actaOAcuerdo == null || actaOAcuerdo.length() <= 0)
+                {
                 addMessage("Contratar Candidato", "El campo Acta o Acuerdo es requerido", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
-            }
-            if (dia == null) {
+                }
+            if (dia == null)
+                {
                 addMessage("Contratar Candidato", "El campo Fecha Acuerdo es requerido", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
-            }
-            if (fechaInicio == null) {
+                }
+            if (fechaInicio == null)
+                {
                 addMessage("Contratar Candidato", "El campo Fecha Inicio es requerido", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
-            }
-            if (fechaInicio != null && fechaFin != null) {
-                if (validaFechas(fechaInicio, fechaInicio) == false) {
+                }
+            if (fechaInicio != null && fechaFin != null)
+                {
+                if (validaFechas(fechaInicio, fechaInicio) == false)
+                    {
                     addMessage("Buscar concurso", "Los rangos de fecha Ingresados no son consistentes.", TipoMensaje.ERROR);
                     error = Boolean.TRUE;
+                    }
                 }
-            }
-            if (salario == null) {
+            if (salario == null)
+                {
                 addMessage("Contratar Candidato", "El campo Salario es requerido", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
-            }
-            if (dui == null || dui.length() <= 0) {
+                }
+            if (dui == null || dui.length() <= 0)
+                {
                 addMessage("Contratar Candidato", "El campo DUI es requerido", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
-            }
-            if (usuario == null || usuario.length() <= 0) {
+                }
+            if (usuario == null || usuario.length() <= 0)
+                {
                 addMessage("Contratar Candidato", "El campo Usuario es requerido", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
-            }
-            if (usuario != null) {
-                if (!reclutamientoSessionBean.findByUsuario(usuario).isEmpty()) {
+                }
+            if (usuario != null)
+                {
+                if (!reclutamientoSessionBean.findByUsuario(usuario).isEmpty())
+                    {
                     addMessage("Contratar Candidato", "El usuario ingresado ya esta siendo usado por otra persona.", TipoMensaje.ERROR);
                     error = Boolean.TRUE;
+                    }
                 }
-            }
-            if (agencia == null) {
+            if (agencia == null)
+                {
                 addMessage("Contratar Candidato", "Seleccione una Sucursal", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
-            }
-            if (tipoPlanilla == null) {
+                }
+            if (tipoPlanilla == null)
+                {
                 addMessage("Contratar Candidato", "Seleccione el Tipo de Planilla", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
-            }
+                }
 
-            if (getSessionBeanADM().getRepresentantePatronal() == null) {
+            if (getSessionBeanADM().getRepresentantePatronal() == null)
+                {
                 addMessage("Contratar Candidato", "No se ha configurado el representante patronal", TipoMensaje.ERROR);
                 error = Boolean.TRUE;
-            }
+                }
 
-            if (error) {
+            if (error)
+                {
                 return null;
-            }
+                }
             contrato.setNumActa(getActaOAcuerdo());
             contrato.setEstado("G");
             contrato.setTipo(tipoContratoSeleccionado);
@@ -571,21 +697,25 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
             limpiarDatosContratacion();
             addMessage("Contratar Candidato", "Datos Guardados ", TipoMensaje.INFORMACION);
             actualizaListas();
-            
+
             //Crear usuario LDAP
-            try {
+            try
+                {
                 LDAPManager lDAPManager = getLDAPManager();
                 lDAPManager.addUser(usuario, candidatoSeleccionado.getCandidato1().getNombre(), candidatoSeleccionado.getCandidato1().getApellido(), usuario);
                 lDAPManager.assignUser(usuario, "empleados");
-            } catch (Exception e) {
+                }
+            catch (Exception e)
+                {
                 addMessage("Contratar Candidato", "Usuario de Aplicación no creado.", TipoMensaje.ERROR);
                 logger.log(Level.SEVERE, "Error al registrar empleado en servidor LDAP.", e);
+                }
             }
-        }
         return null;
     }
 
-    public void limpiarDatosContratacion() {
+    public void limpiarDatosContratacion()
+    {
         setActaOAcuerdo(null);
         setFechaInicio(null);
         setFechaFin(null);
@@ -597,19 +727,23 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
         error = Boolean.FALSE;
     }
 
-    public String noContratarCandidato() {
-        if (tableContratacion.getRowIndex() != -1) {
+    public String noContratarCandidato()
+    {
+        if (tableContratacion.getRowIndex() != -1)
+            {
             CandidatoConcurso c = candidatosContratar.get(tableContratacion.getRowIndex());
             c.setEstado("S");
             reclutamientoSessionBean.editarCandidatoConcurso(c);
             addMessage("Seleccionar Candidato", "Datos Guardados ", TipoMensaje.INFORMACION);
             actualizaListas();
-        }
+            }
         return null;
     }
 
-    public void cambioEstadoCandidato(String estado) {
-        if (tableSeleccion.getRowIndex() != -1) {
+    public void cambioEstadoCandidato(String estado)
+    {
+        if (tableSeleccion.getRowIndex() != -1)
+            {
             CandidatoConcurso c = candidatosGuardados.get(tableSeleccion.getRowIndex());
             c.setEstado(estado);
             c.setFecha(new Date());
@@ -617,42 +751,52 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
             addMessage("Seleccionar Candidato", "Datos Guardados " + candidatosGuardados.get(tableSeleccion.getRowIndex()).getCandidato1().getNombreCompleto(), TipoMensaje.INFORMACION);
             actualizaListas();
             ordenarLista();
-        }
+            }
     }
 
-    public void handleCloseEvaluacionCandidato(CloseEvent event) {
-        reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos,candidatoSeleccionado);
+    public void handleCloseEvaluacionCandidato(CloseEvent event)
+    {
+        reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos, candidatoSeleccionado);
         setCandidatoSeleccionado(null);
     }
 
-    public void handleCloseCriterioAdicional(CloseEvent event) {
-        if (getCriteriosAdicionales() != null && getCriteriosAdicionales().length > 0) {
-            for (Criterio c : getCriteriosAdicionales()) {
-                if (getCriteriosPrincipales() == null) {
+    public void handleCloseCriterioAdicional(CloseEvent event)
+    {
+        if (getCriteriosAdicionales() != null && getCriteriosAdicionales().length > 0)
+            {
+            for (Criterio c : getCriteriosAdicionales())
+                {
+                if (getCriteriosPrincipales() == null)
+                    {
                     setCriteriosPrincipales(new ArrayList<Criterio>());
-                }
-                if (!getCriteriosPrincipales().contains(c)) {
+                    }
+                if (!getCriteriosPrincipales().contains(c))
+                    {
                     getCriteriosPrincipales().add(c);
+                    }
                 }
             }
-        }
     }
 
-    public String listarEvaluaciones() {
+    public String listarEvaluaciones()
+    {
         setEvaluacionCandidatos(reclutamientoSessionBean.getListEvaluacionCandidato(candidatoSeleccionado));//registrarPruebasPorCandidato();
         return null;
     }
 
-    public void actualizaListas() {
-        if (getConcursoSeleccionado() != null) {
+    public void actualizaListas()
+    {
+        if (getConcursoSeleccionado() != null)
+            {
             listaCandidatos = reclutamientoSessionBean.getCandidatosByConcurso(getConcursoSeleccionado());
             setCandidatosGuardados(reclutamientoSessionBean.getListaCandidatoConcurso(getConcursoSeleccionado(), "P"));
             setCandidatosContratar(reclutamientoSessionBean.getListaCandidatoSeleccionado(getConcursoSeleccionado(), Arrays.asList("S", "C")));
-        }
+            }
     }
 
     @Override
-    protected void limpiarCampos() {
+    protected void limpiarCampos()
+    {
         setFechaInicial(null);
         setFechaFinal(null);
         tableCandidatos.setSelection(null);
@@ -662,28 +806,39 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
         setAccionSeleccion("A");
     }
 
-    public String buscarCandidatosXCriterios() {
-        if (concursoSeleccionado == null) {
+    public String buscarCandidatosXCriterios()
+    {
+        if (concursoSeleccionado == null)
+            {
             addMessage("Reclutamiento y Selección", "Aun no ha seleccionado un Concurso.", TipoMensaje.ERROR);
             return null;
-        }
+            }
         setAccionSeleccion("C");
         setCandidatosSeleccionados(null);
         setTableCandidatos(new DataTable());
-        if (criteriosPrincipales!= null && !criteriosPrincipales.isEmpty()){
-            listaCandidatos = reclutamientoSessionBean.findCandidatosMatchCriteria( /*Arrays.asList(*/criteriosPrincipales, getSessionBeanADM().getCompania().getCodCia()/*criteriosSeleccionados) */);
-        }else{
-            listaCandidatos= new ArrayList<Candidato>();
-        }
-        
+        if (criteriosPrincipales != null && !criteriosPrincipales.isEmpty())
+            {
+            listaCandidatos = reclutamientoSessionBean.findCandidatosMatchCriteria( /*
+                     * Arrays.asList(
+                     */criteriosPrincipales, getSessionBeanADM().getCompania().getCodCia()/*
+                     * criteriosSeleccionados)
+                     */);
+            }
+        else
+            {
+            listaCandidatos = new ArrayList<Candidato>();
+            }
+
         return null;
     }
 
-    public String buscarAllCandidatos() {
-        if (concursoSeleccionado == null) {
+    public String buscarAllCandidatos()
+    {
+        if (concursoSeleccionado == null)
+            {
             addMessage("Reclutamiento y Selección", "Aun no ha seleccionado un Concurso.", TipoMensaje.ERROR);
             return null;
-        }
+            }
         setAccionSeleccion("M");
         setCandidatosSeleccionados(null);
         setTableCandidatos(new DataTable());
@@ -691,11 +846,13 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
         return null;
     }
 
-    public String buscarAllEmpleados() {
-        if (concursoSeleccionado == null) {
+    public String buscarAllEmpleados()
+    {
+        if (concursoSeleccionado == null)
+            {
             addMessage("Reclutamiento y Selección", "Aun no ha seleccionado un Concurso.", TipoMensaje.ERROR);
             return null;
-        }
+            }
         setAccionSeleccion("M");
         setCandidatosSeleccionados(null);
         setTableCandidatos(new DataTable());
@@ -703,109 +860,134 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
         return null;
     }
 
-    public String mostrarCandidatos() {
+    public String mostrarCandidatos()
+    {
         setAccionSeleccion("A");
         actualizaListas();
         setCandidatosSeleccionados(null);
         return null;
     }
 
-    public EvaluacionCandidato getPruebaEliminar() {
+    public EvaluacionCandidato getPruebaEliminar()
+    {
         return pruebaEliminar;
     }
 
-    public void setPruebaEliminar(EvaluacionCandidato pruebaEliminar) {
+    public void setPruebaEliminar(EvaluacionCandidato pruebaEliminar)
+    {
         this.pruebaEliminar = pruebaEliminar;
     }
 
-    public List<Candidato> getListaCandidatos() {
+    public List<Candidato> getListaCandidatos()
+    {
         return listaCandidatos;
     }
 
-    public void setListaCandidatos(List<Candidato> listaCandidatos) {
+    public void setListaCandidatos(List<Candidato> listaCandidatos)
+    {
         this.listaCandidatos = listaCandidatos;
     }
 
-    public Concurso getConcursoSeleccionado() {
+    public Concurso getConcursoSeleccionado()
+    {
         return concursoSeleccionado;
     }
 
-    public void setConcursoSeleccionado(Concurso concursoSeleccionado) {
+    public void setConcursoSeleccionado(Concurso concursoSeleccionado)
+    {
         this.concursoSeleccionado = concursoSeleccionado;
     }
 
-    public Candidato[] getCandidatosSeleccionados() {
+    public Candidato[] getCandidatosSeleccionados()
+    {
         return candidatosSeleccionados;
     }
 
-    public void setCandidatosSeleccionados(Candidato[] candidatosSeleccionados) {
+    public void setCandidatosSeleccionados(Candidato[] candidatosSeleccionados)
+    {
         this.candidatosSeleccionados = candidatosSeleccionados;
     }
 
-    public Criterio[] getCriteriosAdicionales() {
+    public Criterio[] getCriteriosAdicionales()
+    {
         return criteriosAdicionales;
     }
 
-    public void setCriteriosAdicionales(Criterio[] criteriosAdicionales) {
+    public void setCriteriosAdicionales(Criterio[] criteriosAdicionales)
+    {
         this.criteriosAdicionales = criteriosAdicionales;
     }
 
-    public AutocompletePruebaConverter getPruebaConverter() {
+    public AutocompletePruebaConverter getPruebaConverter()
+    {
         return pruebaConverter;
     }
 
-    public void setPruebaConverter(AutocompletePruebaConverter pruebaConverter) {
+    public void setPruebaConverter(AutocompletePruebaConverter pruebaConverter)
+    {
         this.pruebaConverter = pruebaConverter;
     }
 
-    public PruebaXPuesto getPruebaXPuestoSeleccionada() {
+    public PruebaXPuesto getPruebaXPuestoSeleccionada()
+    {
         return pruebaXPuestoSeleccionada;
     }
 
-    public void setPruebaXPuestoSeleccionada(PruebaXPuesto pruebaXPuestoSeleccionada) {
+    public void setPruebaXPuestoSeleccionada(PruebaXPuesto pruebaXPuestoSeleccionada)
+    {
         this.pruebaXPuestoSeleccionada = pruebaXPuestoSeleccionada;
     }
 
-    public List<PruebaXPuesto> completePrueba(String query) {
+    public List<PruebaXPuesto> completePrueba(String query)
+    {
         List<PruebaXPuesto> suggestions = new ArrayList<PruebaXPuesto>();
-        for (PruebaXPuesto p : pruebaConverter.listaPruebaXPuesto) {
-            if (p.getNombre().toLowerCase().contains(query.toLowerCase())) {
+        for (PruebaXPuesto p : pruebaConverter.listaPruebaXPuesto)
+            {
+            if (p.getNombre().toLowerCase().contains(query.toLowerCase()))
+                {
                 suggestions.add(p);
+                }
             }
-        }
         return suggestions;
     }
 
-    public String agregarPrueba() {
-        if (pruebaXPuestoSeleccionada != null) {
+    public String agregarPrueba()
+    {
+        if (pruebaXPuestoSeleccionada != null)
+            {
             addMessage("Reclutamiento y Selección", "Ha Seleccionado " + pruebaXPuestoSeleccionada.getNombre(), TipoMensaje.INFORMACION);
             return null;
-        }
+            }
         addMessage("Reclutamiento y Selección", "No ha Seleccionado ninguna Prueba", TipoMensaje.ERROR);
         return null;
     }
 
-    public String eliminarPruebaCandidato() {
-        if (pruebaEliminar == null) {
+    public String eliminarPruebaCandidato()
+    {
+        if (pruebaEliminar == null)
+            {
             addMessage("Reclutamiento y Selección", "No ha Seleccionado ninguna Prueba", TipoMensaje.ERROR);
             return null;
-        }
+            }
         reclutamientoSessionBean.eliminarEvaluacionCandidato(pruebaEliminar);
         addMessage("Reclutamiento y Selección", "Datos eliminados con éxito.", TipoMensaje.INFORMACION);
         setEvaluacionCandidatos(reclutamientoSessionBean.getListEvaluacionCandidato(candidatoSeleccionado));
-        reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos,candidatoSeleccionado);
+        reclutamientoSessionBean.actualizarNotaCandidato(evaluacionCandidatos, candidatoSeleccionado);
         return null;
     }
 
-    public String agregarPruebaCandidato() {
-        if (candidatoSeleccionado == null) {
+    public String agregarPruebaCandidato()
+    {
+        if (candidatoSeleccionado == null)
+            {
             addMessage("Reclutamiento y Selección", "No ha Seleccionado ningun Candidato", TipoMensaje.ERROR);
             return null;
-        }
-        if (pruebaXPuestoSeleccionada == null) {
+            }
+        if (pruebaXPuestoSeleccionada == null)
+            {
             addMessage("Reclutamiento y Selección", "No ha Seleccionado ninguna Prueba", TipoMensaje.ERROR);
             return null;
-        }
+            }
         EvaluacionCandidato nuevaEvaluacion = new EvaluacionCandidato();
         EvaluacionCandidatoPK pk = new EvaluacionCandidatoPK();
         nuevaEvaluacion.setCandidatoConcurso(candidatoSeleccionado);
@@ -818,28 +1000,35 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
         pk.setCandidato(candidatoSeleccionado.getCandidato1().getCandidatoPK().getCodCandidato());
         pk.setConcurso(getConcursoSeleccionado().getConcursoPK().getCodConcurso());
         nuevaEvaluacion.setEvaluacionCandidatoPK(pk);
-        for (EvaluacionCandidato a : evaluacionCandidatos) {
-            if (a.getEvaluacionCandidatoPK().equals(pk)) {
+        for (EvaluacionCandidato a : evaluacionCandidatos)
+            {
+            if (a.getEvaluacionCandidatoPK().equals(pk))
+                {
                 addMessage("Reclutamiento y Selección", "Ya se ha registrado una evaluación de este tipo.", TipoMensaje.ERROR);
                 return null;
+                }
             }
-        }
-        try {
+        try
+            {
             reclutamientoSessionBean.guardarEvaluacionCandidato(nuevaEvaluacion);
             addMessage("Reclutamiento y Selección", "Datos guardados con éxito.", TipoMensaje.INFORMACION);
             setEvaluacionCandidatos(reclutamientoSessionBean.getListEvaluacionCandidato(candidatoSeleccionado));
             setPruebaXPuestoSeleccionada(null);
-        } catch (Exception e) {
+            }
+        catch (Exception e)
+            {
             addMessage("Reclutamiento y Selección", "Ocurrio un error al intentar guardar.", TipoMensaje.ERROR);
-        }
+            }
         return null;
     }
 
-    public String imprimirContrato() {
-        if (candidatoSeleccionado == null) {
+    public String imprimirContrato()
+    {
+        if (candidatoSeleccionado == null)
+            {
             addMessage("Reclutamiento y Selección", "No ha seleccionado ningun candidato.", TipoMensaje.ERROR);
             return null;
-        }
+            }
         HashMap<String, Object> parametros = new HashMap<String, Object>();
         parametros.put("COD_CIA", candidatoSeleccionado.getCandidatoConcursoPK().getCodCia().intValue());
         parametros.put("COD_EMP", candidatoSeleccionado.getCandidato1().getEmpleados().getEmpleadosPK().getCodEmp());
@@ -847,28 +1036,34 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
         return null;
     }
 
-    public String listarBeneficiarios() {
+    public String listarBeneficiarios()
+    {
         listaBeneficiarios = candidatoSeleccionado != null ? reclutamientoSessionBean.findBeneficiariosByCandidato(candidatoSeleccionado.getCandidato1()) : new ArrayList<BeneficiarioXCandidato>();
         return null;
     }
 
-    public String guardarBeneficiario() {
+    public String guardarBeneficiario()
+    {
         Boolean _error = Boolean.FALSE;
-        if (candidatoSeleccionado == null) {
+        if (candidatoSeleccionado == null)
+            {
             addMessage("Reclutamiento y Selección", "No ha seleccionado ningun candidato.", TipoMensaje.ERROR);
             _error = Boolean.TRUE;
-        }
-        if (nombreBeneficiario == null || nombreBeneficiario.length() <= 0) {
+            }
+        if (nombreBeneficiario == null || nombreBeneficiario.length() <= 0)
+            {
             addMessage("Reclutamiento y Selección", "Ingrese el nombre del beneficiario.", TipoMensaje.ERROR);
             _error = Boolean.TRUE;
-        }
-        if (parentesco == null || parentesco == -1) {
+            }
+        if (parentesco == null || parentesco == -1)
+            {
             addMessage("Reclutamiento y Selección", "Seleccione el parentesco.", TipoMensaje.ERROR);
             _error = Boolean.TRUE;
-        }
-        if (_error) {
+            }
+        if (_error)
+            {
             return null;
-        }
+            }
         BeneficiarioXCandidato bc = new BeneficiarioXCandidato();
         BeneficiarioXCandidatoPK pk = reclutamientoSessionBean.getPkBeneficiarioCandiato(candidatoSeleccionado.getCandidato1());
         bc.setBeneficiarioXCandidatoPK(pk);
@@ -876,102 +1071,129 @@ public class PreseleccionAspiranteBackendBean extends AbstractPreseleccion imple
         bc.setNombre(nombreBeneficiario);
         bc.setParentesco(new Parentesco(candidatoSeleccionado.getCandidatoConcursoPK().getCodCia(), parentesco));
 
-        try {
+        try
+            {
             reclutamientoSessionBean.guardarBeneficiarioCandidato(bc);
             addMessage("Reclutamiento y Selección", "Datos Guardados con exito.", TipoMensaje.INFORMACION);
             listaBeneficiarios = candidatoSeleccionado != null ? reclutamientoSessionBean.findBeneficiariosByCandidato(candidatoSeleccionado.getCandidato1()) : new ArrayList<BeneficiarioXCandidato>();
-        } catch (Exception e) {
+            }
+        catch (Exception e)
+            {
             addMessage("Reclutamiento y Selección", "Ocurrio un error al intentar guardar.", TipoMensaje.ERROR);
-        }
+            }
         nombreBeneficiario = null;
         parentesco = null;
         return null;
     }
 
-    public void onEditarBeneficiario(RowEditEvent event) {
+    public void onEditarBeneficiario(RowEditEvent event)
+    {
         BeneficiarioXCandidato c = (BeneficiarioXCandidato) event.getObject();
-        if (c.getNombre() == null || c.getNombre().length() <= 0) {
+        if (c.getNombre() == null || c.getNombre().length() <= 0)
+            {
             addMessage("Reclutamiento y Selección", "Ingrese el nombre de beneficiario.", TipoMensaje.ERROR);
             return;
-        }
+            }
         c.setParentesco(new Parentesco(getSessionBeanADM().getCompania().getCodCia(), parentescoEdit));
-        try {
+        try
+            {
             reclutamientoSessionBean.editarBeneficiarioCandidato(c);
             listaBeneficiarios = candidatoSeleccionado != null ? reclutamientoSessionBean.findBeneficiariosByCandidato(candidatoSeleccionado.getCandidato1()) : new ArrayList<BeneficiarioXCandidato>();
             addMessage("Reclutamiento y Selección", "Datos Guardados con exito.", TipoMensaje.INFORMACION);
-        } catch (Exception e) {
+            }
+        catch (Exception e)
+            {
             logger.log(Level.OFF, "Ocurrio el siguiente error al intentar guardar: ", e);
-        }
+            }
     }
 
-    public String eliminarBeneficiario() {
-        if (beneficiarioSeleccionado == null) {
+    public String eliminarBeneficiario()
+    {
+        if (beneficiarioSeleccionado == null)
+            {
             addMessage("Reclutamiento y Selección", "No ha seleccionado ningun beneficiario.", TipoMensaje.ERROR);
             return null;
-        }
-        try {
+            }
+        try
+            {
             reclutamientoSessionBean.eliminarBeneficiarioCandidato(beneficiarioSeleccionado);
             addMessage("Reclutamiento y Selección", "Datos Eliminados con exito.", TipoMensaje.INFORMACION);
             listaBeneficiarios = candidatoSeleccionado != null ? reclutamientoSessionBean.findBeneficiariosByCandidato(candidatoSeleccionado.getCandidato1()) : new ArrayList<BeneficiarioXCandidato>();
-        } catch (Exception e) {
+            }
+        catch (Exception e)
+            {
             addMessage("Reclutamiento y Selección", "Ocurrio un error al intentar eliminar.", TipoMensaje.ERROR);
-        }
+            }
 
         return null;
     }
 
-    public String getNombreBeneficiario() {
+    public String getNombreBeneficiario()
+    {
         return nombreBeneficiario;
     }
 
-    public void setNombreBeneficiario(String nombreBeneficiario) {
+    public void setNombreBeneficiario(String nombreBeneficiario)
+    {
         this.nombreBeneficiario = nombreBeneficiario;
     }
 
-    public Short getParentesco() {
+    public Short getParentesco()
+    {
         return parentesco;
     }
 
-    public void setParentesco(Short parentesco) {
+    public void setParentesco(Short parentesco)
+    {
         this.parentesco = parentesco;
     }
 
-    public BeneficiarioXCandidato getBeneficiarioSeleccionado() {
+    public BeneficiarioXCandidato getBeneficiarioSeleccionado()
+    {
         return beneficiarioSeleccionado;
     }
 
-    public void setBeneficiarioSeleccionado(BeneficiarioXCandidato beneficiarioSeleccionado) {
+    public void setBeneficiarioSeleccionado(BeneficiarioXCandidato beneficiarioSeleccionado)
+    {
         this.beneficiarioSeleccionado = beneficiarioSeleccionado;
     }
 
-    public Short getParentescoEdit() {
+    public Short getParentescoEdit()
+    {
         return parentescoEdit;
     }
 
-    public void setParentescoEdit(Short parentescoEdit) {
+    public void setParentescoEdit(Short parentescoEdit)
+    {
         this.parentescoEdit = parentescoEdit;
     }
 
-    public String eliminarCandidato() {
+    public String eliminarCandidato()
+    {
 
-        try {
-            if (candidatoSeleccionado == null) {
+        try
+            {
+            if (candidatoSeleccionado == null)
+                {
                 addMessage("Reclutamiento y Selección", "No ha seleccionado ningún candidato.", TipoMensaje.ERROR);
                 return null;
-            }
-            for (EvaluacionCandidato e : candidatoSeleccionado.getEvaluacionCandidatoList()) {
+                }
+            for (EvaluacionCandidato e : candidatoSeleccionado.getEvaluacionCandidatoList())
+                {
                 reclutamientoSessionBean.eliminarEvaluacionCandidato(e);
-            }
+                }
             candidatoSeleccionado.getCandidato1().getConcursoList().remove(concursoSeleccionado);
             reclutamientoSessionBean.editarCandidato(candidatoSeleccionado.getCandidato1());
             reclutamientoSessionBean.removerCandidatoConcurso(candidatoSeleccionado);
             addMessage("Reclutamiento y Selección", "Datos Eliminados con exito.", TipoMensaje.INFORMACION);
             actualizaListas();
             setCandidatoSeleccionado(null);
-        } catch (Exception e) {
+            }
+        catch (Exception e)
+            {
             addMessage("Reclutamiento y Selección", "Ocurrio un error al intentar eliminar.", TipoMensaje.ERROR);
             logger.log(Level.OFF, "Ocurrio el siguiente error al intentar eliminar: ", e);
-        }
+            }
 
         return null;
     }

@@ -4,11 +4,7 @@
  */
 package com.infosgroup.planilla.controlador.modulos.capacitaciones;
 
-import com.infosgroup.planilla.modelo.entidades.Capacitacion;
-import com.infosgroup.planilla.modelo.entidades.CapacitacionAsistencia;
-import com.infosgroup.planilla.modelo.entidades.CapacitacionXEmpleado;
-import com.infosgroup.planilla.modelo.entidades.Cias;
-import com.infosgroup.planilla.modelo.entidades.Empleados;
+import com.infosgroup.planilla.modelo.entidades.*;
 import com.infosgroup.planilla.modelo.procesos.CapacitacionesSessionBean;
 import com.infosgroup.planilla.view.AbstractJSFPage;
 import com.infosgroup.planilla.view.TipoMensaje;

@@ -28,8 +28,8 @@ public class ContratacionBackendBean extends AbstractJSFPage implements Serializ
 
     @EJB
     private ReclutamientoSessionBean reclutamientoSessionBean;
-    private DataTable tableConcursos;
-    private DataTable tableEvaluados;
+    private transient DataTable tableConcursos;
+    private transient DataTable tableEvaluados;
     private List<Concurso> listaConcurso;
     private List<Candidato> listaCandidatos;
     private Candidato[] candidatosSeleccionados;
